@@ -1,0 +1,24 @@
+[
+    {
+        "description": "Failed to deploy Vm with Id: 126, on Host with Id: null",
+        "type": "8",
+        "date": "31/Aug/2015 14:38:21",
+        "id": "331bd1ae-b080-41ea-8bd7-414e6a62cfce"
+
+    },
+    {
+        "description": "Failed to deploy Vm with Id: 124, on Host with Id: null",
+        "type": "8",
+        "date": "31/Aug/2015 14:38:21",
+        "id": "351bd1ae-b080-41ea-8bd7-414e6a62cfce"
+
+    },
+    {
+        "description": "Failed to deploy Vm with Id: 125, on Host with Id: null",
+        "type": "8",
+        "date": "31/Aug/2015 14:38:21",
+        "id": "361bd1ae-b080-41ea-8bd7-414e6a62cfce"
+
+    }
+
+]

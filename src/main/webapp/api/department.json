@@ -1,0 +1,27 @@
+[
+     {
+        "id": 1,
+        "name":"Billing",
+        "description":"Billing Section"
+    },
+    {
+        "id": 2,
+        "name":"Maintenance",
+        "description":"Maintaining the project details"
+    },
+    {
+        "id": 3,
+        "name":"Infrastructure",
+        "description":"Services are provided by Infrastructure team"
+    },
+    {
+        "id": 4,
+        "name":"Development",
+        "description":"Services are provided by Development team"
+    },
+    {
+        "id": 5,
+        "name":"Testing",
+        "description":"Services are provided by QA team"
+    }
+]

@@ -1,0 +1,104 @@
+<div class="row" ng-controller="formCtrl">
+    
+    <script type="text/ng-template" id="myModalContent.html">
+        <div class="modal-header">
+            <h3 class="modal-title">I'm a modal!</h3>
+        </div>
+        <div class="modal-body">            
+            <div data-ng-include src="'views/cloud/instance/step1.html'"></div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+            <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+        </div>
+    </script>
+    
+    <button type="button" class="btn btn-default" ng-click="open('lg')">Open me!</button>
+    
+    <div class="hpanel">
+        <div class="panel-body">
+            <div class="col-md-2 no-padding no-margins">
+                <div class="hpanel"> 
+                    <div class="panel-body  no-padding"> 
+                        <ul class="mailbox-list h-300 borders"> 
+                            <li class="border-bottom"> <a href="#">Image Type </a> </li> 
+                            <li class="active"> 
+                                <a href="#" data-ng-click="getOsList('linux')">
+                                    <img src="images/os/linux_logo.png" alt="" height="25" width="25" class="m-r" >
+                                   Linux <i class="fa fa-caret-right pull-right"></i>
+                                </a> 
+                            </li> 
+                            <li> 
+                                <a href="#">
+                                    <img src="images/os/windows_logo.png" alt="" height="25" width="25" class="m-r" >
+                                    Windows <i class="fa fa-caret-right pull-right"></i>
+                                </a>
+                            </li> 
+                        </ul>
+
+                    </div> 
+                </div>
+            </div>
+            <div class="col-md-2 no-padding no-margins">
+                <div class="hpanel"> 
+                    <div class="panel-body  no-padding"> 
+                        <ul class="mailbox-list h-300 borders"> 
+                            <li class="border-bottom"><a href="#">Operating System </a> </li> 
+                            <li class="active"><a href="#"><i class="fa fa-paper-plane"></i> Centos <i class="fa fa-caret-right pull-right"></i></a> </li> 
+                            <li><a href="#"><i class="fa fa-pencil"></i> Ubuntu <i class="fa fa-caret-right pull-right"></i></a> </li> 
+                            <li><a href="#"><i class="fa fa-trash"></i> Fedora <i class="fa fa-caret-right pull-right"></i></a> </li> 
+                        </ul>
+
+                    </div> 
+                </div>
+            </div>
+
+            <div class="col-md-2 no-padding no-margins">
+                <div class="hpanel"> 
+                    <div class="panel-body  no-padding"> 
+                        <ul class="mailbox-list h-300 borders"> 
+                            <li class="border-bottom"><a href="#">Version </a> </li> 
+                            <li><a href="#">Version 6.0</a> </li> 
+                            <li><a href="#">Version 6.5</a> </li> 
+                            <li><a href="#">Version 7.0</a> </li> 
+                        </ul>
+                    </div> 
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="hpanel">
+                    <div class="panel-body">
+                        <form name="sampleForm" method="POST" data-ng-submit="save(sampleForm)" novalidate class="form-horizontal">
+                            <div class="form-group" ng-class="{ 'has-error' : sampleForm.name.$invalid && formSubmitted}">
+                                <label class="col-sm-4 control-label">Name</label>
+                                <div class="col-sm-8">
+                                    <input required="true" type="text" name="name" data-ng-model="sample.name" class="form-control" autofocus   >
+                                    <span class="help-block m-b-none" ng-show="sampleForm.name.$invalid && formSubmitted" >Name is required.</span>
+                                </div>
+
+                            </div>
+                            <div class="hr-line-dashed"></div>
+
+                            <div class="form-group" ng-class="{ 'has-error' : sampleForm.email.$invalid && formSubmitted}">
+                                <label class="col-sm-4 control-label">Email</label>
+                                <div class="col-sm-8">
+                                    <input required="true" type="email" name="email" data-ng-model="sample.email" class="form-control" autofocus   >
+                                    <span class="help-block m-b-none" ng-show="sampleForm.email.$invalid && formSubmitted" >Invalid email.</span>
+                                </div>
+
+                            </div>
+                            <div class="hr-line-dashed"></div>
+
+                            <div class="form-group">
+                                <div class="col-sm-8 col-sm-offset-4">
+                                    <button class="btn btn-primary" type="submit"  >Submit</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

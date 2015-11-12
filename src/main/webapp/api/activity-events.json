@@ -1,0 +1,39 @@
+[
+    {
+        "id": "331bd1ae-b080-41ea-8bd7-414e6a62cfce",
+        "description": "User has logged in from IP Address 192.168.1.25",
+        "state":"Completed",
+        "level": "INFO",
+        "type": "USER.LOGIN",
+        "domain":"Root",
+        "account": "admin",
+        "initiatedby":"admin",
+        "date": "31/Aug/2015 14:38:21"
+    
+      
+    },
+      {
+        "id": "351bd1ae-b080-41ea-8bd7-414e6a62cfce",
+        "description": "Add Remote Access VPN user for account 2 username= admin",
+         "state":"Completed",
+        "level": "INFO",
+        "type": "VPN.USER.ADD",
+        "domain":"Root",
+        "account": "admin",
+        "initiatedby":"admin",
+        "date": "31/Aug/2015 14:38:21"
+       
+      
+    },
+      {
+        "id": "431bd1ae-b080-41ea-8bd7-414e6a62cfce",
+        "description": "Error while starting Vm. Vm Id: 126",
+         "state":"Completed",
+        "level": "INFO",
+        "type": "VM.CREATE",
+        "domain":"Root",
+        "account": "admin",
+       "initiatedby":"admin",
+        "date": "31/Aug/2015 14:38:21"
+    }
+]

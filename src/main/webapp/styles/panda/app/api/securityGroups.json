@@ -1,0 +1,61 @@
+[{
+        "id": "93616fd8-f44c-4203-9848-15f56937d814",
+        "name": "default",
+        "description": "Default Security Group",
+        "account": "test",
+        "domainid": "6a757325-2c08-4d06-9862-5cb5f1e06c4a",
+        "domain": "ranjith.com",
+        "ingressrule": [],
+        "egressrule": [],
+        "tags": []
+    }, {
+        "id": "c3d9261c-b991-4267-9018-6a1be527a198",
+        "name": "default",
+        "description": "Default Security Group",
+        "account": "jamseer",
+        "domainid": "5da437bc-25f8-11e5-816b-e06995abbb33",
+        "domain": "ROOT",
+        "ingressrule": [],
+        "egressrule": [],
+        "tags": []
+    }, {
+        "id": "83a2073c-3c04-4f37-9115-85f8846d1da5",
+        "name": "test-group",
+        "description": "",
+        "account": "sibin",
+        "domainid": "5da437bc-25f8-11e5-816b-e06995abbb33",
+        "domain": "ROOT",
+        "ingressrule": [],
+        "egressrule": [],
+        "tags": []
+    }, {
+        "id": "8cecd634-cefe-4df5-b96f-9828030aac90",
+        "name": "default",
+        "description": "Default Security Group",
+        "account": "sreeja",
+        "domainid": "5da437bc-25f8-11e5-816b-e06995abbb33",
+        "domain": "ROOT",
+        "ingressrule": [],
+        "egressrule": [],
+        "tags": []
+    }, {
+        "id": "2bc1a094-c122-45bc-8e59-d744f806db8e",
+        "name": "default",
+        "description": "Default Security Group",
+        "account": "yashin",
+        "domainid": "5da437bc-25f8-11e5-816b-e06995abbb33",
+        "domain": "ROOT",
+        "ingressrule": [],
+        "egressrule": [],
+        "tags": []
+    }, {
+        "id": "586a4ae4-171f-4bac-9630-70591557c7cb",
+        "name": "default",
+        "description": "Default Security Group",
+        "account": "TestUser",
+        "domainid": "5da437bc-25f8-11e5-816b-e06995abbb33",
+        "domain": "ROOT",
+        "ingressrule": [],
+        "egressrule": [],
+        "tags": []
+    }]

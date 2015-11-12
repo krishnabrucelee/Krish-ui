@@ -1,0 +1,512 @@
+[
+    {
+        "id": 1,
+        "name": "NorthChina- Beijing",
+        "owner": "Jamseer",
+        "application": "Nuvol",
+        "project": "CK",
+        "department": "IMS",
+        "zone": {
+            "id": 1,
+            "name": "Beijing"
+        },
+        "ostype": "Linux",
+        "template": {
+            "id": 3,
+            "name": "Centos 5.3 (64 bit)"
+        },
+        "displaynote": "The Instance was created on the name NorthChina- Beijing on the zone Beijing",
+        "computeOffering": {
+            "id": 1,
+            "name": "Small Instance"
+        },
+        "diskOffering": {
+            "id": 1,
+            "name": "Small"
+        },
+        "ip": "10.1.10.92",
+        "vpc": "AZ - Restricted",
+        "network": {
+            "id": 2,
+            "name": "Isolated"
+        },
+        "networkList": [
+            {
+                "id": 1,
+                "name": "Advanced Network",
+                "networkID": "f6dfee50-690c-4210-b77c-c9bf3179b159",
+                "networkType": {
+                    "id": 2,
+                    "name": "Isolated"
+                },
+                "ip": "10.1.10.92",
+                "gateway": "10.1.1.1",
+                "netmask": "255.255.255.0",
+                "isDefault": "YES"
+            }
+
+        ],
+        "state": "Stopped",
+        "createdOn": "12-12-2014",
+        "instanceId": "vm-###-###-###",
+        "subscription": "Trail",
+        "domainName": "Beijing",
+        "accountName": "John",
+        "selected": false,
+        "volumeList":
+                [
+                    {
+                        "id": 1,
+                        "name": "Root-1",
+                        "type": {
+                            "id": 1,
+                            "name": "Root"
+                        },
+                        "plan":
+                                {
+                                    "id": 1,
+                                    "name": "Small",
+                                    "price": 0.10,
+                                    "size": "5 GB"
+                                },
+                        "attachedTo":
+                                {
+                                    "id": 1,
+                                    "name": "NorthChina- Beijing",
+                                    "zone": {
+                                        "id": 1,
+                                        "name": "Beijing"
+                                    },
+                                    "template": {
+                                        "id": 3,
+                                        "name": "Centos 5.3 (64 bit)"
+                                    },
+                                    "computeOffering": {
+                                        "id": 1,
+                                        "name": "Small Instance"
+                                    },
+                                    "diskOffering": {
+                                        "id": 1,
+                                        "name": "Small"
+                                    },
+                                    "ip": "10.1.10.92",
+                                    "vpc": "AZ - Restricted",
+                                    "network": {
+                                        "id": 2,
+                                        "name": "Isolated"
+                                    },
+                                    "state": "Stopped"
+                                },
+                        "createdDate": "20-07-2015"
+                    },
+                    {
+                        "id": 2,
+                        "name": "Data-2",
+                        "type": {
+                            "id": 2,
+                            "name": "Root"
+                        },
+                        "plan": {
+                            "id": 2,
+                            "name": "Medium",
+                            "price": 0.20,
+                            "size": "10 GB"
+
+                        },
+                        "attachedTo": null,
+                        "createdDate": "02-06-2015"
+                    }
+                ]
+
+    },
+    {
+        "id": 2,
+        "name": "Northeast China - Liaoning",
+        "owner": "Ibrahim",
+        "application": "AZ",
+        "project": "Panda",
+        "department": "Dev",
+        "zone": {
+            "id": 2,
+            "name": "Liaoning"
+        },
+        "displaynote": "The Instance was created on the name Northeast China- Liaoning on the zone Liaoning",
+        "ostype": "Windows",
+        "template": {
+            "id": 1,
+            "name": "Windows 2012R ISO"
+        },
+        "computeOffering": {
+            "id": 2,
+            "name": "Medium Instance"
+        },
+        "diskOffering": {
+            "id": 2,
+            "name": "Medium"
+        },
+        "ip": "10.1.10.93",
+        "vpc": "AZ - Restricted",
+        "network": {
+            "id": 1,
+            "name": "Shared Network"
+        },
+        "state": "Running",
+        "createdOn": "1-11-2014",
+        "instanceId": "vm-###-###-###",
+        "subscription": "Free",
+        "domainName": "Liaoning",
+        "accountName": "Jason",
+        "selected": false,
+        "networkList": [{
+                "id": 2,
+                "name": "Custom Network",
+                "networkID": "f6dfee50-690c-4210-b77c-c9bf31734e59",
+                "networkType": {
+                    "id": 1,
+                    "name": "Shared Network"
+                },
+                "ip": "10.1.10.93",
+                "gateway": "10.1.1.1",
+                "netmask": "255.255.255.0",
+                "isDefault": "YES"
+            },
+            {
+                "id": 3,
+                "name": "Advanced Network",
+                "networkID": "f6dfee50-690c-4210-b77c-m4fd452321e3",
+                "networkType": {
+                    "id": 2,
+                    "name": "Isolated"
+                },
+                "ip": "10.1.10.93",
+                "gateway": "10.1.1.1",
+                "netmask": "255.255.255.0",
+                "isDefault": "NO"
+            }
+        ],
+        "volumeList":
+                [
+                    {
+                        "id": 1,
+                        "name": "Root-2",
+                        "type": {
+                            "id": 1,
+                            "name": "Root2"
+                        },
+                        "plan":
+                                {
+                                    "id": 1,
+                                    "name": "Small",
+                                    "price": 0.10,
+                                    "size": "5 GB"
+                                },
+                        "attachedTo":
+                                {
+                                    "id": 1,
+                                    "name": "NorthChina- Liaoning",
+                                    "zone": {
+                                        "id": 1,
+                                        "name": "Liaoning"
+                                    },
+                                    "template": {
+                                        "id": 3,
+                                        "name": "Windows 2012R ISO"
+                                    },
+                                    "computeOffering": {
+                                        "id": 1,
+                                        "name": "Small Instance"
+                                    },
+                                    "diskOffering": {
+                                        "id": 1,
+                                        "name": "Small"
+                                    },
+                                    "ip": "10.1.10.93",
+                                    "vpc": "AZ - Restricted",
+                                    "network": {
+                                        "id": 2,
+                                        "name": "Isolated"
+                                    },
+                                    "state": "Running"
+                                },
+                        "createdDate": "20-07-2015"
+                    },
+                    {
+                        "id": 2,
+                        "name": "Data-22",
+                        "type": {
+                            "id": 2,
+                            "name": "Data-22"
+                        },
+                        "plan": {
+                            "id": 2,
+                            "name": "Medium",
+                            "price": 0.20,
+                            "size": "10 GB"
+
+                        },
+                        "attachedTo": null,
+                        "createdDate": "02-06-2015"
+                    }
+                ]
+    },
+    {
+        "id": 3,
+        "name": "East China - Shanghai",
+        "owner": "Yashin",
+        "application": "Assistanz",
+        "project": "JadeArt",
+        "department": "IMS",
+        "zone": {
+            "id": 3,
+            "name": "Shanghai"
+        },
+        "displaynote": "The Instance was created on the name East China- Shanghai on the zone Shanghai",
+        "ostype": "Windows",
+        "template": {
+            "id": 2,
+            "name": "Server 2012RSTD 64bit"
+        },
+        "computeOffering": {
+            "id": 2,
+            "name": "Large Instance"
+        },
+        "diskOffering": {
+            "id": 2,
+            "name": "Large"
+        },
+        "ip": "10.1.30.93",
+        "vpc": "AZ - Standard",
+        "network": {
+            "id": 1,
+            "name": "Shared Network"
+        },
+        "state": "Running",
+        "createdOn": "1-1-2015",
+        "instanceId": "vm-###-###-###",
+        "subscription": "Retail",
+        "domainName": "Shanghai",
+        "accountName": "Smith",
+        "selected": false,
+        "networkList": [{
+                "id": 2,
+                "name": "Custom Network",
+                "networkID": "f6dfee50-690c-4210-b77c-c9bf31734e59",
+                "networkType": {
+                    "id": 1,
+                    "name": "Shared Network"
+                },
+                "ip": "10.1.30.93",
+                "gateway": "10.1.2.1",
+                "netmask": "255.255.0.0",
+                "isDefault": "YES"
+            },
+            {
+                "id": 3,
+                "name": "Advanced Network",
+                "networkID": "f6dfee50-690c-4210-b77c-m4fd452321e3",
+                "networkType": {
+                    "id": 2,
+                    "name": "Isolated"
+                },
+                "ip": "10.1.40.92",
+                "gateway": "10.1.2.1",
+                "netmask": "255.255.0.0",
+                "isDefault": "NO"
+            }
+        ],
+        "volumeList":
+                [
+                    {
+                        "id": 1,
+                        "name": "Root-3",
+                        "type": {
+                            "id": 1,
+                            "name": "Root2"
+                        },
+                        "plan":
+                                {
+                                    "id": 1,
+                                    "name": "Small",
+                                    "price": 0.10,
+                                    "size": "5 GB"
+                                },
+                        "attachedTo":
+                                {
+                                    "id": 1,
+                                    "name": "East China- Shanghai",
+                                    "zone": {
+                                        "id": 1,
+                                        "name": "Shanghai"
+                                    },
+                                    "template": {
+                                        "id": 3,
+                                        "name": "Server 2012RSTD 64bit"
+                                    },
+                                    "computeOffering": {
+                                        "id": 1,
+                                        "name": "Small Instance"
+                                    },
+                                    "diskOffering": {
+                                        "id": 1,
+                                        "name": "Small"
+                                    },
+                                    "ip": "10.1.30.93",
+                                    "vpc": "AZ - Standard",
+                                    "network": {
+                                        "id": 2,
+                                        "name": "Isolated"
+                                    },
+                                    "state": "Running"
+                                },
+                        "createdDate": "20-07-2015"
+                    },
+                    {
+                        "id": 2,
+                        "name": "Data-32",
+                        "type": {
+                            "id": 2,
+                            "name": "Data-32"
+                        },
+                        "plan": {
+                            "id": 2,
+                            "name": "Medium",
+                            "price": 0.20,
+                            "size": "10 GB"
+
+                        },
+                        "attachedTo": null,
+                        "createdDate": "02-06-2015"
+                    }
+                ]
+    },
+    {
+        "id": 4,
+        "name": "South central China - Henan",
+        "owner": "Vignesh",
+        "application": "Assistanz",
+        "project": "Panda",
+        "department": "Dev",
+        "zone": {
+            "id": 4,
+            "name": "Henan"
+        },
+        "displaynote": "The Instance was created on the name South central China- Henan on the zone Henan",
+        "ostype": "Windows",
+        "template": {
+            "id": 1,
+            "name": "Windows 2012R ISO"
+        },
+        "computeOffering": {
+            "id": 2,
+            "name": "Medium Instance"
+        },
+        "diskOffering": {
+            "id": 2,
+            "name": "Medium"
+        },
+        "ip": "10.168.10.48",
+        "vpc": "AZ - Public",
+        "network": {
+            "id": 2,
+            "name": "Isolated Network"
+        },
+        "state": "Stopped",
+        "createdOn": "13-3-2015",
+        "instanceId": "vm-###-###-###",
+        "subscription": "Retail",
+        "domainName": "Henan",
+        "accountName": "Juon",
+        "selected": false,
+        "networkList": [{
+                "id": 2,
+                "name": "Custom Network",
+                "networkID": "f6dfee50-690c-4210-b77c-c9bf31734e59",
+                "networkType": {
+                    "id": 1,
+                    "name": "Shared Network"
+                },
+                "ip": "10.167.30.93",
+                "gateway": "10.2.2.1",
+                "netmask": "255.0.0.0",
+                "isDefault": "NO"
+            },
+            {
+                "id": 3,
+                "name": "Advanced Network",
+                "networkID": "f6dfee50-690c-4210-b77c-m4fd452321e3",
+                "networkType": {
+                    "id": 2,
+                    "name": "Isolated"
+                },
+                "ip": "10.168.10.48",
+                "gateway": "10.2.2.1",
+                "netmask": "255.255.0.0",
+                "isDefault": "YES"
+            }
+        ],
+        "volumeList":
+                [
+                    {
+                        "id": 1,
+                        "name": "Root-1",
+                        "type": {
+                            "id": 1,
+                            "name": "Root"
+                        },
+                        "plan":
+                                {
+                                    "id": 1,
+                                    "name": "Small",
+                                    "price": 0.10,
+                                    "size": "5 GB"
+                                },
+                        "attachedTo":
+                                {
+                                    "id": 1,
+                                    "name": "South central China- Henan",
+                                    "zone": {
+                                        "id": 1,
+                                        "name": "Henan"
+                                    },
+                                    "template": {
+                                        "id": 3,
+                                        "name": "Windows 2012R ISO"
+                                    },
+                                    "computeOffering": {
+                                        "id": 1,
+                                        "name": "Small Instance"
+                                    },
+                                    "diskOffering": {
+                                        "id": 1,
+                                        "name": "Small"
+                                    },
+                                    "ip": "10.2.2.1",
+                                    "vpc": "AZ - Public",
+                                    "network": {
+                                        "id": 2,
+                                        "name": "Isolated"
+                                    },
+                                    "state": "Stopped"
+                                },
+                        "createdDate": "20-07-2015"
+                    },
+                    {
+                        "id": 2,
+                        "name": "Data-2",
+                        "type": {
+                            "id": 2,
+                            "name": "Root"
+                        },
+                        "plan": {
+                            "id": 2,
+                            "name": "Medium",
+                            "price": 0.20,
+                            "size": "10 GB"
+
+                        },
+                        "attachedTo": null,
+                        "createdDate": "02-06-2015"
+                    }
+                ]
+    }
+]

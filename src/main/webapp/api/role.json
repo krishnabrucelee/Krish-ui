@@ -1,0 +1,34 @@
+[
+    {
+        "id": 1,
+        "name": "Root Admin",
+        "department": {
+            "id": 1,
+            "name": "Billing",
+            "description": "Billing Section"
+        },
+        "description": "Root Admin can access all resources"
+    },
+    {
+        "id": 2,
+        "name": "User",
+        "department": {
+            "id": 2,
+            "name": "Maintenance",
+            "description": "Maintaining the project details"
+        },
+        "description": "user sees only their own resources, such as VM's "
+    },
+    {
+        "id": 3,
+        "name": "Domain Admin",
+        "department": {
+            "id": 3,
+            "name": "Infrastructure",
+            "description": "Services are provided by Infrastructure team"
+        },
+        "description": "Domain Admin can access domain's user but not physical server resources"
+    }
+
+
+]

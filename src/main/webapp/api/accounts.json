@@ -1,0 +1,52 @@
+[   {
+        "id":1,
+        "description": "registered user",
+        "created_at": "2014-10-13T12:43:16.000000",
+        "enabled": true,
+        "real_name": "Amal",
+        "email": "amal@assistanz.com",
+        "default_project_id": "042607397d1d45c7a31d8d91df1a5fee",
+        "country_code": "91",
+        "mobile_number": "9597454545",
+        "id": "0d428cb970d846adbaf2b53d6c677ca0",
+        "referral_code": "c172985d32cb440e92a254070981102d",
+        "company": "AssistanZ Networks PVT",
+        "domain_id": "7b0a9d480cf248be828805c14a6ae751",
+        "name": "amal",
+        "projects":[{"name":"amal_project", "id":"042607397d1d45c7a31d8d91df1a5fee", "roles":[{"name":"Billing Owner"}, {"name":"Project Owner"}]}]
+    }, {
+        "id":2,
+        "description": "registered user",
+        "created_at": "2014-10-13T12:43:16.000000",
+        "enabled": true,
+        "real_name": "Mathar",
+        "email": "mathar@assistanz.com",
+        "default_project_id": "042607397d1d45c7a31d8d91df1a5fee",
+        "country_code": "91",
+        "mobile_number": "9597454545",
+        "id": "0d428cb970d846adbaf2b53d6c677ca1",
+        "referral_code": "c172985d32cb440e92a254070981102d",
+        "company": "AssistanZ Networks PVT",
+        "domain_id": "7b0a9d480cf248be828805c14a6ae751",
+        "name": "mathar",
+        "projects":[{"name":"amal_project", "id":"042607397d1d45c7a31d8d91df1a5fee", "roles":[{"name":"Billing Owner"}, {"name":"Project Owner"}]}, {"name":"AZ test project", "id":"601c6fcb960d4d3c853eabab4ade6a4e", "roles":[{"name":"Billing Owner"}]}]
+
+    },
+    {
+        "id":3,
+        "description": "registered user",
+        "name": "sree",
+        "created_at": "2015-09-12T05:07:01.233458",
+        "real_name": "Sree",
+        "enabled": true,
+        "email": "sree@assistanz.com",
+        "mobile_number": "9597454545",
+        "country_code": "91",
+        "id": "30aa12d3482d4ee7b4db8bde868c179f",
+        "referral_code": "c172985d32cb440e92a254070981102d",
+        "default_project_id": "601c6fcb960d4d3c853eabab4ade6a4e",
+        "company": "AssistanZ Networks Pvt",
+        "domain_id": "7b0a9d480cf248be828805c14a6ae751",
+        "projects":[{"name":"amal_project", "id":"042607397d1d45c7a31d8d91df1a5fee", "roles":[{"name":"Billing Owner"}]}, {"name":"AZ test project", "id":"601c6fcb960d4d3c853eabab4ade6a4e", "roles":[{"name":"Billing Owner"}, {"name":"Project Owner"}]}]
+    }
+]

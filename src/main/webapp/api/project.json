@@ -1,0 +1,151 @@
+[{
+        "project_creator_id": "0d428cb970d846adbaf2b53d6c677ca0",
+        "description": "customer default project",
+        "links": {
+            "self": "http://i.l7.0.uc.ustack.in:35357/v3/projects/042607397d1d45c7a31d8d91df1a5fee"
+        },
+        "created_at": "2014-10-13 12:43:16",
+        "enabled": true,
+        "id": "042607397d1d45c7a31d8d91df1a5fee",
+        "users": {
+            "billing_owner": {
+                "description": "registered user",
+                "created_at": "2014-10-13 12:43:16",
+                "enabled": true,
+                "real_name": "Jamseer",
+                "email": "jamseer@assistanz.com",
+                "default_project_id": "042607397d1d45c7a31d8d91df1a5fee",
+                "country_code": "91",
+                "mobile_number": "9597454545",
+                "id": "1",
+                "referral_code": "c172985d32cb440e92a254070981102d",
+                "company": "AssistanZ Networks PVT",
+                "domain_id": "7b0a9d480cf248be828805c14a6ae751",
+                "name": "jamseer"
+            },
+            "project_owner": {
+                "description": "registered user",
+                "created_at": "2014-10-13 12:43:16",
+                "enabled": true,
+                "real_name": "Jamseer",
+                "email": "jamseer@assistanz.com",
+                "default_project_id": "042607397d1d45c7a31d8d91df1a5fee",
+                "country_code": "91",
+                "mobile_number": "9597454545",
+                "id": "1",
+                "referral_code": "c172985d32cb440e92a254070981102d",
+                "company": "AssistanZ Networks PVT",
+                "domain_id": "7b0a9d480cf248be828805c14a6ae751",
+                "name": "jamseer"
+            }
+        },
+        "domain_id": "7b0a9d480cf248be828805c14a6ae751",
+        "name": "jamseer_project"
+    }, {
+        "project_creator_id": "0d428cb970d846adbaf2b53d6c677ca0",
+        "description": "this is a test project",
+        "links": {
+            "self": "http://i.l7.0.uc.ustack.in:35357/v3/projects/601c6fcb960d4d3c853eabab4ade6a4e"
+        },
+        "created_at": "2015-09-12 05:07:35",
+        "enabled": true,
+        "id": "601c6fcb960d4d3c853eabab4ade6a4e",
+        "users": {
+            "billing_owner": {
+                "name": "sree",
+                "created_at": "2015-09-12 05:07:01",
+                "real_name": "Sree",
+                "enabled": true,
+                "email": "sree@assistanz.com",
+                "id": "2",
+                "company": "AssistanZ Networks Pvt",
+                "domain_id": "7b0a9d480cf248be828805c14a6ae751"
+            },
+            "project_owner": {
+                "name": "sree",
+                "created_at": "2015-09-12 05:07:01",
+                "real_name": "Sree",
+                "enabled": true,
+                "email": "sree@assistanz.com",
+                "id": "2",
+                "company": "AssistanZ Networks Pvt",
+                "domain_id": "7b0a9d480cf248be828805c14a6ae751"
+            }
+        },
+        "domain_id": "7b0a9d480cf248be828805c14a6ae751",
+        "name": "AZ test project"
+    },
+    
+    
+    {
+        "project_creator_id": "0d428cb970d846adbaf2b53d6c677ca0",
+        "description": "this is a test project",
+        "links": {
+            "self": "http://i.l7.0.uc.ustack.in:35357/v3/projects/601c6fcb960d4d3c853eabab4ade6a4e"
+        },
+        "created_at": "2015-09-12 05:07:35",
+        "enabled": true,
+        "id": "601c6fcb960d4d3c853eabab4ade6a4e",
+        "users": {
+            "billing_owner": {
+                "name": "sree",
+                "created_at": "2015-09-12 05:07:01",
+                "real_name": "Sree",
+                "enabled": true,
+                "email": "sree@assistanz.com",
+                "id": "2",
+                "company": "AssistanZ Networks Pvt",
+                "domain_id": "7b0a9d480cf248be828805c14a6ae751"
+            },
+            "project_owner": {
+                "name": "sree",
+                "created_at": "2015-09-12 5:07:01",
+                "real_name": "Sree",
+                "enabled": true,
+                "email": "sree@assistanz.com",
+                "id": "2",
+                "company": "AssistanZ Networks Pvt",
+                "domain_id": "7b0a9d480cf248be828805c14a6ae751"
+            }
+        },
+        "domain_id": "7b0a9d480cf248be828805c14a6ae751",
+        "name": "AZ Panda"
+    },
+    
+    {
+        "project_creator_id": "0d428cb970d846adbaf2b53d6c677ca0",
+        "description": "this is a test project",
+        "links": {
+            "self": "http://i.l7.0.uc.ustack.in:35357/v3/projects/601c6fcb960d4d3c853eabab4ade6a4e"
+        },
+        "created_at": "2015-09-12 05:07:35",
+        "enabled": true,
+        "id": "601c6fcb960d4d3c853eabab4ade6a4e",
+        "users": {
+            "billing_owner": {
+                "name": "sree",
+                "created_at": "2015-09-12 05:07:01",
+                "real_name": "Sree",
+                "enabled": true,
+                "email": "sree@assistanz.com",
+                "id": "2",
+                "company": "AssistanZ Networks Pvt",
+                "domain_id": "7b0a9d480cf248be828805c14a6ae751"
+            },
+            "project_owner": {
+                "name": "sree",
+                "created_at": "2015-09-12 05:07:01",
+                "real_name": "Sree",
+                "enabled": true,
+                "email": "sree@assistanz.com",
+                "id": "2",
+                "company": "AssistanZ Networks Pvt",
+                "domain_id": "7b0a9d480cf248be828805c14a6ae751"
+            }
+        },
+        "domain_id": "7b0a9d480cf248be828805c14a6ae751",
+        "name": "AZ Jadeart"
+    }
+    
+    
+    ]

@@ -1,0 +1,21 @@
+[
+{
+"id": 1,
+        "name": "Windows 2012R ISO",
+        "version":"R2",
+        "price": "0.10"
+        },
+        {
+"id": 2,
+        "name": "Server 2012RSTD 64bit",
+        "version":"R2",
+        "price": "0.10"
+        },
+        {
+"id": 3,
+        name": "Centos 5.3 (64 bit)",
+        "version":"R2",
+        "price": "0.10"
+        }
+
+]

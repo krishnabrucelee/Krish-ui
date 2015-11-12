@@ -1,0 +1,9 @@
+[{
+        "type": "Production",
+        "description": "The production",
+        "enabled": "true"
+    }, {
+        "type": "Development",
+        "description": "Development",
+        "enabled": "true"
+    }]

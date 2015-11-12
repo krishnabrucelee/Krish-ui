@@ -1,0 +1,15 @@
+[{
+        "id": "1867c377-bb31-434d-869e-f8f0709d2c9c",
+        "name": "testVPN",
+        "gateway": "192.168.1.1",
+        "cidrlist": "10.0.0.1/16",
+        "ipsecpsk": "8tBpf2pROE22cuC8H24FRvRb",
+        "ikepolicy": "3des-md5",
+        "esppolicy": "3des-md5",
+        "ikelifetime": 86400,
+        "esplifetime": 3600,
+        "dpd": false,
+        "account": "admin",
+        "domainid": "5da437bc-25f8-11e5-816b-e06995abbb33",
+        "domain": "ROOT"
+    }]

@@ -1,0 +1,42 @@
+[
+    {
+        "id": 1,
+        "name": "NorthChina- Beijing",
+        "zone": {"id":1, "name":"Beijing"},
+        "template": {"id":3, "name" : "Centos 5.3 (64 bit)"},
+        "computeOffering": {"id":1, "name":"Small Instance"},
+        "diskOffering": {"id":1, "name":"Small"},
+        "network": {"id":2, "name":"Isolated"},
+        "state": "Stopped"
+    },
+    {
+        "id": 2,
+        "name": "Northeast China - Liaoning",
+        "zone": {"id":2, "name":"Liaoning"},
+        "template": {"id":1, "name" : "Windows 2012R ISO"},
+        "computeOffering": {"id":2, "name":"Medium Instance"},
+        "diskOffering": {"id":2, "name":"Medium"},
+        "network": {"id":1, "name":"Shared Network"},
+        "state": "Stopped"
+    },
+    {
+        "id": 3,
+        "name": "East China - Shanghai",
+        "zone": {"id":3, "name":"Shanghai"},
+        "template": {"id":2, "name" : "Server 2012RSTD 64bit"},
+        "computeOffering": {"id":2, "name":"Large Instance"},
+        "diskOffering": {"id":2, "name":"Large"},
+        "network": {"id":1, "name":"Shared Network"},
+        "state": "Stopped"
+    },
+    {
+        "id": 4,
+        "name": "South central China - Henan",
+        "zone": {"id":4, "name":"Henan"},
+        "template": {"id":1, "name" : "Windows 2012R ISO"},
+        "computeOffering": {"id":2, "name":"Medium Instance"},
+        "diskOffering": {"id":2, "name":"Medium"},
+        "network": {"id":2, "name":"Isolated Network"},
+        "state": "Stopped"
+    }
+]

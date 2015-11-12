@@ -1,0 +1,13 @@
+[
+    {
+        "snapshotName": "data2-snap",
+        "volumeName":"Data-2",
+        "instanceName": "NorthChina",
+        "type":"Manual",
+       "createdDate":"29-08-2015",
+       "status":"Backedup"
+    }
+   
+    
+    
+]

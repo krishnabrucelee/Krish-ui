@@ -1,0 +1,107 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<!-- This is content container for nested view in UI-Router-->
+<!-- You can put here any constant element in app content for example: Page title or breadcrum -->
+
+<!-- Header -->
+<ng-include id="header" src="global.getViewPageUrl('common/header.jsp')"></ng-include>
+
+<!-- Navigation -->
+<ng-include id="menu" src="global.getViewPageUrl('common/navigation.jsp')"></ng-include>
+
+<!-- Main Wrapper -->
+<div id="wrapper">
+    <div small-header class="normalheader transition ng-scope small-header">
+        <div class="hpanel" tour-step order="1" title="Page header" content="Place your page title and breadcrumb. Select small or large header or give the user choice to change the size." placement="bottom">
+            <div class="panel-body">
+                <div id="hbreadcrumb" class="pull-right">
+                    <ol class="hbreadcrumb breadcrumb">
+                        <li><a ui-sref="dashboard"><fmt:message key="common.home" bundle="${msg}" /></a></li>
+                        <li ng-repeat="state in $state.$current.path" ng-switch="$last || !!state.abstract" ng-class="{active: $last}">
+                            <a ng-switch-when="false" href="{{'#' +state.url.format($stateParams)}}"><fmt:message key="common.accounts" bundle="${msg}" /></a>
+                            <span ng-switch-when="true"><fmt:message key="common.accounts" bundle="${msg}" /></span>
+                        </li>
+                    </ol>
+                </div>
+                <h2 class="font-light m-b-xs">
+                    <span data-ng-if="$state.current.data.pageTitle === 'common.accounts'"><fmt:message key="common.accounts" bundle="${msg}" /></span>
+                </h2>
+                <small>{{ $state.current.data.pageDesc}}</small>
+            </div>
+        </div>
+    </div>
+    <div class="content">
+        <div ui-view>
+            <div ng-controller="accountListCtrl">
+                <div class="hpanel">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12 ">
+                                <div class="pull-left">
+
+                                </div>
+                                <div class="pull-right">
+                                    <panda-quick-search></panda-quick-search>
+                                    <div class="clearfix"></div>
+                                    <span class="pull-right m-l-sm m-t-sm">
+                                        <a class="btn btn-info" data-ng-click="addUser('lg')"><span class="pe-7s-add-user pe-lg font-bold m-r-xs"></span><fmt:message key="add.user" bundle="${msg}" /></a>
+                                        <a data-ng-class="disabled && edit ? 'btn btn-info' : 'btn btn-default disabled'"  data-ng-click="editUser('md')"><span class="fa fa-edit font-bold m-r-xs"></span><fmt:message key="edit.user" bundle="${msg}" /></a>
+                                        <!-- <a data-ng-class="disabled && activate ? 'btn btn-info' : 'btn btn-default disabled'" data-ng-click="activating()"><span class="pe-7s-user pe-lg font-bold m-r-xs"></span>Activate User</a>
+                                        <a data-ng-class="disabled && revoke ? 'btn btn-info' : 'btn btn-default disabled'" data-ng-click="revoking()" ><span class="pe-7s-delete-user pe-lg font-bold m-r-xs"></span>Revoke User</a> -->
+                                        <a data-ng-class="disabled && deletes ? 'btn btn-info' : 'btn btn-default disabled'" data-ng-click="deleteUser('sm')"><span class="pe-7s-trash pe-lg font-bold m-r-xs"></span><fmt:message key="delete.user" bundle="${msg}" /></a>
+                                        <a class="btn btn-info " ui-sref="project.home" title="Refresh"  ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
+                                    </span>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12 ">
+                            <div class="white-content">
+                                <div class="table-responsive">
+                                    <table cellspacing="1" cellpadding="1" class="table table-bordered table-striped ">
+                                        <thead>
+                                        <tr>
+                                                <th class="w-5"><div class="checkbox checkbox-single checkbox-info col-sm-1 col-md-1">
+                                            <input type="checkbox" data-ng-model="accounts.selectedAll.users" data-ng-click="checkAll();"><label></label>                                        </div></th>
+                                        <th><fmt:message key="user.name" bundle="${msg}" /></th>
+                                        <th><fmt:message key="first.name" bundle="${msg}" /></th>
+                                        <th><fmt:message key="user.type" bundle="${msg}" /></th>
+                                        <th><fmt:message key="common.email" bundle="${msg}" /></th>
+                                        <th><fmt:message key="common.status" bundle="${msg}" /></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr data-ng-class="{'bg-row text-white' : account.isSelected == true }"  data-ng-repeat="account in accountList| filter: quickSearch">
+                                                <td>
+                                                    <div class="checkbox checkbox-single checkbox-info ">
+                                                        <input type="checkbox" data-ng-value="account" data-ng-model="account.isSelected" data-ng-click="checkOne(account)" >
+                                                        <label></label>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <a data-ng-class="account.isSelected == true ? 'text-white': 'text-info'"   data-ng-click="viewDetails(account)">{{ account.userName}}</a>
+                                               </td>
+                                                <td>{{account.firstName}}</td>
+                                                <td>{{account.type}}</td>
+                                                <td>{{account.email}}</td>
+                                                <td>
+                                                    <label class="badge badge-success p-xs" data-ng-if="account.isActive == true"> Active </label>
+                                                    <label class="badge badge-danger p-xs" data-ng-if="account.isActive == false"> Inactive </label>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

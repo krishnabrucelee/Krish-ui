@@ -1,0 +1,104 @@
+[
+    {
+        "id": 1,
+        "name": "Advanced Network",
+        "networkID": "f6dfee50-690c-4210-b77c-c9bf3179b159",
+        "zone": {
+            "id": 2,
+            "name": "Liaoning"
+        },
+        "type": {
+            "id": 2,
+            "name": "Isolated"
+        },
+        "protocol":"TCP",
+        "accountName":"Jason",
+        "ip": "10.1.10.92",
+        "gateway": "10.1.1.1",
+        "CIDR":"10.0.0.1/24",
+        "netmask": "255.255.255.0",
+        "isDefault": "YES",
+        "state": "Allocated",
+        "vpc": "NA",
+        "persistent":"No",
+        "restart":"No",
+        "VLAN":"",
+        "broadcasturi":"",
+        "offering":"Isolated",
+        "neworkCIDR":"",
+        "ipv6gateway":"",
+        "ipv6CIDR":"",
+        "ipRange":"",
+        "networkDomain":"cs9azlab.cloud",
+        "domainName":"Beijing"
+    },
+      
+    {
+        "id": 2,
+        "name": "Custom Network",
+        "networkID": "f6dfee50-690c-4210-b77c-c9bf31734e59",
+        "zone": {
+            "id": 2,
+            "name": "Liaoning"
+        },
+        "protocol":"TCP",
+        "type": {
+            "id": 1,
+            "name": "Shared"
+        },
+        "accountName":"Smith",
+        "ip": "10.2.2.92",
+        "gateway": "10.2.2.1",
+        "CIDR":"10.0.0.1/24",
+        "netmask": "255.255.255.0",
+        "isDefault": "NO",
+        "state": "Allocated",
+        "vpc": "AZ - Restricted",
+        "persistent":"No",
+        "restart":"No",
+        "VLAN":"",
+        "broadcasturi":"",
+        "offering":"Isolated",
+        "neworkCIDR":"",
+        "ipv6gateway":"",
+        "ipv6CIDR":"",
+        "ipRange":"",
+        "networkDomain":"cs9azlab.cloud",
+        "domainName":"Shanghai"
+        
+    },
+     {
+        "id": 3,
+        "name": "Default Network",
+        "networkID": "f6dfee50-690c-4210-b77c-m4fd452321e3",
+        "protocol":"TCP",
+        "type": {
+            "id": 2,
+            "name": "Isolated"
+        },
+        "zone": {
+            "id": 2,
+            "name": "Liaoning"
+        },
+        "accountName":"Juon",
+        "ip": "10.1.10.92",
+        "CIDR":"10.0.0.1/24",
+        "gateway": "10.1.1.1",
+        "netmask": "255.255.255.0",
+        "isDefault": "NO",
+        "state": "Allocated",
+        "vpc": "NA",
+        "persistent":"No",
+        "restart":"No",
+        "VLAN":"",
+        "broadcasturi":"",
+        "offering":"Isolated",
+        "neworkCIDR":"",
+        "ipv6gateway":"",
+        "ipv6CIDR":"",
+        "ipRange":"",
+        "networkDomain":"cs9azlab.cloud",
+        "domainName":"Liaoning"
+    }
+    
+]

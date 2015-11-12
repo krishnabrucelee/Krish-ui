@@ -1,0 +1,184 @@
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:hover, .nav-tabs>li.active>a:focus {
+  border: none;
+  border-bottom-color: transparent;
+}
+
+.nav-tabs {
+  margin-bottom: 20px;
+}
+
+/*.tab-pane .panel-body {
+  border-top: none;
+}*/
+
+.tabs-left .tab-pane .panel-body, .tabs-right .tab-pane .panel-body {
+  border-top: 1px solid @border-color;
+}
+
+.nav-tabs > li a:hover {
+  background: transparent;
+  border-color: transparent;
+}
+
+.tabs-below > .nav-tabs,
+.tabs-right > .nav-tabs,
+.tabs-left > .nav-tabs {
+  border-bottom: 0;
+}
+
+.tabs-left .panel-body {
+  position: static;
+}
+
+.tabs-left > .nav-tabs, .tabs-right > .nav-tabs {
+  width: 20%;
+}
+
+.tabs-left .panel-body {
+  width: 80%;
+  margin-left: 20%;
+}
+
+.tabs-right .panel-body {
+  width: 80%;
+  margin-right: 20%;
+}
+
+.tab-content > .tab-pane,
+.pill-content > .pill-pane {
+  display: none;
+}
+
+.tab-content > .active,
+.pill-content > .active {
+  display: block;
+}
+
+.tabs-below > .nav-tabs {
+  border-top: 1px solid @border-color;
+}
+
+.tabs-below > .nav-tabs > li {
+  margin-top: -1px;
+  margin-bottom: 0;
+}
+
+.tabs-below > .nav-tabs > li > a {
+  -webkit-border-radius: 0 0 5px 5px;
+  -moz-border-radius: 0 0 5px 5px;
+  border-radius: 0 0 5px 5px;
+}
+
+.tabs-below > .nav-tabs > li > a:hover,
+.tabs-below > .nav-tabs > li > a:focus {
+  border-top-color: @border-color;
+  border-bottom-color: transparent;
+}
+
+
+.tabs-left > .nav-tabs > li,
+.tabs-right > .nav-tabs > li {
+  float: none;
+}
+
+.tabs-left > .nav-tabs > li > a,
+.tabs-right > .nav-tabs > li > a {
+  min-width: 74px;
+  margin-right: 0;
+  margin-bottom: 3px;
+}
+
+.tabs-left > .nav-tabs {
+  float: left;
+  margin-right: 19px;
+}
+
+.tabs-left > .nav-tabs > li > a {
+  margin-right: -1px;
+  -webkit-border-radius: 5px 0 0 5px;
+  -moz-border-radius: 5px 0 0 5px;
+  border-radius: 5px 0 0 5px;
+}
+
+.tabs-left > .nav-tabs .active > a,
+.tabs-left > .nav-tabs .active > a:hover,
+.tabs-left > .nav-tabs .active > a:focus {
+  border-color: @border-color transparent @border-color @border-color;
+  *border-right-color: #ffffff;
+}
+
+.tabs-right > .nav-tabs {
+  float: right;
+  margin-left: 19px;
+}
+
+.tabs-right > .nav-tabs > li > a {
+  margin-left: -1px;
+  -webkit-border-radius: 0 5px 5px 0;
+  -moz-border-radius: 0 5px 5px 0;
+  border-radius: 0 5px 5px 0;
+}
+
+.tabs-right > .nav-tabs > li > a:hover,
+.tabs-right > .nav-tabs > li > a:focus {
+  border-color: #eeeeee #eeeeee #eeeeee #dddddd;
+}
+
+.tabs-right > .nav-tabs .active > a,
+.tabs-right > .nav-tabs .active > a:hover,
+.tabs-right > .nav-tabs .active > a:focus {
+  border-color: @border-color @border-color @border-color transparent;
+  *border-left-color: #ffffff;
+  z-index: 1;
+}
+
+.table > thead > tr > th {
+  border-bottom: none;
+}
+
+/*****************************/
+/* Triangle and line */
+/*****************************/
+
+.nav-tabs {
+	overflow: visible;
+	border-bottom: 2px solid #e7e7e7;
+	-webkit-transition: color 0.2s;
+	transition: color 0.2s;
+}
+    
+
+.nav-tabs li.active a:after, 
+.nav-tabs li.active a:before {
+	position: absolute;
+	top: 100%;
+	left: 50%;
+	width: 0;
+	height: 0;
+	border: solid transparent;
+	content: '';
+	pointer-events: none;
+}
+
+.nav-tabs li.active a:after {
+	margin-left: -6px;
+	border-width: 6px;
+	border-top-color: #fff;
+}
+
+.nav-tabs li.active a:before {
+	margin-left: -9px;
+	border-width: 9px;
+	border-top-color: #e7e7e7;
+}
+
+/*.tab-content{border-top: #e4e5e7 1px solid;}*/
+.nav-tabs a{outline: none;text-transform: uppercase;}
+.nav-tabs > li{margin-bottom: -2px;}
+.nav-tabs  li.active a{ color: @color-dark-blue !important; font-weight:bold;}
+
+@media screen and (max-width: 58em) {
+	.nav-tabs {
+		font-size: 13px;
+	}
+}

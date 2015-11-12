@@ -1,0 +1,122 @@
+[
+    {
+        "id": 1,
+        "name": "Instance",
+        "selected":false,
+        "accessmenu": [
+            {
+                "id": 1,
+                "name": "Create VM",
+                "selected":false
+
+            },
+            {
+                "id": 2,
+                "name": "Destroy VM",
+                "selected":false
+
+            },
+            {
+                "id": 3,
+                "name": "Reinstall VM",
+                "selected":false
+
+            },
+            {
+                "id": 4,
+                "name": "Take VM Snapshot",
+                "selected":false
+
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "name": "Volume",
+        "selected":false,
+        "accessmenu": [
+            {
+                "id": 1,
+                "name": "Add Volume",
+                "selected":false
+
+            },
+            {
+                "id": 2,
+                "name": "Detach Volume",
+                "selected":false
+
+            },
+            {
+                "id": 3,
+                "name": "Update Volume",
+                "selected":false
+
+            },
+            {
+                "id": 4,
+                "name": "Download Volume",
+                "selected":false
+
+            }
+        ]
+    },
+    {
+        "id": 3,
+        "name": "Network",
+        "selected":false,
+        "accessmenu": [
+            {
+                "id": 1,
+                "name": "Create Network",
+                "selected":false
+
+            },
+            {
+                "id": 2,
+                "name": "Delete Network",
+                "selected":false
+
+            },
+            {
+                "id": 3,
+                "name": "Restart Network",
+                "selected":false
+
+            },
+            {
+                "id": 4,
+                "name": "Edit Network",
+                "selected":false
+
+            }
+        ]
+    },
+    {
+        "id": 4,
+        "name": "Snapshot",
+        "selected":false,
+        "accessmenu": [
+            {
+                "id": 1,
+                "name": "Create Snapshot",
+                "selected":false
+
+            },
+            {
+                "id": 2,
+                "name": "Delete Snapshot",
+                "selected":false
+
+            },
+            {
+                "id": 3,
+                "name": "Create VM Snapshot",
+                "selected":false
+
+            }
+        ]
+    }
+
+
+]

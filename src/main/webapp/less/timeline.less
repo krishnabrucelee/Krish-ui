@@ -1,0 +1,267 @@
+.vertical-container {
+  /* this class is used to give a max-width to the element it is applied to, and center it horizontally when it reaches that max-width */
+  width: 98%;
+//  max-width: 1170px;
+  margin: 0 auto;
+}
+.vertical-container::after {
+  /* clearfix */
+  content: '';
+  display: table;
+  clear: both;
+}
+
+.v-timeline {
+  position: relative;
+  padding:0;
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+.v-timeline::before {
+  content: '';
+  position: absolute;
+  top: 70px;
+  left: 18px;
+  height: 120%;
+  width: 4px;
+  background: darken(@color-background, 3%);
+}
+
+.v-timeline:last-child::before {
+  background: none;
+}
+
+.vertical-timeline-content .btn {
+  float: right;
+}
+
+.vertical-timeline-block {
+  position: relative;
+  margin: 2em 0;
+}
+.vertical-timeline-block:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.vertical-timeline-block:first-child {
+  margin-top: 0;
+}
+.vertical-timeline-block:last-child {
+  margin-bottom: 0;
+}
+
+.vertical-timeline-icon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 16px;
+  border: 1px solid @border-color;
+  text-align: center;
+  background: #fff;
+}
+.vertical-timeline-icon i {
+  display: block;
+  width: 24px;
+  height: 24px;
+  position: relative;
+  left: 50%;
+  top: 50%;
+  margin-left: -12px;
+  margin-top: -9px;
+}
+
+.vertical-timeline-content {
+  position: relative;
+  margin-left: 60px;
+  background: white;
+  border-radius: 0.25em;
+//  padding: 1em;
+  border: 1px solid @border-color;
+  padding-bottom: 15px;
+}
+.vertical-timeline-content:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.vertical-timeline-content h2 {
+  font-weight: 400;
+  margin-top: 4px;
+}
+
+
+.vertical-timeline-content p {
+  margin: 1em 0 0 0;
+  line-height: 1.6;
+}
+
+
+.vertical-timeline-content .vertical-date {
+  font-weight: 500;
+  text-align: right;
+  font-size: 13px;
+}
+
+.vertical-date small {
+  color: @color-green;
+  font-weight: 400;
+}
+
+.vertical-timeline-content:after {
+  border-color: transparent;
+  border-right-color: #fff;
+  border-width: 10px;
+  margin-top: -10px;
+}
+
+.vertical-timeline-content:before {
+  border-color: transparent;
+  border-right-color: @border-color;
+  border-width: 11px;
+  margin-top: -11px;
+}
+
+
+
+.vertical-timeline-block:first-child .h-timeline::before {
+  left: -18px;
+}
+
+.h-timeline::before {
+  content: '';
+  position: absolute;
+  top: 70px;
+  left: 18px;
+  height: 4px;
+  width: 50%;
+  background: darken(@color-background, 3%);
+}
+
+.timeline-title {
+    padding: 10px 15px;
+    background-color: @info-bgcolor;
+    font-size: 15px;
+    font-weight:bold;
+  }
+  
+a.notification{display: block; width: 43px;}
+  
+.notification .label {
+    border-radius: 60px;
+    font-size: 10px;
+    line-height: 16px;
+    padding: 2px 5px;
+    position: absolute;
+    right: 35px;
+    top: 12px;
+}
+
+
+.timeline-primary {
+    
+    .timeline-title {
+        padding: 10px 15px;
+        background-color: @color-dark-blue;
+        font-size: 15px;
+        font-weight:bold;
+        color: @color-white;
+      }
+    
+    .vertical-timeline-content {
+      position: relative;
+      margin-left: 60px;
+      background: white;
+      border-radius: 0.25em;
+    //  padding: 1em;
+      border: 1px solid @color-blue;
+      padding-bottom: 15px;
+    }
+    .vertical-timeline-content:after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+    .vertical-timeline-content h2 {
+      font-weight: 400;
+      margin-top: 4px;
+    }
+
+
+    .vertical-timeline-content p {
+      margin: 1em 0 0 0;
+      line-height: 1.6;
+    }
+
+
+    .vertical-timeline-content .vertical-date {
+      font-weight: 500;
+      text-align: right;
+      font-size: 13px;
+    }
+
+    .vertical-date small {
+      color: @color-blue;
+      font-weight: 400;
+    }
+
+    .vertical-timeline-content:before {
+      border-color: transparent;
+      border-right-color: @color-blue;
+      border-width: 11px;
+      margin-top: -11px;
+    }
+}
+
+.storage{width:33%;padding-top: 20px; margin-right: 10px;}
+.storage .panel-body{height: 210px; }
+.storage-manager{width:65%;padding-top: 20px;}
+.storage-manager-area{width:60%; margin: 0 auto;}
+
+.network{
+    width:26%;padding-top: 20px; margin-right: 10px;
+}
+.network .panel-body{height: 220px;}
+
+.network-manager{width:72%;padding-top: 20px;}
+
+.network-manager-area{width:80%; margin: 0 auto;}
+
+.network-manager-area .vertical-timeline-block:first-child .h-timeline::before{left: -23px;}
+.network-manager-area .v-timeline::before {height: 109%;}
+
+.vpc{width:42%;padding-top: 20px; margin-right: 10px;}
+.vpc-manager{width:55%;padding-top: 20px;}
+.vpc-manager-area{width:83%; margin: 0 auto;}
+
+.vpc-manager-area .vertical-timeline-block:first-child .h-timeline::before{left: -35px;}
+.vpc-manager-area .v-timeline::before {height: 107%;}
+
+.vpc-manager-area .panel{margin-bottom:10px; margin-top: 10px;}
+
+@media only screen and (min-width: 768px) {
+  .vertical-timeline-content h2 {
+    font-size: 18px;
+  }
+  .vertical-timeline-content p {
+    font-size: 13px;
+  }
+
+}
+
+//Custom Responsive//
+@media (min-width: 1024px) and (max-width: 1050px){
+    .storage-manager-area, .network-manager-area{width:90%;}
+}
+
+@media (min-width: 768px) and (max-width: 1023px){
+    .storage-manager-area, .network-manager-area{width:100%;}
+    .storage-manager, .network-manager {width:64%;}
+    
+    .network{width: 33%;}
+    .network-manager-area .vertical-timeline-block:first-child .h-timeline::before{left: -24px;}
+    .vertical-timeline-block:first-child .h-timeline::before { left: -25px;}
+}

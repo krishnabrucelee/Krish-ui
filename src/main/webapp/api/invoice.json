@@ -1,0 +1,49 @@
+[{
+    "billno":"---",
+    "invoiceno": "00022",
+    "previousBalance":"0.00",
+    "payments":"0.00",
+    "currentUsage":"268.00",
+    "totalPayable":"268.00",
+    "previousInvoiceDate":"19/June/2015",
+    "paidDate":"---",
+    "paidAmount":"---",
+    "invoiceDate":"19/July/2015"
+},
+{
+    "billno":"0112",
+    "invoiceno": "00019",
+    "previousBalance":"0.00",
+    "payments":"2.00",
+    "currentUsage":"228.00",
+    "totalPayable":"226.00",
+    "previousInvoiceDate":"19/May/2015",
+    "paidDate":"1/July/2015",
+    "paidAmount":"226.00",
+    "invoiceDate":"19/June/2015"
+},
+{
+    "billno":"0102",
+    "invoiceno": "00015",
+    "previousBalance":"0.00",
+    "payments":"0.00",
+    "currentUsage":"238.00",
+    "totalPayable":"238.00",
+    "previousInvoiceDate":"19/April/2015",
+    "paidDate":"1/June/2015",
+    "paidAmount":"240.00",
+    "invoiceDate":"19/May/2015"
+},
+{
+    "billno":"0082",
+    "invoiceno": "00011",
+    "previousBalance":"12.00",
+    "payments":"0.00",
+    "currentUsage":"208.00",
+    "totalPayable":"220.00",
+    "previousInvoiceDate":"19/March/2015",
+    "paidDate":"1/May/2015",
+    "paidAmount":"220.00",
+    "invoiceDate":"19/April/2015"
+}
+]

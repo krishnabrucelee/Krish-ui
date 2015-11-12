@@ -1,0 +1,81 @@
+<div layout="column" ng-controller="DemoCtrl as ctrl" flex class="content-wrapper" id="primary-col">
+            <md-content layout="column" flex class="md-padding">
+              <form  name="searchForm">
+      <p>The following example demonstrates floating labels being used as a normal form element.</p>
+      <div style="width:50%">
+        <md-input-container flex>
+          <label>Name</label>
+          <input type="text"/>
+        </md-input-container>
+        <md-autocomplete flex required
+            md-input-name="autocompleteField"
+            md-no-cache="ctrl.noCache"
+            md-selected-item="ctrl.selectedItem"
+            md-search-text="ctrl.searchText"
+            md-items="item in ctrl.querySearch(ctrl.searchText)"
+            md-item-text="item.display"
+            md-floating-label="Favorite state">
+          <md-item-template>
+            <span md-highlight-text="ctrl.searchText">{{item.display}}</span>
+          </md-item-template>
+          <div ng-messages="searchForm.autocompleteField.$error">
+            <div ng-message="required">You <b>must</b> have a favorite state.</div>
+            <div ng-message="minlength">Your entry is not long enough.</div>
+            <div ng-message="maxlength">Your entry is too long.</div>
+          </div>
+        </md-autocomplete>
+              <md-input-container>
+        <label>Description</label>
+        <input md-maxlength="30" required name="description" ng-model="project.description">
+        <div ng-messages="searchForm.description.$error" ng-if="searchForm.description.istouched">
+          <div ng-message="required">This is required.</div>
+          <div ng-message="md-maxlength">The name has to be less than 30 characters long.</div>
+        </div>
+      </md-input-container>
+      <md-input-container >
+        <label>Client Name</label>
+        <input  name="clientName" ng-model="project.clientName">
+        <div ng-messages="searchForm.clientName.$error">
+          <div ng-message="required">This is required.</div>
+        </div>
+      </md-input-container>
+      <md-input-container >
+        <label>Hourly Rate (USD)</label>
+        <input required type="number" step="any" name="rate" ng-model="project.rate" min="800" max="4999">
+        <div ng-messages="searchForm.rate.$error">
+          <div ng-message="required">You've got to charge something! You can't just <b>give away</b> a Missile Defense System.</div>
+          <div ng-message="min">You should charge at least $800 an hour. This job is a big deal... if you mess up, everyone dies!</div>
+          <div ng-message="max">$5,000 an hour? That's a little ridiculous. I doubt event Bill Clinton could afford that.</div>
+        </div>
+      </md-input-container>
+          <br/>
+      <md-button class="md-raised md-primary" ng-click="showAdvanced($event)">Submit</md-button>
+      <md-button class="md-raised">Cancel</md-button>
+      
+      </div>
+    </form>
+            </md-content>
+        </div>
+<div ng-controller="alertCtrl" class="md-padding" id="popupContainer">
+  <p class="inset">
+    Open a dialog over the app's content. Press escape or click outside to close the dialog and
+    send focus back to the triggering button.
+  </p>
+  <div class="dialog-demo-content" layout="row" layout-wrap >
+    <md-button class="md-primary md-raised" ng-click="showAlert($event)" flex flex-md="100">
+      Alert Dialog
+    </md-button>
+    <md-button class="md-primary md-raised" ng-click="showConfirm($event)" flex flex-md="100">
+      Confirm Dialog
+    </md-button>
+    <md-button class="md-primary md-raised" ng-click="showAdvanced($event)" flex flex-md="100">
+      Custom Dialog
+    </md-button>
+  </div>
+  <div ng-if="status">
+    <br/>
+    <b layout="row" layout-align="center center" class="md-padding">
+      {{status}}
+    </b>
+  </div>
+</div>

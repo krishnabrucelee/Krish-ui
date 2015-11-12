@@ -1,0 +1,110 @@
+[
+    {
+        "id": 1,
+        "name": "Root-1",
+        "type": {
+            "id": 1,
+            "name": "Root"
+        },
+        "plan":
+                {
+                    "id": 1,
+                    "name": "Small",
+                    "price": 0.10,
+                    "size": "5 GB"
+                }
+
+        ,
+        "attachedTo":
+                {
+                    "id": 1,
+                    "name": "NorthChina- Beijing",
+                    "zone": {
+                        "id": 1,
+                        "name": "Beijing"
+                    },
+                    "template": {
+                        "id": 3,
+                        "name": "Centos 5.3 (64 bit)"
+                    },
+                    "computeOffering": {
+                        "id": 1,
+                        "name": "Small Instance"
+                    },
+                    "diskOffering": {
+                        "id": 1,
+                        "name": "Small"
+                    },
+                    "ip": "10.1.10.92",
+                    "vpc": "AZ - Restricted",
+                    "network": {
+                        "id": 2,
+                        "name": "Isolated"
+                    },
+                    "state": "Stopped"
+                },
+                "createdDate": "20-07-2015"
+    },
+    {
+        "id": 2,
+        "name": "Data-2",
+        "type": {
+            "id": 2,
+            "name": "Root"
+        },
+        "plan": {
+            "id": 2,
+            "name": "Medium",
+            "price": 0.20,
+            "size": "10 GB"
+
+        },
+        "attachedTo": null,
+        "createdDate": "02-06-2015"
+    },
+    {
+        "id": 3,
+        "name": "Root-2",
+        "type": {
+            "id": 1,
+            "name": "Root"
+        },
+        "plan": {
+            "id": 3,
+            "name": "Large",
+            "price": 0.20,
+            "size": "20 GB"
+        },
+        "attachedTo":
+                {
+                    "id": 2,
+                    "name": "Northeast China - Liaoning",
+                    "zone": {
+                        "id": 2,
+                        "name": "Liaoning"
+                    },
+                    "template": {
+                        "id": 1,
+                        "name": "Windows 2012R ISO"
+                    },
+                    "computeOffering": {
+                        "id": 2,
+                        "name": "Large Instance"
+                    },
+                    "diskOffering": {
+                        "id": 2,
+                        "name": "Large"
+                    },
+                    "ip": "10.1.10.93",
+                    "vpc": "AZ - Restricted",
+                    "network": {
+                        "id": 1,
+                        "name": "Shared Network"
+                    },
+                    "state": "Running"
+                },
+                "createdDate": "15-07-2015"
+
+    }
+    
+]

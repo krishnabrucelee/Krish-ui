@@ -1,0 +1,14 @@
+[
+    {
+        "id": 1,
+        "name":"DMZ network",
+        "CIDR":"10.0.1.0/24"
+    },
+    
+    
+    {
+        "id": 2,
+        "name":"LAN network",
+        "CIDR":"10.0.0.0/24"
+    }
+]
