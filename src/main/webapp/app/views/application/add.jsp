@@ -14,6 +14,19 @@
 		<div class="modal-body">
 			<div class="row">
 				<div class="col-md-12">
+				<div class="form-group" ng-class="{'text-danger':applicationForm.application.$invalid && formSubmitted}">
+                        <div class="row">
+                            <label class="col-md-3 col-xs-12 col-sm-3 control-label control-normal"><fmt:message key="common.domain" bundle="${msg}" /><span class="text-danger">*</span></label>
+                            <div class="col-md-6  col-sm-6 col-xs-12">
+                                <select required="true" class="form-control input-group" name="domain" data-ng-model="application.domain" ng-options="domain.name for domain in formElements.domainList" data-ng-class="{'error': applicationForm.domain.$invalid && formSubmitted}" >
+                                    <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
+
+                                </select>
+                                <i  tooltip="<fmt:message key="choose.domain" bundle="${msg}" /> " class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
+                                <div class="error-area" data-ng-show="applicationForm.domain.$invalid && formSubmitted" ><i  tooltip="<fmt:message key="domain.is.required" bundle="${msg}" />" class="fa fa-warning error-icon"></i></div>
+                            </div>
+                        </div>
+                    </div>
 					<div class="form-group" ng-class="{'text-danger': applicationForm.type.$invalid && formSubmitted}">
 						<div class="row">
 							<label class="col-md-3 col-xs-12 col-sm-3 control-label"><fmt:message key="common.type" bundle="${msg}" /> <span class="text-danger">*</span></label>
@@ -35,6 +48,21 @@
 								<i tooltip="<fmt:message key="description.of.the.application" bundle="${msg}" />" class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
 								<div class="error-area" data-ng-show="applicationForm.description.$invalid && formSubmitted">
 									<i tooltip="<fmt:message key="application.description.is.required" bundle="${msg}" />" class="fa fa-warning error-icon"></i>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="form-group" ng-class="{'text-danger': applicationForm.status.$invalid && formSubmitted}">
+						<div class="row">
+							<label class="col-md-3 col-xs-12 col-sm-3 control-label"><fmt:message key="common.status" bundle="${msg}" /> <span class="text-danger">*</span>
+							</label>
+							<div class="col-md-6 col-xs-12 col-sm-6">
+                             <select required="true" place class="form-control input-group" name="status" data-ng-model="application.status" ng-options="status for (id, status) in formElements.statusList" data-ng-class="{'error': applicationForm.status.$invalid && formSubmitted}">
+                             <option value="">Select</option>
+                             </select>
+                                    <i tooltip="<fmt:message key="status.of.the.application" bundle="${msg}" />" class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
+								<div class="error-area" data-ng-show="applicationForm.status.$invalid && formSubmitted">
+									<i tooltip="<fmt:message key="application.status.is.required" bundle="${msg}" />" class="fa fa-warning error-icon"></i>
 								</div>
 							</div>
 						</div>

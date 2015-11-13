@@ -70,6 +70,7 @@
 										class="table table-bordered table-striped">
 										<thead>
 											<tr>
+											    <th class="col-md-2 col-sm-2"><fmt:message key="common.domain" bundle="${msg}" /> </th>
 												<th class="col-md-2 col-sm-3"><fmt:message key="common.type" bundle="${msg}" /></th>
 												<th class="col-md-4 col-sm-5"><fmt:message key="common.description" bundle="${msg}" /></th>
 												<th class="col-md-1 col-sm-2"><fmt:message key="common.status" bundle="${msg}" /></th>
@@ -78,12 +79,10 @@
 										</thead>
 										<tbody>
 											<tr data-ng-repeat=" application in applicationList| filter: applicationSearch">
+												<td>{{ application.domain.name }}</td>
 												<td>{{ application.type}}</td>
 												<td>{{ application.description}}</td>
-												<td>
-<!-- 													<label class="icon-button btn btn-success btn-sm" data-ng-show="application.enabled" title="Enabled">Enabled</label>
- -->											 <label class="icon-button btn btn-success btn-sm" data-ng-hide="application.enabled" title="Enabled">Enabled</label>
-												</td>
+												<td>{{ application.status}}</td>
 												<td><a class="icon-button" title="<fmt:message key="common.edit" bundle="${msg}" />" data-ng-click="edit('md', application)"> <span class="fa fa-edit"></span></a>
 												<a class="icon-button" title="<fmt:message key="common.delete" bundle="${msg}" />" data-ng-click="delete('sm', application)"><span class="fa fa-trash"></span></a>
 												</td>
