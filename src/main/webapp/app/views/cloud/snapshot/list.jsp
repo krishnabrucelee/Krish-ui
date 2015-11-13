@@ -1,3 +1,8 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+
 <div class="row" data-ng-controller="snapshotListCtrl">
 
        <div class="col-md-12 col-sm-12">
@@ -11,8 +16,8 @@
 
             <div class="row m-t-n-md">
                 <ul class="nav nav-tabs" data-ng-init="formElements.category = 'snapshot'">
-                    <li class="active"><a href="javascript:void(0)" data-ng-click="formElements.category = 'snapshot'" data-toggle="tab">Snapshot</a></li>
-                    <li class=""><a href="javascript:void(0)" data-ng-click="formElements.category = 'VM Snapshot'" data-toggle="tab">VM Snapshot</a></li>
+                    <li class="active"><a href="javascript:void(0)" data-ng-click="formElements.category = 'snapshot'" data-toggle="tab"><fmt:message key="common.snapshot" bundle="${msg}" /></a></li>
+                    <li class=""><a href="javascript:void(0)" data-ng-click="formElements.category = 'VM Snapshot'" data-toggle="tab"><fmt:message key="vm.snapshot" bundle="${msg}" /></a></li>
 
                 </ul>
             </div>

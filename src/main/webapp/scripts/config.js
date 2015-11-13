@@ -137,7 +137,7 @@ function configState($stateProvider, $httpProvider,  $urlRouterProvider, $compil
                 url: "volume/snapshot",
                 templateUrl: VIEW_URL + "views/cloud/volume/volume-snapshot.jsp",
                 data: {
-                    pageTitle: 'Snapshots'
+                    pageTitle: 'snapshots'
                 }
             })
             .state('cloud.list-volume.view-volume', {
@@ -168,7 +168,7 @@ function configState($stateProvider, $httpProvider,  $urlRouterProvider, $compil
                 url: "snapshot/list",
                 templateUrl: VIEW_URL + "views/cloud/snapshot/list.jsp",
                 data: {
-                    pageTitle: 'Snapshot'
+                    pageTitle: 'snapshot'
                 }
             })
 

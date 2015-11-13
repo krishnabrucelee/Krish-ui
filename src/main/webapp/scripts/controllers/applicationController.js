@@ -31,7 +31,18 @@ function applicationListCtrl($scope, notify, dialogService, crudService) {
     };
     $scope.list(1);
 
-    $scope.appliation = {};
+ // Open dialogue box to create department
+    $scope.application = {};
+    $scope.formElements = {};
+
+    // Domain List
+	var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
+	var hasDomains = crudService.list("domains", $scope.global.paginationHeaders(1, limit), {"limit": limit});
+	hasDomains.then(function (result) {  // this is only run after $http completes0
+	      $scope.formElements.domainList = result;
+	      console.log(result);
+	});
+
     $scope.createApplication = function (size) {
 
         //modalService.trigger('views/application/add.html', size,'', $scope);
@@ -102,6 +113,13 @@ function applicationListCtrl($scope, notify, dialogService, crudService) {
                             $modalInstance.close();
                         };
             }]);
+    };
+
+    $scope.formElements = {
+    		statusList: {
+                "0":"ENABLED",
+                "1":"DISABLED"
+            }
     };
 };
 
