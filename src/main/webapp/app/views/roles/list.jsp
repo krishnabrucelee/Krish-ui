@@ -76,7 +76,7 @@
 
                                                     </td>
                                                     <td>
-                                                        {{ role.department.name }}
+                                                        {{ role.department.userName }}
                                                     </td>
                                                     <td>
                                                         {{ role.description}}

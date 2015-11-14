@@ -10,7 +10,7 @@ angular
         .controller('networkListCtrl', networkListCtrl)
         .controller('networkViewCtrl', networkViewCtrl)
 
-function networksCtrl($scope, modalService, promiseAjax,filterFilter, localStorageService, notify, $state, $stateParams, $timeout, globalConfig, $window) {
+function networksCtrl($scope, modalService, promiseAjax,filterFilter, localStorageService, notify, $state, $stateParams, $timeout, globalConfig, $window,dialogService, crudService) {
 
     $scope.global = globalConfig;
     $scope.rulesList = [];
@@ -18,6 +18,66 @@ function networksCtrl($scope, modalService, promiseAjax,filterFilter, localStora
     $scope.portList = [];
     $scope.vmList = [];
     $scope.allItemsSelected = false;
+
+
+    	 $scope.openAddIsolatedNetwork = function (size) {
+        dialogService.openDialog("app/views/cloud/network/add.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
+                // Create a new department
+
+                $scope.save = function (form) {
+                    $scope.formSubmitted = true;
+                    if (form.$valid) {
+
+                        var department = angular.copy($scope.department);
+                        department.domainId = department.domain.id;
+                        //delete department["domain"]["id"];
+                        var hasServer = crudService.add("departments", department);
+                        hasServer.then(function (result) {  // this is only run after $http completes
+                        	//$rootScope.department={};
+                            $scope.list(1);
+                            notify({message: 'Added successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+                            $modalInstance.close();
+
+                            $scope.department.userName = "";
+                            $scope.department.description = "";
+                            $scope.department.domain = "";
+                            $scope.department.firstName = "";
+                            $scope.department.lastName = "";
+                            $scope.department.email = "";
+                            $scope.department.password = "";
+                            $scope.department.confirmPassword = "";
+                        }).catch(function (result) {
+                        	if(!angular.isUndefined(result) && result.data != null) {
+	                            angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
+	                            	$scope.departmentForm[key].$invalid = true;
+	                                $scope.departmentForm[key].errorMessage = errorMessage;
+	                            });
+                        	}
+
+                        });
+                    }
+                },
+                $scope.cancel = function () {
+                    $modalInstance.close();
+                };
+            }]);
+    };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     $scope.networkLists = {
         networkOffers: [
@@ -664,4 +724,3 @@ function networkViewCtrl($scope, $http, notify, globalConfig, localStorageServic
                 }
           $scope.tabview=localStorageService.get('view');
 }
-

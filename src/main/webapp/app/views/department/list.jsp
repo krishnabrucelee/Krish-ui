@@ -27,7 +27,6 @@
                         </li>
                     </ol>
                 </div>
-                <h2 class="font-light m-b-xs">
                     <span data-ng-if="$state.current.data.pageTitle === 'common.departments'"><fmt:message key="common.departments" bundle="${msg}" /></span>
                 </h2>
                 <small>{{ $state.current.data.pageDesc}}</small>
