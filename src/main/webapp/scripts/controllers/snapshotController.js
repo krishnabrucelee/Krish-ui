@@ -23,6 +23,23 @@ angular
     $scope.validateConfirmSnapshot = function(form) {
         $scope.formSubmitted = true;
         if (form.$valid) {
+        	var hasComputes = crudService.add("snapshots", snapshot);
+            hasComputes.then(function (result) {  // this is only run after
+													// $http completes
+                $scope.list(1);
+                notify({message: 'Added successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+// $window.location.href = '#/templatestore/list';
+
+                $window.location.href = '#/compute/list';
+
+            }).catch(function (result) {
+                if (!angular.isUndefined(result.data)) {
+                    angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
+                        $scope.computeForm[key].$invalid = true;
+                        $scope.computeForm[key].errorMessage = errorMessage;
+                    });
+                }
+            });
             $scope.cancel();
             $scope.homerTemplate = 'app/views/notification/notify.jsp';
             notify({message: 'Snapshot created', classes: 'alert-success', templateUrl: $scope.homerTemplate});
