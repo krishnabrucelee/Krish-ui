@@ -1,7 +1,13 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <div data-ng-controller="networkCtrl">
 
 <div class="row" >
-   
+
         <div class="col-md-12">
             <div class="row">
                 <div class="col-md-12 col-sm-12">
@@ -14,8 +20,8 @@
                       <hr class="m-t-xs">
                   </div>
                 </div>
-             
-            <div class="network-manager-area"> 
+
+            <div class="network-manager-area">
                 <div class="clearfix"></div>
                 <div class="network pull-left">
                     <div class="panel panel-info">
@@ -37,7 +43,7 @@
                                        </div>
                                         <div class="row">
                                             <div class="col-md-12">
-                                                
+
                                                 <div class="p-sm">
                                                     <div class="pull-left">
                                                         <div class="media">
@@ -56,9 +62,9 @@
                                                                     </div>
 
                                                                 </div>
-                                                             
+
                                                             <div class="media-body">
-                                                                
+
                                                                 <div class="row-fluid">
                                                                     <div class="span12 field-box p-xxs"><label class="headerLabel m-r-xs">Network Name:</label><a href="#/user/network/view/2">{{network.name}}</a></div>
                                                                     <div class="span12 field-box p-xxs"><label class="headerLabel m-r-xs">ID:</label><span id="nicId">{{network.networkID}}</span></div>
@@ -71,11 +77,11 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                         
-                                                                                                              
-                                                      
-                                                   
-                                                    
+
+
+
+
+
                                                 </div>
                                             </div>
                                         </div>

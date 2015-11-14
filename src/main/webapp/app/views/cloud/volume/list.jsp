@@ -71,11 +71,11 @@
                                     <td>{{ volume.createdDate}}</td>
                                     <td>
                                         <div class="btn-group action-menu">
-                                            <span data-ng-if="volume.type.id == 2"> 
+                                            <span data-ng-if="volume.type.id == 2">
                                                 <a class="fa fa-cogs dropdown-toggle" data-toggle="dropdown" ></a>
                                                 <ul class="dropdown-menu pull-right">
                                                     <img src="images/dropdown-arw2.png" border="0" class="vol-dropdown-arw">
-                                                    <li><a href="javascript:void(0);" data-ng-click="downloadVolume( )" title="Snapshot"><span class="fa fa-camera m-xs"></span> Snapshot</a></li>
+                                                    <li><a class="icon-button" ui-sref="cloud.list-snapshot" title="Snapshot"><span class="fa fa-camera m-xs"></span> Snapshot</a></li>
                                                     <li><a href="javascript:void(0);" data-ng-click="openReccuringSnapshot(volume)" title="Recurring Snapshot"><span class="fa fa-repeat m-xs"></span> Recurring Snapshot</a></li>
                                                     <li><a href="javascript:void(0);" title="Detach Volume" data-ng-click="detachVolume('sm')"><span class="fa fa-unlink m-xs"></span> Detach</a></li>
                                                     <li><a href="javascript:void(0);" title="Download Volume" data-ng-click="downloadVolume('md')"><span class="fa fa-cloud-download m-xs"></span> Download Volume</a></li>
@@ -86,10 +86,10 @@
                                                 <a class="fa fa-cogs dropdown-toggle" data-toggle="dropdown" ></a>
                                                 <ul class="dropdown-menu pull-right">
                                                     <img src="images/dropdown-arw2.png" border="0" class="vol-dropdown-arw">
-                                                    <li><a href="javascript:void(0);" data-ng-click="downloadVolume( )" title="Snapshot"><span class="fa fa-camera m-xs"></span> Snapshot</a></li>
+                                                    <li><a class="icon-button" ui-sref="cloud.list-snapshot" title="Snapshot"><span class="fa fa-camera m-xs"></span> Snapshot</a></li>
                                                     <li><a href="javascript:void(0);" data-ng-click="openReccuringSnapshot(volume)"  title="Recurring Snapshot"><span class="fa fa-repeat m-xs"></span> Recurring Snapshot</a></li>
                                                 </ul>
-                                            </span>    
+                                            </span>
                                         </div>
 
                                     </td>
