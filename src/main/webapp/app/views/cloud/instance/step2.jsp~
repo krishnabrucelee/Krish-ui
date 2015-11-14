@@ -10,7 +10,7 @@
 			ng-class="{ 'text-danger' : instanceForm.computeoffer.$invalid && OfferingSubmitted}">
 			<div class="col-md-5 col-xs-5 col-sm-5">
 				<div class="pull-left m-r-xs m-t-xxs"
-					data-ng-show="computes && instance.computeOffering.customized">
+					data-ng-show="computes && instance.computeOffering.isCustom == 'somes'">
 					<a ng-click="computeSlide(); diskSlide();"> <span
 						data-ng-hide="compute" class="pe pe-lg pe-7s-plus"></span> <span
 						data-ng-show="compute" class="pe pe-lg pe-7s-less"></span>
@@ -22,7 +22,7 @@
 			<div class="col-md-6 col-xs-6 col-sm-6">
 				<select required="true" class="form-control form-group-lg"
 					name="computeOffering"
-					ng-change='computeFunction(instance.computeOffering.customized)'
+					ng-change='computeFunction(instance.computeOffering.name)'
 					data-ng-model="instance.computeOffering"
 					data-ng-class="{'error': instanceForm.computeOffering.$invalid && OfferingSubmitted}"
 					data-ng-options="computeOffering.name group by computeOffering.group for computeOffering in instanceElements.computeOfferingList">
@@ -35,7 +35,7 @@
 						class="fa fa-warning error-icon"></i>
 				</div>
 				<input required="true" type="hidden" name="computeoffer"
-					data-ng-model="instance.computeOffering.customized" class="form-control"
+					data-ng-model="instance.computeOffering.name" class="form-control"
 					data-ng-class="{'error': instanceForm.computeoffer.$invalid && OfferingSubmitted}">
 
 			</div>
@@ -44,7 +44,7 @@
 	</div>
 
 	<div
-		data-ng-show="compute  && instance.computeOffering.customized">
+		data-ng-show="compute  && instance.computeOffering.isCustom == 'somes'">
 		<div class="row m-b-xl"
 			ng-class="{ 'text-danger' : instanceForm.ram.$modelValue <= 0 && OfferingSubmitted}">
 			<label class="col-md-3 col-sm-3 control-label"><fmt:message key="ram" bundle="${msg}" /> :</label>
@@ -61,7 +61,7 @@
 						data-ng-min="{{ instance.computeOffer.ram.floor}}"
 						data-ng-max="{{ instance.computeOffer.ram.ceil}}" type="text"
 						data-ng-model="instance.computeOffer.ram.value"> <span
-						class="input-group-addon" id="basic-addon2">MB</span>
+						class="input-group-addon" id="basic-addon2">GB</span>
 				</div>
 			</div>
 		</div>
@@ -85,27 +85,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="row m-b-xl"
-			ng-class="{ 'text-danger' : instanceForm.cpuSpeed.$modelValue <= 1000 && OfferingSubmitted}">
-			<label class="col-md-3 col-sm-3 control-label"><fmt:message key="cpu.speed" bundle="${msg}" /> :</label>
-			<div class="col-md-5 col-sm-5">
-				<rzslider rz-slider-model="instance.computeOffer.cpuSpeed.value"
-					rz-slider-floor="instance.computeOffer.cpuSpeed.floor"
-					rz-slider-ceil="instance.computeOffer.cpuSpeed.ceil"
-					rz-slider-always-show-bar="true"></rzslider>
-			</div>
-			<div class="col-md-3 col-sm-3 digit-2-width">
-				<div class="input-group">
-					<input valid-number
-						data-ng-min="{{ instance.computeOffer.cpuSpeed.floor}}"
-						data-ng-max="{{ instance.computeOffer.cpuSpeed.ceil}}" type="text"
-						class="form-control" name="cpuSpeed"
-						data-ng-model="instance.computeOffer.cpuSpeed.value"> <span
-						class="input-group-addon">MHz</span>
-				</div>
-			</div>
-		</div>
-		<div class="row m-b-xl" data-ng-show="instance.computeOffering.customizedIops">
+		<div class="row m-b-xl">
 			<div class="col-md-5 col-sm-6">
 				<div class="form-group"
 					ng-class="{ 'text-danger' : instanceForm.minIops.$modelValue <= 0 && OfferingSubmitted}">

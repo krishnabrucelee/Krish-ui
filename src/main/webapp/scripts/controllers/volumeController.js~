@@ -120,7 +120,7 @@ $scope.volume = {};
                      $scope.volumeElements.diskOfferingList = result;
                });
            };
-
+           
 
 
           $scope.diskTag = function () {
@@ -144,7 +144,7 @@ $scope.volume = {};
                 $scope.save = function (form) {
 
                     $scope.formSubmitted = true;
-
+                    
 
 /**        var diskValid = true;
 
@@ -156,7 +156,7 @@ alert(diskValid); */
 			$scope.volume.zone = $scope.global.zone;
 
                       var volume = $scope.volume;
-
+			
                         var hasVolume = crudService.add("volumes", volume);
                         hasVolume.then(function (result) {  // this is only run after $http completes
                             $scope.list(1);
