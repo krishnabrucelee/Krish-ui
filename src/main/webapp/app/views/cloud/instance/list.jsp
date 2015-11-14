@@ -108,15 +108,15 @@
                                         <td>
 
 						<div data-ng-show="instance.status != 'Error' && instance.status='Expunging'">
-                                            <a class="icon-button text-center" title="Start"  data-ng-click="startVm('sm',instance)" data-ng-hide="instance.status == 'Running'">
+                                            <a class="icon-button text-center" title="<fmt:message key="start" bundle="${msg}" />"  data-ng-click="startVm('sm',instance)" data-ng-hide="instance.status == 'Running'">
                                                 <span class="fa fa-play" ></span>
                                             </a>
-                                            <a class="icon-button text-center"  data-ng-click="stopVm('sm',instance)" title="Stop" data-ng-show="instance.status  == 'Running'">
+                                            <a class="icon-button text-center"  data-ng-click="stopVm('sm',instance)" title="<fmt:message key="stop" bundle="${msg}" />" data-ng-show="instance.status  == 'Running'">
                                                 <span class="fa fa-ban" ></span>
                                             </a>
-                                            <a class="icon-button text-center" data-ng-if="instance.status == 'Running'" title="Restart" data-ng-click="rebootVm('sm',instance)"  ><span class="fa fa-rotate-left"></span></a>
-                                            <a class="icon-button text-center" title="View Console"><span class="fa-desktop fa m-xs"></span></a>
-                                            <a class="icon-button text-center" title="Display Note" data-ng-click="showDescription(instance)"><span class="fa-file-text fa"></span></a>
+                                            <a class="icon-button text-center" data-ng-if="instance.status == 'Running'" title="<fmt:message key="restart" bundle="${msg}" />" data-ng-click="rebootVm('sm',instance)"  ><span class="fa fa-rotate-left"></span></a>
+                                            <a class="icon-button text-center" title="<fmt:message key="view.console" bundle="${msg}" />"><span class="fa-desktop fa m-xs"></span></a>
+                                            <a class="icon-button text-center" title="<fmt:message key="display.note" bundle="${msg}" />" data-ng-click="showDescription(instance)"><span class="fa-file-text fa"></span></a>
 						</div>
                                         </td>
                                     </tr>
