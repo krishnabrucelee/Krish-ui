@@ -17,7 +17,7 @@
 					</a>
 				</div>
 				<label class="pull-left section-title"><fmt:message key="common.compute.offering" bundle="${msg}" /><span
-					title="required" class="text-danger font-bold">*</span></label>
+					title="<fmt:message key="common.required" bundle="${msg}" />" class="text-danger font-bold">*</span></label>
 			</div>
 			<div class="col-md-6 col-xs-6 col-sm-6">
 				<select required="true" class="form-control form-group-lg"
@@ -26,12 +26,12 @@
 					data-ng-model="instance.computeOffering"
 					data-ng-class="{'error': instanceForm.computeOffering.$invalid && OfferingSubmitted}"
 					data-ng-options="computeOffering.name group by computeOffering.group for computeOffering in instanceElements.computeOfferingList">
-					<option value="">Select</option>
+					<option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
 				</select> <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"
-					tooltip="RAM and CPU for the instance"></i>
+					tooltip="<fmt:message key="ram.and.cpu.for.the.instance" bundle="${msg}" />"></i>
 				<div class="error-area"
 					data-ng-show="instanceForm.computeoffer.$invalid && OfferingSubmitted">
-					<i tooltip="Compute offering is required"
+					<i tooltip="<fmt:message key="compute.offering.is.required" bundle="${msg}" />"
 						class="fa fa-warning error-icon"></i>
 				</div>
 				<input required="true" type="hidden" name="computeoffer"
@@ -81,7 +81,7 @@
 						data-ng-max="{{ instance.computeOffer.cpuCore.ceil}}" type="text"
 						class="form-control" name="cpuCore"
 						data-ng-model="instance.computeOffer.cpuCore.value"> <span
-						class="input-group-addon">Core</span>
+						class="input-group-addon"><fmt:message key="core" bundle="${msg}" /></span>
 				</div>
 			</div>
 		</div>
@@ -135,9 +135,9 @@
 					data-ng-model="instance.storageOffering"
 					ng-change='diskFunction(instance.storageOffering.name)'
 					ng-options="storageOffering.name for storageOffering in instanceElements.diskOfferingList">
-					<option value="">No Thanks</option>
+					<option value=""><fmt:message key="no.thanks" bundle="${msg}" /></option>
 				</select> <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"
-					tooltip="Secondary disk and IOPS"></i> <input type="hidden"
+					tooltip="<fmt:message key="secondary.disk.and.iops" bundle="${msg}" />"></i> <input type="hidden"
 					name="storageOffering" data-ng-model="instance.storageOffering.name"
 					class="form-control">
 			</div>
@@ -206,14 +206,14 @@
                         <span data-ng-show="network" class="pe pe-lg pe-7s-less"></span>
                     </a>
                 </div>
-                <label  class="section-title" > Network<span title="required" class="text-danger font-bold">*</span></label>
+                <label  class="section-title" > <fmt:message key="common.network" bundle="${msg}" /><span title="<fmt:message key="common.required" bundle="${msg}" />" class="text-danger font-bold">*</span></label>
             </div>
             <div class="col-md-6 col-xs-6 col-sm-6">
                 <select required="true" class="form-control input-group" name="networkOfferinglist"  data-ng-class="{'error': instanceForm.networkOfferinglist.$invalid && OfferingSubmitted}" data-ng-model="instance.networkOfferinglist" ng-change='networkFunction(instance.networkOfferinglist.value)' ng-options="networkOfferinglist.name for networkOfferinglist in instanceElements.networkOfferingList" >
-                    <option value="">Select</option>
+                    <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
                 </select>
-                <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="Network Offerings" ></i>
-                <div class="error-area" data-ng-show="instanceForm.networkoffer.$invalid && OfferingSubmitted" ><i  tooltip="Network offering is required" class="fa fa-warning error-icon"></i></div>
+                <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="<fmt:message key="network.offerings" bundle="${msg}" />" ></i>
+                <div class="error-area" data-ng-show="instanceForm.networkoffer.$invalid && OfferingSubmitted" ><i  tooltip="<fmt:message key="network.offering.is.required" bundle="${msg}" />" class="fa fa-warning error-icon"></i></div>
                 <input required="true" type="hidden" name="networkoffer" data-ng-model="instance.networkOfferinglist.name" class="form-control" data-ng-class="{'error': instanceForm.networkoffer.$invalid && OfferingSubmitted}"  >
             </div>
 
@@ -224,23 +224,23 @@
                         <table cellspacing="1" cellpadding="1" class="table table-bordered table-striped">
                             <tbody>
                                 <tr>
-                                    <td><b>Network Name<span title="required" class="text-danger font-bold">*</span></b></td>
+                                    <td><b><fmt:message key="network.name" bundle="${msg}" /><span title="<fmt:message key="common.required" bundle="${msg}" />" class="text-danger font-bold">*</span></b></td>
                                     <td><input type="text" class="input-small " data-ng-model="guestnetwork.name" /></td>
                                 </tr>
                                 <tr>
                                     <td width="35%">
-                                        <b>Network Offering  :<span title="required" class="text-danger font-bold">*</span></b>
+                                        <b><fmt:message key="common.networkoffering" bundle="${msg}" />  :<span title="<fmt:message key="common.required" bundle="${msg}" />" class="text-danger font-bold">*</span></b>
                                     </td>
                                     <td width="65%">
                                         <select required="true" class="form-control" name="networkOffering" data-ng-model="guestnetwork.networkOffering" ng-options="networkOffering.displayText for networkOffering in instance.network.networkOfferList" >
-                                            <option value="">Select</option>
+                                            <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
                                         </select>
                                     </td>
                                 </tr>
                              </tbody>
 
                         </table>
-                                                <button  class="btn btn-info btn-sm pull-right" type="button" data-ng-click=addnetwork()> Add </button>
+                                                <button  class="btn btn-info btn-sm pull-right" type="button" data-ng-click=addnetwork()> <fmt:message key="common.add" bundle="${msg}" /></button>
                     </div>
                 </div>
             </div>
@@ -250,9 +250,9 @@
                         <table cellspacing="1" cellpadding="1" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
-                                    <th>Network</th>
-                                    <th>Type</th>
-                                    <th>Action</th>
+                                    <th><fmt:message key="common.network" bundle="${msg}" /></th>
+                                    <th><fmt:message key="common.type" bundle="${msg}" /></th>
+                                    <th><fmt:message key="common.action" bundle="${msg}" /></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -263,9 +263,9 @@
                                     </td>
                                     <td>{{ network.networkType}}</td>
                                     <td>
-                                        <a title="IP Address"  ></a>
-                                        <input type="text" valid-cidr required="true" placeholder="IP Address"  class="input-small" data-ng-model="network.ipaddress" />
-                                        <span ><label><input type="radio" name="instance.network.default" value="network.id" > Default</label></span>
+                                        <a title="<fmt:message key="ip.address" bundle="${msg}" />"  ></a>
+                                        <input type="text" valid-cidr required="true" placeholder="<fmt:message key="ip.address" bundle="${msg}" />"  class="input-small" data-ng-model="network.ipaddress" />
+                                        <span ><label><input type="radio" name="instance.network.default" value="network.id" > <fmt:message key="common.default" bundle="${msg}" /></label></span>
                                     </td>
 
                                 </tr>
@@ -282,9 +282,9 @@
                         <table cellspacing="1" cellpadding="1" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
-                                    <th>Network</th>
-                                    <th>Type</th>
-                                    <th>Action</th>
+                                    <th><fmt:message key="common.network" bundle="${msg}" /></th>
+                                    <th><fmt:message key="common.type" bundle="${msg}" /></th>
+                                    <th><fmt:message key="common.action" bundle="${msg}" /></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -295,9 +295,9 @@
                                     </td>
                                     <td>{{ network.type}}</td>
                                     <td>
-                                        <a title="IP Address"   ></a>
-                                        <input type="text" required="true" valid-cidr placeholder="IP Address"  class="input-small" data-ng-model="network.ipaddress" />
-                                        <span ><label><input type="radio" name="instance.network.default" value="network.id" > Default</label></span>
+                                        <a title="<fmt:message key="ip.address" bundle="${msg}" />"></a>
+                                        <input type="text" required="true" valid-cidr placeholder="<fmt:message key="ip.address" bundle="${msg}" />"  class="input-small" data-ng-model="network.ipaddress" />
+                                        <span ><label><input type="radio" name="instance.network.default" value="network.id" > <fmt:message key="common.default" bundle="${msg}" /></label></span>
                                     </td>
 
                                 </tr>

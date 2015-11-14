@@ -63,19 +63,19 @@
                 <div class="hpanel">
                     <div class="row">
                     <div class="pull-left">
-                        <h4 class="m-b-sm ng-binding pull-left">Memory Performance</h4>
+                        <h4 class="m-b-sm ng-binding pull-left"><fmt:message key="memory.performance" bundle="${msg}" /></h4>
 
 
                     </div>
                     <div class="pull-right">
-                        <a href="javascript:void(0);" title="Refresh"  class="btn btn-info" href="#/instance/list"><span class="fa fa-refresh fa-lg "></span></a>
+                        <a href="javascript:void(0);" title="<fmt:message key="common.refresh" bundle="${msg}" />"  class="btn btn-info" href="#/instance/list"><span class="fa fa-refresh fa-lg "></span></a>
 
                     </div>
 
                     <div class="pull-right m-r-sm">
 
                         <select  class="form-control" name="actions" data-ng-init="instance.actions = instanceElements.actions[3].name" data-ng-model="instance.actions" ng-options="actions.name for actions in instanceElements.actions" >
-                            <option value="">Minutes</option>
+                            <option value=""><fmt:message key="minutes" bundle="${msg}" /></option>
                         </select>
                     </div>
                     </div>
@@ -108,19 +108,19 @@
                 <div class="hpanel">
                     <div class="row">
                     <div class="pull-left">
-                        <h4 class="m-b-sm ng-binding pull-left">Network Performance</h4>
+                        <h4 class="m-b-sm ng-binding pull-left"><fmt:message key="network.performance" bundle="${msg}" /></h4>
 
 
                     </div>
                     <div class="pull-right">
-                        <a href="javascript:void(0);" title="Refresh" class="btn btn-info" href="#/instance/list"><span class="fa fa-refresh fa-lg "></span></a>
+                        <a href="javascript:void(0);" title="<fmt:message key="common.refresh" bundle="${msg}" />" class="btn btn-info" href="#/instance/list"><span class="fa fa-refresh fa-lg "></span></a>
 
                     </div>
 
                     <div class="pull-right m-r-sm">
 
                         <select  class="form-control" name="actions" data-ng-init="instance.actions = instanceElements.actions[3].name" data-ng-model="instance.actions" ng-options="actions.name for actions in instanceElements.actions" >
-                            <option value="">Minutes</option>
+                            <option value=""><fmt:message key="minutes" bundle="${msg}" /></option>
                         </select>
                     </div>
                     </div>
@@ -155,19 +155,19 @@
                 <div class="hpanel">
                     <div class="row">
                     <div class="pull-left">
-                        <h4 class="m-b-sm ng-binding pull-left">Disk Performance</h4>
+                        <h4 class="m-b-sm ng-binding pull-left"><fmt:message key="disk.performance" bundle="${msg}" /></h4>
 
 
                     </div>
                     <div class="pull-right">
-                        <a href="javascript:void(0);" title="Refresh" class="btn btn-info" href="#/instance/list"><span class="fa fa-refresh fa-lg "></span></a>
+                        <a href="javascript:void(0);" title="<fmt:message key="common.refresh" bundle="${msg}" />" class="btn btn-info" href="#/instance/list"><span class="fa fa-refresh fa-lg "></span></a>
 
                     </div>
 
                     <div class="pull-right m-r-sm">
 
                         <select  class="form-control" name="actions" data-ng-init="instance.actions = instanceElements.actions[3].name" data-ng-model="instance.actions" ng-options="actions.name for actions in instanceElements.actions" >
-                            <option value="">Minutes</option>
+                            <option value=""><fmt:message key="minutes" bundle="${msg}" /></option>
                         </select>
                     </div>
                     </div>

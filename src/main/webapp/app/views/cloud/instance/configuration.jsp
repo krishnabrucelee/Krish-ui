@@ -121,7 +121,7 @@
                         <tbody>
                             <tr>
                                 <td class="p-xs col-md-4 col-sm-4"><b><fmt:message key="cpu" bundle="${msg}" /></b></td>
-                                <td class="p-xs col-md-8 col-sm-8">2 <fmt:message key="vcpu's" bundle="${msg}" /></td>
+                                <td class="p-xs col-md-8 col-sm-8">2 vCPU's</td>
                             </tr>
                             <tr>
                                 <td class="p-xs col-md-4 col-sm-4"><b><fmt:message key="ram" bundle="${msg}" /></b></b></td>
@@ -146,7 +146,7 @@
                             <tr>
                                 <td colspan="2" class="p-xs">
                                     <h4 class="text-danger price-text">
-                                        <app-currency></app-currency>0.10 <span>/ hour</span>   <small class="text-right text-muted m-l-sm">(<app-currency></app-currency>7.2 / month)</small>
+                                        <app-currency></app-currency>0.10 <span>/ <fmt:message key="common.hour" bundle="${msg}" /></span>   <small class="text-right text-muted m-l-sm">(<app-currency></app-currency>7.2 / <fmt:message key="common.month" bundle="${msg}" />)</small>
                                     </h4>
                                 </td>
                             </tr>
@@ -163,7 +163,7 @@
     <div class="row">
         <div class="col-md-12 col-sm-12">
             <h4>
-                Affinity Group (optional)
+                <fmt:message key="affinity.group" bundle="${msg}" /> (<fmt:message key="optional" bundle="${msg}" />)
             </h4>
             <hr class="m-t-xs">
         </div>
@@ -177,38 +177,37 @@
 
                     <form name="affinityForm" method="POST" data-ng-submit="saveAffinity(affinityForm)" novalidate class="form-horizontal">
                         <div class="form-group" ng-class="{ 'text-danger' : affinityForm.group.$invalid && affinitySubmitted}">
-                            <label class="col-sm-4 control-label">Select Group
+                            <label class="col-sm-4 control-label"><fmt:message key="select.group" bundle="${msg}" />
                                 <span class="text-danger">*</span>
                             </label>
                             <div class="col-sm-5">
                                 <select required="true" class="form-control input-group" name="group"
                                         data-ng-model="affinity.group" data-ng-class="{'error': affinityForm.group.$invalid && affinitySubmitted}"
                                         data-ng-options="group.name for group in affinityElements.groupList" >
-                                    <option value="">Select</option>
+                                    <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
                                 </select>
-                                <div class="error-area" data-ng-show="affinityForm.group.$invalid && affinitySubmitted" ><i  tooltip="Group is required" class="fa fa-warning error-icon"></i></div>
+                                <div class="error-area" data-ng-show="affinityForm.group.$invalid && affinitySubmitted" ><i  tooltip="<fmt:message key="group.is.required" bundle="${msg}" />" class="fa fa-warning error-icon"></i></div>
                             </div>
                             <div class="col-sm-3">
-                                <a class="btn btn-info" data-ng-click="addAffinityGroup('md')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span>Add new affinity</a>
+                                <a class="btn btn-info" data-ng-click="addAffinityGroup('md')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="add.new.affinity" bundle="${msg}" /></a>
                             </div>
 
                         </div>
 
 
                         <div class="form-group">
-                            <label class="col-sm-4 control-label">Note</label>
+                            <label class="col-sm-4 control-label"><fmt:message key="note" bundle="${msg}" /></label>
                             <div class="col-sm-8">
                                 <div class="well">
-                                    Your Instance must be stopped before attempting to change the affinity group.
-
+                                   <fmt:message key="your.instance.must.be.stopped.before.attempting.to.change.the.affinity.group" bundle="${msg}" />
                                 </div>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <div class="col-sm-8 col-sm-offset-4">
-                                <a class="btn btn-default"  ui-sref="cloud.list-instance">Cancel</a>
-                                <button class="btn btn-info" type="submit"  >Ok</button>
+                                <a class="btn btn-default"  ui-sref="cloud.list-instance"><fmt:message key="common.cancel" bundle="${msg}" /></a>
+                                <button class="btn btn-info" type="submit"  ><fmt:message key="common.ok" bundle="${msg}" /></button>
                             </div>
                         </div>
                     </form>

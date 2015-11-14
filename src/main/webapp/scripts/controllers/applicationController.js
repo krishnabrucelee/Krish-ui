@@ -86,6 +86,11 @@ function applicationListCtrl($scope, notify, dialogService, crudService) {
                             $scope.list(1);
                             notify({message: 'Updated successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                             $modalInstance.close();
+                        }).catch(function (result) {
+                            angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
+                                $scope.applicationForm[key].$invalid = true;
+                                $scope.applicationForm[key].errorMessage = errorMessage;
+                            });
                         });
                     }
                 },
