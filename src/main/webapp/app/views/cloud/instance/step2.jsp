@@ -237,14 +237,7 @@
                                         </select>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td><b>IP Address :</b></td>
-                                    <td>
-                                        <a title="IP Address"  ></a>
-                                        <input type="text" placeholder="CIDR Address" valid-cidr class="input-xs input-2-col" data-ng-model="guestnetwork.cIDR" />
-                                    </td>
-                                </tr>
-                            </tbody>
+                             </tbody>
 
                         </table>
                                                 <button  class="btn btn-info btn-sm pull-right" type="button" data-ng-click=addnetwork()> Add </button>

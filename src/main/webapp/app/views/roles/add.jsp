@@ -28,7 +28,7 @@
                             <div class="row">
                                 <label class="col-md-3 col-sm-3 control-label control-normal"><fmt:message key="common.department" bundle="${msg}" /><span class="text-danger">*</span></label>
                                 <div class="col-md-7  col-sm-7 col-xs-7">
-                                    <select required="true" class="form-control input-group" name="department" data-ng-model="role.department" ng-options="department.name for department in formElements.roleList" data-ng-class="{'error': RoleForm.department.$invalid && formSubmitted}" >
+                                    <select required="true" class="form-control input-group" name="department" data-ng-model="role.department" ng-options="department.userName for department in formElements.roleList" data-ng-class="{'error': RoleForm.department.$invalid && formSubmitted}" >
                                         <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
 
                                     </select>

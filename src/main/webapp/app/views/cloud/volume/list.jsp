@@ -1,5 +1,10 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <div ui-view >
-    <div  data-ng-controller="volumeListCtrl">
+    <div  data-ng-controller="volumeCtrl">
         <div class="hpanel">
             <div class="panel-heading">
                 <div class="row">
@@ -34,7 +39,7 @@
                             <div class="clearfix"></div>
                             <span class="pull-right m-l-sm m-t-sm">
                                 <a class="btn btn-info" data-ng-click="openUploadVolumeContainer()"><span class="pe-7s-cloud-upload pe-lg font-bold m-r-xs"></span> Upload volume</a>
-                                <a class="btn btn-info" data-ng-click="openAddVolumeContainer()"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span> Add volume</a>
+                                <a class="btn btn-info" data-ng-click="addVolume('md')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span> Add volume</a>
                                 <a class="btn btn-info" ui-sref="cloud.list-volume" title="Refresh" ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
                             </span>
                         </div>
@@ -43,6 +48,7 @@
                 </div>
                 <div class="clearfix"></div>
             </div>
+             <pagination-content></pagination-content>
             <div class="row">
                 <div class="col-md-12 col-sm-12 col-xs-12 ">
                     <div class="white-content">
@@ -64,14 +70,15 @@
                                         <a class="text-info" href="javascript:void(0)"  title="View Volume" >{{ volume.name}}</a>
 
                                     </td>
-                                    <td>{{ volume.type.name}}</td>
-                                    <td>{{ volume.plan.name}}</td>
+                                    <td>{{ volume.volumeType}}</td>
+                                    <td>{{ volume.storageOffering.name}}</td>
                                     <td>{{ volume.attachedTo.name || " - " }}</td>
-                                    <td>{{ volume.plan.size}}</td>
-                                    <td>{{ volume.createdDate}}</td>
+                                    <td>{{ volume.diskSize}}</td>
+                                    <td>{{ volume.createdDateTime}}</td>
                                     <td>
                                         <div class="btn-group action-menu">
-                                            <span data-ng-if="volume.type.id == 2">
+                                        <!-- -->
+                                            <span data-ng-if="volume.volumeType == 'DATADISK'">
                                                 <a class="fa fa-cogs dropdown-toggle" data-toggle="dropdown" ></a>
                                                 <ul class="dropdown-menu pull-right">
                                                     <img src="images/dropdown-arw2.png" border="0" class="vol-dropdown-arw">
@@ -82,7 +89,7 @@
                                                     <li><a href="javascript:void(0);"  data-ng-click="resizeVolume(volume)" title="Resize"><span class="fa fa-expand m-xs"></span> Resize Volume</a></li>
                                                 </ul>
                                             </span>
-                                            <span data-ng-if="volume.type.id == 1">
+                                            <span data-ng-if="volume.volumeType == 'ROOT'">
                                                 <a class="fa fa-cogs dropdown-toggle" data-toggle="dropdown" ></a>
                                                 <ul class="dropdown-menu pull-right">
                                                     <img src="images/dropdown-arw2.png" border="0" class="vol-dropdown-arw">
@@ -99,6 +106,8 @@
                     </div>
                 </div>
             </div>
+         <pagination-content></pagination-content>
         </div>
+
     </div>
 </div>
