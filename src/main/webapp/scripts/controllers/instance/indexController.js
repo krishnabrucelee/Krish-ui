@@ -404,9 +404,9 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
 
      $scope.submt = function () {
     	 var instance = $scope.instance;
-    	 if(instance.project !== null){
-         instance.projectId = instance.project.id;
-    	 }
+    	 if (!angular.isUndefined(instance.project)) {
+             instance.projectId = instance.project.id;
+         }
          instance.domain = instance.department.domain;
          instance.domainId =instance.domain.id;
          instance.departmentId = instance.department.id;

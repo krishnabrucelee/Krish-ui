@@ -70,8 +70,8 @@
                                     <li class="list-group-item" data-ng-if="instance.status == 'Running'">
                                         <a href="javascript:void(0);" title="<fmt:message key="view.console" bundle="${msg}" />"><span class="fa-desktop fa font-bold m-xs"></span> <fmt:message key="view.console" bundle="${msg}" /></a>
                                     </li>
-                                    <li class="list-group-item">
-                                        <a href="javascript:void(0);" title="<fmt:message key="reset.password" bundle="${msg}" />"><span class="fa-key fa font-bold m-xs"></span> <fmt:message key="show/reset.password" bundle="${msg}" /></a>
+                                    <li data-ng-show="instance.passwordEnabled == true" class="list-group-item">
+                                        <a href="javascript:void(0);" title="<fmt:message key="reset.password" bundle="${msg}" />" data-ng-click="showPassword(instance)"><span class="fa-key fa font-bold m-xs"></span> <fmt:message key="show/reset.password" bundle="${msg}" /></a>
                                     </li>
                                     <li class="list-group-item">
                                         <a href="javascript:void(0);" title="<fmt:message key="reinstall.vm" bundle="${msg}" />" data-ng-click="reInstallVm('md',instance)"><span class="fa fa-history m-xs"></span> <fmt:message key="reinstall.vm" bundle="${msg}" /></a>
@@ -83,10 +83,16 @@
                                         <a href="javascript:void(0);" data-ng-if="instance.status == 'Destroyed'" data-ng-click="recoverVm('sm',instance)" title="<fmt:message key="recover.vm" bundle="${msg}" />"><span class="fa-history fa font-bold m-xs"></span> <fmt:message key="recover.vm" bundle="${msg}" /></a>
                                     </li>
                                     <li class="list-group-item">
-                                        <a href="javascript:void(0);" title="<fmt:message key="attach.iso" bundle="${msg}" />"><span class="pe-7s-disk pe-1x font-bold m-xs"></span> <fmt:message key="attach.iso" bundle="${msg}" /></a>
+                                        <a href="javascript:void(0);" title="<fmt:message key="attach.iso" bundle="${msg}" />" data-ng-click="attachISO(instance)"><span class="pe-7s-disk pe-1x font-bold m-xs"></span> <fmt:message key="attach.iso" bundle="${msg}" /></a>
+                                    </li>
+                                    <li data-ng-if="instance.iso === null " class="list-group-item">
+                                        <a href="javascript:void(0);" title="Detach ISO" data-ng-click="detachISO(instance)"><span class="pe-7s-disk pe-1x font-bold m-xs"></span> Detach ISO</a>
                                     </li>
                                     <li class="list-group-item">
-                                        <a href="javascript:void(0);" title="<fmt:message key="vm.snapshot" bundle="${msg}" />"><span class="fa-camera fa font-bold m-xs"></span> <fmt:message key="take.vm.snapshot" bundle="${msg}" /></a>
+                                        <a href="javascript:void(0);" title="<fmt:message key="vm.snapshot" bundle="${msg}" />" data-ng-click="takeSnapshot(instance)"><span class="fa-camera fa font-bold m-xs"></span> <fmt:message key="take.vm.snapshot" bundle="${msg}" /></a>
+                                    </li>
+                                    <li data-ng-if="instance.status == 'Running'" class="list-group-item">
+                                        <a href="javascript:void(0);" title="Migrate instance to another host" data-ng-click="hostMigrate(instance)"><span class="fa-camera fa font-bold m-xs"></span> Migrate to host</a>
                                     </li>
                                     <li class="list-group-item">
                                         <!--<a href="#" title="Edit Note">  <span class="fa-edit fa font-bold m-xs"></span> Edit Note</a>-->

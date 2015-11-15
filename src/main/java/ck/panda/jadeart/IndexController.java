@@ -20,7 +20,7 @@ public class IndexController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
     /**
-     * Default constructor. 
+     * Default constructor.
      */
     public IndexController() {
         // TODO Auto-generated constructor stub
@@ -31,10 +31,10 @@ public class IndexController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String language;
-		
-		
+
+
 		Cookie[] cookies = request.getCookies();
-		
+
 		// Default Language
 		String languageString = "en";
 		// Get the selected language from cookie
@@ -51,12 +51,12 @@ public class IndexController extends HttpServlet {
 		    }
 		}
 		}
-		
+
         language = new String(languageString);
 
         Locale currentLocale;
         ResourceBundle messages;
-        
+
         currentLocale = new Locale(language);
         messages = ResourceBundle.getBundle("i18n/messages", currentLocale);
         request.setAttribute("messages", messages);
