@@ -21,7 +21,7 @@
 								<select class="form-control input-group" name="osCategory"
 									data-ng-model="osTypes"
 									ng-options="osCategory.name for osCategory in formElements.osCategoryList">
-									<option value="">Select</option>
+									<option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
 								</select>
 							</div>
 						</div>
@@ -33,7 +33,7 @@
 								<select class="form-control input-group" name="department"
 									data-ng-model="versions"
 									ng-options="osVersion.name for osVersion in formElements.osVersionList">
-									<option value="">Select</option>
+									<option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
 								</select>
 							</div>
 						</div>

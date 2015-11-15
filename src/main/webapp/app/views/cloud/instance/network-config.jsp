@@ -12,10 +12,10 @@
             <div class="row">
                 <div class="col-md-12 col-sm-12">
                       <span class="pull-right">
-                            <a class="btn btn-info" data-ng-click="addNetworkToVM('md')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span>Add Network to VM</a>
+                            <a class="btn btn-info" data-ng-click="addNetworkToVM('md')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="add.network.to.vm" bundle="${msg}" /></a>
                       </span>
                       <h4>
-                          Instance Network Manager
+                          <fmt:message key="instance.network.manager" bundle="${msg}" />
                       </h4>
                       <hr class="m-t-xs">
                   </div>
@@ -53,10 +53,10 @@
                                                             </div>
                                                              <div class="pull-right">
                                                                     <div class="btn-group">
-                                                                        <button class="btn btn-sm m-t-md dropdown-toggle" data-ng-class="$index == 0 ? 'btn-info' : 'btn-default'" data-toggle="dropdown"><i class="fa fa-cog"></i> Configure </button>
+                                                                        <button class="btn btn-sm m-t-md dropdown-toggle" data-ng-class="$index == 0 ? 'btn-info' : 'btn-default'" data-toggle="dropdown"><i class="fa fa-cog"></i> <fmt:message key="configure" bundle="${msg}" /></button>
                                                                         <ul class="dropdown-menu pull-right">
-                                                                            <li data-ng-show="network.isDefault== 'NO'"><a href="javascript:void(0);" title="Set as Default" data-ng-click="setAsDefault($event)"><span class="pe-7s-tools font-bold m-xs"></span> Set as Default</a></li>
-                                                                             <li ><a href="javascript:void(0);" title="Set as Default" data-ng-click="setAsDefault($event)"><span class="fa-remove fa  font-bold m-xs"></span> Remove</a></li>
+                                                                            <li data-ng-show="network.isDefault== 'NO'"><a href="javascript:void(0);" title="Set as Default" data-ng-click="setAsDefault($event)"><span class="pe-7s-tools font-bold m-xs"></span> <fmt:message key="set.as.default" bundle="${msg}" /></a></li>
+                                                                             <li ><a href="javascript:void(0);" title="Set as Default" data-ng-click="setAsDefault($event)"><span class="fa-remove fa  font-bold m-xs"></span> <fmt:message key="remove" bundle="${msg}" /></a></li>
                                                                         </ul>
                                                                         <div class="clearfix"></div>
                                                                     </div>
@@ -66,13 +66,13 @@
                                                             <div class="media-body">
 
                                                                 <div class="row-fluid">
-                                                                    <div class="span12 field-box p-xxs"><label class="headerLabel m-r-xs">Network Name:</label><a href="#/user/network/view/2">{{network.name}}</a></div>
-                                                                    <div class="span12 field-box p-xxs"><label class="headerLabel m-r-xs">ID:</label><span id="nicId">{{network.networkID}}</span></div>
-                                                                    <div class="span12 field-box p-xxs"><label class="headerLabel m-r-xs">Type:</label><span>{{network.networkType.name}}</span></div>
-                                                                    <div class="span12 field-box p-xxs"><label class="headerLabel m-r-xs">IP Address:</label><span>{{network.ip}}</span></div>
-                                                                    <div class="span12 field-box p-xxs"><label class="headerLabel m-r-xs">Gateway:</label><span>{{network.gateway}}</span></div>
-                                                                    <div class="span12 field-box p-xxs"><label class="headerLabel m-r-xs">Netmask:</label><span>{{network.netmask}}</span></div>
-                                                                    <div class="span12 field-box p-xxs"><label class="headerLabel m-r-xs">Is Default:</label><span data-ng-class="network.isDefault== 'YES' ? 'text-info' : 'text-default' ">{{network.isDefault}}</span></div>
+                                                                    <div class="span12 field-box p-xxs"><label class="headerLabel m-r-xs"><fmt:message key="network.name" bundle="${msg}" />:</label><a href="#/user/network/view/2">{{network.name}}</a></div>
+                                                                    <div class="span12 field-box p-xxs"><label class="headerLabel m-r-xs"><fmt:message key="id" bundle="${msg}" />:</label><span id="nicId">{{network.networkID}}</span></div>
+                                                                    <div class="span12 field-box p-xxs"><label class="headerLabel m-r-xs"><fmt:message key="common.type" bundle="${msg}" />:</label><span>{{network.networkType.name}}</span></div>
+                                                                    <div class="span12 field-box p-xxs"><label class="headerLabel m-r-xs"><fmt:message key="ip.address" bundle="${msg}" />:</label><span>{{network.ip}}</span></div>
+                                                                    <div class="span12 field-box p-xxs"><label class="headerLabel m-r-xs"><fmt:message key="gateway" bundle="${msg}" />:</label><span>{{network.gateway}}</span></div>
+                                                                    <div class="span12 field-box p-xxs"><label class="headerLabel m-r-xs"><fmt:message key="netmask" bundle="${msg}" />:</label><span>{{network.netmask}}</span></div>
+                                                                    <div class="span12 field-box p-xxs"><label class="headerLabel m-r-xs"><fmt:message key="is.default" bundle="${msg}" />:</label><span data-ng-class="network.isDefault== 'YES' ? 'text-info' : 'text-default' ">{{network.isDefault}}</span></div>
                                                                 </div>
                                                             </div>
                                                         </div>
