@@ -6,7 +6,7 @@
 <form name="form.detachForsm">
     <div class="inmodal" >
         <div class="modal-header">
-            <panda-modal-header hide-zone="false" page-icon="fa fa-ban" page-title="Detach Iso"></panda-modal-header>
+            <panda-modal-header hide-zone="false" page-icon="fa fa-ban" page-title="<fmt:message key="detach.iso" bundle="${msg}" />"></panda-modal-header>
             <!--<h2 class="modal-title" id="myModalLabel">Confirm Detach Volume</h2>-->
         </div>
 
@@ -17,7 +17,7 @@
                     <img src="images/warning.png" alt="">
                 </div>
                 <div class="form-group has-error col-md-9 col-sm-9  col-xs-9 m-t-md">
-                    <p >Please confirm that you want to detach iso from this instance.</p>
+                    <p ><fmt:message key="please.confirm.that.you.want.to.detach.iso.from.this.instance" bundle="${msg}" />.</p>
                 </div>
 
 

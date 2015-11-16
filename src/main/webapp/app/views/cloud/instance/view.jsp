@@ -86,13 +86,13 @@
                                         <a href="javascript:void(0);" title="<fmt:message key="attach.iso" bundle="${msg}" />" data-ng-click="attachISO(instance)"><span class="pe-7s-disk pe-1x font-bold m-xs"></span> <fmt:message key="attach.iso" bundle="${msg}" /></a>
                                     </li>
                                     <li data-ng-if="instance.iso === null " class="list-group-item">
-                                        <a href="javascript:void(0);" title="Detach ISO" data-ng-click="detachISO(instance)"><span class="pe-7s-disk pe-1x font-bold m-xs"></span> Detach ISO</a>
+                                        <a href="javascript:void(0);" title="<fmt:message key="detach.iso" bundle="${msg}" />" data-ng-click="detachISO(instance)"><span class="pe-7s-disk pe-1x font-bold m-xs"></span> <fmt:message key="detach.iso" bundle="${msg}" /></a>
                                     </li>
                                     <li class="list-group-item">
                                         <a href="javascript:void(0);" title="<fmt:message key="vm.snapshot" bundle="${msg}" />" data-ng-click="takeSnapshot(instance)"><span class="fa-camera fa font-bold m-xs"></span> <fmt:message key="take.vm.snapshot" bundle="${msg}" /></a>
                                     </li>
                                     <li data-ng-if="instance.status == 'Running'" class="list-group-item">
-                                        <a href="javascript:void(0);" title="Migrate instance to another host" data-ng-click="hostMigrate(instance)"><span class="fa-camera fa font-bold m-xs"></span> Migrate to host</a>
+                                        <a href="javascript:void(0);" title="<fmt:message key="migrate.instance.to.another.host" bundle="${msg}" />" data-ng-click="hostMigrate(instance)"><span class="fa-camera fa font-bold m-xs"></span> <fmt:message key="migrate.instance.to.another.host" bundle="${msg}" /></a>
                                     </li>
                                     <li class="list-group-item">
                                         <!--<a href="#" title="Edit Note">  <span class="fa-edit fa font-bold m-xs"></span> Edit Note</a>-->
@@ -128,7 +128,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td><b><fmt:message key="offer" bundle="${msg}" /></b></td>
-                                                    <td>{{ instance.computeOffering.name}} <a href="#" class="fa fa-edit m-l-lg"> <fmt:message key="edit" bundle="${msg}" /></a></td>
+                                                    <td>{{ instance.computeOffering.name}} <a href="#" class="fa fa-edit m-l-lg"> edit</a></td>
                                                 </tr>
                                                 <tr>
                                                     <td><b>IP</b></td>
@@ -150,7 +150,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td><b><fmt:message key="subscription" bundle="${msg}" /></b></td>
-                                                    <td><fmt:message key="free" bundle="${msg}" /></td>
+                                                    <td>Free</td>
                                                 </tr>
                                                 <tr>
                                                     <td><b><fmt:message key="common.company" bundle="${msg}" /></b></td>

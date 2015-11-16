@@ -7,7 +7,7 @@
 
     <div class="inmodal" >
         <div class="modal-header">
-            <panda-modal-header page-icon="fa fa-trash pe-lg" page-title="Delete Snapshot"></panda-modal-header>
+            <panda-modal-header page-icon="fa fa-trash pe-lg" page-title="<fmt:message key="delete.snapshot" bundle="${msg}" />"></panda-modal-header>
 
         </div>
 
@@ -18,7 +18,7 @@
                     <img src="images/warning.png" alt="">
                 </div>
                 <div class="form-group has-error col-md-9 col-sm-9  col-xs-9 m-t-md">
-                    <p>Please confirm that you want to delete this snapshot </p>
+                    <p><fmt:message key="please.confirm.that.you.want.to.delete.this.snapshot" bundle="${msg}" /> </p>
                 </div>
 
 
@@ -27,8 +27,8 @@
         </div>
 
         <div class="modal-footer">
-            <button type="button" class="btn btn-default " ng-click="cancel()" data-dismiss="modal">No</button>
-            <button class="btn btn-info" type="submit">Yes</button>
+            <button type="button" class="btn btn-default " ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.no" bundle="${msg}" /></button>
+            <button class="btn btn-info" type="submit"><fmt:message key="common.yes" bundle="${msg}" /></button>
 
 
 

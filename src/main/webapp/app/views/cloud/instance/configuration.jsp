@@ -128,19 +128,19 @@
                                 <td class="p-xs col-md-8 col-sm-8">4096MB of memory</td>
                             </tr>
                             <tr>
-                                <td class="p-xs col-md-4 col-sm-4"><b>System Disk</b></td>
+                                <td class="p-xs col-md-4 col-sm-4"><b><fmt:message key="system.disk" bundle="${msg}" /></b></td>
                                 <td class="p-xs col-md-8 col-sm-8">20.0GB</td>
                             </tr>
                             <tr>
-                                <td class="p-xs col-md-4 col-sm-4"><b>Network</b></td>
+                                <td class="p-xs col-md-4 col-sm-4"><b><fmt:message key="common.network" bundle="${msg}" /></b></td>
                                 <td class="p-xs col-md-8 col-sm-8">1000GB</td>
                             </tr>
                             <tr>
-                                <td class="p-xs col-md-4 col-sm-4"><b>Bandwidth</b></td>
+                                <td class="p-xs col-md-4 col-sm-4"><b><fmt:message key="bandwidth" bundle="${msg}" /></b></td>
                                 <td class="p-xs col-md-8 col-sm-8">10 MB/s</td>
                             </tr>
                             <tr>
-                                <td class="p-xs col-md-4 col-sm-4"><b>Disk IO</b></td>
+                                <td class="p-xs col-md-4 col-sm-4"><b><fmt:message key="disk.io" bundle="${msg}" /></b></td>
                                 <td class="p-xs col-md-8 col-sm-8">Good</td>
                             </tr>
                             <tr>

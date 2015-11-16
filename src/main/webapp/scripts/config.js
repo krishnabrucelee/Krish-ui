@@ -168,7 +168,7 @@ function configState($stateProvider, $httpProvider,  $urlRouterProvider, $compil
                 url: "snapshot/list",
                 templateUrl: VIEW_URL + "views/cloud/snapshot/list.jsp",
                 data: {
-                    pageTitle: 'snapshot'
+                    pageTitle: 'common.snapshot'
                 }
             })
 

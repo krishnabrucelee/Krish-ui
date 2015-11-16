@@ -29,6 +29,10 @@
 	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.instances" bundle="${msg}" /></a>
 	                            <span ng-switch-when="true"><fmt:message key="common.instances" bundle="${msg}" /></span>
                             </span>
+                            <span data-ng-if="state.data.pageTitle === 'common.snapshot'">
+	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.snapshot" bundle="${msg}" /></a>
+	                            <span ng-switch-when="true"><fmt:message key="common.snapshot" bundle="${msg}" /></span>
+                            </span>
                         </li>
                     </ol>
                 </div>

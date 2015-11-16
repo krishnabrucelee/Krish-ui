@@ -7,7 +7,7 @@
 <form name="form.detachForsm">
     <div class="inmodal" >
         <div class="modal-header">
-            <panda-modal-header hide-zone="false" page-icon="fa fa-ban" page-title="Reboot instance"></panda-modal-header>
+            <panda-modal-header hide-zone="false" page-icon="fa fa-ban" page-title="<fmt:message key="destroy.vm" bundle="${msg}" />"></panda-modal-header>
             <!--<h2 class="modal-title" id="myModalLabel">Confirm Detach Volume</h2>-->
         </div>
 
@@ -20,7 +20,7 @@
                 <div class="form-group p-md col-md-9 col-sm-9  col-xs-9" data-ng-class=" agree != true && actionExpunge  ? 'text-danger' : ''">
 
                    <input id="agree" icheck type="checkbox" name="agree" value="yes" class="input-mini p-md"  data-ng-model="agree"/>
-                   <label class="m-l-sm font-normal" for="agree"> Expunge VM </label>
+                   <label class="m-l-sm font-normal" for="agree"> <fmt:message key="expunge.vm" bundle="${msg}" /></label>
                 </div>
 
 
