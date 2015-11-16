@@ -1,4 +1,7 @@
-
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
 <form name="deleteSnapshotForm" data-ng-submit="validateDeleteSnapshot(deleteSnapshotForm)" method="post" novalidate="" data-ng-controller="addVMSnapshotCtrl" >
 
@@ -26,7 +29,7 @@
         <div class="modal-footer">
             <button type="button" class="btn btn-default " ng-click="cancel()" data-dismiss="modal">No</button>
             <button class="btn btn-info" type="submit">Yes</button>
-            
+
 
 
         </div>

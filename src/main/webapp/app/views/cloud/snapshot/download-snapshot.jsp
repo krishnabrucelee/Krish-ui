@@ -1,14 +1,18 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <form name="confirmsnapshot" data-ng-submit="validateConfirmSnapshot(confirmsnapshot)" method="post" novalidate="" data-ng-controller="addConfirmSnapshotCtrl" >
     <div class="inmodal" >
         <div class="modal-header">
-            <panda-modal-header hide-zone="true" page-icon="fa fa-camera" page-title="Create Snapshot"></panda-modal-header>                
+            <panda-modal-header hide-zone="true" page-icon="fa fa-camera" page-title="Create Snapshot"></panda-modal-header>
         </div>
 
         <div class="modal-body">
             <div class=" row">
                 <div class="col-md-12">
                     <div class="form-group" >
-                        <div class="row" > 
+                        <div class="row" >
                             <label class="col-md-3 col-sm-3 control-label" >Disk Name:
 
                             </label>
@@ -24,7 +28,7 @@
 
 
                     <div class="form-group" ng-class="{'text-danger': confirmsnapshot.name.$invalid && formSubmitted}">
-                        <div class="row" > 
+                        <div class="row" >
                             <label class="col-md-3 col-sm-3 control-label" >Name
                                 <span class="text-danger">*</span>
                             </label>
@@ -46,7 +50,7 @@
         <div class="modal-footer">
             <span class="pull-left">
                 <h4 class="text-danger price-text m-l-lg">
-                    <app-currency></app-currency>0.10 <span>/ hour</span> <span>/GB</span> 
+                    <app-currency></app-currency>0.10 <span>/ hour</span> <span>/GB</span>
                 </h4>
             </span>
             <button type="button" class="btn btn-default " ng-click="cancel()" data-dismiss="modal">Cancel</button>
