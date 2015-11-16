@@ -7,23 +7,21 @@
 <form name="form.detachForsm">
     <div class="inmodal" >
         <div class="modal-header">
-            <panda-modal-header hide-zone="false" page-icon="fa fa-ban" page-title="<fmt:message key="destroy.vm" bundle="${msg}" />"></panda-modal-header>
+            <panda-modal-header hide-zone="false" page-icon="fa fa-ban" page-title="Show/Reset password of instance"></panda-modal-header>
             <!--<h2 class="modal-title" id="myModalLabel">Confirm Detach Volume</h2>-->
         </div>
 
         <div class="modal-body">
             <div class=" row">
-                <div class="form-group p-sm has-error col-md-3 col-sm-3  col-xs-3">
-
-                    <img class="m-l-sm" src="images/warning.png" alt="">
+             <div class="form-group col-md-2 col-sm-2  "></div>
+                <div class="form-group col-md-4 col-sm-4  col-xs-6">
+                   <input id="show" icheck type="checkbox" name="show" value="yes" class="input-mini p-md"  data-ng-model="show"/>
+                   <label class="m-l-sm font-normal" for="show"> Show Password </label>
                 </div>
-                <div class="form-group p-md col-md-9 col-sm-9  col-xs-9" data-ng-class=" agree != true && actionExpunge  ? 'text-danger' : ''">
-
-                   <input id="agree" icheck type="checkbox" name="agree" value="yes" class="input-mini p-md"  data-ng-model="agree"/>
-                   <label class="m-l-sm font-normal" for="agree"> <fmt:message key="expunge.vm" bundle="${msg}" /></label>
+                <div class="form-group col-md-4 col-sm-4  col-xs-6">
+                   <input id="reset" icheck type="checkbox" name="reset" value="yes" class="input-mini p-md"  data-ng-model="reset"/>
+                   <label class="m-l-sm font-normal" for="reset"> Reset Password </label>
                 </div>
-
-
             </div>
 
         </div>

@@ -1,6 +1,11 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <div ui-view ng-controller="networksCtrl">
 
-    <div data-ng-hide="viewContent" ng-controller="networkListCtrl">
+    <div data-ng-hide="viewContent">
         <div class="hpanel">
             <div class="panel-heading">
                 <div class="row">
@@ -37,7 +42,7 @@
 
                             <div class="clearfix"></div>
                             <span class="pull-right m-l-sm m-t-sm">
-                                <a class="btn btn-info" data-ng-click="openAddIsolatedNetwork('lg')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span>Add Isolated Network</a>
+                                <a class="btn btn-info" data-ng-click="openAddIsolatedNetwork('md')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span>Add Isolated Network</a>
                                 <a ui-sref-opts="{reload: true}" title="Refresh"  data-ng-click="selectedNetwork(network.networkView.name)" class="btn btn-info"><span class="fa fa-refresh fa-lg "></span></a>
 
                             </span>

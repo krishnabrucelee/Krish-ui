@@ -6,7 +6,7 @@
 <form name="form.detachForsm">
     <div class="inmodal" >
         <div class="modal-header">
-            <panda-modal-header hide-zone="false" page-icon="fa fa-ban" page-title="<fmt:message key="reboot.instance" bundle="${msg}" />"></panda-modal-header>
+            <panda-modal-header hide-zone="false" page-icon="fa fa-ban" page-title="<fmt:message key="detach.iso" bundle="${msg}" />"></panda-modal-header>
             <!--<h2 class="modal-title" id="myModalLabel">Confirm Detach Volume</h2>-->
         </div>
 
@@ -17,7 +17,7 @@
                     <img src="images/warning.png" alt="">
                 </div>
                 <div class="form-group has-error col-md-9 col-sm-9  col-xs-9 m-t-md">
-                    <p ><fmt:message key="please.confirm.that.you.want.to.reboot.this.instance" bundle="${msg}" />.</p>
+                    <p ><fmt:message key="please.confirm.that.you.want.to.detach.iso.from.this.instance" bundle="${msg}" />.</p>
                 </div>
 
 
@@ -26,7 +26,7 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-default " ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.cancel" bundle="${msg}" /></button>
-            <button type="submit" class="btn btn-default btn-danger2" ng-click="vmRestart(item)" data-dismiss="modal"><fmt:message key="common.ok" bundle="${msg}" /></button>
+            <button type="submit" class="btn btn-default btn-danger2" ng-click="vmStop(item)" data-dismiss="modal"><fmt:message key="common.ok" bundle="${msg}" /></button>
 
         </div>
     </div>

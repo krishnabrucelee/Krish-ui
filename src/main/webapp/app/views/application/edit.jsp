@@ -22,16 +22,17 @@
                         </div>
                     </div>
                     <div class="form-group" ng-class="{'text-danger': applicationForm.type.$invalid && formSubmitted}">
-                        <div class="row" >
-                            <label class="col-md-3 col-xs-12 col-sm-3 control-label" ><fmt:message key="common.type" bundle="${msg}" /> <span class="text-danger">*</span>
-                            </label>
-                            <div class="col-md-6 col-xs-12 col-sm-6">
-                                <input required="true" type="text"  name="type" data-ng-model="application.type"  class="form-control" data-ng-class="{'error': applicationForm.type.$invalid && formSubmitted}">
-                                <i  tooltip="<fmt:message key="type.of.the.application" bundle="${msg}" />" class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
-                                <div class="error-area" data-ng-show="applicationForm.type.$invalid && formSubmitted" ><i  tooltip="<fmt:message key="application.type.is.required" bundle="${msg}" />" class="fa fa-warning error-icon"></i></div>
-                            </div>
-                        </div>
-                    </div>
+						<div class="row">
+							<label class="col-md-3 col-xs-12 col-sm-3 control-label"><fmt:message key="common.type" bundle="${msg}" /> <span class="text-danger">*</span></label>
+							<div class="col-md-6 col-xs-12 col-sm-6">
+								<input required="true" type="text" name="type" data-ng-model="application.type" class="form-control" data-ng-class="{'error': applicationForm.type.$invalid && formSubmitted}">
+								<i tooltip="<fmt:message key="type.of.the.application" bundle="${msg}" />" class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
+								<div class="error-area" data-ng-show="applicationForm.type.$invalid && formSubmitted">
+									<i ng-attr-tooltip="{{ applicationForm.type.errorMessage || '<fmt:message key="application.type.is.required" bundle="${msg}" />' }}" class="fa fa-warning error-icon"></i>
+								</div>
+							</div>
+						</div>
+					</div>
                     <div class="form-group" ng-class="{'text-danger': applicationForm.description.$invalid && formSubmitted}">
                         <div class="row" >
                             <label class="col-md-3 col-xs-12 col-sm-3 control-label" ><fmt:message key="common.description" bundle="${msg}" /> <span class="text-danger">*</span>

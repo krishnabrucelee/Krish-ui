@@ -12,7 +12,7 @@
 			ng-class="{ 'text-danger' : instanceTemplateForm.name.$invalid && templateFormSubmitted}">
 			<div class="col-md-5 col-xs-5 col-sm-5">
 				<span class="control-label"><fmt:message key="instance.name"
-						bundle="${msg}" /><span title="required"
+						bundle="${msg}" /><span title="<fmt:message key="common.required" bundle="${msg}" />"
 					class="text-danger font-bold">*</span></span>
 			</div>
 			<div class="col-md-6 col-xs-6 col-sm-6">
@@ -33,7 +33,7 @@
 			ng-class="{ 'text-danger' : !instance.department && templateFormSubmitted}">
 			<div class="col-md-5 col-xs-5 col-sm-5">
 				<span class="control-label"><fmt:message
-						key="department.name" bundle="${msg}" /><span title="required"
+						key="department.name" bundle="${msg}" /><span title="<fmt:message key="common.required" bundle="${msg}" />"
 					class="text-danger font-bold">*</span></span>
 			</div>
 			<div class="col-md-6 col-xs-6 col-sm-6">
@@ -43,7 +43,7 @@
 					data-ng-class="{'error': instanceTemplateForm.department.$invalid && templateFormSubmitted}">
 			 -->		<div  data-ng-class="{'error': !instance.department && templateFormSubmitted}" custom-select="t as t.name for t in formElements.departmenttypeList | filter: { name: $searchTerm }" ng-model="instance.department">
 						<div class="pull-left">
-						<strong>{{ t.name }}</strong><br />
+						<strong>{{ t.userName }}</strong><br />
 						</div>
 						<div class="clearfix"></div>
 						</div>
@@ -65,7 +65,7 @@
 			ng-class="{ 'text-danger' : !instance.instanceOwner && templateFormSubmitted}">
 			<div class="col-md-5 col-xs-5 col-sm-5">
 				<span class="control-label"><fmt:message key="instance.owner"
-						bundle="${msg}" /><span title="required"
+						bundle="${msg}" /><span title="<fmt:message key="common.required" bundle="${msg}" />"
 					class="text-danger font-bold">*</span></span>
 			</div>
 			<div class="col-md-6 col-xs-6 col-sm-6"><!--
@@ -99,7 +99,7 @@
 			ng-class="{ 'text-danger' : instanceTemplateForm.application.$invalid && templateFormSubmitted}">
 			<div class="col-md-5 col-xs-5 col-sm-5">
 				<span class="control-label"><fmt:message
-						key="application.name" bundle="${msg}" /><span title="required"
+						key="application.name" bundle="${msg}" /><span title="<fmt:message key="common.required" bundle="${msg}" />"
 					class="text-danger font-bold">*</span></span>
 
 			</div>
@@ -125,7 +125,7 @@
 			ng-class="{ 'text-danger' : !instance.applicationList && templateFormSubmitted}">
 			<div class="col-md-12 col-xs-12 col-sm-12">
 				<span class="control-label"><fmt:message key="application.type" bundle="${msg}" /><span
-					title="required" class="text-danger font-bold">*</span></span> <i
+					title="<fmt:message key="common.required" bundle="${msg}" />" class="text-danger font-bold">*</span></span> <i
 					class="pe-7s-help1 pe-lg m-r-xs pull-right"
 					tooltip="<fmt:message key="type.of.the.application" bundle="${msg}" />"></i>
 				<div class="m-t-sm">

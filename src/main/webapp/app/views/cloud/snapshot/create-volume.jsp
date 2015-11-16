@@ -1,4 +1,7 @@
-
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
 <form name="createVolumeForm" data-ng-submit="validateCreateVolume(createVolumeForm)" method="post" novalidate="" data-ng-controller="addVMSnapshotCtrl" >
 
@@ -9,10 +12,10 @@
         </div>
 
         <div class="modal-body">
-            <div class="row"  > 
+            <div class="row"  >
                 <div class="col-md-12">
                     <div class="form-group" ng-class="{'text-danger': createVolumeForm.disk.$invalid && formSubmitted}">
-                        <div class="row" > 
+                        <div class="row" >
                             <label class="col-md-3 col-sm-3 control-label" >Disk
                                 <span class="text-danger">*</span>
                             </label>

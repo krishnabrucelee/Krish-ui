@@ -79,7 +79,11 @@ function addVMSnapshotCtrl($scope, globalConfig, $window, notify) {
 
 function snapshotListCtrl($scope, crudService, $timeout, promiseAjax, globalConfig,
 localStorageService, $window, dialogService, notify) {
+	$scope.global = globalConfig;
+	$scope.global = crudService.globalConfig;
 	$scope.snapshotList = {};
+	$scope.vmSnapshotList = {};
+	$scope.instanceList = {};
     $scope.list = function(pageNumber) {
 	    var limit = (angular.isUndefined($scope.paginationObject.limit)) ? crudService.globalConfig.CONTENT_LIMIT : $scope.paginationObject.limit;
 	    var hasVolumes = crudService.list("snapshots", crudService.globalConfig.paginationHeaders(pageNumber, limit), {"limit": limit});
@@ -94,6 +98,61 @@ localStorageService, $window, dialogService, notify) {
         $modalInstance.close();
     };
     $scope.list(1);
+
+	$scope.vmSnapshot = function(pageNumber){
+		  var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
+	        var hasSnapshots = crudService.list("vmsnapshot", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+	        hasSnapshots.then(function (result) {  // this is only run after $http completes0
+	            $scope.vmSnapshotList = result;
+	            // For pagination
+	            $scope.paginationObject.limit  = limit;
+	            $scope.paginationObject.currentPage = pageNumber;
+	            $scope.paginationObject.totalItems = result.totalItems;
+	        });
+		};
+		$scope.vmSnapshot(1);
+     $scope.openAddSnapshotContainer = function(size) {
+        modalService.trigger('app/views/cloud/snapshot/create.jsp', size);
+    };
+    $scope.instanceId = function(pageNumber) {
+		var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
+		var hasUsers = crudService.listAll("virtualmachine/list");
+		hasUsers.then(function(result) { // this is only run after $http
+			// completes0
+			$scope.instanceList = result;
+			// For pagination
+
+                        $scope.instancesList.Count = 0;
+           		 for (i = 0; i < result.length; i++) {
+            		 if($scope.instanceList[i].status.indexOf("Running") > -1) {
+            		 $scope.instancesList.Count++;
+           		  }
+           		 }
+			$scope.paginationObject.limit = limit;
+			$scope.paginationObject.currentPage = pageNumber;
+			$scope.paginationObject.totalItems = result.totalItems;
+		});
+	};
+
+
+
+    $scope.openAddVMSnapshotContainer = function(vm) {
+    	 dialogService.openDialog("app/views/cloud/snapshot/createVm.jsp", 'md',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
+    		 $scope.vm = vm;
+    		 $scope.instanceId(1);
+	  		 $scope.validateVMSnapshot= function(form) {
+		  				var hasVm = crudService.add("vmsnapshot", $scope.vm);
+		  				hasVm.then(function(result) {
+		  					$state.reload();
+		  					 $scope.cancel();
+		  				});
+
+	  			},
+				  $scope.cancel = function () {
+	               $modalInstance.close();
+	           };
+    	 }]);
+    };
 
 
     $scope.deleteSnapshot = function(size, snapshot) {
@@ -154,7 +213,7 @@ localStorageService, $window, dialogService, notify) {
     		       	 	snapshot.zone = crudService.globalConfig.zone ;
 		       	 		var hasServer = crudService.add("snapshots", snapshot);
                         hasServer.then(function (result) {
-                        	 $scope.listSnapshots(1);
+                        	 $scope.list(1);
                         	notify({message: 'Added successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
                             $modalInstance.close();
                         }).catch(function (result) {
@@ -192,9 +251,6 @@ localStorageService, $window, dialogService, notify) {
         //modalService.trigger('app/views/cloud/snapshot/create.jsp', size);
     };
 
-    $scope.openAddVMSnapshotContainer = function(size) {
-        modalService.trigger('app/views/cloud/snapshot/createVm.jsp', size);
-    };
     $scope.createVolume = function(size) {
         modalService.trigger('app/views/cloud/snapshot/create-volume.jsp', size);
     };

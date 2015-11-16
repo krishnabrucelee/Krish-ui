@@ -3,11 +3,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<form name="form.detachForsm">
+<form name="form.detachForm" data-ng-controller="deleteCtrl">
     <div class="inmodal" >
         <div class="modal-header">
-            <panda-modal-header hide-zone="false" page-icon="fa fa-ban" page-title="<fmt:message key="reboot.instance" bundle="${msg}" />"></panda-modal-header>
-            <!--<h2 class="modal-title" id="myModalLabel">Confirm Detach Volume</h2>-->
+            <panda-modal-header hide-zone="false" page-icon="fa fa-warning" page-title="<fmt:message key="revert.vm.snapshot" bundle="${msg}" />"></panda-modal-header>
+
         </div>
 
         <div class="modal-body">
@@ -17,7 +17,7 @@
                     <img src="images/warning.png" alt="">
                 </div>
                 <div class="form-group has-error col-md-9 col-sm-9  col-xs-9 m-t-md">
-                    <p ><fmt:message key="please.confirm.that.you.want.to.reboot.this.instance" bundle="${msg}" />.</p>
+                    <p ><fmt:message key="are.you.sure.do.you.want.to.revert.vm.snapshot" bundle="${msg}" /> ?</p>
                 </div>
 
 
@@ -26,7 +26,7 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-default " ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.cancel" bundle="${msg}" /></button>
-            <button type="submit" class="btn btn-default btn-danger2" ng-click="vmRestart(item)" data-dismiss="modal"><fmt:message key="common.ok" bundle="${msg}" /></button>
+            <button type="submit" class="btn btn-default btn-danger2" ng-click="delete()" data-dismiss="modal"><fmt:message key="common.ok" bundle="${msg}" /></button>
 
         </div>
     </div>

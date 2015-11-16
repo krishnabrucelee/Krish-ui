@@ -409,9 +409,9 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
 
      $scope.submt = function () {
     	 var instance = $scope.instance;
-    	 if(instance.project !== null){
-         instance.projectId = instance.project.id;
-    	 }
+    	 if (!angular.isUndefined(instance.project)) {
+             instance.projectId = instance.project.id;
+         }
          instance.domain = instance.department.domain;
          instance.domainId =instance.domain.id;
          instance.departmentId = instance.department.id;
@@ -455,20 +455,19 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
 
       $scope.instanceId(1);
 
-     $scope.guestnetwork = {};
+
      $scope.addnetwork = function () {
- // notify.closeAll();
- // $modalInstance.close('');
+
           var cidrRegex = /^([0-9]{1,3}\.){3}[0-9]{1,3}($|\/[0-32]{1,2})$/i;
          var networkError = false;
-         var CIDR = angular.copy($scope.guestnetwork.cIDR);
-         if((!cidrRegex.test(CIDR)) && CIDR!= "" && !angular.isUndefined($scope.guestnetwork.cIDR)) {
-                 $scope.homerTemplate = 'app/views/notification/notify.jsp';
-             notify({message: 'Invalid CIDR', classes: 'alert-danger', templateUrl: $scope.homerTemplate});
-             networkError = true;
-         }
+//        var CIDR = angular.copy($scope.guestnetwork.cIDR);
+//         if((!cidrRegex.test(CIDR)) && CIDR!= "" && !angular.isUndefined($scope.guestnetwork.cIDR)) {
+//                 $scope.homerTemplate = 'app/views/notification/notify.jsp';
+//             notify({message: 'Invalid CIDR', classes: 'alert-danger', templateUrl: $scope.homerTemplate});
+//             networkError = true;
+ //        }
 
-         else if($scope.guestnetwork.name == null){
+          if($scope.guestnetwork.name == null){
           $scope.homerTemplate = 'app/views/notification/notify.jsp';
           notify({message: 'Enter Network Name', classes: 'alert-danger', templateUrl: $scope.homerTemplate});
           networkError = true;
@@ -711,15 +710,20 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
          $scope.saveNetwork = function (networkError) {
 
              if (!networkError) {
+
+ $scope.guestnetwork.zone = $scope.global.zone;
                  var guestnetwork = $scope.guestnetwork;
+
+
                  console.log($scope.guestnetwork);
-                 var hasNetworks = crudService.add("guestnetwork", guestnetwork);
-                 hasNetworks.then(function (result) {
+                 var hasguestNetworks = crudService.add("guestnetwork", guestnetwork);
+                 hasguestNetworks.then(function (result) {
                      $scope.listNetwork(1);
                      notify({message: 'Added successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
-                     // $window.location.href = '#/templatestore/list';
                      $scope.instance.networkOfferinglist = $scope.instanceElements.networkOfferingList[0];
-
+                   $scope.guestnetwork.name = "";
+                   $scope.guestnetwork.networkoffering = "";
+                   networkError = false;
                  }).catch(function (result) {
                      if (!angular.isUndefined(result.data)) {
                          angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
@@ -730,4 +734,6 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
                  });
              }
          }
+
+
 }
