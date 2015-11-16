@@ -6,7 +6,7 @@
 <form name="form.detachForm" data-ng-controller="deleteCtrl">
     <div class="inmodal" >
         <div class="modal-header">
-            <panda-modal-header hide-zone="false" page-icon="fa fa-warning" page-title="Revert VM Snapshot"></panda-modal-header>
+            <panda-modal-header hide-zone="false" page-icon="fa fa-warning" page-title="<fmt:message key="revert.vm.snapshot" bundle="${msg}" />"></panda-modal-header>
 
         </div>
 
@@ -17,7 +17,7 @@
                     <img src="images/warning.png" alt="">
                 </div>
                 <div class="form-group has-error col-md-9 col-sm-9  col-xs-9 m-t-md">
-                    <p >Are you sure do you want to Revert VM Snapshot ?</p>
+                    <p ><fmt:message key="are.you.sure.do.you.want.to.revert.vm.snapshot" bundle="${msg}" /> ?</p>
                 </div>
 
 
@@ -25,8 +25,8 @@
 
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-default " ng-click="cancel()" data-dismiss="modal">Cancel</button>
-            <button type="submit" class="btn btn-default btn-danger2" ng-click="delete()" data-dismiss="modal">Ok</button>
+            <button type="button" class="btn btn-default " ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.cancel" bundle="${msg}" /></button>
+            <button type="submit" class="btn btn-default btn-danger2" ng-click="delete()" data-dismiss="modal"><fmt:message key="common.ok" bundle="${msg}" /></button>
 
         </div>
     </div>

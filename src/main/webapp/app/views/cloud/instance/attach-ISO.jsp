@@ -16,7 +16,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <h6 class="text-left m-l-md ">
-                       Please specify the ISO that you would like to attach with this VM.
+                      <fmt:message key="please.specify.the.iso.that.you.would.like.to.attach.with.this.vm" bundle="${msg}" />.
                     </h6>
                     <br/>
                     <!--<div class="hr-line-dashed"></div>-->
@@ -31,8 +31,8 @@
                                         data-ng-options="isos.name for isos in isoList.iso" >
                                     <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
                                 </select>
-                                <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="iso is required to attach" ></i>
-                                <div class="error-area" data-ng-show="isoForm.isolist.$invalid && formSubmitted" ><i  tooltip="iso is required to attach" class="fa fa-warning error-icon"></i></div>
+                                <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="<fmt:message key="iso.is.required.to.attach" bundle="${msg}" />" ></i>
+                                <div class="error-area" data-ng-show="isoForm.isolist.$invalid && formSubmitted" ><i  tooltip="<fmt:message key="iso.is.required.to.attach" bundle="${msg}" />" class="fa fa-warning error-icon"></i></div>
                             </div>
 
                         </div>

@@ -91,10 +91,10 @@
                                 <td class="legendColorBox p-xs">
                                     <div style="border:1px solid #ccc;padding:1px"><div style="width:4px;height:0;border:5px solid #E56919;overflow:hidden"></div></div>
                                 </td>
-                                <td class="legendLabel">Used Memory</td>
+                                <td class="legendLabel"><fmt:message key="used.memory" bundle="${msg}" /></td>
                                 <td class="legendColorBox p-xs"><div style="border:1px solid #ccc;padding:1px"><div style="width:4px;height:0;border:5px solid #16658D;overflow:hidden"></div></div>
                                 </td>
-                                <td class="legendLabel">Unused Memory</td><td class="legendColorBox p-xs">
+                                <td class="legendLabel"><fmt:message key="unused.memory" bundle="${msg}" /></td><td class="legendColorBox p-xs">
                                 </td>
                                 </tr></tbody></table>
 
@@ -136,14 +136,14 @@
                                 <td class="legendColorBox p-xs">
                                     <div style="border:1px solid #ccc;padding:1px"><div style="width:4px;height:0;border:5px solid #E56919;overflow:hidden"></div></div>
                                 </td>
-                                <td class="legendLabel">NIC 0 - Receive</td>
+                                <td class="legendLabel">NIC 0 - <fmt:message key="receive" bundle="${msg}" /></td>
                                 <td class="legendColorBox p-xs"><div style="border:1px solid #ccc;padding:1px"><div style="width:4px;height:0;border:5px solid #16658D;overflow:hidden"></div></div>
                                 </td>
-                                <td class="legendLabel">NIC 0 - Send</td><td class="legendColorBox p-xs"><div style="border:1px solid #ccc;padding:1px"><div style="width:4px;height:0;border:5px solid #7208A8;overflow:hidden"></div></div>
+                                <td class="legendLabel">NIC 0 - <fmt:message key="send" bundle="${msg}" /></td><td class="legendColorBox p-xs"><div style="border:1px solid #ccc;padding:1px"><div style="width:4px;height:0;border:5px solid #7208A8;overflow:hidden"></div></div>
                                 </td>
-                                <td class="legendLabel">NIC 1 - Send</td><td class="legendColorBox p-xs"><div style="border:1px solid #ccc;padding:1px"><div style="width:4px;height:0;border:5px solid rgba(98,203,49,0.5);overflow:hidden"></div></div>
+                                <td class="legendLabel">NIC 1 - <fmt:message key="send" bundle="${msg}" /></td><td class="legendColorBox p-xs"><div style="border:1px solid #ccc;padding:1px"><div style="width:4px;height:0;border:5px solid rgba(98,203,49,0.5);overflow:hidden"></div></div>
                                 </td>
-                                <td class="legendLabel">NIC 1 - Receive</td></tr></tbody></table>
+                                <td class="legendLabel">NIC 1 - <fmt:message key="receive" bundle="${msg}" /></td></tr></tbody></table>
 
                 </div>
             </div>
@@ -183,7 +183,7 @@
                                 <td class="legendColorBox p-xs">
                                     <div style="border:1px solid #ccc;padding:1px"><div style="width:4px;height:0;border:5px solid #E56919;overflow:hidden"></div></div>
                                 </td>
-                                <td class="legendLabel">Disk IOPS</td>
+                                <td class="legendLabel"><fmt:message key="disk.iops" bundle="${msg}" /></td>
 
                                 </tr></tbody></table>
 

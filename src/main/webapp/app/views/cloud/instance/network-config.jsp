@@ -56,7 +56,7 @@
                                                                         <button class="btn btn-sm m-t-md dropdown-toggle" data-ng-class="$index == 0 ? 'btn-info' : 'btn-default'" data-toggle="dropdown"><i class="fa fa-cog"></i> <fmt:message key="configure" bundle="${msg}" /></button>
                                                                         <ul class="dropdown-menu pull-right">
                                                                             <li data-ng-show="network.isDefault== 'NO'"><a href="javascript:void(0);" title="Set as Default" data-ng-click="setAsDefault($event)"><span class="pe-7s-tools font-bold m-xs"></span> <fmt:message key="set.as.default" bundle="${msg}" /></a></li>
-                                                                             <li ><a href="javascript:void(0);" title="Set as Default" data-ng-click="setAsDefault($event)"><span class="fa-remove fa  font-bold m-xs"></span> <fmt:message key="remove" bundle="${msg}" /></a></li>
+                                                                             <li ><a href="javascript:void(0);" title="<fmt:message key="set.as.default" bundle="${msg}" />" data-ng-click="setAsDefault($event)"><span class="fa-remove fa  font-bold m-xs"></span> <fmt:message key="remove" bundle="${msg}" /></a></li>
                                                                         </ul>
                                                                         <div class="clearfix"></div>
                                                                     </div>
@@ -69,7 +69,7 @@
                                                                     <div class="span12 field-box p-xxs"><label class="headerLabel m-r-xs"><fmt:message key="network.name" bundle="${msg}" />:</label><a href="#/user/network/view/2">{{network.name}}</a></div>
                                                                     <div class="span12 field-box p-xxs"><label class="headerLabel m-r-xs"><fmt:message key="id" bundle="${msg}" />:</label><span id="nicId">{{network.networkID}}</span></div>
                                                                     <div class="span12 field-box p-xxs"><label class="headerLabel m-r-xs"><fmt:message key="common.type" bundle="${msg}" />:</label><span>{{network.networkType.name}}</span></div>
-                                                                    <div class="span12 field-box p-xxs"><label class="headerLabel m-r-xs"><fmt:message key="ip.address" bundle="${msg}" />:</label><span>{{network.ip}}</span></div>
+                                                                    <div class="span12 field-box p-xxs"><label class="headerLabel m-r-xs"><fmt:message key="iP.address" bundle="${msg}" />:</label><span>{{network.ip}}</span></div>
                                                                     <div class="span12 field-box p-xxs"><label class="headerLabel m-r-xs"><fmt:message key="gateway" bundle="${msg}" />:</label><span>{{network.gateway}}</span></div>
                                                                     <div class="span12 field-box p-xxs"><label class="headerLabel m-r-xs"><fmt:message key="netmask" bundle="${msg}" />:</label><span>{{network.netmask}}</span></div>
                                                                     <div class="span12 field-box p-xxs"><label class="headerLabel m-r-xs"><fmt:message key="is.default" bundle="${msg}" />:</label><span data-ng-class="network.isDefault== 'YES' ? 'text-info' : 'text-default' ">{{network.isDefault}}</span></div>
