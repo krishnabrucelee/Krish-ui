@@ -60,9 +60,50 @@ volumeService, localStorageService, $window, notify, dialogService, crudService)
 
 
 
-    $scope.downloadVolume = function(size) {
-        modalService.trigger('app/views/cloud/volume/download-snapshot.jsp', size);
-    };
+    $scope.createSnapshot=function(size, volume){
+	    	$scope.volume = volume;
+	    	$scope.snapshot = {};
+		        setTimeout(function () {
+	       	 	dialogService.openDialog("app/views/cloud/snapshot/download-snapshot.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+	       	 	// Creating snapshot
+	       	 		$scope.validateConfirmSnapshot = function(form) {
+
+		       	 		$scope.formSubmitted = true;
+		       	        if (form.$valid) {
+			       	 		var snapshot = $scope.snapshot;
+	    		       	 	snapshot.volume = $scope.volume;
+	    		       	 	snapshot.zone = crudService.globalConfig.zone ;
+			       	 		var hasServer = crudService.add("snapshots", snapshot);
+	                        hasServer.then(function (result) {
+	                        	notify({message: 'Added successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+	                        	$window.location = "#/snapshot/list";
+	                            $modalInstance.close();
+	                        }).catch(function (result) {
+	                        	if(!angular.isUndefined(result) && result.data != null) {
+	                        		if(result.data.globalError[0] != ''){
+		                               	 var msg = result.data.globalError[0];
+		                               	 notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+	                                }
+		                            angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
+		                            	$scope.confirmsnapshot[key].$invalid = true;
+		                                $scope.confirmsnapshot[key].errorMessage = errorMessage;
+		                            });
+	                        	}
+
+	                        });
+		       	        }
+	       	 		};
+
+	       	 		// Close the dialog box
+		       	 	$scope.closeCreateSnapshot = function () {
+			    		$modalInstance.close();
+		            };
+
+
+	       	 	}]);
+	        }, 500);
+
+	    };
 
 
     $scope.openAddVolumeContainer = function(size) {
