@@ -150,6 +150,87 @@ function instanceViewCtrl($scope,$log, dialogService, $modal,$http, $state, $sta
 				           };
 				       }]);
 				  };
+				  $scope.attachISO = function(vm) {
+					  	 dialogService.openDialog("app/views/cloud/instance/attach-ISO.jsp", 'md',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
+					  		 $scope.vm = vm;
+					  		 $scope.update= function(form) {
+						  				var hasVm = crudService.vmUpdate("virtualmachine/event", item.uuid, event);
+						  				hasVm.then(function(result) {
+						  					$state.reload();
+						  					 $scope.cancel();
+						  				});
+
+					  			},
+								  $scope.cancel = function () {
+					               $modalInstance.close();
+					           };
+					       }]);
+					  };
+					  $scope.detachISO = function(vm) {
+						  	 dialogService.openDialog("app/views/cloud/instance/detach-ISO.jsp", 'md',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
+						  		 $scope.vm = vm;
+						  		 $scope.update= function(form) {
+							  				var hasVm = crudService.vmUpdate("virtualmachine/event", item.uuid, event);
+							  				hasVm.then(function(result) {
+							  					$state.reload();
+							  					 $scope.cancel();
+							  				});
+
+						  			},
+									  $scope.cancel = function () {
+						               $modalInstance.close();
+						           };
+						       }]);
+						  };
+
+						  $scope.takeSnapshot = function(vm) {
+							  	 dialogService.openDialog("app/views/cloud/instance/createVmSnapshot.jsp", 'md',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
+							  		 $scope.vm = vm;
+							  		 $scope.update= function(form) {
+								  				var hasVm = crudService.vmUpdate("virtualmachine/event", item.uuid, event);
+								  				hasVm.then(function(result) {
+								  					$state.reload();
+								  					 $scope.cancel();
+								  				});
+
+							  			},
+										  $scope.cancel = function () {
+							               $modalInstance.close();
+							           };
+							       }]);
+							  };
+						$scope.hostMigrate = function(vm) {
+								  	 dialogService.openDialog("app/views/cloud/instance/host-migrate.jsp", 'md',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
+								  		 $scope.vm = vm;
+								  		 $scope.update= function(form) {
+									  				var hasVm = crudService.vmUpdate("virtualmachine/event", item.uuid, event);
+									  				hasVm.then(function(result) {
+									  					$state.reload();
+									  					 $scope.cancel();
+									  				});
+
+								  			},
+											  $scope.cancel = function () {
+								               $modalInstance.close();
+								           };
+								       }]);
+								  };
+						$scope.showPassword = function(vm) {
+									  	 dialogService.openDialog("app/views/cloud/instance/show-reset-password.jsp", 'md',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
+									  		 $scope.vm = vm;
+									  		 $scope.update= function(form) {
+										  				var hasVm = crudService.vmUpdate("virtualmachine/event", item.uuid, event);
+										  				hasVm.then(function(result) {
+										  					$state.reload();
+										  					 $scope.cancel();
+										  				});
+
+									  			},
+												  $scope.cancel = function () {
+									               $modalInstance.close();
+									           };
+									       }]);
+							};
 
     $scope.templateCategory = 'dashboard';
     var instanceViewTab = localStorageService.get("instanceViewTab");

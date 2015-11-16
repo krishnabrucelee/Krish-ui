@@ -59,15 +59,15 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr data-ng-repeat="snapshot in snapshotList| filter:quickSearch">
+                            <tr data-ng-repeat="snapshot in vmSnapshotList | filter:quickSearch">
                                 <td>
-                                    {{ snapshot.snapshotName}}
+                                    {{ snapshot.name}}
                                 </td>
                                 <td>
-                                    {{ snapshot.volumeName}}
+                                    {{ snapshot.description}}
                                 </td>
                                 <td>
-                                    {{ snapshot.instanceName}}
+                                    {{ snapshot.vm.name}}
                                 </td>
                                  <td>
                                     <a class="icon-button" title="<fmt:message key="restore.vm.snapshot" bundle="${msg}" />"  data-ng-click="restoresnapshot('sm', vmsnapshot)()">

@@ -1,3 +1,8 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
     <div class="m-l-sm m-r-sm " ng-controller="instanceMonitorCtrl">
 
@@ -8,22 +13,22 @@
                 <div class="hpanel">
                     <div class="row">
                     <div class="pull-left ">
-                        <h4 class="m-b-sm ng-binding pull-left">CPU Performance</h4>
-                        
+                        <h4 class="m-b-sm ng-binding pull-left"><fmt:message key="cpu.performance" bundle="${msg}" /></h4>
+
 
                     </div>
                     <div class="pull-right">
-                        <a title="Refresh" href="javascript:void(0)" class="btn btn-info" ><span class="fa fa-refresh fa-lg "></span></a>
+                        <a title="<fmt:message key="common.refresh" bundle="${msg}" />" href="javascript:void(0)" class="btn btn-info" ><span class="fa fa-refresh fa-lg "></span></a>
 
                     </div>
 
                     <div class="pull-right m-r-sm">
 
                         <select  class="form-control" name="actions" data-ng-init="instance.actions = instanceElements.actions[3].name" data-ng-model="instance.actions" ng-options="actions.name for actions in instanceElements.actions" >
-                            <option value="">Minutes</option>
+                            <option value=""><fmt:message key="minutes" bundle="${msg}" /></option>
                         </select>
                     </div>
-                    
+
                 </div>
                     <div class="row"><hr class="m-t-xs"></div>
                     <div class="row">
@@ -48,7 +53,7 @@
                 </div>
             </div>
                                     <!--<hr class="m-t-xs">-->
-                                    
+
 
         </div>
         <div class="row" >
@@ -58,19 +63,19 @@
                 <div class="hpanel">
                     <div class="row">
                     <div class="pull-left">
-                        <h4 class="m-b-sm ng-binding pull-left">Memory Performance</h4>
+                        <h4 class="m-b-sm ng-binding pull-left"><fmt:message key="memory.performance" bundle="${msg}" /></h4>
 
 
                     </div>
                     <div class="pull-right">
-                        <a href="javascript:void(0);" title="Refresh"  class="btn btn-info" href="#/instance/list"><span class="fa fa-refresh fa-lg "></span></a>
+                        <a href="javascript:void(0);" title="<fmt:message key="common.refresh" bundle="${msg}" />"  class="btn btn-info" href="#/instance/list"><span class="fa fa-refresh fa-lg "></span></a>
 
                     </div>
 
                     <div class="pull-right m-r-sm">
 
                         <select  class="form-control" name="actions" data-ng-init="instance.actions = instanceElements.actions[3].name" data-ng-model="instance.actions" ng-options="actions.name for actions in instanceElements.actions" >
-                            <option value="">Minutes</option>
+                            <option value=""><fmt:message key="minutes" bundle="${msg}" /></option>
                         </select>
                     </div>
                     </div>
@@ -103,19 +108,19 @@
                 <div class="hpanel">
                     <div class="row">
                     <div class="pull-left">
-                        <h4 class="m-b-sm ng-binding pull-left">Network Performance</h4>
+                        <h4 class="m-b-sm ng-binding pull-left"><fmt:message key="network.performance" bundle="${msg}" /></h4>
 
 
                     </div>
                     <div class="pull-right">
-                        <a href="javascript:void(0);" title="Refresh" class="btn btn-info" href="#/instance/list"><span class="fa fa-refresh fa-lg "></span></a>
+                        <a href="javascript:void(0);" title="<fmt:message key="common.refresh" bundle="${msg}" />" class="btn btn-info" href="#/instance/list"><span class="fa fa-refresh fa-lg "></span></a>
 
                     </div>
 
                     <div class="pull-right m-r-sm">
 
                         <select  class="form-control" name="actions" data-ng-init="instance.actions = instanceElements.actions[3].name" data-ng-model="instance.actions" ng-options="actions.name for actions in instanceElements.actions" >
-                            <option value="">Minutes</option>
+                            <option value=""><fmt:message key="minutes" bundle="${msg}" /></option>
                         </select>
                     </div>
                     </div>
@@ -150,19 +155,19 @@
                 <div class="hpanel">
                     <div class="row">
                     <div class="pull-left">
-                        <h4 class="m-b-sm ng-binding pull-left">Disk Performance</h4>
+                        <h4 class="m-b-sm ng-binding pull-left"><fmt:message key="disk.performance" bundle="${msg}" /></h4>
 
 
                     </div>
                     <div class="pull-right">
-                        <a href="javascript:void(0);" title="Refresh" class="btn btn-info" href="#/instance/list"><span class="fa fa-refresh fa-lg "></span></a>
+                        <a href="javascript:void(0);" title="<fmt:message key="common.refresh" bundle="${msg}" />" class="btn btn-info" href="#/instance/list"><span class="fa fa-refresh fa-lg "></span></a>
 
                     </div>
 
                     <div class="pull-right m-r-sm">
 
                         <select  class="form-control" name="actions" data-ng-init="instance.actions = instanceElements.actions[3].name" data-ng-model="instance.actions" ng-options="actions.name for actions in instanceElements.actions" >
-                            <option value="">Minutes</option>
+                            <option value=""><fmt:message key="minutes" bundle="${msg}" /></option>
                         </select>
                     </div>
                     </div>
@@ -179,7 +184,7 @@
                                     <div style="border:1px solid #ccc;padding:1px"><div style="width:4px;height:0;border:5px solid #E56919;overflow:hidden"></div></div>
                                 </td>
                                 <td class="legendLabel">Disk IOPS</td>
-                               
+
                                 </tr></tbody></table>
 
                 </div>

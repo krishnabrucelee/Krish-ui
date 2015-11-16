@@ -107,19 +107,22 @@ function addVMSnapshotCtrl($scope, globalConfig, $window, notify) {
 };
 
 
-function snapshotListCtrl($scope, $modal, $log, $timeout, promiseAjax, globalConfig,
-localStorageService, $window, modalService, notify,dialogService,crudService) {
-    localStorageService.set("snapshotList", null);
-    if (localStorageService.get("snapshotList") == null) {
-        var hasServer = promiseAjax.httpRequest("GET", "api/snapshot.json");
-        hasServer.then(function (result) {  // this is only run after $http completes
-            $scope.snapshotList = result;
-            localStorageService.set("snapshotList", result);
-        });
-    } else {
-        $scope.snapshotList = localStorageService.get("snapshotList");
-    }
-
+function snapshotListCtrl($scope, $modal, $log, $timeout, promiseAjax, dialogService, globalConfig,crudService,$window, modalService, notify) {
+	$scope.global = globalConfig;
+	$scope.global = crudService.globalConfig;
+	$scope.vmSnapshotList = {};
+	$scope.vmSnapshot = function(pageNumber){
+		  var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
+	        var hasSnapshots = crudService.list("vmsnapshot", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+	        hasSnapshots.then(function (result) {  // this is only run after $http completes0
+	            $scope.vmSnapshotList = result;
+	            // For pagination
+	            $scope.paginationObject.limit  = limit;
+	            $scope.paginationObject.currentPage = pageNumber;
+	            $scope.paginationObject.totalItems = result.totalItems;
+	        });
+		};
+		$scope.vmSnapshot(1);
      $scope.openAddSnapshotContainer = function(size) {
         modalService.trigger('app/views/cloud/snapshot/create.jsp', size);
     };
