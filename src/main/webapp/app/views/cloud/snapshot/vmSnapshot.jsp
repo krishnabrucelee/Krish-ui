@@ -70,10 +70,10 @@
                                     {{ snapshot.vm.name}}
                                 </td>
                                  <td>
-                                    <a class="icon-button" title="<fmt:message key="restore.vm.snapshot" bundle="${msg}" />" >
+                                    <a class="icon-button" title="<fmt:message key="restore.vm.snapshot" bundle="${msg}" />"  data-ng-click="restoresnapshot('sm', vmsnapshot)()">
                                         <span class="fa fa-rotate-left "> </span>
                                     </a>
-                                    <a class="icon-button" title="<fmt:message key="delete.vm.snapshot" bundle="${msg}" />" ><span class="fa fa-trash"></span></a>
+                                    <a class="icon-button" title="<fmt:message key="delete.vm.snapshot" bundle="${msg}" />" data-ng-click="delete('sm', vmsnapshot)()"><span class="fa fa-trash"></span></a>
 
                                 </td>
                             </tr>

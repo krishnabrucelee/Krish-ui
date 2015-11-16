@@ -1,3 +1,7 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <div class="row" data-ng-controller="snapshotListCtrl">
 
     <div class="col-md-12 col-sm-12">
@@ -61,7 +65,7 @@
                                     {{ snapshot.status}}
                                 </td>
                                 <td>
-                                    <a class="icon-button" title="Create Volume" data-ng-click="createVolume()">                    
+                                    <a class="icon-button" title="Create Volume" data-ng-click="createVolume()">
                                         <span class="fa fa-plus-square"> </span>
                                     </a>
                                     <a class="icon-button" title="Delete Snapshot" data-ng-click="deleteSnapshot()" ><span class="fa fa-trash"></span></a>

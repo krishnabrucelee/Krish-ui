@@ -136,4 +136,40 @@ function snapshotListCtrl($scope, $modal, $log, $timeout, promiseAjax, dialogSer
     $scope.deleteSnapshot = function(size) {
         modalService.trigger('app/views/cloud/snapshot/delete-snapshot.jsp', size);
     };
+
+    // Revert the VM Snapshot
+    $scope.restoresnapshot = function (size, vmsnapshot) {
+        dialogService.openDialog("app/views/cloud/snapshot/revert-vmsnapshot.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+
+            }]);
+    };
+
+    // Delete the VM Snapshot
+    $scope.delete = function (size, vmsnapshot) {
+        dialogService.openDialog("app/views/common/confirm-delete.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+//                $scope.deleteObject = department;
+//                $scope.ok = function (deleteObject) {
+//                    var hasServer = crudService.softDelete("departments", deleteObject);
+//                    hasServer.then(function (result) {
+//                        $scope.list(1);
+//                        notify({message: 'Deleted successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+//                    });
+//                    $modalInstance.close();
+//                },
+//                        $scope.cancel = function () {
+//                            $modalInstance.close();
+//                        };
+            }]);
+    };
+
+
+
+
+
+
+
+
+
+
 }
+
