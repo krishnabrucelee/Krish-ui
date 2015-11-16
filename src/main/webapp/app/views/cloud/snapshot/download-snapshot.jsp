@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<form name="confirmsnapshot" data-ng-submit="validateConfirmSnapshot(confirmsnapshot)" method="post" novalidate="" data-ng-controller="addConfirmSnapshotCtrl" >
+<form name="confirmsnapshot" data-ng-submit="validateConfirmSnapshot(confirmsnapshot)" method="post" novalidate=""   >
     <div class="inmodal" >
         <div class="modal-header">
             <panda-modal-header hide-zone="true" page-icon="fa fa-camera" page-title="Create Snapshot"></panda-modal-header>
@@ -17,7 +17,7 @@
 
                             </label>
                             <div class="col-md-9 col-sm-9 ">
-                                <span class=" text-center">Data-2 </span>
+                                <span class=" text-center">{{ volume.name }} </span>
 
 
 
@@ -33,7 +33,7 @@
                                 <span class="text-danger">*</span>
                             </label>
                             <div class="col-md-5 col-sm-5">
-                                <input required="true" type="text" name="name" data-ng-model="confirmsnapshot.subject" class="form-control" data-ng-class="{'error': confirmsnapshot.name.$invalid && formSubmitted}" >
+                                <input required="true" type="text" name="name" data-ng-model="snapshot.name" class="form-control" data-ng-class="{'error': confirmsnapshot.name.$invalid && formSubmitted}" >
                                 <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="Name of the snapshot" ></i>
                                 <div class="error-area" data-ng-show="confirmsnapshot.name.$invalid && formSubmitted" ><i  tooltip="Snapshot Name is required" class="fa fa-warning error-icon"></i></div>
                             </div>
@@ -53,7 +53,7 @@
                     <app-currency></app-currency>0.10 <span>/ hour</span> <span>/GB</span>
                 </h4>
             </span>
-            <button type="button" class="btn btn-default " ng-click="cancel()" data-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-default " ng-click="closeCreateSnapshot()" data-dismiss="modal2">Cancel</button>
             <button class="btn btn-info" type="submit">Create</button>
         </div>
     </div>

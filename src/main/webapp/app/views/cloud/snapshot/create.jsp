@@ -3,6 +3,8 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
+<div data-ng-hide="createSnapshot">
+
 <form name="snapshotForm" data-ng-submit="validateSnapshot(snapshotForm)" method="post" novalidate="" data-ng-controller="addSnapshotCtrl" >
 
     <div class="inmodal" >
@@ -28,16 +30,16 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
+                    <tr data-ng-repeat="volume in volumesList">
                         <td>
-                           <a  ng-click="downloadLink('md')"> Data-2</a>
+                           <a  ng-click="updatePageStatus('md', volume)"> {{ volume.name }}</a>
                         </td>
                         <td>
                             North China
                         </td>
 
                          <td>
-                          Data Disk
+                          {{ volume.volumeType }}
                         </td>
 
                     </tr>
@@ -61,6 +63,10 @@
             </span>
         </div></div></div>
 </form>
+</div>
+
+<div data-ng-include src="'app/views/cloud/snapshot/download-snapshot.jsp'" data-ng-show="createSnapshot"></div>
+
 
 
 

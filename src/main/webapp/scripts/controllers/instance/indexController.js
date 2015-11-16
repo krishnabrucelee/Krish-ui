@@ -28,16 +28,21 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
     $scope.instance = {
         computeOffer: {
             category: 'static',
-            ram: {
-                value: 0,
-                floor: 0,
-                ceil: 64
+            memory: {
+                value: 512,
+                floor: 512,
+                ceil: 4096
             },
             cpuCore: {
-                value: 0,
-                floor: 0,
+                value: 1,
+                floor: 1,
                 ceil: 32
 
+            },
+            cpuSpeed: {
+                value: 1000,
+                floor: 1000,
+                ceil: 3500
             },
             isOpen: true
         },
@@ -123,7 +128,7 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
         $scope.network = false;
 
         $scope.computeFunction = function (item) {
-            if (item == 'Custom') {
+            if (item === true) {
                 $scope.compute = true;
                 $scope.disk = false;
                 $scope.network = false;
@@ -302,8 +307,8 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
          var submitError = false;
          if (form.networkoffer.$valid && form.computeoffer.$valid) {
              var computeOfferValid = true;
-             if ($scope.instance.computeOffering.name == "Custom") {
-                 if ($scope.instance.computeOffer.cpuCore.value != 0 && $scope.instance.computeOffer.ram.value != 0) {
+             if ($scope.instance.computeOffering.customized == "true") {
+                 if ($scope.instance.computeOffer.cpuCore.value != 0 && $scope.instance.computeOffer.memory.value != 0) {
                      $scope.compute = false;
                  }
                  else {

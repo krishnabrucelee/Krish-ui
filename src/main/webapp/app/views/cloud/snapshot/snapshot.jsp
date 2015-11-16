@@ -29,7 +29,7 @@
                 </div>
 
             </div>
-
+			<pagination-content></pagination-content>
             <div class="white-content">
                 <div class="table-responsive">
                     <table cellspacing="1" cellpadding="1" class="table table-bordered table-striped">
@@ -47,16 +47,16 @@
                         <tbody>
                             <tr data-ng-repeat="snapshot in snapshotList| filter:quickSearch">
                                 <td>
-                                    {{ snapshot.snapshotName}}
+                                    {{ snapshot.name}}
                                 </td>
                                 <td>
-                                    {{ snapshot.volumeName}}
+                                    {{ snapshot.volume.name}}
                                 </td>
                                 <td>
-                                    {{ snapshot.instanceName}}
+                                    {{ snapshot.volume.vmInstance.name}}
                                 </td>
                                 <td>
-                                    {{ snapshot.type}}
+                                    {{snapshot.volume.volumeType}}
                                 </td>
                                 <td>
                                     {{ snapshot.createdDate}}
@@ -68,7 +68,7 @@
                                     <a class="icon-button" title="Create Volume" data-ng-click="createVolume()">
                                         <span class="fa fa-plus-square"> </span>
                                     </a>
-                                    <a class="icon-button" title="Delete Snapshot" data-ng-click="deleteSnapshot()" ><span class="fa fa-trash"></span></a>
+                                    <a class="icon-button" title="Delete Snapshot" data-ng-click="deleteSnapshot('sm', snapshot)" ><span class="fa fa-trash"></span></a>
 
                                 </td>
 
@@ -77,6 +77,7 @@
                     </table>
                 </div>
             </div>
+            <pagination-content></pagination-content>
         </div>
     </div>
 </div>
