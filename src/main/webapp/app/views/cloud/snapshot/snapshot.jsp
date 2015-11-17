@@ -35,13 +35,13 @@
                     <table cellspacing="1" cellpadding="1" class="table table-bordered table-striped">
                         <thead>
                             <tr>
-                                <th class="col-md-2 col-sm-2">Snapshot Name</th>
-                                <th class="col-md-2 col-sm-2">Volume Name</th>
-                                <th class="col-md-2 col-sm-2">Instance Name</th>
-                                <th class="col-md-1 col-sm-1">Type</th>
-                                <th class="col-md-2 col-sm-2">Created Date</th>
-                                <th class="col-md-1 col-sm-1">Status</th>
-                                <th class="col-md-1 col-sm-1">Action</th>
+                                <th class="col-md-2 col-sm-2"><fmt:message key="common.name" bundle="${msg}" /></th>
+                                <th class="col-md-2 col-sm-2"><fmt:message key="common.volume" bundle="${msg}" /></th>
+                                <th class="col-md-2 col-sm-2"><fmt:message key="common.instance" bundle="${msg}" /></th>
+                                <th class="col-md-1 col-sm-1"><fmt:message key="common.type" bundle="${msg}" /></th>
+                                <th class="col-md-2 col-sm-2"><fmt:message key="common.created.date" bundle="${msg}" /></th>
+                                <th class="col-md-1 col-sm-1"><fmt:message key="common.status" bundle="${msg}" /></th>
+                                <th class="col-md-1 col-sm-1"><fmt:message key="common.action" bundle="${msg}" /></th>
                             </tr>
                         </thead>
                         <tbody>

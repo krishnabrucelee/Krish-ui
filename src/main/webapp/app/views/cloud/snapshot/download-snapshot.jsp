@@ -18,15 +18,9 @@
                             </label>
                             <div class="col-md-9 col-sm-9 ">
                                 <span class=" text-center">{{ volume.name }} </span>
-
-
-
                             </div>
-
                         </div>
                     </div>
-
-
                     <div class="form-group" ng-class="{'text-danger': confirmsnapshot.name.$invalid && formSubmitted}">
                         <div class="row" >
                             <label class="col-md-3 col-sm-3 control-label" >Name
@@ -35,17 +29,14 @@
                             <div class="col-md-5 col-sm-5">
                                 <input required="true" type="text" name="name" data-ng-model="snapshot.name" class="form-control" data-ng-class="{'error': confirmsnapshot.name.$invalid && formSubmitted}" >
                                 <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="Name of the snapshot" ></i>
-                                <div class="error-area" data-ng-show="confirmsnapshot.name.$invalid && formSubmitted" ><i  tooltip="Snapshot Name is required" class="fa fa-warning error-icon"></i></div>
+                                <div class="error-area" data-ng-show="confirmsnapshot.name.$invalid && formSubmitted" >
+                                <i  tooltip="{{ confirmsnapshot.name.errorMessage || 'Snapshot Name is required' }}" class="fa fa-warning error-icon"></i>
+                                </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
-
             </div>
-
-
-
         </div>
         <div class="modal-footer">
             <span class="pull-left">
