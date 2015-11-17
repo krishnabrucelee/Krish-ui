@@ -15,21 +15,21 @@
                                 <span class="pull-right">Total Network</span>
                                 <div class="clearfix"></div>
                                 <span class="pull-left m-t-xs"><img src="images/network-icon.png"></span>
-                                <b class="pull-right">13</b>
+                                <b class="pull-right">{{networkList.Count}}</b>
                                 <div class="clearfix"></div>
                             </div>
                             <div class="dashboard-box pull-left">
                                 <span class="pull-right">Isolated Network</span>
                                 <div class="clearfix"></div>
                                 <span class="pull-left m-t-xs"><img src="images/network-icon.png"></span>
-                                <b class="pull-right">04</b>
+                                <b class="pull-right">{{networkList.Count}}</b>
                                 <div class="clearfix"></div>
                             </div>
                             <div class="dashboard-box pull-left">
                                 <span class="pull-right">Shared Network</span>
                                 <div class="clearfix"></div>
                                 <span class="pull-left m-t-xs"><img src="images/network-icon.png"></span>
-                                <b class="pull-right">09</b>
+                                <b class="pull-right">0</b>
                                 <div class="clearfix"></div>
                             </div>
                         </div>
@@ -37,7 +37,7 @@
                         <div class="pull-right">
                             <panda-quick-search></panda-quick-search>
                             <span class="pull-right m-r-sm">
-                                <select  class="form-control input-group col-xs-5" name="networkView" data-ng-init="network.networkView = networkLists.views[0]" data-ng-model="network.networkView" data-ng-change="selectView(network.networkView.name)" data-ng-options="networkView.name for networkView in networkLists.views"></select>
+                                <select  class="form-control input-group col-xs-5" name="networkView" data-ng-init="network.networkView = dropnetworkLists.views[0]" data-ng-model="network.networkView" data-ng-change="selectView(network.networkView.name)" data-ng-options="networkView.name for networkView in dropnetworkLists.views"></select>
                             </span>
 
                             <div class="clearfix"></div>

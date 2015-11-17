@@ -252,7 +252,7 @@
                                         <b><fmt:message key="common.networkoffering" bundle="${msg}" />  :<span title="<fmt:message key="common.required" bundle="${msg}" />" class="text-danger font-bold">*</span></b>
                                     </td>
                                     <td width="65%">
-                                        <select required="true" class="form-control" name="networkOffering" data-ng-model="guestnetwork.networkOffering" ng-options="networkOffering.displayText for networkOffering in instance.network.networkOfferList" >
+                                        <select required="true" class="form-control" name="networkOffering" data-ng-model="guestnetwork.networkOffering" ng-options="networkOffering.displayText for networkOffering in instance.networks.networkOfferList" >
                                             <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
                                         </select>
                                     </td>
