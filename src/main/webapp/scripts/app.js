@@ -22,9 +22,9 @@
         'datatables',               // Angular datatables plugin
         'xeditable',                // Angular-xeditable
         'ui.select',                // AngularJS ui-select
-        'ui.sortable',               // AngularJS ui-sortable
-        'LocalStorageModule',        // AngularJs LocalStorage
-        'rzModule'                 // RZ
+        'ui.sortable',              // AngularJS ui-sortable
+        'LocalStorageModule',       // AngularJs LocalStorage
+        'rzModule',                 // RZ
+        'angular.filter'		    // Angular filters
     ])
 })();
-

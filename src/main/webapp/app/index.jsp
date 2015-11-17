@@ -147,6 +147,7 @@
 	<script
 		src="bower_components/angular-local-storage/dist/angular-local-storage.js"></script>
 	<script src="bower_components/angularjs-slider/rzslider.js"></script>
+	<script src="bower_components/angular-filter/dist/angular-filter.js"></script>
 
 	<!-- endbuild -->
 
