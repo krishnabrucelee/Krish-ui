@@ -45,8 +45,7 @@
                                 <div ng-repeat="person in projectElements.projectOwnerList | filter: {userName:'admin'}">
                                 <div class="col-md-5 col-xs-12 col-sm-5">
 
-                                    <select required="true" class="form-control input-group" name="projectOwner"
-                                       ng-init="project.projectOwner = projectElements.projectOwnerList[$index]" data-ng-model="project.projectOwner" data-ng-class="{'error': projectForm.projectOwner.$invalid && formSubmitted}"
+                                    <select required="true" class="form-control input-group" name="projectOwner" data-ng-model="project.projectOwner" data-ng-class="{'error': projectForm.projectOwner.$invalid && formSubmitted}"
                                         data-ng-options="projectOwner.userName for projectOwner in projectElements.projectOwnerList" >
                                     </select>
                                     <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="<fmt:message key="select.the.project.owner" bundle="${msg}" />"></i>

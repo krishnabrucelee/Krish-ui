@@ -3,7 +3,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
-<form name="vmsnapshotForm" data-ng-submit="validateVMSnapshot(vmsnapshotForm)" method="post" novalidate="" data-ng-controller="addVMSnapshotCtrl" >
+<form name="vmsnapshotForm" data-ng-submit="validateVMSnapshot(vmsnapshotForm)" method="post" novalidate=""  >
 
     <div class="inmodal" >
         <div class="modal-header">
@@ -60,7 +60,7 @@
 
                             </label>
                             <div class="col-md-5 col-sm-5">
-                                <label> <input icheck type="checkbox" data-ng-model="vmsnapshot.snapshotMemory"> </label>
+                                <label> <input icheck type="checkbox" value="true" data-ng-model="vmsnapshot.snapshotMemory"> </label>
 
 
 
@@ -68,18 +68,16 @@
 
                         </div>
                     </div>
-                    <div class="form-group" ng-class="{'text-danger': vmsnapshotForm.instance.$invalid && formSubmitted}">
+                    <div class="form-group" >
                         <div class="row" >
                             <label class="col-md-3 col-sm-3 control-label" ><fmt:message key="common.instance" bundle="${msg}" />
                                 <span class="text-danger">*</span>
                             </label>
 
                             <div class="col-md-5 col-sm-5 ">
-                                <select required="true" class="form-control input-group" data-ng-class="{'error':  vmsnapshotForm.name.$invalid && formSubmitted}"  name="instance" data-ng-model="vmsnapshot.instance" ng-options="instance.name for instance in formElements.instanceList" >
-                                    <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
-                                </select>
-                                <div class="error-area" data-ng-show="vmsnapshotForm.instance.$invalid && formSubmitted" ><i  tooltip="<fmt:message key="instance.is.required" bundle="${msg}" />" class="fa fa-warning error-icon"></i></div>
-                            </div>
+                            {{instance.name}}
+                            <input type="hidden" data-ng-model="vmsnapshot.vmId" value="{{instance.id}}" />
+                              </div>
 
                         </div>
                     </div>

@@ -68,7 +68,7 @@
                                         <a href="javascript:void(0);" data-ng-if="instance.status == 'Running'" title="<fmt:message key="restart" bundle="${msg}" />" data-ng-click="rebootVm('sm',instance)"><span class="fa-rotate-left fa font-bold m-xs"></span> <fmt:message key="reboot" bundle="${msg}" /></a>
                                     </li>
                                     <li class="list-group-item" data-ng-if="instance.status == 'Running'">
-                                        <a href="javascript:void(0);" title="<fmt:message key="view.console" bundle="${msg}" />"><span class="fa-desktop fa font-bold m-xs"></span> <fmt:message key="view.console" bundle="${msg}" /></a>
+                                        <a href="javascript:void(0);" title="<fmt:message key="view.console" bundle="${msg}" />" data-ng-click="showConsole(instance)"><span class="fa-desktop fa font-bold m-xs"></span> <fmt:message key="view.console" bundle="${msg}" /></a>
                                     </li>
                                     <li data-ng-show="instance.passwordEnabled == true" class="list-group-item">
                                         <a href="javascript:void(0);" title="<fmt:message key="reset.password" bundle="${msg}" />" data-ng-click="showPassword(instance)"><span class="fa-key fa font-bold m-xs"></span> <fmt:message key="show/reset.password" bundle="${msg}" /></a>

@@ -41,6 +41,10 @@ object.listAllByTag = function(moduleName, val) {
         return promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + moduleName +"?tags=" +val);
     };
 
+    object.console = function(moduleName, val) {
+        return promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + moduleName +"?instance=" +val);
+    };
+
     object.delete = function(moduleName, id) {
         return promiseAjax.httpTokenRequest( globalConfig.HTTP_DELETE , globalConfig.APP_URL + moduleName  +"/"+id+"?lang=" + localStorageService.cookie.get('language'), '');
     };

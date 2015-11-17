@@ -10,7 +10,7 @@ angular
         .controller('instanceDetailsCtrl', instanceDetailsCtrl)
 
 
-function instanceViewCtrl($scope,$log, dialogService, $modal,$http, $state, $stateParams, localStorageService, globalConfig, crudService) {
+function instanceViewCtrl($scope,$log, dialogService, $modal,$http, $state, $stateParams, localStorageService, globalConfig, crudService, $window) {
     $scope.instanceList = [];
     $scope.global = crudService.globalConfig;
     if ($stateParams.id > 0) {
@@ -36,6 +36,7 @@ function instanceViewCtrl($scope,$log, dialogService, $modal,$http, $state, $sta
             };
         }]);
   };
+
   $scope.stopVm = function(size,item) {
   	 dialogService.openDialog("app/views/cloud/instance/stop.jsp", size, $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance, $rootScope) {
   		 $scope.item =item;
@@ -134,6 +135,15 @@ function instanceViewCtrl($scope,$log, dialogService, $modal,$http, $state, $sta
 			       }]);
 			  };
 
+			  $scope.showConsole = function(vm) {
+				  $scope.vm = vm;
+				  var hasVms = crudService.console("virtualmachine/console", $scope.vm.name);
+	  				hasVms.then(function(result) {
+	  					console.log(result);
+	  					 $window.open(result);
+	  				});
+			  }
+
 			  $scope.showDescription = function(vm) {
 				  	 dialogService.openDialog("app/views/cloud/instance/editnote.jsp", 'sm',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
 				  		 $scope.vm = vm;
@@ -185,23 +195,43 @@ function instanceViewCtrl($scope,$log, dialogService, $modal,$http, $state, $sta
 
 						  $scope.takeSnapshot = function(vm) {
 							  	 dialogService.openDialog("app/views/cloud/instance/createVmSnapshot.jsp", 'md',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
-							  		 $scope.vm = vm;
-							  		 $scope.update= function(form) {
-								  				var hasVm = crudService.vmUpdate("virtualmachine/event", item.uuid, event);
+							  		 $scope.instance = vm;
+							  		 $scope.validateVMSnapshot= function(form) {
+								  			$scope.formSubmitted = true;
+						                    if (form.$valid) {
+						                    	$scope.vmsnapshot.domainId = $scope.instance.domainId;
+						                    	$scope.vmsnapshot.vmId = $scope.instance.id;
+								  				var hasVm = crudService.add("vmsnapshot",$scope.vmsnapshot);
 								  				hasVm.then(function(result) {
 								  					$state.reload();
 								  					 $scope.cancel();
-								  				});
+								  				}).catch(function (result) {
+								  					console.log(result.data.globalError[0]);
+								  			         if(result.data.globalError[0] != ''){
+								  			        	 var msg = result.data.globalError[0];
+								  			        	 notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+								  			        	 wizard.show(1);
+								  			             } else if(!angular.isUndefined(result) && result.data != null) {
+							                            angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
+							                            	$scope.departmentForm[key].$invalid = true;
+							                                $scope.departmentForm[key].errorMessage = errorMessage;
+							                            });
 
+					                    }
+
+						                        });
+						                    }
 							  			},
 										  $scope.cancel = function () {
 							               $modalInstance.close();
 							           };
 							       }]);
 							  };
+
 						$scope.hostMigrate = function(vm) {
 								  	 dialogService.openDialog("app/views/cloud/instance/host-migrate.jsp", 'md',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
 								  		 $scope.vm = vm;
+
 								  		 $scope.update= function(form) {
 									  				var hasVm = crudService.vmUpdate("virtualmachine/event", item.uuid, event);
 									  				hasVm.then(function(result) {
@@ -209,7 +239,7 @@ function instanceViewCtrl($scope,$log, dialogService, $modal,$http, $state, $sta
 									  					 $scope.cancel();
 									  				});
 
-								  			},
+								  		 },
 											  $scope.cancel = function () {
 								               $modalInstance.close();
 								           };

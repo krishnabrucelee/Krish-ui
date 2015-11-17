@@ -81,6 +81,7 @@
 												<th><fmt:message key="common.status" bundle="${msg}" /></th>
 												<th><fmt:message key="project.owner" bundle="${msg}" /></th>
 												<th><fmt:message key="billing.owner" bundle="${msg}" /></th>
+												<th><fmt:message key="common.department" bundle="${msg}" /></th>
 												<th><fmt:message key="create.time" bundle="${msg}" /></th>
 												<th><fmt:message key="operation" bundle="${msg}" /></th>
 											</tr>
@@ -108,6 +109,7 @@
 													class="text-danger">In Active</label></td>
 												<td>{{ projectObj.projectOwner.userName }}</td>
 												<td>{{ projectObj.projectOwner.userName }}</td>
+												<td>{{ projectObj.department.userName }}</td>
 												<td>{{ projectObj.createdDateTime*1000 | date:'yyyy-MM-dd HH:mm:ss'}}</td>
 												<td><a
 													data-ng-class="isSingle == projectObj.id  ? 'text-white' : ''"
@@ -168,6 +170,13 @@
 											<label class="col-md-4 col-sm-4 control-label"> <span
 												class="pull-right"><fmt:message key="project.owner" bundle="${msg}" /></span></label>
 											<div class="col-md-6 col-sm-6 col-xs-6">{{projectInfo.projectOwner.userName}}</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="row">
+											<label class="col-md-4 col-sm-4 control-label"> <span
+												class="pull-right"><fmt:message key="common.department" bundle="${msg}" /></span></label>
+											<div class="col-md-6 col-sm-6 col-xs-6">{{projectInfo.department.userName}}</div>
 										</div>
 									</div>
 									<div class="form-group">

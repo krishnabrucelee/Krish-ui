@@ -202,8 +202,8 @@
             <div class="col-md-5 col-xs-5 col-sm-5">
                 <div class="pull-left m-r-xs m-t-xxs" data-ng-show="instanceForm.networkOfferinglist.$valid">
                     <a ng-click="computeSlide(); diskSlide(); networkSlide();">
-                        <span data-ng-hide="network" class="pe pe-lg pe-7s-plus"></span>
-                        <span data-ng-show="network" class="pe pe-lg pe-7s-less"></span>
+                        <span data-ng-hide="networks" class="pe pe-lg pe-7s-plus"></span>
+                        <span data-ng-show="networks" class="pe pe-lg pe-7s-less"></span>
                     </a>
                 </div>
                 <label  class="section-title" > <fmt:message key="common.network" bundle="${msg}" /><span title="<fmt:message key="common.required" bundle="${msg}" />" class="text-danger font-bold">*</span></label>
@@ -212,12 +212,12 @@
                 <select required="true" class="form-control input-group" name="networkOfferinglist"  data-ng-class="{'error': instanceForm.networkOfferinglist.$invalid && OfferingSubmitted}" data-ng-model="instance.networkOfferinglist" ng-change='networkFunction(instance.networkOfferinglist.value)' ng-options="networkOfferinglist.name for networkOfferinglist in instanceElements.networkOfferingList" >
                     <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
                 </select>
-                <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="<fmt:message key="network.offerings" bundle="${msg}" />" ></i>
+                <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="<fmt:message key="networks.offerings" bundle="${msg}" />" ></i>
                 <div class="error-area" data-ng-show="instanceForm.networkoffer.$invalid && OfferingSubmitted" ><i  tooltip="<fmt:message key="network.offering.is.required" bundle="${msg}" />" class="fa fa-warning error-icon"></i></div>
                 <input required="true" type="hidden" name="networkoffer" data-ng-model="instance.networkOfferinglist.name" class="form-control" data-ng-class="{'error': instanceForm.networkoffer.$invalid && OfferingSubmitted}"  >
             </div>
 
-            <div data-ng-show="instance.networkOfferinglist.value == 'new' && network" >
+            <div data-ng-show="instance.networkOfferinglist.value == 'new' && networks" >
                 <div class="col-md-12 col-sm-12">
                     <div class="table-responsive m-t-md">
 
@@ -244,7 +244,7 @@
                     </div>
                 </div>
             </div>
-            <div data-ng-show=" instance.networkOfferinglist.value == 'all' && network"  >
+            <div data-ng-show=" instance.networkOfferinglist.value == 'all' && networks"  >
                 <div class="col-md-12 col-sm-12">
                     <div class="table-responsive m-t-md">
                         <table cellspacing="1" cellpadding="1" class="table table-bordered table-striped">
@@ -256,16 +256,16 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr data-ng-repeat="network in instance.network.networkList">
+                                <tr data-ng-repeat="networks in instance.networks.networkList">
                                     <td>
-                                        <label><input  data-ng-model="instance.network[$index]" type="checkbox" required="true"  name="network" value="{{network}}" > {{ network.name}}</label>
+                                        <label><input  data-ng-model="instance.networks[$index]" type="checkbox" required="true"  name="network" value="{{networks}}" > {{ networks.name}}</label>
 
                                     </td>
-                                    <td>{{ network.networkType}}</td>
+                                    <td>{{ networks.networkType}}</td>
                                     <td>
                                         <a title="<fmt:message key="ip.address" bundle="${msg}" />"  ></a>
-                                        <input type="text" valid-cidr required="true" placeholder="<fmt:message key="ip.address" bundle="${msg}" />"  class="input-small" data-ng-model="network.ipaddress" />
-                                        <span ><label><input type="radio" name="instance.network.default" value="network.id" > <fmt:message key="common.default" bundle="${msg}" /></label></span>
+                                        <input type="text" valid-cidr required="true" placeholder="<fmt:message key="ip.address" bundle="${msg}" />"  class="input-small" data-ng-model="networks.ipaddress" />
+                                        <span ><label><input type="radio" name="instance.networks.default" value="networks.id" > <fmt:message key="common.default" bundle="${msg}" /></label></span>
                                     </td>
 
                                 </tr>
@@ -276,7 +276,7 @@
                 </div>
             </div>
 
-            <div data-ng-show=" instance.networkOfferinglist.value == 'vpc' && network" >
+            <div data-ng-show=" instance.networkOfferinglist.value == 'vpc' && networks" >
                 <div class="col-md-12 col-sm-12">
                     <div class="table-responsive m-t-md">
                         <table cellspacing="1" cellpadding="1" class="table table-bordered table-striped">
@@ -288,16 +288,16 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr data-ng-repeat="network in instance.network.networkList| filter:{ vpc : true }">
+                                <tr data-ng-repeat="networks in instance.networks.networkList| filter:{ vpc : true }">
                                     <td>
-                                        <label><input data-ng-model="network.selected" type="checkbox" required="true" name="instance.network" value="network" > {{ network.name}}</label>
+                                        <label><input data-ng-model="networks.selected" type="checkbox" required="true" name="instance.networks" value="networks" > {{ networks.name}}</label>
 
                                     </td>
-                                    <td>{{ network.type}}</td>
+                                    <td>{{ networks.type}}</td>
                                     <td>
                                         <a title="<fmt:message key="ip.address" bundle="${msg}" />"></a>
-                                        <input type="text" required="true" valid-cidr placeholder="<fmt:message key="ip.address" bundle="${msg}" />"  class="input-small" data-ng-model="network.ipaddress" />
-                                        <span ><label><input type="radio" name="instance.network.default" value="network.id" > <fmt:message key="common.default" bundle="${msg}" /></label></span>
+                                        <input type="text" required="true" valid-cidr placeholder="<fmt:message key="ip.address" bundle="${msg}" />"  class="input-small" data-ng-model="networks.ipaddress" />
+                                        <span ><label><input type="radio" name="instance.networks.default" value="networks.id" > <fmt:message key="common.default" bundle="${msg}" /></label></span>
                                     </td>
 
                                 </tr>

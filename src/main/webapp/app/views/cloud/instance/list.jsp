@@ -90,7 +90,7 @@
                                         <td>{{ instance.instanceOwner.userName}}</td>
                                         <td>{{ instance.application}}</td>
                                         <td>{{ instance.project.name}}</td>
-                                        <td>{{ instance.department.name}}</td>
+                                        <td>{{ instance.department.userName}}</td>
 <!--                                         <td>{{ instance.template.displayText}}</td> -->
  										<td>{{ instance.template.osType.description}}</td>
                                         <td>{{ instance.ipAddress}}</td>
@@ -107,7 +107,7 @@
                                         </td>
                                         <td>
 
-						<div data-ng-show="instance.status != 'Error' && instance.status='Expunging'">
+						<div data-ng-show="instance.status != 'Error' && instance.status != 'Expunging'">
                                             <a class="icon-button text-center" title="<fmt:message key="start" bundle="${msg}" />"  data-ng-click="startVm('sm',instance)" data-ng-hide="instance.status == 'Running'">
                                                 <span class="fa fa-play" ></span>
                                             </a>
