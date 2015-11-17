@@ -79,6 +79,7 @@ function addVMSnapshotCtrl($scope, globalConfig, $window, notify) {
 
 function snapshotListCtrl($scope, crudService, $timeout, promiseAjax, globalConfig,
 localStorageService, $window, dialogService, notify) {
+	$scope.confirmsnapshot = {};
 	$scope.global = globalConfig;
 	$scope.global = crudService.globalConfig;
 	$scope.snapshotList = {};
@@ -218,13 +219,13 @@ localStorageService, $window, dialogService, notify) {
                             $modalInstance.close();
                         }).catch(function (result) {
                         	if(!angular.isUndefined(result) && result.data != null) {
-                        		if(result.data.globalError[0] != ''){
+                        		if(result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])){
 	                               	 var msg = result.data.globalError[0];
 	                               	 notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
                                 }
 	                            angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
-	                            	$scope.confirmsnapshot[key].$invalid = true;
-	                                $scope.confirmsnapshot[key].errorMessage = errorMessage;
+	                            	form[key].$invalid = true;
+	                            	form[key].errorMessage = errorMessage;
 	                            });
                         	}
 
