@@ -44,7 +44,7 @@
 
 
 
-					<div class="panel panel-default" data-ng-show="instance.osCategory">
+					<div class="panel panel-default" data-ng-show="instance.template">
 						<div class="panel-heading">
 							<h3 class="panel-title"><fmt:message key="common.configuration" bundle="${msg}" /></h3>
 
@@ -61,9 +61,9 @@
 
 											<div class="row">
 												<div class="col-md-12 col-sm-12 m-t-xs">
-													{{ instance.osCategory.name}} {{ instance.osVersion.name}} {{instance.bit}}
+													{{ instance.template.name}}
 													<span class="pull-right text-danger price-text m-l-lg">
-														<app-currency></app-currency>{{ instance.osVersion.price}}
+														<app-currency></app-currency>2.00
 														<span> / <fmt:message key="common.hour" bundle="${msg}" /></span>
 													</span>
 												</div>

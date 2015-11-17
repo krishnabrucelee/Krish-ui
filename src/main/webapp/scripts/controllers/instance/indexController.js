@@ -24,6 +24,9 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
         };
 
 
+
+
+
     // Form Field Decleration
     $scope.instance = {
         computeOffer: {
@@ -108,11 +111,11 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
                     {id: 1, name: 'Developing'},
                     {id: 2, name: 'Testing'}
                 ],
-        osVersionList: [
-                    {id: 1, name: '5.4', price: 0.10},
-                    {id: 2, name: '2012R', price: 0.10},
-                    {id: 3, name: '2012RSTD', price: 0.10}
-                ]
+//        osVersionList: [
+//                    {id: 1, name: '5.4', price: 0.10},
+//                    {id: 2, name: '2012R', price: 0.10},
+//                    {id: 3, name: '2012RSTD', price: 0.10}
+//                ]
         };
 
         $scope.compute = false;

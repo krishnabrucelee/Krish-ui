@@ -5,49 +5,55 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <div class="row no-margins">
-
-<%-- 	<div class="col-md-5 col-sm-5 no-padding">
+ 	<div class="col-md-12 col-sm-12 no-padding">
 		<div class="hpanel">
 			<div class="panel-body  no-padding">
-				<ul class="mailbox-list h-275 borders">
-					<li class="border-bottom"><a href="javascript:void(0);"><fmt:message key="common.filters" bundle="${msg}" /></a>
-					</li>
+				<ul class="mailbox-list h-202 borders">
+					<%-- <li class="border-bottom"><a href="javascript:void(0);"><fmt:message key="common.filters" bundle="${msg}" /></a>
+					</li> --%>
+					<div class="row">
 					<div class="scroll-220">
+					<div class= "col-md-4 col-sm-4 m-t-sm">
 						<div class="form-group">
 							<div class="col-md-12 col-xs-12 col-sm-12 ">
 								<span class="control-label"><fmt:message key="common.os.category" bundle="${msg}" />:</span>
 							</div>
 							<div class="col-md-12 col-xs-12 col-sm-12 p-xs">
 								<select class="form-control input-group" name="osCategory"
-									data-ng-model="osTypes"
+									data-ng-model="instance.osCategory"
 									ng-options="osCategory.name for osCategory in formElements.osCategoryList">
 									<option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
 								</select>
 							</div>
 						</div>
+						</div>
+						<div class= "col-md-4 col-sm-4 m-t-sm">
 						<div class="form-group">
-							<div class="col-md-12 col-xs-12 col-sm-12">
+							<div class=" ">
 								<span class="control-label"><fmt:message key="common.os.version/release" bundle="${msg}" />:</span>
 							</div>
 							<div class="col-md-12 col-xs-12 col-sm-12 p-xs">
-								<select class="form-control input-group" name="department"
-									data-ng-model="versions"
-									ng-options="osVersion.name for osVersion in formElements.osVersionList">
+								<select class="form-control input-group" name="osVersion"
+									data-ng-model="instance.osVersion"
+									ng-options="osVersion.osVersion for osVersion in formElements.templateList">
 									<option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
 								</select>
 							</div>
 						</div>
+						</div>
+						<div class= "col-md-4 col-sm-4 m-t-sm">
 						<div class="form-group">
-							<span class="col-md-12 col-sm-12 p-xs"><fmt:message key="common.architecture" bundle="${msg}" />: </span>
-							<div class="col-md-12 col-sm-12">
+							<span class=" "><fmt:message key="common.architecture" bundle="${msg}" />: </span>
+							<div class="m-t-sm">
 								<label class=" "> <input icheck type="radio"
-									data-ng-model="arch" value="32Bit" name="architecture">
+									data-ng-model="instance.bit" value="32Bit" name="architecture">
 									32Bit
-								</label> <label class="m-l-sm "> <input icheck type="radio"
-									data-ng-model="arch.$" value="64Bit" name="architecture"
+								</label> <label class=" "> <input icheck type="radio"
+									data-ng-model="instance.bit" value="64Bit" name="architecture"
 									data-ng-checked="true"> 64Bit
 								</label>
 							</div>
+						</div>
 						</div>
 						<!-- <li data-ng-class="instance.templateImage == templateImage ? 'active' : ''" data-ng-repeat="templateImage in instanceElements.imageList">
                         <a data-ng-click="getOsListByImage(templateImage)" >
@@ -64,10 +70,11 @@
                         <span class="p-10 block-span">No Operating system selected</span>
                     </li> -->
 					</div>
+					</div>
 				</ul>
 			</div>
 		</div>
-	</div> --%>
+	</div>
 	<div class="col-md-12 col-sm-12 no-padding no-margins">
 		<div class="hpanel">
 			<div class="panel-body  no-padding">
@@ -111,7 +118,7 @@
 										<table cellspacing="1" cellpadding="1" class="table table-striped no-margins">
 											<tr data-ng-repeat="templateObj in formElements.templateList  ">
 												<td>
-												<div class="col-md-2 col-sm-2">
+												<div class="col-md-3 col-sm-3">
 
 											<img data-ng-show="templateObj.displayText.toLowerCase().indexOf('cent') > -1" src="images/os/centos_logo.png" alt="" height="25" width="25" class="m-r-5" >
 											<img data-ng-show="templateObj.displayText.toLowerCase().indexOf('ubuntu') > -1" src="images/os/ubuntu_logo.png" alt="" height="25" width="25" class="m-r-5" >
@@ -121,10 +128,10 @@
 											<img data-ng-show="templateObj.displayText.toLowerCase().indexOf('core') > -1" src="images/os/core_logo.png" alt="" height="25" width="25" class="m-r-5" >
 											<img data-ng-show="templateObj.displayText.toLowerCase().indexOf('vynta') > -1" src="images/os/vynta_logo.png" alt="" height="25" width="25" class="m-r-5" >
   											<img data-ng-show="templateObj.displayText.toLowerCase().indexOf('windows') > -1" src="images/os/windows_logo.png" alt="" height="25" width="25" class="m-r-5" >
-
+											<br>ver : <span class="text-success">{{templateObj.osVersion}}</span>
 											</div>
 											 <div class="col-md-8 col-sm-8"><label class="col-md-11 col-sm-11">{{templateObj.name}}</label><span class="col-md-11 col-sm-11">{{templateObj.displayText}}</span></div>
-											 <div class="col-md-2 col-sm-2">
+											 <div class="col-md-1 col-sm-1">
 													<div class="form-group">
 															<label class=" "> <input icheck type="radio"
 																data-ng-model="templat" value="" data-ng-change="setTemplate(templateObj)"
@@ -133,9 +140,9 @@
 
 													</div>
 											 </div>
-												<div class="row">
-												<div class="col-md-9 col-sm-9 text-success">{{templateObj.osVersion}}</div>
-													</div>
+												<!-- <div class="row">
+												<div>version: <span class="text-success">{{templateObj.osVersion}}</span></div>
+													</div> -->
 												</td>
 											</tr>
 											</table>

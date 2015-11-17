@@ -111,7 +111,7 @@ function configState($stateProvider, $httpProvider,  $urlRouterProvider, $compil
                 url: "/view/:id",
                 templateUrl: VIEW_URL + "views/cloud/instance/view.jsp",
                 data: {
-                    pageTitle: 'View Instance'
+                    pageTitle: 'view.instance'
                 }
             })
 
@@ -120,7 +120,7 @@ function configState($stateProvider, $httpProvider,  $urlRouterProvider, $compil
                 url: "/view/:id",
                 templateUrl: VIEW_URL + "views/cloud/instance/monitor.jsp",
                 data: {
-                    pageTitle: 'Monitor'
+                    pageTitle: 'common.monitor'
                 }
             })
 
