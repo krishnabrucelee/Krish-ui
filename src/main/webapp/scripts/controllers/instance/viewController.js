@@ -194,7 +194,7 @@ function instanceViewCtrl($scope,$log, dialogService, $modal,$http, $state, $sta
 						  };
 
 						  $scope.takeSnapshot = function(vm) {
-							  	 dialogService.openDialog("app/views/cloud/instance/createVmSnapshot.jsp", 'md',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
+							  	 dialogService.openDialog("app/views/cloud/instance/createVmSnapshot.jsp", 'md',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance, $rootScope) {
 							  		 $scope.instance = vm;
 							  		 $scope.validateVMSnapshot= function(form) {
 								  			$scope.formSubmitted = true;
@@ -207,10 +207,10 @@ function instanceViewCtrl($scope,$log, dialogService, $modal,$http, $state, $sta
 								  					 $scope.cancel();
 								  				}).catch(function (result) {
 								  					console.log(result.data.globalError[0]);
-								  			         if(result.data.globalError[0] != ''){
+								  			         if(result.data.globalError[0] != null){
 								  			        	 var msg = result.data.globalError[0];
 								  			        	 notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
-								  			        	 wizard.show(1);
+
 								  			             } else if(!angular.isUndefined(result) && result.data != null) {
 							                            angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
 							                            	$scope.departmentForm[key].$invalid = true;

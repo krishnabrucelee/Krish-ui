@@ -153,17 +153,10 @@ localStorageService, $window, dialogService, notify) {
 	               $modalInstance.close();
 	           };
     	 }]);
-<<<<<<< HEAD
     };
     $scope.createVolume = function(size) {
         modalService.trigger('app/views/cloud/snapshot/create-volume.jsp', size);
     };
-    $scope.deleteSnapshot = function(size) {
-        modalService.trigger('app/views/cloud/snapshot/delete-snapshot.jsp', size);
-=======
->>>>>>> 112feff58b0a384fa80f34988ad66cb9f95d03a9
-    };
-
 
     $scope.deleteSnapshot = function(size, snapshot) {
     	 dialogService.openDialog("app/views/common/confirm-delete.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
