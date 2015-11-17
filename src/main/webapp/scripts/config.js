@@ -211,6 +211,14 @@ function configState($stateProvider, $httpProvider,  $urlRouterProvider, $compil
                 }
             })
 
+               .state('projects.quotalimit', {
+                url: "/:quotaType/:id",
+                templateUrl: VIEW_URL +  "views/project/projectquota.jsp",
+                data: {
+                    pageTitle: 'View Quota Limit'
+                }
+            })
+
             // Applications
             .state('applications', {
                 url: "/applications",
@@ -441,6 +449,15 @@ function configState($stateProvider, $httpProvider,  $urlRouterProvider, $compil
                     pageTitle: 'common.departments'
                 }
             })
+
+            .state('department.quotalimit', {
+                url: "/:quotaType/:id",
+                templateUrl: VIEW_URL +  "views/department/departmentquota.jsp",
+                data: {
+                    pageTitle: 'View Quota Limit'
+                }
+            })
+
 
 
 }
