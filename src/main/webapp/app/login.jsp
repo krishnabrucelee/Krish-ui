@@ -53,6 +53,10 @@
                                 <input type="password" title="Please enter your password" placeholder="******" required="" value="" name="password" id="password" class="form-control">
                                 <!--<span class="help-block small">Your strong password</span>-->
                             </div>
+                            <div class="form-group">
+                                <label class="control-label" for="domain">Domain</label>
+                                <input type="text" placeholder="domain" title="Please enter you domain" required="" value="" name="domain" id="domain" class="form-control">
+                            </div>
                             <div class="checkboxs">
                                     <input type="checkbox" id="remeber_login" >
                                     <label for="remeber_login">Remember login</label>
