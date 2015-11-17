@@ -93,7 +93,7 @@
                                                 <a class="fa fa-cogs dropdown-toggle" data-toggle="dropdown" ></a>
                                                 <ul class="dropdown-menu pull-right">
                                                     <img src="images/dropdown-arw2.png" border="0" class="vol-dropdown-arw">
-                                                    <li><a class="icon-button" ui-sref="cloud.list-snapshot" title="Snapshot"><span class="fa fa-camera m-xs"></span> Snapshot</a></li>
+                                                    <li><a href="javascript:void(0);" data-ng-click="createSnapshot(md,volume)" title="Snapshot"><span class="fa fa-camera m-xs"></span> Snapshot</a></li>
                                                     <li><a href="javascript:void(0);" data-ng-click="openReccuringSnapshot(volume)"  title="Recurring Snapshot"><span class="fa fa-repeat m-xs"></span> Recurring Snapshot</a></li>
                                                 </ul>
                                             </span>
