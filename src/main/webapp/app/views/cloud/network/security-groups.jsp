@@ -11,11 +11,11 @@
     <tbody>
         <tr data-ng-repeat="network in networkList| filter: quickSearch">
             <td>
-                <a class="text-info" ui-sref="cloud.list-network.view-network({id: {{ network.id}}})"  title="View Network" >{{ network.name}}</a>
+                <a class="text-info" ui-sref="cloud.list-network.view-network({id: {{ network.id}}})"  title="View Network" >{{ network.namea}}</a>
             </td>
-            <td>{{ network.displayText}} </td>
-            <td>{{ network.domain.name}} </td>
-            <td>{{ network.account}} </td>
+            <td>{{ network.displayTexta}} </td>
+            <td>{{ network.domain.naame}} </td>
+            <td>{{ network.accounat}} </td>
 
             <td>
                 <a class="icon-button" title="Edit">

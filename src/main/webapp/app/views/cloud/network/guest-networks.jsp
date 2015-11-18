@@ -21,7 +21,7 @@
                         <td>
                             <a class="text-info" ui-sref="cloud.list-network.view-network({id: {{ network.id }}})"  title="View Network" >{{ network.name }}</a>
                         </td>
-                        <td>{{ network.department.name }} </td>
+                        <td>{{ network.account }} </td>
                         <td>{{ network.networkType }} </td>
                         <td>{{ network.cIDR }} </td>
                         <td>{{ network.gateway}} </td>
