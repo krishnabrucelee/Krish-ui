@@ -27,17 +27,6 @@
 						</div>
 						<div class= "col-md-4 col-sm-4 m-t-sm">
 						<div class="form-group">
-							<div class=" ">
-								<span class="control-label"><fmt:message key="common.os.version/release" bundle="${msg}" />:</span>
-							</div>
-							<div class="col-md-12 col-xs-12 col-sm-12 p-xs">
-								<input class="form-control input-group" name="osVersion"
-									data-ng-model="instance.osVersion" ng-change="getTemplatesByFilters()"/>
-							</div>
-						</div>
-						</div>
-						<div class= "col-md-4 col-sm-4 m-t-sm">
-						<div class="form-group">
 							<span class=" "><fmt:message key="common.architecture" bundle="${msg}" />: </span>
 							<div class="m-t-sm">
 								<label class=" "> <input icheck type="radio"
@@ -47,6 +36,16 @@
 									data-ng-model="instance.architecture" ng-change="getTemplatesByFilters()" value="64" name="architecture"
 									data-ng-checked="true"> 64Bit
 								</label>
+							</div>
+						</div>
+						</div>
+						<div class= "col-md-4 col-sm-4 m-t-sm">
+						<div class="form-group">
+								<span class="control-label"><fmt:message key="common.os.version/release" bundle="${msg}" />:</span>
+							<div class="col-md-12 col-xs-12 col-sm-12 p-xs">
+								<div class="input-group">
+									<input data-ng-model="instance.osVersion" type="text" class="form-control input-medium">
+								</div>
 							</div>
 						</div>
 						</div>
@@ -72,7 +71,7 @@
 										<tr data-ng-show="formElements.templateList.length == 0">
 											<td><fmt:message key="common.no.records.found" bundle="${msg}" /></td>
 										</tr>
-											<tr data-ng-repeat="templateObj in formElements.templateList">
+											<tr data-ng-repeat="templateObj in formElements.templateList | filter: instance.osVersion ">
 												<td>
 												<div class="col-md-3 col-sm-3">
 
