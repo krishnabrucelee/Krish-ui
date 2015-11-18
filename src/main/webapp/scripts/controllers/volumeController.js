@@ -121,26 +121,8 @@ volumeService, localStorageService, $window, notify, dialogService, crudService)
     };
 
     $scope.resizeVolume =  function(volume) {
-        var modalInstance = $modal.open({
-            animation: $scope.animationsEnabled,
-            templateUrl: 'app/views/cloud/volume/resize.jsp',
-            controller: 'volumeResizeCtrl',
-            size: 'md',
-            backdrop : 'static',
-            windowClass: "hmodal-info",
-            resolve: {
-                volume: function () {
-                    return angular.copy(volume);
-                }
-            }
-        });
-
-        modalInstance.result.then(function (selectedItem) {
-            $scope.selected = selectedItem;
-
-        }, function () {
-            $log.info('Modal dismissed at: ' + new Date());
-        });
+                dialogService.openDialog($scope.global.VIEW_URL + "cloud/volume/resize.jsp", 'md', $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
+	}]);
     };
 
 //==========================================
@@ -156,8 +138,12 @@ $scope.volume = {};
 
 
           $scope.diskList = function (tag) {
+		if(angular.isUndefined(tag)) {
+		   tag = "";
+		}
               var hasDisks = crudService.listAllByTag("storages/storagesort",tag);
-              hasDisks.then(function (result) {  // this is only run after $http completes0
+              hasDisks.then(function (result) {  // this is only run after
+													// $http completes0
                      $scope.volumeElements.diskOfferingList = result;
                });
            };
@@ -166,7 +152,8 @@ $scope.volume = {};
 
           $scope.diskTag = function () {
               var hasDiskTags = crudService.listAll("storages/storagetags");
-              hasDiskTags.then(function (result) {  // this is only run after $http completes0
+              hasDiskTags.then(function (result) {  // this is only run after
+													// $http completes0
 
                      $scope.volumeElements.diskOfferingTags = result;
                });
@@ -187,19 +174,22 @@ $scope.volume = {};
                     $scope.formSubmitted = true;
 
 
-/**        var diskValid = true;
-
-        if(($scope.volume.storageOffering.isCustomDisk && $scope.volume.diskSize <= 0) || ($scope.volume.storageOffering.isCustomizedIops && $scope.volume.diskMinIops <= 0)) {
-            diskValid = false;
-        }
-alert(diskValid); */
+/**
+ * var diskValid = true;
+ *
+ * if(($scope.volume.storageOffering.isCustomDisk && $scope.volume.diskSize <=
+ * 0) || ($scope.volume.storageOffering.isCustomizedIops &&
+ * $scope.volume.diskMinIops <= 0)) { diskValid = false; } alert(diskValid);
+ */
         if (form.$valid) {
 			$scope.volume.zone = $scope.global.zone;
 
                       var volume = $scope.volume;
 
                         var hasVolume = crudService.add("volumes", volume);
-                        hasVolume.then(function (result) {  // this is only run after $http completes
+                        hasVolume.then(function (result) {  // this is only run
+															// after $http
+															// completes
                             $scope.list(1);
                             notify({message: 'Added successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                             $modalInstance.close();
