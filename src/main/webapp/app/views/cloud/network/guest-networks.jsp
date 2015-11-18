@@ -8,12 +8,12 @@
 <table cellspacing="1" cellpadding="1" class="table table-bordered table-striped">
                     <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Account</th>
-                        <th>Type</th>
-                        <th>CIDR</th>
-                        <th>Gateway</th>
-                        <th>Action</th>
+                        <th><fmt:message key="common.name" bundle="${msg}" /></th>
+                        <th><fmt:message key="common.account" bundle="${msg}" /></th>
+                        <th><fmt:message key="common.type" bundle="${msg}" /></th>
+                        <th><fmt:message key="common.cidr" bundle="${msg}" /></th>
+                        <th><fmt:message key="gateway" bundle="${msg}" /></th>
+                        <th><fmt:message key="common.action" bundle="${msg}" /></th>
                     </tr>
                     </thead>
                     <tbody>
