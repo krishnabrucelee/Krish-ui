@@ -189,7 +189,7 @@
 										<div class="row">
 											<label class="col-md-4 col-sm-4 control-label"> <span
 												class="pull-right"><fmt:message key="created.on" bundle="${msg}" /></span></label>
-											<div class="col-md-6 col-sm-6 col-xs-6">{{projectInfo.createdDateTime}}
+											<div class="col-md-6 col-sm-6 col-xs-6">{{projectInfo.createdDateTime*1000  | date:'yyyy-MM-dd HH:mm:ss'}}
 											</div>
 										</div>
 									</div>
