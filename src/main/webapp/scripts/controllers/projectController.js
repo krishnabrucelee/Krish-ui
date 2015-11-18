@@ -129,16 +129,24 @@ function projectCtrl($scope, promiseAjax, $modal, $state, modalService, dialogSe
     };
 
     $scope.addUser =function(user){
-    	if ($scope.projectInfo.userList.indexOf(user) != -1) {
-        	$scope.projectInfo.userList.push(user);
-        	var hasServer = crudService.update("projects", $scope.projectInfo);
-            hasServer.then(function (result) {
-                notify({message: 'User updated successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
-            });
-    	}
-    	else{
-    		 notify({message: 'User already added ', classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
-    	}
+
+    	 var newUser = user;
+         var oldUser;
+         if(newUser){ //This will avoid empty data
+         angular.forEach($scope.projectInfo.userList, function(eachuser){ //For loop
+         if(newUser.userName.toLowerCase() == eachuser.userName.toLowerCase()){ // this line will check whether the data is existing or not
+        	 oldUser = true;
+        	 notify({message: 'User already added ', classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+         }
+         });
+         if(!oldUser){
+        	 $scope.projectInfo.userList.push(user);
+        	 var hasServer = crudService.update("projects", $scope.projectInfo);
+             hasServer.then(function (result) {
+                 notify({message: 'User updated successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+             });
+         }
+         }
 
     }
 

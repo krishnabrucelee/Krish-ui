@@ -6,7 +6,7 @@
 <form name="volumeForm" method="POST" data-ng-submit="save(volumeForm, volume)" novalidate >
     <div class="inmodal" >
         <div class="modal-header">
-            <panda-modal-header page-icon="fa fa-database" page-title="Add Volume"></panda-modal-header>
+            <panda-modal-header page-icon="fa fa-database" page-title="<fmt:message key="add.volume" bundle="${msg}" />"></panda-modal-header>
 
         </div>
         <div class="modal-body">
@@ -14,7 +14,7 @@
                 <div class="col-md-12">
                     <div class="form-group" ng-class="{ 'text-danger' : volumeForm.name.$invalid && formSubmitted}">
                         <div class="row">
-                            <label  class="col-md-2 col-xs-12 col-sm-2 control-label">Name
+                            <label  class="col-md-2 col-xs-12 col-sm-2 control-label"><fmt:message key="common.name" bundle="${msg}" />
                                 <span class="text-danger">*</span>
                             </label>
                             <div class="col-md-5 col-xs-12 col-sm-5">
@@ -28,7 +28,7 @@
 
                     <div class="form-group" ng-class="{'text-danger' : volumeForm.type.$invalid && formSubmitted}">
                         <div class="row">
-                            <label class="col-md-2 col-xs-12 col-sm-2 control-label">Type <span class="m-l-xs"></span></label>
+                            <label class="col-md-2 col-xs-12 col-sm-2 control-label"><fmt:message key="common.type" bundle="${msg}" /> <span class="m-l-xs"></span></label>
 
 
                              <div class="col-md-5 col-xs-12 col-sm-5">
@@ -36,7 +36,7 @@
                                         data-ng-model="volume.storageTags"
                                         data-ng-class="{'error': volumeForm.type.$invalid && formSubmitted}"
                                         data-ng-options="storageTags for storageTags in volumeElements.diskOfferingTags" >
-                                    <option value="">Select</option>
+                                    <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
                                 </select>
                                 <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="Select the plan" ></i>
                                 <div class="error-area" data-ng-show="volumeForm.diskOfferings.$invalid && formSubmitted" ><i  tooltip="Plan is Required" class="fa fa-warning error-icon"></i></div>
@@ -61,7 +61,7 @@
                     <div class="form-group" ng-class="{ 'text-danger' : volumeForm.diskOfferings.$invalid && formSubmitted}">
 
                         <div class="row" >
-                            <label class="col-md-2 col-xs-12 col-sm-2 control-label">Plan
+                            <label class="col-md-2 col-xs-12 col-sm-2 control-label"><fmt:message key="common.plan" bundle="${msg}" />
                                 <span class="text-danger">*</span>
                             </label>
                             <div class="col-md-5 col-xs-12 col-sm-5">
@@ -69,7 +69,7 @@
                                         data-ng-model="volume.storageOffering"
                                         data-ng-class="{'error': volumeForm.diskOfferings.$invalid && formSubmitted}"
                                         data-ng-options="storageOffering.name for storageOffering in volumeElements.diskOfferingList" >
-                                    <option value="">Select</option>
+                                    <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
                                 </select>
                                 <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="Select the plan" ></i>
                                 <div class="error-area" data-ng-show="volumeForm.diskOfferings.$invalid && formSubmitted" ><i  tooltip="Plan is Required" class="fa fa-warning error-icon"></i></div>
@@ -142,8 +142,8 @@
                     $0.10 <span>/ hour</span>   <small class="text-right text-muted m-l-sm">($7.2 / month)</small>
                 </h4>
             </span>
-            <a class="btn btn-default"  data-ng-click="cancel()">Cancel</a>
-            <button class="btn btn-info" type="submit">Add</button>
+            <a class="btn btn-default"  data-ng-click="cancel()"><fmt:message key="common.cancel" bundle="${msg}" /></a>
+            <button class="btn btn-info" type="submit"><fmt:message key="common.add" bundle="${msg}" /></button>
 
 
         </div>
