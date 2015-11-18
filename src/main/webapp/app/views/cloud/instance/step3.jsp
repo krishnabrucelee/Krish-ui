@@ -41,7 +41,7 @@
 					data-ng-model="instance.dept" class="form-control col-md-4"
 					autofocus autocomplete="off"
 					data-ng-class="{'error': instanceTemplateForm.department.$invalid && templateFormSubmitted}">
-			 -->		<div  data-ng-class="{'error': !instance.department && templateFormSubmitted}" custom-select="t as t.name for t in formElements.departmenttypeList | filter: { name: $searchTerm }" ng-model="instance.department">
+			 -->		<div  data-ng-class="{'error': !instance.department && templateFormSubmitted}" custom-select="t as t.userName for t in formElements.departmenttypeList | filter: { name: $searchTerm }" ng-model="instance.department">
 						<div class="pull-left">
 						<strong>{{ t.userName }}</strong><br />
 						</div>

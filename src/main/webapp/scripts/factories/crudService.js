@@ -6,7 +6,7 @@ function crudService($window, localStorageService, globalConfig, $stateParams, p
 
     // List all the objects    object.setModuleName = function(moduleName) {
     object.list = function(moduleName, headers, data) {
-        return promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + moduleName +"?lang=" + localStorageService.cookie.get('language') + "&sortBy=ASC&limit="+data.limit, headers, data);
+        return promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + moduleName +"?lang=" + localStorageService.cookie.get('language') + "&sortBy=+id&limit="+data.limit, headers, data);
     };
 
     object.listAll = function(moduleName) {
@@ -39,6 +39,10 @@ function crudService($window, localStorageService, globalConfig, $stateParams, p
 
 object.listAllByTag = function(moduleName, val) {
         return promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + moduleName +"?tags=" +val);
+    };
+
+    object.console = function(moduleName, val) {
+        return promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + moduleName +"?instance=" +val);
     };
 
     object.delete = function(moduleName, id) {

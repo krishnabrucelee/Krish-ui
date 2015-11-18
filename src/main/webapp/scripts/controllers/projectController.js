@@ -49,6 +49,20 @@ function projectCtrl($scope, promiseAjax, $modal, $state, modalService, dialogSe
        var hasUsers = crudService.listAllByFilter("users/list", department.id);
         hasUsers.then(function (result) {  // this is only run after $http completes0
         	$scope.projectElements.projectOwnerList = result;
+        	angular.forEach($scope.projectElements.projectOwnerList, function(obj, key) {
+	    		if(obj.id == $scope.project.projectOwner.id) {
+	    			$scope.project.projectOwner = obj;
+	    		}
+	    	});
+        });
+    };
+
+    $scope.userLists = function (department) {
+    	console.log(department);
+       var hasUsers = crudService.listAllByFilter("users/list", department.id);
+        hasUsers.then(function (result) {  // this is only run after $http completes0
+        	$scope.projectElements.projectuserList = result;
+
         });
     };
 
@@ -95,12 +109,16 @@ function projectCtrl($scope, promiseAjax, $modal, $state, modalService, dialogSe
     }
 
     $scope.viewProjectDetails = function(project) {
+    	$scope.projectInfo = angular.copy(project);
+    	$scope.userLists($scope.projectInfo.department);
         project.isSelected = (project.isSelected) ? false : true;
         $scope.checkOne(project);
     };
 
     $scope.viewProjectd = function(project) {
     	$scope.editProjects = angular.copy(project);
+    	$scope.projectInfo = angular.copy(project);
+    	$scope.userLists($scope.projectInfo.department);
    	 	$scope.project = $scope.editProjects;
     	$scope.oneChecked = true;
     };
@@ -108,6 +126,41 @@ function projectCtrl($scope, promiseAjax, $modal, $state, modalService, dialogSe
 
      $scope.createProject = function (size) {
          modalService.trigger('app/views/project/add.jsp', size);
+    };
+
+    $scope.addUser =function(user){
+
+    	 var newUser = user;
+         var oldUser;
+         if(newUser){ //This will avoid empty data
+         angular.forEach($scope.projectInfo.userList, function(eachuser){ //For loop
+         if(newUser.userName.toLowerCase() == eachuser.userName.toLowerCase()){ // this line will check whether the data is existing or not
+        	 oldUser = true;
+        	 notify({message: 'User already added ', classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+         }
+         });
+         if(!oldUser){
+        	 $scope.projectInfo.userList.push(user);
+        	 var hasServer = crudService.update("projects", $scope.projectInfo);
+             hasServer.then(function (result) {
+                 notify({message: 'User updated successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+             });
+         }
+         }
+
+    }
+
+    $scope.removeUser = function(user){
+    	angular.forEach($scope.projectInfo.userList, function(obj, key) {
+    		if(obj.id == user.id) {
+    			$scope.projectInfo.userList.splice(key, 1);
+    		}
+    	});
+    	var hasServer = crudService.update("projects", $scope.projectInfo);
+        hasServer.then(function (result) {
+            notify({message: 'User removed successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+
+        });
     };
 
     // Edit the project
@@ -120,6 +173,7 @@ function projectCtrl($scope, promiseAjax, $modal, $state, modalService, dialogSe
                     $scope.formSubmitted = true;
                     if (form.$valid) {
                         var project = $scope.project;
+                        project.projectOwnerId = $scope.project.projectOwner.id;
                         var hasServer = crudService.update("projects", project);
                         hasServer.then(function (result) {
                         	$scope.oneChecked = false;
@@ -316,7 +370,7 @@ function projectCtrl($scope, promiseAjax, $modal, $state, modalService, dialogSe
                         $scope.list(1);
                         notify({message: 'Added successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
                         $modalInstance.close();
-                        $scope.userList();
+                        $scope.userList(user.department);
                     }).catch(function (result) {
                         angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
                             $scope.departmentForm[key].$invalid = true;

@@ -53,7 +53,10 @@
 											class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="create.project" bundle="${msg}" /></a> <a class="btn btn-info"
 										data-ng-click="editProject('md')"
 										data-ng-disabled="!oneChecked"><span
-											class="fa fa-edit fa-lg m-r-xs"></span><fmt:message key="edit.project" bundle="${msg}" /></a> <a
+											class="fa fa-edit fa-lg m-r-xs"></span><fmt:message key="edit.project" bundle="${msg}" /></a>
+
+
+											 <a
 										class="btn btn-danger"
 										data-ng-click="projectDeleteConfirmation('sm', project.totalCheckedCount)"
 										data-ng-disabled="!oneChecked"><span
@@ -81,6 +84,7 @@
 												<th><fmt:message key="common.status" bundle="${msg}" /></th>
 												<th><fmt:message key="project.owner" bundle="${msg}" /></th>
 												<th><fmt:message key="billing.owner" bundle="${msg}" /></th>
+												<th><fmt:message key="common.department" bundle="${msg}" /></th>
 												<th><fmt:message key="create.time" bundle="${msg}" /></th>
 												<th><fmt:message key="operation" bundle="${msg}" /></th>
 											</tr>
@@ -108,11 +112,15 @@
 													class="text-danger">In Active</label></td>
 												<td>{{ projectObj.projectOwner.userName }}</td>
 												<td>{{ projectObj.projectOwner.userName }}</td>
+												<td>{{ projectObj.department.userName }}</td>
 												<td>{{ projectObj.createdDateTime*1000 | date:'yyyy-MM-dd HH:mm:ss'}}</td>
-												<td><a
+											<td><a
 													data-ng-class="isSingle == projectObj.id  ? 'text-white' : ''"
 													class="badge badge-info p-xs" ui-sref="dashboard">Enter
-														Project</a></td>
+														Project</a>
+														   <a class="icon-button" ui-sref="projects.quotalimit({id: {{projectObj.id}}, quotaType: 'project-quota'})" title="<fmt:message key="common.edit.quota" bundle="${msg}" />">
+                                                    <span class="fa font-bold pe-7s-edit"> </span>
+                                                </a></td>
 
 											</tr>
 										</tbody>
@@ -173,8 +181,15 @@
 									<div class="form-group">
 										<div class="row">
 											<label class="col-md-4 col-sm-4 control-label"> <span
+												class="pull-right"><fmt:message key="common.department" bundle="${msg}" /></span></label>
+											<div class="col-md-6 col-sm-6 col-xs-6">{{projectInfo.department.userName}}</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="row">
+											<label class="col-md-4 col-sm-4 control-label"> <span
 												class="pull-right"><fmt:message key="created.on" bundle="${msg}" /></span></label>
-											<div class="col-md-6 col-sm-6 col-xs-6">{{projectInfo.createdDateTime}}
+											<div class="col-md-6 col-sm-6 col-xs-6">{{projectInfo.createdDateTime*1000  | date:'yyyy-MM-dd HH:mm:ss'}}
 											</div>
 										</div>
 									</div>

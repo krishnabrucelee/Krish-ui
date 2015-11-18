@@ -85,7 +85,7 @@ function instanceListCtrl($scope, $log, $filter, dialogService, promiseAjax, $st
 
 	$scope.instanceId = function(pageNumber) {
 		var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
-		var hasUsers = crudService.list("virtualmachine/list", $scope.global
+		var hasUsers = crudService.list("virtualmachine", $scope.global
 				.paginationHeaders(pageNumber, limit), {
 			"limit" : limit
 		});

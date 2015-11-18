@@ -35,7 +35,7 @@
                                 <span class="text-danger">*</span>
                             </label>
                             <div class="col-md-5 col-sm-5">
-                                <input required="true" type="text" name="name" data-ng-model="vmsnapshot.name" class="form-control" data-ng-class="{'error':  vmsnapshotForm.name.$invalid && formSubmitted}"  >
+                                <input required="true" type="text" name="name" data-ng-model="vm.name" class="form-control" data-ng-class="{'error':  vmsnapshotForm.name.$invalid && formSubmitted}"  >
                                 <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="<fmt:message key="name.of.the.instance" bundle="${msg}" />" ></i>
                                 <div class="error-area" data-ng-show="vmsnapshotForm.name.$invalid && formSubmitted" ><i  tooltip="<fmt:message key="name.is.required" bundle="${msg}" />" class="fa fa-warning error-icon"></i></div>
                             </div>

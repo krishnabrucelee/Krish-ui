@@ -8,29 +8,28 @@ angular.module('homer', []).controller("loginCtrl", function ($scope, $http, glo
     $scope.loginForm = function () {
         var username = document.getElementById("username").value;
         var password = document.getElementById("password").value;
+        var domain = document.getElementById("domain").value;
 
-        if (username == "user" && password == "user")
-        {
-             var headers = {
-                "x-requested-with": 'sample',
-                "x-auth-username": username,
-                "x-auth-password": password,
-                'Content-Type': 'application/json'
-            };
+        var headers = {
+            "x-requested-with": domain,
+            "x-auth-username": username,
+            "x-auth-password": password,
+            'Content-Type': 'application/json'
+        };
 
-            $http({method: 'POST', url: globalConfig.APP_URL + 'authenticate', headers: headers})
+        $http({method: 'POST', url: globalConfig.APP_URL + 'authenticate', headers: headers})
             .success(function (result) {
-                $window.sessionStorage.token = result.token;
-                window.location.href = "index#/dashboard";
-            }).error(function (data, status, headers, config) {
-                delete $window.sessionStorage.token;
-            });
+               $window.sessionStorage.token = result.token;
+               window.location.href = "index#/dashboard";
+           }).catch(function (result) {
+       	       delete $window.sessionStorage.token;
+                  if (!angular.isUndefined(result.data)) {
+        	          var target = document.getElementById("errorMsg");
+                      target.innerHTML = result.data.message;
+                      target.style.display = 'block';
+                      target.style["margin-bottom"] = '10px';
+                  }
+           });
 
-        } else {
-            var target = document.getElementById("errorMsg");
-            target.innerHTML = "Invalid Username or Password";
-            target.style.display = 'block';
-            target.style["margin-bottom"] = '10px';
-        }
     }
 });

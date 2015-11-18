@@ -17,7 +17,7 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
     $scope.instanceForm = [];
     $scope.instanceElements = {};
     $scope.instance ={};
-    $scope.instance.network ={};
+    $scope.instance.networks = {};
 
     $scope.template = {
             templateList: {}
@@ -27,16 +27,21 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
     $scope.instance = {
         computeOffer: {
             category: 'static',
-            ram: {
-                value: 0,
-                floor: 0,
-                ceil: 64
+            memory: {
+                value: 512,
+                floor: 512,
+                ceil: 4096
             },
             cpuCore: {
-                value: 0,
-                floor: 0,
+                value: 1,
+                floor: 1,
                 ceil: 32
 
+            },
+            cpuSpeed: {
+                value: 1000,
+                floor: 1000,
+                ceil: 3500
             },
             isOpen: true
         },
@@ -57,7 +62,7 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
             isOpen: false
 
         },
-        network: {
+        networks: {
             category: 'all',
             isOpen: false
 
@@ -141,13 +146,13 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
         $scope.disk = false;
         $scope.disks = false;
         $scope.computes = false;
-        $scope.network = false;
+        $scope.networks = false;
 
         $scope.computeFunction = function (item) {
-            if (item == 'Custom') {
+            if (item === true) {
                 $scope.compute = true;
                 $scope.disk = false;
-                $scope.network = false;
+                $scope.networks = false;
                 $scope.computes = true;
             }
             else {
@@ -171,11 +176,11 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
               }
           }
           $scope.networkSlide = function () {
-              if (!$scope.network) {
-                  $scope.network = true;
+              if (!$scope.networks) {
+                  $scope.networks = true;
               }
               else {
-                  $scope.network = false;
+                  $scope.networks = false;
               }
           }
 
@@ -184,7 +189,7 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
               if (item == 'Custom') {
                   $scope.disk = true;
                   $scope.compute = false;
-                  $scope.network = false;
+                  $scope.networks = false;
                   $scope.disks = true;
 
               }
@@ -197,10 +202,10 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
 
           $scope.networkFunction = function (item) {
               if (item == '') {
-                  $scope.network = false;
+                  $scope.networks = false;
               }
               else {
-                  $scope.network = true;
+                  $scope.networks = true;
                   $scope.compute = false;
                   $scope.disk = false;
               }
@@ -323,8 +328,8 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
          var submitError = false;
          if (form.networkoffer.$valid && form.computeoffer.$valid) {
              var computeOfferValid = true;
-             if ($scope.instance.computeOffering.name == "Custom") {
-                 if ($scope.instance.computeOffer.cpuCore.value != 0 && $scope.instance.computeOffer.ram.value != 0) {
+             if ($scope.instance.computeOffering.customized == "true") {
+                 if ($scope.instance.computeOffer.cpuCore.value != 0 && $scope.instance.computeOffer.memory.value != 0) {
                      $scope.compute = false;
                  }
                  else {
@@ -339,9 +344,9 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
              }
              if (form.networkoffer.$valid && !$scope.compute) {
                  if ($scope.instance.networkOfferinglist.value == 'new') {
-                     if ($scope.instance.network.name == null) {
+                     if ($scope.instance.networks.name == null) {
                          submitError = true;
-                         $scope.network = true;
+                         $scope.networks = true;
                          $scope.disk = false;
                          $scope.homerTemplate = 'app/views/notification/notify.jsp';
                          notify({message: 'Enter network name  ', classes: 'alert-danger', templateUrl: $scope.homerTemplate});
@@ -349,7 +354,7 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
                      else {
                          if (angular.isUndefined($scope.instance.networkOffering)) {
                              submitError = true;
-                             $scope.network = true;
+                             $scope.networks = true;
                              $scope.disk = false;
                              $scope.homerTemplate = 'app/views/notification/notify.jsp';
                              notify({message: 'Select network offering ', classes: 'alert-danger', templateUrl: $scope.homerTemplate});
@@ -359,12 +364,12 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
                  }
                  var networkSelected = false;
                  if ($scope.instance.networkOfferinglist.value == 'vpc' || $scope.instance.networkOfferinglist.value == 'all') {
-                     for (var i = 0; i < $scope.instance.network.networkList.length; i++) {
-                         var network = $scope.instance.network.networkList[i];
-                         $scope.instance.networkUuid = network.uuid;
-                         console.log(network);
+                     for (var i = 0; i < $scope.instance.networks.networkList.length; i++) {
+                         var networks = $scope.instance.networks.networkList[i];
+                         $scope.instance.networkUuid = networks.uuid;
+                         console.log(networks);
                          console.log($scope.instance.nerworkList);
-                         if ($scope.instance.network[i] == true) {
+                         if ($scope.instance.networks[i] == true) {
                              networkSelected = true;
                              submitError = false;
                              break;
@@ -373,7 +378,7 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
 
                      if (!networkSelected) {
                          submitError = true;
-                         $scope.network = true;
+                         $scope.networks = true;
                          $scope.disk = false;
                          $scope.homerTemplate = 'app/views/notification/notify.jsp';
                          notify({message: 'Select network offering ', classes: 'alert-danger', templateUrl: $scope.homerTemplate});
@@ -392,7 +397,7 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
                                  $scope.homerTemplate = 'app/views/notification/notify.jsp';
                                  notify({message: 'Select the disk size and IOPS', classes: 'alert-danger', templateUrl: $scope.homerTemplate});
                                  $scope.disk = true;
-                                 $scope.network = false;
+                                 $scope.networks = false;
                                  submitError = true;
                              }
                          }
@@ -428,10 +433,15 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
     	 if (!angular.isUndefined(instance.project)) {
              instance.projectId = instance.project.id;
          }
+    	 if (!angular.isUndefined(instance.department.domain) && instance.department.domain != null) {
          instance.domain = instance.department.domain;
          instance.domainId =instance.domain.id;
+         }else{
+        	 instance.domainId = 1;
+         }
          instance.departmentId = instance.department.id;
          instance.instanceOwnerId = instance.instanceOwner.id;
+
          console.log("hi");
          console.log("=====");
          console.log(instance);
@@ -448,7 +458,7 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
          if(result.data.globalError[0] != ''){
         	 var msg = result.data.globalError[0];
         	 notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
-
+        	 wizard.show(1);
              } else if(result.data.fieldErrors != null){
               var errorMessages = "";
               angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
@@ -535,10 +545,10 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
              };
              // localStorageService.remove('instanceNetworkList');
 
-             $scope.network.plan = $scope.network.networkOffers.name;
+             $scope.networks.plan = $scope.networks.networkOffers.name;
 
-             $scope.instanceNetwork = filterFilter($scope.networkList.networkOffers, {'name': $scope.network.plan});
-             if (filterFilter($scope.instanceNetworkList, {'name': $scope.network.plan})[0] == null) {
+             $scope.instanceNetwork = filterFilter($scope.networkList.networkOffers, {'name': $scope.networks.plan});
+             if (filterFilter($scope.instanceNetworkList, {'name': $scope.networks.plan})[0] == null) {
                  $scope.instanceNetworkList.push($scope.instanceNetwork[0]);
                  localStorageService.set("instanceNetworkList", $scope.instanceNetworkList);
                  $scope.homerTemplate = 'app/views/notification/notify.jsp';
@@ -636,7 +646,7 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
             	 $scope.step--;
              }
          };
-
+         $scope.instance.networks={};
         $scope.getOsListByImage = function (templateImage) {
              $scope.instance.templateOs = {};
              $scope.instance.templateImage = templateImage;
@@ -658,27 +668,22 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
 
 
          $scope.getNetworkByType = function (type) {
-             $scope.instance.network.category = type;
+             $scope.instance.networks.category = type;
          }
 
          $scope.networkList = {};
          $scope.paginationObject = {};
-         $scope.networkForm = {};
+      $scope.networkForm = {};
+      $scope.instance.networks={};
          $scope.global = crudService.globalConfig;
          $scope.test = "test";
          // Guest Network List
          $scope.listNetwork = function (pageNumber) {
-             var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
-             var hasGuestNetworks = crudService.list("guestnetwork", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+             var hasGuestNetworks = crudService.listAll("guestnetwork/list");
              hasGuestNetworks.then(function (result) {  // this is only run after $http
-                                                                                                     // completes0
+                     $scope.instance.networks.networkList = result;
+             });
 
-                     $scope.instance.network.networkList = result;
-
-                 // For pagination
-                 $scope.paginationObject.limit = limit;
-                 $scope.paginationObject.currentPage = pageNumber;
-                 $scope.paginationObject.totalItems = result.totalItems;});
          };
 
 
@@ -694,7 +699,7 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
              hasNetworks.then(function (result) {  // this is only run after $http
                                                                                                      // completes0
 
-                     $scope.instance.network.networkOfferList = result;
+                     $scope.instance.networks.networkOfferList = result;
 
                  // For pagination
                  $scope.paginationObject.limit = limit;

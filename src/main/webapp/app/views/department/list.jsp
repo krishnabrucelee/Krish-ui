@@ -95,7 +95,7 @@
                                                 <a class="icon-button" title="<fmt:message key="common.edit" bundle="${msg}" />" data-ng-click="edit('lg', department)">
                                                     <span class="fa fa-edit"> </span>
                                                 </a>
-                                                <a class="icon-button" title="<fmt:message key="common.edit.quota" bundle="${msg}" />" onclick="javascript:void(0);">
+                                                 <a class="icon-button" ui-sref="department.quotalimit({id: {{department.id}}, quotaType: 'department-quota'})" title="<fmt:message key="common.edit.quota" bundle="${msg}" />">
                                                     <span class="fa font-bold pe-7s-edit"> </span>
                                                 </a>
                                                 <a class="icon-button" title="<fmt:message key="common.delete" bundle="${msg}" />" data-ng-click="delete('sm', department)" ><span class="fa fa-trash"></span></a>
