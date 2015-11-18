@@ -17,6 +17,7 @@ function instanceViewCtrl($scope,$log, dialogService, $modal,$http, $state, $sta
         var hasServer = crudService.read("virtualmachine", $stateParams.id);
         hasServer.then(function (result) {  // this is only run after $http completes
             $scope.instance = result;
+            $state.current.data.pageName = result.name;
         });
     }
 
