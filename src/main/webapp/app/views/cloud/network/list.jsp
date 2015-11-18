@@ -12,21 +12,21 @@
                     <div class="col-md-12 col-sm-12 col-xs-12 ">
                         <div class="pull-left">
                             <div class="dashboard-box pull-left">
-                                <span class="pull-right">Total Network</span>
+                                <span class="pull-right"><fmt:message key="total.network" bundle="${msg}" /></span>
                                 <div class="clearfix"></div>
                                 <span class="pull-left m-t-xs"><img src="images/network-icon.png"></span>
                                 <b class="pull-right">{{networkList.Count}}</b>
                                 <div class="clearfix"></div>
                             </div>
                             <div class="dashboard-box pull-left">
-                                <span class="pull-right">Isolated Network</span>
+                                <span class="pull-right"><fmt:message key="isolated.network" bundle="${msg}" /></span>
                                 <div class="clearfix"></div>
                                 <span class="pull-left m-t-xs"><img src="images/network-icon.png"></span>
                                 <b class="pull-right">{{networkList.Count}}</b>
                                 <div class="clearfix"></div>
                             </div>
                             <div class="dashboard-box pull-left">
-                                <span class="pull-right">Shared Network</span>
+                                <span class="pull-right"><fmt:message key="shared.network" bundle="${msg}" /></span>
                                 <div class="clearfix"></div>
                                 <span class="pull-left m-t-xs"><img src="images/network-icon.png"></span>
                                 <b class="pull-right">0</b>
@@ -42,8 +42,8 @@
 
                             <div class="clearfix"></div>
                             <span class="pull-right m-l-sm m-t-sm">
-                                <a class="btn btn-info" data-ng-click="openAddIsolatedNetwork('md')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span>Add Isolated Network</a>
-                                <a ui-sref-opts="{reload: true}" title="Refresh"  data-ng-click="selectedNetwork(network.networkView.name)" class="btn btn-info"><span class="fa fa-refresh fa-lg "></span></a>
+                                <a class="btn btn-info" data-ng-click="openAddIsolatedNetwork('md')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="add.isolated.network" bundle="${msg}" /></a>
+                                <a ui-sref-opts="{reload: true}" title="<fmt:message key="common.refresh" bundle="${msg}" />"  data-ng-click="selectedNetwork(network.networkView.name)" class="btn btn-info"><span class="fa fa-refresh fa-lg "></span></a>
 
                             </span>
                         </div>
