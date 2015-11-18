@@ -172,6 +172,9 @@
 	<script src="scripts/directives/touchSpin.js"></script>
 	<script src="scripts/directives/customSelect.js"></script>
 
+	<script src="scripts/controllers/quotaAllocationController.js"></script>
+
+
 	<script src="scripts/controllers/instance/indexController.js"></script>
 	<script src="scripts/controllers/instance/viewController.js"></script>
 	<script src="scripts/controllers/instance/listController.js"></script>

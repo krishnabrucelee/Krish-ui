@@ -675,17 +675,11 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
          $scope.test = "test";
          // Guest Network List
          $scope.listNetwork = function (pageNumber) {
-             var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
-             var hasGuestNetworks = crudService.list("guestnetwork", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+             var hasGuestNetworks = crudService.listAll("guestnetwork/list");
              hasGuestNetworks.then(function (result) {  // this is only run after $http
-                                                                                                     // completes0
-
                      $scope.instance.networks.networkList = result;
+             });
 
-                 // For pagination
-                 $scope.paginationObject.limit = limit;
-                 $scope.paginationObject.currentPage = pageNumber;
-                 $scope.paginationObject.totalItems = result.totalItems;});
          };
 
 

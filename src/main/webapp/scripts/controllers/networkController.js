@@ -7,7 +7,6 @@
 angular
         .module('homer')
         .controller('networksCtrl', networksCtrl)
-        .controller('networkListCtrl', networkListCtrl)
         .controller('networkViewCtrl', networkViewCtrl)
 
 function networksCtrl($scope, modalService, promiseAjax,filterFilter, localStorageService, notify, $state, $stateParams, $timeout, globalConfig, $window,dialogService, crudService) {
@@ -38,14 +37,7 @@ function networksCtrl($scope, modalService, promiseAjax,filterFilter, localStora
                             notify({message: 'Added successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
                             $modalInstance.close();
 
-                            $scope.department.userName = "";
-                            $scope.department.description = "";
-                            $scope.department.domain = "";
-                            $scope.department.firstName = "";
-                            $scope.department.lastName = "";
-                            $scope.department.email = "";
-                            $scope.department.password = "";
-                            $scope.department.confirmPassword = "";
+
                         }).catch(function (result) {
                         	if(!angular.isUndefined(result) && result.data != null) {
 	                            angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
@@ -65,6 +57,33 @@ function networksCtrl($scope, modalService, promiseAjax,filterFilter, localStora
 
 
 
+	   $scope.networkList = {};
+       $scope.paginationObject = {};
+       $scope.networkForm = {};
+       $scope.global = crudService.globalConfig;
+       // Guest Network List
+       $scope.list = function (pageNumber) {
+           var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
+           var hasGuestNetworks = crudService.list("guestnetwork", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+           hasGuestNetworks.then(function (result) {  // this is only run after $http
+                                                                                                   // completes0
+
+                   $scope.networkList = result;
+                   console.log($scope.networkList);
+
+
+
+                   $scope.networkList.Count = 0;
+                   if(result.length != 0) {
+                   	$scope.networkList.Count = result.length;
+                   }
+
+               // For pagination
+               $scope.paginationObject.limit = limit;
+               $scope.paginationObject.currentPage = pageNumber;
+               $scope.paginationObject.totalItems = result.totalItems;});
+       };
+       $scope.list(1);
 
 
 
@@ -72,15 +91,91 @@ function networksCtrl($scope, modalService, promiseAjax,filterFilter, localStora
 
 
 
+	//localStorageService.clearAll();
+    //localStorageService.set("rules",null);
+ /*   localStorageService.set("networkList", null);
+    if (localStorageService.get("networkList") == null) {
+        var hasServer = promiseAjax.httpRequest("GET", "api/network.json");
+        hasServer.then(function (result) {  // this is only run after $http completes
+            $scope.networkList = result;
+            localStorageService.set("networkList", result);
+        });
+    } else {
+        $scope.networkList = localStorageService.get("networkList");
+    }*/
+   /* $scope.selectView=function(selectedItem){
+
+    if(selectedItem == 'Guest Networks' || selectedItem==null ){
+         var hasServer = promiseAjax.httpRequest("GET", "api/network.json");
+        hasServer.then(function (result) {  // this is only run after $http completes
+            $scope.networkList = result;
+            localStorageService.set("networkList", result);
+        });
+    }
+    if(selectedItem == 'VPC'){
+         var hasServer = promiseAjax.httpRequest("GET", "api/vpc.json");
+        hasServer.then(function (result) {  // this is only run after $http completes
+            $scope.networkList = result;
+            localStorageService.set("networkList", result);
+        });
+    }
+    if(selectedItem == 'Security Groups'){
+         var hasServer = promiseAjax.httpRequest("GET", "api/securityGroups.json");
+        hasServer.then(function (result) {  // this is only run after $http completes
+            $scope.networkList = result;
+            localStorageService.set("networkList", result);
+        });
+    }
+    if(selectedItem == 'VPN Customer Gateway'){
+         var hasServer = promiseAjax.httpRequest("GET", "api/vpn.json");
+        hasServer.then(function (result) {  // this is only run after $http completes
+            $scope.networkList = result;
+            localStorageService.set("networkList", result);
+        });
+    }
+};
 
 
+ $scope.selectedNetwork=function(selectedItem){
 
+    if(selectedItem == 'Guest Networks' || selectedItem==null ){
+         var hasServer = promiseAjax.httpRequest("GET", "api/network.json");
+        hasServer.then(function (result) {  // this is only run after $http completes
+            $scope.networkList = result;
+            localStorageService.set("networkList", result);
+        });
+    }
+    if(selectedItem == 'VPC'){
+         var hasServer = promiseAjax.httpRequest("GET", "api/vpc.json");
+        hasServer.then(function (result) {  // this is only run after $http completes
+            $scope.networkList = result;
+            localStorageService.set("networkList", result);
+        });
+    }
+    if(selectedItem == 'Security Groups'){
+         var hasServer = promiseAjax.httpRequest("GET", "api/securityGroups.json");
+        hasServer.then(function (result) {  // this is only run after $http completes
+            $scope.networkList = result;
+            localStorageService.set("networkList", result);
+        });
+    }
+    if(selectedItem == 'VPN Customer Gateway'){
+         var hasServer = promiseAjax.httpRequest("GET", "api/vpn.json");
+        hasServer.then(function (result) {  // this is only run after $http completes
+            $scope.networkList = result;
+            localStorageService.set("networkList", result);
+        });
+    }
+};*/
 
+      $scope.networkElements= {actions: [
+            {id: 1, name: 'Hours'},
+            {id: 2, name: 'Weeks'},
+            {id: 3, name: 'Month'}
+        ]};
 
-
-
-    $scope.networkLists = {
-        networkOffers: [
+    $scope.dropnetworkLists = {
+    		/* networkOffers: [
             {
                 "id": 1,
                 "name": "Advanced Network",
@@ -120,14 +215,14 @@ function networksCtrl($scope, modalService, promiseAjax,filterFilter, localStora
                 "netmask": "255.255.255.0",
                 "isDefault": "NO"
             }
-        ],
+        ],*/
         views: [
             {id: 1, name: 'Guest Networks'},
             {id: 2, name: 'Security Groups'},
             {id: 3, name: 'VPC'},
             {id: 4, name: 'VPN Customer Gateway'}
         ],
-        protocols: [
+        /*protocols: [
             {id: 1, name: 'TCP', value: 'tcp'},
             {id: 2, name: 'UDP', value: 'udp'},
             {id: 3, name: 'ICMP', value: 'icmp'},
@@ -148,14 +243,14 @@ function networksCtrl($scope, modalService, promiseAjax,filterFilter, localStora
             {id: 1, name: 'Round-robin', value: 'roundrobin'},
             {id: 2, name: 'Least connections', value: 'leastconn'},
             {id: 3, name: 'Source', value: 'source'}
-        ]
+        ]*/
 
     };
 
     $scope.tcp = true;
     $scope.udp = true;
 
-    $scope.selectProtocol = function (selectedItem) {
+   /* $scope.selectProtocol = function (selectedItem) {
         if (selectedItem == 'TCP' || selectedItem == 'UDP') {
             $scope.tcp = true;
             $scope.udp = true;
@@ -226,7 +321,7 @@ function networksCtrl($scope, modalService, promiseAjax,filterFilter, localStora
         };
         $scope.portList.push($scope.newport);
         localStorageService.set("ports", $scope.portList);
-    }
+    }*/
     $scope.portList = localStorageService.get("ports");
     $scope.rulesList = localStorageService.get("rules");
     $scope.rules = localStorageService.get("firewall");
@@ -525,92 +620,6 @@ $scope.vmperror=false;
 };
 
 
-function networkListCtrl($scope,$modal,$log, promiseAjax, globalConfig, localStorageService, $window, sweetAlert, notify) {
-   //localStorageService.clearAll();
-    //localStorageService.set("rules",null);
-    localStorageService.set("networkList", null);
-    if (localStorageService.get("networkList") == null) {
-        var hasServer = promiseAjax.httpRequest("GET", "api/network.json");
-        hasServer.then(function (result) {  // this is only run after $http completes
-            $scope.networkList = result;
-            localStorageService.set("networkList", result);
-        });
-    } else {
-        $scope.networkList = localStorageService.get("networkList");
-    }
-    $scope.selectView=function(selectedItem){
-
-    if(selectedItem == 'Guest Networks' || selectedItem==null ){
-         var hasServer = promiseAjax.httpRequest("GET", "api/network.json");
-        hasServer.then(function (result) {  // this is only run after $http completes
-            $scope.networkList = result;
-            localStorageService.set("networkList", result);
-        });
-    }
-    if(selectedItem == 'VPC'){
-         var hasServer = promiseAjax.httpRequest("GET", "api/vpc.json");
-        hasServer.then(function (result) {  // this is only run after $http completes
-            $scope.networkList = result;
-            localStorageService.set("networkList", result);
-        });
-    }
-    if(selectedItem == 'Security Groups'){
-         var hasServer = promiseAjax.httpRequest("GET", "api/securityGroups.json");
-        hasServer.then(function (result) {  // this is only run after $http completes
-            $scope.networkList = result;
-            localStorageService.set("networkList", result);
-        });
-    }
-    if(selectedItem == 'VPN Customer Gateway'){
-         var hasServer = promiseAjax.httpRequest("GET", "api/vpn.json");
-        hasServer.then(function (result) {  // this is only run after $http completes
-            $scope.networkList = result;
-            localStorageService.set("networkList", result);
-        });
-    }
-};
-
-
- $scope.selectedNetwork=function(selectedItem){
-
-    if(selectedItem == 'Guest Networks' || selectedItem==null ){
-         var hasServer = promiseAjax.httpRequest("GET", "api/network.json");
-        hasServer.then(function (result) {  // this is only run after $http completes
-            $scope.networkList = result;
-            localStorageService.set("networkList", result);
-        });
-    }
-    if(selectedItem == 'VPC'){
-         var hasServer = promiseAjax.httpRequest("GET", "api/vpc.json");
-        hasServer.then(function (result) {  // this is only run after $http completes
-            $scope.networkList = result;
-            localStorageService.set("networkList", result);
-        });
-    }
-    if(selectedItem == 'Security Groups'){
-         var hasServer = promiseAjax.httpRequest("GET", "api/securityGroups.json");
-        hasServer.then(function (result) {  // this is only run after $http completes
-            $scope.networkList = result;
-            localStorageService.set("networkList", result);
-        });
-    }
-    if(selectedItem == 'VPN Customer Gateway'){
-         var hasServer = promiseAjax.httpRequest("GET", "api/vpn.json");
-        hasServer.then(function (result) {  // this is only run after $http completes
-            $scope.networkList = result;
-            localStorageService.set("networkList", result);
-        });
-    }
-};
-
-      $scope.networkElements= {actions: [
-            {id: 1, name: 'Hours'},
-            {id: 2, name: 'Weeks'},
-            {id: 3, name: 'Month'}
-        ]};
-};
-
-
 function networkViewCtrl($scope, $http, notify, globalConfig, localStorageService, modalService, $log, $state, $stateParams, promiseAjax) {
     $scope.global = globalConfig;
     $scope.networkList = [];
@@ -619,7 +628,7 @@ function networkViewCtrl($scope, $http, notify, globalConfig, localStorageServic
     $scope.ipDetails = [];
     $scope.tabview='';
 
-    if ($stateParams.id > 0) {
+    /*if ($stateParams.id > 0) {
         var hasServer = promiseAjax.httpRequest("GET", "api/network.json");
         hasServer.then(function (result) {  // this is only run after $http completes
             var networkId = $stateParams.id - 1;
@@ -643,7 +652,7 @@ function networkViewCtrl($scope, $http, notify, globalConfig, localStorageServic
             localStorageService.set('view','details');
         });
 
-    }
+    }*/
 
 
 

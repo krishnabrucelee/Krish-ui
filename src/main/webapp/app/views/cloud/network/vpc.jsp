@@ -14,13 +14,13 @@
             <td>
                 <a class="text-info" ui-sref="cloud.list-network.view-network({id: {{ network.id}}})"  title="View Network" >{{ network.name}}</a>
             </td>
-            <td>{{ network.displaytext}} </td>
-            <td>{{ network.zonename}} </td>
-            <td>{{ network.cidr}} </td>
-            <td><label class="label label-success text-center text-white"> {{ network.state}} </label></td>
+            <td>{{ network.displayText}} </td>
+            <td>{{ network.zone.name}} </td>
+            <td>{{ network.cIDR}} </td>
+            <td><label class="label label-success text-center text-white"> {{ network.status}} </label></td>
 
             <td>
-                <a class="icon-button" title="Edit">                    
+                <a class="icon-button" title="Edit">
                     <span class="fa fa-edit m-r"> </span>
                 </a>
                 <a class="icon-button" title="Delete"  ><span class="fa fa-trash"></span></a>

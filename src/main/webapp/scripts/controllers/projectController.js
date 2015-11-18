@@ -129,12 +129,25 @@ function projectCtrl($scope, promiseAjax, $modal, $state, modalService, dialogSe
     };
 
     $scope.addUser =function(user){
-    	$scope.projectInfo.userList.push(user);
-    	var hasServer = crudService.update("projects", $scope.projectInfo);
-        hasServer.then(function (result) {
-            notify({message: 'User updated successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
 
-        });
+    	 var newUser = user;
+         var oldUser;
+         if(newUser){ //This will avoid empty data
+         angular.forEach($scope.projectInfo.userList, function(eachuser){ //For loop
+         if(newUser.userName.toLowerCase() == eachuser.userName.toLowerCase()){ // this line will check whether the data is existing or not
+        	 oldUser = true;
+        	 notify({message: 'User already added ', classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+         }
+         });
+         if(!oldUser){
+        	 $scope.projectInfo.userList.push(user);
+        	 var hasServer = crudService.update("projects", $scope.projectInfo);
+             hasServer.then(function (result) {
+                 notify({message: 'User updated successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+             });
+         }
+         }
+
     }
 
     $scope.removeUser = function(user){
@@ -356,8 +369,8 @@ function projectCtrl($scope, promiseAjax, $modal, $state, modalService, dialogSe
                     hasServer.then(function (result) {  // this is only run after $http completes
                         $scope.list(1);
                         notify({message: 'Added successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
-                        $modalInstance.close(user.department);
-                        $scope.userList();
+                        $modalInstance.close();
+                        $scope.userList(user.department);
                     }).catch(function (result) {
                         angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
                             $scope.departmentForm[key].$invalid = true;
