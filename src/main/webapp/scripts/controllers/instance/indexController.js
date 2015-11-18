@@ -23,10 +23,6 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
             templateList: {}
         };
 
-
-
-
-
     // Form Field Decleration
     $scope.instance = {
         computeOffer: {
@@ -88,6 +84,33 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
       };
       $scope.templateList();
 
+
+      $scope.getTemplatesByFilters = function() {
+    	  var templateList = [];
+    	  var template = {};
+    	  template.osCategory = $scope.instance.osCategory;
+    	  template.architecture = $scope.instance.architecture;
+    	  template.osVersion = $scope.instance.osVersion;
+    	  console.log(template);
+
+    	  var hastemplateList = promiseAjax.httpTokenRequest(globalConfig.HTTP_POST , globalConfig.APP_URL + "templates/search?lang=" + localStorageService.cookie.get('language'), '', template);
+          hastemplateList.then(function (result) {
+        	  $scope.formElements.templateList= result;
+          });
+      }
+
+
+      function containsObject(obj, list) {
+    	    var i;
+    	    for (i = 0; i < list.length; i++) {
+    	        if (list[i] === obj) {
+    	            return true;
+    	        }
+    	    }
+
+    	    return false;
+    	}
+
         $scope.templateListOs = function (osType) {
 
         };
@@ -110,12 +133,7 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
                 departmentList: [
                     {id: 1, name: 'Developing'},
                     {id: 2, name: 'Testing'}
-                ],
-//        osVersionList: [
-//                    {id: 1, name: '5.4', price: 0.10},
-//                    {id: 2, name: '2012R', price: 0.10},
-//                    {id: 3, name: '2012RSTD', price: 0.10}
-//                ]
+                ]
         };
 
         $scope.compute = false;
@@ -457,14 +475,7 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
      $scope.addnetwork = function () {
 
           var cidrRegex = /^([0-9]{1,3}\.){3}[0-9]{1,3}($|\/[0-32]{1,2})$/i;
-         var networkError = false;
-//        var CIDR = angular.copy($scope.guestnetwork.cIDR);
-//         if((!cidrRegex.test(CIDR)) && CIDR!= "" && !angular.isUndefined($scope.guestnetwork.cIDR)) {
-//                 $scope.homerTemplate = 'app/views/notification/notify.jsp';
-//             notify({message: 'Invalid CIDR', classes: 'alert-danger', templateUrl: $scope.homerTemplate});
-//             networkError = true;
- //        }
-
+          var networkError = false;
           if($scope.guestnetwork.name == null){
           $scope.homerTemplate = 'app/views/notification/notify.jsp';
           notify({message: 'Enter Network Name', classes: 'alert-danger', templateUrl: $scope.homerTemplate});
@@ -539,16 +550,6 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
                  notify({message: 'Network already exist', classes: 'alert-danger', templateUrl: $scope.homerTemplate});
              }
              $scope.networkLists = localStorageService.get("instanceNetworkList");
-             // console.log($scope.volumeLists);
-
-
- // if(angular.isUndefined($stateParams.id)) {
- // $window.location.href = '#/instance/list/';
- // } else {
- // $state.reload();
- // // $window.location.href = '#/instance/list/view/'+$stateParams.id;
- // //$window.location.href = '#instance/list/view/'+instanceId;
- // }
              localStorageService.set('instanceViewTab', 'network');
              $state.reload();
 
@@ -732,6 +733,5 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
                  });
              }
          }
-
 
 }
