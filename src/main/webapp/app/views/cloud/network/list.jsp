@@ -60,11 +60,11 @@
 
                             <div data-ng-show="network.networkView.name == 'Guest Networks' || network.networkView.name == null" data-ng-include src="'app/views/cloud/network/guest-networks.jsp'"></div>
 
-                            <div data-ng-show="network.networkView.name == 'Security Groups'" data-ng-include src="'app/views/cloud/network/security-groups.jsp'"></div>
+                            <div data-ng-show="network.networkView.name == 'Security Groups'" data-ng-include src="'app/views/cloud/network/asecurity-groups.jsp'"></div>
 
-                            <div data-ng-show="network.networkView.name == 'VPC'" data-ng-include src="'app/views/cloud/network/vpc.jsp'"></div>
+                            <div data-ng-show="network.networkView.name == 'VPC'" data-ng-include src="'app/views/cloud/network/avpc.jsp'"></div>
 
-                            <div data-ng-show="network.networkView.name == 'VPN Customer Gateway'" data-ng-include src="'app/views/cloud/network/vpn.jsp'"></div>
+                            <div data-ng-show="network.networkView.name == 'VPN Customer Gateway'" data-ng-include src="'app/views/cloud/network/avpn.jsp'"></div>
                         </div>
                     </div>
                 </div>

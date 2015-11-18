@@ -130,14 +130,14 @@ function configState($stateProvider, $httpProvider,  $urlRouterProvider, $compil
                 url: "volume/list",
                 templateUrl: VIEW_URL + "views/cloud/volume/list.jsp",
                 data: {
-                    pageTitle: 'Volumes'
+                    pageTitle: 'common.volume'
                 }
             })
             .state('cloud.volume-snapshot', {
                 url: "volume/snapshot",
                 templateUrl: VIEW_URL + "views/cloud/volume/volume-snapshot.jsp",
                 data: {
-                    pageTitle: 'snapshots'
+                    pageTitle: 'common.snapshots'
                 }
             })
             .state('cloud.list-volume.view-volume', {
@@ -342,7 +342,7 @@ function configState($stateProvider, $httpProvider,  $urlRouterProvider, $compil
                 url: "network/list",
                 templateUrl: VIEW_URL + "views/cloud/network/list.jsp",
                 data: {
-                    pageTitle: 'Networks'
+                    pageTitle: 'common.network'
                 }
             })
 
