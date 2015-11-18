@@ -28,7 +28,7 @@
                             <div class="row">
                                 <label class="col-md-3 col-sm-3 control-label control-normal"><fmt:message key="common.department" bundle="${msg}" /><span class="text-danger">*</span></label>
                                 <div class="col-md-7  col-sm-7 col-xs-7">
-                                    <select required="true" class="form-control input-group" name="department" data-ng-model="role.department" ng-options="department.userName for department in formElements.roleList" data-ng-class="{'error': RoleForm.department.$invalid && formSubmitted}" >
+                                    <select required="true" class="form-control input-group" name="department" data-ng-model="role.department" ng-options="department.userName for department in formElements.departmentList" data-ng-class="{'error': RoleForm.department.$invalid && formSubmitted}" >
                                         <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
 
                                     </select>
@@ -53,16 +53,15 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-3 col-sm-6" ng-repeat="permission in permissions">
+        <div class="col-md-3 col-sm-6" ng-repeat="(key, module) in permissions | groupBy: 'module'">
             <div class="form-group">
                 <div class="white-content min-height-200">
                     <div class="panel-body">
-                        <label class="text-info font-control m-b-sm "> <input type="checkbox" ng-model="permission.selected" data-ng-click="checkAll(permission, $index)" /><span class="m-l-sm">{{ permission.name}}</span></label>
-                        <div class="row" ng-repeat="menu in permission.accessmenu">
+                        <label class="text-info font-control m-b-sm "> <input data-ng-model="permissionGroup[key]"  type="checkbox" data-ng-click="checkAll(module, key)" ><span class="m-l-sm">{{module[0].description}}</span></label>
+                        <div class="row" ng-repeat="permission in module">
                             <div class="col-md-12  col-sm-12 col-lg-12">
-                                <label> <input icheck type="checkbox" ng-model="menu.selected"data-ng-click="checkOne(permission)">  <span class="m-l-sm">{{menu.name}}</span></label>
+                                <label> <input type="checkbox" ng-model="permissionList[permission.id]" data-ng-click="checkOne(permission, module)">  <span class="m-l-sm">{{permission.action}}</span></label>
                             </div>
-
                         </div>
                     </div>
                 </div>

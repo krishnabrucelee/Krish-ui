@@ -57,7 +57,8 @@
     "blueimp-gallery": "https://github.com/blueimp/Gallery.git#~2.15.2",
     "angular-ui-sortable": "~0.13.3",
     "angular-local-storage": "~0.2.2"
-   
+    "angular-filter": "0.5.7"
+
   }
 
 }
