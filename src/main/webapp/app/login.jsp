@@ -43,7 +43,7 @@
                             <h6 class="alert alert-danger" style="display: none" id="errorMsg"></h6>
 
                             <div class="form-group">
-                                <label class="control-label" for="username">Usernames</label>
+                                <label class="control-label" for="username">Username</label>
                                 <input type="text" placeholder="username" title="Please enter you username" required="" value="" name="username" id="username" class="form-control">
                                 <!--<span class="help-block small">Your unique username to app</span>-->
 
