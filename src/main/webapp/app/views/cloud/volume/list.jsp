@@ -14,21 +14,21 @@
                                 <span class="pull-right"><fmt:message key="total.volume" bundle="${msg}" /></span>
                                 <div class="clearfix"></div>
                                 <span class="pull-left m-t-xs"><img src="images/volume-icon.png"></span>
-                                <b class="pull-right">13</b>
+                                <b class="pull-right">{{volumeList.Count}}</b>
                                 <div class="clearfix"></div>
                             </div>
                             <div class="dashboard-box pull-left">
                                 <span class="pull-right"><fmt:message key="running.volume" bundle="${msg}" /></span>
                                 <div class="clearfix"></div>
                                 <span class="pull-left m-t-xs"><img src="images/volume-icon.png"></span>
-                                <b class="pull-right">04</b>
+                                <b class="pull-right">{{volumeList.Count}}</b>
                                 <div class="clearfix"></div>
                             </div>
                             <div class="dashboard-box pull-left">
                                 <span class="pull-right"><fmt:message key="stopped.volume" bundle="${msg}" /></span>
                                 <div class="clearfix"></div>
                                 <span class="pull-left m-t-xs"><img src="images/volume-icon.png"></span>
-                                <b class="pull-right">09</b>
+                                <b class="pull-right">0</b>
                                 <div class="clearfix"></div>
                             </div>
 
@@ -38,7 +38,7 @@
                             <panda-quick-search></panda-quick-search>
                             <div class="clearfix"></div>
                             <span class="pull-right m-l-sm m-t-sm">
-                                <a class="btn btn-info" data-ng-click="openUploadVolumeContainer()"><span class="pe-7s-cloud-upload pe-lg font-bold m-r-xs"></span> <fmt:message key="common.name" bundle="${msg}" /></a>
+                                <a class="btn btn-info" data-ng-click="openUploadVolumeContainer()"><span class="pe-7s-cloud-upload pe-lg font-bold m-r-xs"></span> <fmt:message key="upload.volume" bundle="${msg}" /></a>
                                 <a class="btn btn-info" data-ng-click="addVolume('md')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span>  <fmt:message key="add.volume" bundle="${msg}" /></a>
                                 <a class="btn btn-info" ui-sref="cloud.list-volume" title="<fmt:message key="common.refresh" bundle="${msg}" />" ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
                             </span>
@@ -86,7 +86,7 @@
                                                     <li><a href="javascript:void(0);" data-ng-click="openReccuringSnapshot(volume)" title="Recurring Snapshot"><span class="fa fa-repeat m-xs"></span> <fmt:message key="recurring.snapshot" bundle="${msg}" /></a></li>
                                                     <li><a href="javascript:void(0);" title="Detach Volume" data-ng-click="detachVolume('sm')"><span class="fa fa-unlink m-xs"></span> <fmt:message key="common.detach" bundle="${msg}" /></a></li>
                                                     <li><a href="javascript:void(0);" title="Download Volume" data-ng-click="downloadVolume('md')"><span class="fa fa-cloud-download m-xs"></span> <fmt:message key="download.volume" bundle="${msg}" /></a></li>
-                                                    <li><a href="javascript:void(0);"  data-ng-click="resizeVolume(volume)" title="Resize"><span class="fa fa-expand m-xs"></span><fmt:message key="resize.volume" bundle="${msg}" /> </a></li>
+                                                    <li><a href="javascript:void(0);"  data-ng-click="resizeVolume(md,volume)" title="Resize"><span class="fa fa-expand m-xs"></span><fmt:message key="resize.volume" bundle="${msg}" /> </a></li>
                                                 </ul>
                                             </span>
                                             <span data-ng-if="volume.volumeType == 'ROOT'">
