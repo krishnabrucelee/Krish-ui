@@ -81,7 +81,7 @@
 
                     <!--<div class="hr-line-dashed"></div>-->
 
- <%--                    <div data-ng-show="volume.storageOffering.isCustomDisk">
+                    <div data-ng-show="volume.storageOffering.isCustomDisk">
                         <div class="form-group" ng-class="{ 'text-danger' : volumeForm.diskSize <= 0 && formSubmitted}">
 
                             <div class="row" >
@@ -92,8 +92,8 @@
                                     <rzslider rz-slider-model="volume.diskSize" rz-slider-floor="volumeElements.diskOffer.diskSize.floor" rz-slider-ceil="volumeElements.diskOffer.diskSize.ceil" rz-slider-always-show-bar="true"></rzslider>
                                 </div>
                                 <div class="col-md-2 col-xs-12 col-sm-3">
-                                    <input type="text" data-ng-init="volume.diskSize=0" valid-number  data-ng-min="{{ volumeElements.diskOffer.diskSize.floor}}" data-ng-max="{{ volumeElements.diskOffer.diskSize.ceil}}"
-                                           class="form-control input-mini" name="diskSize" data-ng-model="volume.diskSize">
+                                    <input type="text" data-ng-init="volume.diskSize=0" data-ng-min="{{ volumeElements.diskOffer.diskSize.floor}}" data-ng-max="{{ volumeElements.diskOffer.diskSize.ceil}}"
+                                           class="form-control input-mini" name="diskSize" data-ng-model="volume.diskSize" valid-number="">
                                 </div>
                             </div>
                         </div>
@@ -130,16 +130,16 @@
                             </div>
 
                         <!--<div class="hr-line-dashed"></div>-->
-                    </div> --%>
+                    </div>
 
                 </div>
             </div>
         </div>
         <div class="modal-footer">
 
-            <span class="pull-left" data-ng-show="volume.storageOffering.isCustomDisk || volume.storageOffering.isCustomizedIops">
+            <span class="pull-left" data-ng-show="volume.storageOffering.isCustomDisk">
                 <h4 class="text-danger price-text m-l-lg">
-                    $0.10 <span>/ hour</span>   <small class="text-right text-muted m-l-sm">($7.2 / month)</small>
+                <app-currency></app-currency>{{ (volume.storageOffering.storagePrice[0].costGbPerMonth * volume.diskSize) }}    <span>/ hour</span>   <small class="text-right text-muted m-l-sm">(<app-currency></app-currency>{{ volume.storageOffering.storagePrice[0].costGbPerMonth * volume.diskSize * 720}} / month)</small>
                 </h4>
             </span>
             <a class="btn btn-default"  data-ng-click="cancel()"><fmt:message key="common.cancel" bundle="${msg}" /></a>
