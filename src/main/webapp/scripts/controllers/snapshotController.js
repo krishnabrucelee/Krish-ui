@@ -95,9 +95,7 @@ localStorageService, $window, dialogService, notify) {
 	        $scope.paginationObject.totalItems = result.totalItems;
 	        console.log($scope.paginationObject);
 	    });
-    },$scope.cancel = function () {
-        $modalInstance.close();
-    };
+    }
     $scope.list(1);
 
 	$scope.vmSnapshot = function(pageNumber){
@@ -176,6 +174,24 @@ localStorageService, $window, dialogService, notify) {
              };
          }]);
     };
+
+    $scope.restoresnapshot = function(vmsnapshot) {
+   	 dialogService.openDialog("app/views/cloud/snapshot/revert-vmsnapshot.jsp", 'sm',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
+
+   	     $scope.ok = function (deleteObject) {
+             var hasServer = crudService.softDelete("snapshots", deleteObject);
+             hasServer.then(function (result) {
+                 $scope.list(1);
+
+                 notify({message: 'Restored successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+             });
+             $modalInstance.close();
+         },
+				  $scope.cancel = function () {
+	               $modalInstance.close();
+	           };
+   	 }]);
+   };
 
     $scope.paginationObject = {};
      $scope.openAddSnapshotContainer = function(size) {

@@ -38,21 +38,11 @@
                                         data-ng-options="storageTags for storageTags in volumeElements.diskOfferingTags" >
                                     <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
                                 </select>
-                                <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="Select the plan" ></i>
-                                <div class="error-area" data-ng-show="volumeForm.diskOfferings.$invalid && formSubmitted" ><i  tooltip="Plan is Required" class="fa fa-warning error-icon"></i></div>
+                                <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="Select the type" ></i>
+                                <div class="error-area" data-ng-show="volumeForm.type.$invalid && formSubmitted" ><i  tooltip="Type is Required" class="fa fa-warning error-icon"></i></div>
                             </div>
 
 
-
-    <!--                         <div class="col-md-9 col-xs-12 col-sm-9">
-                                <div class="btn-group" data-toggle="buttons">
-                                    <label data-ng-init="volume.type = volumeElements.type[0]" data-ng-click="resetDiskValues(volumeType)"
-                                           class="btn m-r-md w-sm" data-ng-class="volume.type.id == volumeType.id ? 'btn-info' : 'btn - default'" data-ng-repeat="volumeType in volumeElements.type">
-                                        {{ volumeType.name}}
-                                    </label>
-                                    <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="Disk type" ></i>
-                                </div>
-                            </div> -->
 
                         </div>
                     </div>
