@@ -10,12 +10,13 @@ angular
         .controller('instanceDetailsCtrl', instanceDetailsCtrl)
 
 
-function instanceViewCtrl($scope,$log, dialogService, $modal,$http, $state, $stateParams, localStorageService, globalConfig, crudService, $window) {
+function instanceViewCtrl($scope,$log, dialogService, $modal,$http, $state, $stateParams, localStorageService, globalConfig, crudService, notify, $window) {
     $scope.instanceList = [];
     $scope.global = crudService.globalConfig;
     if ($stateParams.id > 0) {
         var hasServer = crudService.read("virtualmachine", $stateParams.id);
-        hasServer.then(function (result) {  // this is only run after $http completes
+        hasServer.then(function (result) {  // this is only run after $http
+											// completes
             $scope.instance = result;
             $state.current.data.pageName = result.name;
         });
@@ -30,7 +31,14 @@ function instanceViewCtrl($scope,$log, dialogService, $modal,$http, $state, $sta
 					hasVm.then(function(result) {
 						$state.reload();
 						 $scope.cancel();
-					});
+					}).catch(function (result) {
+	  					console.log(result.data.globalError[0]);
+	  			         if(result.data.globalError[0] != null){
+	  			        	 var msg = result.data.globalError[0];
+	  			        	 notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+
+	  			             }
+                           });
 				},
 			  $scope.cancel = function () {
                 $modalInstance.close();
@@ -47,13 +55,37 @@ function instanceViewCtrl($scope,$log, dialogService, $modal,$http, $state, $sta
   				hasVm.then(function(result) {
   					$state.reload();
   					 $scope.cancel();
-  				});
+  				}).catch(function (result) {
+  					console.log(result.data.globalError[0]);
+ 			         if(result.data.globalError[0] != null){
+ 			        	 var msg = result.data.globalError[0];
+ 			        	 notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+
+ 			             }
+                       });
   			},
 			  $scope.cancel = function () {
                $modalInstance.close();
            };
        }]);
   };
+
+  $scope.isoList = function () {
+      var hasisoList = crudService.listAll("iso/list");
+      hasisoList.then(function (result) {  // this is only run after $http
+											// completes0
+              $scope.isoLists = result;
+       });
+   };
+   $scope.isoList();
+
+   $scope.hostList = function () {
+	      var hashostList = crudService.listAll("host/list");
+	      hashostList.then(function (result) {  // this is only run after $http
+				$scope.hostLists = result;
+	       });
+	   };
+	   $scope.hostList();
 
   $scope.rebootVm = function(size,item) {
   	 dialogService.openDialog("app/views/cloud/instance/reboot.jsp", size,  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
@@ -64,7 +96,14 @@ function instanceViewCtrl($scope,$log, dialogService, $modal,$http, $state, $sta
   				hasVm.then(function(result) {
   					$state.reload();
   					 $scope.cancel();
-  				});
+  				}).catch(function (result) {
+  					console.log(result.data.globalError[0]);
+ 			         if(result.data.globalError[0] != null){
+ 			        	 var msg = result.data.globalError[0];
+ 			        	 notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+
+ 			             }
+                       });
   			},
 			  $scope.cancel = function () {
                $modalInstance.close();
@@ -83,7 +122,15 @@ function instanceViewCtrl($scope,$log, dialogService, $modal,$http, $state, $sta
 	  				hasVm.then(function(result) {
 	  					$state.reload();
 	  					 $scope.cancel();
-	  				});
+	  				}).catch(function (result) {
+	  					console.log(result.data.globalError[0]);
+	  			         if(result.data.globalError[0] != null){
+	  			        	 var msg = result.data.globalError[0];
+	  			        	 notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+	  			        	$state.reload();
+		  					$scope.cancel();
+	  			             }
+                           });
 	  			},
 				  $scope.cancel = function () {
 	               $modalInstance.close();
@@ -102,14 +149,30 @@ function instanceViewCtrl($scope,$log, dialogService, $modal,$http, $state, $sta
 			  				hasVm.then(function(result) {
 			  					$state.reload();
 			  					 $scope.cancel();
-			  				});
+			  				}).catch(function (result) {
+			  					console.log(result.data.globalError[0]);
+			  			         if(result.data.globalError[0] != null){
+			  			        	 var msg = result.data.globalError[0];
+			  			        	 notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+			  			        	$state.reload();
+				  					$scope.cancel();
+			  			             }
+		                            });
 		  		        } else{
 		  		        	var event = "VM.DESTROY";
 		  		        	var hasVm = crudService.vmUpdate("virtualmachine/event", item.uuid, event);
 		  		        	hasVm.then(function(result) {
 		  					$state.reload();
 		  					$scope.cancel();
-		  				});
+		  				}).catch(function (result) {
+		  					console.log(result.data.globalError[0]);
+		  			         if(result.data.globalError[0] != null){
+		  			        	 var msg = result.data.globalError[0];
+		  			        	 notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+		  			        	$state.reload();
+			  					$scope.cancel();
+		  			             }
+	                            });
 		  		        }
 		  			},
 					  $scope.cancel = function () {
@@ -127,8 +190,15 @@ function instanceViewCtrl($scope,$log, dialogService, $modal,$http, $state, $sta
 				  				hasVm.then(function(result) {
 				  					$state.reload();
 				  					 $scope.cancel();
-				  				});
-
+				  				}).catch(function (result) {
+				  					console.log(result.data.globalError[0]);
+				  			         if(result.data.globalError[0] != null){
+				  			        	 var msg = result.data.globalError[0];
+				  			        	 notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+				  			        	$state.reload();
+					  					$scope.cancel();
+				  			             }
+			                            });
 			  			},
 						  $scope.cancel = function () {
 			               $modalInstance.close();
@@ -138,10 +208,10 @@ function instanceViewCtrl($scope,$log, dialogService, $modal,$http, $state, $sta
 
 			  $scope.showConsole = function(vm) {
 				  $scope.vm = vm;
-				  var hasVms = crudService.console("virtualmachine/console", $scope.vm.name);
+				  var hasVms = crudService.updates("virtualmachine/console", vm);
 	  				hasVms.then(function(result) {
 	  					console.log(result);
-	  					 $window.open(result);
+	  					 $window.open(result.success, 'VM console', 'width=500,height=400');
 	  				});
 			  }
 
@@ -163,14 +233,32 @@ function instanceViewCtrl($scope,$log, dialogService, $modal,$http, $state, $sta
 				  };
 				  $scope.attachISO = function(vm) {
 					  	 dialogService.openDialog("app/views/cloud/instance/attach-ISO.jsp", 'md',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
-					  		 $scope.vm = vm;
-					  		 $scope.update= function(form) {
-						  				var hasVm = crudService.vmUpdate("virtualmachine/event", item.uuid, event);
+					  		var tempVm = vm;
+					  		 var event = "ISO.ATTACH";
+					  		 $scope.attachISotoVM = function(form) {
+					  			$scope.formSubmitted =true;
+					  			 if(form.$valid){
+					  				tempVm.iso = $scope.isos.uuid;
+					  				tempVm.event = event;
+							  		console.log(tempVm.iso);
+							  		console.log(tempVm.event);
+						  				var hasVm = crudService.updates("virtualmachine/vm", tempVm);
 						  				hasVm.then(function(result) {
+						  					$scope.homerTemplate = 'app/views/notification/notify.jsp';
+						                     notify({message: $scope.isos.name+" is attaching to this VM", classes: 'alert-success', "timeOut": "5000", templateUrl: $scope.homerTemplate});
 						  					$state.reload();
 						  					 $scope.cancel();
-						  				});
-
+						  				}).catch(function (result) {
+						  					console.log(result);
+						  					console.log(result.data.globalError[0]);
+						  			         if(result.data.globalError[0] != null){
+						  			        	 var msg = result.data.globalError[0];
+						  			        	 notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+						  			        	$state.reload();
+							  					$scope.cancel();
+						  			             }
+					                            });
+					  			 }
 					  			},
 								  $scope.cancel = function () {
 					               $modalInstance.close();
@@ -180,13 +268,25 @@ function instanceViewCtrl($scope,$log, dialogService, $modal,$http, $state, $sta
 					  $scope.detachISO = function(vm) {
 						  	 dialogService.openDialog("app/views/cloud/instance/detach-ISO.jsp", 'md',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
 						  		 $scope.vm = vm;
-						  		 $scope.update= function(form) {
-							  				var hasVm = crudService.vmUpdate("virtualmachine/event", item.uuid, event);
+						  		 var event = "ISO.DETACH";
+						  		 $scope.update = function() {
+						  			$scope.vm.event = event;
+							  				var hasVm = crudService.updates("virtualmachine/vm", $scope.vm);
 							  				hasVm.then(function(result) {
+							  					$scope.homerTemplate = 'app/views/notification/notify.jsp';
+							                     notify({message: $scope.vm.isoName+" is detaching from this VM", classes: 'alert-success', "timeOut": "5000", templateUrl: $scope.homerTemplate});
 							  					$state.reload();
-							  					 $scope.cancel();
-							  				});
-
+							  					$scope.cancel();
+							  				}).catch(function (result) {
+							  					console.log(result);
+							  					console.log(result.data.globalError[0]);
+							  			         if(result.data.globalError[0] != null){
+							  			        	 var msg = result.data.globalError[0];
+							  			        	 notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+							  			        	$state.reload();
+								  					$scope.cancel();
+							  			             }
+						                            });
 						  			},
 									  $scope.cancel = function () {
 						               $modalInstance.close();
@@ -204,22 +304,16 @@ function instanceViewCtrl($scope,$log, dialogService, $modal,$http, $state, $sta
 						                    	$scope.vmsnapshot.vmId = $scope.instance.id;
 								  				var hasVm = crudService.add("vmsnapshot",$scope.vmsnapshot);
 								  				hasVm.then(function(result) {
-								  					$state.reload();
+								  					$scope.homerTemplate = 'app/views/notification/notify.jsp';
+								                     notify({message: $scope.vmsnapshot.name+" is creating for "+$scope.instance.name, classes: 'alert-success', "timeOut": "5000", templateUrl: $scope.homerTemplate});
+								  					 $state.reload();
 								  					 $scope.cancel();
 								  				}).catch(function (result) {
 								  					console.log(result.data.globalError[0]);
-								  			         if(result.data.globalError[0] != null){
-								  			        	 var msg = result.data.globalError[0];
-								  			        	 notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
-
-								  			             } else if(!angular.isUndefined(result) && result.data != null) {
-							                            angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
-							                            	$scope.departmentForm[key].$invalid = true;
-							                                $scope.departmentForm[key].errorMessage = errorMessage;
-							                            });
-
-					                    }
-
+								  				  $scope.homerTemplate = 'app/views/notification/notify.jsp';
+								                     notify({message: result.data.globalError[0], classes: 'alert-danger', "timeOut": "5000", templateUrl: $scope.homerTemplate});
+								                     $state.reload();
+									  			     $scope.cancel();
 						                        });
 						                    }
 							  			},
@@ -231,16 +325,30 @@ function instanceViewCtrl($scope,$log, dialogService, $modal,$http, $state, $sta
 
 						$scope.hostMigrate = function(vm) {
 								  	 dialogService.openDialog("app/views/cloud/instance/host-migrate.jsp", 'md',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
-								  		 $scope.vm = vm;
-
+								  		var vms = vm;
+								  		 var event = "VM.MIGRATE";
 								  		 $scope.update= function(form) {
-									  				var hasVm = crudService.vmUpdate("virtualmachine/event", item.uuid, event);
+								  			vms.event = event;
+								  			$scope.formSubmitted = true;
+						                    if (form.$valid) {
+						                    	vms.hostUuid = $scope.host.uuid;
+									  				var hasVm = crudService.updates("virtualmachine/vm", vms);
 									  				hasVm.then(function(result) {
+									  					$scope.homerTemplate = 'app/views/notification/notify.jsp';
+									                    notify({message: $scope.host.name+" is migrating", classes: 'alert-success', "timeOut": "5000", templateUrl: $scope.homerTemplate});
 									  					$state.reload();
 									  					 $scope.cancel();
-									  				});
-
-								  		 },
+									  				}).catch(function (result) {
+									  					console.log(result.data.globalError[0]);
+									  			         if(result.data.globalError[0] != null){
+									  			        	 var msg = result.data.globalError[0];
+									  			        	 notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+									  			        	$state.reload();
+										  					$scope.cancel();
+									  			         }
+								                            });
+								  		 }
+						                    },
 											  $scope.cancel = function () {
 								               $modalInstance.close();
 								           };
@@ -249,13 +357,27 @@ function instanceViewCtrl($scope,$log, dialogService, $modal,$http, $state, $sta
 						$scope.showPassword = function(vm) {
 									  	 dialogService.openDialog("app/views/cloud/instance/show-reset-password.jsp", 'md',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
 									  		 $scope.vm = vm;
+									  		 var event = "VM.RESETPASSWORD";
 									  		 $scope.update= function(form) {
-										  				var hasVm = crudService.vmUpdate("virtualmachine/event", item.uuid, event);
+									  			$scope.vm.event = event;
+									  			$scope.formSubmitted = true;
+									  			if(form.$valid) {
+									  				   $scope.vm.password = $scope.passwords;
+										  				var hasVm = crudService.updates("virtualmachine/vm", $scope.vm);
 										  				hasVm.then(function(result) {
 										  					$state.reload();
 										  					 $scope.cancel();
-										  				});
-
+										  				}).catch(function (result) {
+										  					console.log(result);
+										  					console.log(result.data.globalError[0]);
+										  			         if(result.data.globalError[0] != null){
+										  			        	 var msg = result.data.globalError[0];
+										  			        	notify({message: msg, classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+										  			        	$state.reload();
+											  					$scope.cancel();
+										  			         }
+									                            });
+									  			}
 									  			},
 												  $scope.cancel = function () {
 									               $modalInstance.close();
@@ -279,8 +401,8 @@ function instanceViewCtrl($scope,$log, dialogService, $modal,$http, $state, $sta
 
 
     /**
-     * Data for Line chart
-     */
+	 * Data for Line chart
+	 */
     $scope.lineData = {
         labels: ["10.00", "10.05", "10.10", "10.15", "10.20", "10.25", "10.30"],
         datasets: [
@@ -335,8 +457,8 @@ function instanceViewCtrl($scope,$log, dialogService, $modal,$http, $state, $sta
         ]};
 
     /**
-     * Options for Line chart
-     */
+	 * Options for Line chart
+	 */
     $scope.lineOptions = {
         scaleShowGridLines: true,
         scaleGridLineColor: "rgba(0,0,0,.05)",
@@ -350,8 +472,8 @@ function instanceViewCtrl($scope,$log, dialogService, $modal,$http, $state, $sta
         datasetStroke: true,
         datasetStrokeWidth: 1,
         datasetFill: false,
-//        responsive: true,
-//        maintainAspectRatio: true
+// responsive: true,
+// maintainAspectRatio: true
     };
 
 }

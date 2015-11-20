@@ -69,7 +69,7 @@
                             </div>
 
                             <div class="col-md-2 col-xs-12 col-sm-2">
-                                <button class="btn btn-info m-l-lg"  data-ng-click="createUser()"><fmt:message key="create.user" bundle="${msg}" /></button>
+                                <button type="button" class="btn btn-info m-l-lg"  data-ng-click="createUser()"><fmt:message key="create.user" bundle="${msg}" /></button>
                             </div>
                         </div>
                     </div>

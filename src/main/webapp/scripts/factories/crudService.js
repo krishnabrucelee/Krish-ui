@@ -33,6 +33,10 @@ function crudService($window, localStorageService, globalConfig, $stateParams, p
         return promiseAjax.httpTokenRequest( globalConfig.HTTP_PUT , globalConfig.APP_URL + moduleName  +"/"+object.id+"?lang=" + localStorageService.cookie.get('language'), '', object);
     };
 
+    object.updates = function(moduleName, object) {
+        return promiseAjax.httpTokenRequest( globalConfig.HTTP_PUT , globalConfig.APP_URL + moduleName +"?lang=" + localStorageService.cookie.get('language'), '', object);
+    };
+
     object.listAllByFilter = function(moduleName, object) {
         return promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + moduleName +"?dept=" +object.id+ "&lang=" + localStorageService.cookie.get('language'));
     };

@@ -3,7 +3,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
-<form name="deleteSnapshotForm" data-ng-submit="validateDeleteSnapshot(deleteSnapshotForm)" method="post" novalidate="" data-ng-controller="addVMSnapshotCtrl" >
+<form name="deleteSnapshotForm" novalidate="" >
 
     <div class="inmodal" >
         <div class="modal-header">
@@ -28,7 +28,7 @@
 
         <div class="modal-footer">
             <button type="button" class="btn btn-default " ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.no" bundle="${msg}" /></button>
-            <button class="btn btn-info" type="submit"><fmt:message key="common.yes" bundle="${msg}" /></button>
+            <button class="btn btn-info" type="button" ng-click="ok()"><fmt:message key="common.yes" bundle="${msg}" /></button>
 
 
 

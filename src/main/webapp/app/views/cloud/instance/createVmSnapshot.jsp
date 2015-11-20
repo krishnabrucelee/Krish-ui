@@ -22,7 +22,6 @@
                         </div>
                     </div>
                 </div></panda-modal-header>
-
         </div>
 
         <div class="modal-body">
