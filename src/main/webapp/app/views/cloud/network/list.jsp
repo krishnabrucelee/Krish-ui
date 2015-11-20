@@ -56,6 +56,8 @@
             <div class="row">
                 <div class="col-md-12 col-sm-12 col-xs-12 ">
                     <div class="white-content">
+                            	<pagination-content></pagination-content>
+
                         <div class="table-responsive">
 
                             <div data-ng-show="network.networkView.name == 'Guest Networks' || network.networkView.name == null" data-ng-include src="'app/views/cloud/network/guest-networks.jsp'"></div>
@@ -66,9 +68,12 @@
 
                             <div data-ng-show="network.networkView.name == 'VPN Customer Gateway'" data-ng-include src="'app/views/cloud/network/avpn.jsp'"></div>
                         </div>
+                                	<pagination-content></pagination-content>
+
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 </div>

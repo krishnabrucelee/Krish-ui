@@ -75,7 +75,7 @@ function networksCtrl($scope, modalService, promiseAjax,filterFilter, localStora
 
                    $scope.networkList.Count = 0;
                    if(result.length != 0) {
-                   	$scope.networkList.Count = result.length;
+                   	$scope.networkList.Count = result.totalItems;
                    }
 
                // For pagination
