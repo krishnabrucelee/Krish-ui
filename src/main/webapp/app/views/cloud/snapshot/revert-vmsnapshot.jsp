@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<form name="form.detachForm" data-ng-controller="deleteCtrl">
+<form name="form.detachForm" data-ng-controller="snapshotListCtrl">
     <div class="inmodal" >
         <div class="modal-header">
             <panda-modal-header hide-zone="false" page-icon="fa fa-warning" page-title="<fmt:message key="revert.vm.snapshot" bundle="${msg}" />"></panda-modal-header>
