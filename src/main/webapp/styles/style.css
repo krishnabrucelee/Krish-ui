@@ -163,4 +163,8 @@ background-image: none;
 }
  .custom-select.error > a.dropdown-toggle {
 border-color: #e74c3c !important;}
-
+.scroll-area{
+	height:300px;
+	with:auto;
+	overflow-x:hidden;
+	overflow-y:scroll;}

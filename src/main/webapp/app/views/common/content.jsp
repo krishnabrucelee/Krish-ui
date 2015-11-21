@@ -36,7 +36,7 @@
                             <span data-ng-if="state.data.pageTitle === 'common.monitor'">
 	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.monitor" bundle="${msg}" /></a>
 	                            <span ng-switch-when="true"><fmt:message key="common.monitor" bundle="${msg}" /></span>
-	                    </span>        
+	                    </span>
                             <span data-ng-if="state.data.pageTitle === 'common.volume'">
 	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.volume" bundle="${msg}" /></a>
 	                            <span ng-switch-when="true"><fmt:message key="common.volume" bundle="${msg}" /></span>
@@ -52,6 +52,10 @@
                             <span data-ng-if="state.data.pageTitle === 'common.department'">
 	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.department" bundle="${msg}" /></a>
 	                            <span ng-switch-when="true"><fmt:message key="common.department" bundle="${msg}" /></span>
+                            </span>
+                             <span data-ng-if="state.data.pageTitle === 'common.projects'">
+	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.projects" bundle="${msg}" /></a>
+	                            <span ng-switch-when="true"><fmt:message key="common.projects" bundle="${msg}" /></span>
                             </span>
                         </li>
                     </ol>
