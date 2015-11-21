@@ -18,9 +18,7 @@
                                     <i  tooltip="<fmt:message key="role.name" bundle="${msg}" />" class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
                                     <div class="error-area" data-ng-show="RoleForm.name.$invalid && formSubmitted" >
                                     <i ng-attr-tooltip="{{ RoleForm.name.errorMessage  }}" class="fa fa-warning error-icon"></i>
-
                                     </div>
-
                                 </div>
                             </div>
                         </div>
