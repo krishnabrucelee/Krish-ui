@@ -9,7 +9,7 @@ angular
         .controller('networksCtrl', networksCtrl)
         .controller('networkViewCtrl', networkViewCtrl)
 
-function networksCtrl($scope, modalService, promiseAjax,filterFilter, localStorageService, notify, $state, $stateParams, $timeout, globalConfig, $window,dialogService, crudService) {
+function networksCtrl($scope, modalService, promiseAjax, filterFilter, localStorageService, notify, $state, $stateParams, $timeout, globalConfig, $window, dialogService, crudService) {
 
     $scope.global = globalConfig;
     $scope.rulesList = [];
@@ -18,204 +18,185 @@ function networksCtrl($scope, modalService, promiseAjax,filterFilter, localStora
     $scope.vmList = [];
     $scope.allItemsSelected = false;
 
-
-    	 $scope.openAddIsolatedNetwork = function (size) {
+    $scope.openAddIsolatedNetwork = function (size) {
         dialogService.openDialog("app/views/cloud/network/add.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
-                // Create a new department
+
+                // Create a new Isolated Network
 
                 $scope.save = function (form) {
                     $scope.formSubmitted = true;
                     if (form.$valid) {
-
                         var department = angular.copy($scope.department);
                         department.domainId = department.domain.id;
-                        //delete department["domain"]["id"];
                         var hasServer = crudService.add("departments", department);
                         hasServer.then(function (result) {  // this is only run after $http completes
-                        	//$rootScope.department={};
                             $scope.list(1);
-                            notify({message: 'Added successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+                            notify({message: 'Added successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                             $modalInstance.close();
-
-
                         }).catch(function (result) {
-                        	if(!angular.isUndefined(result) && result.data != null) {
-	                            angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
-	                            	$scope.departmentForm[key].$invalid = true;
-	                                $scope.departmentForm[key].errorMessage = errorMessage;
-	                            });
-                        	}
-
+                            if (!angular.isUndefined(result) && result.data != null) {
+                                angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
+                                    $scope.departmentForm[key].$invalid = true;
+                                    $scope.departmentForm[key].errorMessage = errorMessage;
+                                });
+                            }
                         });
                     }
                 },
-                $scope.cancel = function () {
-                    $modalInstance.close();
-                };
+                        $scope.cancel = function () {
+                            $modalInstance.close();
+                        };
             }]);
     };
 
+    $scope.networkList = {};
+    $scope.paginationObject = {};
+    $scope.networkForm = {};
+    $scope.global = crudService.globalConfig;
+    // Guest Network List
+    $scope.list = function (pageNumber) {
+        var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
+        var hasGuestNetworks = crudService.list("guestnetwork", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+        hasGuestNetworks.then(function (result) {
+            $scope.networkList = result;
+            console.log($scope.networkList);
+            $scope.networkList.Count = 0;
+            if (result.length != 0) {
+                $scope.networkList.Count = result.totalItems;
+            }
+            // For pagination
+            $scope.paginationObject.limit = limit;
+            $scope.paginationObject.currentPage = pageNumber;
+            $scope.paginationObject.totalItems = result.totalItems;
+        });
+    };
+    $scope.list(1);
 
-
-	   $scope.networkList = {};
-       $scope.paginationObject = {};
-       $scope.networkForm = {};
-       $scope.global = crudService.globalConfig;
-       // Guest Network List
-       $scope.list = function (pageNumber) {
-           var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
-           var hasGuestNetworks = crudService.list("guestnetwork", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
-           hasGuestNetworks.then(function (result) {  // this is only run after $http
-                                                                                                   // completes0
-
-                   $scope.networkList = result;
-                   console.log($scope.networkList);
-
-
-
-                   $scope.networkList.Count = 0;
-                   if(result.length != 0) {
-                   	$scope.networkList.Count = result.totalItems;
-                   }
-
-               // For pagination
-               $scope.paginationObject.limit = limit;
-               $scope.paginationObject.currentPage = pageNumber;
-               $scope.paginationObject.totalItems = result.totalItems;});
-       };
-       $scope.list(1);
-
-
-
-
-
-
-
-	//localStorageService.clearAll();
+    //localStorageService.clearAll();
     //localStorageService.set("rules",null);
- /*   localStorageService.set("networkList", null);
-    if (localStorageService.get("networkList") == null) {
-        var hasServer = promiseAjax.httpRequest("GET", "api/network.json");
-        hasServer.then(function (result) {  // this is only run after $http completes
-            $scope.networkList = result;
-            localStorageService.set("networkList", result);
-        });
-    } else {
-        $scope.networkList = localStorageService.get("networkList");
-    }*/
-   /* $scope.selectView=function(selectedItem){
+    /*   localStorageService.set("networkList", null);
+     if (localStorageService.get("networkList") == null) {
+     var hasServer = promiseAjax.httpRequest("GET", "api/network.json");
+     hasServer.then(function (result) {  // this is only run after $http completes
+     $scope.networkList = result;
+     localStorageService.set("networkList", result);
+     });
+     } else {
+     $scope.networkList = localStorageService.get("networkList");
+     }*/
+    /* $scope.selectView=function(selectedItem){
 
-    if(selectedItem == 'Guest Networks' || selectedItem==null ){
-         var hasServer = promiseAjax.httpRequest("GET", "api/network.json");
-        hasServer.then(function (result) {  // this is only run after $http completes
-            $scope.networkList = result;
-            localStorageService.set("networkList", result);
-        });
-    }
-    if(selectedItem == 'VPC'){
-         var hasServer = promiseAjax.httpRequest("GET", "api/vpc.json");
-        hasServer.then(function (result) {  // this is only run after $http completes
-            $scope.networkList = result;
-            localStorageService.set("networkList", result);
-        });
-    }
-    if(selectedItem == 'Security Groups'){
-         var hasServer = promiseAjax.httpRequest("GET", "api/securityGroups.json");
-        hasServer.then(function (result) {  // this is only run after $http completes
-            $scope.networkList = result;
-            localStorageService.set("networkList", result);
-        });
-    }
-    if(selectedItem == 'VPN Customer Gateway'){
-         var hasServer = promiseAjax.httpRequest("GET", "api/vpn.json");
-        hasServer.then(function (result) {  // this is only run after $http completes
-            $scope.networkList = result;
-            localStorageService.set("networkList", result);
-        });
-    }
-};
+     if(selectedItem == 'Guest Networks' || selectedItem==null ){
+     var hasServer = promiseAjax.httpRequest("GET", "api/network.json");
+     hasServer.then(function (result) {  // this is only run after $http completes
+     $scope.networkList = result;
+     localStorageService.set("networkList", result);
+     });
+     }
+     if(selectedItem == 'VPC'){
+     var hasServer = promiseAjax.httpRequest("GET", "api/vpc.json");
+     hasServer.then(function (result) {  // this is only run after $http completes
+     $scope.networkList = result;
+     localStorageService.set("networkList", result);
+     });
+     }
+     if(selectedItem == 'Security Groups'){
+     var hasServer = promiseAjax.httpRequest("GET", "api/securityGroups.json");
+     hasServer.then(function (result) {  // this is only run after $http completes
+     $scope.networkList = result;
+     localStorageService.set("networkList", result);
+     });
+     }
+     if(selectedItem == 'VPN Customer Gateway'){
+     var hasServer = promiseAjax.httpRequest("GET", "api/vpn.json");
+     hasServer.then(function (result) {  // this is only run after $http completes
+     $scope.networkList = result;
+     localStorageService.set("networkList", result);
+     });
+     }
+     };
 
 
- $scope.selectedNetwork=function(selectedItem){
+     $scope.selectedNetwork=function(selectedItem){
 
-    if(selectedItem == 'Guest Networks' || selectedItem==null ){
-         var hasServer = promiseAjax.httpRequest("GET", "api/network.json");
-        hasServer.then(function (result) {  // this is only run after $http completes
-            $scope.networkList = result;
-            localStorageService.set("networkList", result);
-        });
-    }
-    if(selectedItem == 'VPC'){
-         var hasServer = promiseAjax.httpRequest("GET", "api/vpc.json");
-        hasServer.then(function (result) {  // this is only run after $http completes
-            $scope.networkList = result;
-            localStorageService.set("networkList", result);
-        });
-    }
-    if(selectedItem == 'Security Groups'){
-         var hasServer = promiseAjax.httpRequest("GET", "api/securityGroups.json");
-        hasServer.then(function (result) {  // this is only run after $http completes
-            $scope.networkList = result;
-            localStorageService.set("networkList", result);
-        });
-    }
-    if(selectedItem == 'VPN Customer Gateway'){
-         var hasServer = promiseAjax.httpRequest("GET", "api/vpn.json");
-        hasServer.then(function (result) {  // this is only run after $http completes
-            $scope.networkList = result;
-            localStorageService.set("networkList", result);
-        });
-    }
-};*/
+     if(selectedItem == 'Guest Networks' || selectedItem==null ){
+     var hasServer = promiseAjax.httpRequest("GET", "api/network.json");
+     hasServer.then(function (result) {  // this is only run after $http completes
+     $scope.networkList = result;
+     localStorageService.set("networkList", result);
+     });
+     }
+     if(selectedItem == 'VPC'){
+     var hasServer = promiseAjax.httpRequest("GET", "api/vpc.json");
+     hasServer.then(function (result) {  // this is only run after $http completes
+     $scope.networkList = result;
+     localStorageService.set("networkList", result);
+     });
+     }
+     if(selectedItem == 'Security Groups'){
+     var hasServer = promiseAjax.httpRequest("GET", "api/securityGroups.json");
+     hasServer.then(function (result) {  // this is only run after $http completes
+     $scope.networkList = result;
+     localStorageService.set("networkList", result);
+     });
+     }
+     if(selectedItem == 'VPN Customer Gateway'){
+     var hasServer = promiseAjax.httpRequest("GET", "api/vpn.json");
+     hasServer.then(function (result) {  // this is only run after $http completes
+     $scope.networkList = result;
+     localStorageService.set("networkList", result);
+     });
+     }
+     };*/
 
-      $scope.networkElements= {actions: [
+    $scope.networkElements = {actions: [
             {id: 1, name: 'Hours'},
             {id: 2, name: 'Weeks'},
             {id: 3, name: 'Month'}
         ]};
 
     $scope.dropnetworkLists = {
-    		/* networkOffers: [
-            {
-                "id": 1,
-                "name": "Advanced Network",
-                "networkID": "f6dfee50-690c-4210-b77c-c9bf3179b159",
-                "networkType": {
-                    "id": 2,
-                    "name": "Isolated"
-                },
-                "ip": "10.1.10.92",
-                "gateway": "10.1.1.1",
-                "netmask": "255.255.255.0",
-                "isDefault": "No"
-            },
-            {
-                "id": 2,
-                "name": "Custom Network",
-                "networkID": "f6dfee50-690c-4210-b77c-c9bf31734e59",
-                "networkType": {
-                    "id": 1,
-                    "name": "Shared Network"
-                },
-                "ip": "10.2.2.92",
-                "gateway": "10.2.2.1",
-                "netmask": "255.255.255.0",
-                "isDefault": "NO"
-            },
-            {
-                "id": 3,
-                "name": "Default Network",
-                "networkID": "f6dfee50-690c-4210-b77c-m4fd452321e3",
-                "networkType": {
-                    "id": 2,
-                    "name": "Isolated"
-                },
-                "ip": "10.1.10.92",
-                "gateway": "10.1.1.1",
-                "netmask": "255.255.255.0",
-                "isDefault": "NO"
-            }
-        ],*/
+        /* networkOffers: [
+         {
+         "id": 1,
+         "name": "Advanced Network",
+         "networkID": "f6dfee50-690c-4210-b77c-c9bf3179b159",
+         "networkType": {
+         "id": 2,
+         "name": "Isolated"
+         },
+         "ip": "10.1.10.92",
+         "gateway": "10.1.1.1",
+         "netmask": "255.255.255.0",
+         "isDefault": "No"
+         },
+         {
+         "id": 2,
+         "name": "Custom Network",
+         "networkID": "f6dfee50-690c-4210-b77c-c9bf31734e59",
+         "networkType": {
+         "id": 1,
+         "name": "Shared Network"
+         },
+         "ip": "10.2.2.92",
+         "gateway": "10.2.2.1",
+         "netmask": "255.255.255.0",
+         "isDefault": "NO"
+         },
+         {
+         "id": 3,
+         "name": "Default Network",
+         "networkID": "f6dfee50-690c-4210-b77c-m4fd452321e3",
+         "networkType": {
+         "id": 2,
+         "name": "Isolated"
+         },
+         "ip": "10.1.10.92",
+         "gateway": "10.1.1.1",
+         "netmask": "255.255.255.0",
+         "isDefault": "NO"
+         }
+         ],*/
         views: [
             {id: 1, name: 'Guest Networks'},
             {id: 2, name: 'Security Groups'},
@@ -223,105 +204,99 @@ function networksCtrl($scope, modalService, promiseAjax,filterFilter, localStora
             {id: 4, name: 'VPN Customer Gateway'}
         ],
         /*protocols: [
-            {id: 1, name: 'TCP', value: 'tcp'},
-            {id: 2, name: 'UDP', value: 'udp'},
-            {id: 3, name: 'ICMP', value: 'icmp'},
-            {id: 4, name: 'All', value: 'all'}
+         {id: 1, name: 'TCP', value: 'tcp'},
+         {id: 2, name: 'UDP', value: 'udp'},
+         {id: 3, name: 'ICMP', value: 'icmp'},
+         {id: 4, name: 'All', value: 'all'}
 
-        ],
-        portProtocols: [
-            {id: 1, name: 'TCP', value: 'tcp'},
-            {id: 2, name: 'UDP', value: 'udp'},
-        ],
-        fireProtocols: [
-            {id: 1, name: 'TCP', value: 'tcp'},
-            {id: 2, name: 'UDP', value: 'udp'},
-            {id: 3, name: 'ICMP', value: 'icmp'}
+         ],
+         portProtocols: [
+         {id: 1, name: 'TCP', value: 'tcp'},
+         {id: 2, name: 'UDP', value: 'udp'},
+         ],
+         fireProtocols: [
+         {id: 1, name: 'TCP', value: 'tcp'},
+         {id: 2, name: 'UDP', value: 'udp'},
+         {id: 3, name: 'ICMP', value: 'icmp'}
 
-        ],
-        algorithms: [
-            {id: 1, name: 'Round-robin', value: 'roundrobin'},
-            {id: 2, name: 'Least connections', value: 'leastconn'},
-            {id: 3, name: 'Source', value: 'source'}
-        ]*/
-
+         ],
+         algorithms: [
+         {id: 1, name: 'Round-robin', value: 'roundrobin'},
+         {id: 2, name: 'Least connections', value: 'leastconn'},
+         {id: 3, name: 'Source', value: 'source'}
+         ]*/
     };
 
     $scope.tcp = true;
     $scope.udp = true;
 
-   /* $scope.selectProtocol = function (selectedItem) {
-        if (selectedItem == 'TCP' || selectedItem == 'UDP') {
-            $scope.tcp = true;
-            $scope.udp = true;
-            $scope.icmp = false;
+    /* $scope.selectProtocol = function (selectedItem) {
+     if (selectedItem == 'TCP' || selectedItem == 'UDP') {
+     $scope.tcp = true;
+     $scope.udp = true;
+     $scope.icmp = false;
 
-        }
-        if (selectedItem == 'ICMP') {
-            $scope.icmp = true;
-            $scope.tcp = false;
-            $scope.udp = false;
-        }
-        if (selectedItem == 'All') {
-            $scope.tcp = false;
-            $scope.udp = false;
-            $scope.icmp = false;
-        }
-
-
-    };
-    if (localStorageService.get("firewall") == null) {
-        $scope.newrule = {
-            'name': 'test',
-            'id': 0, 'cidr': '10.0.0.1/24',
-            'protocol': 'tcp',
-            'algorithm': 'roundrobin',
-            'startPort': '70',
-            'endPort': '120',
-            'icmpType': '',
-            'icmpCode': '',
-            'privateStart': '90',
-            'privateEnd': '120', 'vms': []
-        };
-        $scope.rules.push($scope.newrule);
-        localStorageService.set("firewall", $scope.rules);
-    }
-
-
-    if (localStorageService.get("rules") == null) {
-        $scope.newrule = {
-            'name': 'test',
-            'id': 0, 'cidr': '10.0.0.1/24',
-            'protocol': 'tcp',
-            'algorithm': 'roundrobin',
-            'startPort': '70',
-            'endPort': '120',
-            'icmpType': '',
-            'icmpCode': '',
-            'privateStart': '90',
-            'privateEnd': '120', 'vms': []
-        };
-        $scope.rulesList.push($scope.newrule);
-        localStorageService.set("rules", $scope.rulesList);
-    }
-
-    if (localStorageService.get("ports") == null) {
-        $scope.newport = {
-            'name': 'test',
-            'id': 0, 'cidr': '10.0.0.1/24',
-            'protocol': 'tcp',
-            'algorithm': 'roundrobin',
-            'startPort': '70',
-            'endPort': '120',
-            'icmpType': '',
-            'icmpCode': '',
-            'privateStart': '90',
-            'privateEnd': '120',
-            'vms': []
-        };
-        $scope.portList.push($scope.newport);
-        localStorageService.set("ports", $scope.portList);
-    }*/
+     }
+     if (selectedItem == 'ICMP') {
+     $scope.icmp = true;
+     $scope.tcp = false;
+     $scope.udp = false;
+     }
+     if (selectedItem == 'All') {
+     $scope.tcp = false;
+     $scope.udp = false;
+     $scope.icmp = false;
+     }
+     };
+     if (localStorageService.get("firewall") == null) {
+     $scope.newrule = {
+     'name': 'test',
+     'id': 0, 'cidr': '10.0.0.1/24',
+     'protocol': 'tcp',
+     'algorithm': 'roundrobin',
+     'startPort': '70',
+     'endPort': '120',
+     'icmpType': '',
+     'icmpCode': '',
+     'privateStart': '90',
+     'privateEnd': '120', 'vms': []
+     };
+     $scope.rules.push($scope.newrule);
+     localStorageService.set("firewall", $scope.rules);
+     }
+     if (localStorageService.get("rules") == null) {
+     $scope.newrule = {
+     'name': 'test',
+     'id': 0, 'cidr': '10.0.0.1/24',
+     'protocol': 'tcp',
+     'algorithm': 'roundrobin',
+     'startPort': '70',
+     'endPort': '120',
+     'icmpType': '',
+     'icmpCode': '',
+     'privateStart': '90',
+     'privateEnd': '120', 'vms': []
+     };
+     $scope.rulesList.push($scope.newrule);
+     localStorageService.set("rules", $scope.rulesList);
+     }
+     if (localStorageService.get("ports") == null) {
+     $scope.newport = {
+     'name': 'test',
+     'id': 0, 'cidr': '10.0.0.1/24',
+     'protocol': 'tcp',
+     'algorithm': 'roundrobin',
+     'startPort': '70',
+     'endPort': '120',
+     'icmpType': '',
+     'icmpCode': '',
+     'privateStart': '90',
+     'privateEnd': '120',
+     'vms': []
+     };
+     $scope.portList.push($scope.newport);
+     localStorageService.set("ports", $scope.portList);
+     }*/
     $scope.portList = localStorageService.get("ports");
     $scope.rulesList = localStorageService.get("rules");
     $scope.rules = localStorageService.get("firewall");
@@ -350,22 +325,12 @@ function networksCtrl($scope, modalService, promiseAjax,filterFilter, localStora
             else {
                 $scope.actionRule = true;
                 $scope.cidrValidate = true;
-
             }
         }
         else {
             $scope.actionRule = true;
             $scope.cidrValidate = true;
-
         }
-
-//        if(type='LB'){
-//         $scope.rules.push({'id': $scope.rules.length + 1,'algorithm':$scope.global.rulesLB[0].algorithm, 'name': $scope.global.rulesLB[0].name, 'cidr': '', 'protocol': $scope.global.rulesLB[0].algorithm, 'startPort': $scope.global.rulesLB[0].publicPort, 'endPort': $scope.global.rulesLB[0].privatePort, 'icmpType': $scope.icmpType, 'icmpCode': $scope.icmpCode});
-//         console.log( $scope.rules);
-//        }
-
-
-
     };
     console.log($scope.rules);
     $scope.removeRule = function (id, type) {
@@ -386,7 +351,6 @@ function networksCtrl($scope, modalService, promiseAjax,filterFilter, localStora
         if (type == 'firewall') {
             localStorageService.set('view', 'firewall');
         }
-
         localStorageService.set("firewall", $scope.rules);
         console.log($scope.rules);
         $state.reload();
@@ -413,7 +377,6 @@ function networksCtrl($scope, modalService, promiseAjax,filterFilter, localStora
             $scope.acquiringIP = true;
             $timeout($scope.ok, 3000);
         }
-
     }
 
     $scope.deleteRules = function (id, type) {
@@ -427,8 +390,6 @@ function networksCtrl($scope, modalService, promiseAjax,filterFilter, localStora
         $scope.deleteRule = true;
         $timeout($scope.delete, 1000);
     }
-
-
 
     $scope.delete = function () {
         var id = localStorageService.get('deleteRule').id;
@@ -460,56 +421,51 @@ function networksCtrl($scope, modalService, promiseAjax,filterFilter, localStora
             $scope.global.rulesLB[0].publicPort = $scope.publicPort;
             $scope.global.rulesLB[0].privatePort = $scope.privatePort;
             $scope.global.rulesLB[0].algorithm = $scope.algorithms.value;
-
             modalService.trigger('app/views/cloud/network/vm-list.jsp', 'lg');
-
         }
     };
     $scope.lbCheck = false;
-    $scope.vmlerror=false;
+    $scope.vmlerror = false;
     $scope.addLB = function () {
         $scope.ruleList = localStorageService.get("rules");
         $scope.vms = localStorageService.get("vms");
-           console.log('hid'+$scope.vms);
-         if($scope.vms == ''){
-            $scope.vmlerror=true;
-               $scope.homerTemplate = 'app/views/notification/notify.jsp';
-              notify({message: 'Select atleast one VM', classes: 'alert-danger', "timeOut": "1000", templateUrl: $scope.homerTemplate});
-
+        console.log('hid' + $scope.vms);
+        if ($scope.vms == '') {
+            $scope.vmlerror = true;
+            $scope.homerTemplate = 'app/views/notification/notify.jsp';
+            notify({message: 'Select atleast one VM', classes: 'alert-danger', "timeOut": "1000", templateUrl: $scope.homerTemplate});
         }
-        else{
-        localStorageService.set("vms", null);
-        $scope.addedRule = {'id': $scope.ruleList.length + 1, 'algorithm': $scope.global.rulesLB[0].algorithm, 'name': $scope.global.rulesLB[0].name, 'cidr': '', 'protocol': '', 'startPort': $scope.global.rulesLB[0].publicPort, 'endPort': $scope.global.rulesLB[0].privatePort, 'icmpType': '', 'icmpCode': '', 'privateStart': '', 'privateEnd': '', 'vms': $scope.vms};
-        $scope.ruleList.push($scope.addedRule);
-        localStorageService.set("rules", $scope.ruleList);
-        console.log($scope.ruleList);
-
-        notify({message: 'Rule added successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
-        $scope.cancel();
-        localStorageService.set('view', 'load-balance');
-        $state.reload();
+        else {
+            localStorageService.set("vms", null);
+            $scope.addedRule = {'id': $scope.ruleList.length + 1, 'algorithm': $scope.global.rulesLB[0].algorithm, 'name': $scope.global.rulesLB[0].name, 'cidr': '', 'protocol': '', 'startPort': $scope.global.rulesLB[0].publicPort, 'endPort': $scope.global.rulesLB[0].privatePort, 'icmpType': '', 'icmpCode': '', 'privateStart': '', 'privateEnd': '', 'vms': $scope.vms};
+            $scope.ruleList.push($scope.addedRule);
+            localStorageService.set("rules", $scope.ruleList);
+            console.log($scope.ruleList);
+            notify({message: 'Rule added successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
+            $scope.cancel();
+            localStorageService.set('view', 'load-balance');
+            $state.reload();
+        }
     }
-    }
-$scope.vmperror=false;
+    $scope.vmperror = false;
     $scope.addPort = function () {
         $scope.portList = localStorageService.get("ports");
         $scope.vms = localStorageService.get("vmsPort");
-        if($scope.vms == ''){
-            $scope.vmperror=true;
-             $scope.homerTemplate = 'app/views/notification/notify.jsp';
-              notify({message: 'Select atleast one VM', classes: 'alert-danger', "timeOut": "1000", templateUrl: $scope.homerTemplate});
-
+        if ($scope.vms == '') {
+            $scope.vmperror = true;
+            $scope.homerTemplate = 'app/views/notification/notify.jsp';
+            notify({message: 'Select atleast one VM', classes: 'alert-danger', "timeOut": "1000", templateUrl: $scope.homerTemplate});
         }
-        else{
-        localStorageService.set("vmsPort", null);
-        $scope.addedRule = {'id': $scope.portList.length + 1, 'algorithm': '', 'name': '', 'cidr': '', 'protocol': $scope.global.rulesLB[0].protocol, 'startPort': $scope.global.rulesLB[0].publicPort, 'endPort': $scope.global.rulesLB[0].publicEndPort, 'icmpType': '', 'icmpCode': '', 'privateStart': $scope.global.rulesLB[0].privatePort, 'privateEnd': $scope.global.rulesLB[0].privateEndPort, 'vms': $scope.vms};
-        $scope.portList.push($scope.addedRule);
-        localStorageService.set("ports", $scope.portList);
-        notify({message: 'Rule added successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
-        $scope.cancel();
-        localStorageService.set('view', 'port-forward');
-        $state.reload();
-    }
+        else {
+            localStorageService.set("vmsPort", null);
+            $scope.addedRule = {'id': $scope.portList.length + 1, 'algorithm': '', 'name': '', 'cidr': '', 'protocol': $scope.global.rulesLB[0].protocol, 'startPort': $scope.global.rulesLB[0].publicPort, 'endPort': $scope.global.rulesLB[0].publicEndPort, 'icmpType': '', 'icmpCode': '', 'privateStart': $scope.global.rulesLB[0].privatePort, 'privateEnd': $scope.global.rulesLB[0].privateEndPort, 'vms': $scope.vms};
+            $scope.portList.push($scope.addedRule);
+            localStorageService.set("ports", $scope.portList);
+            notify({message: 'Rule added successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
+            $scope.cancel();
+            localStorageService.set('view', 'port-forward');
+            $state.reload();
+        }
     }
 
     $scope.addVM = function (form) {
@@ -520,14 +476,12 @@ $scope.vmperror=false;
             $scope.global.rulesLB[0].privateEndPort = $scope.privateEndPort;
             $scope.global.rulesLB[0].publicEndPort = $scope.publicEndPort;
             $scope.global.rulesLB[0].protocol = $scope.protocolName.value;
-
             modalService.trigger('app/views/cloud/network/vm-list1.jsp', 'lg');
         }
     }
 
     $scope.removeLB = function (id) {
         $scope.ruleList = localStorageService.get("rules");
-
         var comArr = eval($scope.ruleList);
         var index = -1;
         for (var i = 0; i < comArr.length; i++) {
@@ -539,7 +493,6 @@ $scope.vmperror=false;
         if (index === -1) {
             alert("Something gone wrong");
         }
-
         $scope.ruleList.splice(index, 1);
         localStorageService.set("rules", $scope.ruleList);
         localStorageService.set('view', 'load-balance');
@@ -549,7 +502,6 @@ $scope.vmperror=false;
 
     $scope.removePort = function (id) {
         $scope.ports = localStorageService.get("ports");
-
         var comArr = eval($scope.ports);
         var index = -1;
         for (var i = 0; i < comArr.length; i++) {
@@ -561,7 +513,6 @@ $scope.vmperror=false;
         if (index === -1) {
             alert("Something gone wrong");
         }
-
         $scope.ports.splice(index, 1);
         localStorageService.set("ports", $scope.ports);
         localStorageService.set('view', 'port-forward');
@@ -581,21 +532,19 @@ $scope.vmperror=false;
         $scope.instanceList = localStorageService.get("instanceList");
     }
 
+    $scope.selectVM = function () {
+        localStorageService.set("vms", filterFilter($scope.instanceList, {selected: true}));
+        return filterFilter($scope.instanceList, {selected: true});
+    };
 
- $scope.selectVM = function() {
-     localStorageService.set("vms",filterFilter($scope.instanceList, { selected: true }));
-    return filterFilter($scope.instanceList, { selected: true });
-  };
-
-  // watch fruits for changes
-  $scope.$watch('instanceList|filter:{selected:true}', function (nv) {
-    $scope.vmList = nv.map(function (vm) {
-      return vm;
-    });
-    localStorageService.set("vms", $scope.vmList);
-    localStorageService.set("vmsPort", $scope.vmList);
-  }, true);
-
+    // watch fruits for changes
+    $scope.$watch('instanceList|filter:{selected:true}', function (nv) {
+        $scope.vmList = nv.map(function (vm) {
+            return vm;
+        });
+        localStorageService.set("vms", $scope.vmList);
+        localStorageService.set("vmsPort", $scope.vmList);
+    }, true);
 //
 //        if (!$scope.instanceList[id].isChecked) {
 //            console.log($scope.instanceList[id]);
@@ -605,20 +554,14 @@ $scope.vmperror=false;
 //            return;
 //        }
 
-
-
-        //If not the check the "allItemsSelected" checkbox
-
     $scope.selectVMPort = function () {
-
-  localStorageService.set("vmsPort",filterFilter($scope.instanceList, { selected: true }));
-    return filterFilter($scope.instanceList, { selected: true });
-
+        localStorageService.set("vmsPort", filterFilter($scope.instanceList, {selected: true}));
+        return filterFilter($scope.instanceList, {selected: true});
     };
 
     $scope.tabview = localStorageService.get('view');
-};
-
+}
+;
 
 function networkViewCtrl($scope, $http, notify, globalConfig, localStorageService, modalService, $log, $state, $stateParams, promiseAjax) {
     $scope.global = globalConfig;
@@ -626,36 +569,33 @@ function networkViewCtrl($scope, $http, notify, globalConfig, localStorageServic
     $scope.network = [];
     $scope.ipList = [];
     $scope.ipDetails = [];
-    $scope.tabview='';
+    $scope.tabview = '';
 
     /*if ($stateParams.id > 0) {
-        var hasServer = promiseAjax.httpRequest("GET", "api/network.json");
-        hasServer.then(function (result) {  // this is only run after $http completes
-            var networkId = $stateParams.id - 1;
-            $scope.network = result[networkId];
-            $scope.global.networks.name = result[networkId].name;
-            if (localStorageService.get("networkIP") != '') {
-                if($scope.global.networks.name!=''){
-                localStorageService.set("networkIP", $scope.global.networks.name);}
-            }
-            $state.current.data.pageTitle = result[networkId].name;
-            localStorageService.set('view','details');
-        });
-    }
+     var hasServer = promiseAjax.httpRequest("GET", "api/network.json");
+     hasServer.then(function (result) {  // this is only run after $http completes
+     var networkId = $stateParams.id - 1;
+     $scope.network = result[networkId];
+     $scope.global.networks.name = result[networkId].name;
+     if (localStorageService.get("networkIP") != '') {
+     if($scope.global.networks.name!=''){
+     localStorageService.set("networkIP", $scope.global.networks.name);}
+     }
+     $state.current.data.pageTitle = result[networkId].name;
+     localStorageService.set('view','details');
+     });
+     }
 
-    if ($stateParams.id1 > 0) {
-        var hasServer = promiseAjax.httpRequest("GET", "api/ipaddress.json");
-        hasServer.then(function (result) {  // this is only run after $http completes
-            var ipId = $stateParams.id1 - 1;
-            $scope.ipDetails = result[ipId];
-            $state.current.data.pageTitle = result[ipId].ipaddress;
-            localStorageService.set('view','details');
-        });
+     if ($stateParams.id1 > 0) {
+     var hasServer = promiseAjax.httpRequest("GET", "api/ipaddress.json");
+     hasServer.then(function (result) {  // this is only run after $http completes
+     var ipId = $stateParams.id1 - 1;
+     $scope.ipDetails = result[ipId];
+     $state.current.data.pageTitle = result[ipId].ipaddress;
+     localStorageService.set('view','details');
+     });
 
-    }*/
-
-
-
+     }*/
 
     /**
      * Data for Line chart
@@ -683,8 +623,6 @@ function networkViewCtrl($scope, $http, notify, globalConfig, localStorageServic
                 pointHighlightStroke: "rgba(26,179,148,1)",
                 data: [37, 39, 29, 36, 32, 23, 28]
             }
-
-
         ]
     };
     $scope.networkElements = {actions: [
@@ -696,9 +634,6 @@ function networkViewCtrl($scope, $http, notify, globalConfig, localStorageServic
     $scope.openAddIP = function (size) {
         modalService.trigger('app/views/cloud/network/acquire-IP.jsp', size);
     };
-
-
-
 
     /**
      * Options for Line chart
@@ -720,16 +655,20 @@ function networkViewCtrl($scope, $http, notify, globalConfig, localStorageServic
 //        maintainAspectRatio: true
     };
 
+    $scope.selectTab = function (type) {
 
+        if (type == 'firewall') {
+            localStorageService.set('view', 'firewall');
+        }
+        if (type == 'loadBalance') {
+            localStorageService.set('view', 'load-balance');
+        }
+        if (type == 'portForward') {
+            localStorageService.set('view', 'port-forward');
+        }
 
-                $scope.selectTab=function(type){
-
-                   if(type=='firewall') {localStorageService.set('view','firewall'); }
-                   if(type=='loadBalance'){localStorageService.set('view','load-balance'); }
-                   if(type=='portForward'){localStorageService.set('view','port-forward');}
-
-                $scope.tabview=localStorageService.get('view');
-                $state.reload();
-                }
-          $scope.tabview=localStorageService.get('view');
+        $scope.tabview = localStorageService.get('view');
+        $state.reload();
+    }
+    $scope.tabview = localStorageService.get('view');
 }

@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -7,7 +7,6 @@
     <div class="inmodal" >
         <div class="modal-header">
             <panda-modal-header page-icon="fa fa-database" page-title="<fmt:message key="add.volume" bundle="${msg}" />"></panda-modal-header>
-
         </div>
         <div class="modal-body">
             <div class="row">
@@ -25,13 +24,10 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="form-group" ng-class="{'text-danger' : volumeForm.type.$invalid && formSubmitted}">
                         <div class="row">
                             <label class="col-md-2 col-xs-12 col-sm-2 control-label"><fmt:message key="common.type" bundle="${msg}" /> <span class="m-l-xs"></span></label>
-
-
-                             <div class="col-md-5 col-xs-12 col-sm-5">
+                            <div class="col-md-5 col-xs-12 col-sm-5">
                                 <select required="true" class="form-control input-group" name="diskOfferings"
                                         data-ng-model="volume.storageTags"
                                         data-ng-class="{'error': volumeForm.type.$invalid && formSubmitted}"
@@ -41,15 +37,9 @@
                                 <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="Select the type" ></i>
                                 <div class="error-area" data-ng-show="volumeForm.type.$invalid && formSubmitted" ><i  tooltip="Type is Required" class="fa fa-warning error-icon"></i></div>
                             </div>
-
-
-
                         </div>
                     </div>
-
-                    <!--<div class="hr-line-dashed"></div>-->
                     <div class="form-group" ng-class="{ 'text-danger' : volumeForm.diskOfferings.$invalid && formSubmitted}">
-
                         <div class="row" >
                             <label class="col-md-2 col-xs-12 col-sm-2 control-label"><fmt:message key="common.plan" bundle="${msg}" />
                                 <span class="text-danger">*</span>
@@ -66,14 +56,8 @@
                             </div>
                         </div>
                     </div>
-
-
-
-                    <!--<div class="hr-line-dashed"></div>-->
-
                     <div data-ng-show="volume.storageOffering.isCustomDisk">
                         <div class="form-group" ng-class="{ 'text-danger' : volumeForm.diskSize <= 0 && formSubmitted}">
-
                             <div class="row" >
                                 <label class="col-md-2 col-xs-12 col-sm-2 control-label">Size (GB)
                                     <span class="text-danger">*</span>
@@ -87,55 +71,44 @@
                                 </div>
                             </div>
                         </div>
-                        <!--<div class="hr-line-dashed"></div>-->
-
                         <div class="form-group" ng-class="{ 'text-danger' : volumeForm.diskMinIops <= 0 && formSubmitted}" data-ng-show="volume.storageOffering.isCustomizedIops">
-
                             <div class="row" >
-		<div class="col-md-6 col-sm-6">
-                             <div class="form-group" ng-class="{ 'text-danger' : volumeForm.diskMinIops <= 0 &&  OfferingSubmitted}">
-					<label class="col-md-3 col-sm-3 control-label"><fmt:message key="min.iops" bundle="${msg}" /> 	 <span class="text-danger">*</span>
-					</label>
-
-					<div class="col-md-5 col-sm-5">
-						<input class="form-control ng-pristine ng-valid ng-touched"
-							type="text" data-ng-model="volume.diskMinIops"
-							valid-number="" name="diskMinIops">
-					</div>
-				</div>
-				</div>
-				<div class="col-md-6 col-sm-6">
-
-          <div class="form-group" ng-class="{ 'text-danger' : volumeForm.diskMaxIops <= 0 && OfferingSubmitted}">
-					<label class="col-md-3 col-sm-3 control-label"><fmt:message key="max.iops" bundle="${msg}" /><span class="text-danger">*</span>
-					 </label>
-
-					<div class="col-md-5 col-sm-5">
-						<input class="form-control ng-pristine ng-valid ng-touched"
-							type="text" data-ng-model="volume.diskMaxIops"
-							valid-number="" name="diskMaxIops">
-					</div>
-				</div>
-</div></div>
+                                <div class="col-md-6 col-sm-6">
+                                    <div class="form-group" ng-class="{ 'text-danger' : volumeForm.diskMinIops <= 0 && OfferingSubmitted}">
+                                        <label class="col-md-3 col-sm-3 control-label"><fmt:message key="min.iops" bundle="${msg}" /> 	 <span class="text-danger">*</span>
+                                        </label>
+                                        <div class="col-md-5 col-sm-5">
+                                            <input class="form-control ng-pristine ng-valid ng-touched"
+                                                   type="text" data-ng-model="volume.diskMinIops"
+                                                   valid-number="" name="diskMinIops">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-6">
+                                    <div class="form-group" ng-class="{ 'text-danger' : volumeForm.diskMaxIops <= 0 && OfferingSubmitted}">
+                                        <label class="col-md-3 col-sm-3 control-label"><fmt:message key="max.iops" bundle="${msg}" /><span class="text-danger">*</span>
+                                        </label>
+                                        <div class="col-md-5 col-sm-5">
+                                            <input class="form-control ng-pristine ng-valid ng-touched"
+                                                   type="text" data-ng-model="volume.diskMaxIops"
+                                                   valid-number="" name="diskMaxIops">
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-
-                        <!--<div class="hr-line-dashed"></div>-->
+                        </div>
                     </div>
-
                 </div>
             </div>
         </div>
         <div class="modal-footer">
-
             <span class="pull-left" data-ng-show="volume.storageOffering.isCustomDisk">
                 <h4 class="text-danger price-text m-l-lg">
-                <app-currency></app-currency>{{ (volume.storageOffering.storagePrice[0].costGbPerMonth * volume.diskSize) }}    <span>/ hour</span>   <small class="text-right text-muted m-l-sm">(<app-currency></app-currency>{{ volume.storageOffering.storagePrice[0].costGbPerMonth * volume.diskSize * 720}} / month)</small>
+                    <app-currency></app-currency>{{ (volume.storageOffering.storagePrice[0].costGbPerMonth * volume.diskSize)}}    <span>/ hour</span>   <small class="text-right text-muted m-l-sm">(<app-currency></app-currency>{{ volume.storageOffering.storagePrice[0].costGbPerMonth * volume.diskSize * 720}} / month)</small>
                 </h4>
             </span>
             <a class="btn btn-default"  data-ng-click="cancel()"><fmt:message key="common.cancel" bundle="${msg}" /></a>
             <button class="btn btn-info" type="submit"><fmt:message key="common.add" bundle="${msg}" /></button>
-
-
         </div>
     </div>
 </form>

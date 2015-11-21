@@ -3,8 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<div  >
 
+<div>
 <table cellspacing="1" cellpadding="1" class="table table-bordered table-striped">
                     <thead>
                     <tr>
@@ -25,7 +25,6 @@
                         <td>{{ network.networkType }} </td>
                         <td>{{ network.cIDR }} </td>
                         <td>{{ network.gateway}} </td>
-
                         <td>
                             <a class="icon-button" title="Edit">
                              <span class="fa fa-edit m-r"> </span>
@@ -36,5 +35,4 @@
                     </tr>
                     </tbody>
 </table>
-
 </div>

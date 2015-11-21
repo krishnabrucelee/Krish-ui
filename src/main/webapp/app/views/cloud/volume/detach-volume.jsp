@@ -8,26 +8,19 @@
         <div class="modal-header">
             <panda-modal-header hide-zone="false" page-icon="fa fa-unlink" page-title="<fmt:message key="detach.volume" bundle="${msg}" />"></panda-modal-header>
         </div>
-
         <div class="modal-body">
             <div class=" row">
                 <div class="form-group has-error col-md-3 col-sm-3  col-xs-3">
-
                     <img src="images/warning.png" alt="">
                 </div>
                 <div class="form-group has-error col-md-9 col-sm-9  col-xs-9 m-t-md">
-                    <p >Are you sure do you want to detach ?</p>
+                    <p ><fmt:message key="common.are.you.sure.do.you.want.to.detach" bundle="${msg}" /></p>
                 </div>
-
-
             </div>
-
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-default " ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.cancel" bundle="${msg}" /></button>
             <button type="submit" class="btn btn-default btn-danger2" ng-click="detachVolume(volume)" data-dismiss="modal"><fmt:message key="common.ok" bundle="${msg}" /></button>
-
         </div>
     </div>
-
 </form>
