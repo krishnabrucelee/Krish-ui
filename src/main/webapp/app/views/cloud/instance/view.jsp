@@ -133,7 +133,7 @@
                                                     <td>{{ instance.computeOffering.name}} <a href="#" class="fa fa-edit m-l-lg"> edit</a></td>
                                                 </tr>
                                                 <tr>
-                                                    <td><b>IP</b></td>
+                                                    <td><b><fmt:message key="common.ip" bundle="${msg}" /></b></td>
                                                     <td>{{ instance.ipAddress}} | {{instance.network.type}} </td>
                                                 </tr>
                                             </tbody>
