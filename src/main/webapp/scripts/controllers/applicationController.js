@@ -9,12 +9,10 @@ angular
         .controller('applicationListCtrl', applicationListCtrl)
 
 function applicationListCtrl($scope, notify, dialogService, crudService) {
-
     $scope.applicationList = {};
     $scope.paginationObject = {};
     $scope.applicationForm = {};
     $scope.global = crudService.globalConfig;
-
 
     // Application List
     $scope.list = function (pageNumber) {
@@ -31,7 +29,7 @@ function applicationListCtrl($scope, notify, dialogService, crudService) {
     };
     $scope.list(1);
 
- // Open dialogue box to create department
+    // Open dialogue box to create department
     $scope.application = {};
     $scope.formElements = {};
 
@@ -45,9 +43,6 @@ function applicationListCtrl($scope, notify, dialogService, crudService) {
 
 	$scope.application.domain = "";
     $scope.createApplication = function (size) {
-
-        //modalService.trigger('views/application/add.html', size,'', $scope);
-
         dialogService.openDialog($scope.global.VIEW_URL + "application/add.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
                 // Create a new application
                 $scope.save = function (form) {
@@ -59,7 +54,6 @@ function applicationListCtrl($scope, notify, dialogService, crudService) {
                             $scope.list(1);
                             notify({message: 'Added successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                             $modalInstance.close();
-
                             $scope.application.type = "";
                             $scope.application.description = "";
                             $scope.application.status = "";
@@ -72,9 +66,9 @@ function applicationListCtrl($scope, notify, dialogService, crudService) {
                         });
                     }
                 },
-                        $scope.cancel = function () {
-                            $modalInstance.close();
-                        };
+                 $scope.cancel = function () {
+                     $modalInstance.close();
+                 };
             }]);
     };
 
@@ -100,12 +94,11 @@ function applicationListCtrl($scope, notify, dialogService, crudService) {
                         });
                     }
                 },
-                        $scope.cancel = function () {
-                            $modalInstance.close();
-                        };
+                 $scope.cancel = function () {
+                     $modalInstance.close();
+                 };
             }]);
     };
-
 
     // Delete the application
     $scope.delete = function (size, application) {
@@ -120,9 +113,9 @@ function applicationListCtrl($scope, notify, dialogService, crudService) {
                     });
                     $modalInstance.close();
                 },
-                        $scope.cancel = function () {
-                            $modalInstance.close();
-                        };
+                 $scope.cancel = function () {
+                     $modalInstance.close();
+                 };
             }]);
     };
 
