@@ -82,7 +82,7 @@
                                     <rzslider rz-slider-model="volume.diskSize" rz-slider-floor="volumeElements.diskOffer.diskSize.floor" rz-slider-ceil="volumeElements.diskOffer.diskSize.ceil" rz-slider-always-show-bar="true"></rzslider>
                                 </div>
                                 <div class="col-md-2 col-xs-12 col-sm-3">
-                                    <input type="text" data-ng-init="volume.diskSize=0" data-ng-min="{{ volumeElements.diskOffer.diskSize.floor}}" data-ng-max="{{ volumeElements.diskOffer.diskSize.ceil}}"
+                                    <input type="text" data-ng-init="volume.diskSize" data-ng-min="{{ volumeElements.diskOffer.diskSize.floor}}" data-ng-max="{{ volumeElements.diskOffer.diskSize.ceil}}"
                                            class="form-control input-mini" name="diskSize" data-ng-model="volume.diskSize" valid-number="">
                                 </div>
                             </div>

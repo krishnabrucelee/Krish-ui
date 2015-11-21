@@ -84,7 +84,9 @@
                                                     <img src="images/dropdown-arw2.png" border="0" class="vol-dropdown-arw">
                                                     <li><a class="icon-button" href="javascript:void(0);" data-ng-click="createSnapshot(md,volume)" title="Snapshot"><span class="fa fa-camera m-xs"></span> <fmt:message key="common.snapshot" bundle="${msg}" /></a></li>
                                                     <li><a href="javascript:void(0);" data-ng-click="openReccuringSnapshot(volume)" title="Recurring Snapshot"><span class="fa fa-repeat m-xs"></span> <fmt:message key="recurring.snapshot" bundle="${msg}" /></a></li>
-                                                    <li><a href="javascript:void(0);" title="Detach Volume" data-ng-click="detachVolume('sm')"><span class="fa fa-unlink m-xs"></span> <fmt:message key="common.detach" bundle="${msg}" /></a></li>
+                                                    <li><a href="javascript:void(0);" data-ng-show="volume.vmInstanceId > 0" title="Detach Volume" data-ng-click="detach(md, volume)"><span class="fa fa-unlink m-xs"></span> <fmt:message key="detach.volume" bundle="${msg}" /></a></li>
+                                                   <li><a href="javascript:void(0);" data-ng-hide="volume.vmInstanceId > 0" title="Attach Volume" data-ng-click="attach(md, volume)"><span class="pe-7s-disk pe-1x font-bold m-xs"></span> <fmt:message key="attach.volume" bundle="${msg}" /></a></li>
+
                                                     <li><a href="javascript:void(0);" title="Download Volume" data-ng-click="downloadVolume('md')"><span class="fa fa-cloud-download m-xs"></span> <fmt:message key="download.volume" bundle="${msg}" /></a></li>
                                                     <li><a href="javascript:void(0);"  data-ng-click="resizeVolume(md,volume)" title="Resize"><span class="fa fa-expand m-xs"></span><fmt:message key="resize.volume" bundle="${msg}" /> </a></li>
                                                 </ul>
@@ -110,3 +112,8 @@
 
     </div>
 </div>
+
+
+
+
+

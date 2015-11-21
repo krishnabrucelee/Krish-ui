@@ -9,7 +9,6 @@ angular
         .controller('volumeCtrl', volumeCtrl)
         .controller('recurringSnapshotCtrl', recurringSnapshotController)
         .controller('uploadVolumeCtrl', uploadVolumeCtrl)
-        .controller('volumeViewCtrl', volumeViewCtrl)
 
 function volumeCtrl($scope, $state, $stateParams, $timeout, globalConfig,
         volumeService, localStorageService, $window, notify, dialogService, crudService) {
@@ -26,12 +25,11 @@ function volumeCtrl($scope, $state, $stateParams, $timeout, globalConfig,
     $scope.storageForm = {};
     $scope.global = crudService.globalConfig;
 
-
+    // Volume List
     $scope.list = function (pageNumber) {
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasVolumes = crudService.list("volumes", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
-        hasVolumes.then(function (result) {  // this is only run after $http
-            // completes0
+        hasVolumes.then(function (result) {
 
             $scope.volumeList = result;
             console.log($scope.volumeList);
@@ -48,18 +46,120 @@ function volumeCtrl($scope, $state, $stateParams, $timeout, globalConfig,
 
 
 
-    $scope.detachVolume = function (size) {
-        modalService.trigger('app/views/cloud/volume/detach.jsp', size);
+    // Attach Volume
+    $scope.attach = function (size, volume) {
+    	$scope.volume = volume;
+        dialogService.openDialog("app/views/cloud/volume/attach-volume.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+
+                $scope.instanceList = function () {
+
+                    var hasinstanceList = crudService.listAll("virtualmachine/list");
+                    hasinstanceList.then(function (result) {  // this is only run after $http completes0
+                        $scope.instanceList = result;
+
+
+                    });
+                };
+                $scope.instanceList();
+
+
+                $scope.attachVolume = function (form, volume) {
+                	volume.vmInstance = $scope.vmInstance;
+                    $scope.formSubmitted = true;
+                    if (form.$valid) {
+                        var hasServer = crudService.add("volumes/attach/"+volume.id, volume);
+                        hasServer.then(function (result) {  // this is only run after $http completes
+                            notify({message: 'Attached successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                            $window.location.href = '#/volume/list';
+                            $modalInstance.close();
+
+                        }).catch(function (result) {
+                            if (!angular.isUndefined(result.data)) {
+                            	if (result.data.globalError!= '' && !angular.isUndefined(result.data.globalError)) {
+                              	    var msg = result.data.globalError[0];
+                            	    notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+                                } else if (result.data.fieldErrors != null) {
+                                    angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
+                                        $scope.attachvolumeForm[key].$invalid = true;
+                                        $scope.attachvolumeForm[key].errorMessage = errorMessage;
+                                    });
+                            	}
+                            }
+                        });
+
+                    }
+                };
+
+
+
+
+
+
+
+                $scope.cancel = function () {
+                    $modalInstance.close();
+                };
+
+            }]);
+    };
+
+    // Detach Volume
+    $scope.detach = function (size, volume) {
+    	$scope.volume = volume;
+
+        dialogService.openDialog("app/views/cloud/volume/detach-volume.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+
+                $scope.instanceList = function () {
+
+                    var hasinstanceList = crudService.listAll("virtualmachine/list");
+                    hasinstanceList.then(function (result) {  // this is only run after $http completes0
+                        $scope.instanceList = result;
+
+
+                    });
+                };
+                $scope.instanceList();
+
+
+                $scope.detachVolume = function (volume) {
+
+                	console.log(volume);
+                    var hasServer = crudService.add("volumes/detach/"+volume.id, volume);
+                    hasServer.then(function (result) {  // this is only run after $http completes
+                        notify({message: 'Detached successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                        $window.location.href = '#/volume/list';
+                        $modalInstance.close();
+
+                    }).catch(function (result) {
+                        if (!angular.isUndefined(result.data)) {
+                        	if (result.data.globalError!= '' && !angular.isUndefined(result.data.globalError)) {
+                          	    var msg = result.data.globalError[0];
+                        	    notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+                            } else if (result.data.fieldErrors != null) {
+                                angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
+                                    $scope.attachvolumeForm[key].$invalid = true;
+                                    $scope.attachvolumeForm[key].errorMessage = errorMessage;
+                                });
+                        	}
+                        }
+                    });
+                };
+
+                $scope.cancel = function () {
+                    $modalInstance.close();
+                };
+
+            }]);
     };
 
 
-
+    // Creating snapshot
     $scope.createSnapshot = function (size, volume) {
         $scope.volume = volume;
         $scope.snapshot = {};
         setTimeout(function () {
             dialogService.openDialog("app/views/cloud/snapshot/download-snapshot.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
-                    // Creating snapshot
+
                     $scope.validateConfirmSnapshot = function (form) {
 
                         $scope.formSubmitted = true;
@@ -111,68 +211,68 @@ function volumeCtrl($scope, $state, $stateParams, $timeout, globalConfig,
         modalService.trigger('app/views/cloud/volume/recurring-snapshot.jsp', 'lg');
     };
 
-    $scope.resizeVolume = function (size ,volume) {
+    $scope.resizeVolume = function (size, volume) {
         dialogService.openDialog($scope.global.VIEW_URL + "cloud/volume/resize.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
 
 
-            $scope.diskList = function (tag) {
-                if (angular.isUndefined(tag)) {
-                    tag = "";
-                }
-                var hasDisks = crudService.listAllByTag("storages/storagesort", tag);
-                hasDisks.then(function (result) {  // this is only run after
-                    // $http completes0
-                    $scope.volumeElements.diskOfferingList = result;
-                });
-            };
-
-            $scope.diskTag = function () {
-                var hasDiskTags = crudService.listAll("storages/storagetags");
-                hasDiskTags.then(function (result) {  // this is only run after
-                    // $http completes0
-
-                    $scope.volumeElements.diskOfferingTags = result;
-                });
-            };
-            $scope.diskTag();
-
-            $scope.$watch('volume.storageTags', function (val) {
-                $scope.diskList(val);
-            });
-
-
-            // Resize the Volume
-            $scope.update = function (form) {
-
-                $scope.formSubmitted = true;
-
-
-                if (form.$valid) {
-                    $scope.volume.zone = $scope.global.zone;
-
-                    var volume = $scope.volume;
-
-                    var hasVolume = crudService.add("volumes", volume);
-                    hasVolume.then(function (result) {  // this is only run
-                        // after $http
-                        // completes
-                        $scope.list(1);
-                        notify({message: 'Updated successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
-                        $modalInstance.close();
-                    }).catch(function (result) {
-                        angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
-                            $scope.applicationForm[key].$invalid = true;
-                            $scope.applicationForm[key].errorMessage = errorMessage;
-                        });
+                $scope.diskList = function (tag) {
+                    if (angular.isUndefined(tag)) {
+                        tag = "";
+                    }
+                    var hasDisks = crudService.listAllByTag("storages/storagesort", tag);
+                    hasDisks.then(function (result) {  // this is only run after
+                        // $http completes0
+                        $scope.volumeElements.diskOfferingList = result;
                     });
-                }
-            },
-                    $scope.cancel = function () {
-                        $modalInstance.close();
-                    };
+                };
+
+                $scope.diskTag = function () {
+                    var hasDiskTags = crudService.listAll("storages/storagetags");
+                    hasDiskTags.then(function (result) {  // this is only run after
+                        // $http completes0
+
+                        $scope.volumeElements.diskOfferingTags = result;
+                    });
+                };
+                $scope.diskTag();
+
+                $scope.$watch('volume.storageTags', function (val) {
+                    $scope.diskList(val);
+                });
 
 
-        }]);
+                // Resize the Volume
+                $scope.update = function (form) {
+
+                    $scope.formSubmitted = true;
+
+
+                    if (form.$valid) {
+                        $scope.volume.zone = $scope.global.zone;
+
+                        var volume = $scope.volume;
+
+                        var hasVolume = crudService.add("volumes", volume);
+                        hasVolume.then(function (result) {  // this is only run
+                            // after $http
+                            // completes
+                            $scope.list(1);
+                            notify({message: 'Updated successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                            $modalInstance.close();
+                        }).catch(function (result) {
+                            angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
+                                $scope.applicationForm[key].$invalid = true;
+                                $scope.applicationForm[key].errorMessage = errorMessage;
+                            });
+                        });
+                    }
+                },
+                        $scope.cancel = function () {
+                            $modalInstance.close();
+                        };
+
+
+            }]);
     };
 
 
@@ -266,11 +366,7 @@ function volumeCtrl($scope, $state, $stateParams, $timeout, globalConfig,
 
     };
 
-    $scope.detach = function () {
-        $scope.homerTemplate = 'app/views/notification/notify.jsp';
-        notify({message: 'Detached successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
-        $scope.cancel();
-    };
+
 
     $scope.confirmSnapshot = function () {
         $scope.cancel();
@@ -426,13 +522,4 @@ function uploadVolumeCtrl($scope, globalConfig, $window, notify) {
 
 }
 
-function volumeViewCtrl($scope, $http, $state, $stateParams, localStorageService, promiseAjax) {
-    if ($stateParams.id > 0) {
-        var hasServer = promiseAjax.httpRequest("GET", "api/volume.json");
-        hasServer.then(function (result) {  // this is only run after $http completes
-            var volumeId = $stateParams.id - 1;
-            $scope.volume = result[volumeId];
-            $state.current.data.pageTitle = result[volumeId].name + " #" + $stateParams.id;
-        });
-    }
-}
+
