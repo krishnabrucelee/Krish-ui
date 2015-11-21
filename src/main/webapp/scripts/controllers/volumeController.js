@@ -89,7 +89,7 @@ function volumeCtrl($scope, $state, $stateParams, $timeout, globalConfig,
                     };
 
                     // Close the dialog box
-                    $scope.closeCreateSnapshot = function () {
+                    $scope.cancel = function () {
                         $modalInstance.close();
                     };
 

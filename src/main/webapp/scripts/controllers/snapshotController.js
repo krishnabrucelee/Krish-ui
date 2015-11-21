@@ -38,14 +38,14 @@ function addVMSnapshotCtrl($scope, globalConfig, $window, notify) {
     };
     $scope.formSubmitted = false;
 
-    $scope.formElements = {
+   /* $scope.formElements = {
         instanceList: [
             {id: 1, name: 'North China'},
             {id: 2, name: 'South central china'}
 
         ]
 
-     };
+     };*/
     $scope.validateVMSnapshot = function(form) {
         $scope.formSubmitted = true;
         if (form.$valid) {
@@ -75,8 +75,6 @@ function addVMSnapshotCtrl($scope, globalConfig, $window, notify) {
     };
 
 };
-
-
 function snapshotListCtrl($scope, crudService, $timeout, promiseAjax, globalConfig,
 localStorageService, $window, dialogService, notify) {
 	$scope.confirmsnapshot = {};
@@ -86,9 +84,11 @@ localStorageService, $window, dialogService, notify) {
 	$scope.vmSnapshotList = {};
 	$scope.instanceList = {};
     $scope.list = function(pageNumber) {
+    	$scope.showLoader = true;
 	    var limit = (angular.isUndefined($scope.paginationObject.limit)) ? crudService.globalConfig.CONTENT_LIMIT : $scope.paginationObject.limit;
 	    var hasVolumes = crudService.list("snapshots", crudService.globalConfig.paginationHeaders(pageNumber, limit), {"limit": limit});
 	    hasVolumes.then(function (result) {
+	    	$scope.showLoader = false;
 	        $scope.snapshotList = result;
 	        $scope.paginationObject.limit  = limit;
 	        $scope.paginationObject.currentPage = pageNumber;
@@ -111,9 +111,8 @@ localStorageService, $window, dialogService, notify) {
 		};
 		$scope.vmSnapshot(1);
 		$scope.instanceList = {};
-     $scope.openAddSnapshotContainer = function(size) {
-        modalService.trigger('app/views/cloud/snapshot/create.jsp', size);
-    };
+
+
     $scope.instanceId = function(pageNumber) {
 		var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
 		var hasUsers = crudService.listAll("virtualmachine/list");
@@ -133,9 +132,6 @@ localStorageService, $window, dialogService, notify) {
 			$scope.paginationObject.totalItems = result.totalItems;
 		});
 	};
-
-
-
     $scope.openAddVMSnapshotContainer = function(vm) {
     	 dialogService.openDialog("app/views/cloud/snapshot/createVm.jsp", 'md',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
     		 $scope.vm = vm;
@@ -156,7 +152,6 @@ localStorageService, $window, dialogService, notify) {
     $scope.createVolume = function(size) {
         modalService.trigger('app/views/cloud/snapshot/create-volume.jsp', size);
     };
-
     $scope.deleteSnapshot = function(size, snapshot) {
     	 dialogService.openDialog("app/views/common/confirm-delete.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
              $scope.deleteObject = snapshot;
@@ -174,15 +169,15 @@ localStorageService, $window, dialogService, notify) {
              };
          }]);
     };
-
     $scope.restoresnapshot = function(vmsnapshot) {
    	 dialogService.openDialog("app/views/cloud/snapshot/revert-vmsnapshot.jsp", 'sm',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
 
    	     $scope.ok = function (deleteObject) {
+   	    	$scope.showLoader = true;
              var hasServer = crudService.softDelete("snapshots", deleteObject);
              hasServer.then(function (result) {
+            	 $scope.showLoader = false;
                  $scope.list(1);
-
                  notify({message: 'Restored successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
              });
              $modalInstance.close();
@@ -192,40 +187,30 @@ localStorageService, $window, dialogService, notify) {
 	           };
    	 }]);
    };
-
-    $scope.paginationObject = {};
-     $scope.openAddSnapshotContainer = function(size) {
-    	 dialogService.openDialog("app/views/cloud/snapshot/create.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+     $scope.openAddSnapshotContainer = function() {
+    	 dialogService.openDialog("app/views/cloud/snapshot/create.jsp", "md", $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
     		 $scope.createSnapshot = false;
     		 	$scope.volumesList = {};
-    		    $scope.listVolumes = function(pageNumber) {
-    			    var limit = (angular.isUndefined($scope.paginationObject.limit)) ? crudService.globalConfig.CONTENT_LIMIT : $scope.paginationObject.limit;
-    			    var hasVolumes = crudService.list("volumes", crudService.globalConfig.paginationHeaders(pageNumber, limit), {"limit": limit});
+    		    $scope.listVolumes = function() {
+    		    	$scope.showLoader = true;
+    			    var hasVolumes = crudService.listAll("volumes/list");
     			    hasVolumes.then(function (result) {
+    			    	$scope.showLoader = false;
     			        $scope.volumesList = result;
-    			        $scope.paginationObject.limit  = limit;
-    			        $scope.paginationObject.currentPage = pageNumber;
-    			        $scope.paginationObject.totalItems = result.totalItems;
     			    });
     		    };
-
-    		    $scope.listVolumes(1);
-
+    		    $scope.listVolumes();
     		    $scope.updatePageStatus=function(size, volume){
     		    	$scope.createSnapshot=true;
     		    	$scope.volume = volume;
     		    	$scope.snapshot = {};
     		    };
-
     		    // Close the create snapshot page
     		    $scope.closeCreateSnapshot = function() {
     		    	$scope.createSnapshot=false;
     		    };
-
-
     		    // Creating snapshot
        	 		$scope.validateConfirmSnapshot = function(form) {
-
 	       	 		$scope.formSubmitted = true;
 	       	        if (form.$valid) {
 		       	 		var snapshot = $scope.snapshot;
@@ -247,8 +232,11 @@ localStorageService, $window, dialogService, notify) {
 	                            	form[key].errorMessage = errorMessage;
 	                            });
                         	}
-
                         });
+
+                    	$scope.cancel = function () {
+     		               $modalInstance.close();
+     		           };
 	       	        }
        	 		};
 
@@ -260,19 +248,11 @@ localStorageService, $window, dialogService, notify) {
 			    	} else {
 			    		$modalInstance.close();
 			    	}
-
 	            };
-//    		       	 	}]);
-//    		        }, 500);
-
-//    		    };
-
          }]);
-        //modalService.trigger('app/views/cloud/snapshot/create.jsp', size);
     };
 
     $scope.createVolume = function(size) {
         modalService.trigger('app/views/cloud/snapshot/create-volume.jsp', size);
     };
-
 }
