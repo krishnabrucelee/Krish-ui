@@ -43,6 +43,7 @@ function applicationListCtrl($scope, notify, dialogService, crudService) {
 	      console.log(result);
 	});
 
+	$scope.application.domain = "";
     $scope.createApplication = function (size) {
 
         //modalService.trigger('views/application/add.html', size,'', $scope);
@@ -58,6 +59,11 @@ function applicationListCtrl($scope, notify, dialogService, crudService) {
                             $scope.list(1);
                             notify({message: 'Added successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                             $modalInstance.close();
+
+                            $scope.application.type = "";
+                            $scope.application.description = "";
+                            $scope.application.status = "";
+                            $scope.application.domain = "";
                         }).catch(function (result) {
                             angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
                                 $scope.applicationForm[key].$invalid = true;
