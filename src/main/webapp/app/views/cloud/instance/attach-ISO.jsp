@@ -27,8 +27,8 @@
                             </label>
                             <div class="col-md-5 col-xs-5 col-sm-5">
                                 <select required="true" class="form-control input-group" name="isolist"
-                                        data-ng-model="iso" data-ng-class="{'error': isoForm.isolist.$invalid && formSubmitted}"
-                                        data-ng-options="isos.name for isos in isoList.iso" >
+                                        data-ng-model="isos" data-ng-class="{'error': isoForm.isolist.$invalid && formSubmitted}"
+                                        data-ng-options="isos.name for isos in isoLists" >
                                     <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
                                 </select>
                                 <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="<fmt:message key="iso.is.required.to.attach" bundle="${msg}" />" ></i>

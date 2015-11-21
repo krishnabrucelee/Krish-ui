@@ -28,7 +28,7 @@
                             <div class="col-md-5 col-xs-5 col-sm-5">
                                 <select required="true" class="form-control input-group" name="hostlist"
                                         data-ng-model="host" data-ng-class="{'error': hostForm.hostlist.$invalid && formSubmitted}"
-                                        data-ng-options="host.name for host in hostlist" >
+                                        data-ng-options="host.name for host in hostLists" >
                                     <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
                                 </select>
                                 <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="<fmt:message key="host.is.required.to.migrate" bundle="${msg}" />" ></i>

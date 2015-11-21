@@ -77,7 +77,7 @@ function addVMSnapshotCtrl($scope, globalConfig, $window, notify) {
 };
 
 
-function snapshotListCtrl($scope, crudService, $timeout, promiseAjax, globalConfig,
+function snapshotListCtrl($scope, crudService,$state, $timeout, promiseAjax, globalConfig,
 localStorageService, $window, dialogService, notify) {
 	$scope.confirmsnapshot = {};
 	$scope.global = globalConfig;
@@ -101,7 +101,8 @@ localStorageService, $window, dialogService, notify) {
 	$scope.vmSnapshot = function(pageNumber){
 		  var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
 	        var hasSnapshots = crudService.list("vmsnapshot", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
-	        hasSnapshots.then(function (result) {  // this is only run after $http completes0
+	        hasSnapshots.then(function (result) {  // this is only run after
+													// $http completes0
 	            $scope.vmSnapshotList = result;
 	            // For pagination
 	            $scope.paginationObject.limit  = limit;
@@ -115,59 +116,81 @@ localStorageService, $window, dialogService, notify) {
         modalService.trigger('app/views/cloud/snapshot/create.jsp', size);
     };
     $scope.instanceId = function(pageNumber) {
-		var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
 		var hasUsers = crudService.listAll("virtualmachine/list");
 		hasUsers.then(function(result) { // this is only run after $http
 			// completes0
 			$scope.instanceList = result;
-			// For pagination
 
-                        $scope.instancesList.Count = 0;
-           		 for (i = 0; i < result.length; i++) {
-            		 if($scope.instanceList[i].status.indexOf("Running") > -1) {
-            		 $scope.instancesList.Count++;
-           		  }
-           		 }
-			$scope.paginationObject.limit = limit;
-			$scope.paginationObject.currentPage = pageNumber;
-			$scope.paginationObject.totalItems = result.totalItems;
 		});
 	};
 
-
-
-    $scope.openAddVMSnapshotContainer = function(vm) {
-    	 dialogService.openDialog("app/views/cloud/snapshot/createVm.jsp", 'md',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
-    		 $scope.vm = vm;
-    		 $scope.instanceId(1);
+	$scope.openAddVMSnapshotContainer = function() {
+	  	 dialogService.openDialog("app/views/cloud/snapshot/createVm.jsp", 'md',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance, $rootScope) {
+	  		$scope.instanceId(1);
 	  		 $scope.validateVMSnapshot= function(form) {
-		  				var hasVm = crudService.add("vmsnapshot", $scope.vm);
+		  			$scope.formSubmitted = true;
+                   if (form.$valid) {
+                   	$scope.vmsnapshot.domainId = $scope.vmsnapshot.vm.domainId;
+                   	$scope.vmsnapshot.vmId = $scope.vmsnapshot.vm.id;
+		  				var hasVm = crudService.add("vmsnapshot",$scope.vmsnapshot);
 		  				hasVm.then(function(result) {
 		  					$state.reload();
 		  					 $scope.cancel();
-		  				});
+		  				}).catch(function (result) {
+		  					console.log(result.data.globalError[0]);
+		  				  $scope.homerTemplate = 'app/views/notification/notify.jsp';
+		                     notify({message: result.data.globalError[0], classes: 'alert-danger', "timeOut": "5000", templateUrl: $scope.homerTemplate});
 
+                       });
+                   }
 	  			},
 				  $scope.cancel = function () {
 	               $modalInstance.close();
 	           };
-    	 }]);
-    };
+	       }]);
+	  };
+
+// $scope.openAddVMSnapshotContainer = function(vm) {
+// dialogService.openDialog("app/views/cloud/snapshot/createVm.jsp", 'md',
+// $scope, ['$scope', '$modalInstance','$rootScope', function ($scope,
+// $modalInstance , $rootScope) {
+// $scope.vm = vm;
+// $scope.instanceId(1);
+// $scope.validateVMSnapshot= function(form) {
+// var hasVm = crudService.add("vmsnapshot", $scope.vm);
+// hasVm.then(function(result) {
+// $state.reload();
+// $scope.cancel();
+// });
+//
+// },
+// $scope.cancel = function () {
+// $modalInstance.close();
+// };
+// }]);
+// };
     $scope.createVolume = function(size) {
         modalService.trigger('app/views/cloud/snapshot/create-volume.jsp', size);
     };
 
-    $scope.deleteSnapshot = function(size, snapshot) {
-    	 dialogService.openDialog("app/views/common/confirm-delete.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+    $scope.deleteSnapshots = function(size, snapshot) {
+    	 dialogService.openDialog("app/views/snapshot/delete-snapshot.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
              $scope.deleteObject = snapshot;
-             $scope.ok = function (deleteObject) {
-                 var hasServer = crudService.softDelete("snapshots", deleteObject);
+             $scope.ok = function () {
+            	 var event = "VMSNAPSHOT.DELETE";
+				 var hasServer = crudService.vmUpdate("vmsnapshot/event", snapshot.uuid, event);
                  hasServer.then(function (result) {
-                     $scope.list(1);
+                	 $scope.cancel();
+                	 $scope.list(1);
+                     notify({message: 'Deleting '+snapshot.name, classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
 
-                     notify({message: 'Deleted successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
-                 });
-                 $modalInstance.close();
+                 }).catch(function (result) {
+ 					console.log(result.data.globalError[0]);
+			         if(result.data.globalError[0] != null){
+			        	 var msg = result.data.globalError[0];
+			        	 notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+			         }
+                  });
              },
              $scope.cancel = function () {
                  $modalInstance.close();
@@ -175,21 +198,45 @@ localStorageService, $window, dialogService, notify) {
          }]);
     };
 
+    $scope.deleteSnapshot = function(size, snapshot) {
+   	 dialogService.openDialog("app/views/common/confirm-delete.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+            $scope.deleteObject = snapshot;
+            $scope.ok = function (deleteObject) {
+                var hasServer = crudService.softDelete("snapshots", deleteObject);
+                hasServer.then(function (result) {
+                    $scope.list(1);
+
+                    notify({message: 'Deleted successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                });
+                $modalInstance.close();
+            },
+            $scope.cancel = function () {
+                $modalInstance.close();
+            };
+        }]);
+   };
+
     $scope.restoresnapshot = function(vmsnapshot) {
    	 dialogService.openDialog("app/views/cloud/snapshot/revert-vmsnapshot.jsp", 'sm',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
 
-   	     $scope.ok = function (deleteObject) {
-             var hasServer = crudService.softDelete("snapshots", deleteObject);
-             hasServer.then(function (result) {
-                 $scope.list(1);
-
-                 notify({message: 'Restored successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
-             });
+   	     $scope.ok = function () {
+   	    	    var event = "VMSNAPSHOT.REVERTTO";
+				var hasVm = crudService.vmUpdate("vmsnapshot/event", vmsnapshot.uuid, event);
+				hasVm.then(function(result) {
+				  $state.reload();
+				  $scope.cancel();
+				  notify({message: 'Reverting snapshot in VM '+vmsnapshot.vm.name, classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+				}).catch(function (result) {
+					console.log(result.data.globalError[0]);
+			         if(result.data.globalError[0] != null){
+			        	 var msg = result.data.globalError[0];
+			        	 notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+			         }
+                   });
+   	     },
+   	  $scope.cancel = function () {
              $modalInstance.close();
-         },
-				  $scope.cancel = function () {
-	               $modalInstance.close();
-	           };
+         };
    	 }]);
    };
 
@@ -208,15 +255,12 @@ localStorageService, $window, dialogService, notify) {
     			        $scope.paginationObject.totalItems = result.totalItems;
     			    });
     		    };
-
     		    $scope.listVolumes(1);
-
     		    $scope.updatePageStatus=function(size, volume){
     		    	$scope.createSnapshot=true;
     		    	$scope.volume = volume;
     		    	$scope.snapshot = {};
     		    };
-
     		    // Close the create snapshot page
     		    $scope.closeCreateSnapshot = function() {
     		    	$scope.createSnapshot=false;
@@ -262,13 +306,13 @@ localStorageService, $window, dialogService, notify) {
 			    	}
 
 	            };
-//    		       	 	}]);
-//    		        }, 500);
+// }]);
+// }, 500);
 
-//    		    };
+// };
 
          }]);
-        //modalService.trigger('app/views/cloud/snapshot/create.jsp', size);
+        // modalService.trigger('app/views/cloud/snapshot/create.jsp', size);
     };
 
     $scope.createVolume = function(size) {
