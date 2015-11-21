@@ -3,7 +3,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
-<form name="vmsnapshotForm" data-ng-submit="validateVMSnapshot(vmsnapshotForm)" method="post" novalidate="" data-ng-controller="addVMSnapshotCtrl" >
+<form name="vmsnapshotForm" data-ng-submit="validateVMSnapshot(vmsnapshotForm)" method="post" novalidate="" >
 
     <div class="inmodal" >
         <div class="modal-header">
@@ -35,7 +35,7 @@
                                 <span class="text-danger">*</span>
                             </label>
                             <div class="col-md-5 col-sm-5">
-                                <input required="true" type="text" name="name" data-ng-model="vm.name" class="form-control" data-ng-class="{'error':  vmsnapshotForm.name.$invalid && formSubmitted}"  >
+                                <input required="true" type="text" name="name" data-ng-model="vmsnapshot.name" class="form-control" data-ng-class="{'error':  vmsnapshotForm.name.$invalid && formSubmitted}"  >
                                 <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="<fmt:message key="name.of.the.instance" bundle="${msg}" />" ></i>
                                 <div class="error-area" data-ng-show="vmsnapshotForm.name.$invalid && formSubmitted" ><i  tooltip="<fmt:message key="name.is.required" bundle="${msg}" />" class="fa fa-warning error-icon"></i></div>
                             </div>
@@ -60,7 +60,7 @@
 
                             </label>
                             <div class="col-md-5 col-sm-5">
-                                <label> <input icheck type="checkbox" data-ng-model="vmsnapshot.snapshotMemory"> </label>
+                                <label> <input icheck type="checkbox" value="true" data-ng-model="vmsnapshot.snapshotMemory"> </label>
 
 
 
@@ -75,7 +75,7 @@
                             </label>
 
                             <div class="col-md-5 col-sm-5 ">
-                                <select required="true" class="form-control input-group" data-ng-class="{'error':  vmsnapshotForm.name.$invalid && formSubmitted}"  name="instance" data-ng-model="vmsnapshot.instance" ng-options="instance.name for instance in formElements.instanceList" >
+                                <select required="true" class="form-control input-group" data-ng-class="{'error':  vmsnapshotForm.name.$invalid && formSubmitted}"  name="instance" data-ng-model="vmsnapshot.vm" ng-options="instance.name for instance in instanceList" >
                                     <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
                                 </select>
                                 <div class="error-area" data-ng-show="vmsnapshotForm.instance.$invalid && formSubmitted" ><i  tooltip="<fmt:message key="instance.is.required" bundle="${msg}" />" class="fa fa-warning error-icon"></i></div>
@@ -87,24 +87,12 @@
                     <div class="form-group" >
                         <div class="row" >
                             <label class="col-md-3 col-sm-3 control-label" ><fmt:message key="note" bundle="${msg}" />
-
                             </label>
                             <div class="col-md-9 col-sm-9 ">
                                 <span class="text-danger text-center"><fmt:message key="you.cannot.attach.or.detach.the.storage.volume" bundle="${msg}" />, <fmt:message key="when.the.particular.instance.have.vm.snapshots" bundle="${msg}" />.. </span>
-
-
-
                             </div>
-
                         </div>
                     </div>
-
-
-
-
-
-
-
                 </div>
             </div>
         </div>

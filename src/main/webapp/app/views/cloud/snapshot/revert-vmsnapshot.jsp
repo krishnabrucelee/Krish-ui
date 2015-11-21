@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<form name="form.detachForm" data-ng-controller="snapshotListCtrl">
+<form name="form.detachForm" >
     <div class="inmodal" >
         <div class="modal-header">
             <panda-modal-header hide-zone="false" page-icon="fa fa-warning" page-title="<fmt:message key="revert.vm.snapshot" bundle="${msg}" />"></panda-modal-header>
@@ -26,7 +26,7 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-default " ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.cancel" bundle="${msg}" /></button>
-            <button type="submit" class="btn btn-default btn-danger2" ng-click="delete()" data-dismiss="modal"><fmt:message key="common.ok" bundle="${msg}" /></button>
+            <button type="button" class="btn btn-default btn-danger2" ng-click="ok()" data-dismiss="modal"><fmt:message key="common.ok" bundle="${msg}" /></button>
 
         </div>
     </div>

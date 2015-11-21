@@ -207,7 +207,7 @@ function configState($stateProvider, $httpProvider,  $urlRouterProvider, $compil
                 url: "/projects",
                 templateUrl: VIEW_URL + "views/project/index.jsp",
                 data: {
-                    pageTitle: 'Projects'
+                    pageTitle: 'common.projects'
                 }
             })
 

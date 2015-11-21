@@ -26,7 +26,7 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-default " ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.cancel" bundle="${msg}" /></button>
-            <button type="submit" class="btn btn-default btn-danger2" ng-click="vmStop(item)" data-dismiss="modal"><fmt:message key="common.ok" bundle="${msg}" /></button>
+            <button type="submit" class="btn btn-default btn-danger2" ng-click="update()" data-dismiss="modal"><fmt:message key="common.ok" bundle="${msg}" /></button>
 
         </div>
     </div>
