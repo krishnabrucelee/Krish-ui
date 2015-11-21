@@ -2,23 +2,20 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<div class="row" data-ng-controller="snapshotListCtrl">
-
-    <div class="col-md-12 col-sm-12">
+<div class="" data-ng-controller="snapshotListCtrl">
+	<get-loader-image data-ng-show="showLoader"></get-loader-image>
+	<div class="col-md-12 col-sm-12" data-ng-hide="showLoader">
         <div class="hpanel">
             <div class="panel-heading">
-
                 <div class="row">
                     <div class="col-md-12 col-sm-12 col-xs-12 ">
                         <div class="pull-left">
                             <div class="pull-left">
-
                             </div>
                         </div>
                         <div class="pull-right">
                             <panda-quick-search></panda-quick-search>
                             <div class="clearfix"></div>
-
                             <span class="pull-right m-l-sm m-t-sm">
                                 <a class="btn btn-info"  ng-click="openAddSnapshotContainer()"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span>Create Snapshot</a>
                                 <a class="btn btn-info" title="Refresh" ><span class="fa fa-refresh fa-lg"></span></a>
@@ -27,7 +24,6 @@
                     </div>
                     <div class="clearfix"></div>
                 </div>
-
             </div>
 			<pagination-content></pagination-content>
             <div class="white-content">
@@ -69,9 +65,7 @@
                                         <span class="fa fa-plus-square"> </span>
                                     </a>
                                     <a class="icon-button" title="Delete Snapshot" data-ng-click="deleteSnapshot('sm', snapshot)" ><span class="fa fa-trash"></span></a>
-
                                 </td>
-
                             </tr>
                         </tbody>
                     </table>

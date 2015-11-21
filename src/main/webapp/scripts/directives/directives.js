@@ -27,6 +27,7 @@ angular
     .directive('appScroll', appScroll)
     .directive('templateQuickSearch', templateQuickSearch)
     .directive('paginationContent', paginationContent)
+    .directive('getLoaderImage', getLoaderImage)
     .directive('passwordVerify', passwordVerify)
     .directive('multiselect', function () {
     return {
@@ -642,6 +643,16 @@ function paginationContent() {
         },
         templateUrl: "app/views/common/pagination-content.jsp",
     };
+}
+
+function getLoaderImage() {
+	return {
+		restrict: 'E',
+        link: function (scope, element, attrs) {
+
+        },
+        templateUrl: "app/views/common/loader-image.jsp",
+	}
 }
 
 function passwordVerify() {
