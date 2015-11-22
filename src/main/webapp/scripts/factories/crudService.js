@@ -10,7 +10,7 @@ function crudService($window, localStorageService, globalConfig, $stateParams, p
     };
 
     object.listAll = function(moduleName) {
-        return promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + moduleName +"?lang=" + localStorageService.cookie.get('language'));
+        return promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + moduleName +"?lang=" + localStorageService.cookie.get('language')+"&sortBy=-id");
     };
 
     object.listSearch = function(moduleName) {
