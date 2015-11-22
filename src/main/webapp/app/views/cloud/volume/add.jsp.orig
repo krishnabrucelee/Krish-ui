@@ -25,11 +25,10 @@ pageEncoding="UTF-8"%>
                         </div>
                     </div>
 <<<<<<< Updated upstream
-                    <div class="form-group" ng-class="{'text-danger' : volumeForm.type.$invalid && formSubmitted}">
+                    <div class="form-group" >
                         <div class="row">
                             <label class="col-md-2 col-xs-12 col-sm-2 control-label"><fmt:message key="common.type" bundle="${msg}" /> <span class="m-l-xs"></span></label>
                             <div class="col-md-5 col-xs-12 col-sm-5">
-                                <select required="true" class="form-control input-group" name="diskOfferings"
 =======
 
                     <div class="form-group" >
@@ -38,8 +37,8 @@ pageEncoding="UTF-8"%>
 
 
                              <div class="col-md-5 col-xs-12 col-sm-5">
-                                <select  class="form-control input-group" name="diskOfferings"
 >>>>>>> Stashed changes
+                                <select  class="form-control input-group" name="diskOfferings"
                                         data-ng-model="volume.storageTags"
                                         data-ng-options="storageTags for storageTags in volumeElements.diskOfferingTags" >
                                     <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
@@ -47,6 +46,14 @@ pageEncoding="UTF-8"%>
 
                                 <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="Select the type" ></i>
                                 <div class="error-area" data-ng-show="volumeForm.type.$invalid && formSubmitted" ><i  tooltip="Type is Required" class="fa fa-warning error-icon"></i></div>
+<<<<<<< Updated upstream
+=======
+
+                                <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="Select the plan" ></i>
+
+                            </div>
+
+>>>>>>> Stashed changes
 
                                 <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="Select the plan" ></i>
 
