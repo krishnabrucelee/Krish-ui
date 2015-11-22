@@ -254,7 +254,12 @@ function volumeCtrl($scope, $state, $stateParams, $timeout, globalConfig,
                 });
 
                 // Create a new application
+<<<<<<< Updated upstream
+                $scope.save = function (form) {
+=======
                 $scope.save = function (form, volume) {
+
+>>>>>>> Stashed changes
                     $scope.formSubmitted = true;
 
                     if (form.$valid) {

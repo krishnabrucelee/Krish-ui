@@ -68,8 +68,8 @@
                                 <table cellspacing="1" cellpadding="1" class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
-                                            <th class="col-md-2 col-sm-2"><fmt:message key="common.domain" bundle="${msg}" /> </th>
                                             <th class="col-md-2 col-sm-2"><fmt:message key="common.name" bundle="${msg}" /> </th>
+                                            <th class="col-md-2 col-sm-2"><fmt:message key="common.domain" bundle="${msg}" /> </th>
                                             <th class="col-md-3 col-sm-3"><fmt:message key="common.description" bundle="${msg}" /> </th>
                                             <th class="col-md-1 col-sm-1"><fmt:message key="common.action" bundle="${msg}" /> </th>
                                         </tr>
@@ -81,11 +81,11 @@
                                     </tbody>
                                     <tbody data-ng-show="departmentList.length > 0">
                                         <tr data-ng-repeat="department in departmentList| filter:quickSearch" >
+											<td>
+                                                {{ department.userName}}
+                                            </td>
                                         	<td>
                                                 {{ department.domain.name }}
-                                            </td>
-                                            <td>
-                                                {{ department.userName}}
                                             </td>
                                             <td>
                                                 {{ department.description}}
