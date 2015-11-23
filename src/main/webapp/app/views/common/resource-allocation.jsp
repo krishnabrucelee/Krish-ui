@@ -19,9 +19,9 @@
                         <div class="col-md-4 col-sm-4" data-ng-if="type == 'department-quota'" >
                             <div class="form-group">
                                 <div class="row">
-                                    <label class="col-md-3 col-sm-4 control-label"><fmt:message key="common.department" bundle="${msg}" />:
+                                    <label class="col-md-4 col-sm-4 control-label"><fmt:message key="common.department" bundle="${msg}" />:
                                     </label>
-                                    <div class="col-md-5 col-sm-6">
+                                    <div class="col-md-8 col-sm-8">
                                         <select   class="form-control input-group" name="department" data-ng-disabled="true" data-ng-model="resourceQuota.department" ng-options="department.userName for department in departmentList" >
                                             <option value="">Select</option>
                                         </select>
@@ -32,9 +32,9 @@
                           <div class="col-md-4 col-sm-4" data-ng-if="type == 'project-quota'">
                             <div class="form-group">
                                 <div class="row">
-                                    <label class="col-md-2 col-sm-3 control-label"><fmt:message key="common.project" bundle="${msg}" />:
+                                    <label class="col-md-4 col-sm-4 control-label"><fmt:message key="common.project" bundle="${msg}" />:
                                     </label>
-                                    <div class="col-md-5 col-sm-6">
+                                    <div class="col-md-8 col-sm-8">
 
                                         <select  class="form-control input-group"  data-ng-disabled="true"  name="project"   data-ng-model="resourceQuota.project" ng-options="project.name for project in projectList" >
                                             <option value="">Select</option>

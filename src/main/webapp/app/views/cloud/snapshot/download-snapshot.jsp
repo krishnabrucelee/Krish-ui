@@ -44,7 +44,7 @@
                     <app-currency></app-currency>0.10 <span>/ hour</span> <span>/GB</span>
                 </h4>
             </span>
-            <button type="button" class="btn btn-default " ng-click="closeCreateSnapshot()" data-dismiss="modal2">Cancel</button>
+            <button type="button" class="btn btn-default " ng-click="cancel()" data-dismiss="modal2">Cancel</button>
             <button class="btn btn-info" type="submit">Create</button>
         </div>
     </div>

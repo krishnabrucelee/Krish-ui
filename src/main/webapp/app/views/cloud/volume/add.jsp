@@ -19,15 +19,15 @@ pageEncoding="UTF-8"%>
                             <div class="col-md-5 col-xs-12 col-sm-5">
                                 <input required="true" type="text" name="name" data-ng-model="volume.name" class="form-control" data-ng-class="{'error': volumeForm.name.$invalid && formSubmitted}" >
                                 <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="Name of the disk" ></i>
-                                <div class="error-area" data-ng-show="volumeForm.name.$invalid && formSubmitted" ><i  tooltip="Name is Required" class="fa fa-warning error-icon"></i></div>
-
+                                <div class="error-area" data-ng-show="volumeForm.name.$invalid && formSubmitted" >
+                                <i ng-attr-tooltip="{{ volumeForm.name.errorMessage || '<fmt:message key="volume.already.exist" bundle="${msg}" />' }}"
+												class="fa fa-warning error-icon"></i>
+							</div>
                             </div>
                         </div>
                     </div>
                     <div class="form-group" >
-                    
-                        <div class="row">
-                            <label class="col-md-2 col-xs-12 col-sm-2 control-label"><fmt:message key="common.type" bundle="${msg}" /> <span class="m-l-xs"></span></label>
+
                         <div class="row">
                             <label class="col-md-2 col-xs-12 col-sm-2 control-label"><fmt:message key="common.type" bundle="${msg}" /> <span class="m-l-xs"></span></label>
                             <div class="col-md-5 col-xs-12 col-sm-5">
@@ -38,10 +38,8 @@ pageEncoding="UTF-8"%>
                                 </select>
 
                                 <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="Select the type" ></i>
-                                <div class="error-area" data-ng-show="volumeForm.type.$invalid && formSubmitted" ><i  tooltip="Type is Required" class="fa fa-warning error-icon"></i></div>
-
-                                <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="Select the plan" ></i>
-
+                                <div class="error-area" data-ng-show="volumeForm.type.$invalid && formSubmitted" >
+                                <i  tooltip="Type is Required" class="fa fa-warning error-icon"></i></div>
 
                                 <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="Select the plan" ></i>
 
@@ -75,7 +73,7 @@ pageEncoding="UTF-8"%>
                                     <rzslider rz-slider-model="volume.diskSize" rz-slider-floor="volumeElements.diskOffer.diskSize.floor" rz-slider-ceil="volumeElements.diskOffer.diskSize.ceil" rz-slider-always-show-bar="true"></rzslider>
                                 </div>
                                 <div class="col-md-2 col-xs-12 col-sm-3">
-                                    <input type="text" data-ng-init="volume.diskSize" data-ng-min="{{ volumeElements.diskOffer.diskSize.floor}}" data-ng-max="{{ volumeElements.diskOffer.diskSize.ceil}}"
+                                    <input type="text" data-ng-min="{{ volumeElements.diskOffer.diskSize.floor }}" data-ng-max="{{ volumeElements.diskOffer.diskSize.ceil}}"
                                            class="form-control input-mini" name="diskSize" data-ng-model="volume.diskSize" valid-number="">
                                 </div>
                             </div>
@@ -113,7 +111,9 @@ pageEncoding="UTF-8"%>
         <div class="modal-footer">
             <span class="pull-left" data-ng-show="volume.storageOffering.isCustomDisk">
                 <h4 class="text-danger price-text m-l-lg">
-                    <app-currency></app-currency>{{ (volume.storageOffering.storagePrice[0].costGbPerMonth * volume.diskSize)}}    <span>/ hour</span>   <small class="text-right text-muted m-l-sm">(<app-currency></app-currency>{{ volume.storageOffering.storagePrice[0].costGbPerMonth * volume.diskSize * 720}} / month)</small>
+                    <app-currency></app-currency> <span data-ng-if="volume.diskSize">{{ (volume.storageOffering.storagePrice[0].costGbPerMonth * volume.diskSize)}}</span>
+                    <span data-ng-if="volume.diskSize">{{ (volume.storageOffering.storagePrice[0].costGbPerMonth * 0)}}</span><span data-ng-if="!volume.diskSize">0</span> <span>/ hour</span>
+                     <small class="text-right text-muted m-l-sm">(<app-currency></app-currency><span data-ng-if="volume.diskSize">{{ volume.storageOffering.storagePrice[0].costGbPerMonth * volume.diskSize * 720}} / month)</span><span data-ng-if="!volume.diskSize">0 / month)</span></small>
                 </h4>
             </span>
             <a class="btn btn-default"  data-ng-click="cancel()"><fmt:message key="common.cancel" bundle="${msg}" /></a>

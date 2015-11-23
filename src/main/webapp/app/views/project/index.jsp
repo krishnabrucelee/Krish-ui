@@ -135,10 +135,10 @@
 					ng-class="project.side ? 'animated fadeInRight sidebar-open' : 'animated fadeInRight'">
 					<div class="p-m">
 						<button id="sidebar-close"
-							class="right-sidebar-toggle sidebar-button btn btn-default m-b-md">
-							<i class="pe pe-7s-close"></i>
+							class="right-sidebar-toggle pull-right sidebar-button btn btn-default m-b-md btn-danger">
+							<i class="pe-1x font-bold pe pe-7s-close"></i>
 						</button>
-						<div class="row panel-body">
+						<div class="row panel-body m-t-lg">
 
 							<accordion close-others="false"> <accordion-group is-open="true"> <accordion-heading>
 							<fmt:message key="project.information" bundle="${msg}" /><i class="pull-right glyphicon"

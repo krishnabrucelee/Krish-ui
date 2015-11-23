@@ -90,11 +90,11 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
       $scope.templateList();
 
 
-      $scope.getTemplatesByFilters = function() {
+      $scope.getTemplatesByFilters = function(obj) {
     	  var templateList = [];
     	  var template = {};
     	  template.osCategory = $scope.instance.osCategory;
-    	  template.architecture = $scope.instance.architecture;
+    	  template.architecture = obj;
     	  template.osVersion = $scope.instance.osVersion;
     	  console.log(template);
 
@@ -103,6 +103,12 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
         	  $scope.formElements.templateList= result;
           });
       }
+
+	$scope.$watch('instance.architecture', function (obj) {
+	if (!angular.isUndefined(obj)) {
+    	  $scope.getTemplatesByFilters(obj);
+	}
+          });
 
 
       function containsObject(obj, list) {
@@ -129,9 +135,17 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
         };
 
         $scope.setTemplate = function (item){
+console.log(item);
         	 $scope.instance.template = item;
              $scope.instance.templateId = item.id;
             }
+
+	  $scope.$watch('templat', function (obj) {
+console.log(obj);
+	if (!angular.isUndefined(obj)) {
+    	   $scope.setTemplate(obj);
+	}
+          });
 
 
         $scope.formElements = {

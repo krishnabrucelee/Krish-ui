@@ -1,7 +1,7 @@
-<form name="confirmsnapshot" data-ng-submit="validateConfirmSnapshot(confirmsnapshot)" method="post" novalidate="" data-ng-controller="addConfirmSnapshotCtrl" >
+<form name="confirmsnapshot" data-ng-submit="validateConfirmSnapshot(confirmsnapshot)" method="post" novalidate="" >
    <div class="inmodal" >
         <div class="modal-header">
-            <panda-modal-header hide-zone="true" page-icon="fa fa-camera" page-title="Take Snapshot"></panda-modal-header>                
+            <panda-modal-header hide-zone="true" page-icon="fa fa-camera" page-title="Take Snapshot"></panda-modal-header>
         </div>
 
          <div class="modal-body">
@@ -19,9 +19,9 @@
 
         </div>
 
-       
+
        <div class="modal-footer">
-            
+
             <button type="button" class="btn btn-default " ng-click="cancel()" data-dismiss="modal">No</button>
         <button class="btn btn-info" type="submit">Yes</button>
         </div>

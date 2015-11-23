@@ -223,15 +223,19 @@ function volumeCtrl($scope, $state, $stateParams, $timeout, globalConfig,
                         };
             }]);
     };
-
+ 	
     $scope.volume = {};
+    $scope.volumeForm = {};
     $scope.addVolume = function (size) {
         dialogService.openDialog($scope.global.VIEW_URL + "cloud/volume/add.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
-
+		
                 $scope.diskList = function (tag) {
                     if (angular.isUndefined(tag)) {
                         tag = "";
                     }
+		   if(tag === null){
+			tag = "";
+	            }
                     var hasDisks = crudService.listAllByTag("storages/storagesort", tag);
                     hasDisks.then(function (result) {  // this is only run after
                         // $http completes0
@@ -252,7 +256,7 @@ function volumeCtrl($scope, $state, $stateParams, $timeout, globalConfig,
                 $scope.$watch('volume.storageTags', function (val) {
                     $scope.diskList(val);
                 });
-
+		
                 // Create a new application
                 $scope.save = function (form, volume) {
                     $scope.formSubmitted = true;
@@ -266,10 +270,17 @@ function volumeCtrl($scope, $state, $stateParams, $timeout, globalConfig,
                             notify({message: 'Added successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                             $modalInstance.close();
                         }).catch(function (result) {
+ 				if (!angular.isUndefined(result) && result.data != null) {
+                                    if (result.data.globalError[0] != '') {
+                                        var msg = result.data.globalError[0];
+                                        notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                                    }
                             angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
-                                $scope.applicationForm[key].$invalid = true;
-                                $scope.applicationForm[key].errorMessage = errorMessage;
+                                $scope.volumeForm[key].$invalid = true;
+                                $scope.volumeForm[key].errorMessage = errorMessage;
                             });
+
+				}
                         });
                     }
                 },

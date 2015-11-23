@@ -69,7 +69,7 @@ pageEncoding="UTF-8"%>
                                     <td>{{ volume.volumeType}}</td>
                                     <td>{{ volume.storageOffering.name}}</td>
                                     <td>{{ volume.attachedTo.name || " - " }}</td>
-                                    <td>{{ volume.diskSize}}</td>
+                                    <td><span data-ng-if="volume.storageOffering.isCustomDisk">{{ volume.diskSize}} </span> <span data-ng-if="!volume.storageOffering.isCustomDisk">{{ volume.storageOffering.diskSize}}</span></td>
                                     <td>{{ volume.createdDateTime}}</td>
                                     <td>
                                         <div class="btn-group action-menu">

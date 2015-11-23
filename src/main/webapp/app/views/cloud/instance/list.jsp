@@ -101,8 +101,9 @@
                                             <label class="label label-danger" data-ng-if="instance.status == 'Stopped'">{{ instance.status}}</label>
                                             <label class="label label-primary" data-ng-if="instance.status == 'Starting'">{{ instance.status}}</label>
                                             <label class="label label-danger" data-ng-if="instance.status == 'Error'">{{ instance.status}}</label>
-					    <label class="label label-danger" data-ng-if="instance.status == 'Stopping'">{{ instance.status}}</label>
+					    					<label class="label label-danger" data-ng-if="instance.status == 'Stopping'">{{ instance.status}}</label>
                                             <label class="label label-danger" data-ng-if="instance.status == 'Expunging'">{{ instance.status}}</label>
+                                            <label class="label label-danger" data-ng-if="instance.status == 'Destroyed'">{{ instance.status}}</label>
 
                                         </td>
                                         <td>

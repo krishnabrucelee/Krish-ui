@@ -57,7 +57,7 @@
                                                             <span class="label label-success">04</span>
                                                         </a>
                                                         <div class="clearfix"></div>
-                                                        <div class="btn-group" data-ng-controller="volumeListCtrl">
+                                                        <div class="btn-group">
 
                                                             <span data-ng-if="$index != 0">
                                                                 <button class="btn btn-sm m-t-md dropdown-toggle" data-ng-class="$index == 0 ? 'btn-info' : 'btn-default'" data-toggle="dropdown"><i class="fa fa-cog"></i> <fmt:message key="configure" bundle="${msg}" /> </button>
