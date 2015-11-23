@@ -45,6 +45,7 @@ function accountListCtrl($scope,$state, promiseAjax, $log, notify, crudService, 
     // Department list load based on the domain
     $scope.domainChange = function() {
         $scope.domains = {};
+console.log($scope.user.domain);
         var hasDepartmentList = crudService.listAllByFilter("departments/search", $scope.user.domain);
         hasDepartmentList.then(function (result) {
     	    $scope.accountElements.departmentList = result;

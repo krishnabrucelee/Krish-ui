@@ -34,7 +34,8 @@ angular
 
     // Department list from server
     $scope.role.department = {};
-    var hasDepartment = crudService.listAll("departments/list");
+    var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
+    var hasDepartment = crudService.list("departments", $scope.global.paginationHeaders(1, limit), {"limit": limit});
     hasDepartment.then(function (result) {  // this is only run after $http completes0
     	$scope.formElements.departmentList = result;
     });

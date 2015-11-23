@@ -61,7 +61,7 @@
 										data-ng-click="projectDeleteConfirmation('sm', project.totalCheckedCount)"
 										data-ng-disabled="!oneChecked"><span
 											class="fa fa-times-circle-o fa-lg m-r-xs"></span><fmt:message key="common.delete" bundle="${msg}" /></a>
-									<a class="btn btn-info" ui-sref="project.home" title="<fmt:message key="common.refresh" bundle="${msg}" />" ui-sref-opts="{reload: true}"><span
+									<a class="btn btn-info" ui-sref="projects" title="<fmt:message key="common.refresh" bundle="${msg}" />" ui-sref-opts="{reload: true}"><span
 											class="fa fa-refresh fa-lg "></span></a>
 									</span>
 								</div>

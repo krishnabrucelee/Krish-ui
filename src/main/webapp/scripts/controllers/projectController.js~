@@ -61,7 +61,7 @@ function projectCtrl($scope, promiseAjax, $modal, $state, modalService, dialogSe
 
     $scope.userLists = function (department) {
     	console.log(department);
-       var hasUsers = crudService.listAllByFilter("users/search", department);
+       var hasUsers = crudService.listAllByFilter("users/list", department.id);
         hasUsers.then(function (result) {  // this is only run after $http completes0
         	$scope.projectElements.projectuserList = result;
 

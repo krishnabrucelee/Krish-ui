@@ -34,7 +34,8 @@ function applicationListCtrl($scope, notify, dialogService, crudService) {
     $scope.formElements = {};
 
     // Domain List
-	var hasDomains = crudService.listAll("domains/list");
+	var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
+	var hasDomains = crudService.list("domains", $scope.global.paginationHeaders(1, limit), {"limit": limit});
 	hasDomains.then(function (result) {  // this is only run after $http completes0
 	      $scope.formElements.domainList = result;
 	      console.log(result);

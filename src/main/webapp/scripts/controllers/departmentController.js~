@@ -16,8 +16,7 @@ function departmentCtrl($scope, notify, promiseAjax, dialogService, crudService)
 
     // Department List
     $scope.list = function (pageNumber) {
-        var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
-        var hasDepartments = crudService.list("departments", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+        var hasDepartments = crudService.listAll("departments/list");
         hasDepartments.then(function (result) {  // this is only run after $http completes0
 
             $scope.departmentList = result;

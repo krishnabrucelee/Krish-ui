@@ -24,6 +24,10 @@
 	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.departments" bundle="${msg}" /></a>
 	                            <span ng-switch-when="true"><fmt:message key="common.departments" bundle="${msg}" /></span>
                             </span>
+                            <span data-ng-if="state.data.pageTitle !== 'common.departments'">
+	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.departments" bundle="${msg}" /></a>
+	                            <span ng-switch-when="true">{{ state.data.pageName }}</span>
+	                    </span>
                         </li>
                     </ol>
                 </div>
