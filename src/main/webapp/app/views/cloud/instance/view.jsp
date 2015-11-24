@@ -16,7 +16,6 @@
         </ul>
 
         <div class="tab-content">
-
             <div class="tab-pane" data-ng-class="{'active' : templateCategory == 'dashboard'}" id="step1-dashboard">
                 <div class="row" >
 
@@ -83,10 +82,10 @@
                                     <li data-ng-if="instance.status == 'Destroyed'" class="list-group-item">
                                         <a href="javascript:void(0);" data-ng-if="instance.status == 'Destroyed'" data-ng-click="recoverVm('sm',instance)" title="<fmt:message key="recover.vm" bundle="${msg}" />"><span class="fa-history fa font-bold m-xs"></span> <fmt:message key="recover.vm" bundle="${msg}" /></a>
                                     </li>
-                                    <li data-ng-if="instance.isoName !== null " class="list-group-item">
+                                    <li data-ng-if="instance.isoName === null " class="list-group-item">
                                         <a href="javascript:void(0);" title="<fmt:message key="attach.iso" bundle="${msg}" />" data-ng-click="attachISO(instance)"><span class="fa-dot-circle-o fa font-bold m-xs"></span> <fmt:message key="attach.iso" bundle="${msg}" /></a>
                                     </li>
-                                    <li data-ng-if="instance.isoName === null " class="list-group-item">
+                                    <li data-ng-if="instance.isoName !== null " class="list-group-item">
                                         <a href="javascript:void(0);" title="<fmt:message key="detach.iso" bundle="${msg}" />" data-ng-click="detachISO(instance)"><span class="fa-compass fa font-bold m-xs"></span> <fmt:message key="detach.iso" bundle="${msg}" /></a>
                                     </li>
                                     <li class="list-group-item">

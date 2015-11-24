@@ -216,7 +216,6 @@ console.log(item);
                   $scope.disk = false;
               }
               $scope.listNetworkOffer(1);
-              $scope.listNetwork(1);
 
               console.log(item);
           }
@@ -277,6 +276,7 @@ console.log(item);
       $scope.$watch('instance.department', function (obj) {
 	if (!angular.isUndefined(obj)) {
     	  $scope.userList(obj);
+          $scope.listNetwork(obj.userName);
 	}
           });
 
@@ -686,8 +686,8 @@ console.log(item);
          $scope.global = crudService.globalConfig;
          $scope.test = "test";
          // Guest Network List
-         $scope.listNetwork = function (pageNumber) {
-             var hasGuestNetworks = crudService.listAll("guestnetwork/list");
+         $scope.listNetwork = function (department) {
+             var hasGuestNetworks = crudService.listAllByFilters("guestnetwork/list", department);
              hasGuestNetworks.then(function (result) {  // this is only run after $http
                      $scope.instance.networks.networkList = result;
              });
@@ -730,7 +730,7 @@ console.log(item);
                  console.log($scope.guestnetwork);
                  var hasguestNetworks = crudService.add("guestnetwork", guestnetwork);
                  hasguestNetworks.then(function (result) {
-                     $scope.listNetwork(1);
+                     $scope.listNetwork($scope.instance.department.name);
                      notify({message: 'Added successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                      $scope.instance.networkOfferinglist = $scope.instanceElements.networkOfferingList[0];
                    $scope.guestnetwork.name = "";
