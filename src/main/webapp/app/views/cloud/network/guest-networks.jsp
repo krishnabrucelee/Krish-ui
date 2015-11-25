@@ -5,6 +5,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <div>
+
 <table cellspacing="1" cellpadding="1" class="table table-bordered table-striped">
                     <thead>
                     <tr>
@@ -21,7 +22,7 @@
                         <td>
                             <a class="text-info" ui-sref="cloud.list-network.view-network({id: {{ network.id }}})"  title="View Network" >{{ network.name }}</a>
                         </td>
-                        <td>{{ network.account }} </td>
+                        <td>{{ network.department.userName}} </td>
                         <td>{{ network.networkType }} </td>
                         <td>{{ network.cIDR }} </td>
                         <td>{{ network.gateway}} </td>
