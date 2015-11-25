@@ -276,7 +276,7 @@ console.log(item);
       $scope.$watch('instance.department', function (obj) {
 	if (!angular.isUndefined(obj)) {
     	  $scope.userList(obj);
-          $scope.listNetwork(obj.userName);
+          $scope.listNetwork(obj.id);
 	}
           });
 
@@ -723,14 +723,16 @@ console.log(item);
 
              if (!networkError) {
 
- $scope.guestnetwork.zone = $scope.global.zone;
-                 var guestnetwork = $scope.guestnetwork;
-
+            	 $scope.guestnetwork.zone = $scope.global.zone;
+            	 var guestnetwork = $scope.guestnetwork;
+            	 $scope.guestnetwork.departmentId= $scope.instance.department.id;
+		 $scope.guestnetwork.department= $scope.instance.department;
+            	 $scope.guestnetwork.domainId = $scope.instance.department.domainId;
 
                  console.log($scope.guestnetwork);
                  var hasguestNetworks = crudService.add("guestnetwork", guestnetwork);
                  hasguestNetworks.then(function (result) {
-                     $scope.listNetwork($scope.instance.department.name);
+                     $scope.listNetwork($scope.instance.department.id);
                      notify({message: 'Added successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                      $scope.instance.networkOfferinglist = $scope.instanceElements.networkOfferingList[0];
                    $scope.guestnetwork.name = "";
