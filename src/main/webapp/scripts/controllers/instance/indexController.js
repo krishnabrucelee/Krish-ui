@@ -90,11 +90,11 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
       $scope.templateList();
 
 
-      $scope.getTemplatesByFilters = function(obj) {
+      $scope.getTemplatesByFilters = function() {
     	  var templateList = [];
     	  var template = {};
     	  template.osCategory = $scope.instance.osCategory;
-    	  template.architecture = obj;
+    	  template.architecture = $scope.instance.architecture;
     	  template.osVersion = $scope.instance.osVersion;
     	  console.log(template);
 
@@ -103,13 +103,6 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
         	  $scope.formElements.templateList= result;
           });
       }
-
-	$scope.$watch('instance.architecture', function (obj) {
-	if (!angular.isUndefined(obj)) {
-    	  $scope.getTemplatesByFilters(obj);
-	}
-          });
-
 
       function containsObject(obj, list) {
     	    var i;
