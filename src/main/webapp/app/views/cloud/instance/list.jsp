@@ -116,7 +116,7 @@
                                                 <span class="fa fa-ban" ></span>
                                             </a>
                                             <a class="icon-button text-center" data-ng-if="instance.status == 'Running'" title="<fmt:message key="restart" bundle="${msg}" />" data-ng-click="rebootVm('sm',instance)"  ><span class="fa fa-rotate-left"></span></a>
-                                            <a class="icon-button text-center" title="<fmt:message key="view.console" bundle="${msg}" />"><span class="fa-desktop fa m-xs"></span></a>
+                                            <a data-ng-click="showConsole(instance)" class="icon-button text-center" title="<fmt:message key="view.console" bundle="${msg}" />"><span class="fa-desktop fa m-xs"></span></a>
                                             <a class="icon-button text-center" title="<fmt:message key="display.note" bundle="${msg}" />" data-ng-click="showDescription(instance)"><span class="fa-file-text fa"></span></a>
 						</div>
                                         </td>
