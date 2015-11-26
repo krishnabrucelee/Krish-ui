@@ -302,6 +302,9 @@ function instanceViewCtrl($scope,$log, dialogService, $modal,$http, $state, $sta
 						                    if (form.$valid) {
 						                    	$scope.vmsnapshot.domainId = $scope.instance.domainId;
 						                    	$scope.vmsnapshot.vmId = $scope.instance.id;
+						                    	if (angular.isUndefined($scope.vmsnapshot.snapshotMemory) || $scope.vmsnapshot.snapshotMemory === null || $scope.vmsnapshot.snapshotMemory === '') {
+						                    	$scope.vmsnapshot.snapshotMemory = false;
+						                    	}
 								  				var hasVm = crudService.add("vmsnapshot",$scope.vmsnapshot);
 								  				hasVm.then(function(result) {
 								  					$scope.homerTemplate = 'app/views/notification/notify.jsp';
