@@ -59,7 +59,7 @@
                             </div>
                             <div class="panel-body no-padding">
                                 <ul class="list-group">
-                                <div data-ng-if="instance.status !== 'Error' || instance.status !== 'Expunging' || instance.status !== 'Starting' || instance.status !== 'Stopping' ">
+                                <div data-ng-if="instance.status != 'Error' || instance.status != 'Expunging' || instance.status != 'Starting' || instance.status != 'Stopping' || instance.status != 'Destroying'  ">
                                     <li class="list-group-item">
                                         <a href="javascript:void(0);" title="<fmt:message key="stop" bundle="${msg}" />" data-ng-click="stopVm('sm',instance)" data-ng-show="instance.status == 'Running'"><span class="fa-ban fa font-bold m-xs"></span> <fmt:message key="stop" bundle="${msg}" /></a>
                                         <a href="javascript:void(0);" title="<fmt:message key="start" bundle="${msg}" />" data-ng-click="startVm('sm',instance)" data-ng-show="instance.status == 'Stopped'"><span class="fa-play fa font-bold m-xs"></span> <fmt:message key="start" bundle="${msg}" /></a>
