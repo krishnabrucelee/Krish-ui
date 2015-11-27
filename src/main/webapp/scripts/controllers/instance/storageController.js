@@ -30,7 +30,7 @@ volumeService, modalService, promiseAjax, notify, globalConfig) {
     }
 
     $scope.addVolume = function(size) {
-        modalService.trigger('app/views/cloud/instance/add-volume.jsp', 'md')
+    	modalService.trigger('app/views/cloud/instance/add-volume.jsp', 'md');
 
     };
 

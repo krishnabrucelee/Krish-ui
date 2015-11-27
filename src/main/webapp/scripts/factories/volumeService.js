@@ -29,24 +29,25 @@ function volumeService($window, $rootScope, localStorageService, $stateParams, n
                 value: 0
             },
             isOpen:false
-                        
+
         },
-        
+
         type: [
             {id:1, name:"Performance"},
             {id:2, name:"Capacity"}
+
         ]
     };
-    
+
     volume.save = function(object) {
         var homerTemplate = 'views/notification/notify.html';
         notify({message: 'Added successfully', classes: 'alert-success', templateUrl: homerTemplate});
         volume.cancel();
 
     };
-    
+
     volume.saveByInstance = function(object, instance) {
-        var instanceVolume = {};       
+        var instanceVolume = {};
         var volumeList = localStorageService.get("volumeList");
         if(angular.isUndefined(volumeList)) {
             volumeList = {};
@@ -59,12 +60,12 @@ function volumeService($window, $rootScope, localStorageService, $stateParams, n
         instanceVolume.createdDate = dt.getDate() + "-" + (dt.getMonth() + 1) + "-" + dt.getFullYear();
         volumeList.push(instanceVolume);
         return volumeList;
-        
+
     };
 
-    
+
     return volume;
-    
+
 }
 
 /**

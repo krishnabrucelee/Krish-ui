@@ -8,7 +8,7 @@ angular
         .module('homer')
         .controller('volumeCtrl', volumeCtrl)
         .controller('recurringSnapshotCtrl', recurringSnapshotController)
-        .controller('uploadVolumeCtrl', uploadVolumeCtrl)
+        //.controller('uploadVolumeCtrl', uploadVolumeCtrl)
 
 function volumeCtrl($scope, $state, $stateParams, $timeout, globalConfig,
         volumeService, localStorageService, $window, notify, dialogService, crudService) {
@@ -172,7 +172,10 @@ function volumeCtrl($scope, $state, $stateParams, $timeout, globalConfig,
         modalService.trigger('app/views/cloud/volume/recurring-snapshot.jsp', 'lg');
     };
 
+    //Resize Volume
     $scope.resizeVolume = function (size, volume) {
+        $scope.volume = volume;
+        $scope.volume = angular.copy(volume);
         dialogService.openDialog($scope.global.VIEW_URL + "cloud/volume/resize.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
                 $scope.diskList = function (tag) {
                     if (angular.isUndefined(tag)) {
@@ -199,8 +202,9 @@ function volumeCtrl($scope, $state, $stateParams, $timeout, globalConfig,
                     $scope.diskList(val);
                 });
 
+
                 // Resize the Volume
-                $scope.update = function (form) {
+                $scope.update = function (form, volume) {
                     $scope.formSubmitted = true;
                     if (form.$valid) {
                         $scope.volume.zone = $scope.global.zone;
@@ -223,19 +227,21 @@ function volumeCtrl($scope, $state, $stateParams, $timeout, globalConfig,
                         };
             }]);
     };
- 	
+
+    //Create volume
     $scope.volume = {};
     $scope.volumeForm = {};
     $scope.addVolume = function (size) {
-        dialogService.openDialog($scope.global.VIEW_URL + "cloud/volume/add.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
-		
+        dialogService.openDialog($scope.global.VIEW_URL + "cloud/volume/add.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope',
+                                                                                                 function ($scope, $modalInstance, $rootScope) {
+
                 $scope.diskList = function (tag) {
                     if (angular.isUndefined(tag)) {
                         tag = "";
                     }
-		   if(tag === null){
-			tag = "";
-	            }
+                    	if(tag === null){
+                    		tag = "";
+                    	}
                     var hasDisks = crudService.listAllByTag("storages/storagesort", tag);
                     hasDisks.then(function (result) {  // this is only run after
                         // $http completes0
@@ -256,7 +262,9 @@ function volumeCtrl($scope, $state, $stateParams, $timeout, globalConfig,
                 $scope.$watch('volume.storageTags', function (val) {
                     $scope.diskList(val);
                 });
-		
+                $scope.volume.name = "";
+                $scope.volume.storageTags = "";
+                $scope.volume.storageOffering = "";
                 // Create a new application
                 $scope.save = function (form, volume) {
                     $scope.formSubmitted = true;
@@ -321,8 +329,63 @@ function volumeCtrl($scope, $state, $stateParams, $timeout, globalConfig,
         $scope.volumeElements.storageOffering.diskSize.value = 0;
         $scope.volumeElements.storageOffering.iops.value = 0;
     };
-}
-;
+
+
+ // Upload volume
+//	$scope.volume = {};
+//	$scope.volumeForm = {};
+	$scope.uploadVolumeCtrl = function (size) {
+		dialogService.openDialog($scope.global.VIEW_URL + "cloud/volume/upload.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope',
+                                                                                                 function ($scope, $modalInstance, $rootScope) {
+    $scope.global = globalConfig;
+    // Form Field Decleration
+
+
+    $scope.formSubmitted = false;
+//    $scope.formElements = {
+//        formatList: [
+//            {id: 1, name: 'RAW'},
+//            {id: 2, name: 'VHD'},
+//            {id: 3, name: 'VHDX'},
+//            {id: 4, name: 'OVA'},
+//            {id: 5, name: 'QCOW2'}
+//        ]
+//    };
+
+    //
+    $scope.validateVolume = function (form, volume) {
+        $scope.formSubmitted = true;
+        if (form.$valid) {
+        	 $scope.volume.zone = $scope.global.zone;
+             var volume = $scope.volume;
+             var hasUploadVolume = crudService.add("volumes", volume);
+             hasUploadVolume.then(function (result) {
+                 $scope.list(1);
+                 $scope.homerTemplate = 'app/views/notification/notify.jsp';
+                 notify({message: 'Uploaded successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
+                 $modalInstance.close();
+             }).catch(function (result) {
+  				if (!angular.isUndefined(result) && result.data != null) {
+                    if (result.data.globalError[0] != '') {
+                        var msg = result.data.globalError[0];
+                        notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                    }
+            angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
+                $scope.volumeForm[key].$invalid = true;
+                $scope.volumeForm[key].errorMessage = errorMessage;
+            });
+
+				}
+                        });
+                    }
+                },
+                $scope.cancel = function () {
+                    $modalInstance.close();
+                };
+    }]);
+};
+
+};
 
 function recurringSnapshotController($scope, globalConfig, localStorageService, $window, notify) {
 
@@ -421,29 +484,4 @@ function recurringSnapshotController($scope, globalConfig, localStorageService, 
     };
 }
 
-function uploadVolumeCtrl($scope, globalConfig, $window, notify) {
-    $scope.global = globalConfig;
-    // Form Field Decleration
-    $scope.volume = {
-    };
-    $scope.formSubmitted = false;
-    $scope.formElements = {
-        formatList: [
-            {id: 1, name: 'RAW'},
-            {id: 2, name: 'VHD'},
-            {id: 3, name: 'VHDX'},
-            {id: 4, name: 'OVA'},
-            {id: 5, name: 'QCOW2'}
-        ]
-    };
-    $scope.validateVolume = function (form) {
-        $scope.formSubmitted = true;
-        if (form.$valid) {
-            $scope.cancel();
-            $scope.homerTemplate = 'app/views/notification/notify.jsp';
-            notify({message: 'Uploaded successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
-        }
-    };
-
-}
 
