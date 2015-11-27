@@ -1,10 +1,15 @@
-<form name="volumeForm" data-ng-submit="validateVolume(volumeForm)" method="post" novalidate="" data-ng-controller="uploadVolumeCtrl">
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<form name="volumeForm" data-ng-submit="validateVolume(volumeForm, volume)" method="POST" novalidate="" data-ng-controller="volumeCtrl">
     <div class="inmodal" >
         <div class="modal-header">
-            <panda-modal-header page-icon="fa fa-cloud-upload" page-title="Upload Volume"></panda-modal-header>                
+            <panda-modal-header page-icon="fa fa-cloud-upload" page-title="Upload Volume"></panda-modal-header>
         </div>
         <div class="modal-body">
-            <div class="row"  > 
+            <div class="row"  >
                 <div class="col-md-12">
 
 
@@ -12,7 +17,7 @@
                                             'text-danger'
                                             : volumeForm.name.$invalid && formSubmitted}">
                         <div class="row">
-                            <label class="col-md-3 col-sm-3 control-label">Name<span class="text-danger">*</span> 
+                            <label class="col-md-3 col-sm-3 control-label">Name<span class="text-danger">*</span>
                             </label>
                             <div class="col-md-5 col-sm-5">
                                 <input required="true" type="text" name="name" data-ng-model="volume.name" class="form-control" data-ng-class="{'error': volumeForm.name.$invalid && formSubmitted}" >
@@ -27,7 +32,7 @@
 
 
                     <div class="form-group" ng-class="{'text-danger': volumeForm.format.$invalid && formSubmitted}">
-                        <div class="row" > 
+                        <div class="row" >
                             <label class="col-md-3 col-sm-3 control-label" >Format
                                 <span class="text-danger">*</span>
                             </label>
@@ -35,7 +40,7 @@
                             <div class="col-md-5 col-sm-5">
                                 <select required="true" class="form-control input-group" data-ng-class="{'error': volumeForm.format.$invalid && formSubmitted}" name="format" data-ng-model="volume.format" ng-options="format.name for format in formElements.formatList" >
                                     <option value="">Select</option>
-                                </select>  
+                                </select>
                                 <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="Volume file format" ></i>
                                 <div class="error-area" data-ng-show="volumeForm.format.$invalid && formSubmitted" ><i  tooltip="Format is Required" class="fa fa-warning error-icon"></i></div>
                             </div>
