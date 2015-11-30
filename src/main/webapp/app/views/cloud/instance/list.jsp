@@ -108,7 +108,7 @@
                                         </td>
                                         <td>
 
-						<div data-ng-show="instance.status != 'Error' && instance.status != 'Expunging'">
+						 <div data-ng-show="instance.status != 'Error' || instance.status != 'Expunging' || instance.status != 'Starting' || instance.status != 'Stopping' || instance.status != 'Destroying'  ">
                                             <a class="icon-button text-center" title="<fmt:message key="start" bundle="${msg}" />"  data-ng-click="startVm('sm',instance)" data-ng-hide="instance.status == 'Running'">
                                                 <span class="fa fa-play" ></span>
                                             </a>
@@ -117,8 +117,8 @@
                                             </a>
                                             <a class="icon-button text-center" data-ng-if="instance.status == 'Running'" title="<fmt:message key="restart" bundle="${msg}" />" data-ng-click="rebootVm('sm',instance)"  ><span class="fa fa-rotate-left"></span></a>
                                             <a data-ng-click="showConsole(instance)" class="icon-button text-center" title="<fmt:message key="view.console" bundle="${msg}" />"><span class="fa-desktop fa m-xs"></span></a>
-                                            <a class="icon-button text-center" title="<fmt:message key="display.note" bundle="${msg}" />" data-ng-click="showDescription(instance)"><span class="fa-file-text fa"></span></a>
 						</div>
+                                            <a class="icon-button text-center" title="<fmt:message key="display.note" bundle="${msg}" />" data-ng-click="showDescription(instance)"><span class="fa-file-text fa"></span></a>
                                         </td>
                                     </tr>
                                 </tbody>

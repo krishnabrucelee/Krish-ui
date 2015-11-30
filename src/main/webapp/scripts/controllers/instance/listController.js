@@ -21,6 +21,15 @@ function instanceListCtrl($scope, $log, $filter, dialogService, promiseAjax, $st
 
 
 
+	  $scope.showConsole = function(vm) {
+		  $scope.vm = vm;
+		  var hasVms = crudService.updates("virtualmachine/console", vm);
+			hasVms.then(function(result) {
+				console.log(result);
+				 $window.open(result.success, 'VM console', 'width=500,height=400');
+			});
+	  }
+
 	$scope.startVm = function(size, item) {
 		  dialogService.openDialog("app/views/cloud/instance/start.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
 			  $scope.item =item;
