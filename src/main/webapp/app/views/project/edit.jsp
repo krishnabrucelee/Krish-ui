@@ -27,7 +27,7 @@
 
                         <div class="form-group" >
                             <div class="row">
-                                <label class="col-md-3 col-xs-12 col-sm-3 control-label"><fmt:message key="common.description" bundle="${msg}" /><span class="m-l-xs"></span></label>
+                                <label class="col-md-3 col-xs-12 col-sm-3 control-label"><fmt:message key="common.description" bundle="${msg}" /><span class="text-danger">*</span><span class="m-l-xs"></span></label>
                                 <div class="col-md-5 col-xs-12 col-sm-5">
                                     <textarea name="description" data-ng-model="project.description" class="form-control"></textarea>
                                 </div>
