@@ -51,7 +51,7 @@ function volumeCtrl($scope, $state, $stateParams, $timeout, globalConfig,
             // instance List
         	$scope.instanceList = function (pageNumber) {
                 var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
-                var hasVolumes = crudService.list("volumes/listvm", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+                var hasVolumes = crudService.list("virtualmachine", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
                 hasVolumes.then(function (result) {
                 	  $scope.instanceList = result;
 

@@ -86,7 +86,7 @@ pageEncoding="UTF-8"%>
                                                     <li><a href="javascript:void(0);" data-ng-hide="volume.vmInstanceId > 0" title="Attach Volume" data-ng-click="attach(md, volume)"><span class="pe-7s-disk pe-1x font-bold m-xs"></span> <fmt:message key="attach.volume" bundle="${msg}" /></a></li>
                                                     <li><a href="javascript:void(0);" title="Download Volume" data-ng-click="downloadVolume('md')"><span class="fa fa-cloud-download m-xs"></span> <fmt:message key="download.volume" bundle="${msg}" /></a></li>
                                                     <li><a href="javascript:void(0);" data-ng-show="volume.status == 'READY'" data-ng-click="resizeVolume(md, volume)" title="Resize"><span class="fa fa-expand m-xs"></span><fmt:message key="resize.volume" bundle="${msg}" /> </a></li>
-                                                    <li><a href="javascript:void(0);" data-ng-click="delete('sm', volume)" title="Delete Volume"><span class="fa fa-trash m-xs"></span><fmt:message key="delete.volume" bundle="${msg}" /> </a></li>
+                                                    <li><a href="javascript:void(0);" data-ng-hide="volume.vmInstanceId > 0" data-ng-click="delete('sm', volume)" title="Delete Volume"><span class="fa fa-trash m-xs"></span><fmt:message key="delete.volume" bundle="${msg}" /> </a></li>
                                                 </ul>
                                             </span>
                                             <span data-ng-if="volume.volumeType == 'ROOT'">
