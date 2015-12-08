@@ -211,7 +211,7 @@ function resourceAllocationCtrl($scope, crudService, globalConfig, notify, $stat
 
 	// Get the projects by department.
 	$scope.getDepartmentResourceLimits = function() {
-		if(angular.isUndefined($scope.resourceQuota.department)) {
+		if(angular.isUndefined($scope.resourceQuota.department) || $scope.resourceQuota.department == null) {
 			$scope.resourceQuota.department = {id:0};
 		}
 		var hasResource = promiseAjax.httpTokenRequest( globalConfig.HTTP_GET , globalConfig.APP_URL + "resourceDepartments/department/"+$stateParams.id);
@@ -232,7 +232,7 @@ function resourceAllocationCtrl($scope, crudService, globalConfig, notify, $stat
 	};
 
 	$scope.getProjectResourceLimits = function() {
-		if(angular.isUndefined($scope.resourceQuota.project)) {
+		if(angular.isUndefined($scope.resourceQuota.project)  || $scope.resourceQuota.project == null) {
 			$scope.resourceQuota.project = {id:0};
 		}
 		var hasResource = promiseAjax.httpTokenRequest( globalConfig.HTTP_GET , globalConfig.APP_URL + "resourceProjects/project/"+$stateParams.id);
