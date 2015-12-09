@@ -189,7 +189,7 @@
 	<script src="scripts/controllers/departmentController.js"></script>
 
 	<script src="scripts/controllers/rolesController.js"></script>
-
+	<script src="scripts/controllers/domainController.js"></script>
 
 	<script src="scripts/controllers/reportCtrl.js"></script>
 	<script src="scripts/controllers/activityController.js"></script>

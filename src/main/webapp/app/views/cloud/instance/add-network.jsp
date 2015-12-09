@@ -5,7 +5,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
-<form name="networkForm" method="POST" data-ng-submit="addNetworkVM(networkForm)" novalidate >
+<form name="networkForm" method="POST" data-ng-submit="addNicToVirtualMachine(networkForm, network)"  novalidate >
     <div class="inmodal" >
         <div class="modal-header">
             <panda-modal-header page-custom-icon="images/network-icon-2.png"  page-title="<fmt:message key="add.network.to.vm" bundle="${msg}" />"></panda-modal-header>
@@ -27,8 +27,8 @@
                             </label>
                             <div class="col-md-5 col-xs-5 col-sm-5">
                                 <select required="true" class="form-control input-group" name="networkOffers"
-                                        data-ng-model="network.networkOffers" data-ng-class="{'error': networkForm.networkOffers.$invalid && formSubmitted}"
-                                        data-ng-options="networkOffers.name for networkOffers in networkList.networkOffers" >
+                                        data-ng-model="network" data-ng-class="{'error': networkForm.networkOffers.$invalid && formSubmitted}"
+                                        data-ng-options="network.name for network in networkList" >
                                     <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
                                 </select>
                                 <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="<fmt:message key="select.the.network" bundle="${msg}" />" ></i>
@@ -43,9 +43,10 @@
             </div>
         </div>
         <div class="modal-footer">
+								<get-loader-image data-ng-show="showLoader"></get-loader-image>
 
-            <a class="btn btn-default"  data-ng-click="cancel()"><fmt:message key="common.cancel" bundle="${msg}" /></a>
-            <button class="btn btn-info" type="submit"><fmt:message key="common.add" bundle="${msg}" /></button>
+            <a class="btn btn-default"   data-ng-hide="showLoader"data-ng-click="cancel()"><fmt:message key="common.cancel" bundle="${msg}" /></a>
+            <button class="btn btn-info"   data-ng-hide="showLoader" type="submit"><fmt:message key="common.add" bundle="${msg}" /></button>
 
 
         </div>

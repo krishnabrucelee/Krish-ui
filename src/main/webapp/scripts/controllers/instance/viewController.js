@@ -12,6 +12,7 @@ angular
 
 function instanceViewCtrl($scope,$log, dialogService, $modal,$http, $state, $stateParams, localStorageService, globalConfig, crudService, notify, $window) {
     $scope.instanceList = [];
+    $scope.testvar = "test";
     $scope.global = crudService.globalConfig;
     if ($stateParams.id > 0) {
         var hasServer = crudService.read("virtualmachine", $stateParams.id);
