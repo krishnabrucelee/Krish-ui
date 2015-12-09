@@ -14,7 +14,6 @@ function networkCtrl($scope, $modal, $stateParams, localStorageService, promiseA
 
     $scope.instanceDetails='';
 
-
     //localStorageService.clearAll();
     if (localStorageService.get("instanceNetworkList") == null) {
         var hasServer = promiseAjax.httpRequest("GET", "api/instance.json");
@@ -30,10 +29,6 @@ function networkCtrl($scope, $modal, $stateParams, localStorageService, promiseA
         });
         $scope.networkList = localStorageService.get("instanceNetworkList");
     }
-
-
-
-
 
     $scope.addNetworkToVM = function(size) {
         var modalInstance = $modal.open({

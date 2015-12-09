@@ -51,24 +51,19 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
                 value: 0,
                 floor: 0,
                 ceil: 1024
-
             },
             iops: {
                 value: 0,
                 floor: 0,
                 ceil: 500
-
             },
             isOpen: false
-
         },
         networks: {
             category: 'all',
             isOpen: false
-
         }
     };
-
 
     $scope.instance.bit64 = true;
 
@@ -80,7 +75,6 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
      };
      $scope.osList();
 
-
      $scope.templateList = function () {
          var hastemplateList = crudService.listAll("templates/list");
          hastemplateList.then(function (result) {  // this is only run after $http completes0
@@ -89,7 +83,6 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
       };
       $scope.templateList();
 
-
       $scope.getTemplatesByFilters = function() {
     	  var templateList = [];
     	  var template = {};
@@ -97,7 +90,6 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
     	  template.architecture = $scope.instance.architecture;
     	  template.osVersion = $scope.instance.osVersion;
     	  console.log(template);
-
     	  var hastemplateList = promiseAjax.httpTokenRequest(globalConfig.HTTP_POST , globalConfig.APP_URL + "templates/search?lang=" + localStorageService.cookie.get('language'), '', template);
           hastemplateList.then(function (result) {
         	  $scope.formElements.templateList= result;
@@ -111,7 +103,6 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
     	            return true;
     	        }
     	    }
-
     	    return false;
     	}
 
@@ -128,7 +119,7 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
         };
 
         $scope.setTemplate = function (item){
-console.log(item);
+                 console.log(item);
         	 $scope.instance.template = item;
              $scope.instance.templateId = item.id;
             }
@@ -141,7 +132,6 @@ console.log(item);
         };
 
         $scope.compute = false;
-
         $scope.disk = false;
         $scope.disks = false;
         $scope.computes = false;
@@ -190,7 +180,6 @@ console.log(item);
                   $scope.compute = false;
                   $scope.networks = false;
                   $scope.disks = true;
-
               }
               else {
 
@@ -208,8 +197,7 @@ console.log(item);
                   $scope.compute = false;
                   $scope.disk = false;
               }
-              $scope.listNetworkOffer(1);
-
+              $scope.listNetworkOffer();
               console.log(item);
           }
 
@@ -223,7 +211,7 @@ console.log(item);
            $scope.zoneList = function () {
                var hasZones = crudService.listAll("zones/list");
                hasZones.then(function (result) {  // this is only run after $http completes0
-                       $scope.instance.zone = result[0];
+                       $scope.zoneList= result[0];
                        $scope.instance.zoneId = result[0].id;
                 });
             };
@@ -241,7 +229,6 @@ console.log(item);
             var hasDepartments = crudService.listAll("departments/list");
             hasDepartments.then(function (result) {  // this is only run after $http completes0
                    $scope.formElements.departmenttypeList = result;
-
              });
          };
          $scope.departmentList();
@@ -316,7 +303,6 @@ console.log(item);
           $scope.instance.departmentId = item.id;
           $scope.instance.domain = $scope.instance.department.domain;
           $scope.instance.domainId = $scope.instance.domain.id;
-
       };
 
      $scope.sliderTranslate = function (value) {
@@ -339,9 +325,7 @@ console.log(item);
                      notify({message: 'Select the CPU core and RAM', classes: 'alert-danger', "timeOut": "1000", templateUrl: $scope.homerTemplate});
                      $scope.compute = true;
                      computeOfferValid = false;
-
                  }
-
              }
              if (form.networkoffer.$valid && !$scope.compute) {
                  if ($scope.instance.networkOfferinglist.value == 'new') {
@@ -359,7 +343,6 @@ console.log(item);
                              $scope.disk = false;
                              $scope.homerTemplate = 'app/views/notification/notify.jsp';
                              notify({message: 'Select network offering ', classes: 'alert-danger', templateUrl: $scope.homerTemplate});
-
                          }
                      }
                  }
@@ -376,7 +359,6 @@ console.log(item);
                              break;
                          }
                      }
-
                      if (!networkSelected) {
                          submitError = true;
                          $scope.networks = true;
@@ -416,7 +398,6 @@ console.log(item);
          if ($scope.instance.template == null) {
              $scope.homerTemplate = 'app/views/notification/notify.jsp';
              notify({message: 'Select the template', classes: 'alert-danger', templateUrl: $scope.homerTemplate});
-
          } else if (form.$valid) {
              $scope.wizard.next();
          }
@@ -448,9 +429,7 @@ console.log(item);
          console.log(instance);
          var hasServer = crudService.add("virtualmachine", instance);
          hasServer.then(function (result) {  // this is only run after $http completes
-
             notify({message: result.eventMessage, classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
-
                     console.log(result);
                  $modalInstance.close();
                 $state.reload();
@@ -468,8 +447,6 @@ console.log(item);
               errorMessages = errorMessages.slice(1, errorMessages.legnth);
                  notify({message: errorMessages, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
              }
-
-
             });
      };
 
@@ -480,10 +457,9 @@ console.log(item);
           });
       };
 
-      $scope.instanceId(1);
+    $scope.instanceId(1);
 
-
-     $scope.addnetwork = function () {
+    $scope.addnetwork = function () {
 
           var cidrRegex = /^([0-9]{1,3}\.){3}[0-9]{1,3}($|\/[0-32]{1,2})$/i;
           var networkError = false;
@@ -497,10 +473,8 @@ console.log(item);
           notify({message: 'Select the Network Offering Type', classes: 'alert-danger', templateUrl: $scope.homerTemplate});
           networkError = true;
       }
-
       else {
           $scope.saveNetwork(networkError);
-
  }
      };
 
@@ -512,8 +486,6 @@ console.log(item);
 
      $scope.selectedAppClass = {};
      $scope.appClass = [{'name': 'Prod.', 'id': 1}, {'name': 'QAS', 'id': 2}, {'name': 'DEV', 'id': 3}, {'name': 'Backup', 'id': 4}, {'name': 'DR', 'id': 5}, {'name': 'Other', 'id': 6}];
-
-
 
      $scope.cancel = function () {
          $modalInstance.dismiss('cancel');
@@ -535,9 +507,7 @@ console.log(item);
          });
      };
 
-
-
-     $scope.addNetworkVM = function (form) {
+    $scope.addNetworkVM = function (form) {
          $scope.formSubmitted = true;
          if (form.$valid) {
              $scope.instanceNetworkList = localStorageService.get("instanceNetworkList");
@@ -566,7 +536,6 @@ console.log(item);
 
          }
      };
-
 
      $scope.networkList = {
          networkOffers: [
@@ -687,40 +656,32 @@ console.log(item);
 
          };
 
+       $scope.networkOfferList = {};
+       $scope.networkOfferForm = {};
+       $scope.global = crudService.globalConfig;
+     //  Network Offer List
 
-         $scope.networkOfferList = {};
-         $scope.paginationObject = {};
-         $scope.networkOfferForm = {};
-         $scope.global = crudService.globalConfig;
-         $scope.test = "test";
-         //  Network Offer List
-         $scope.listNetworkOffer = function (pageNumber) {
-             var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
-             var hasNetworks = crudService.list("networkoffer", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
-             hasNetworks.then(function (result) {  // this is only run after $http
-                                                                                                     // completes0
-
-                     $scope.instance.networks.networkOfferList = result;
-
-                 // For pagination
-                 $scope.paginationObject.limit = limit;
-                 $scope.paginationObject.currentPage = pageNumber;
-                 $scope.paginationObject.totalItems = result.totalItems;
-             });
-         };
+       $scope.listNetworkOffer = function () {
+    	   var hasNetworks =  promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "networkoffer/isolated" +"?lang=" + localStorageService.cookie.get('language')+"&sortBy=-id");
+         hasNetworks.then(function (result) {
+                 $scope.instance.networks.networkOfferList = result;
+         });
+     };
 
          // create Guest Network
          $scope.guestnetwork = {};
 
          $scope.saveNetwork = function (networkError) {
-
              if (!networkError) {
 
-            	 $scope.guestnetwork.zone = $scope.global.zone;
-            	 var guestnetwork = $scope.guestnetwork;
-            	 $scope.guestnetwork.departmentId= $scope.instance.department.id;
-		 $scope.guestnetwork.department= $scope.instance.department;
+        	 $scope.guestnetwork.zone = $scope.global.zone;
+        	 $scope.guestnetwork.displayText =  $scope.guestnetwork.name;
+        	 var guestnetwork = $scope.guestnetwork;
+        	 $scope.guestnetwork.departmentId= $scope.instance.department.id;
+    	 		$scope.guestnetwork.department= $scope.instance.department;
+            	 $scope.guestnetwork.domain = $scope.instance.department.domain;
             	 $scope.guestnetwork.domainId = $scope.instance.department.domainId;
+
 
                  console.log($scope.guestnetwork);
                  var hasguestNetworks = crudService.add("guestnetwork", guestnetwork);
@@ -741,5 +702,4 @@ console.log(item);
                  });
              }
          }
-
 }

@@ -40,7 +40,7 @@ pageEncoding="UTF-8"%>
                             <div class="clearfix"></div>
                             <span class="pull-right m-l-sm m-t-sm">
                                 <a class="btn btn-info" data-ng-click="openAddIsolatedNetwork('md')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="add.isolated.network" bundle="${msg}" /></a>
-                                <a ui-sref-opts="{reload: true}" title="<fmt:message key="common.refresh" bundle="${msg}" />"  data-ng-click="selectedNetwork(network.networkView.name)" class="btn btn-info"><span class="fa fa-refresh fa-lg "></span></a>
+                                <a class="btn btn-info" ui-sref="cloud.list-network" title="<fmt:message key="common.refresh" bundle="${msg}" /> " ui-sref-opts="{reload: true}" ><span class="fa fa-refresh fa-lg"></span></a>
                             </span>
                         </div>
                     </div>
