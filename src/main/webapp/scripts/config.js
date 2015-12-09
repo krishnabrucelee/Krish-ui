@@ -450,6 +450,15 @@ function configState($stateProvider, $httpProvider,  $urlRouterProvider, $compil
                 }
             })
 
+              // Domains
+            .state('domain', {
+                url: "/domain",
+                templateUrl: VIEW_URL + "views/domain/list.jsp",
+                data: {
+                    pageTitle: 'Domains'
+                }
+            })
+
             .state('department.quotalimit', {
                 url: "/:quotaType/:id",
                 templateUrl: VIEW_URL +  "views/department/departmentquota.jsp",
