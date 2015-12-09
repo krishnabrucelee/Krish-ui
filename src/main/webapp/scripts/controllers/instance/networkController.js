@@ -23,7 +23,6 @@ function networkCtrl($scope, $modal, $window, $stateParams,globalConfig, localSt
         });
     }
 
-
     $scope.networkList = {};
     $scope.paginationObject = {};
     $scope.networkForm = {};
@@ -47,7 +46,6 @@ function networkCtrl($scope, $modal, $window, $stateParams,globalConfig, localSt
     $scope.list(1);
 
     $scope.addNetworkToVM = function () {
-
         dialogService.openDialog("app/views/cloud/instance/add-network.jsp", 'md', $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
         	$scope.listNetwork = function () {
             	var instanceId = $stateParams.id;
@@ -56,10 +54,8 @@ function networkCtrl($scope, $modal, $window, $stateParams,globalConfig, localSt
                        $scope.networkList = result;
                        console.log($scope.networkList);
                    });
-
                };
            	$scope.listNetwork();
-
             $scope.addNicToVirtualMachine = function (form, network) {
                 $scope.formSubmitted = true;
                 if (form.$valid) {

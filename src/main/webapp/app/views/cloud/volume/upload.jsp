@@ -3,7 +3,7 @@ pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<form name="volumeForm" data-ng-submit="validateVolume(volumeForm, volume)" method="POST" novalidate="" data-ng-controller="volumeCtrl">
+<form name="volumeForm" data-ng-submit="uploadVolume(volumeForm, volume)" method="POST" novalidate="">
     <div class="inmodal" >
         <div class="modal-header">
             <panda-modal-header page-icon="fa fa-cloud-upload" page-title="Upload Volume"></panda-modal-header>
@@ -29,44 +29,60 @@ pageEncoding="UTF-8"%>
                         </div>
                     </div>
 
-
-
-                    <div class="form-group" ng-class="{'text-danger': volumeForm.format.$invalid && formSubmitted}">
-                        <div class="row" >
-                            <label class="col-md-3 col-sm-3 control-label" >Format
-                                <span class="text-danger">*</span>
-                            </label>
-
-                            <div class="col-md-5 col-sm-5">
-                                <select required="true" class="form-control input-group" data-ng-class="{'error': volumeForm.format.$invalid && formSubmitted}" name="format" data-ng-model="volume.format" ng-options="format.name for format in formElements.formatList" >
-                                    <option value="">Select</option>
-                                </select>
-                                <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="Volume file format" ></i>
-                                <div class="error-area" data-ng-show="volumeForm.format.$invalid && formSubmitted" ><i  tooltip="Format is Required" class="fa fa-warning error-icon"></i></div>
-                            </div>
-
-                        </div>
-                    </div>
-
-
-                    <div class="form-group" ng-class="{
-                                            'text-danger'
-                                            : volumeForm.url.$invalid && formSubmitted}">
+					<div class="form-group"ng-class="{'text-danger':volumeForm.zone.$invalid && formSubmitted}">
                         <div class="row">
-                            <label class="col-md-3 col-sm-3 control-label" tooltip="URL for the disk file">URL
-                                <span class="text-danger">*</span>
-                            </label>
+                            <label class="col-md-3 col-xs-3 col-sm-3 control-label control-normal"><fmt:message key="common.zone" bundle="${msg}" /><span class="text-danger">*</span></label>
+                            <div class="col-md-5  col-sm-5 col-xs-12">
+                                <select required="true" class="form-control input-group" name="zone" data-ng-model="volume.zone" ng-options="zone.name for zone in zoneList" data-ng-class="{'error': volumeForm.zone.$invalid && formSubmitted}" >
+                                    <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
 
-                            <div class="col-md-5 col-sm-5">
-                                <input required="true" type="text" name="url" data-ng-model="volume.url" class="form-control" data-ng-class="{'error': volumeForm.url.$invalid && formSubmitted}" >
-                                <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="URL for the disk file" ></i>
-                                <div class="error-area" data-ng-show="volumeForm.url.$invalid && formSubmitted" ><i  tooltip="Url is Required" class="fa fa-warning error-icon"></i></div>
-
+                                </select>
+                                <i  tooltip="<fmt:message key="choose.zone" bundle="${msg}" /> " class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
+                                <div class="error-area" data-ng-show="volumeForm.zone.$invalid && formSubmitted" ><i  tooltip="<fmt:message key="zone.is.required" bundle="${msg}" />" class="fa fa-warning error-icon"></i></div>
                             </div>
-
                         </div>
                     </div>
 
+                        <div class="form-group" ng-class="{'text-danger': volumeForm.url.$invalid && formSubmitted}">
+                            <div class="row">
+                                <label class="col-md-3 col-sm-3 control-label"><fmt:message key="common.url" bundle="${msg}" /><span class="text-danger">*</span></label>
+                                <div class="col-md-5  col-sm-5 col-xs-5">
+                                    <input required="true" type="text" name="url" data-ng-model="volume.url" class="form-control" data-ng-class="{'error': volumeForm.url.$invalid && formSubmitted}" >
+                                    <i  tooltip="<fmt:message key="volumeForm.url.tooltip" bundle="${msg}" />" class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
+                                    <div class="error-area" data-ng-show="volumeForm.url.$invalid && formSubmitted" >
+                                        <i  tooltip="<fmt:message key="volume.url.error" bundle="${msg}" />" class="fa fa-warning error-icon"></i>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="form-group"  ng-class="{'text-danger':volumeForm.format.$invalid && formSubmitted}">
+                            <div class="row" >
+                                <label class="col-md-3 col-sm-3 col-xs-3 control-label" ><fmt:message key="volume.format" bundle="${msg}" /><span class="text-danger">*</span></label>
+                                <div class="col-md-5  col-sm-5 col-xs-5">
+                                    <select required="true" class="form-control input-group" name="format" data-ng-model="volume.format" ng-options="format for (id, format) in formElements.formatList" data-ng-class="{'error': volumeForm.format.$invalid && formSubmitted}" >
+                                        <option value="">Select</option>
+                                    </select>
+                                    <i tooltip="<fmt:message key="volume.format.tooltip" bundle="${msg}" />"  class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
+                                    <div class="error-area" data-ng-show="volumeForm.format.$invalid && formSubmitted" ><i  tooltip="<fmt:message key="volume.format.error" bundle="${msg}" />" class="fa fa-warning error-icon"></i></div>
+                                </div>
+                            </div>
+                        </div>
+
+                    <div class="form-group">
+                        <div class="row" >
+                            <label class="col-md-3 col-xs-3 col-sm-3 control-label"><fmt:message key="common.customOffering" bundle="${msg}" />
+                            </label>
+                            <div class="col-md-5 col-xs-5 col-sm-5">
+                                <select class="form-control input-group" name="diskOfferings"
+                                        data-ng-model="volume.storageOffering"
+                                        data-ng-options="storageOffering.name for storageOffering in volumeElements.diskOfferingList | filter: {isCustomDisk:true}" >
+                                    <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="form-group">
                         <div class="row">
@@ -94,8 +110,8 @@ pageEncoding="UTF-8"%>
                     <app-currency></app-currency>0.10 <span>/ hour</span>   <small class="text-right text-muted m-l-sm">(<app-currency></app-currency>7.2 / month)</small>
                 </h4>
             </span>
-            <a class="btn btn-default"  data-ng-click="cancel()">Cancel</a>
-            <button class="btn btn-info" type="submit">Upload</button>
+ 			<a class="btn btn-default"  data-ng-click="cancel()"><fmt:message key="common.cancel" bundle="${msg}" /></a>
+            <button class="btn btn-info" type="submit"><fmt:message key="common.update" bundle="${msg}" /></button>
         </div>
     </div>
 

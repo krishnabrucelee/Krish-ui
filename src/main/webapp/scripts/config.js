@@ -347,7 +347,7 @@ function configState($stateProvider, $httpProvider,  $urlRouterProvider, $compil
             })
 
             .state('cloud.list-network.view-network', {
-                url: "/view/:id",
+                url: "/:view/:id",
                 templateUrl: VIEW_URL + "views/cloud/network/view.jsp",
                 data: {
                     pageTitle: 'View Network'

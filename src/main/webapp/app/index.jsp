@@ -58,6 +58,7 @@
 	href="fonts/pe-icon-7-stroke/css/pe-icon-7-stroke.css" />
 <link rel="stylesheet" href="fonts/pe-icon-7-stroke/css/helper.css" />
 <link rel="stylesheet" href="styles/style.css">
+<link rel="stylesheet" href="styles/custom-style.css">
 <!-- endbuild -->
 
 </head>
