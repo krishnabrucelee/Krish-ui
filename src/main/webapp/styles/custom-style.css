@@ -177,6 +177,10 @@ border-color: #e74c3c !important;}
 }
 
 .instance-border-content {
-	border: 2px solid #ccc;
+	border: 2px solid #fff;
 	border-style: dotted;
+}
+
+.dashboard-box {
+	cursor: pointer;
 }
