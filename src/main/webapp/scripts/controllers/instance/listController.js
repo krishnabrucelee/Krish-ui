@@ -92,30 +92,39 @@ function instanceListCtrl($scope, $log, $filter, dialogService, promiseAjax, $st
 		return sort.descending;
 	};
 
-	$scope.instanceId = function(pageNumber) {
+	$scope.instanceId = function(pageNumber, status) {
 		var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
-		var hasUsers = crudService.list("virtualmachine", $scope.global
-				.paginationHeaders(pageNumber, limit), {
+		var hasUsers =  promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "virtualmachine/listByStatus" +"?lang=" + localStorageService.cookie.get('language') + "&status="+status+"&sortBy=+name&limit="+limit,  $scope.global.paginationHeaders(pageNumber, limit), {
 			"limit" : limit
-		});
+		})
+
+		$scope.borderContent = status
 		hasUsers.then(function(result) { // this is only run after $http
 			// completes0
+
 			$scope.instanceList = result;
 			// For pagination
 
-                        $scope.instancesList.Count = 0;
+                $scope.instancesList.Count = 0;
            		 for (i = 0; i < result.length; i++) {
             		 if($scope.instanceList[i].status.indexOf("Running") > -1) {
             		 $scope.instancesList.Count++;
            		  }
            		 }
+
+           		var hasVmCount =  crudService.listAll("virtualmachine/vmCounts");
+           		hasVmCount.then(function(result) {
+           			$scope.runningVmCount = result.runningVmCount;
+           			$scope.stoppedVmCount = result.stoppedVmCount;
+           			$scope.totalCount = result.totalCount;
+        		});
 			$scope.paginationObject.limit = limit;
 			$scope.paginationObject.currentPage = pageNumber;
 			$scope.paginationObject.totalItems = result.totalItems;
 		});
 	};
 
-	$scope.instanceId(1);
+	$scope.instanceId(1, "Running");
 
 
 	$scope.openAddInstance = function(size) {
