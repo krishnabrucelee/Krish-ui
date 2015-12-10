@@ -226,7 +226,7 @@
                                 <label class="col-md-4 col-sm-5 control-label">
                                 </label>
                                 <div class="col-md-4 col-sm-5">
-                                    <a class="btn btn-default btn-outline"  href="#/configuration/chargeback"><fmt:message key="common.cancel" bundle="${msg}" /></a>
+                                    <a class="btn btn-default btn-outline"  data-ng-click="cancel()"><fmt:message key="common.cancel" bundle="${msg}" /></a>
                                     <button class="btn btn-info" type="submit"><fmt:message key="common.update" bundle="${msg}" /></button>
                                 </div>
                             </div>
