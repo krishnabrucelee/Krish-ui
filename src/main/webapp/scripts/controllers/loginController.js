@@ -19,10 +19,11 @@ angular.module('homer', []).controller("loginCtrl", function ($scope, $http, glo
 
         $http({method: 'POST', url: globalConfig.APP_URL + 'authenticate', headers: headers})
             .success(function (result) {
-               $window.sessionStorage.token = result.token;
+               //$window.sessionStorage.token = result.token;
+               $window.sessionStorage.setItem("loginSession", JSON.stringify(result));
                window.location.href = "index#/dashboard";
            }).catch(function (result) {
-       	       delete $window.sessionStorage.token;
+        	   $window.sessionStorage.removeItem("loginSession")
                   if (!angular.isUndefined(result.data)) {
         	          var target = document.getElementById("errorMsg");
                       target.innerHTML = result.data.message;
