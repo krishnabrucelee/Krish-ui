@@ -16,14 +16,14 @@ function configurationCtrl($scope,$stateParams, localStorageService, promiseAjax
     $scope.global = crudService.globalConfig;
     $scope.instanceForm = [];
     $scope.instanceElements = {};
-    $scope.instance ={};
+    $scope.instance = {};
     // Form Field Decleration
     $scope.computeOffer = {
 //        type: {id:1, name:"Basic"}
     };
 
 
-$scope.instances = {};
+$scope.instances = [];
 var instanceId = $stateParams.id;
 var hasServers = crudService.read("virtualmachine", instanceId);
 hasServers.then(function (result) {
@@ -71,16 +71,17 @@ $scope.instances = result;
 
         }
     };
-
  $scope.computeList = function () {
              var hasCompute = crudService.listAll("computes/list");
              hasCompute.then(function (result) {  // this is only run after $http completes0
                      $scope.instanceElements.computeOfferingList = result;
 angular.forEach(result, function(item){
+if (!angular.isUndefined($scope.instances.computeOffering)) {
    if(item.name == $scope.instances.computeOffering.name){
      var index = instanceElements.computeOfferingList.indexOf(item);
      $scope.instanceElements.computeOfferingList.splice(index, 1);
    }
+}
   });
               });
           };

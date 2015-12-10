@@ -32,7 +32,7 @@
 					data-ng-options="computeOffering.name group by computeOffering.group for computeOffering in instanceElements.computeOfferingList">
 					<option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
 				</select> <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"
-					tooltip="<fmt:message key="ram.and.cpu.for.the.instance" bundle="${msg}" />"></i>
+					tooltip="<fmt:message key="compute.offering.plans" bundle="${msg}" />"></i>
 				<div class="error-area"
 					data-ng-show="instanceForm.computeoffer.$invalid && OfferingSubmitted">
 					<i tooltip="<fmt:message key="compute.offering.is.required" bundle="${msg}" />"
