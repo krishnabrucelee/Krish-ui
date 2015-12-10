@@ -418,6 +418,7 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
     	 if (!angular.isUndefined(instance.department.domain) && instance.department.domain != null) {
          instance.domain = instance.department.domain;
          instance.domainId =instance.domain.id;
+
          }else{
         	 instance.domainId = 1;
          }
