@@ -45,6 +45,14 @@ function networkCtrl($scope, $modal, $window, $stateParams,globalConfig, localSt
     };
     $scope.list(1);
 
+    $scope.nicList = function () {
+        var hasnicList = crudService.listAll("nics/list");
+        hasnicList.then(function (result) {  // this is only run after $http completes0
+                $scope.nicList = result;
+         });
+     };
+     $scope.nicList();
+
     $scope.addNetworkToVM = function () {
         dialogService.openDialog("app/views/cloud/instance/add-network.jsp", 'md', $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
         	$scope.listNetwork = function () {
@@ -59,10 +67,13 @@ function networkCtrl($scope, $modal, $window, $stateParams,globalConfig, localSt
             $scope.addNicToVirtualMachine = function (form, network) {
                 $scope.formSubmitted = true;
                 if (form.$valid) {
-                	$scope.instance.network.push(network);
-                	$scope.instance.networkUuid = network.uuid;
+
+                	$scope.nic = {};
+                	$scope.nic.vmInstance = $scope.instance;
+                	delete $scope.nic.vmInstance.network;
+                	$scope.nic.network = network;
                     $scope.showLoader = true;
-                    var hasServer = crudService.add("nics", $scope.instance);
+                    var hasServer = crudService.add("nics", $scope.nic);
                     hasServer.then(function (result) {  // this is only run after $http completes
                         $scope.showLoader = false;
                     	notify({message: 'Attached successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
@@ -89,15 +100,11 @@ function networkCtrl($scope, $modal, $window, $stateParams,globalConfig, localSt
             }]);
     };
 
-    $scope.removeNicToVM = function(form, network) {
+    $scope.removeNicToVM = function(form, nic) {
       	 dialogService.openDialog("app/views/common/confirm-delete.jsp", 'md', $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
-         	var instanceId = $stateParams.id;
-         	$scope.instance.nicUuid = network.uuid;
-      		 $scope.deleteObject = $scope.instance;
-        	//$scope.instance.network.push(network);
-
-               $scope.ok = function (deleteObject) {
-            	   var hasServer = promiseAjax.httpTokenRequest( globalConfig.HTTP_DELETE , globalConfig.APP_URL + "virtualmachine/removenic/"+deleteObject.id+"?lang=" + localStorageService.cookie.get('language'), '', deleteObject);
+      		 $scope.deleteId = nic.id;
+               $scope.ok = function (nicId) {
+            	   var hasServer = crudService.softDelete("nics", nic);
                    hasServer.then(function (result) {
                        $scope.list(1);
                        notify({message: 'Deleted successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
@@ -110,13 +117,11 @@ function networkCtrl($scope, $modal, $window, $stateParams,globalConfig, localSt
            }]);
       };
 
-      $scope.updateNicToVM = function(form, network) {
+      $scope.updateNicToVM = function(form, nic) {
        	 dialogService.openDialog("app/views/cloud/instance/confirm-update.jsp", 'md', $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
           	var instanceId = $stateParams.id;
-        	$scope.instance.nicUuid = network.uuid;
-
-                $scope.ok = function (instance) {
-                    var hasServer = crudService.update("virtualmachine/updatenic/", vmInstance.nicUuid);
+                   $scope.ok = function (instance) {
+                    var hasServer = crudService.update("nics", nic);
                     hasServer.then(function (result) {
                         $scope.list(1);
 
