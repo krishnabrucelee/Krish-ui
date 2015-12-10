@@ -121,7 +121,18 @@
                                                 </tr>
                                                 <tr>
                                                     <td><b><fmt:message key="display.name" bundle="${msg}" /></b></td>
-                                                    <td> {{ instance.name}}</td>
+                                                    <td>
+                                                    	<span data-ng-if="!instnaceEdit">{{instance.transDisplayName}}</span>
+														<div data-ng-if="instnaceEdit && instance.status == 'Stopped'" class="form-group"
+															ng-class="{'text-danger': instance.transDisplayName == '' && formSubmitted}">
+															<input type="text" name="transDisplayName"
+																data-ng-model="instance.transDisplayName"
+																class="form-control editedinput "
+																data-ng-class="{'error': instance.transDisplayName == '' && formSubmitted}">
+														</div>
+														<a data-ng-if="!instnaceEdit && instance.status == 'Stopped'" data-ng-click="editDisplayName(instance)"  class="fa fa-edit m-l-lg"> <fmt:message key="common.edit" bundle="${msg}" /></a>
+														<a data-ng-if="instnaceEdit" data-ng-click="updateDisplayName(instance)"  class="btn btn-sm btn-info pull-right"> <fmt:message key="common.update" bundle="${msg}" /></a>
+                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td><b><fmt:message key="common.status" bundle="${msg}" /></b></td>
@@ -129,7 +140,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td><b><fmt:message key="offer" bundle="${msg}" /></b></td>
-                                                    <td>{{ instance.computeOffering.name}} <a href="#" class="fa fa-edit m-l-lg"> edit</a></td>
+                                                    <td>{{ instance.computeOffering.name}} <a href="javascript:void(0)"  data-ng-click="templateCategory = 'config'"  class="fa fa-edit m-l-lg"> edit</a></td>
                                                 </tr>
                                                 <tr>
                                                     <td><b><fmt:message key="disk.size" bundle="${msg}" /></b></td>
