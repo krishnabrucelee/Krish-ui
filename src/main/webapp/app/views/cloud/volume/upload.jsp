@@ -6,7 +6,7 @@ pageEncoding="UTF-8"%>
 <form name="volumeForm" data-ng-submit="uploadVolume(volumeForm, volume)" method="POST" novalidate="">
     <div class="inmodal" >
         <div class="modal-header">
-            <panda-modal-header page-icon="fa fa-cloud-upload" page-title="Upload Volume"></panda-modal-header>
+            <panda-modal-header page-icon="fa fa-cloud-upload" page-title="<fmt:message key="common.upload" bundle="${msg}" />"></panda-modal-header>
         </div>
         <div class="modal-body">
             <div class="row"  >
@@ -17,12 +17,12 @@ pageEncoding="UTF-8"%>
                                             'text-danger'
                                             : volumeForm.name.$invalid && formSubmitted}">
                         <div class="row">
-                            <label class="col-md-3 col-sm-3 control-label">Name<span class="text-danger">*</span>
+                            <label class="col-md-3 col-sm-3 control-label"><fmt:message key="common.name" bundle="${msg}" />"><span class="text-danger">*</span>
                             </label>
                             <div class="col-md-5 col-sm-5">
                                 <input required="true" type="text" name="name" data-ng-model="volume.name" class="form-control" data-ng-class="{'error': volumeForm.name.$invalid && formSubmitted}" >
-                                <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="Name of the disk" ></i>
-                                <div class="error-area" data-ng-show="volumeForm.name.$invalid && formSubmitted" ><i  tooltip="Name is Required" class="fa fa-warning error-icon"></i></div>
+                                <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="<fmt:message key="name.of.the.disk" bundle="${msg}" />" ></i>
+                                <div class="error-area" data-ng-show="volumeForm.name.$invalid && formSubmitted" ><i  tooltip="<fmt:message key="name.of.the.disk" bundle="${msg}" />" class="fa fa-warning error-icon"></i></div>
 
                             </div>
 
@@ -62,7 +62,7 @@ pageEncoding="UTF-8"%>
                                 <label class="col-md-3 col-sm-3 col-xs-3 control-label" ><fmt:message key="volume.format" bundle="${msg}" /><span class="text-danger">*</span></label>
                                 <div class="col-md-5  col-sm-5 col-xs-5">
                                     <select required="true" class="form-control input-group" name="format" data-ng-model="volume.format" ng-options="format for (id, format) in formElements.formatList" data-ng-class="{'error': volumeForm.format.$invalid && formSubmitted}" >
-                                        <option value="">Select</option>
+                                        <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
                                     </select>
                                     <i tooltip="<fmt:message key="volume.format.tooltip" bundle="${msg}" />"  class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
                                     <div class="error-area" data-ng-show="volumeForm.format.$invalid && formSubmitted" ><i  tooltip="<fmt:message key="volume.format.error" bundle="${msg}" />" class="fa fa-warning error-icon"></i></div>
@@ -86,11 +86,11 @@ pageEncoding="UTF-8"%>
 
                     <div class="form-group">
                         <div class="row">
-                            <label class="col-md-3 col-sm-3 control-label">MD5 checksum </label>
+                            <label class="col-md-3 col-sm-3 control-label"><fmt:message key="volume.md5checksum" bundle="${msg}" /></label>
 
                             <div class="col-md-5 col-sm-5">
                                 <input type="text" name="md5checksum" data-ng-model="volume.md5checksum" class="form-control" >
-                                <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="MD5 Checksum" ></i>
+                                <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="<fmt:message key="volume.MD5Checksum.tooltip" bundle="${msg}" />" ></i>
 
                             </div>
 
@@ -105,13 +105,14 @@ pageEncoding="UTF-8"%>
             </div>
         </div>
         <div class="modal-footer">
-            <span class="pull-left">
+            <!-- <span class="pull-left">
                 <h4 class="text-danger price-text m-l-lg">
                     <app-currency></app-currency>0.10 <span>/ hour</span>   <small class="text-right text-muted m-l-sm">(<app-currency></app-currency>7.2 / month)</small>
                 </h4>
-            </span>
- 			<a class="btn btn-default"  data-ng-click="cancel()"><fmt:message key="common.cancel" bundle="${msg}" /></a>
-            <button class="btn btn-info" type="submit"><fmt:message key="common.update" bundle="${msg}" /></button>
+            </span> -->
+             <get-loader-image data-ng-show="showLoader"></get-loader-image>
+ 			<a class="btn btn-default"  data-ng-hide="showLoader" data-ng-click="cancel()"><fmt:message key="common.cancel" bundle="${msg}" /></a>
+            <button class="btn btn-info" data-ng-hide="showLoader" type="submit"><fmt:message key="common.update" bundle="${msg}" /></button>
         </div>
     </div>
 
