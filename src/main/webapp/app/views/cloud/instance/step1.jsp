@@ -19,7 +19,7 @@
 							<div class="col-md-12 col-xs-12 col-sm-12 p-xs">
 								<select class="form-control input-group" name="osCategory"
 									data-ng-model="instance.osCategory" ng-change="getTemplatesByFilters()"
-									ng-options="osCategory.name for osCategory in formElements.osCategoryList">
+									ng-options="osCategory.name for osCategory in formElements.osCategoryListByFilter">
 									<option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
 								</select>
 							</div>
@@ -81,7 +81,7 @@
 											<img data-ng-show="templateObj.displayText.toLowerCase().indexOf('fedora') > -1" src="images/os/fedora_logo.png" alt="" height="25" width="25" class="m-r-5" >
 											<img data-ng-show="templateObj.displayText.toLowerCase().indexOf('redhat') > -1" src="images/os/redhat_logo.png" alt="" height="25" width="25" class="m-r-5" >
 											<img data-ng-show="templateObj.displayText.toLowerCase().indexOf('core') > -1" src="images/os/core_logo.png" alt="" height="25" width="25" class="m-r-5" >
-											<img data-ng-show="templateObj.displayText.toLowerCase().indexOf('vynta') > -1" src="images/os/vynta_logo.png" alt="" height="25" width="25" class="m-r-5" >
+											<!-- <img data-ng-show="templateObj.displayText.toLowerCase().indexOf('vynta') > -1" src="images/os/vynta_logo.png" alt="" height="25" width="25" class="m-r-5" > -->
   											<img data-ng-show="templateObj.displayText.toLowerCase().indexOf('windows') > -1" src="images/os/windows_logo.png" alt="" height="25" width="25" class="m-r-5" >
 											<br>ver : <span class="text-success">{{templateObj.osVersion}}</span>
 											</div>

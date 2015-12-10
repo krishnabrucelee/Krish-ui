@@ -30,6 +30,7 @@ angular
     .directive('getLoaderImage', getLoaderImage)
     .directive('passwordVerify', passwordVerify)
     .directive('validInteger', validInteger)
+    .directive('hasPermission', hasPermission)
     .directive('multiselect', function () {
     return {
         restrict: 'E',
@@ -564,7 +565,11 @@ function pandaModalHeader() {
         link: function (scope, element, attrs) {
             scope.pageTitle = attrs["pageTitle"];
             scope.pageIcon = attrs["pageIcon"];
-            scope.pageCustomIcon = attrs["pageCustomIcon"];
+            if(attrs["pageCustomIcon"] != null && !angular.isUndefined(attrs["pageCustomIcon"])) {
+            	scope.pageCustomIcon = attrs["pageCustomIcon"];
+            } else {
+            	scope.pageCustomIcon = false;
+            }
             scope.hideZone = attrs["hideZone"];
         },
         templateUrl: "app/views/common/modal-header.jsp",
@@ -728,3 +733,25 @@ function passwordVerify() {
 		}
 	};
 };
+
+/**
+ * Check the User has permission or not
+ */
+function hasPermission() {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attrs) {
+
+        	var permission=false;
+        	for(var i=0;i<scope.global.sessionValues.permissionList.length;i++){
+        	    if(scope.global.sessionValues.permissionList[i].action_key === attrs["hasPermission"]){
+        	    	permission = true;
+        	    	break;
+        	    }
+        	}
+        	if(!permission) {
+    	    	element.hide();
+        	}
+        }
+    }
+}

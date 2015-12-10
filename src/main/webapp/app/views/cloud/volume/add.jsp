@@ -18,7 +18,7 @@ pageEncoding="UTF-8"%>
                             </label>
                             <div class="col-md-5 col-xs-12 col-sm-5">
                                 <input required="true" type="text" name="name" data-ng-model="volume.name" class="form-control" data-ng-class="{'error': volumeForm.name.$invalid && formSubmitted}" >
-                                <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="Name of the disk" ></i>
+                                <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="<fmt:message key="common.name" bundle="${msg}" />" ></i>
                                 <div class="error-area" data-ng-show="volumeForm.name.$invalid && formSubmitted" >
                                 <i ng-attr-tooltip="{{ volumeForm.name.errorMessage || '<fmt:message key="volume.already.exist" bundle="${msg}" />' }}"
 												class="fa fa-warning error-icon"></i>
@@ -41,7 +41,7 @@ pageEncoding="UTF-8"%>
                                 <div class="error-area" data-ng-show="volumeForm.type.$invalid && formSubmitted" >
                                 <i  tooltip="Type is Required" class="fa fa-warning error-icon"></i></div>
 
-                                <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="Select the plan" ></i>
+                                <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="<fmt:message key="common.type" bundle="${msg}" />" ></i>
 
                             </div>
                         </div>
@@ -58,8 +58,8 @@ pageEncoding="UTF-8"%>
                                         data-ng-options="storageOffering.name for storageOffering in volumeElements.diskOfferingList" >
                                     <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
                                 </select>
-                                <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="Select the plan" ></i>
-                                <div class="error-area" data-ng-show="volumeForm.diskOfferings.$invalid && formSubmitted" ><i  tooltip="Plan is Required" class="fa fa-warning error-icon"></i></div>
+                                <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="<fmt:message key="common.plan" bundle="${msg}" />" ></i>
+                                <div class="error-area" data-ng-show="volumeForm.diskOfferings.$invalid && formSubmitted" ><i  tooltip="<fmt:message key="common.plan" bundle="${msg}" />" class="fa fa-warning error-icon"></i></div>
                             </div>
                         </div>
                     </div>
@@ -116,8 +116,9 @@ pageEncoding="UTF-8"%>
                      <small class="text-right text-muted m-l-sm">(<app-currency></app-currency><span data-ng-if="volume.diskSize">{{ volume.storageOffering.storagePrice[0].costGbPerMonth * volume.diskSize * 720}} / month)</span><span data-ng-if="!volume.diskSize">0 / month)</span></small>
                 </h4>
             </span>
-            <a class="btn btn-default"  data-ng-click="cancel()"><fmt:message key="common.cancel" bundle="${msg}" /></a>
-            <button class="btn btn-info" type="submit"><fmt:message key="common.add" bundle="${msg}" /></button>
+            <get-loader-image data-ng-show="showLoader"></get-loader-image>
+            <a class="btn btn-default"  data-ng-hide="showLoader" data-ng-click="cancel()"><fmt:message key="common.cancel" bundle="${msg}" /></a>
+            <button class="btn btn-info"  data-ng-hide="showLoader" type="submit"><fmt:message key="common.add" bundle="${msg}" /></button>
         </div>
     </div>
 </form>

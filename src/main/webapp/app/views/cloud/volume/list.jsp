@@ -68,7 +68,7 @@ pageEncoding="UTF-8"%>
                                     <td>
                                         <a class="text-info" href="javascript:void(0)"  title="View Volume" >{{ volume.name}}</a>
                                     </td>
-                                    <td>{{ volume.department.userName}}</td>
+                                    <td>{{ volume.department.userName || " - "}}</td>
                                     <td>{{ volume.volumeType}}</td>
                                     <td>{{ volume.storageOffering.name || " - "}}</td>
                                     <td>{{ volume.vmInstance.name || " - " }}</td>
@@ -80,22 +80,24 @@ pageEncoding="UTF-8"%>
                                                 <a class="fa fa-cogs dropdown-toggle" data-toggle="dropdown" ></a>
                                                 <ul class="dropdown-menu pull-right">
                                                     <img src="images/dropdown-arw2.png" border="0" class="vol-dropdown-arw">
-                                                    <li><a class="icon-button" href="javascript:void(0);" data-ng-click="createSnapshot(md, volume)" title="<fmt:message key="common.snapshot" bundle="${msg}" />"><span class="fa fa-camera m-xs"></span> <fmt:message key="common.snapshot" bundle="${msg}" /></a></li>
-                                                    <li><a href="javascript:void(0);" data-ng-click="openReccuringSnapshot(volume)" title="<fmt:message key="common.recurring.snapshot" bundle="${msg}" />"><span class="fa fa-repeat m-xs"></span> <fmt:message key="recurring.snapshot" bundle="${msg}" /></a></li>
+                                                    <%-- <li><a class="icon-button" href="javascript:void(0);" data-ng-click="createSnapshot(md, volume)" title="Snapshot"><span class="fa fa-camera m-xs"></span> <fmt:message key="common.snapshot" bundle="${msg}" /></a></li>
+                                                    <li><a href="javascript:void(0);" data-ng-click="openReccuringSnapshot(volume)" title="Recurring Snapshot"><span class="fa fa-repeat m-xs"></span> <fmt:message key="recurring.snapshot" bundle="${msg}" /></a></li> --%>
                                                     <li><a href="javascript:void(0);" data-ng-show="volume.vmInstanceId > 0" title="<fmt:message key="common.detach.volume" bundle="${msg}" />" data-ng-click="detach(md, volume)"><span class="fa fa-unlink m-xs"></span> <fmt:message key="detach.volume" bundle="${msg}" /></a></li>
                                                     <li><a href="javascript:void(0);" data-ng-hide="volume.vmInstanceId > 0" title="<fmt:message key="common.attach.volume" bundle="${msg}" />" data-ng-click="attach(md, volume)"><span class="pe-7s-disk pe-1x font-bold m-xs"></span> <fmt:message key="attach.volume" bundle="${msg}" /></a></li>
-                                                    <li><a href="javascript:void(0);" title="<fmt:message key="common.download.volume" bundle="${msg}" />" data-ng-click="downloadVolume('md')"><span class="fa fa-cloud-download m-xs"></span> <fmt:message key="download.volume" bundle="${msg}" /></a></li>
-                                                    <li><a href="javascript:void(0);" data-ng-show="volume.status == 'READY'" data-ng-click="resizeVolume(md, volume)" title="Resize"><span class="fa fa-expand m-xs"></span><fmt:message key="resize.volume" bundle="${msg}" /> </a></li>
-                                                    <li><a href="javascript:void(0);" data-ng-hide="volume.vmInstanceId > 0" data-ng-click="delete('sm', volume)" title="Delete Volume"><span class="fa fa-trash m-xs"></span><fmt:message key="delete.volume" bundle="${msg}" /> </a></li>
+                                                    <li><a href="javascript:void(0);" data-ng-show="volume.vmInstanceId > 0" title="Detach Volume" data-ng-click="detach(md, volume)"><span class="fa fa-unlink m-xs"></span> <fmt:message key="detach.volume" bundle="${msg}" /></a></li>
+                                                    <li><a href="javascript:void(0);" data-ng-hide="volume.vmInstanceId > 0" title="Attach Volume" data-ng-click="attach(md, volume)"><span class="pe-7s-disk pe-1x font-bold m-xs"></span> <fmt:message key="attach.volume" bundle="${msg}" /></a></li>
+<%--                                                     <li><a href="javascript:void(0);" title="Download Volume" data-ng-click="downloadVolume('md')"><span class="fa fa-cloud-download m-xs"></span> <fmt:message key="download.volume" bundle="${msg}" /></a></li>
+ --%><%--                                                     <li><a href="javascript:void(0);" data-ng-show="volume.status == 'READY'" data-ng-click="resizeVolume(md, volume)" title="Resize"><span class="fa fa-expand m-xs"></span><fmt:message key="resize.volume" bundle="${msg}" /> </a></li>
+ --%>                                                    <li><a href="javascript:void(0);" data-ng-hide="volume.vmInstanceId > 0" data-ng-click="delete('sm', volume)" title="Delete Volume"><span class="fa fa-trash m-xs"></span><fmt:message key="delete.volume" bundle="${msg}" /> </a></li>
                                                 </ul>
                                             </span>
                                             <span data-ng-if="volume.volumeType == 'ROOT'">
                                                 <a class="fa fa-cogs dropdown-toggle" data-toggle="dropdown" ></a>
-                                                <ul class="dropdown-menu pull-right">
+                                               <%--  <ul class="dropdown-menu pull-right">
                                                     <img src="images/dropdown-arw2.png" border="0" class="vol-dropdown-arw">
                                                     <li><a href="javascript:void(0);" data-ng-click="createSnapshot(md, volume)" title="Snapshot"><span class="fa fa-camera m-xs"></span> <fmt:message key="common.snapshot" bundle="${msg}" /></a></li>
                                                     <li><a href="javascript:void(0);" data-ng-click="openReccuringSnapshot(volume)"  title="Recurring Snapshot"><span class="fa fa-repeat m-xs"></span> <fmt:message key="recurring.snapshot" bundle="${msg}" /></a></li>
-                                                </ul>
+                                                </ul> --%>
                                             </span>
                                         </div>
                                     </td>

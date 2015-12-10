@@ -1,8 +1,8 @@
 <form name="form.detachForm" data-ng-controller="deleteCtrl">
     <div class="inmodal" >
         <div class="modal-header">
-            <panda-modal-header hide-zone="false" page-icon="fa fa-warning" page-title="{{ modalTitle }}"></panda-modal-header>                
-           
+            <panda-modal-header hide-zone="false" page-icon="fa fa-warning" page-title="{{ modalTitle }}"></panda-modal-header>
+
         </div>
 
         <div class="modal-body">

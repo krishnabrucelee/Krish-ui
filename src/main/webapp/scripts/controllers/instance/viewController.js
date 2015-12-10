@@ -12,6 +12,7 @@ angular
 
 function instanceViewCtrl($scope,$log, dialogService, $modal,$http, $state, $stateParams, localStorageService, globalConfig, crudService, notify, $window) {
     $scope.instanceList = [];
+    $scope.testvar = "test";
     $scope.global = crudService.globalConfig;
     if ($stateParams.id > 0) {
         var hasServer = crudService.read("virtualmachine", $stateParams.id);
@@ -214,6 +215,28 @@ function instanceViewCtrl($scope,$log, dialogService, $modal,$http, $state, $sta
 	  					 $window.open(result.success, 'VM console', 'width=500,height=400');
 	  				});
 			  }
+
+			  $scope.instnaceEdit = false;
+			  $scope.editDisplayName = function(vm) {
+				  $scope.vm = vm;
+				  $scope.instnaceEdit = true;
+			  }
+
+	  		 $scope.updateDisplayName= function(vm) {
+	  			 	$scope.formSubmitted = true;
+	  			 	$scope.vm = vm;
+	  			 	if($scope.vm.transDisplayName != "") {
+	  			 		$scope.vm.transDisplayName=$scope.vm.transDisplayName;
+	  			 		var hasVm = crudService.update("virtualmachine", $scope.vm);
+		  				hasVm.then(function(result) {
+		  					notify({message: "Updated successfully", classes: 'alert-success', "timeOut": "5000", templateUrl: $scope.homerTemplate});
+		  					$state.reload();
+		  					 $scope.cancel();
+		  				});
+	  			 	}
+
+
+	  		 };
 
 			  $scope.showDescription = function(vm) {
 				  	 dialogService.openDialog("app/views/cloud/instance/editnote.jsp", 'sm',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {

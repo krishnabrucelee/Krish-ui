@@ -69,6 +69,7 @@ function volumeCtrl($scope, $state, $stateParams, $timeout, globalConfig,
 
             // instance List
         	$scope.instanceList = function (pageNumber) {
+
                 var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
                 var hasVolumes = crudService.list("virtualmachine", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
                 hasVolumes.then(function (result) {
@@ -86,9 +87,11 @@ function volumeCtrl($scope, $state, $stateParams, $timeout, globalConfig,
                     volume.vmInstance = $scope.vmInstance;
                     $scope.formSubmitted = true;
                     if (form.$valid) {
+                    	$scope.showLoader = true;
                         var hasServer = crudService.add("volumes/attach/" + volume.id, volume);
                         hasServer.then(function (result) {  // this is only run after $http completes
-                            notify({message: 'Attached successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                        	$scope.showLoader = false;
+                        	notify({message: 'Attached successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                             $window.location.href = '#/volume/list';
                             $modalInstance.close();
                             $scope.list(1);
@@ -96,6 +99,7 @@ function volumeCtrl($scope, $state, $stateParams, $timeout, globalConfig,
                             if (!angular.isUndefined(result.data)) {
                                 if (result.data.globalError != '' && !angular.isUndefined(result.data.globalError)) {
                                     var msg = result.data.globalError[0];
+                                    $scope.showLoader = false;
                                     notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                                 } else if (result.data.fieldErrors != null) {
                                     angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
@@ -126,8 +130,10 @@ function volumeCtrl($scope, $state, $stateParams, $timeout, globalConfig,
                 $scope.instanceList();
                 $scope.detachVolume = function (volume) {
                     console.log(volume);
+                    $scope.showLoader = true;
                     var hasServer = crudService.add("volumes/detach/" + volume.id, volume);
                     hasServer.then(function (result) {  // this is only run after $http completes
+                    	$scope.showLoader = false;
                         notify({message: 'Detached successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                         $window.location.href = '#/volume/list';
                         $modalInstance.close();
@@ -136,6 +142,7 @@ function volumeCtrl($scope, $state, $stateParams, $timeout, globalConfig,
                         if (!angular.isUndefined(result.data)) {
                             if (result.data.globalError != '' && !angular.isUndefined(result.data.globalError)) {
                                 var msg = result.data.globalError[0];
+                                $scope.showLoader = false;
                                 notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                             } else if (result.data.fieldErrors != null) {
                                 angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
@@ -222,18 +229,28 @@ function volumeCtrl($scope, $state, $stateParams, $timeout, globalConfig,
                 $scope.update = function (form, volume) {
                     $scope.formSubmitted = true;
                     if (form.$valid) {
+                    	$scope.showLoader = true;
                         $scope.volume.zone = $scope.global.zone;
                         var volume = $scope.volume;
                         var hasVolume = crudService.add("volumes/resize/" + volume.id, volume);
                         hasVolume.then(function (result) {
+                        	$scope.showLoader = false;
                             $scope.list(1);
                             notify({message: 'Updated successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                             $modalInstance.close();
                         }).catch(function (result) {
-                            angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
-                                $scope.applicationForm[key].$invalid = true;
-                                $scope.applicationForm[key].errorMessage = errorMessage;
-                            });
+                            if (!angular.isUndefined(result.data)) {
+                                if (result.data.globalError != '' && !angular.isUndefined(result.data.globalError)) {
+                                    var msg = result.data.globalError[0];
+                                    $scope.showLoader = false;
+                                    notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                                } else if (result.data.fieldErrors != null) {
+                                    angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
+                                        $scope.attachvolumeForm[key].$invalid = true;
+                                        $scope.attachvolumeForm[key].errorMessage = errorMessage;
+                                    });
+                                }
+                            }
                         });
                     }
                 },
@@ -285,10 +302,12 @@ function volumeCtrl($scope, $state, $stateParams, $timeout, globalConfig,
                     $scope.formSubmitted = true;
 
                     if (form.$valid) {
+                    	$scope.showLoader = true;
                         $scope.volume.zone = $scope.global.zone;
                         var volume = $scope.volume;
                         var hasVolume = crudService.add("volumes", volume);
                         hasVolume.then(function (result) {
+                        	$scope.showLoader = false;
                             $scope.list(1);
                             notify({message: 'Added successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                             $modalInstance.close();
@@ -296,6 +315,7 @@ function volumeCtrl($scope, $state, $stateParams, $timeout, globalConfig,
  				if (!angular.isUndefined(result) && result.data != null) {
                                     if (result.data.globalError[0] != '') {
                                         var msg = result.data.globalError[0];
+                                        $scope.showLoader = false;
                                         notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                                     }
                             angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
@@ -398,6 +418,7 @@ function volumeCtrl($scope, $state, $stateParams, $timeout, globalConfig,
     $scope.uploadVolume = function (form, volume) {
         $scope.formSubmitted = true;
         if (form.$valid) {
+        	$scope.showLoader = true;
              var volume = $scope.volume;
              if(volume.storageOffering == "") {
             	 delete volume.storageOffering;
@@ -407,14 +428,17 @@ function volumeCtrl($scope, $state, $stateParams, $timeout, globalConfig,
              }
              var hasUploadVolume = crudService.add("volumes/upload", volume);
              hasUploadVolume.then(function (result) {
-                 $scope.list(1);
+            	 $scope.showLoader = false;
+
                  $scope.homerTemplate = 'app/views/notification/notify.jsp';
                  notify({message: 'Uploaded successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
                  $modalInstance.close();
+                 $scope.list(1);
              }).catch(function (result) {
   				if (!angular.isUndefined(result) && result.data != null) {
                     if (result.data.globalError[0] != '') {
                         var msg = result.data.globalError[0];
+                        $scope.showLoader = false;
                         notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                     }
             angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
@@ -485,17 +509,34 @@ $scope.validateVolume = function (form, volume) {
 }]);
 };
 
+
 // Delete the Volume
 $scope.delete = function (size, volume) {
-    dialogService.openDialog("app/views/common/confirm-delete.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+    dialogService.openDialog("app/views/cloud/volume/delete.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
             $scope.deleteObject = volume;
             $scope.ok = function (volume) {
+            	$scope.showLoader = true;
                 var hasServer = crudService.softDelete("volumes", volume);
                 hasServer.then(function (result) {
-                    $scope.list(1);
-                    notify({message: 'Deleted successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                	 $scope.homerTemplate = 'app/views/notification/notify.jsp';
+                     notify({message: 'Deleted successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
+                     $scope.showLoader = false;
+                     $modalInstance.close();
+                     $scope.list(1);
+                }).catch(function (result) {
+                    if (!angular.isUndefined(result) && result.data != null) {
+                        if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
+                            var msg = result.data.globalError[0];
+                            $scope.showLoader = false;
+                            notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                        }
+                        angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
+                            $scope.addnetworkForm[key].$invalid = true;
+                            $scope.addnetworkForm[key].errorMessage = errorMessage;
+                        });
+                    }
                 });
-                $modalInstance.close();
+
             },
                     $scope.cancel = function () {
                         $modalInstance.close();

@@ -13,25 +13,25 @@
                 <div class="row">
                     <div class="col-md-12 col-sm-12 col-xs-12 ">
                         <div class="pull-left">
-                            <div class="dashboard-box pull-left">
+                            <div class="dashboard-box pull-left" data-ng-class="{'instance-border-content' : borderContent=='Expunging'}" data-ng-click="instanceId(1, 'Expunging')">
                                 <span class="pull-right"><fmt:message key="total.instance" bundle="${msg}" /></span>
                                 <div class="clearfix"></div>
                                 <span class="pull-left m-t-xs"><img src="images/instance-icon.png"></span>
-                                <b class="pull-right">{{instanceList.length}}</b>
+                                <b class="pull-right">{{totalCount}}</b>
                                 <div class="clearfix"></div>
                             </div>
-                            <div class="dashboard-box pull-left">
+                            <div class="dashboard-box pull-left" data-ng-class="{'instance-border-content' : borderContent=='Running'}" data-ng-click="instanceId(1, 'Running')">
                                 <span class="pull-right"><fmt:message key="running.instance" bundle="${msg}" /></span>
                                 <div class="clearfix"></div>
                                 <span class="pull-left m-t-xs"><img src="images/instance-icon.png"></span>
-                                <b class="pull-right">{{instancesList.Count}}</b>
+                                <b class="pull-right">{{runningVmCount}}</b>
                                 <div class="clearfix"></div>
                             </div>
-                            <div class="dashboard-box pull-left">
+                            <div class="dashboard-box pull-left" data-ng-class="{'instance-border-content' : borderContent=='Stopped'}" data-ng-click="instanceId(1, 'Stopped')">
                                 <span class="pull-right"><fmt:message key="stopped.instance" bundle="${msg}" /></span>
                                 <div class="clearfix"></div>
                                 <span class="pull-left m-t-xs"><img src="images/instance-icon.png"></span>
-                                <b class="pull-right">{{instanceList.length - instancesList.Count}}</b>
+                                <b class="pull-right">{{stoppedVmCount}}</b>
                                 <div class="clearfix"></div>
                             </div>
                         </div>
@@ -60,7 +60,7 @@
                                         <th  ng-click="changeSorting('name')" data-ng-class="sort.descending && sort.column =='name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="instance.name" bundle="${msg}" /></th>
                                         <th ng-click="changeSorting('owner')" data-ng-class="sort.descending && sort.column =='owner'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="owner" bundle="${msg}" /> </th>
                                         <th ng-click="changeSorting('application')" data-ng-class="sort.descending && sort.column =='application'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.application" bundle="${msg}" /> </th>
-                                        <th ng-click="changeSorting('project')" data-ng-class="sort.descending && sort.column =='project'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.project" bundle="${msg}" /></th>
+                                        <%-- <th ng-click="changeSorting('project')" data-ng-class="sort.descending && sort.column =='project'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.project" bundle="${msg}" /></th> --%>
                                         <th ng-click="changeSorting('department')" class="w-10" data-ng-class="sort.descending && sort.column =='department'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.department" bundle="${msg}" /> </th>
                                         <th ng-click="changeSorting('ostype')" data-ng-class="sort.descending && sort.column =='ostype'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.osType" bundle="${msg}" /></th>
                                        <%--  <th ng-click="changeSorting('template.name')" data-ng-class="sort.descending && sort.column =='template.name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.template" bundle="${msg}" /> </th> --%>
@@ -89,7 +89,7 @@
                                         </td>
                                         <td>{{ instance.instanceOwner.userName}}</td>
                                         <td>{{ instance.application}}</td>
-                                        <td>{{ instance.project.name}}</td>
+                                        <!-- <td>{{ instance.project.name}}</td> -->
                                         <td>{{ instance.department.userName}}</td>
 <!--                                         <td>{{ instance.template.displayText}}</td> -->
  										<td>{{ instance.template.osType.description}}</td>
@@ -99,10 +99,10 @@
                                         <td>
                                             <label class="label label-success" data-ng-if="instance.status == 'Running'">{{ instance.status}}</label>
                                             <label class="label label-danger" data-ng-if="instance.status == 'Stopped'">{{ instance.status}}</label>
-                                            <label class="label label-primary" data-ng-if="instance.status == 'Starting'">{{ instance.status}}</label>
+                                            <label class="label label-warning" data-ng-if="instance.status == 'Starting'">{{ instance.status}}</label>
                                             <label class="label label-danger" data-ng-if="instance.status == 'Error'">{{ instance.status}}</label>
-					    					<label class="label label-danger" data-ng-if="instance.status == 'Stopping'">{{ instance.status}}</label>
-                                            <label class="label label-danger" data-ng-if="instance.status == 'Expunging'">{{ instance.status}}</label>
+					    					<label class="label label-warning" data-ng-if="instance.status == 'Stopping'">{{ instance.status}}</label>
+                                            <label class="label label-warning" data-ng-if="instance.status == 'Expunging'">{{ instance.status}}</label>
                                             <label class="label label-danger" data-ng-if="instance.status == 'Destroyed'">{{ instance.status}}</label>
 
                                         </td>
