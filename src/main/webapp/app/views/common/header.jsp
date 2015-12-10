@@ -44,7 +44,7 @@
                     <li><a ui-sref="profile">
                     	<fmt:message key="common.profile" bundle="${msg}" />
                     </a></li>
-                    <li><a href="login"><fmt:message key="common.logout" bundle="${msg}" /> </a></li>
+                    <li><a href="javascript:void(0)" data-ng-click="logout()"><fmt:message key="common.logout" bundle="${msg}" /> </a></li>
                 </ul>
             </li>
         </ul>

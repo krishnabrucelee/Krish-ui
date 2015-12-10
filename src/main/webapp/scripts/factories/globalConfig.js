@@ -6,7 +6,7 @@ angular
     .factory('globalConfig', globalConfig);
 
 
-function globalConfig() {
+function globalConfig($window) {
     var appGlobalConfig = {};
 
     /**
@@ -57,7 +57,8 @@ function globalConfig() {
 
         getViewPageUrl: function(url) {
         	return appGlobalConfig.VIEW_URL + url;
-        }
+        },
+        sessionValues:  JSON.parse($window.sessionStorage.getItem("loginSession"))
     };
 
     return appGlobalConfig;

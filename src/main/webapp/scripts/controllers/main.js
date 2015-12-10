@@ -330,6 +330,19 @@ function appCtrl($http, $scope, $window, $timeout, globalConfig, crudService, pr
     	$window.location.reload();
     }
 
+    /**
+     *  Logout a user.
+     */
+    $scope.logout = function() {
+    	var hasResponse = promiseAjax.httpTokenRequest(globalConfig.HTTP_GET, globalConfig.APP_URL + "logout", '');
+    	hasResponse.then(function (result) {
+    		if(result) {
+    			$window.sessionStorage.removeItem("loginSession")
+    		    window.location.href = "login";
+    	    }
+        });
+    }
+
     $scope.getZoneList = function (pageNumber) {
     	$scope.paginationObject = {};
       var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
