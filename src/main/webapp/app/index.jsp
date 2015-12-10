@@ -57,6 +57,10 @@
 <link rel="stylesheet"
 	href="fonts/pe-icon-7-stroke/css/pe-icon-7-stroke.css" />
 <link rel="stylesheet" href="fonts/pe-icon-7-stroke/css/helper.css" />
+<link rel="stylesheet" href="fonts/pe-icon-7-stroke/fonts/cJZKeOuBrn4kERxqtaUH3VtXRa8TVwTICgirnJhmVJw.woff2" />
+<link rel="stylesheet" href="fonts/pe-icon-7-stroke/fonts/DXI1ORHCpsQm3Vp6mXoaTegdm0LZdjqr5-oayXSOefg.woff2" />
+<link rel="stylesheet" href="fonts/pe-icon-7-stroke/fonts/k3k702ZOKiLJc3WVjuplzOgdm0LZdjqr5-oayXSOefg.woff2" />
+<link rel="stylesheet" href="fonts/pe-icon-7-stroke/fonts/MTP_ySUJH_bn48VBG8sNSugdm0LZdjqr5-oayXSOefg.woff2" />
 <link rel="stylesheet" href="styles/style.css">
 <link rel="stylesheet" href="styles/custom-style.css">
 <!-- endbuild -->
@@ -161,9 +165,13 @@
 	<!--<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDQTpXj82d8UpCi97wzo_nKXL7nYrd4G70"></script>-->
 
 	<!-- build:js({.tmp,app}) scripts/scripts.js -->
+	<script type="text/javascript" src="scripts/js"></script>
 	<script src="scripts/homer.js"></script>
 	<script src="scripts/app.js"></script>
 	<script src="scripts/config.js"></script>
+	<script src="scripts/common.js"></script>
+	<script src="scripts/util.js"></script>
+	<script src="scripts/stats.js"></script>
 	<script src="scripts/filters/props.js"></script>
 	<script src="scripts/directives/directives.js"></script>
 	<script src="scripts/controllers/main.js"></script>
