@@ -30,7 +30,7 @@
                 	<div class="row">
 						<label class="col-md-4 col-sm-4 control-label">Company Name Abbreviation <span class="text-danger">*</span></label>
 							<div class="col-md-6 col-sm-6">
-								<input required="true" type="text" name="companyNameAbb" data-ng-model="domain.companyNameAbb" class="form-control" data-ng-class="{'error': domainForm.companyNameAbb.$invalid && formSubmitted}">
+								<input required="true" type="text" name="companyNameAbb" data-ng-model="domain.companyNameAbbreviation" class="form-control" data-ng-class="{'error': domainForm.companyNameAbb.$invalid && formSubmitted}">
 								<i tooltip="Abbreviation of the company name" class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
 									<div class="error-area" data-ng-show="domainForm.companyNameAbb.$invalid && formSubmitted" >
 										<i ng-attr-tooltip="{{ domainForm.companyNameAbb.errorMessage || 'company Name Abbreviation required' }}" class="fa fa-warning error-icon"></i>

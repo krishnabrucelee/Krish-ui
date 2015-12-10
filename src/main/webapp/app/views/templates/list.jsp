@@ -1,12 +1,14 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
     <div class="row">
 
         <div class="col-md-12 col-sm-12">
             <div class="hpanel">
                 <div class="panel-heading">
-                    
-
-                    
-                </div>
+            </div>
 
                 <div class="white-content">
                     <div class="table-responsive">
@@ -14,7 +16,7 @@
                             <thead>
                                 <tr>
 
-                                    
+
                             <th class="col-md-2 col-sm-2">Name</th>
                             <th class="col-md-1 col-sm-1">Size</th>
                             <th class="col-md-1 col-sm-1">Status</th>
@@ -30,9 +32,10 @@
                             </thead>
                             <tbody>
                                 <tr data-ng-repeat="template in template.templateList| filter:quickSearch">
-                                    <td> 
+                                    <td>
                                         <a data-ng-click="showDescription(template)">
-                                            <img src="images/os/{{template.imageName}}_logo.png" alt="" height="30" width="30" class="m-r" > {{ template.name }}
+                                           <img data-ng-show="template.imageName.indexOf('windows') > -1" src="images/os/windows_logo.png" alt="" height="35" width="35" class="m-r-5" >
+                       					   <img data-ng-show="template.imageName.indexOf('linux') > -1" src="images/os/ubuntu_logo.png" alt="" height="35" width="35" class="m-r-5" > {{ template.name }}
                                         </a>
                                     </td>
                                     <td>{{ template.size }}</td>
@@ -55,4 +58,3 @@
             </div>
         </div>
     </div>
-</div>

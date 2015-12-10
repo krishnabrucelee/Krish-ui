@@ -101,8 +101,7 @@
 													</div>
 												</td>
 												<td><a class="text-info right-sidebar-toggle"
-													data-ng-class="isSingle === projectObj.id  ? 'text-white' : ''"
-													data-ng-click="viewProjectDetails(projectObj)">{{
+													data-ng-click="viewProjectDetails(projectObj); isSelected = true;">{{
 														projectObj.name}}</a></td>
 												<td><label class="badge badge-success p-xs" data-ng-show="projectObj.isActive"
 													data-ng-class="isSingle === projectObj.id  ? 'text-white' : ''"
@@ -120,7 +119,8 @@
 														Project</a>
 														   <a class="icon-button" ui-sref="projects.quotalimit({id: {{projectObj.id}}, quotaType: 'project-quota'})" title="<fmt:message key="common.edit.quota" bundle="${msg}" />">
                                                     <span class="fa font-bold pe-7s-edit"> </span>
-                                                </a></td>
+                                                </a>
+                                                </td>
 
 											</tr>
 										</tbody>
@@ -131,8 +131,7 @@
 						</div>
 					</div>
 				</div>
-				<div id="right-sidebar" class="animated fadeInRight"
-					ng-class="project.side ? 'animated fadeInRight sidebar-open' : 'animated fadeInRight'">
+				<div id="right-sidebar" ng-class="isSelected ? 'animated fadeInRight sidebar-open' : 'animated fadeInRight'">
 					<div class="p-m">
 						<button id="sidebar-close"
 							class="right-sidebar-toggle pull-right sidebar-button btn btn-default m-b-md btn-danger">

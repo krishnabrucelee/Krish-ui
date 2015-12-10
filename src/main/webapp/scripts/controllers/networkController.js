@@ -129,6 +129,7 @@ function networksCtrl($scope, modalService, promiseAjax, filterFilter, localStor
         var hasnetwork = crudService.read("guestnetwork", networkId);
         hasnetwork.then(function (result) {
             $scope.network = result;
+            localStorageService.set('view', 'details');
         });
     };
 

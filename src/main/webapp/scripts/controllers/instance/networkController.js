@@ -51,7 +51,7 @@ function networkCtrl($scope, $modal, $window, $stateParams,globalConfig, localSt
                 $scope.nicList = result;
          });
      };
-     $scope.nicList();
+    // $scope.nicList();
 
     $scope.addNetworkToVM = function () {
         dialogService.openDialog("app/views/cloud/instance/add-network.jsp", 'md', $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
@@ -63,7 +63,7 @@ function networkCtrl($scope, $modal, $window, $stateParams,globalConfig, localSt
                        console.log($scope.networkList);
                    });
                };
-           	$scope.listNetwork();
+//           	$scope.listNetwork();
             $scope.addNicToVirtualMachine = function (form, network) {
                 $scope.formSubmitted = true;
                 if (form.$valid) {
