@@ -51,19 +51,20 @@ function sshkeyListCtrl($scope, notify, dialogService, crudService) {
 };
    $scope.listDomain();
 
-   $scope.departmentList = function (domain) {
+$scope.departmentList = function (domain) {
               var hasUsers = crudService.listAllByFilter("departments/search", domain);
               hasUsers.then(function (result) {  // this is only run after $http completes0
                        $scope.formElements.departmenttypeList  = result;
                });
            };
-           $scope.$watch('sshkey.domain', function (obj) {
-        	   if (!angular.isUndefined(obj)) {
-        		   $scope.departmentList(obj);
-        	   }
-           });
 
-	$scope.sshkey.domain = {};
+ $scope.$watch('sshkey.domain', function (obj) {
+	if (!angular.isUndefined(obj)) {
+    	  $scope.departmentList(obj);
+	}
+          });
+
+	$scope.sshkey.domain = "";
     $scope.createSSHKey = function (size) {
         dialogService.openDialog($scope.global.VIEW_URL + "cloud/sshkeys/add.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
                 // Create a new sshkey

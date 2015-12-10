@@ -7,7 +7,6 @@
 angular
         .module('homer')
         .controller('networksCtrl', networksCtrl)
-        .controller('networkViewCtrl', networkViewCtrl)
 
 function networksCtrl($scope, modalService, promiseAjax, filterFilter, localStorageService, notify, $state, $stateParams, $timeout, globalConfig, $window, dialogService, crudService) {
 
@@ -16,38 +15,55 @@ function networksCtrl($scope, modalService, promiseAjax, filterFilter, localStor
     $scope.rules = [];
     $scope.portList = [];
     $scope.vmList = [];
+    $scope.formElements = [];
     $scope.allItemsSelected = false;
 
     $scope.openAddIsolatedNetwork = function (size) {
         dialogService.openDialog("app/views/cloud/network/add.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
 
                 // Create a new Isolated Network
-
-                $scope.save = function (form) {
+                $scope.save = function (form, network) {
                     $scope.formSubmitted = true;
                     if (form.$valid) {
-                        var department = angular.copy($scope.department);
-                        department.domainId = department.domain.id;
-                        var hasServer = crudService.add("departments", department);
-                        hasServer.then(function (result) {  // this is only run after $http completes
+                        var guestnetwork = $scope.guestnetwork;
+                        if (!angular.isUndefined($scope.network.domain)) {
+                            network.domainId = $scope.network.domain.id;
+                            network.departmentId = $scope.network.department.id;
+                        }
+                        var hasguestNetworks = crudService.add("guestnetwork", network);
+                        hasguestNetworks.then(function (result) {
                             $scope.list(1);
-                            notify({message: 'Added successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                            notify({message: 'Added successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                             $modalInstance.close();
                         }).catch(function (result) {
                             if (!angular.isUndefined(result) && result.data != null) {
+                                if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
+                                    var msg = result.data.globalError[0];
+                                    notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                                    $modalInstance.close();
+                                }
                                 angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
-                                    $scope.departmentForm[key].$invalid = true;
-                                    $scope.departmentForm[key].errorMessage = errorMessage;
+                                    $scope.addnetworkForm[key].$invalid = true;
+                                    $scope.addnetworkForm[key].errorMessage = errorMessage;
                                 });
                             }
                         });
+                        $scope.cancel = function () {
+                            $modalInstance.close();
+                        };
                     }
                 },
+                        $scope.$watch('network.domain', function (obj) {
+                            if (!angular.isUndefined(obj)) {
+                                $scope.departmentList(obj);
+                            }
+                        }),
                         $scope.cancel = function () {
                             $modalInstance.close();
                         };
             }]);
     };
+
 
     $scope.networkList = {};
     $scope.paginationObject = {};
@@ -55,10 +71,11 @@ function networksCtrl($scope, modalService, promiseAjax, filterFilter, localStor
     $scope.global = crudService.globalConfig;
     // Guest Network List
     $scope.list = function (pageNumber) {
+        $scope.type = $stateParams.view;
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasGuestNetworks = crudService.list("guestnetwork", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
         hasGuestNetworks.then(function (result) {
-            $scope.networkList = result;
+            $scope.networkList = angular.copy(result);
             console.log($scope.networkList);
             $scope.networkList.Count = 0;
             if (result.length != 0) {
@@ -72,30 +89,127 @@ function networksCtrl($scope, modalService, promiseAjax, filterFilter, localStor
     };
     $scope.list(1);
 
-     $scope.networkOfferList = {};
-       $scope.networkOfferForm = {};
-       $scope.global = crudService.globalConfig;
-     //  Network Offer List
+    // Delete the Network
+    $scope.delete = function (size, network) {
+        dialogService.openDialog("app/views/cloud/network/confirm-delete.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+                $scope.deleteId = network.id;
+                $scope.ok = function (networkId) {
+                	 $scope.showLoader = true;
+                    var hasNetworks = crudService.softDelete("guestnetwork", network);
+                    hasNetworks.then(function (result) {
+                        $scope.homerTemplate = 'app/views/notification/notify.jsp';
+                        notify({message: 'Deleted successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
+                        $scope.showLoader = false;
+                        $modalInstance.close();
+                        $window.location.href = '#/network/list';
+                        $scope.list(1);
+                    }).catch(function (result) {
+                        if (!angular.isUndefined(result) && result.data != null) {
+                            if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
+                                var msg = result.data.globalError[0];
+                                $scope.showLoader = false;
+                                notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                            }
+                            angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
+                                $scope.addnetworkForm[key].$invalid = true;
+                                $scope.addnetworkForm[key].errorMessage = errorMessage;
+                            });
+                        }
+                    });
+                },
+                        $scope.cancel = function () {
+                            $modalInstance.close();
+                        };
+            }]);
+    };
 
-       $scope.listNetworkOffer = function () {
-    	   var hasNetworks =  promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "networkoffer/isolated" +"?lang=" + localStorageService.cookie.get('language')+"&sortBy=-id");
-         hasNetworks.then(function (result) {
-                 $scope.networkOfferList = result;
-         });
-     };
-	$scope.listNetworkOffer();
 
+    // Edit Network
+    $scope.edit = function (networkId) {
+        var hasnetwork = crudService.read("guestnetwork", networkId);
+        hasnetwork.then(function (result) {
+            $scope.network = result;
+        });
+    };
 
- $scope.zoneList = {};
- $scope.zoneList = function () {
-               var hasZones = crudService.listAll("zones/list");
-               hasZones.then(function (result) {  // this is only run after $http completes0
-                       $scope.zoneList = result;
-console.log($scope.zoneList );
+    if (!angular.isUndefined($stateParams.id) && $stateParams.id != '') {
+        $scope.edit($stateParams.id);
+    }
 
-                });
-            };
-            $scope.zoneList();
+    // Update the Network
+    $scope.update = function (form) {
+        console.log(form);
+        $scope.formSubmitted = true;
+        if (form.$valid) {
+            var network = $scope.network;
+            $scope.showLoader = true;
+            var hasNetwork = crudService.update("guestnetwork", network);
+            hasNetwork.then(function (result) {
+                $scope.showLoader = false;
+                $scope.homerTemplate = 'app/views/notification/notify.jsp';
+                notify({message: 'Updated successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
+                $window.location.href = '#/network/list';
+            }).catch(function (result) {
+                if (!angular.isUndefined(result) && result.data != null) {
+                    if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
+                        var msg = result.data.globalError[0];
+                        $scope.showLoader = false;
+                        notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                    }
+                    angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
+                        $scope.addnetworkForm[key].$invalid = true;
+                        $scope.addnetworkForm[key].errorMessage = errorMessage;
+                    });
+                }
+            });
+        }
+    };
+    $scope.cancel = function () {
+        $modalInstance.close();
+        $window.location.href = '#/network/list';
+    };
+
+    $scope.networkOfferList = {};
+    $scope.networkOfferForm = {};
+    $scope.global = crudService.globalConfig;
+
+    //  Network Offer List
+
+    $scope.listNetworkOffer = function () {
+        var hasNetworks = promiseAjax.httpTokenRequest(globalConfig.HTTP_GET, globalConfig.APP_URL + "networkoffer/isolated" + "?lang=" + localStorageService.cookie.get('language') + "&sortBy=-id");
+        hasNetworks.then(function (result) {
+            $scope.networkOfferList = result;
+        });
+    };
+    $scope.listNetworkOffer();
+
+    $scope.zoneList = {};
+    $scope.zoneList = function () {
+        var hasZones = crudService.listAll("zones/list");
+        hasZones.then(function (result) {  // this is only run after $http completes0
+            $scope.zoneList = result;
+            console.log($scope.zoneList);
+        });
+    };
+    $scope.zoneList();
+
+    $scope.domainList = {};
+    $scope.domainList = function () {
+        var hasZones = crudService.listAll("domains/list");
+        hasZones.then(function (result) {  // this is only run after $http completes0
+            $scope.domainList = result;
+            console.log($scope.domainList);
+        });
+    };
+    $scope.domainList();
+
+    $scope.departmentList = function (domain) {
+        var hasDepartments = crudService.listAllByFilter("departments/search", domain);
+        hasDepartments.then(function (result) {  // this is only run after $http completes0
+            $scope.formElements.departmenttypeList = result;
+
+        });
+    };
 
     //localStorageService.clearAll();
     //localStorageService.set("rules",null);
@@ -416,28 +530,28 @@ console.log($scope.zoneList );
         $timeout($scope.delete, 1000);
     }
 
-    $scope.delete = function () {
-        var id = localStorageService.get('deleteRule').id;
-        var type = localStorageService.get('deleteRule').type;
-
-        $timeout(function () {
-            $scope.deleteRule = true
-        }, 5);
-
-        if (type == 'LB') {
-            $scope.removeLB(id);
-        }
-        if (type == 'Egress') {
-            $scope.removeRule(id, '');
-            localStorageService.set('view', 'egress');
-        }
-        if (type == 'Port') {
-            $scope.removePort(id);
-        }
-        if (type == 'Firewall') {
-            $scope.removeRule(id, 'firewall');
-        }
-    };
+//    $scope.delete = function () {
+//        var id = localStorageService.get('deleteRule').id;
+//        var type = localStorageService.get('deleteRule').type;
+//
+//        $timeout(function () {
+//            $scope.deleteRule = true
+//        }, 5);
+//
+//        if (type == 'LB') {
+//            $scope.removeLB(id);
+//        }
+//        if (type == 'Egress') {
+//            $scope.removeRule(id, '');
+//            localStorageService.set('view', 'egress');
+//        }
+//        if (type == 'Port') {
+//            $scope.removePort(id);
+//        }
+//        if (type == 'Firewall') {
+//            $scope.removeRule(id, 'firewall');
+//        }
+//    };
 
     $scope.openAddVM = function (form) {
         $scope.loadFormSubmitted = true;
@@ -585,16 +699,17 @@ console.log($scope.zoneList );
     };
 
     $scope.tabview = localStorageService.get('view');
-}
-;
 
-function networkViewCtrl($scope, $http, notify, globalConfig, localStorageService, modalService, $log, $state, $stateParams, promiseAjax) {
-    $scope.global = globalConfig;
-    $scope.networkList = [];
-    $scope.network = [];
-    $scope.ipList = [];
-    $scope.ipDetails = [];
-    $scope.tabview = '';
+
+
+
+
+//    $scope.global = globalConfig;
+//    $scope.networkList = [];
+//    $scope.network = [];
+//    $scope.ipList = [];
+//    $scope.ipDetails = [];
+//    $scope.tabview = '';
 
     /*if ($stateParams.id > 0) {
      var hasServer = promiseAjax.httpRequest("GET", "api/network.json");
@@ -697,3 +812,5 @@ function networkViewCtrl($scope, $http, notify, globalConfig, localStorageServic
     }
     $scope.tabview = localStorageService.get('view');
 }
+;
+

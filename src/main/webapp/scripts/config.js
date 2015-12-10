@@ -161,7 +161,7 @@ function configState($stateProvider, $httpProvider,  $urlRouterProvider, $compil
                 url: "sshkeys/list",
                 templateUrl: VIEW_URL + "views/cloud/sshkeys/list.jsp",
                 data: {
-                    pageTitle: 'SSH Keys'
+                    pageTitle: 'common.ssh.keys'
                 }
             })
             .state('cloud.list-snapshot', {

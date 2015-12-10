@@ -27,16 +27,16 @@
 						</div>
 						<div class= "col-md-4 col-sm-4 m-t-sm">
 						<div class="form-group">
-							<span class=" "><fmt:message key="common.architecture" bundle="${msg}"/>: </span>
-							<div class="m-t-sm">
-								<label class=" "> <input icheck type="radio"
+							<div class="m-b-sm">
+							 <span class=" "><fmt:message key="common.architecture" bundle="${msg}" />: </span>
+						    </div>
+								  <label class=" "> <input icheck type="radio"
 									data-ng-model="instance.architecture" value="32" ng-change="getTemplatesByFilters()" name="architecture">
 									32Bit
 								</label> <label class=" "> <input icheck type="radio"
 									data-ng-model="instance.architecture" value="64" ng-change="getTemplatesByFilters()" name="architecture"
 									data-ng-checked="true"> 64Bit
 								</label>
-							</div>
 						</div>
 						</div>
 						<div class= "col-md-4 col-sm-4 m-t-sm">
@@ -89,7 +89,7 @@
 											 <div class="col-md-1 col-sm-1">
 													<div class="form-group">
 															<label class=" "> <input icheck type="radio"
-																data-ng-model="instance.template" ng-change="setTemplate(templateObj)" value="templateObj"
+																data-ng-model="instance.template" value="" data-ng-change="setTemplate(templateObj)"
 																name="template">
 															</label>
 

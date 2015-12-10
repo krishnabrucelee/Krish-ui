@@ -44,7 +44,7 @@
 
                             <div class="form-group">
                                 <label class="control-label" for="username">Username</label>
-                                <input type="text" placeholder="username" title="Please enter you username" required="" value="" name="username" id="username" class="form-control">
+                                <input type="text" placeholder="username" title="Please enter you username" required="" value="" data-ng-model="login.username" name="username" id="username" class="form-control">
                                 <!--<span class="help-block small">Your unique username to app</span>-->
 
                             </div>

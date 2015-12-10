@@ -131,7 +131,7 @@
 													<div class="col-md-12 col-sm-12 m-t-xs">
 														{{ instance.template.name}}
 														<span class="pull-right text-danger price-text m-l-lg">
-															<app-currency></app-currency>{{ instance.template.cost}}<span> / <fmt:message key="common.hour" bundle="${msg}" /></span>
+															<app-currency></app-currency> {{ instance.template.templateCost[0].cost}}<span> / <fmt:message key="common.hour" bundle="${msg}" /></span>
 														</span>
 													</div>
 												</div>

@@ -29,7 +29,7 @@ function applicationListCtrl($scope, notify, dialogService, crudService) {
     };
     $scope.list(1);
 
-    // Open dialogue box to create department
+    // Open dialogue box to create application
     $scope.application = {};
     $scope.formElements = {};
 
