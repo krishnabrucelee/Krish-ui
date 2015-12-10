@@ -17,7 +17,7 @@ pageEncoding="UTF-8"%>
                                             'text-danger'
                                             : volumeForm.name.$invalid && formSubmitted}">
                         <div class="row">
-                            <label class="col-md-3 col-sm-3 control-label"><fmt:message key="common.name" bundle="${msg}" />"><span class="text-danger">*</span>
+                            <label class="col-md-3 col-sm-3 control-label"><fmt:message key="common.name" bundle="${msg}" /><span class="text-danger">*</span>
                             </label>
                             <div class="col-md-5 col-sm-5">
                                 <input required="true" type="text" name="name" data-ng-model="volume.name" class="form-control" data-ng-class="{'error': volumeForm.name.$invalid && formSubmitted}" >

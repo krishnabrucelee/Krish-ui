@@ -75,6 +75,16 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
      };
      $scope.osList();
 
+     //Os list by filter
+     $scope.osListByFilter = function () {
+         var hasOsListByFilter = crudService.listAll("oscategorys/os");
+         hasOsListByFilter.then(function (result) {  // this is only run after $http completes0
+                 $scope.formElements.osCategoryListByFilter = result;
+                 console.log("-------->"+result);
+          });
+      };
+      $scope.osListByFilter();
+
      $scope.templateList = function () {
          var hastemplateList = crudService.listAll("templates/list");
          hastemplateList.then(function (result) {  // this is only run after $http completes0
