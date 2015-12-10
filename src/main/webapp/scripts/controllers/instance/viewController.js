@@ -216,6 +216,27 @@ function instanceViewCtrl($scope,$log, dialogService, $modal,$http, $state, $sta
 	  				});
 			  }
 
+			  $scope.instnaceEdit = false;
+			  $scope.editDisplayName = function(vm) {
+				  $scope.vm = vm;
+				  $scope.instnaceEdit = true;
+			  }
+
+	  		 $scope.updateDisplayName= function(vm) {
+	  			 	$scope.formSubmitted = true;
+	  			 	$scope.vm = vm;
+	  			 	if($scope.vm.transDisplayName != "") {
+	  			 		$scope.vm.transDisplayName=$scope.vm.transDisplayName;
+	  			 		var hasVm = crudService.update("virtualmachine", $scope.vm);
+		  				hasVm.then(function(result) {
+		  					$state.reload();
+		  					$scope.cancel();
+		  				});
+	  			 	}
+
+
+	  		 };
+
 			  $scope.showDescription = function(vm) {
 				  	 dialogService.openDialog("app/views/cloud/instance/editnote.jsp", 'sm',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
 				  		 $scope.vm = vm;

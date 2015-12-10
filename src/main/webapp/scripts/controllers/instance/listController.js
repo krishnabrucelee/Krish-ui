@@ -112,6 +112,7 @@ function instanceListCtrl($scope, $log, $filter, dialogService, promiseAjax, $st
            		  }
            		 }
 
+           		 // Get the count of the listings
            		var hasVmCount =  crudService.listAll("virtualmachine/vmCounts");
            		hasVmCount.then(function(result) {
            			$scope.runningVmCount = result.runningVmCount;
