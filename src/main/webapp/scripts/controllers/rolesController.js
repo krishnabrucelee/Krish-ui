@@ -15,7 +15,8 @@ angular
     $scope.paginationObject = {};
     $scope.RoleForm = {};
     $scope.global = crudService.globalConfig;
-
+    $scope.userList = {};
+    $scope.roleList = {};
 
     // Role List
     $scope.list = function (pageNumber) {
@@ -169,4 +170,109 @@ angular
         }
 
     };
+
+    // Opened user add window
+    $scope.assignRole = function (size) {
+        dialogService.openDialog("app/views/roles/assign-role.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
+            // Getting list of users and roles by department
+        $scope.getUsersByDepartment = function(department) {
+        	var hasUsers =  promiseAjax.httpTokenRequest( crudService.globalConfig.HTTP_GET, crudService.globalConfig.APP_URL + "users"  +"/department/"+department.id);
+        	hasUsers.then(function (result) {  // this is only run after $http completes0
+        		$scope.userList = result;
+        	});
+
+        	var hasRoles =  promiseAjax.httpTokenRequest( crudService.globalConfig.HTTP_GET, crudService.globalConfig.APP_URL + "roles"  +"/department/"+department.id);
+        	hasRoles.then(function (result) {  // this is only run after $http completes0
+        		$scope.roleList = result;
+        	});
+        };
+           	
+       // Assign a new role to our user
+        $scope.userRoleList = [];   
+        $scope.assignRoleSave = function (form) {
+        	$scope.formSubmitted = true;
+        	$scope.formSubmitted = true;
+        	var assignedUsers = [];
+        	angular.forEach($scope.userList, function(obj, key) {
+        		var userObject = {};
+        		userObject = obj;
+        		userObject.role = $scope.userRoleList[obj.id];
+        		assignedUsers.push(userObject);
+        	});
+
+        	console.log(assignedUsers);
+        	if (form.$valid) {
+        		var hasServer = crudService.add("users/assignRole", assignedUsers);
+        		hasServer.then(function (result) {  // this is only run after $http completes
+        			$scope.list(1);
+        			notify({message: 'Assigned successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+        			$modalInstance.close();
+        		}).catch(function (result) {
+        			if(!angular.isUndefined(result) && result.data != null) {
+        				angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
+        					$scope.RoleForm[key].$invalid = true;
+        					$scope.RoleForm[key].errorMessage = errorMessage;
+        				});
+        			}
+        		});
+        	}
+        	},
+        	   $scope.cancel = function () {
+                $modalInstance.close();
+            };   
+        }]);
+    };
+    
+    
+    // Opened user edit window
+    $scope.editAssignedRole = function (size) {
+        dialogService.openDialog("app/views/roles/edit-assigned-role.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
+            // Getting list of users and roles by department
+        $scope.getUsersByDepartment = function(department) {
+        	var hasUsers =  promiseAjax.httpTokenRequest( crudService.globalConfig.HTTP_GET, crudService.globalConfig.APP_URL + "users"  +"/department/"+department.id);
+        	hasUsers.then(function (result) {  // this is only run after $http completes0
+        		$scope.userList = result;
+        	});
+        	
+          	var hasRoles =  promiseAjax.httpTokenRequest( crudService.globalConfig.HTTP_GET, crudService.globalConfig.APP_URL + "roles"  +"/department/"+department.id);
+        	hasRoles.then(function (result) {  // this is only run after $http completes0
+        		$scope.roleList = result;
+        	});
+        };
+        
+       // Assign a new role to our user
+        $scope.userRoleList = [];   
+        $scope.editAssignedRoleSave = function (form) {
+        	$scope.formSubmitted = true;
+        	var assignedUsers = [];
+        	angular.forEach($scope.userList, function(obj, key) {
+        		var userObject = {};
+        		userObject = obj;
+        		userObject.role = $scope.userRoleList[obj.id];
+        		assignedUsers.push(userObject);
+        	});
+
+        	console.log(assignedUsers);
+        	if (form.$valid) {
+        		var hasServer = crudService.add("users/assignRole", assignedUsers);
+        		hasServer.then(function (result) {  // this is only run after $http completes
+        			$scope.list(1);
+        			notify({message: 'Updated successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+        			$modalInstance.close();
+        		}).catch(function (result) {
+        			if(!angular.isUndefined(result) && result.data != null) {
+        				angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
+        					$scope.RoleForm[key].$invalid = true;
+        					$scope.RoleForm[key].errorMessage = errorMessage;
+        				});
+        			}
+        		});
+        	}
+        	},
+        	   $scope.cancel = function () {
+                $modalInstance.close();
+            };   
+        }]);
+    };
+
 }

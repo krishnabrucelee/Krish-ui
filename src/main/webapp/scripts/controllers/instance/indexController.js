@@ -424,6 +424,15 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
          instance.departmentId = instance.department.id;
          instance.instanceOwnerId = instance.instanceOwner.id;
 
+         if (!angular.isUndefined($scope.instance.computeOffer.cpuCore.value)) {
+             instance.cpuCore = $scope.instance.computeOffer.cpuCore.value;
+         }
+         if (!angular.isUndefined($scope.instance.computeOffer.cpuSpeed.value)) {
+             instance.cpuSpeed = $scope.instance.computeOffer.cpuSpeed.value;
+         }
+         if (!angular.isUndefined($scope.instance.computeOffer.memory.value)) {
+             instance.memory = $scope.instance.computeOffer.memory.value;
+         }
          console.log("hi");
          console.log("=====");
          console.log(instance);
@@ -507,7 +516,51 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
          });
      };
 
-    $scope.addNetworkVM = function (form) {
+     $scope.addNetworkToVM = function () {
+         dialogService.openDialog("app/views/cloud/instance/add-network.jsp", 'md', $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+         	$scope.listNetwork = function () {
+                    var hasGuestNetworks = crudService.findByDepartment("guestnetwork/list");
+                    hasGuestNetworks.then(function (result) {  // this is only run after $http
+                            $scope.networkList = result;
+                    });
+
+                };
+            	listNetwork();
+         	$scope.add = function (deleteObject) {
+         		   if (form.$valid) {
+         	             $scope.instanceNetworkList = localStorageService.get("instanceNetworkList");
+
+         	             $scope.instanceNetwork = {
+         	             };
+         	             // localStorageService.remove('instanceNetworkList');
+
+         	             $scope.networks.plan = $scope.networks.networkOffers.name;
+
+         	             $scope.instanceNetwork = filterFilter($scope.networkList.networkOffers, {'name': $scope.networks.plan});
+         	             if (filterFilter($scope.instanceNetworkList, {'name': $scope.networks.plan})[0] == null) {
+         	                 $scope.instanceNetworkList.push($scope.instanceNetwork[0]);
+         	                 localStorageService.set("instanceNetworkList", $scope.instanceNetworkList);
+         	                 $scope.homerTemplate = 'app/views/notification/notify.jsp';
+         	                 notify({message: 'Added successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
+         	                 $scope.cancel();
+         	             }
+         	             else {
+         	                 $scope.homerTemplate = 'app/views/notification/notify.jsp';
+         	                 notify({message: 'Network already exist', classes: 'alert-danger', templateUrl: $scope.homerTemplate});
+         	             }
+         	             $scope.networkLists = localStorageService.get("instanceNetworkList");
+         	             localStorageService.set('instanceViewTab', 'network');
+         	             $state.reload();
+
+         	         }
+                 },
+                 $scope.cancel = function () {
+                     $modalInstance.close();
+                 };
+             }]);
+     };
+
+     /*$scope.addNetworkVM = function (form) {
          $scope.formSubmitted = true;
          if (form.$valid) {
              $scope.instanceNetworkList = localStorageService.get("instanceNetworkList");
@@ -536,7 +589,7 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
 
          }
      };
-
+*/
      $scope.networkList = {
          networkOffers: [
              {

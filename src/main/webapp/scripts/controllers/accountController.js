@@ -183,6 +183,16 @@ function accountListCtrl($scope,$state, promiseAjax, $log, notify, crudService, 
                     		$scope.list(1);
                     		notify({message: 'Added successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
                     		$modalInstance.close();
+                    		$scope.user.userName = "";
+                    		$scope.user.password = "";
+                    		$scope.user.department = "";
+                    		$scope.user.domain = "";
+                    		$scope.user.role = "";
+                    		$scope.user.email = "";
+                    		$scope.user.type = "";
+                    		$scope.user.firstName = "";
+                    		$scope.user.lastName = "";
+                    		$scope.user.projectList = "";
                     	}).catch(function (result) {
                     		if(!angular.isUndefined(result) && result.data != null) {
                     			angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
