@@ -37,7 +37,7 @@
     </div>
     <div class="content">
         <div ui-view >
-            <div class="hpanel">
+            <div class="hpanel" ng-controller="rolesListCtrl">
                 <div class="panel-heading">
                     <div class="row" >
                         <div class="col-md-12 col-sm-12 col-xs-12">
@@ -48,7 +48,9 @@
                                 <div class="clearfix"></div>
 
                                 <span class="pull-right m-l-sm m-t-sm m-b-sm">
-                                    <a class="btn btn-info" ui-sref="roles.list-add"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="common.add" bundle="${msg}" /></a>
+                                	<a class="btn btn-info" data-ng-click="assignRole('lg')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span>Assign User Role</a>
+                                	<a class="btn btn-info" data-ng-click="editAssignedRole('lg')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span>Edit User Role</a>
+                                    <a class="btn btn-info" ui-sref="roles.list-add"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span>Add Role</a>
                                     <a class="btn btn-info" ui-sref="roles" title="<fmt:message key="common.refresh" bundle="${msg}" />"  ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
                                 </span>
                             </div>
