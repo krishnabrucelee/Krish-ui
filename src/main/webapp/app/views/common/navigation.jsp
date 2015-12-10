@@ -71,12 +71,12 @@
             </a>
         </li>
 
-           <li ng-class="{active: $state.includes('domain')}">
+           <%-- <li ng-class="{active: $state.includes('domain')}">
             <a ui-sref="domain">
                 <span class="pe-7s-network pe-2x nav-menu-icons"></span>
                 <span class="nav-label"><fmt:message key="common.domain" bundle="${msg}" /></span>
             </a>
-        </li>
+        </li> --%>
     </ul>
 </div>
 
