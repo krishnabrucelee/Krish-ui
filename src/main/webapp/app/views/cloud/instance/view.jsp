@@ -132,8 +132,14 @@
                                                     <td>{{ instance.computeOffering.name}} <a href="#" class="fa fa-edit m-l-lg"> edit</a></td>
                                                 </tr>
                                                 <tr>
+                                                    <td><b><fmt:message key="disk.size" bundle="${msg}" /></b></td>
+                                                    <td><span data-ng-show="instance.storageOffering">{{ instance.storageOffering}}</span>
+                                                    	<span data-ng-hide="instance.storageOffering">NA</span>
+                                                     </td>
+                                                </tr>
+                                                <tr>
                                                     <td><b><fmt:message key="common.ip" bundle="${msg}" /></b></td>
-                                                    <td>{{ instance.ipAddress}} | {{instance.network.type}} </td>
+                                                    <td>{{ instance.ipAddress}} | {{instance.network.networkType}} </td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -150,12 +156,16 @@
                                                     <td>VM-{{ instance.uuid}}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td><b><fmt:message key="subscription" bundle="${msg}" /></b></td>
-                                                    <td>Free</td>
+                                                    <td><b><fmt:message key="memory" bundle="${msg}" /></b></td>
+                                                    <td>{{ instance.computeOffering.memory }}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td><b><fmt:message key="common.company" bundle="${msg}" /></b></td>
-                                                    <td>{{ instance.domain.name}}</td>
+                                                    <td><b><fmt:message key="cpu.cores" bundle="${msg}" /></b></td>
+                                                    <td>{{ instance.computeOffering.numberOfCores }}</td>
+                                                </tr>
+                                                 <tr>
+                                                    <td><b><fmt:message key="common.host" bundle="${msg}" /></b></td>
+                                                    <td>{{ instance.host.name }}</td>
                                                 </tr>
                                                 <tr>
                                                     <td><b><fmt:message key="common.account" bundle="${msg}" /></b></td>
