@@ -229,8 +229,9 @@ function instanceViewCtrl($scope,$log, dialogService, $modal,$http, $state, $sta
 	  			 		$scope.vm.transDisplayName=$scope.vm.transDisplayName;
 	  			 		var hasVm = crudService.update("virtualmachine", $scope.vm);
 		  				hasVm.then(function(result) {
+		  					notify({message: "Updated successfully", classes: 'alert-success', "timeOut": "5000", templateUrl: $scope.homerTemplate});
 		  					$state.reload();
-		  					$scope.cancel();
+		  					 $scope.cancel();
 		  				});
 	  			 	}
 
