@@ -138,6 +138,10 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
                 departmentList: [
                     {id: 1, name: 'Developing'},
                     {id: 2, name: 'Testing'}
+                ],
+                architectureList: [
+                    {id: 1, name: '32'},
+                    {id: 2, name: '64'}
                 ]
         };
 

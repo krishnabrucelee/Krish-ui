@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <div class="inmodal" >
     <div class="modal-header">
         <panda-modal-header hide-zone="false" page-icon="fa fa-warning" page-title="<fmt:message key="delete.confirmation" bundle="${msg}" />"></panda-modal-header>
