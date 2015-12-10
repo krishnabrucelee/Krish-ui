@@ -19,7 +19,7 @@
 							<div class="col-md-12 col-xs-12 col-sm-12 p-xs">
 								<select class="form-control input-group" name="osCategory"
 									data-ng-model="instance.osCategory" ng-change="getTemplatesByFilters()"
-									ng-options="osCategory.name for osCategory in formElements.osCategoryList">
+									ng-options="osCategory.name for osCategory in formElements.osCategoryListByFilter">
 									<option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
 								</select>
 							</div>
