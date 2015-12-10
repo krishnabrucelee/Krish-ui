@@ -1,3 +1,8 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <div class="row m-t-sm">
     <div class="col-md-12 col-lg-6 col-xs-12 col-sm-12 template-panel-area" data-ng-repeat="templateObj in template.templateList|orderBy:template.name | filter: quickSearch">
         <div class="hpanel">
@@ -14,7 +19,11 @@
                 </div>
                 <div class="row">
                     <div class="col-md-2 col-sm-2">
-                        <img src="images/os/{{templateObj.imageName}}_logo.png" alt="" height="80" width="80" class="m-r" >
+                        <!-- <img src="images/os/{{templateObj.imageName}}_logo.png" alt="" height="80" width="80" class="m-r" > -->
+                        <img data-ng-show="templateObj.imageName.indexOf('windows') > -1" src="images/os/windows_logo.png" alt="" height="80" width="80" class="m-r-5" >
+                        <img data-ng-show="templateObj.imageName.indexOf('linux') > -1" src="images/os/ubuntu_logo.png" alt="" height="80" width="80" class="m-r-5" >
+
+
                     </div>
                     <div class="col-md-7 col-sm-7 ">
                         <div class="row">
@@ -38,7 +47,7 @@
                                 </div>
                                 <div class="small text-justify"   data-ng-include src="templateObj.content" data-ng-show="templateObj.openDescription"></div>
 
-                                <a class="text-info font-bold "  data-ng-click="openDescription($index)"><span data-ng-class="templateObj.openDescription ? 'pe-7s-angle-up-circle' : 'pe - 7s - angle - down - circle' " class="pe-lg font-bold m-r-xs"></span> details</a>
+                                <a class="text-info font-bold "  data-ng-click="openDescription($index)"><span data-ng-class="templateObj.openDescription ? 'pe-7s-angle-up-circle' : 'pe-7s-angle-down-circle' " class="pe-lg font-bold m-r-xs"></span> details</a>
 
 
                             </div>

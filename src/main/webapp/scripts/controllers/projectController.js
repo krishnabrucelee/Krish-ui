@@ -46,6 +46,7 @@ function projectCtrl($scope, promiseAjax, $modal, $state, modalService, dialogSe
 
     $scope.userList = function (department) {
     	console.log(department);
+    	if(department!= null && !angular.isUndefined(department)){
        var hasUsers = crudService.listAllByFilter("users/search", department);
         hasUsers.then(function (result) {  // this is only run after $http completes0
         	$scope.projectElements.projectOwnerList = result;
@@ -56,7 +57,7 @@ function projectCtrl($scope, promiseAjax, $modal, $state, modalService, dialogSe
 				}
 	    		}
 	    	});
-        });
+        });}
     };
 
     $scope.userLists = function (department) {
@@ -111,18 +112,21 @@ function projectCtrl($scope, promiseAjax, $modal, $state, modalService, dialogSe
              }
          });
     }
-
+    $scope.isSelected = false;
     $scope.viewProjectDetails = function(project) {
     	$scope.projectInfo = angular.copy(project);
+    	if(!angular.isUndefined($scope.projectInfo.department) && $scope.projectInfo.department != null ){
     	$scope.userLists($scope.projectInfo.department);
-        project.isSelected = (project.isSelected) ? false : true;
+    	}
+        $scope.isSelected =  true;
         $scope.checkOne(project);
     };
 
     $scope.viewProjectd = function(project) {
     	$scope.editProjects = angular.copy(project);
     	$scope.projectInfo = angular.copy(project);
-    	$scope.userLists($scope.projectInfo.department);
+    	if(!angular.isUndefined($scope.projectInfo.department) && $scope.projectInfo.department != null ){
+    	$scope.userLists($scope.projectInfo.department);}
    	 	$scope.project = $scope.editProjects;
     	$scope.oneChecked = true;
     };
