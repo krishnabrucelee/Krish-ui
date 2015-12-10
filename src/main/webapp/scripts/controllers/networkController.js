@@ -40,7 +40,7 @@ function networksCtrl($scope, modalService, promiseAjax, filterFilter, localStor
                                 if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
                                     var msg = result.data.globalError[0];
                                     notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
-                                    $modalInstance.close();
+//                                    $modalInstance.close();
                                 }
                                 angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
                                     $scope.addnetworkForm[key].$invalid = true;
