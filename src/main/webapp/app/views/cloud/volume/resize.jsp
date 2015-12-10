@@ -42,7 +42,7 @@
                                 <select required="true" class="form-control input-group" name="diskOfferings"
                                         data-ng-model="volume.storageOffering"
                                         data-ng-class="{'error': volumeForm.diskOfferings.$invalid && formSubmitted}"
-                                        data-ng-options="storageOffering.description for storageOffering in volumeElements.diskOfferingList" >
+                                        data-ng-options="storageOffering.description for (id, storageOffering) in volumeElements.diskOfferingList" >
                                     <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
                                 </select>
                                 <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="Select the plan" ></i>
@@ -122,8 +122,9 @@
                      <small class="text-right text-muted m-l-sm">(<app-currency></app-currency><span data-ng-if="rsize">{{ volume.storageOffering.storagePrice[0].costGbPerMonth * rsize * 720}} / month)</span><span data-ng-if="!rsize">0 / month)</span></small>
                 </h4>
             </span> -->
-            <a class="btn btn-default"  data-ng-click="cancel()"><fmt:message key="common.cancel" bundle="${msg}" /></a>
-            <button class="btn btn-info" type="submit"><fmt:message key="common.add" bundle="${msg}" /></button>
+             <get-loader-image data-ng-show="showLoader"></get-loader-image>
+            <a class="btn btn-default"  data-ng-hide="showLoader" data-ng-click="cancel()"><fmt:message key="common.cancel" bundle="${msg}" /></a>
+            <button class="btn btn-info" data-ng-hide="showLoader" type="submit"><fmt:message key="common.add" bundle="${msg}" /></button>
         </div>
     </div>
 </form>

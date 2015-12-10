@@ -1,7 +1,7 @@
 <form name="form.detachForsm" data-ng-controller="volumeCtrl">
     <div class="inmodal" >
         <div class="modal-header">
-            <panda-modal-header hide-zone="false" page-icon="fa fa-unlink" page-title="Detach Volume"></panda-modal-header>                
+            <panda-modal-header hide-zone="false" page-icon="fa fa-unlink" page-title="Detach Volume"></panda-modal-header>
             <!--<h2 class="modal-title" id="myModalLabel">Confirm Detach Volume</h2>-->
         </div>
 
@@ -20,8 +20,9 @@
 
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-default " ng-click="cancel()" data-dismiss="modal">Cancel</button>
-            <button type="submit" class="btn btn-default btn-danger2" ng-click="detach()" data-dismiss="modal">Ok</button>
+        <get-loader-image data-ng-show="showLoader"></get-loader-image>
+            <button type="button" data-ng-hide="showLoader" class="btn btn-default " ng-click="cancel()" data-dismiss="modal">Cancel</button>
+            <button type="submit" data-ng-hide="showLoader" class="btn btn-default btn-danger2" ng-click="detach()" data-dismiss="modal">Ok</button>
 
         </div>
     </div>

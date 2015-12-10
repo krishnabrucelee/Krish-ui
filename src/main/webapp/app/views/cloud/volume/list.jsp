@@ -68,7 +68,7 @@ pageEncoding="UTF-8"%>
                                     <td>
                                         <a class="text-info" href="javascript:void(0)"  title="View Volume" >{{ volume.name}}</a>
                                     </td>
-                                    <td>{{ volume.department.userName}}</td>
+                                    <td>{{ volume.department.userName || " - "}}</td>
                                     <td>{{ volume.volumeType}}</td>
                                     <td>{{ volume.storageOffering.name || " - "}}</td>
                                     <td>{{ volume.vmInstance.name || " - " }}</td>
