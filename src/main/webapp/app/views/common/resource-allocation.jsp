@@ -226,8 +226,10 @@
                                 <label class="col-md-4 col-sm-5 control-label">
                                 </label>
                                 <div class="col-md-4 col-sm-5">
-                                    <a class="btn btn-default btn-outline"  data-ng-click="cancel()"><fmt:message key="common.cancel" bundle="${msg}" /></a>
-                                    <button class="btn btn-info" type="submit"><fmt:message key="common.update" bundle="${msg}" /></button>
+                                    <a class="btn btn-default btn-outline" data-ng-if="type == 'department-quota'"  ui-sref="department""><fmt:message key="common.cancel" bundle="${msg}" /></a>
+                                    <a class="btn btn-default btn-outline" data-ng-if="type == 'project-quota'"  ui-sref="projects""><fmt:message key="common.cancel" bundle="${msg}" /></a>
+
+                                    <button class="btn btn-info"  type="submit"><fmt:message key="common.update" bundle="${msg}" /></button>
                                 </div>
                             </div>
                         </div>
