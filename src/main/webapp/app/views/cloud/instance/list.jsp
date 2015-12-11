@@ -91,7 +91,12 @@
                                         <th class="w-sm">Action</th>-->
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody data-ng-hide="instanceList.length > 0">
+                                       <tr>
+                                           <td class="col-md-11 col-sm-11" colspan="11"><fmt:message key="common.no.records.found" bundle="${msg}" />!!</td>
+                                       </tr>
+                                   </tbody>
+                                <tbody data-ng-show="instanceList.length > 0">
                                    <tr data-ng-repeat="instance in instanceList | filter: quickSearch  |orderBy:sort.column:sort.descending"   >
                                         <td>
                                             <a class="text-info" ui-sref="cloud.list-instance.view-instance({id: {{ instance.id}}})"  title="View Instance" >{{ instance.name}}</a>
