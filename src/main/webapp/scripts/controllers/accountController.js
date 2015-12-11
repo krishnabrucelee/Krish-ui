@@ -233,7 +233,7 @@ function accountListCtrl($scope,$state, promiseAjax, $log, notify, crudService, 
             }
    	 });
 
-     var hasServer = crudService.delete("users", user.id);
+     var hasServer = crudService.softDelete("users", user);
      hasServer.then(function (result) {
          $scope.list(1);
          notify({message: 'Deleted successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
