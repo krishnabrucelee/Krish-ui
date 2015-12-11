@@ -16,7 +16,9 @@
                                 <div class="col-md-7  col-sm-7 col-xs-7">
                                     <input required="true" type="text" name="name" data-ng-model="role.name" class="form-control" readonly data-ng-class="{'error': RoleForm.name.$invalid && formSubmitted}">
                                     <i  tooltip="<fmt:message key="role.name" bundle="${msg}" />" class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
-                                    <div class="error-area" data-ng-show="RoleForm.name.$invalid && formSubmitted" ><i  tooltip="Role Name is required." class="fa fa-warning error-icon"></i></div>
+                                    <div class="error-area" data-ng-show="RoleForm.name.$invalid && formSubmitted" ><i  tooltip="Role Name is required." class="fa fa-warning error-icon"></i>
+                                    <i ng-attr-tooltip="{{ RoleForm.name.errorMessage || '<fmt:message key="role.already.exist" bundle="${msg}" />' }}"
+												class="fa fa-warning error-icon"></i></div>
                                 </div>
                             </div>
                         </div>
@@ -70,8 +72,9 @@
     <div class="form-group">
         <div class="row">
             <span class="pull-right">
-                <a class="btn btn-default btn-outline"  ui-sref="roles"><fmt:message key="common.cancel" bundle="${msg}" /></a>
-                <button class="btn btn-info" type="submit" ng-disabled="form.RoleForm.$invalid" ><fmt:message key="common.update" bundle="${msg}" /></button>
+            <get-loader-image data-ng-show="showLoader"></get-loader-image>
+                <a class="btn btn-default btn-outline" data-ng-hide="showLoader" ui-sref="roles"><fmt:message key="common.cancel" bundle="${msg}" /></a>
+                <button class="btn btn-info" data-ng-hide="showLoader" type="submit" ng-disabled="form.RoleForm.$invalid" ><fmt:message key="common.update" bundle="${msg}" /></button>
             </span>
         </div>
     </div>

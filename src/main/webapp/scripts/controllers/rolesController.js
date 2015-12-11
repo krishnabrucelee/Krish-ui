@@ -54,6 +54,7 @@ angular
     $scope.createRole = function (form) {
         $scope.formSubmitted = true;
         if (form.$valid) {
+        	$scope.showLoader = true;
             $scope.role.permissionList = [];
             angular.forEach($scope.permissions, function(permission, key) {
             	if($scope.permissionList[permission.id]) {
@@ -63,14 +64,23 @@ angular
             var role = $scope.role;
             var hasServer = crudService.add("roles", role);
             hasServer.then(function (result) {  // this is only run after $http completes
-                $scope.list(1);
+            	$scope.showLoader = false;
+            	$scope.list(1);
                 notify({message: 'Added successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
                 $window.location.href = '#/roles';
             }).catch(function (result) {
-                angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
-                	$scope.RoleForm[key].$invalid = true;
-                    $scope.RoleForm[key].errorMessage = errorMessage;
-                });
+                if (!angular.isUndefined(result.data)) {
+                    if (result.data.globalError != '' && !angular.isUndefined(result.data.globalError)) {
+                        var msg = result.data.globalError[0];
+                        $scope.showLoader = false;
+                        notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                    } else if (result.data.fieldErrors != null) {
+                        angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
+                            $scope.attachvolumeForm[key].$invalid = true;
+                            $scope.attachvolumeForm[key].errorMessage = errorMessage;
+                        });
+                    }
+                }
 
             });
         }
@@ -100,6 +110,7 @@ angular
         $scope.update = function (form) {
             $scope.formSubmitted = true;
             if (form.$valid) {
+            	$scope.showLoader = true;
             	$scope.role.permissionList = [];
                 angular.forEach($scope.permissions, function(permission, key) {
                 	if($scope.permissionList[permission.id]) {
@@ -109,9 +120,24 @@ angular
             	var role = $scope.role;
                 var hasServer = crudService.update("roles", role);
                 hasServer.then(function (result) {
+                	$scope.showLoader = false;
                 $scope.homerTemplate = 'app/views/notification/notify.jsp';
                 notify({message: 'Updated successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
                 $window.location.href = '#/roles';
+                }).catch(function (result) {
+                    if (!angular.isUndefined(result.data)) {
+                        if (result.data.globalError != '' && !angular.isUndefined(result.data.globalError)) {
+                            var msg = result.data.globalError[0];
+                            $scope.showLoader = false;
+                            notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                        } else if (result.data.fieldErrors != null) {
+                            angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
+                                $scope.attachvolumeForm[key].$invalid = true;
+                                $scope.attachvolumeForm[key].errorMessage = errorMessage;
+                            });
+                        }
+                    }
+
                 });
             }
         };
@@ -122,9 +148,10 @@ angular
                 $scope.deleteId = role.id;
                 $scope.ok = function (id) {
                 	role.isActive = false;
-                    var hasRole = crudService.update("roles", role);
+                    var hasRole = crudService.softDelete("roles", role);
                     hasRole.then(function (result) {
                         $scope.list(1);
+                        $scope.homerTemplate = 'app/views/notification/notify.jsp';
                         notify({message: 'Deleted successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
                     });
                     $modalInstance.close();
@@ -186,9 +213,9 @@ angular
         		$scope.roleList = result;
         	});
         };
-           	
+
        // Assign a new role to our user
-        $scope.userRoleList = [];   
+        $scope.userRoleList = [];
         $scope.assignRoleSave = function (form) {
         	$scope.formSubmitted = true;
         	$scope.formSubmitted = true;
@@ -219,11 +246,11 @@ angular
         	},
         	   $scope.cancel = function () {
                 $modalInstance.close();
-            };   
+            };
         }]);
     };
-    
-    
+
+
     // Opened user edit window
     $scope.editAssignedRole = function (size) {
         dialogService.openDialog("app/views/roles/edit-assigned-role.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
@@ -233,15 +260,15 @@ angular
         	hasUsers.then(function (result) {  // this is only run after $http completes0
         		$scope.userList = result;
         	});
-        	
+
           	var hasRoles =  promiseAjax.httpTokenRequest( crudService.globalConfig.HTTP_GET, crudService.globalConfig.APP_URL + "roles"  +"/department/"+department.id);
         	hasRoles.then(function (result) {  // this is only run after $http completes0
         		$scope.roleList = result;
         	});
         };
-        
+
        // Assign a new role to our user
-        $scope.userRoleList = [];   
+        $scope.userRoleList = [];
         $scope.editAssignedRoleSave = function (form) {
         	$scope.formSubmitted = true;
         	var assignedUsers = [];
@@ -271,7 +298,7 @@ angular
         	},
         	   $scope.cancel = function () {
                 $modalInstance.close();
-            };   
+            };
         }]);
     };
 
