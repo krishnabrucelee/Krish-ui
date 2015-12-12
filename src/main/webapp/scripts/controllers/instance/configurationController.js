@@ -22,15 +22,14 @@ function configurationCtrl($scope,$stateParams, localStorageService, promiseAjax
 //        type: {id:1, name:"Basic"}
     };
 
+	$scope.instances = [];
+	var instanceId = $stateParams.id;
+	var hasServers = crudService.read("virtualmachine", instanceId);
+	hasServers.then(function (result) {
+	$scope.instances = result;
+	});
 
-$scope.instances = [];
-var instanceId = $stateParams.id;
-var hasServers = crudService.read("virtualmachine", instanceId);
-hasServers.then(function (result) {
-$scope.instances = result;
-});
-
-    $scope.instance = {
+    	$scope.instance = {
         computeOffer: {
             category: 'static',
             ram: {
@@ -42,11 +41,8 @@ $scope.instances = result;
                 value: 0,
                 floor: 0,
                 ceil: 32
-
             },
             isOpen: true
-
-
         },
         diskOffer: {
             category: 'static',
@@ -54,89 +50,94 @@ $scope.instances = result;
                 value: 0,
                 floor: 0,
                 ceil: 1024
-
             },
             iops: {
                 value: 0,
                 floor: 0,
                 ceil: 500
-
             },
             isOpen: false
-
         },
         network: {
             category: 'all',
             isOpen: false
-
         }
     };
- $scope.computeList = function () {
+
+	 // Volume List
+	$scope.volume = {};
+	$scope.volume = [];
+	$scope.list = function () {
+       	var instanceId = $stateParams.id;
+       	var hasVolume = promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "volumes/listbyinstancesandvolumetype?instanceid="+instanceId +"&lang=" + 	localStorageService.cookie.get('language')+"&sortBy=-id");
+	        hasVolume.then(function (result) {
+	            $scope.volume = result;
+	        });
+	    };
+	    $scope.list();
+
+	    $scope.computeList = function () {
              var hasCompute = crudService.listAll("computes/list");
              hasCompute.then(function (result) {  // this is only run after $http completes0
                      $scope.instanceElements.computeOfferingList = result;
-angular.forEach(result, function(item){
-if (!angular.isUndefined($scope.instances.computeOffering)) {
-   if(item.name == $scope.instances.computeOffering.name){
-     var index = instanceElements.computeOfferingList.indexOf(item);
-     $scope.instanceElements.computeOfferingList.splice(index, 1);
-   }
-}
-  });
-              });
-          };
-          $scope.computeList();
+                     angular.forEach(result, function(item){
+                    	 if (!angular.isUndefined($scope.instances.computeOffering)) {
+                    		 if(item.name == $scope.instances.computeOffering.name){
+                    			 var index = instanceElements.computeOfferingList.indexOf(item);
+                    			 $scope.instanceElements.computeOfferingList.splice(index, 1);
+                    		 }
+                    	 }
+                     });
+              	});
+          	};
+          	$scope.computeList();
 
- $scope.computeFunction = function (item) {
-            if (item === true) {
-                $scope.compute = true;
-                $scope.disk = false;
-                $scope.networks = false;
-                $scope.computes = true;
-            }
-            else {
-                $scope.compute = false;
-            }
-        }
+          	$scope.computeFunction = function (item) {
+          		if (item === true) {
+          			$scope.compute = true;
+          			$scope.disk = false;
+          			$scope.networks = false;
+          			$scope.computes = true;
+          		}
+          		else {
+          			$scope.compute = false;
+          		}
+          	}
 
-
- $scope.save = function (form, instance) {
-console.log($scope.instances);
-
-     $scope.formSubmitted = true;
-     if (form.$valid) {
-	$scope.showLoader= true;
-$scope.instances.computeOfferingId = $scope.instance.computeOffering.id;
-$scope.instances.computeOffering = $scope.instance.computeOffering;
-         var hasServer =crudService.updates("virtualmachine/resize", $scope.instances);
-
-         hasServer.then(function (result) {  // this is only run after $http completes
-             //$scope.list(1);
-	$scope.showLoader= false;
-             notify({message: 'Updated successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
-             //$modalInstance.close();
-         }).catch(function (result) {
-                          	console.log(result.data.globalError[0]);
-                            	                                if (!angular.isUndefined(result) && result.data != null) {
-	                                    if (result.data.globalError[0] != '') {
-	                                        var msg = result.data.globalError[0];
-						$scope.showLoader= false;
-	                                        notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
-	                                    }
-	                                    angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
-	                                        $scope.instanceForm[key].$invalid = true;
-	                                        $scope.instanceForm[key].errorMessage = errorMessage;
-	                                    });
-	                                }
+          		$scope.save = function (form, instance) {
+          		console.log($scope.instances);
+          		$scope.formSubmitted = true;
+          		if (form.$valid) {
+          			$scope.showLoader= true;
+          			$scope.instances.computeOfferingId = $scope.instance.computeOffering.id;
+          			$scope.instances.computeOffering = $scope.instance.computeOffering;
+          			var hasServer =crudService.updates("virtualmachine/resize", $scope.instances);
+          			hasServer.then(function (result) {  // this is only run after $http completes
+          				//$scope.list(1);
+          				$scope.showLoader= false;
+          				notify({message: 'Updated successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+          				//$modalInstance.close();
+          			}).catch(function (result) {
+                        console.log(result.data.globalError[0]);
+                        if (!angular.isUndefined(result) && result.data != null) {
+	                        if (result.data.globalError[0] != '') {
+	                            var msg = result.data.globalError[0];
+						        $scope.showLoader= false;
+	                            notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+	                        }
+	                            angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
+	                            $scope.instanceForm[key].$invalid = true;
+	                            $scope.instanceForm[key].errorMessage = errorMessage;
+	                            });
+	                            }
                         });
-     }
- },
+          			}
+          		},
 
 
     $scope.affinity = {
 //        type: {id:1, name:"Basic"}
     };
-
 
     $scope.affinityElements = {
         groupList: [
