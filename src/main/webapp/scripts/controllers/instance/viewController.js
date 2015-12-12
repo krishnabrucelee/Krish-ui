@@ -10,7 +10,7 @@ angular
         .controller('instanceDetailsCtrl', instanceDetailsCtrl)
 
 
-function instanceViewCtrl($scope,$log, dialogService, $modal,$http, $state, $stateParams, localStorageService, globalConfig, crudService, notify, $window) {
+function instanceViewCtrl($scope,$log, dialogService, $modal,$http, $state, $stateParams, promiseAjax, localStorageService, globalConfig, crudService, notify, $window) {
     $scope.instanceList = [];
     $scope.testvar = "test";
     $scope.global = crudService.globalConfig;
@@ -22,6 +22,18 @@ function instanceViewCtrl($scope,$log, dialogService, $modal,$http, $state, $sta
             $state.current.data.pageName = result.name;
         });
     }
+
+ // Volume List
+$scope.volume = {};
+$scope.volume = [];
+$scope.list = function () {
+       	var instanceId = $stateParams.id;
+       	var hasVolume = promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "volumes/listbyinstancesandvolumetype?instanceid="+instanceId +"&lang=" + localStorageService.cookie.get('language')+"&sortBy=-id");
+	        hasVolume.then(function (result) {
+	            $scope.volume = result;
+	        });
+	    };
+	    $scope.list();
 
     $scope.startVm = function(size, item) {
 		  dialogService.openDialog("app/views/cloud/instance/start.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {

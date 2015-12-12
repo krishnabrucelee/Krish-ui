@@ -184,11 +184,11 @@
                             </tr>
                             <tr>
                                 <td class="p-xs col-md-4 col-sm-4"><b><fmt:message key="ram" bundle="${msg}" /></b></b></td>
-                                <td class="p-xs col-md-8 col-sm-8">{{instances.computeOffering.memory}}MB of memory</td>
+                                <td class="p-xs col-md-8 col-sm-8">{{instances.computeOffering.memory}} MB of memory</td>
                             </tr>
                             <tr>
-                                <td class="p-xs col-md-4 col-sm-4"><b><fmt:message key="system.disk" bundle="${msg}" /></b></td>
-                                <td class="p-xs col-md-8 col-sm-8">{{instances.storageOffering.diskSize}}GB</td>
+                                <td class="p-xs col-md-4 col-sm-4"><b><fmt:message key="disk.size" bundle="${msg}" /></b></td>
+                                <td class="p-xs col-md-8 col-sm-8">{{volume[0].diskSize / global.Math.pow(2, 30)}} GB</td>
                             </tr>
                            <%--  <tr>
                                 <td class="p-xs col-md-4 col-sm-4"><b><fmt:message key="common.network" bundle="${msg}" /></b></td>
@@ -198,9 +198,9 @@
                                 <td class="p-xs col-md-4 col-sm-4"><b><fmt:message key="bandwidth" bundle="${msg}" /></b></td>
                                 <td class="p-xs col-md-8 col-sm-8">10 MB/s</td>
                             </tr> --%>
-                           <%--  <tr>
+                            <%--  <tr>
                                 <td class="p-xs col-md-4 col-sm-4"><b><fmt:message key="disk.io" bundle="${msg}" /></b></td>
-                                <td class="p-xs col-md-8 col-sm-8">Good</td>
+                                <td class="p-xs col-md-8 col-sm-8">{{instances.computeOffering.diskIo}}</td>
                             </tr> --%>
                             <tr>
                                 <td colspan="2" class="p-xs">

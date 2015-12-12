@@ -144,9 +144,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td><b><fmt:message key="disk.size" bundle="${msg}" /></b></td>
-                                                    <td><span data-ng-show="instance.storageOffering">{{ instance.storageOffering}}</span>
-                                                    	<span data-ng-hide="instance.storageOffering">NA</span>
-                                                     </td>
+                                                    <td>{{volume[0].diskSize / global.Math.pow(2, 30)}} GB</td>
                                                 </tr>
                                                 <tr>
                                                     <td><b><fmt:message key="common.ip" bundle="${msg}" /></b></td>
