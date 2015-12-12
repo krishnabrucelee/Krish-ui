@@ -57,7 +57,7 @@
                                         <div class="clearfix"></div>
 
                                         <span class="pull-right m-l-sm m-t-sm">
-                                            <a class="btn btn-info"  ng-click="createDepartment('lg')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="common.add" bundle="${msg}" /> </a>
+                                            <a class="btn btn-info"  ng-click="createDepartment('md')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="common.add" bundle="${msg}" /> </a>
                                             <a class="btn btn-info" ui-sref="department" title="<fmt:message key="common.refresh" bundle="${msg}" /> " ui-sref-opts="{reload: true}" ><span class="fa fa-refresh fa-lg"></span></a>
                                         </span>
                                     </div>
@@ -96,7 +96,7 @@
                                             </td>
                                             <td>
 
-                                                <a class="icon-button" title="<fmt:message key="common.edit" bundle="${msg}" />" data-ng-click="edit('lg', department)">
+                                                <a class="icon-button" title="<fmt:message key="common.edit" bundle="${msg}" />" data-ng-click="edit('md', department)">
                                                     <span class="fa fa-edit"> </span>
                                                 </a>
                                                  <a class="icon-button" ui-sref="department.quotalimit({id: {{department.id}}, quotaType: 'department-quota'})" title="<fmt:message key="common.edit.quota" bundle="${msg}" />">

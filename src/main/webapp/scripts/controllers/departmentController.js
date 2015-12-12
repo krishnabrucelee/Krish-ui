@@ -16,6 +16,7 @@ function departmentCtrl($scope, notify, promiseAjax, dialogService, crudService)
 
     // Department List
     $scope.list = function (pageNumber) {
+    	console.log($scope.global.sessionValues);
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasDepartments = crudService.list("departments", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
         hasDepartments.then(function (result) {  // this is only run after $http completes0
@@ -53,7 +54,9 @@ function departmentCtrl($scope, notify, promiseAjax, dialogService, crudService)
                     if (form.$valid) {
 
                         var department = angular.copy($scope.department);
-                        department.domainId = department.domain.id;
+                        if(!angular.isUndefined($scope.department.domain)) {
+                        	department.domainId = department.domain.id;
+                        }
                         //delete department["domain"]["id"];
                         var hasServer = crudService.add("departments", department);
                         hasServer.then(function (result) {  // this is only run after $http completes
