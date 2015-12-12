@@ -11,7 +11,7 @@
         </div>
         <div class="modal-body">
             <div class="row"  >
-                <div class="col-md-6">
+                <div class="col-md-12">
 					<div class="form-group"ng-class="{'text-danger': RoleForm.department.$invalid && formSubmitted}">
                         <div class="row">
                             <label class="col-md-4 col-xs-12 col-sm-4 control-label control-normal"><fmt:message key="common.domain" bundle="${msg}" /><span class="text-danger">*</span></label>
@@ -31,22 +31,9 @@
                                     <i ng-attr-tooltip="{{ departmentForm.userName.errorMessage || '<fmt:message key="department.userName.is.required" bundle="${msg}" />' }}" class="fa fa-warning error-icon"></i>
                                 </div>
                             </div>
-                            <div class="col-md-12 "><fmt:message key="department.note.department.username" bundle="${msg}" /></div>
                         </div>
 					</div>
-					<%-- <div class="form-group" ng-class="{'text-danger': departmentForm.hod.$invalid && formSubmitted}">
-                        <div class="row" >
-                            <label class="col-md-4 col-xs-12 col-sm-4 control-label" ><fmt:message key="department.hod" bundle="${msg}" /> <span class="text-danger">*</span>
-                            </label>
-                            <div class="col-md-6 col-xs-12 col-sm-6">
-                                <input required="true" type="text"  name="hod" data-ng-model="department.hod"  class="form-control" data-ng-class="{'error': departmentForm.hod.$invalid && formSubmitted}">
-                                <i  tooltip="<fmt:message key="department.hod" bundle="${msg}" />" class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
-                                <div class="error-area" data-ng-show="departmentForm.hod.$invalid && formSubmitted" >
-                                    <i ng-attr-tooltip="{{ departmentForm.hod.errorMessage || '<fmt:message key="department.hod.is.required" bundle="${msg}" />' }}" class="fa fa-warning error-icon"></i>
-                                </div>
-                            </div>
-                        </div>
-					</div> --%>
+
                         <div class="form-group" ng-class="{'text-danger': departmentForm.description.$invalid && formSubmitted}">
 	                        <div class="row" >
 	                            <label class="col-md-4 col-xs-12 col-sm-4 control-label" ><fmt:message key="common.description" bundle="${msg}" /> <span class="text-danger">*</span>
@@ -63,46 +50,7 @@
                     </div>
 
                      </div>
-					<div class="col-md-6">
-                        <div class="form-group" ng-class="{'text-danger': departmentForm.firstName.$invalid && formSubmitted}">
-                            <div class="row">
-                                <label class="col-md-4 col-sm-4 control-label"><fmt:message key="first.name" bundle="${msg}" /><span class="text-danger">*</span>
-                                </label>
-                                <div class="col-md-6 col-sm-6">
-                                    <input required="true" type="text" name="firstName" data-ng-model="department.firstName" class="form-control" data-ng-class="{'error': departmentForm.firstName.$invalid && formSubmitted}">
-                                    <i  tooltip="<fmt:message key="first.name.of.the.department" bundle="${msg}" />" class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
-                                    <div class="error-area" data-ng-show="departmentForm.firstName.$invalid && formSubmitted" ><i  tooltip="<fmt:message key="first.name.is.required" bundle="${msg}" />" class="fa fa-warning error-icon"></i></div>
-                                </div>
-                            </div>
-                        </div>
 
-                        <div class="form-group" ng-class="{'text-danger': departmentForm.lastName.$invalid && formSubmitted}">
-                            <div class="row">
-                                <label class="col-md-4 col-sm-4 control-label"><fmt:message key="last.name" bundle="${msg}" /><span class="text-danger">*</span>
-                                </label>
-                                <div class="col-md-6 col-sm-6">
-                                    <input required="true" type="text" name="lastName" data-ng-model="department.lastName" class="form-control" data-ng-class="{'error': departmentForm.lastName.$invalid && formSubmitted}">
-                                    <i  tooltip="<fmt:message key="last.name.of.the.department" bundle="${msg}" />" class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
-                                    <div class="error-area" data-ng-show="departmentForm.lastName.$invalid && formSubmitted" ><i  tooltip="<fmt:message key="last.name.is.required" bundle="${msg}" />" class="fa fa-warning error-icon"></i></div>
-                                </div>
-                            </div>
-                        </div>
-
-
-					<div class="form-group" ng-class="{'text-danger': departmentForm.email.$invalid && formSubmitted}">
-                          <div class="row">
-                              <label class="col-md-4 col-sm-4 control-label"><fmt:message key="common.email" bundle="${msg}" /> <span class="text-danger">*</span>
-                              </label>
-                              <div class="col-md-6 col-sm-6">
-                                  <input required="true" type='email'  valid-email name="email" data-ng-model="department.email" class="form-control" data-ng-class="{'error': departmentForm.email.$invalid && formSubmitted}" >
-                                  <i  tooltip="<fmt:message key="enter.the.desired.email" bundle="${msg}" />" class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
-                                  <div class="error-area" data-ng-show="departmentForm.email.$invalid && formSubmitted" ><i  tooltip="<fmt:message key="email.is.required" bundle="${msg}" />" class="fa fa-warning error-icon"></i></div>
-
-                              </div>
-
-                          </div>
-                      </div>
-                </div>
             </div>
         </div>
 
