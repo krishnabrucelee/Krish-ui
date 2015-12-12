@@ -47,7 +47,7 @@
                             <div class="clearfix"></div>
                             <span class="pull-right m-l-sm m-t-sm">
                                 <a class="btn btn-info" data-ng-click="openAddInstance('lg')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="create.vm" bundle="${msg}" /></a>
-                                <a class="btn btn-info" ui-sref="cloud.list-instance" title="<fmt:message key="common.refresh" bundle="${msg}" />"  ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
+                                <a class="btn btn-info" data-ng-click="instanceId(1, borderContent)" title="<fmt:message key="common.refresh" bundle="${msg}" />"  ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
                             </span>
                         </div>
 
