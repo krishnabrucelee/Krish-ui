@@ -334,13 +334,8 @@ function appCtrl($http, $scope, $window, $timeout, globalConfig, crudService, pr
      *  Logout a user.
      */
     $scope.logout = function() {
-    	var hasResponse = promiseAjax.httpTokenRequest(globalConfig.HTTP_GET, globalConfig.APP_URL + "logout", '');
-    	hasResponse.then(function (result) {
-    		if(result) {
-    			$window.sessionStorage.removeItem("loginSession")
-    		    window.location.href = "login";
-    	    }
-        });
+    	$window.sessionStorage.removeItem("loginSession")
+	    window.location.href = "login";
     }
 
     $scope.getZoneList = function (pageNumber) {
