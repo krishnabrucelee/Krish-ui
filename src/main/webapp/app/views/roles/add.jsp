@@ -80,7 +80,7 @@
             <span class="pull-right">
             <get-loader-image data-ng-show="showLoader"></get-loader-image>
                 <a class="btn btn-default btn-outline" data-ng-hide="showLoader" ui-sref="roles"><fmt:message key="common.cancel" bundle="${msg}" /></a>
-                <button class="btn btn-info" data-ng-hide="showLoader" type="submit" ng-disabled="form.RoleForm.$invalid" ><fmt:message key="common.add" bundle="${msg}" /></button>
+                <button class="btn btn-info" has-permission="CREATE_ROLE" data-ng-hide="showLoader" type="submit" ng-disabled="form.RoleForm.$invalid" ><fmt:message key="common.add" bundle="${msg}" /></button>
             </span>
         </div>
     </div>
