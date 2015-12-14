@@ -144,17 +144,31 @@ angular
 
 
     $scope.delete = function (size, role) {
-        dialogService.openDialog("app/views/common/confirm-delete.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+        dialogService.openDialog("app/views/roles/confirm-delete.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
                 $scope.deleteId = role.id;
                 $scope.ok = function (id) {
+                	$scope.showLoader = true;
                 	role.isActive = false;
                     var hasRole = crudService.softDelete("roles", role);
                     hasRole.then(function (result) {
+                    	$scope.showLoader = false;
                         $scope.list(1);
                         $scope.homerTemplate = 'app/views/notification/notify.jsp';
                         notify({message: 'Deleted successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
+                    }).catch(function (result) {
+                        if (!angular.isUndefined(result) && result.data != null) {
+                            if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
+                                var msg = result.data.globalError[0];
+                                $scope.showLoader = false;
+                                notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                            }
+                            angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
+                                $scope.addnetworkForm[key].$invalid = true;
+                                $scope.addnetworkForm[key].errorMessage = errorMessage;
+                            });
+                        }
                     });
-                    $modalInstance.close();
+
                 },
                         $scope.cancel = function () {
                             $modalInstance.close();
