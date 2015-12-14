@@ -203,6 +203,13 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider,
 					pageTitle : 'common.projects'
 				}
 			})
+			.state('projects.view', {
+				url : "/:id",
+				templateUrl : VIEW_URL + "views/project/view.jsp",
+				data : {
+					pageTitle : 'view.projects'
+				}
+			})
 
 			.state('projects.quotalimit', {
 				url : "/:quotaType/:id",

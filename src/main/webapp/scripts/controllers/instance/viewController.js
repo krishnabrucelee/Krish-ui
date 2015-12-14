@@ -14,12 +14,14 @@ function instanceViewCtrl($scope,$log, dialogService, $modal,$http, $state, $sta
     $scope.instanceList = [];
     $scope.testvar = "test";
     $scope.global = crudService.globalConfig;
+
     if ($stateParams.id > 0) {
+    	$scope.showLoaderOffer = true;
         var hasServer = crudService.read("virtualmachine", $stateParams.id);
-        hasServer.then(function (result) {  // this is only run after $http
-											// completes
+        hasServer.then(function (result) {  // this is only run after $http											// completes
             $scope.instance = result;
             $state.current.data.pageName = result.name;
+            $scope.showLoaderOffer = false;
         });
     }
 

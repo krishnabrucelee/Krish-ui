@@ -16,8 +16,12 @@
         </ul>
 
         <div class="tab-content">
-            <div class="tab-pane" data-ng-class="{'active' : templateCategory == 'dashboard'}" id="step1-dashboard">
-                <div class="row" >
+         <div data-ng-show = "showLoaderOffer" style="margin: 20%">
+      		<get-loader-image data-ng-show="showLoaderOffer"></get-loader-image>
+      	 </div>
+            <div data-ng-hide="showLoaderOffer" class="tab-pane" data-ng-class="{'active' : templateCategory == 'dashboard'}" id="step1-dashboard">
+
+                <div  class="row" >
 
                     <div class="col-lg-9 col-md-8 col-sm-12">
                         <div class="hpanel">

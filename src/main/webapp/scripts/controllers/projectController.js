@@ -8,7 +8,7 @@ angular
     .module('homer')
     .controller('projectCtrl', projectCtrl)
 
-function projectCtrl($scope, promiseAjax, $modal, $state, modalService, dialogService, globalConfig,crudService, notify) {
+function projectCtrl($scope, promiseAjax, $modal, $state, modalService, dialogService, globalConfig,crudService,$stateParams, notify) {
 	$scope.global = globalConfig;
     $scope.projectList = {};
     $scope.paginationObject = {};
@@ -31,6 +31,7 @@ function projectCtrl($scope, promiseAjax, $modal, $state, modalService, dialogSe
     $scope.global = crudService.globalConfig;
 
     $scope.list = function (pageNumber) {
+    	$scope.showLoader = true;
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasProjects = crudService.list("projects", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
         hasProjects.then(function (result) {  // this is only run after $http completes0
@@ -39,9 +40,32 @@ function projectCtrl($scope, promiseAjax, $modal, $state, modalService, dialogSe
             $scope.paginationObject.limit  = limit;
             $scope.paginationObject.currentPage = pageNumber;
             $scope.paginationObject.totalItems = result.totalItems;
+            $scope.showLoader = false;
         });
     };
     $scope.list(1);
+
+    $scope.edit = function (projectId) {
+    	$scope.showLoader = true;
+        var hasproject = crudService.read("projects", projectId);
+        hasproject.then(function (result) {
+            $scope.projectInfo = result;
+            $state.current.data.pageName = result.name;
+            console.log(result.department);
+            if (!angular.isUndefined(result.department) && result.department != null) {
+            console.log(result.department);
+            $scope.userLists(result.department);
+            }
+        	$scope.showLoader = false;
+        });
+    };
+
+    if (!angular.isUndefined($stateParams.id) && $stateParams.id != '') {
+    	if ($stateParams.id > 0) {
+            $scope.edit($stateParams.id);
+        }
+
+    }
 
 
     $scope.userList = function (department) {

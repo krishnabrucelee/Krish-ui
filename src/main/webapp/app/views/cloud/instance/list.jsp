@@ -59,8 +59,12 @@
                 <div class="col-md-12 col-sm-12 col-xs-12 ">
                  <pagination-content></pagination-content>
                     <div class="white-content">
-                        <div class="table-responsive col-12-table">
-                            <table  cellspacing="1" cellpadding="1" class="table dataTable table-bordered table-striped ">
+                      <div data-ng-show = "showLoader" style="margin: 1%">
+    				  		<get-loader-image data-ng-show="showLoader"></get-loader-image>
+      						</div>
+                        <div  data-ng-hide="showLoader" class="table-responsive col-12-table">
+
+									<table cellspacing="1" cellpadding="1" class="table dataTable table-bordered table-striped ">
                                 <thead>
                                     <tr>
                                         <th  ng-click="changeSorting('name')" data-ng-class="sort.descending && sort.column =='name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="instance.name" bundle="${msg}" /></th>

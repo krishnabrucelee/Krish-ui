@@ -45,6 +45,10 @@
 	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="view.instance" bundle="${msg}" /></a>
 	                            <span ng-switch-when="true">{{ state.data.pageName }}</span>
 	                    </span>
+	                    <span data-ng-if="state.data.pageTitle === 'view.projects'">
+	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="view.projects" bundle="${msg}" /></a>
+	                            <span ng-switch-when="true">{{ state.data.pageName }}</span>
+	                    </span>
                             <span data-ng-if="state.data.pageTitle === 'common.network'">
 	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.network" bundle="${msg}" /></a>
 	                            <span ng-switch-when="true"><fmt:message key="common.network" bundle="${msg}" /></span>
@@ -66,6 +70,9 @@
                 </div>
                 <h2 class="font-light m-b-xs">
                     <span data-ng-if="$state.current.data.pageTitle === 'common.instances'"><fmt:message key="common.instances" bundle="${msg}" /></span>
+                </h2>
+                <h2 class="font-light m-b-xs">
+                    <span data-ng-if="$state.current.data.pageTitle === 'common.projects'"><fmt:message key="common.projects" bundle="${msg}" /></span>
                 </h2>
                 <h2 class="font-light m-b-xs">
                     <span data-ng-if="$state.current.data.pageTitle === 'common.volume'"><fmt:message key="common.volume" bundle="${msg}" /></span>

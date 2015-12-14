@@ -56,7 +56,10 @@
 		</div>
 	</div>
 	<div class="col-md-12 col-sm-12 no-padding no-margins">
-		<div class="hpanel">
+	<div data-ng-show = "showLoader" style="margin: 20%">
+      <get-loader-image data-ng-show="showLoader"></get-loader-image>
+      </div>
+		<div data-ng-hide = "showLoader" class="hpanel">
 			<div class="panel-body  no-padding">
 				<ul class="mailbox-list borders no-margins">
 					<li class="border-bottom"><a href="javascript:void(0);"><fmt:message key="common.templates" bundle="${msg}" /></a>

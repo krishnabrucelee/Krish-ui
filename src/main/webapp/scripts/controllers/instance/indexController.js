@@ -86,23 +86,28 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
       $scope.osListByFilter();
 
      $scope.templateList = function () {
+    	 $scope.showLoader = true;
          var hastemplateList = crudService.listAll("templates/list");
          hastemplateList.then(function (result) {  // this is only run after $http completes0
                 $scope.formElements.templateList = result;
+                $scope.showLoader = false;
           });
       };
       $scope.templateList();
 
       $scope.getTemplatesByFilters = function() {
     	  var templateList = [];
+    	  $scope.showLoader = true;
     	  var template = {};
     	  template.osCategory = $scope.instance.osCategory;
     	  template.architecture = $scope.instance.architecture;
     	  template.osVersion = $scope.instance.osVersion;
     	  console.log(template);
     	  var hastemplateList = promiseAjax.httpTokenRequest(globalConfig.HTTP_POST , globalConfig.APP_URL + "templates/search?lang=" + localStorageService.cookie.get('language'), '', template);
-          hastemplateList.then(function (result) {
+
+    	  hastemplateList.then(function (result) {
         	  $scope.formElements.templateList= result;
+        	  $scope.showLoader = false;
           });
       }
 
@@ -216,9 +221,11 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
           }
 
           $scope.userList = function (department) {
+        	  $scope.showLoaderDetail = true;
               var hasUsers = crudService.listAllByFilter("users/search", department);
               hasUsers.then(function (result) {  // this is only run after $http completes0
                        $scope.formElements.instanceOwnerList = result;
+                       $scope.showLoaderDetail = false;
                });
            };
 
@@ -232,25 +239,31 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
             $scope.zoneList();
 
            $scope.applicationList = function () {
+        	   $scope.showLoaderDetail = true;
                var hasApplication = crudService.listAll("applications/list");
                hasApplication.then(function (result) {  // this is only run after $http completes0
                    $scope.formElements.applicationsList = result;
+                   $scope.showLoaderDetail = false;
             });
         };
         $scope.applicationList();
 
         $scope.departmentList = function () {
+        	$scope.showLoaderDetail = true;
             var hasDepartments = crudService.listAll("departments/list");
             hasDepartments.then(function (result) {  // this is only run after $http completes0
                    $scope.formElements.departmenttypeList = result;
+                   $scope.showLoaderDetail = false;
              });
          };
          $scope.departmentList();
 
          $scope.projectList = function () {
+        	 $scope.showLoaderDetail = true;
              var hasProjects = crudService.listAll("projects/list");
              hasProjects.then(function (result) {  // this is only run after $http completes0
             	 $scope.formElements.projecttypeList = result;
+            	 $scope.showLoaderDetail = false;
              });
          };
          $scope.projectList();
@@ -534,9 +547,11 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
      $scope.addNetworkToVM = function () {
          dialogService.openDialog("app/views/cloud/instance/add-network.jsp", 'md', $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
          	$scope.listNetwork = function () {
+         		$scope.showLoaderDetail = true;
                     var hasGuestNetworks = crudService.findByDepartment("guestnetwork/list");
                     hasGuestNetworks.then(function (result) {  // this is only run after $http
                             $scope.networkList = result;
+                            $scope.showLoaderDetail = false;
                     });
 
                 };
@@ -638,17 +653,21 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
          };
 
          $scope.computeList = function () {
+        	 $scope.showLoaderOffer = true;
              var hasCompute = crudService.listAll("computes/list");
              hasCompute.then(function (result) {  // this is only run after $http completes0
                      $scope.instanceElements.computeOfferingList = result;
+                     $scope.showLoaderOffer = false;
               });
           };
           $scope.computeList();
 
           $scope.diskList = function () {
+         	 $scope.showLoaderOffer = true;
               var hasDisks = crudService.listAll("storages/list");
               hasDisks.then(function (result) {  // this is only run after $http completes0
                      $scope.instanceElements.diskOfferingList = result;
+                	 $scope.showLoaderOffer = false;
                });
            };
            $scope.diskList();
@@ -717,9 +736,11 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
          $scope.test = "test";
          // Guest Network List
          $scope.listNetwork = function (department) {
+        	 $scope.showLoaderOffer = true;
              var hasGuestNetworks = crudService.listAllByFilters("guestnetwork/list", department);
              hasGuestNetworks.then(function (result) {  // this is only run after $http
                      $scope.instance.networks.networkList = result;
+                	 $scope.showLoaderOffer = false;
              });
 
          };
@@ -752,6 +773,7 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
 
 
                  console.log($scope.guestnetwork);
+            	 $scope.showLoaderOffer = true;
                  var hasguestNetworks = crudService.add("guestnetwork", guestnetwork);
                  hasguestNetworks.then(function (result) {
                      $scope.listNetwork($scope.instance.department.id);
@@ -760,6 +782,7 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
                    $scope.guestnetwork.name = "";
                    $scope.guestnetwork.networkoffering = "";
                    networkError = false;
+                   $scope.showLoaderOffer = false;
                  }).catch(function (result) {
                      if (!angular.isUndefined(result.data)) {
                          angular.forEach(result.data.fieldErrors, function (errorMessage, key) {

@@ -63,7 +63,7 @@
 												<div class="col-md-12 col-sm-12 m-t-xs">
 													{{ instance.template.name}}
 													<span class="pull-right text-danger price-text m-l-lg">
-														<app-currency></app-currency>{{ instance.template.templateCost[0].cost}}
+														<app-currency></app-currency>{{ instance.template.templateCost[0].cost / 720 | number : 2}}
 														<span> / <fmt:message key="common.hour" bundle="${msg}" /></span>
 													</span>
 												</div>
@@ -81,7 +81,10 @@
 					<form name="instanceForm" method="POST"
 						data-ng-submit="validateOffering(instanceForm)" novalidate
 						class="form-horizontal">
-						<div data-ng-include src="'app/views/cloud/instance/step2.jsp'"></div>
+						<div data-ng-show = "showLoaderOffer" style="margin: 10%">
+      							<get-loader-image data-ng-show="showLoaderOffer"></get-loader-image>
+      						</div>
+						<div data-ng-hide = "showLoaderOffer" data-ng-include src="'app/views/cloud/instance/step2.jsp'"></div>
 						<div class="row">
 							<button type="button" class="btn btn-info btn-outline"
 								ng-click="wizard.show(1)"><fmt:message key="common.previous" bundle="${msg}" /></button>
@@ -104,7 +107,10 @@
 						<form name="instanceTemplateForm" method="POST"
 							data-ng-submit="validateTemplate(instanceTemplateForm)"
 							novalidate class="form-horizontal">
-							<div data-ng-include src="'app/views/cloud/instance/step3.jsp'"></div>
+							<div data-ng-show = "showLoader" style="margin: 20%">
+      							<get-loader-image data-ng-show="showLoaderDetail"></get-loader-image>
+      						</div>
+							<div data-ng-hide="showLoaderDetail" data-ng-include src="'app/views/cloud/instance/step3.jsp'"></div>
 						</form>
 					</div>
 				</div>
@@ -131,7 +137,7 @@
 													<div class="col-md-12 col-sm-12 m-t-xs">
 														{{ instance.template.name}}
 														<span class="pull-right text-danger price-text m-l-lg">
-															<app-currency></app-currency> {{ instance.template.templateCost[0].cost}}<span> / <fmt:message key="common.hour" bundle="${msg}" /></span>
+															<app-currency></app-currency> {{ instance.template.templateCost[0].cost/720 | number:2}}<span> / <fmt:message key="common.hour" bundle="${msg}" /></span>
 														</span>
 													</div>
 												</div>
@@ -139,7 +145,7 @@
 										</div>
 									</li>
 									<li class="list-group-item "
-										data-ng-show="instance.computeOffering.setupCost != null">
+										data-ng-show="instance.computeOffering">
 										<div class="row">
 											<div class="col-md-12 col-sm-12">
 												<div class="stats-title">
@@ -149,17 +155,27 @@
 													<div class="col-md-12 col-sm-12 m-t-xs">
 														{{ instance.computeOffering.name}} <span
 															class="pull-right text-danger price-text m-l-lg"><app-currency></app-currency>{{
-															(instance.computeOffering.instanceRunningCostIops + instance.computeOffering.instanceRunningCostMemory + instance.computeOffering.instanceRunningCostVcpu
-															+instance.computeOffering.instanceStoppageCostIops +instance.computeOffering.instanceStoppageCostMemory+ instance.computeOffering.instanceStoppageCostVcpu+
-															instance.computeOffering.setupCost)/720 |
+															(instance.computeOffering.computeCost[0].instanceRunningCostIops + instance.computeOffering.computeCost[0].instanceRunningCostMemory + instance.computeOffering.computeCost[0].instanceRunningCostVcpu
+															+instance.computeOffering.computeCost[0].instanceStoppageCostIops +instance.computeOffering.computeCost[0].instanceStoppageCostMemory+ instance.computeOffering.computeCost[0].instanceStoppageCostVcpu)/720 |
 													number:2 }}<span> / <fmt:message key="common.hour" bundle="${msg}" /></span></span>
 													</div>
 												</div>
 											</div>
 										</div>
+
+												<div class="row">
+												<div class="col-md-12 col-sm-12 m-t-xs ">
+													 <fmt:message key="setup.cost" bundle="${msg}" /><span class="font-bold"> (<fmt:message key="one.time" bundle="${msg}" />)</span> <span
+															class="pull-right text-danger price-text m-l-lg">
+													<app-currency></app-currency>
+															{{instance.computeOffering.computeCost[0].setupCost | number :2}}
+															<span></span>
+												</span>
+												</div>
+												</div>
 									</li>
 									<li class="list-group-item "
-										data-ng-show="instance.storageOffering.costGbPerMonth != null ">
+										data-ng-show="instance.storageOffering">
 										<div class="row">
 											<div class="col-sm-12 col-md-12">
 												<div class="stats-title pull-left">
@@ -169,25 +185,9 @@
 													<div class="col-md-12 col-sm-12 m-t-xs">
 														{{ instance.storageOffering.name}} <span
 															class="pull-right text-danger price-text m-l-lg"><app-currency></app-currency>{{
-													(instance.storageOffering.costGbPerMonth +
-													instance.storageOffering.costIopsPerMonth )/720 |
+													(instance.storageOffering.storagePrice[0].costGbPerMonth +
+													instance.storageOffering.storagePrice[0].costIopsPerMonth )/720 |
 													number:2 }}<span> / <fmt:message key="common.hour" bundle="${msg}" /></span></span>
-													</div>
-												</div>
-											</div>
-										</div>
-									</li>
-									<li class="list-group-item "
-										data-ng-show="instance.networkOfferinglist">
-										<div class="row">
-											<div class="col-md-12 col-sm-12">
-												<div class="stats-title">
-													<h5 class="font-bold text-info"><fmt:message key="common.network" bundle="${msg}" /></h5>
-												</div>
-												<div class="row">
-													<div class="col-md-12 col-sm-12 m-t-xs">
-														{{ instance.networkOfferinglist.name}} <span
-															class="pull-right text-danger price-text m-l-lg"><app-currency></app-currency> 2.00 <span> /<fmt:message key="common.hour" bundle="${msg}" /></span></span>
 													</div>
 												</div>
 											</div>
@@ -202,12 +202,11 @@
 												</div>
 												<div class="row">
 													<div class="col-md-12 col-sm-12 m-t-xs">
-														Cost <span
+														<fmt:message key="common.cost" bundle="${msg}" /> <span
 															class="pull-right text-danger price-text m-l-lg">
-															<app-currency></app-currency>{{(instance.storageOffering.costGbPerMonth +instance.storageOffering.costIopsPerMonth+
-															instance.computeOffering.instanceRunningCostIops+instance.computeOffering.instanceRunningCostMemory + instance.computeOffering.instanceRunningCostVcpu
-															+instance.computeOffering.instanceStoppageCostIops +instance.computeOffering.instanceStoppageCostMemory+ instance.computeOffering.instanceStoppageCostVcpu+
-															instance.computeOffering.setupCost)/720 | number:2
+															<app-currency></app-currency>{{(instance.template.templateCost[0].cost + instance.storageOffering.storagePrice[0].costGbPerMonth +instance.storageOffering.storagePrice[0].costIopsPerMonth+
+															instance.computeOffering.computeCost[0].instanceRunningCostIops+instance.computeOffering.computeCost[0].instanceRunningCostMemory + instance.computeOffering.computeCost[0].instanceRunningCostVcpu
+															+instance.computeOffering.computeCost[0].instanceStoppageCostIops +instance.computeOffering.computeCost[0].instanceStoppageCostMemory+ instance.computeOffering.computeCost[0].instanceStoppageCostVcpu)/720 | number:2
 															 }} <span> / <fmt:message key="common.hour" bundle="${msg}" /></span>
 														</span>
 													</div>
@@ -217,13 +216,22 @@
 										<div class="row">
 											<div class="col-md-12 col-sm-12">
 												<small
-													class="pull-right text-right font-bold text-muted m-l-lg">
-													<app-currency></app-currency>{{(instance.storageOffering.costGbPerMonth +instance.storageOffering.costIopsPerMonth+
-															instance.computeOffering.instanceRunningCostIops+instance.computeOffering.instanceRunningCostMemory + instance.computeOffering.instanceRunningCostVcpu
-															+instance.computeOffering.instanceStoppageCostIops +instance.computeOffering.instanceStoppageCostMemory+ instance.computeOffering.instanceStoppageCostVcpu+
-															instance.computeOffering.setupCost)/720 | number:2
-															 }} <span> / <fmt:message key="common.month" bundle="${msg}" /></span>
+													class="pull-right text-right font-bold  m-l-lg">
+													<app-currency></app-currency>{{(instance.template.templateCost[0].cost + instance.storageOffering.storagePrice[0].costGbPerMonth +instance.storageOffering.storagePrice[0].costIopsPerMonth+
+															instance.computeOffering.computeCost[0].instanceRunningCostIops+instance.computeOffering.computeCost[0].instanceRunningCostMemory + instance.computeOffering.computeCost[0].instanceRunningCostVcpu
+															+instance.computeOffering.computeCost[0].instanceStoppageCostIops +instance.computeOffering.computeCost[0].instanceStoppageCostMemory+ instance.computeOffering.computeCost[0].instanceStoppageCostVcpu) | number:2
+															 }} <span> / <fmt:message key="common.month" bundle="${msg}" />   </span>
 												</small>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-md-12 col-sm-12 m-t-xs " data-ng-show="instance.computeOffering">
+														<fmt:message key="setup.cost" bundle="${msg}" /><span class="font-bold"> (<fmt:message key="one.time" bundle="${msg}" />)</span> <span
+															class="pull-right text-danger price-text m-l-lg">
+													<app-currency></app-currency>
+															{{instance.computeOffering.computeCost[0].setupCost | number :2}}
+															<span></span>
+												</span>
 											</div>
 										</div>
 									</li>

@@ -93,6 +93,7 @@ function instanceListCtrl($scope, $log, $filter, dialogService, promiseAjax, $st
 	};
 
 	$scope.instanceId = function(pageNumber, status) {
+		$scope.showLoader = true;
 		var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
 		var hasUsers =  promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "virtualmachine/listByStatus" +"?lang=" + localStorageService.cookie.get('language') + "&status="+status+"&sortBy=+name&limit="+limit,  $scope.global.paginationHeaders(pageNumber, limit), {
 			"limit" : limit
@@ -122,6 +123,7 @@ function instanceListCtrl($scope, $log, $filter, dialogService, promiseAjax, $st
 			$scope.paginationObject.limit = limit;
 			$scope.paginationObject.currentPage = pageNumber;
 			$scope.paginationObject.totalItems = result.totalItems;
+			$scope.showLoader = false;
 		});
 	};
 
