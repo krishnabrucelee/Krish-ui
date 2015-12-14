@@ -33,9 +33,10 @@
 								  <label class=" "> <input icheck type="radio"
 									data-ng-model="instance.architecture" value="32" ng-change="getTemplatesByFilters()" name="architecture">
 									32Bit
-								</label> <label class=" "> <input icheck type="radio"
-									data-ng-model="instance.architecture" value="64" ng-change="getTemplatesByFilters()" name="architecture"
-									data-ng-checked="true"> 64Bit
+								 </label>
+								 <label class=" "> <input icheck type="radio"
+									data-ng-model="instance.architecture" value="64" ng-change="getTemplatesByFilters()" name="architecture">
+									64Bit
 								</label>
 						</div>
 						</div>
