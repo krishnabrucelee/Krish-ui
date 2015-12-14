@@ -29,30 +29,80 @@
                                 <a title="<fmt:message key="common.refresh" bundle="${msg}" />"  class="btn btn-info" ui-sref="cloud.list-instance.view-instance"  ui-sref-opts="{reload: true}" ><span class="fa fa-refresh fa-lg "></span></a>
 
                             </div>
-                            <div class="pull-right m-r-sm">
-                                <select  class="form-control" name="actions" data-ng-init="instance.actions = instanceElements.actions[3].name" data-ng-model="instance.actions" ng-options="actions.name for actions in instanceElements.actions" >
-                                    <option value=""><fmt:message key="minutes" bundle="${msg}" /></option>
-                                </select>
-                            </div>
-                            <div class="clearfix"></div>
-                            <div class="chart">
-
-                                <canvas  linechart options="lineOptions" data="lineData" width="800" height="280"></canvas>
-                            </div>
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <td class="legendColorBox p-xs">
-                                            <div style="border:1px solid #ccc;padding:1px"><div style="width:4px;height:0;border:5px solid #E56919;overflow:hidden"></div></div>
-                                        </td>
-                                        <td class="legendLabel"><fmt:message key="vcpu" bundle="${msg}" /> (%)</td>
-                                        <td class="legendColorBox p-xs"><div style="border:1px solid #ccc;padding:1px"><div style="width:4px;height:0;border:5px solid #16658D;overflow:hidden"></div></div>
-                                        </td>
-                                        <td class="legendLabel"><fmt:message key="memory" bundle="${msg}" /> (%)</td><td class="legendColorBox p-xs"><div style="border:1px solid #ccc;padding:1px"><div style="width:4px;height:0;border:5px solid #7208A8;overflow:hidden"></div></div>
-                                        </td>
-                                        <td class="legendLabel"><fmt:message key="n/w" bundle="${msg}" /> (kB/s)</td><td class="legendColorBox p-xs"><div style="border:1px solid #ccc;padding:1px"><div style="width:4px;height:0;border:5px solid rgba(98,203,49,0.5);overflow:hidden"></div></div>
-                                        </td>
-                                        <td class="legendLabel"><fmt:message key="disk" bundle="${msg}" /> (Bytes/sec)</td></tr></tbody></table>
+                            <h4>
+								<fmt:message key="common.statistics" bundle="${msg}" />
+							</h4>
+							<div class="row m-l-md">
+								<div class=" col-md-5 col-sm-12 col-lg-5 ">
+									<div class="row">
+										<hr class="m-t-xs">
+										<table cellspacing="1" cellpadding="1" width="300"
+											height="200" class="table table-bordered table-striped">
+											<tbody>
+												<tr>
+													<td><label
+														class="col-md-7 col-sm-7 col-xs-4 control-label "><fmt:message
+																key="total.cpu" bundle="${msg}" /></label></td>
+													<td>{{instance.cpuCore}}x{{instance.cpuSpeed}} MHz</td>
+												</tr>
+												<tr>
+													<td><label
+														class="col-md-7 col-sm-7 col-xs-4 control-label "><fmt:message
+																key="network.read" bundle="${msg}" /></label></td>
+													<td>{{instance.networkKbsRead}} KB</td>
+												</tr>
+												<tr>
+													<td><label
+														class="col-md-7 col-sm-7 col-xs-4 control-label "><fmt:message
+																key="network.write" bundle="${msg}" /></label></td>
+													<td>{{instance.networkKbsWrite}} KB</td>
+												</tr>
+												<tr>
+													<td><label
+														class="col-md-8 col-sm-7 col-xs-4 control-label "><fmt:message
+																key="disk.read.bytes" bundle="${msg}" /></label></td>
+													<td data-ng-if="instance.diskKbsRead>1024">{{(instance.diskKbsRead)/1024 | number:2}} MB</td>
+													<td data-ng-if="instance.diskKbsRead<1024">{{instance.diskKbsRead}} KB</td>
+												</tr>
+												<tr>
+													<td><label
+														class="col-md-8 col-sm-7 col-xs-7 control-label "><fmt:message
+																key="disk.write.bytes" bundle="${msg}" /></label></td>
+													<td data-ng-if="instance.diskKbsWrite>1024">{{(instance.diskKbsWrite)/1024 | number:2}} MB</td>
+													<td data-ng-if="instance.diskKbsWrite<1024">{{instance.diskKbsWrite}} KB</td>
+												</tr>
+												<tr>
+													<td><label
+														class="col-md-7 col-sm-7 col-xs-7 control-label "><fmt:message
+																key="disk.read.io" bundle="${msg}" /></label></td>
+													<td>{{instance.diskIoRead}} </td>
+													
+												</tr>
+												<tr>
+													<td><label
+														class="col-md-7 col-sm-7 col-xs-7 control-label "><fmt:message
+																key="disk.write.io" bundle="${msg}" /></label></td>
+													<td>{{instance.diskIoWrite}} </td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+								<div class=" col-md-5 col-sm-12 col-lg-5 ">
+									<div class="row m-l-lg m-t-lg"
+										data-ng-repeat="quota in quotaLimitData">
+										<label class="col-md-6 col-sm-6 col-xs-6 control-label ">
+											<fmt:message key="cpu.utilized" bundle="${msg}" />
+										</label>{{instance.cpuUsage}}
+										<div class="col-md-4  col-sm-4 col-xs-4 m-t-lg m-r-xxs">
+											<canvas donutchart options="quotaChartOptions"
+												data="quota.options" width="175" height="175">   
+                                            </canvas>
+											
+										</div>
+									</div>
+								</div>
+							</div>
 
                         </div>
                     </div>

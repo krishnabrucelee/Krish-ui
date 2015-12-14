@@ -1,17 +1,19 @@
 /**
  *
- * instanceViewCtrl
+ * instanceViewCtrl 
  *
  */
-
+ 
 angular
-        .module('homer')
+        .module('homer') 
         .controller('instanceViewCtrl', instanceViewCtrl)
         .controller('instanceDetailsCtrl', instanceDetailsCtrl)
 
 
-function instanceViewCtrl($scope,$log, dialogService, $modal,$http, $state, $stateParams, localStorageService, globalConfig, crudService, notify, $window) {
-    $scope.instanceList = [];
+function instanceViewCtrl($scope,$log, dialogService, $modal,$http, $state, $stateParams, promiseAjax, localStorageService, globalConfig, crudService, notify, $window) {
+
+    $scope.instanceList = []; 
+    $scope.testvar = "test";
     $scope.global = crudService.globalConfig;
     if ($stateParams.id > 0) {
         var hasServer = crudService.read("virtualmachine", $stateParams.id);
@@ -21,6 +23,18 @@ function instanceViewCtrl($scope,$log, dialogService, $modal,$http, $state, $sta
             $state.current.data.pageName = result.name;
         });
     }
+
+ // Volume List
+$scope.volume = {};
+$scope.volume = [];
+$scope.list = function () {
+       	var instanceId = $stateParams.id;
+       	var hasVolume = promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "volumes/listbyinstancesandvolumetype?instanceid="+instanceId +"&lang=" + localStorageService.cookie.get('language')+"&sortBy=-id");
+	        hasVolume.then(function (result) {
+	            $scope.volume = result;
+	        });
+	    };
+	    $scope.list();
 
     $scope.startVm = function(size, item) {
 		  dialogService.openDialog("app/views/cloud/instance/start.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
@@ -215,6 +229,28 @@ function instanceViewCtrl($scope,$log, dialogService, $modal,$http, $state, $sta
 	  				});
 			  }
 
+			  $scope.instnaceEdit = false;
+			  $scope.editDisplayName = function(vm) {
+				  $scope.vm = vm;
+				  $scope.instnaceEdit = true;
+			  }
+
+	  		 $scope.updateDisplayName= function(vm) {
+	  			 	$scope.formSubmitted = true;
+	  			 	$scope.vm = vm;
+	  			 	if($scope.vm.transDisplayName != "") {
+	  			 		$scope.vm.transDisplayName=$scope.vm.transDisplayName;
+	  			 		var hasVm = crudService.update("virtualmachine", $scope.vm);
+		  				hasVm.then(function(result) {
+		  					notify({message: "Updated successfully", classes: 'alert-success', "timeOut": "5000", templateUrl: $scope.homerTemplate});
+		  					$state.reload();
+		  					 $scope.cancel();
+		  				});
+	  			 	}
+
+
+	  		 };
+
 			  $scope.showDescription = function(vm) {
 				  	 dialogService.openDialog("app/views/cloud/instance/editnote.jsp", 'sm',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
 				  		 $scope.vm = vm;
@@ -290,7 +326,7 @@ function instanceViewCtrl($scope,$log, dialogService, $modal,$http, $state, $sta
 						  			},
 									  $scope.cancel = function () {
 						               $modalInstance.close();
-						           };
+						           }; 
 						       }]);
 						  };
 
@@ -302,6 +338,9 @@ function instanceViewCtrl($scope,$log, dialogService, $modal,$http, $state, $sta
 						                    if (form.$valid) {
 						                    	$scope.vmsnapshot.domainId = $scope.instance.domainId;
 						                    	$scope.vmsnapshot.vmId = $scope.instance.id;
+						                    	if (angular.isUndefined($scope.vmsnapshot.snapshotMemory) || $scope.vmsnapshot.snapshotMemory === null || $scope.vmsnapshot.snapshotMemory === '') {
+						                    	$scope.vmsnapshot.snapshotMemory = false;
+						                    	}
 								  				var hasVm = crudService.add("vmsnapshot",$scope.vmsnapshot);
 								  				hasVm.then(function(result) {
 								  					$scope.homerTemplate = 'app/views/notification/notify.jsp';
@@ -474,6 +513,57 @@ function instanceViewCtrl($scope,$log, dialogService, $modal,$http, $state, $sta
         datasetFill: false,
 // responsive: true,
 // maintainAspectRatio: true
+    };
+
+
+ 
+ 
+    
+    var instanceLimit = {
+        "title": "Instance",
+        "options": [
+                    {
+                value: 40,
+                color: "#A9A9A9",
+                highlight: "#57b32c",
+                label: "Available",
+                showLabels: "true",
+            },
+            {
+                value: 2.09,
+                color: "#3399FF",
+                highlight: "#e74c3c",
+                label: "Used",
+                showLabels: "true",
+            }]
+    };
+
+    /**
+     * Data for Doughnut chart
+     */
+    $scope.quotaLimitData = [
+        instanceLimit
+           ];
+
+
+    /**
+     * Options for Doughnut chart
+     */
+    $scope.quotaChartOptions = {
+        segmentShowStroke: true,
+        segmentStrokeColor: "#fff",
+        segmentStrokeWidth: 1,
+        percentageInnerCutout: 60, // This is 0 for Pie charts
+        animationSteps: 100,
+        animationEasing: false,
+        animateRotate: false,
+        animateScale: false,
+        showTooltips: true,
+        tooltipCaretSize: 12,
+        tooltipFontSize: 12,
+        tooltipYPadding: 6,
+        tooltipXPadding: 6,
+        legend:true
     };
 
 }
