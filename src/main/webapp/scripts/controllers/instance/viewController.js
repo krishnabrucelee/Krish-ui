@@ -1,17 +1,18 @@
 /**
  *
- * instanceViewCtrl
+ * instanceViewCtrl 
  *
- */
-
+ */ 
+ 
 angular
-        .module('homer')
+        .module('homer') 
         .controller('instanceViewCtrl', instanceViewCtrl)
         .controller('instanceDetailsCtrl', instanceDetailsCtrl)
 
 
 function instanceViewCtrl($scope,$log, dialogService, $modal,$http, $state, $stateParams, promiseAjax, localStorageService, globalConfig, crudService, notify, $window) {
-    $scope.instanceList = [];
+
+    $scope.instanceList = []; 
     $scope.testvar = "test";
     $scope.global = crudService.globalConfig;
 
@@ -20,11 +21,21 @@ function instanceViewCtrl($scope,$log, dialogService, $modal,$http, $state, $sta
         var hasServer = crudService.read("virtualmachine", $stateParams.id);
         hasServer.then(function (result) {  // this is only run after $http											// completes
             $scope.instance = result;
+            var str = $scope.instance.cpuUsage;
+            var newString = str.replace(/^_+|_+$/g,'');
+            var num = parseFloat(newString).toFixed(2);
             $state.current.data.pageName = result.name;
             $scope.showLoaderOffer = false;
+            $scope.chart(num);
         });
     }
 
+
+    
+    
+  
+   
+    
  // Volume List
 $scope.volume = {};
 $scope.volume = [];
@@ -327,7 +338,7 @@ $scope.list = function () {
 						  			},
 									  $scope.cancel = function () {
 						               $modalInstance.close();
-						           };
+						           }; 
 						       }]);
 						  };
 
@@ -516,6 +527,59 @@ $scope.list = function () {
 // maintainAspectRatio: true
     };
 
+$scope.chart=function(used){
+	
+	var available= parseFloat(100-used).toFixed(2);
+	
+	
+    var instanceLimit = {
+        "title": "Instance",
+        "options": [
+                    {
+                value: parseFloat(available),
+                color: "#d6ebf5",
+                highlight: "#57b32c",
+                label: "Available",
+                showLabels: "true",
+            },
+            {
+                value: parseFloat(used),
+                color: "#3399FF",
+                highlight: "#e74c3c",
+                label: "Used",
+                showLabels: "true",
+            }]
+    };
+
+    /**
+     * Data for Doughnut chart
+     */
+    $scope.quotaLimitData = [
+        instanceLimit
+           ];
+
+
+    /**
+     * Options for Doughnut chart
+     */
+    $scope.quotaChartOptions = {
+        segmentShowStroke: true,
+        segmentStrokeColor: "#fff",
+        segmentStrokeWidth: 1,
+        percentageInnerCutout: 50, // This is 0 for Pie charts
+        animationSteps: 100,
+        animationEasing: false,
+        animateRotate: false,
+        animateScale: false,
+        showTooltips: true,
+        tooltipCaretSize: 12,
+        tooltipFontSize: 12,
+        tooltipYPadding: 6,
+        tooltipXPadding: 6,
+        legend:true
+    };
+
+}
 }
 function instanceDetailsCtrl($scope, instance, $modalInstance) {
     $scope.instance = instance;

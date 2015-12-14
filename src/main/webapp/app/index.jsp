@@ -62,6 +62,7 @@
 <link rel="stylesheet" href="fonts/pe-icon-7-stroke/fonts/k3k702ZOKiLJc3WVjuplzOgdm0LZdjqr5-oayXSOefg.woff2" />
 <link rel="stylesheet" href="fonts/pe-icon-7-stroke/fonts/MTP_ySUJH_bn48VBG8sNSugdm0LZdjqr5-oayXSOefg.woff2" />
 <link rel="stylesheet" href="styles/style.css">
+<link rel="stylesheet" href="styles/css">
 <link rel="stylesheet" href="styles/custom-style.css">
 <!-- endbuild -->
 
