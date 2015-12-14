@@ -258,15 +258,14 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
          };
          $scope.departmentList();
 
-         $scope.projectList = function () {
+         $scope.projectList = function (department) {
         	 $scope.showLoaderDetail = true;
-             var hasProjects = crudService.listAll("projects/list");
+             var hasProjects = crudService.listAllByObject("projects/department", department);
              hasProjects.then(function (result) {  // this is only run after $http completes0
             	 $scope.formElements.projecttypeList = result;
             	 $scope.showLoaderDetail = false;
              });
          };
-         $scope.projectList();
 
       $scope.search = {'users': [],'departments':[], 'projects':[]};
       $scope.$watch('instance.user', function (val) {
@@ -284,6 +283,7 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
 	if (!angular.isUndefined(obj)) {
     	  $scope.userList(obj);
           $scope.listNetwork(obj.id);
+          $scope.projectList(obj);
 	}
           });
 
