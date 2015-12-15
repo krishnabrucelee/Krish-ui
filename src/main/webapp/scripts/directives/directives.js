@@ -749,8 +749,8 @@ function hasPermission() {
         	    	break;
         	    }
         	}
-        	if(!permission || permission) {
-    	    	element.show();
+        	if(!permission) {
+    	    	element.hide();
         	}
         }
     }
