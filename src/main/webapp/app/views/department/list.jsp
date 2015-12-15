@@ -68,7 +68,11 @@
                         </div>
                         <pagination-content></pagination-content>
                         <div class="white-content m-b-sm m-t-xs">
-                            <div class="table-responsive">
+                        
+                         <div data-ng-show = "showLoader" style="margin: 1%">
+    				  		<get-loader-image data-ng-show="showLoader"></get-loader-image>
+      						</div>
+                            <div data-ng-hide="showLoader" class="table-responsive">
                                 <table cellspacing="1" cellpadding="1" class="table table-bordered table-striped">
                                     <thead>
                                         <tr>

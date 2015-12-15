@@ -15,25 +15,32 @@ function instanceViewCtrl($scope,$log, dialogService, $modal,$http, $state, $sta
     $scope.instanceList = []; 
     $scope.testvar = "test";
     $scope.global = crudService.globalConfig;
-
     if ($stateParams.id > 0) {
+    	$scope.showLoader = true;
     	$scope.showLoaderOffer = true;
-        var hasServer = crudService.read("virtualmachine", $stateParams.id);
+ 	    var hasServer = crudService.read("virtualmachine", $stateParams.id);
         hasServer.then(function (result) {  // this is only run after $http											// completes
             $scope.instance = result;
+                                    
             var str = $scope.instance.cpuUsage;
+            if(str!=null){
             var newString = str.replace(/^_+|_+$/g,'');
             var num = parseFloat(newString).toFixed(2);
             $state.current.data.pageName = result.name;
             $scope.showLoaderOffer = false;
+            $scope.showLoader = false;
             $scope.chart(num);
+            }
+            else{
+            	   $scope.showLoaderOffer = false;
+            	   $scope.showLoader = false;
+            	 $scope.chart(0);
+            }
+
         });
     }
 
 
-    
-    
-  
    
     
  // Volume List

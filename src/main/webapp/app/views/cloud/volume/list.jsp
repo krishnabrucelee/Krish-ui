@@ -50,6 +50,10 @@ pageEncoding="UTF-8"%>
             <div class="row">
                 <div class="col-md-12 col-sm-12 col-xs-12 ">
                     <div class="white-content">
+                    <div data-ng-show = "showLoader" style="margin: 1%">
+    				  		<get-loader-image data-ng-show="showLoader"></get-loader-image>
+      						</div>
+      						<div  data-ng-hide="showLoader" class="table-responsive col-12-table">
                         <table cellspacing="1" cellpadding="1" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
@@ -102,6 +106,7 @@ pageEncoding="UTF-8"%>
                                 </tr>
                             </tbody>
                         </table>
+                        </div>
                     </div>
                 </div>
             </div>

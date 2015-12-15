@@ -340,7 +340,7 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider,
 				url : "/:view/:id",
 				templateUrl : VIEW_URL + "views/cloud/network/view.jsp",
 				data : {
-					pageTitle : 'View Network'
+					pageTitle : 'view.network'
 				}
 
 			})

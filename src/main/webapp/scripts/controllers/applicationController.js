@@ -16,7 +16,8 @@ function applicationListCtrl($scope, notify, dialogService, crudService) {
 
     // Application List
     $scope.list = function (pageNumber) {
-        var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
+    	$scope.showLoader = true;
+    	var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasApplications = crudService.list("applications", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
         hasApplications.then(function (result) {  // this is only run after $http completes0
             $scope.applicationList = result;
@@ -25,6 +26,7 @@ function applicationListCtrl($scope, notify, dialogService, crudService) {
             $scope.paginationObject.limit = limit;
             $scope.paginationObject.currentPage = pageNumber;
             $scope.paginationObject.totalItems = result.totalItems;
+            $scope.showLoader = false;
         });
     };
     $scope.list(1);
@@ -45,12 +47,15 @@ function applicationListCtrl($scope, notify, dialogService, crudService) {
         dialogService.openDialog($scope.global.VIEW_URL + "application/add.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
                 // Create a new application
                 $scope.save = function (form) {
+                	
                     $scope.formSubmitted = true;
                     if (form.$valid) {
+                    	$scope.showLoader = true;
                         var application = $scope.application;
                         var hasServer = crudService.add("applications", application);
                         hasServer.then(function (result) {  // this is only run after $http completes
                             $scope.list(1);
+                        	$scope.showLoader = false;
                             notify({message: 'Added successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                             $modalInstance.close();
                             $scope.application.type = "";
@@ -58,6 +63,8 @@ function applicationListCtrl($scope, notify, dialogService, crudService) {
                             $scope.application.status = "";
                             $scope.application.domain = "";
                         }).catch(function (result) {
+                        	$scope.showLoader = false;
+
                             angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
                                 $scope.applicationForm[key].$invalid = true;
                                 $scope.applicationForm[key].errorMessage = errorMessage;
@@ -79,13 +86,16 @@ function applicationListCtrl($scope, notify, dialogService, crudService) {
                 $scope.update = function (form) {
                     $scope.formSubmitted = true;
                     if (form.$valid) {
+                    	$scope.showLoader = true;
                         var application = $scope.application;
                         var hasServer = crudService.update("applications", application);
                         hasServer.then(function (result) {
                             $scope.list(1);
+                            $scope.showLoader = false;
                             notify({message: 'Updated successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                             $modalInstance.close();
                         }).catch(function (result) {
+                        	$scope.showLoader = false;
                             angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
                                 $scope.applicationForm[key].$invalid = true;
                                 $scope.applicationForm[key].errorMessage = errorMessage;
@@ -104,10 +114,12 @@ function applicationListCtrl($scope, notify, dialogService, crudService) {
         dialogService.openDialog($scope.global.VIEW_URL + "application/delete.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
                 $scope.deleteId = application.id;
                 $scope.ok = function (id) {
+                	$scope.showLoader = true;
                     application.isActive = false;
                     var hasServer = crudService.update("applications", application);
                     hasServer.then(function (result) {
                         $scope.list(1);
+                        $scope.showLoader = false;
                         notify({message: 'Deleted successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                     });
                     $modalInstance.close();
