@@ -13,7 +13,7 @@
                 <div class="row">
                     <div class="col-md-12 col-sm-12 col-xs-12 ">
                         <div class="pull-left">
-                            <div class="dashboard-box pull-left" data-ng-click="instanceId(1, 'Expunging')">
+                            <div class="dashboard-box pull-left" data-ng-click="list(1, 'Expunging')">
                                 <div class="instance-border-content-normal" data-ng-class="{'instance-border-content' : borderContent=='Expunging'}">
 	                                <span class="pull-right"><fmt:message key="total.instance" bundle="${msg}" /></span>
 	                                <div class="clearfix"></div>
@@ -22,7 +22,7 @@
 	                                <div class="clearfix"></div>
                                 </div>
                             </div>
-                            <div class="dashboard-box pull-left" data-ng-click="instanceId(1, 'Running')">
+                            <div class="dashboard-box pull-left" data-ng-click="list(1, 'Running')">
                                 <div class="instance-border-content-normal" data-ng-class="{'instance-border-content' : borderContent=='Running'}">
 	                                <span class="pull-right"><fmt:message key="running.instance" bundle="${msg}" /></span>
 	                                <div class="clearfix"></div>
@@ -31,7 +31,7 @@
 	                                <div class="clearfix"></div>
                                 </div>
                             </div>
-                            <div class="dashboard-box pull-left"  data-ng-click="instanceId(1, 'Stopped')">
+                            <div class="dashboard-box pull-left"  data-ng-click="list(1, 'Stopped')">
                                 <div class="instance-border-content-normal" data-ng-class="{'instance-border-content' : borderContent=='Stopped'}">
 	                                <span class="pull-right"><fmt:message key="stopped.instance" bundle="${msg}" /></span>
 	                                <div class="clearfix"></div>
@@ -47,7 +47,7 @@
                             <div class="clearfix"></div>
                             <span class="pull-right m-l-sm m-t-sm">
                                 <a class="btn btn-info" data-ng-click="openAddInstance('lg')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="create.vm" bundle="${msg}" /></a>
-                                <a class="btn btn-info" data-ng-click="instanceId(1, borderContent)" title="<fmt:message key="common.refresh" bundle="${msg}" />"  ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
+                                <a class="btn btn-info" data-ng-click="list(1, borderContent)" title="<fmt:message key="common.refresh" bundle="${msg}" />"  ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
                             </span>
                         </div>
 

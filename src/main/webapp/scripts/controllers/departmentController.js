@@ -132,22 +132,35 @@ function departmentCtrl($scope, notify, promiseAjax, dialogService, crudService)
 
 
     // Delete the department
+ // Delete the department
     $scope.delete = function (size, department) {
-        dialogService.openDialog("app/views/common/confirm-delete.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+        dialogService.openDialog("app/views/department/confirm-delete.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
                 $scope.deleteObject = department;
                 $scope.ok = function (deleteObject) {
-                	$scope.showLoader = true;
                     var hasServer = crudService.softDelete("departments", deleteObject);
                     hasServer.then(function (result) {
                         $scope.list(1);
-                        $scope.showLoader = false;
                         notify({message: 'Deleted successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
-                    });
+                    }).catch(function (result) {
+
+                  	 if(!angular.isUndefined(result) && result.data != null) {
+	      		 		   if(result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])){
+	                      	 var msg = result.data.globalError[0];
+	                      	 notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+	                       }
+	                       angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
+	                      	$scope.departmentForm[key].$invalid = true;
+	                       	$scope.departmentForm[key].errorMessage = errorMessage;
+	                       });
+           			  }
+
+                   });
+                   $modalInstance.close();
+               },
+                $scope.cancel = function () {
                     $modalInstance.close();
-                },
-                        $scope.cancel = function () {
-                            $modalInstance.close();
-                        };
+                };
+
             }]);
     };
 };
