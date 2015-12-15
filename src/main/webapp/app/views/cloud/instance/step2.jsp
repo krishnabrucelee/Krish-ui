@@ -285,7 +285,7 @@
                                     <td>
                                         <a title="<fmt:message key="ip.address" bundle="${msg}" />"  ></a>
                                         <input type="text" valid-cidr required="true" placeholder="<fmt:message key="ip.address" bundle="${msg}" />"  class="input-small" data-ng-model="networks.ipaddress" />
-                                        <span ><label><input type="radio" name="instance.networks.default" value="networks.id" > <fmt:message key="common.default" bundle="${msg}" /></label></span>
+                                        <span ><label><input type="radio" name="instance.networks.default"  data-ng-model="instance.networkc" value="{{networks}}" > <fmt:message key="common.default" bundle="${msg}" /></label></span>
                                     </td>
 
                                 </tr>
@@ -317,7 +317,7 @@
                                     <td>
                                         <a title="<fmt:message key="ip.address" bundle="${msg}" />"></a>
                                         <input type="text" required="true" valid-cidr placeholder="<fmt:message key="ip.address" bundle="${msg}" />"  class="input-small" data-ng-model="networks.ipaddress" />
-                                        <span ><label><input type="radio" name="instance.networks.default" value="networks.id" > <fmt:message key="common.default" bundle="${msg}" /></label></span>
+                                        <span ><label><input type="radio" name="instance.networks.default" data-ng-model="instance.networks[$index]" value="{{networks}}" > <fmt:message key="common.default" bundle="${msg}" /></label></span>
                                     </td>
 
                                 </tr>

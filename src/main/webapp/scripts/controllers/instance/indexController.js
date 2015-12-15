@@ -376,15 +376,17 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
                  var networkSelected = false;
                  if ($scope.instance.networkOfferinglist.value == 'vpc' || $scope.instance.networkOfferinglist.value == 'all') {
                      for (var i = 0; i < $scope.instance.networks.networkList.length; i++) {
-                         var networks = $scope.instance.networks.networkList[i];
-                         $scope.instance.networkUuid = networks.uuid;
-                         console.log(networks);
-                         console.log($scope.instance.nerworkList);
                          if ($scope.instance.networks[i] == true) {
-                             networkSelected = true;
-                             submitError = false;
-                             break;
+                    		 var networks = $scope.instance.networks.networkList[i];
+                    		 var result = angular.fromJson($scope.instance.networkc);
+                        	 if (result.id === networks.id){
+                                 $scope.instance.networkUuid = networks.uuid;
+                                 networkSelected = true;
+                                 submitError = false;
+                                 break;
+                        	 }
                          }
+
                      }
                      if (!networkSelected) {
                          submitError = true;
@@ -704,6 +706,7 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
              }
          };
          $scope.instance.networks={};
+         $scope.instance.networkc={};
         $scope.getOsListByImage = function (templateImage) {
              $scope.instance.templateOs = {};
              $scope.instance.templateImage = templateImage;
