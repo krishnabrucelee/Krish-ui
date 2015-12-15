@@ -27,18 +27,24 @@ function volumeCtrl($scope, $state, $stateParams, $timeout, globalConfig,
 
     // Volume List
     $scope.list = function (pageNumber) {
+    	 $scope.showLoader = true;
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasVolumes = crudService.list("volumes", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
         hasVolumes.then(function (result) {
+        	
             $scope.volumeList = result;
             console.log($scope.volumeList);
 
             $scope.volumeList.Count = result.totalItems;
+          
             // For pagination
             $scope.paginationObject.limit = limit;
             $scope.paginationObject.currentPage = pageNumber;
             $scope.paginationObject.totalItems = result.totalItems;
+            $scope.showLoader = false;
         });
+        
+       
     };
     $scope.list(1);
 

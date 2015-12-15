@@ -41,6 +41,10 @@
 	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.volume" bundle="${msg}" /></a>
 	                            <span ng-switch-when="true"><fmt:message key="common.volume" bundle="${msg}" /></span>
                             </span>
+                             <span data-ng-if="state.data.pageTitle === 'common.network'">
+	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.network" bundle="${msg}" /></a>
+	                            <span ng-switch-when="true"><fmt:message key="common.network" bundle="${msg}" /></span>
+                            </span>
                             <span data-ng-if="state.data.pageTitle === 'view.instance'">
 	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="view.instance" bundle="${msg}" /></a>
 	                            <span ng-switch-when="true">{{ state.data.pageName }}</span>
@@ -49,10 +53,11 @@
 	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="view.projects" bundle="${msg}" /></a>
 	                            <span ng-switch-when="true">{{ state.data.pageName }}</span>
 	                    </span>
-                            <span data-ng-if="state.data.pageTitle === 'common.network'">
-	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.network" bundle="${msg}" /></a>
-	                            <span ng-switch-when="true"><fmt:message key="common.network" bundle="${msg}" /></span>
-                            </span>
+                           
+                             <span data-ng-if="state.data.pageTitle === 'view.network'">
+	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="view.network" bundle="${msg}" /></a>
+	                            <span ng-switch-when="true">{{ $stateParams.pageTitle}}</span>
+	                    </span>
                              <span data-ng-if="state.data.pageTitle === 'common.ssh.keys'">
 	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.ssh.keys" bundle="${msg}" /></a>
 	                            <span ng-switch-when="true"><fmt:message key="common.ssh.keys" bundle="${msg}" /></span>
@@ -76,6 +81,9 @@
                 </h2>
                 <h2 class="font-light m-b-xs">
                     <span data-ng-if="$state.current.data.pageTitle === 'common.volume'"><fmt:message key="common.volume" bundle="${msg}" /></span>
+                </h2>
+                <h2 class="font-light m-b-xs">
+                    <span data-ng-if="$state.current.data.pageTitle === 'common.network'"><fmt:message key="common.network" bundle="${msg}" /></span>
                 </h2>
                 <small>{{ $state.current.data.pageDesc}}</small>
             </div>

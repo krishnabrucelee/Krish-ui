@@ -75,16 +75,22 @@ function accountListCtrl($scope,$state, promiseAjax, $log, notify, crudService, 
         $scope.checkOne(item);
     }
 
+   
+    
     // User List
     $scope.list = function (pageNumber) {
+    	$scope.showLoader = true;
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasUsers = crudService.list("users", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
         hasUsers.then(function (result) {  // this is only run after $http completes0
+     
             $scope.accountList = result;
             // For pagination
             $scope.paginationObject.limit  = limit;
             $scope.paginationObject.currentPage = pageNumber;
             $scope.paginationObject.totalItems = result.totalItems;
+        	$scope.showLoader = false;
+
         });
     };
     $scope.list(1);
