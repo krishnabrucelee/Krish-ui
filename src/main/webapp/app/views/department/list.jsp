@@ -57,7 +57,7 @@
                                         <div class="clearfix"></div>
 
                                         <span class="pull-right m-l-sm m-t-sm">
-                                            <a class="btn btn-info"  ng-click="createDepartment('md')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="common.add" bundle="${msg}" /> </a>
+                                            <a has-permission="ADD_DEPARTMENT" class="btn btn-info"  ng-click="createDepartment('md')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="common.add" bundle="${msg}" /> </a>
                                             <a class="btn btn-info" ui-sref="department" title="<fmt:message key="common.refresh" bundle="${msg}" /> " ui-sref-opts="{reload: true}" ><span class="fa fa-refresh fa-lg"></span></a>
                                         </span>
                                     </div>
@@ -96,13 +96,13 @@
                                             </td>
                                             <td>
 
-                                                <a class="icon-button" title="<fmt:message key="common.edit" bundle="${msg}" />" data-ng-click="edit('md', department)">
+                                                <a has-permission="EDIT_DEPARTMENT" class="icon-button" title="<fmt:message key="common.edit" bundle="${msg}" />" data-ng-click="edit('md', department)">
                                                     <span class="fa fa-edit"> </span>
                                                 </a>
                                                  <a class="icon-button" ui-sref="department.quotalimit({id: {{department.id}}, quotaType: 'department-quota'})" title="<fmt:message key="common.edit.quota" bundle="${msg}" />">
                                                     <span class="fa font-bold pe-7s-edit"> </span>
                                                 </a>
-                                                <a class="icon-button" title="<fmt:message key="common.delete" bundle="${msg}" />" data-ng-click="delete('sm', department)" ><span class="fa fa-trash"></span></a>
+                                                <a has-permission="DELETE_DEPARTMENT" class="icon-button" title="<fmt:message key="common.delete" bundle="${msg}" />" data-ng-click="delete('sm', department)" ><span class="fa fa-trash"></span></a>
 
                                             </td>
 
