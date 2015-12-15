@@ -770,6 +770,7 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
     	 		$scope.guestnetwork.department= $scope.instance.department;
             	 $scope.guestnetwork.domain = $scope.instance.department.domain;
             	 $scope.guestnetwork.domainId = $scope.instance.department.domainId;
+            	 $scope.guestnetwork.project = $scope.instance.project;
 
 
                  console.log($scope.guestnetwork);

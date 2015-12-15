@@ -127,6 +127,17 @@ pageEncoding="UTF-8"%>
                             </div>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-md-4 col-xs-12 col-sm-4 control-label control-normal"><fmt:message key="common.project" bundle="${msg}" /></label>
+                            <div class="col-md-6  col-sm-6 col-xs-12">
+                                <select  class="form-control input-group" name="project" data-ng-model="network.project" ng-options="project.name for project in projectList"  >
+                                    <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
+                                </select>
+                                <i  tooltip="<fmt:message key="choose.project" bundle="${msg}" /> " class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

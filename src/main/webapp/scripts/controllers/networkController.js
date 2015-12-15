@@ -64,6 +64,12 @@ function networksCtrl($scope, modalService, promiseAjax, filterFilter, localStor
                                 $scope.departmentList(obj);
                             }
                         }),
+                        $scope.$watch('network.department', function (obj) {
+                            if (!angular.isUndefined(obj)) {
+                                $scope.getProjectList(obj);
+                            }
+                        }),
+
                         $scope.cancel = function () {
                             $modalInstance.close();
                         };
@@ -224,6 +230,21 @@ function networksCtrl($scope, modalService, promiseAjax, filterFilter, localStor
 
         });
     };
+
+    $scope.projectList = {};
+    $scope.getProjectList = function (department) {
+        var hasProjects = crudService.listAllByObject("projects/department", department);
+        hasProjects.then(function (result) {  // this is only run after $http completes0
+        	$scope.projectList = result;
+        	console.log($scope.projectList);
+        });
+    };
+
+    if($scope.global.sessionValues.type != "ROOT_ADMIN") {
+    	var department = {};
+    	department.id = $scope.global.sessionValues.departmentId;
+    	$scope.getProjectList(department);
+    }
 
     //localStorageService.clearAll();
     //localStorageService.set("rules",null);
