@@ -20,7 +20,7 @@ pageEncoding="UTF-8"%>
                                 <input required="true" type="text" name="name" data-ng-model="volume.name" class="form-control" data-ng-class="{'error': volumeForm.name.$invalid && formSubmitted}" >
                                 <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="<fmt:message key="common.name" bundle="${msg}" />" ></i>
                                 <div class="error-area" data-ng-show="volumeForm.name.$invalid && formSubmitted" >
-                                <i ng-attr-tooltip="{{ volumeForm.name.errorMessage || '<fmt:message key="volume.already.exist" bundle="${msg}" />' }}"
+                                <i ng-attr-tooltip="{{ volumeForm.name.errorMessage || '<fmt:message key="volume.required" bundle="${msg}" />' }}"
 												class="fa fa-warning error-icon"></i>
 							</div>
                             </div>
@@ -59,7 +59,7 @@ pageEncoding="UTF-8"%>
                                     <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
                                 </select>
                                 <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="<fmt:message key="common.plan" bundle="${msg}" />" ></i>
-                                <div class="error-area" data-ng-show="volumeForm.diskOfferings.$invalid && formSubmitted" ><i  tooltip="<fmt:message key="common.plan" bundle="${msg}" />" class="fa fa-warning error-icon"></i></div>
+                                <div class="error-area" data-ng-show="volumeForm.diskOfferings.$invalid && formSubmitted" ><i  tooltip="<fmt:message key="plan.is.required" bundle="${msg}" />" class="fa fa-warning error-icon"></i></div>
                             </div>
                         </div>
                     </div>
@@ -118,7 +118,7 @@ pageEncoding="UTF-8"%>
             </span>
             <get-loader-image data-ng-show="showLoader"></get-loader-image>
             <a class="btn btn-default"  data-ng-hide="showLoader" data-ng-click="cancel()"><fmt:message key="common.cancel" bundle="${msg}" /></a>
-            <button class="btn btn-info"  data-ng-hide="showLoader" type="submit"><fmt:message key="common.add" bundle="${msg}" /></button>
+            <button class="btn btn-info" has-permission="ADD_VOLUME" data-ng-hide="showLoader" type="submit"><fmt:message key="common.add" bundle="${msg}" /></button>
         </div>
     </div>
 </form>

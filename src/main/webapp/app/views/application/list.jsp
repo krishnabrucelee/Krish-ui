@@ -53,7 +53,7 @@
 										</div>
 									</div>
 									<span class="pull-right m-l-sm m-t-sm">
-									<a class="btn btn-info" ng-click="createApplication('md')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span>
+									<a has-permission="CREATE_APPLICATION_TYPE" class="btn btn-info" ng-click="createApplication('md')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span>
 									<fmt:message key="common.add" bundle="${msg}" /></a> <a class="btn btn-info" ui-sref="applications" title="<fmt:message key="common.refresh" bundle="${msg}" />" ui-sref-opts="{reload: true}">
 									<span class="fa fa-refresh fa-lg"></span></a>
 									</span>
@@ -87,8 +87,8 @@
 												<td>{{ application.type}}</td>
 												<td>{{ application.description}}</td>
 												<td>{{ application.status}}</td>
-												<td><a class="icon-button" title="<fmt:message key="common.edit" bundle="${msg}" />" data-ng-click="edit('md', application)"> <span class="fa fa-edit"></span></a>
-												<a class="icon-button" title="<fmt:message key="common.delete" bundle="${msg}" />" data-ng-click="delete('sm', application)"><span class="fa fa-trash"></span></a>
+												<td><a has-permission="EDIT_APPLICATION_TYPE" class="icon-button" title="<fmt:message key="common.edit" bundle="${msg}" />" data-ng-click="edit('md', application)"> <span class="fa fa-edit"></span></a>
+												<a has-permission="DELETE_APPLICATION_TYPE" class="icon-button" title="<fmt:message key="common.delete" bundle="${msg}" />" data-ng-click="delete('sm', application)"><span class="fa fa-trash"></span></a>
 												</td>
 											</tr>
 										</tbody>

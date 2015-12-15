@@ -63,20 +63,27 @@ function applicationListCtrl($scope, notify, dialogService, crudService) {
                             $scope.application.status = "";
                             $scope.application.domain = "";
                         }).catch(function (result) {
-                        	$scope.showLoader = false;
-
-                            angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
-                                $scope.applicationForm[key].$invalid = true;
-                                $scope.applicationForm[key].errorMessage = errorMessage;
-                            });
-                        });
-                    }
-                },
-                 $scope.cancel = function () {
-                     $modalInstance.close();
-                 };
-            }]);
-    };
+            		    if (!angular.isUndefined(result.data)) {
+                		if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
+                  	   	 var msg = result.data.globalError[0];
+                  	   	 $scope.showLoader = false;
+                	    	notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+                    	} else if (result.data.fieldErrors != null) {
+                       	$scope.showLoader = false;
+                        	angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
+                            	$scope.applicationForm[key].$invalid = true;
+                            	$scope.applicationForm[key].errorMessage = errorMessage;
+                        	});
+                		}
+                	}
+            	});
+                    	}
+                	},
+                 	$scope.cancel = function () {
+                     	$modalInstance.close();
+                 	};
+            	}]);
+    	};
 
     // Edit the application
     $scope.edit = function (size, application) {
@@ -95,12 +102,20 @@ function applicationListCtrl($scope, notify, dialogService, crudService) {
                             notify({message: 'Updated successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                             $modalInstance.close();
                         }).catch(function (result) {
-                        	$scope.showLoader = false;
-                            angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
-                                $scope.applicationForm[key].$invalid = true;
-                                $scope.applicationForm[key].errorMessage = errorMessage;
-                            });
+            	if (!angular.isUndefined(result.data)) {
+                	if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
+                  	    var msg = result.data.globalError[0];
+                  	    $scope.showLoader = false;
+                	    notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+                    } else if (result.data.fieldErrors != null) {
+                    $scope.showLoader = false;
+                        angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
+                            $scope.applicationForm[key].$invalid = true;
+                            $scope.applicationForm[key].errorMessage = errorMessage;
                         });
+                	}
+                }
+            });
                     }
                 },
                  $scope.cancel = function () {
@@ -108,6 +123,7 @@ function applicationListCtrl($scope, notify, dialogService, crudService) {
                  };
             }]);
     };
+
 
     // Delete the application
     $scope.delete = function (size, application) {
@@ -121,6 +137,13 @@ function applicationListCtrl($scope, notify, dialogService, crudService) {
                         $scope.list(1);
                         $scope.showLoader = false;
                         notify({message: 'Deleted successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                    }).catch(function (result) {
+                    	if (!angular.isUndefined(result.data)) {
+                        	if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
+                          	    var msg = result.data.globalError[0];
+                        	    notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+                            }
+                        }
                     });
                     $modalInstance.close();
                 },
