@@ -108,7 +108,7 @@ function instanceListCtrl($scope, $log, $filter, dialogService, promiseAjax, $st
 
                 $scope.instancesList.Count = 0;
            		 for (i = 0; i < result.length; i++) {
-            		 if($scope.instanceList[i].status.indexOf("Running") > -1) {
+            		 if($scope.instanceList[i].status.indexOf("Expunging") > -1) {
             		 $scope.instancesList.Count++;
            		  }
            		 }
@@ -127,7 +127,7 @@ function instanceListCtrl($scope, $log, $filter, dialogService, promiseAjax, $st
 		});
 	};
 
-	$scope.list(1, "Running");
+	$scope.list(1, "Expunging");
 
 
 	$scope.openAddInstance = function(size) {
