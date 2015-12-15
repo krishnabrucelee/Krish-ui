@@ -220,11 +220,20 @@ angular
         	var hasUsers =  promiseAjax.httpTokenRequest( crudService.globalConfig.HTTP_GET, crudService.globalConfig.APP_URL + "users"  +"/department/"+department.id);
         	hasUsers.then(function (result) {  // this is only run after $http completes0
         		$scope.userList = result;
-        	});
+        		if(angular.isUndefined($scope.userRoleList))
+        			$scope.userRoleList = [];
 
-        	var hasRoles =  promiseAjax.httpTokenRequest( crudService.globalConfig.HTTP_GET, crudService.globalConfig.APP_URL + "roles"  +"/department/"+department.id);
-        	hasRoles.then(function (result) {  // this is only run after $http completes0
-        		$scope.roleList = result;
+
+
+    			var hasRoles =  promiseAjax.httpTokenRequest( crudService.globalConfig.HTTP_GET, crudService.globalConfig.APP_URL + "roles"  +"/department/"+department.id);
+            	hasRoles.then(function (result) {  // this is only run after $http completes0
+            		$scope.roleList = result;
+            			angular.forEach($scope.userList, function(obj, key) {
+                			if(!angular.isUndefined(obj.role) && obj.role != null && obj.role != "") {
+            					$scope.userRoleList[obj.id] = obj.role;
+                			}
+                		});
+            	});
         	});
         };
 
@@ -259,6 +268,7 @@ angular
         	}
         	},
         	   $scope.cancel = function () {
+        		$scope.role.department = {};
                 $modalInstance.close();
             };
         }]);
@@ -273,16 +283,29 @@ angular
         	var hasUsers =  promiseAjax.httpTokenRequest( crudService.globalConfig.HTTP_GET, crudService.globalConfig.APP_URL + "users"  +"/department/"+department.id);
         	hasUsers.then(function (result) {  // this is only run after $http completes0
         		$scope.userList = result;
+        		if(angular.isUndefined($scope.userRoleList))
+        			$scope.userRoleList = [];
+
+
+
+    			var hasRoles =  promiseAjax.httpTokenRequest( crudService.globalConfig.HTTP_GET, crudService.globalConfig.APP_URL + "roles"  +"/department/"+department.id);
+            	hasRoles.then(function (result) {  // this is only run after $http completes0
+            		$scope.roleList = result;
+            			angular.forEach($scope.userList, function(obj, key) {
+            				$scope.userRoleList[obj.id] = $scope.roleList[0];
+                			if(!angular.isUndefined(obj.role) && obj.role != null && obj.role != "") {
+                				console.log(obj.role);
+            					$scope.userRoleList[obj.id] = obj.role;
+                			}
+                		});
+            	});
         	});
 
-          	var hasRoles =  promiseAjax.httpTokenRequest( crudService.globalConfig.HTTP_GET, crudService.globalConfig.APP_URL + "roles"  +"/department/"+department.id);
-        	hasRoles.then(function (result) {  // this is only run after $http completes0
-        		$scope.roleList = result;
-        	});
+
+
         };
 
        // Assign a new role to our user
-        $scope.userRoleList = [];
         $scope.editAssignedRoleSave = function (form) {
         	$scope.formSubmitted = true;
         	var assignedUsers = [];
@@ -293,7 +316,6 @@ angular
         		assignedUsers.push(userObject);
         	});
 
-        	console.log(assignedUsers);
         	if (form.$valid) {
         		var hasServer = crudService.add("users/assignRole", assignedUsers);
         		hasServer.then(function (result) {  // this is only run after $http completes
@@ -311,6 +333,7 @@ angular
         	}
         	},
         	   $scope.cancel = function () {
+        		$scope.role.department = {};
                 $modalInstance.close();
             };
         }]);
