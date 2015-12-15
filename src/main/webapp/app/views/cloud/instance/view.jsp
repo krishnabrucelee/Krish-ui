@@ -9,7 +9,7 @@
 
         <ul class="nav nav-tabs" data-ng-init="templateCategory = 'dashboard'">
             <li class="active"><a href="javascript:void(0)" data-ng-click="templateCategory = 'dashboard'" data-toggle="tab">  <i class="fa fa-laptop"></i> <fmt:message key="dashboard" bundle="${msg}" /></a></li>
-            <li class=""><a  data-ng-click="templateCategory = 'config'" data-toggle="tab"> <i class="fa fa-cogs"></i> <fmt:message key="configuration" bundle="${msg}" /></a></li>
+            <li data-ng-show ="instance.status == 'Stopped'" class=""><a  data-ng-click="templateCategory = 'config'" data-toggle="tab"> <i class="fa fa-cogs"></i> <fmt:message key="configuration" bundle="${msg}" /></a></li>
             <li class=""><a  data-ng-click="templateCategory = 'storage'" data-toggle="tab"><i class="fa fa-database"></i> <fmt:message key="storage" bundle="${msg}" /></a></li>
             <li class=""><a  data-ng-click="templateCategory = 'network'" data-toggle="tab"> <!--<i class="fa fa-sitemap"></i>--><i class="custom-icon custom-icon-network"></i> <fmt:message key="networking" bundle="${msg}" /></a></li>
             <li class=""><a data-ng-click="templateCategory = 'monitor'" data-toggle="tab"> <i class="fa fa-desktop"></i> <fmt:message key="monitor" bundle="${msg}" /></a></li>
@@ -194,7 +194,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td><b><fmt:message key="offer" bundle="${msg}" /></b></td>
-                                                    <td>{{ instance.computeOffering.name}} <a href="javascript:void(0)"  data-ng-click="templateCategory = 'config'"  class="fa fa-edit m-l-lg"> edit</a></td>
+                                                    <td>{{ instance.computeOffering.name}} <a data-ng-show = "instance.status == 'Stopped'" data-ng-click="templateCategory = 'config'"  class="fa fa-edit m-l-lg"> <fmt:message key="common.edit" bundle="${msg}" /></a></td>
                                                 </tr>
                                                 <tr>
                                                     <td><b><fmt:message key="disk.size" bundle="${msg}" /></b></td>
