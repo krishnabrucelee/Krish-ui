@@ -44,10 +44,10 @@ pageEncoding="UTF-8"%>
                             <a href="javascript:void(0);" title=" <fmt:message key="restart.network" bundle="${msg}" />"><span class="fa-repeat fa font-bold m-xs"></span><fmt:message key="restart.network" bundle="${msg}" /></a>
                         </li>
                         <li class="list-group-item">
-                            <a href="javascript:void(0);" title=" <fmt:message key="delete.network" bundle="${msg}" />" data-ng-click="delete('sm', network)"><span class="fa-trash fa font-bold m-xs"></span> <fmt:message key="delete.network" bundle="${msg}" /></a>
+                            <a has-permission="DELETE_NETWORK" href="javascript:void(0);" title=" <fmt:message key="delete.network" bundle="${msg}" />" data-ng-click="delete('sm', network)"><span class="fa-trash fa font-bold m-xs"></span> <fmt:message key="delete.network" bundle="${msg}" /></a>
                         </li>
                         <li class="list-group-item">
-                            <a  title=" <fmt:message key="edit.network" bundle="${msg}" />" href="#/network/list/edit/{{ network.id}}" >
+                            <a  has-permission="EDIT_NETWORK"  title=" <fmt:message key="edit.network" bundle="${msg}" />" href="#/network/list/edit/{{ network.id}}" >
                                 <span class="fa fa-edit font-bold m-xs"></span> <fmt:message key="edit.network" bundle="${msg}" />
                             </a>
                         </li>
