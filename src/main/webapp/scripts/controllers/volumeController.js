@@ -42,23 +42,23 @@ function volumeCtrl($scope, $state, $stateParams, $timeout, globalConfig,
     };
     $scope.list(1);
 
-    // Delete the volume
-    $scope.delete = function (size, volume) {
-        dialogService.openDialog($scope.global.VIEW_URL + "cloud/volume/delete.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
-        	$scope.deleteId = volume.id;
-                $scope.ok = function (deleteObject) {
-                    var hasServer = crudService.delete("volumes", volume);
-                    hasServer.then(function (result) {
-                        $scope.list(1);
-                        notify({message: 'Deleted successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
-                    });
-                    $modalInstance.close();
-                },
-                 $scope.cancel = function () {
-                     $modalInstance.close();
-                 };
-            }]);
-    };
+//    // Delete the volume
+//    $scope.delete = function (size, volume) {
+//        dialogService.openDialog($scope.global.VIEW_URL + "cloud/volume/delete.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+//        	$scope.deleteId = volume.id;
+//                $scope.ok = function (deleteObject) {
+//                    var hasServer = crudService.delete("volumes", volume);
+//                    hasServer.then(function (result) {
+//                        $scope.list(1);
+//                        notify({message: 'Deleted successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+//                    });
+//                    $modalInstance.close();
+//                },
+//                 $scope.cancel = function () {
+//                     $modalInstance.close();
+//                 };
+//            }]);
+//    };
 
 
     // Attach Volume

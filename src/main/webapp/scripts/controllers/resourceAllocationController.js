@@ -52,9 +52,10 @@ function resourceAllocationCtrl($scope, crudService, globalConfig, notify, $stat
     // Save Resource limits based on the quota type.
 	$scope.save = function(form) {
 		//if(form.$valid) {
-		if(!angular.isUndefined($scope.resourceQuota.project)) {
+		console.log($scope.type);
+		if($scope.type == "project-quota") {
 			$scope.saveProjectQuota(form);
-		} else if(!angular.isUndefined($scope.resourceQuota.department)) {
+		} else if($scope.type == "department-quota") {
 			$scope.saveDepartmentQuota(form);
 		} else {
 			$scope.saveDomainQuota(form);
@@ -119,6 +120,7 @@ function resourceAllocationCtrl($scope, crudService, globalConfig, notify, $stat
 	$scope.saveDepartmentQuota = function(form) {
 		$scope.formSubmitted = true;
 		if(form.$valid) {
+			$scope.showLoader = true;
 			var quotaList = [];
 			for(var i=0; i < $scope.resourceTypeList.length; i++) {
 				if(i != 5) {
@@ -135,6 +137,7 @@ function resourceAllocationCtrl($scope, crudService, globalConfig, notify, $stat
 
 			var hasResource = promiseAjax.httpTokenRequest( globalConfig.HTTP_POST , globalConfig.APP_URL + "resourceDepartments/create" , '', quotaList);
 			hasResource.then(function (result) {  // this is only run after $http completes
+				$scope.showLoader = false;
 				$scope.isDisabledProject = false;
 				$scope.formSubmitted = false;
 	            notify({message: 'Created successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
@@ -142,6 +145,7 @@ function resourceAllocationCtrl($scope, crudService, globalConfig, notify, $stat
 	            if (!angular.isUndefined(result.data)) {
 	            	if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
 	              	    var msg = result.data.globalError[0];
+	              	  $scope.showLoader = false;
 	            	    notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
 	                } else if (result.data.fieldErrors != null) {
 	                    angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
@@ -159,6 +163,7 @@ function resourceAllocationCtrl($scope, crudService, globalConfig, notify, $stat
 	$scope.saveProjectQuota = function(form) {
 		$scope.formSubmitted = true;
 		if(form.$valid) {
+			$scope.showLoader = true;
 			var quotaList = [];
 			for(var i=0; i < $scope.resourceTypeList.length; i++) {
 				if(i != 5) {
@@ -177,6 +182,7 @@ function resourceAllocationCtrl($scope, crudService, globalConfig, notify, $stat
 
 			var hasResource = promiseAjax.httpTokenRequest( globalConfig.HTTP_POST , globalConfig.APP_URL + "resourceProjects/create" , '', quotaList);
 			hasResource.then(function (result) {  // this is only run after $http completes
+				$scope.showLoader = false;
 				$scope.formSubmitted = false;
 	            notify({message: 'Created successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
 
@@ -184,6 +190,7 @@ function resourceAllocationCtrl($scope, crudService, globalConfig, notify, $stat
 	            if (!angular.isUndefined(result.data)) {
 	            	if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
 	              	    var msg = result.data.globalError[0];
+	              	  $scope.showLoader = false;
 	            	    notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
 	                } else if (result.data.fieldErrors != null) {
 	                    angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
