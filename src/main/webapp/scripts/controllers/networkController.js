@@ -23,8 +23,11 @@ function networksCtrl($scope, modalService, promiseAjax, filterFilter, localStor
 
                 // Create a new Isolated Network
                 $scope.save = function (form, network) {
+                	
                     $scope.formSubmitted = true;
                     if (form.$valid) {
+                   	 $scope.showLoader = true;
+
                         var guestnetwork = $scope.guestnetwork;
                         if (!angular.isUndefined($scope.network.domain)) {
                             network.domainId = $scope.network.domain.id;
@@ -33,12 +36,15 @@ function networksCtrl($scope, modalService, promiseAjax, filterFilter, localStor
                         var hasguestNetworks = crudService.add("guestnetwork", network);
                         hasguestNetworks.then(function (result) {
                             $scope.list(1);
+                       	 $scope.showLoader = false;
                             notify({message: 'Added successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                             $modalInstance.close();
                         }).catch(function (result) {
                             if (!angular.isUndefined(result) && result.data != null) {
                                 if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
                                     var msg = result.data.globalError[0];
+                               	 $scope.showLoader = false;
+
                                     notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
 //                                    $modalInstance.close();
                                 }
@@ -77,21 +83,28 @@ function networksCtrl($scope, modalService, promiseAjax, filterFilter, localStor
     $scope.global = crudService.globalConfig;
     // Guest Network List
     $scope.list = function (pageNumber) {
+   	 $scope.showLoader = true;
+
         $scope.type = $stateParams.view;
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasGuestNetworks = crudService.list("guestnetwork", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
         hasGuestNetworks.then(function (result) {
+        	$scope.showLoader = true;
             $scope.networkList = angular.copy(result);
             console.log($scope.networkList);
             $scope.networkList.Count = 0;
             if (result.length != 0) {
                 $scope.networkList.Count = result.totalItems;
             }
+            $scope.showLoader = false;
             // For pagination
             $scope.paginationObject.limit = limit;
             $scope.paginationObject.currentPage = pageNumber;
             $scope.paginationObject.totalItems = result.totalItems;
+       	 $scope.showLoader = false;
         });
+      	
+
     };
     $scope.list(1);
 

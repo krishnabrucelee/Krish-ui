@@ -1,41 +1,48 @@
 /**
  *
- * instanceViewCtrl 
+ * instanceViewCtrl
  *
- */ 
- 
+ */
+
 angular
-        .module('homer') 
+        .module('homer')
         .controller('instanceViewCtrl', instanceViewCtrl)
         .controller('instanceDetailsCtrl', instanceDetailsCtrl)
 
 
-function instanceViewCtrl($scope,$log, dialogService, $modal,$http, $state, $stateParams, promiseAjax, localStorageService, globalConfig, crudService, notify, $window) {
+function instanceViewCtrl($scope,$log, $sce, dialogService, $modal,$http, $state, $stateParams, promiseAjax, localStorageService, globalConfig, crudService, notify, $window) {
 
-    $scope.instanceList = []; 
+    $scope.instanceList = [];
     $scope.testvar = "test";
     $scope.global = crudService.globalConfig;
-
     if ($stateParams.id > 0) {
+    	$scope.showLoader = true;
     	$scope.showLoaderOffer = true;
-        var hasServer = crudService.read("virtualmachine", $stateParams.id);
+ 	    var hasServer = crudService.read("virtualmachine", $stateParams.id);
         hasServer.then(function (result) {  // this is only run after $http											// completes
             $scope.instance = result;
+
             var str = $scope.instance.cpuUsage;
+            if(str!=null){
             var newString = str.replace(/^_+|_+$/g,'');
             var num = parseFloat(newString).toFixed(2);
             $state.current.data.pageName = result.name;
             $scope.showLoaderOffer = false;
+            $scope.showLoader = false;
             $scope.chart(num);
+            }
+            else{
+            	   $scope.showLoaderOffer = false;
+            	   $scope.showLoader = false;
+            	 $scope.chart(0);
+            }
+
         });
     }
 
 
-    
-    
-  
-   
-    
+
+
  // Volume List
 $scope.volume = {};
 $scope.volume = [];
@@ -236,8 +243,11 @@ $scope.list = function () {
 				  $scope.vm = vm;
 				  var hasVms = crudService.updates("virtualmachine/console", vm);
 	  				hasVms.then(function(result) {
-	  					console.log(result);
-	  					 $window.open(result.success, 'VM console', 'width=500,height=400');
+	  					$scope.consoleUrl = $sce.trustAsResourceUrl(result.success);
+	  					//$scope.consoleUrl = $sce.trustAsResourceUrl("http://192.168.1.152/console/?token=MTkyLjE2OC4xLjE1MnxpLTItNjktVk18bm92bmN0ZXN0");
+	  					$scope.instance = vm;
+	  			        dialogService.openDialog("app/views/cloud/instance/view-console.jsp", 'lg', $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
+	  			        }]);
 	  				});
 			  }
 
@@ -338,7 +348,7 @@ $scope.list = function () {
 						  			},
 									  $scope.cancel = function () {
 						               $modalInstance.close();
-						           }; 
+						           };
 						       }]);
 						  };
 
@@ -528,10 +538,10 @@ $scope.list = function () {
     };
 
 $scope.chart=function(used){
-	
+
 	var available= parseFloat(100-used).toFixed(2);
-	
-	
+
+
     var instanceLimit = {
         "title": "Instance",
         "options": [

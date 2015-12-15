@@ -1,22 +1,24 @@
+
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * and open the template in the editor.    
  */
-
-angular
-        .module('homer')
-        .controller('accountCtrl', accountCtrl)
-        .controller('accountListCtrl', accountListCtrl)
+  
+angular         
+        .module('homer')   
+        .controller('accountCtrl', accountCtrl)  
+        .controller('accountListCtrl', accountListCtrl)  
         .controller('editCtrl', editCtrl)
-
+ 
 function accountCtrl($scope, promiseAjax, crudService, dialogService,   notify) {
     $scope.global = crudService.globalConfig;
     $scope.userData = "testss";
     $scope.addUser = function (form) {
     	console.log(form);
         $scope.formSubmitted = true;
-        if (form.$valid) {
+        if (form.$valid) { 
         	console.log($scope.user);
         }
     };
@@ -60,14 +62,6 @@ function accountListCtrl($scope,$state, promiseAjax, $log, notify, crudService, 
     });
     }
 
-    // Load project
-    $scope.project = {};
-    var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
-    var hasProjects = promiseAjax.httpTokenRequest( crudService.globalConfig.HTTP_GET, crudService.globalConfig.APP_URL + "projects/list");
-    hasProjects.then(function (result) {  // this is only run after $http completes0
-    	$scope.options = result;
-    });
-
     // Load domain
     $scope.domain = {};
     var hasDomains = crudService.listAll("domains/list");
@@ -81,16 +75,22 @@ function accountListCtrl($scope,$state, promiseAjax, $log, notify, crudService, 
         $scope.checkOne(item);
     }
 
+   
+    
     // User List
     $scope.list = function (pageNumber) {
+    	$scope.showLoader = true;
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasUsers = crudService.list("users", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
         hasUsers.then(function (result) {  // this is only run after $http completes0
+     
             $scope.accountList = result;
             // For pagination
             $scope.paginationObject.limit  = limit;
             $scope.paginationObject.currentPage = pageNumber;
             $scope.paginationObject.totalItems = result.totalItems;
+        	$scope.showLoader = false;
+
         });
     };
     $scope.list(1);
@@ -196,7 +196,7 @@ function accountListCtrl($scope,$state, promiseAjax, $log, notify, crudService, 
                     	}).catch(function (result) {
                     		if(!angular.isUndefined(result) && result.data != null) {
                     			angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
-                            	   $scope.userForm[key].$invalid = true;
+				   $scope.userForm[key].$invalid = true;
                             	   $scope.userForm[key].errorMessage = errorMessage;
                     			});
                     		}
@@ -213,14 +213,21 @@ function accountListCtrl($scope,$state, promiseAjax, $log, notify, crudService, 
                 $modalInstance.close();
             };
 
-            // Getting list of roles by department
-            $scope.getRolesByDepartment = function(department) {
+
+            // Getting list of roles and projects by department
+            $scope.getRolesAndProjectsByDepartment = function(department) {
             	 var hasRoles =  promiseAjax.httpTokenRequest( crudService.globalConfig.HTTP_GET, crudService.globalConfig.APP_URL + "roles"  +"/department/"+department.id);
             	 hasRoles.then(function (result) {  // this is only run after $http completes0
             		 $scope.accountElements.roleList = result;
             	 });
+
+		 var hasProjects =  promiseAjax.httpTokenRequest( crudService.globalConfig.HTTP_GET, crudService.globalConfig.APP_URL + "projects"  +"/department/"+department.id);
+		 hasProjects.then(function (result) {  // this is only run after $http completes0
+            		$scope.options = result;
+            	 });
            	};
-         }]);
+         }]); 
+          
     };
 
     // Delete user data from database
@@ -248,7 +255,7 @@ function accountListCtrl($scope,$state, promiseAjax, $log, notify, crudService, 
     }
 
     // Edit user data
-    $scope.editUser = function (size) {
+    $scope.editUser = function (size) {  
     	var user = {};
     	 angular.forEach($scope.accountList, function (item, key) {
 
@@ -267,7 +274,14 @@ function accountListCtrl($scope,$state, promiseAjax, $log, notify, crudService, 
     		            $scope.list(1);
     		            notify({message: 'Updated successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
     		            $scope.cancel();
-    		        });
+    		        }).catch(function (result) {
+                    		if(!angular.isUndefined(result) && result.data != null) {
+                    			angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
+				   $scope.userForm[key].$invalid = true;
+                            	   $scope.userForm[key].errorMessage = errorMessage;
+                    			});
+                    		}
+                    	});
     		    },
              $scope.cancel = function () {
                  $modalInstance.close();
@@ -326,3 +340,5 @@ function editCtrl($scope, account, notify, $modalInstance) {
     }
 
 }
+
+

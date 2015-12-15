@@ -16,6 +16,7 @@ function departmentCtrl($scope, notify, promiseAjax, dialogService, crudService)
 
     // Department List
     $scope.list = function (pageNumber) {
+    	$scope.showLoader = true;
     	console.log($scope.global.sessionValues);
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasDepartments = crudService.list("departments", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
@@ -27,6 +28,7 @@ function departmentCtrl($scope, notify, promiseAjax, dialogService, crudService)
             $scope.paginationObject.limit  = limit;
             $scope.paginationObject.currentPage = pageNumber;
             $scope.paginationObject.totalItems = result.totalItems;
+            $scope.showLoader = false;
         });
     };
     $scope.list(1);
@@ -52,7 +54,7 @@ function departmentCtrl($scope, notify, promiseAjax, dialogService, crudService)
                 $scope.save = function (form) {
                     $scope.formSubmitted = true;
                     if (form.$valid) {
-
+                    	$scope.showLoader = true;
                         var department = angular.copy($scope.department);
                         if(!angular.isUndefined($scope.department.domain)) {
                         	department.domainId = department.domain.id;
@@ -62,6 +64,7 @@ function departmentCtrl($scope, notify, promiseAjax, dialogService, crudService)
                         hasServer.then(function (result) {  // this is only run after $http completes
                         	//$rootScope.department={};
                             $scope.list(1);
+                            $scope.showLoader = false;
                             notify({message: 'Added successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
                             $modalInstance.close();
 
@@ -75,7 +78,8 @@ function departmentCtrl($scope, notify, promiseAjax, dialogService, crudService)
                             $scope.department.confirmPassword = "";
                         }).catch(function (result) {
                         	if(!angular.isUndefined(result) && result.data != null) {
-                        		if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
+                        	$scope.showLoader = false;
+                        	if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
                                	    var msg = result.data.globalError[0];
                              	    notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
                                  } else {
@@ -102,17 +106,20 @@ function departmentCtrl($scope, notify, promiseAjax, dialogService, crudService)
                 $scope.update = function (form) {
                     $scope.formSubmitted = true;
                     if (form.$valid) {
+                    	$scope.showLoader = true;
                         var department = $scope.department;
                         department.domainId = department.domain.id;
                         var hasServer = crudService.update("departments", department);
                         hasServer.then(function (result) {
                         	$scope.department={};
                             $scope.list(1);
+                            $scope.showLoader = false;
                             notify({message: 'Updated successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                             $modalInstance.close();
                         }).catch(function (result) {
                         	if(!angular.isUndefined(result) && result.data != null) {
-                        		if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
+                        	$scope.showLoader = false;
+                        	if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
                                	    var msg = result.data.globalError[0];
                              	    notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
                                  } else {
@@ -134,8 +141,9 @@ function departmentCtrl($scope, notify, promiseAjax, dialogService, crudService)
 
 
     // Delete the department
+ // Delete the department
     $scope.delete = function (size, department) {
-        dialogService.openDialog("app/views/common/confirm-delete.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+        dialogService.openDialog("app/views/department/confirm-delete.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
                 $scope.deleteObject = department;
                 $scope.ok = function (deleteObject) {
                     var hasServer = crudService.softDelete("departments", deleteObject);
@@ -143,18 +151,25 @@ function departmentCtrl($scope, notify, promiseAjax, dialogService, crudService)
                         $scope.list(1);
                         notify({message: 'Deleted successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                     }).catch(function (result) {
-                        if (!angular.isUndefined(result.data)) {
-                        	if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
-                          	    var msg = result.data.globalError[0];
-                        	    notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
-                            }
-                        }
-                    });
+
+                  	 if(!angular.isUndefined(result) && result.data != null) {
+	      		 		   if(result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])){
+	                      	 var msg = result.data.globalError[0];
+	                      	 notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+	                       }
+	                       angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
+	                      	$scope.departmentForm[key].$invalid = true;
+	                       	$scope.departmentForm[key].errorMessage = errorMessage;
+	                       });
+           			  }
+
+                   });
+                   $modalInstance.close();
+               },
+                $scope.cancel = function () {
                     $modalInstance.close();
-                },
-                        $scope.cancel = function () {
-                            $modalInstance.close();
-                        };
+                };
+
             }]);
     };
 };

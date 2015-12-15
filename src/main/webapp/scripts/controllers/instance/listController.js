@@ -92,7 +92,7 @@ function instanceListCtrl($scope, $log, $filter, dialogService, promiseAjax, $st
 		return sort.descending;
 	};
 
-	$scope.instanceId = function(pageNumber, status) {
+	$scope.list = function(pageNumber, status) {
 		$scope.showLoader = true;
 		var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
 		var hasUsers =  promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "virtualmachine/listByStatus" +"?lang=" + localStorageService.cookie.get('language') + "&status="+status+"&sortBy=+name&limit="+limit,  $scope.global.paginationHeaders(pageNumber, limit), {
@@ -108,7 +108,7 @@ function instanceListCtrl($scope, $log, $filter, dialogService, promiseAjax, $st
 
                 $scope.instancesList.Count = 0;
            		 for (i = 0; i < result.length; i++) {
-            		 if($scope.instanceList[i].status.indexOf("Running") > -1) {
+            		 if($scope.instanceList[i].status.indexOf("Expunging") > -1) {
             		 $scope.instancesList.Count++;
            		  }
            		 }
@@ -127,7 +127,7 @@ function instanceListCtrl($scope, $log, $filter, dialogService, promiseAjax, $st
 		});
 	};
 
-	$scope.instanceId(1, "Running");
+	$scope.list(1, "Expunging");
 
 
 	$scope.openAddInstance = function(size) {

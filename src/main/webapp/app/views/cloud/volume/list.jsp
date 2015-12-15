@@ -50,14 +50,19 @@ pageEncoding="UTF-8"%>
             <div class="row">
                 <div class="col-md-12 col-sm-12 col-xs-12 ">
                     <div class="white-content">
+                    <div data-ng-show = "showLoader" style="margin: 1%">
+    				  		<get-loader-image data-ng-show="showLoader"></get-loader-image>
+      						</div>
+      						<div  data-ng-hide="showLoader" class="table-responsive col-12-table">
                         <table cellspacing="1" cellpadding="1" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
                                     <th class="col-md-2 col-xs-2"><fmt:message key="common.name" bundle="${msg}" /></th>
                                     <th class="col-md-1 col-xs-1"><fmt:message key="common.department" bundle="${msg}" /></th>
+                                    <th class="col-md-1 col-xs-1"><fmt:message key="common.project" bundle="${msg}" /></th>
                             <th class="col-md-1 col-xs-1"><fmt:message key="common.type" bundle="${msg}" /></th>
                             <th class="col-md-2 col-xs-3"><fmt:message key="common.plan" bundle="${msg}" /></th>
-                            <th class="col-md-3 col-xs-3"><fmt:message key="common.attached.to" bundle="${msg}" /></th>
+                            <th class="col-md-2 col-xs-2"><fmt:message key="common.attached.to" bundle="${msg}" /></th>
                             <th class="col-md-1 col-xs-1"><fmt:message key="common.size" bundle="${msg}" /></th>
                             <th class="col-md-2 col-xs-1"><fmt:message key="common.created.date" bundle="${msg}" /></th>
                             <th class="col-md-1 col-xs-1"><fmt:message key="common.action" bundle="${msg}" /></th>
@@ -69,6 +74,7 @@ pageEncoding="UTF-8"%>
                                         <a class="text-info" href="javascript:void(0)"  title="View Volume" >{{ volume.name}}</a>
                                     </td>
                                     <td>{{ volume.department.userName || " - "}}</td>
+                                    <td>{{ volume.project.name || " - "}}</td>
                                     <td>{{ volume.volumeType}}</td>
                                     <td>{{ volume.storageOffering.name || " - "}}</td>
                                     <td>{{ volume.vmInstance.name || " - " }}</td>
@@ -102,6 +108,7 @@ pageEncoding="UTF-8"%>
                                 </tr>
                             </tbody>
                         </table>
+                        </div>
                     </div>
                 </div>
             </div>
