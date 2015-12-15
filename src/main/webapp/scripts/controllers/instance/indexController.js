@@ -282,10 +282,16 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
       $scope.$watch('instance.department', function (obj) {
 	if (!angular.isUndefined(obj)) {
     	  $scope.userList(obj);
-          $scope.listNetwork(obj.id);
+          $scope.listNetworks(obj.id,'department');
           $scope.projectList(obj);
 	}
           });
+
+      $scope.$watch('instance.project',function (obj) {
+    		if (!angular.isUndefined(obj)) {
+    	          $scope.listNetworks(obj.id,'project');
+    		}
+    	          });
 
       $scope.$watch('instance.projct', function (val) {
           var payload = {'q': val};
@@ -738,9 +744,14 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
          $scope.global = crudService.globalConfig;
          $scope.test = "test";
          // Guest Network List
-         $scope.listNetwork = function (department) {
+         $scope.listNetworks = function (department,type) {
         	 $scope.showLoaderOffer = true;
-             var hasGuestNetworks = crudService.listAllByFilters("guestnetwork/list", department);
+        	 var hasGuestNetworks = {};
+        	 if(type === 'department'){
+        		 hasGuestNetworks = crudService.listAllByFilters("guestnetwork/list", department);
+         	 } else {
+         		hasGuestNetworks = crudService.listAllByID("guestnetwork/listall?projectId="+department);
+         	 }
              hasGuestNetworks.then(function (result) {  // this is only run after $http
                      $scope.instance.networks.networkList = result;
                 	 $scope.showLoaderOffer = false;

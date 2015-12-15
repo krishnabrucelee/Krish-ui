@@ -123,7 +123,7 @@
  										</td>
  										<td class="custom-width-xs">{{ instance.computeOffering.numberOfCores}}</td>
  										<td class="custom-width-md">{{ instance.computeOffering.memory}}</td>
-                                        <td class="custom-width-xs">{{ instance.storageOffering}}</td>
+                                        <td class="custom-width-xs">{{ instance.volume.diskSize}}</td>
  										<td>{{ instance.ipAddress}}</td>
                                         <td>{{ instance.network.name}}</td>
                                         <td>{{ instance.host.name}}</td>

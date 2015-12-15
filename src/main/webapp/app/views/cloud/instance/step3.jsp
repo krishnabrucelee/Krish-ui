@@ -144,7 +144,7 @@
 			<div class="col-md-6 col-xs-6 col-sm-6"><!--
 				<input type="text" name="project" data-ng-model="instance.projct"
 					class="form-control col-md-4" autofocus autocomplete="off"> -->
-						<div  custom-select="t as t.name for t in formElements.projecttypeList | filter: { name: $searchTerm }" ng-model="instance.project">
+						<div  custom-select="t as t.name for t in formElements.projecttypeList | filter: { name: $searchTerm }" data-ng-model="instance.project">
 						<div class="pull-left">
 						<strong>{{ t.name }}</strong><br />
 						</div>

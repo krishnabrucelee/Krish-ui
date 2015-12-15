@@ -45,6 +45,10 @@ function crudService($window, localStorageService, globalConfig, $stateParams, p
         return promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + moduleName +"?dept=" +dept+ "&lang=" +localStorageService.cookie.get('language'));
     };
 
+    object.listAllByID = function(moduleName) {
+        return promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + moduleName +"&lang=" +localStorageService.cookie.get('language'));
+    };
+
     object.listAllByObject = function(moduleName, dept) {
         return promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + moduleName +"/" +dept.id);
     };
