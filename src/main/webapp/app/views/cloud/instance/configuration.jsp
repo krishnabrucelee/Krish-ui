@@ -24,31 +24,20 @@
                                 <span class="text-danger">*</span>
                             </label>
                             	<div class="col-md-6 col-xs-6 col-sm-6">
-				<select required="true" class="form-control form-group-lg"
-					name="computeOffering"
-					ng-change='computeFunction(instance.computeOffering.customized)'
-					data-ng-model="instance.computeOffering"
-					data-ng-class="{'error': instanceForm.computeOffering.$invalid && OfferingSubmitted}"
-					data-ng-options="computeOffering.name group by computeOffering.group for computeOffering in instanceElements.computeOfferingList">
-					<option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
-				</select> <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"
-					tooltip="<fmt:message key="compute.offering.plans" bundle="${msg}" />"></i>
-				<div class="error-area"
-					data-ng-show="instanceForm.computeoffer.$invalid && OfferingSubmitted">
-					<i tooltip="<fmt:message key="compute.offering.is.required" bundle="${msg}" />"
-						class="fa fa-warning error-icon"></i>
+									<select required="true" class="form-control form-group-lg" name="computeOffering" ng-change="computeFunction(instance.computeOffering.customized)" data-ng-model="instance.computeOffering"
+					data-ng-class="{'error': instanceForm.computeOffering.$invalid && OfferingSubmitted}"  data-ng-options="computeOffering.name group by computeOffering.group for computeOffering in instanceElements.computeOfferingList">
+									</select>
+				<i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="<fmt:message key="compute.offering.plans" bundle="${msg}" />"></i>
+				<div class="error-area" data-ng-show="instanceForm.computeoffer.$invalid && OfferingSubmitted">
+					<i tooltip="<fmt:message key="compute.offering.is.required" bundle="${msg}" />" class="fa fa-warning error-icon"></i>
 				</div>
 				<input required="true" type="hidden" name="computeoffer"
 					data-ng-model="instance.computeOffering.customized" class="form-control"
 					data-ng-class="{'error': instanceForm.computeoffer.$invalid && OfferingSubmitted}">
+								</div>
+                       	 </div>
 
-			</div>
-
-                        </div>
-
-
-
-                        <div data-ng-show="compute  && instance.computeOffering.customized">
+        <div data-ng-show="compute  && instance.computeOffering.customized">
 		<div class="row m-b-xl"
 			ng-class="{ 'text-danger' : instanceForm.ram.$modelValue <= 0 && OfferingSubmitted}">
 			<label class="col-md-3 col-sm-3 control-label"><fmt:message key="ram" bundle="${msg}" /> :</label>
@@ -58,7 +47,6 @@
 					rz-slider-ceil="instance.computeOffer.ram.ceil"
 					rz-slider-always-show-bar="true"></rzslider>
 			</div>
-
 			<div class="col-md-3 col-sm-3 digit-2-width">
 				<div class="input-group">
 					<input class="form-control" name="ram" valid-number
@@ -211,8 +199,6 @@
                             </tr>
                         </tbody>
                     </table>
-
-
                 </div>
             </div>
         </div>

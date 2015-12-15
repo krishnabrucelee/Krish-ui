@@ -8,7 +8,7 @@ angular
     .module('homer')
     .controller('configurationCtrl', configurationCtrl)
 
-function configurationCtrl($scope,$stateParams, localStorageService, promiseAjax, $modal, globalConfig, crudService, notify) {
+function configurationCtrl($scope,$stateParams, localStorageService, promiseAjax, $modal, $window, globalConfig, crudService, notify) {
 
     $scope.formSubmitted = false;
     $scope.instanceList = [];
@@ -17,16 +17,21 @@ function configurationCtrl($scope,$stateParams, localStorageService, promiseAjax
     $scope.instanceForm = [];
     $scope.instanceElements = {};
     $scope.instance = {};
+    $scope.instances = [];
+    $scope.instances.computeOffering ={};
+
     // Form Field Decleration
     $scope.computeOffer = {
 //        type: {id:1, name:"Basic"}
     };
 
-	$scope.instances = [];
+
 	var instanceId = $stateParams.id;
 	var hasServers = crudService.read("virtualmachine", instanceId);
 	hasServers.then(function (result) {
 	$scope.instances = result;
+        $scope.computeList();
+        console.log($scope.instances);
 	});
 
     	$scope.instance = {
@@ -80,17 +85,18 @@ function configurationCtrl($scope,$stateParams, localStorageService, promiseAjax
              var hasCompute = crudService.listAll("computes/list");
              hasCompute.then(function (result) {  // this is only run after $http completes0
                      $scope.instanceElements.computeOfferingList = result;
+                     //console.log($scope.instanceElements.computeOfferingList);
                      angular.forEach(result, function(item){
                     	 if (!angular.isUndefined($scope.instances.computeOffering)) {
-                    		 if(item.name == $scope.instances.computeOffering.name){
-                    			 var index = instanceElements.computeOfferingList.indexOf(item);
-                    			 $scope.instanceElements.computeOfferingList.splice(index, 1);
+                    		 if(item.name === $scope.instances.computeOffering.name){
+                    			 var index = $scope.instanceElements.computeOfferingList.indexOf(item);
+					 $scope.instance.computeOffering = result[index];
+					  console.log(result[index]);
                     		 }
                     	 }
-                     });
+                    	 	});
               	});
           	};
-          	$scope.computeList();
 
           	$scope.computeFunction = function (item) {
           		if (item === true) {
@@ -133,6 +139,11 @@ function configurationCtrl($scope,$stateParams, localStorageService, promiseAjax
                         });
           			}
           		},
+
+          		$scope.config = function (){
+                               $window.location.href = '#/cloud/instance/configuration.jsp';
+          		}
+
 
 
     $scope.affinity = {
