@@ -15,7 +15,7 @@
                 <div class="panel-body">
                     <div class="col-md-12 col-sm-12 m-b-md border-bottom">
 						<input type="hidden" data-ng-model="resourceQuota.domain" />
-						<input type="hidden" data-ng-model="type" />
+<!-- 						<input type="hidden" data-ng-model="type" /> -->
 
                         <div class="col-md-4 col-sm-4" data-ng-if="type == 'department-quota'" >
                             <div class="form-group">
@@ -232,7 +232,8 @@
                                     <a class="btn btn-default btn-outline" data-ng-if="type == 'department-quota'"  ui-sref="department""><fmt:message key="common.cancel" bundle="${msg}" /></a>
                                     <a class="btn btn-default btn-outline" data-ng-if="type == 'project-quota'"  ui-sref="projects""><fmt:message key="common.cancel" bundle="${msg}" /></a>
 
-                                    <button class="btn btn-info" data-ng-hide="showLoader" type="submit"><fmt:message key="common.update" bundle="${msg}" /></button>
+                                    <button data-ng-if="type == 'department-quota'" class="btn btn-info" has-permission="DEPARTMENT_QUOTA_EDIT" data-ng-hide="showLoader" type="submit"><fmt:message key="common.update" bundle="${msg}" /></button>
+                        			<button data-ng-if="type == 'project-quota'" class="btn btn-info" has-permission="PROJECT_QUOTA_EDIT" data-ng-hide="showLoader" type="submit"><fmt:message key="common.update" bundle="${msg}" /></button>
                                 </div>
                             </div>
                         </div>

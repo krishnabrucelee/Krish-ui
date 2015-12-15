@@ -54,9 +54,13 @@ function resourceAllocationCtrl($scope, crudService, globalConfig, notify, $stat
 		//if(form.$valid) {
 		console.log($scope.type);
 		if($scope.type == "project-quota") {
-			$scope.saveProjectQuota(form);
+			if(!angular.isUndefined($scope.resourceQuota.project)) {
+				$scope.saveProjectQuota(form);
+			}
 		} else if($scope.type == "department-quota") {
-			$scope.saveDepartmentQuota(form);
+			if(!angular.isUndefined($scope.resourceQuota.department)) {
+				$scope.saveDepartmentQuota(form);
+			}
 		} else {
 			$scope.saveDomainQuota(form);
 		}
@@ -125,8 +129,8 @@ function resourceAllocationCtrl($scope, crudService, globalConfig, notify, $stat
 			for(var i=0; i < $scope.resourceTypeList.length; i++) {
 				if(i != 5) {
 					var resourceObject = {};
-					resourceObject.domainId = $scope.resourceQuota.domain.id;
-					resourceObject.domain = $scope.resourceQuota.domain;
+					resourceObject.domainId = $scope.resourceQuota.department.domainId;
+					resourceObject.domain = $scope.resourceQuota.department.domain;
 					resourceObject.departmentId = $scope.resourceQuota.department.id;
 					resourceObject.department = $scope.resourceQuota.department;
 					resourceObject.resourceType = $scope.resourceTypeList[i];
