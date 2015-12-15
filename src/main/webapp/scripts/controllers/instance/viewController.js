@@ -10,7 +10,7 @@ angular
         .controller('instanceDetailsCtrl', instanceDetailsCtrl)
 
 
-function instanceViewCtrl($scope,$log, dialogService, $modal,$http, $state, $stateParams, promiseAjax, localStorageService, globalConfig, crudService, notify, $window) {
+function instanceViewCtrl($scope,$log, $sce, dialogService, $modal,$http, $state, $stateParams, promiseAjax, localStorageService, globalConfig, crudService, notify, $window) {
 
     $scope.instanceList = [];
     $scope.testvar = "test";
