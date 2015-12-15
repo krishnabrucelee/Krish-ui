@@ -18,7 +18,7 @@
 							</div>
 						</div>
                         <span class="pull-right m-l-sm m-t-sm m-b-sm">
-                            <a class="btn btn-info"  ng-click="createSSHKey('md')"  data-backdrop="static" data-keyboard="false"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="create.ssh.key.pair" bundle="${msg}" /></a>
+                            <a has-permission="CREATE_SSH_KEY" class="btn btn-info"  ng-click="createSSHKey('md')"  data-backdrop="static" data-keyboard="false"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="create.ssh.key.pair" bundle="${msg}" /></a>
                             <a class="btn btn-info" ui-sref="cloud.list-ssh" href="#/sshkeys/list" title="<fmt:message key="common.refresh" bundle="${msg}" />"  ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
                         </span>
                     </div>
@@ -55,7 +55,7 @@
                                         	{{ sshkey.privatekey}}
                                         </td>
                                         <td><a class="icon-button" title="<fmt:message key="common.view.instance" bundle="${msg}" />"> <span class="fa fa-eye"></span></a>
-											<a class="icon-button" title="<fmt:message key="common.delete" bundle="${msg}" />" data-ng-click="delete('sm', sshkey)"><span class="fa fa-trash"></span></a>
+											<a has-permission="DELETE_SSH_KEY" class="icon-button" title="<fmt:message key="common.delete" bundle="${msg}" />" data-ng-click="delete('sm', sshkey)"><span class="fa fa-trash"></span></a>
 										</td>
                                     </tr>
                                 </tbody>
