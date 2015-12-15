@@ -50,19 +50,20 @@ function promiseAjax($http, $window, globalConfig, notify) {
                 }
             }
             return data;
+        }).catch(function (result) {
+        	if(result.data != null && result.data.status === 401 && result.data.message === "INVALID_TOKEN") {
+        		notify({
+    				message : "Your session has expired. Please log-in again",
+    				classes : 'alert-danger',
+    				templateUrl : global.NOTIFICATION_TEMPLATE
+    			});
+        		setTimeout(function() {
+        			window.location.href = "login";
+        		}, 2000);
+            } else {
+            	throw result;
+            }
         });
-//        .catch(function (result) {
-//        	if(result.data.status === 401 && result.data.message === "INVALID_TOKEN") {
-//        		notify({
-//    				message : "Your session has expired. Please log-in again",
-//    				classes : 'alert-danger',
-//    				templateUrl : global.NOTIFICATION_TEMPLATE
-//    			});
-//        		setTimeout(function() {
-//        			window.location.href = "login";
-//        		}, 2000);
-//            }
-//        });
     };
 
     var httpRequest = function(method, url, data) {
