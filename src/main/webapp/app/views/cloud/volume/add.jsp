@@ -105,6 +105,26 @@ pageEncoding="UTF-8"%>
                             </div>
                         </div>
                     </div>
+           <div class="form-group" >
+
+                        <div class="row">
+                            <label class="col-md-2 col-xs-12 col-sm-2 control-label"><fmt:message key="common.project" bundle="${msg}" /> <span class="m-l-xs"></span></label>
+                            <div class="col-md-5 col-xs-12 col-sm-5">
+                                <select  class="form-control input-group" name="diskOfferings"
+                                        data-ng-model="volume.project"
+                                        data-ng-options="options.name for options in options" >
+                                    <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
+                                </select>
+
+                                <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="Select the type" ></i>
+                                <div class="error-area" data-ng-show="volumeForm.type.$invalid && formSubmitted" >
+                                <i  tooltip="Type is Required" class="fa fa-warning error-icon"></i></div>
+
+                                <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="<fmt:message key="common.project" bundle="${msg}" />" ></i>
+
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
