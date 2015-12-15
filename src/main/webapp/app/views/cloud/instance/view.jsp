@@ -153,7 +153,7 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                    <div class="col-md-6">rconfiguration
+                                    <div class="col-md-6">
                                         <table class="table table-condensed table-striped" cellspacing="1" cellpadding="1">
                                             <tbody>
                                                 <tr>
