@@ -18,14 +18,14 @@ pageEncoding="UTF-8"%>
                                 <div class="clearfix"></div>
                             </div>
                             <div class="dashboard-box pull-left">
-                                <span class="pull-right"><fmt:message key="running.volume" bundle="${msg}" /></span>
+                                <span class="pull-right"><fmt:message key="attached.volume" bundle="${msg}" /></span>
                                 <div class="clearfix"></div>
                                 <span class="pull-left m-t-xs"><img src="images/volume-icon.png"></span>
                                 <b class="pull-right">{{volumeList.Count}}</b>
                                 <div class="clearfix"></div>
                             </div>
                             <div class="dashboard-box pull-left">
-                                <span class="pull-right"><fmt:message key="stopped.volume" bundle="${msg}" /></span>
+                                <span class="pull-right"><fmt:message key="detached.volume" bundle="${msg}" /></span>
                                 <div class="clearfix"></div>
                                 <span class="pull-left m-t-xs"><img src="images/volume-icon.png"></span>
                                 <b class="pull-right">0</b>
@@ -36,7 +36,8 @@ pageEncoding="UTF-8"%>
                             <panda-quick-search></panda-quick-search>
                             <div class="clearfix"></div>
                             <span class="pull-right m-l-sm m-t-sm">
-                            	<a class="btn btn-info" data-ng-click="uploadVolumeFromLocalCtrl('md')"><span class="pe-7s-cloud-upload pe-lg font-bold m-r-xs"></span> <fmt:message key="upload.volume.from.local" bundle="${msg}" /></a>
+<%--                             	<a class="btn btn-info" data-ng-click="uploadVolumeFromLocalCtrl('md')"><span class="pe-7s-cloud-upload pe-lg font-bold m-r-xs"></span> <fmt:message key="upload.volume.from.local" bundle="${msg}" /></a> --%>
+								<a class="btn btn-info" ><span class="pe-7s-cloud-upload pe-lg font-bold m-r-xs"></span> <fmt:message key="upload.volume.from.local" bundle="${msg}" /></a>
                                 <a class="btn btn-info" data-ng-click="uploadVolumeCtrl('md')"><span class="pe-7s-cloud-upload pe-lg font-bold m-r-xs"></span> <fmt:message key="common.upload" bundle="${msg}" /></a>
                                 <a class="btn btn-info" data-ng-click="addVolume('md')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span>  <fmt:message key="add.volume" bundle="${msg}" /></a>
                                 <a class="btn btn-info" ui-sref="cloud.list-volume" title="<fmt:message key="common.refresh" bundle="${msg}" />" ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
@@ -58,10 +59,10 @@ pageEncoding="UTF-8"%>
                             <thead>
                                 <tr>
                                     <th class="col-md-2 col-xs-2"><fmt:message key="common.name" bundle="${msg}" /></th>
-                                    <th class="col-md-1 col-xs-1"><fmt:message key="common.department" bundle="${msg}" /></th>
-                                    <th class="col-md-1 col-xs-1"><fmt:message key="common.project" bundle="${msg}" /></th>
+                                    <th class="col-md-2 col-xs-1"><fmt:message key="common.department" bundle="${msg}" /></th>
+                                    <th class="col-md-2 col-xs-1"><fmt:message key="common.project" bundle="${msg}" /></th>
                             <th class="col-md-1 col-xs-1"><fmt:message key="common.type" bundle="${msg}" /></th>
-                            <th class="col-md-2 col-xs-3"><fmt:message key="common.plan" bundle="${msg}" /></th>
+                            <th class="col-md-1 col-xs-1"><fmt:message key="common.plan" bundle="${msg}" /></th>
                             <th class="col-md-2 col-xs-2"><fmt:message key="common.attached.to" bundle="${msg}" /></th>
                             <th class="col-md-1 col-xs-1"><fmt:message key="common.size" bundle="${msg}" /></th>
                             <th class="col-md-2 col-xs-1"><fmt:message key="common.created.date" bundle="${msg}" /></th>
