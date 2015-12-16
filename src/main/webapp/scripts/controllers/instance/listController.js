@@ -10,15 +10,13 @@ angular.module('homer').controller('instanceListCtrl', instanceListCtrl)
 function instanceListCtrl($scope, $sce, $log, $filter, dialogService, promiseAjax, $state,
 		globalConfig, crudService,$modal, localStorageService, $window, notify) {
 	$scope.instanceList = [];
-	$scope.instancesList = [];       
+	$scope.instancesList = [];
         $scope.global = crudService.globalConfig;
 	$scope.paginationObject = {};
 	$scope.sort = {
 		column : '',
 		descending : false
 	};
-
-
 
 //	  $scope.showConsole = function(vm) {
 //		  $scope.vm = vm;
@@ -108,17 +106,17 @@ function instanceListCtrl($scope, $sce, $log, $filter, dialogService, promiseAja
 		}
 		return sort.descending;
 	};
-	
+
 	$scope.vm = {};
 
 	$scope.list = function(pageNumber, status) {
 	if(!angular.isUndefined(status)) {
-	$scope.vm.status = status;	
+	$scope.vm.status = status;
  	$window.sessionStorage.removeItem("status")
  	$window.sessionStorage.setItem("status",status);
 	} else {
 	$scope.vm.status=$window.sessionStorage.getItem("status");
-        }        	  
+        }
 		$scope.showLoader = true;
 		var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
 
