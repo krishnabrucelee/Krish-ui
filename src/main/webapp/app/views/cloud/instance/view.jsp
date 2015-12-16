@@ -169,14 +169,12 @@
                                     <div class="col-md-6">
                                         <table class="table table-condensed table-striped" cellspacing="1" cellpadding="1">
                                             <tbody>
+                                               
                                                 <tr>
-                                                    <td class="col-md-4 col-sm-4"><b><fmt:message key="common.zone" bundle="${msg}" /></b></td>
-                                                    <td class="col-md-8 col-sm-8">{{ instance.zone.name}}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td><b><fmt:message key="display.name" bundle="${msg}" /></b></td>
+                                                <h4 class="text-info">Basic Info</h4>
+                                                    <td><b><fmt:message key="instance.name" bundle="${msg}" /></b></td>
                                                     <td>
-                                                    	<span data-ng-if="!instnaceEdit">{{instance.transDisplayName}}</span>
+                                                    	<span data-ng-if="!instnaceEdit">{{instance.name}}</span>
 														<div data-ng-if="instnaceEdit && instance.status == 'Stopped'" class="form-group"
 															ng-class="{'text-danger': instance.transDisplayName == '' && formSubmitted}">
 															<input type="text" name="transDisplayName"
@@ -193,47 +191,126 @@
                                                     <td><b class="text-uppercase" data-ng-class="instance.status == 'Stopped' ? 'text-danger' : 'text-success' ">{{ instance.status}} </b></td>
                                                 </tr>
                                                 <tr>
-                                                    <td><b><fmt:message key="offer" bundle="${msg}" /></b></td>
-                                                    <td>{{ instance.computeOffering.name}} <a data-ng-show = "instance.status == 'Stopped'" data-ng-click="templateCategory = 'config'"  class="fa fa-edit m-l-lg"> <fmt:message key="common.edit" bundle="${msg}" /></a></td>
+                                                    <td><b><fmt:message key="instance.id" bundle="${msg}" /></b></td>
+                                                    <td>VM-{{ instance.uuid}}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td><b><fmt:message key="disk.size" bundle="${msg}" /></b></td>
-                                                    <td>{{volume[0].diskSize / global.Math.pow(2, 30)}} GB</td>
+                                                    <td><b><fmt:message key="common.company" bundle="${msg}" /></b></td>
+                                                    <td>{{instance.domain.name}}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td><b><fmt:message key="common.ip" bundle="${msg}" /></b></td>
-                                                    <td>{{ instance.ipAddress}} | {{instance.network.networkType}} </td>
+                                                    <td class="col-md-4 col-sm-4"><b><fmt:message key="common.zone" bundle="${msg}" /></b></td>
+                                                    <td class="col-md-8 col-sm-8">{{ instance.zone.name}}</td>
                                                 </tr>
+                                                <tr>
+                                                    <td><b><fmt:message key="common.host" bundle="${msg}" /></b></td>
+                                                    <td>{{ instance.host.name }}</td>
+                                                </tr>
+                                                 <tr>
+                                                    <td class="col-md-4 col-sm-4"><b><fmt:message key="created.on" bundle="${msg}" /></b></td>
+                                                    <td class="col-md-8 col-sm-8">{{ instance.createdDateTime *1000 | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                                                </tr>
+                                                
                                             </tbody>
                                         </table>
                                     </div>
                                     <div class="col-md-6">
                                         <table class="table table-condensed table-striped" cellspacing="1" cellpadding="1">
                                             <tbody>
+                                               <h4 class="text-info">Ownership</h4>
+                                                 <tr>
+                                                    <td><b><fmt:message key="instance.owner" bundle="${msg}" /></b></td>
+                                                    <td>{{instance.department.userName}}</td>
+                                                </tr>
+                                                  <tr>
+                                                    <td><b><fmt:message key="common.company" bundle="${msg}" /></b></td>
+                                                    <td>{{instance.domain.name}}</td>
+                                                </tr>
+                                                  <tr>
+                                                    <td><b><fmt:message key="common.department" bundle="${msg}" /></b></td>
+                                                    <td>{{ instance.department.userName}}</td>
+                                                </tr>
+                                                 <tr>
+                                                    <td><b><fmt:message key="common.project" bundle="${msg}" /></b></td>
+                                                    <td>{{instance.project.name}}</td>
+                                                </tr>
+                                                 <tr>
+                                                    <td><b><fmt:message key="common.application" bundle="${msg}" /></b></td>
+                                                    <td><div data-ng-repeat="application in instance.applicationList"> <span data-ng-show="application.type !== ''">{{application.type}}</span> </div></td>
+                                                </tr>
+                                               </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <table class="table table-condensed table-striped" cellspacing="1" cellpadding="1">
+                                            <tbody>
+                                               
                                                 <tr>
-                                                    <td class="col-md-4 col-sm-4"><b><fmt:message key="created.on" bundle="${msg}" /></b></td>
-                                                    <td class="col-md-8 col-sm-8">{{ instance.createdDateTime *1000 | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                                                <h4 class="text-info">Tech Specification</h4>
+                                                    <td><b><fmt:message key="common.hypervisor" bundle="${msg}" /></b></td>
+                                                    <td>{{instance.template.hypervisor.name}}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td><b><fmt:message key="instance.id" bundle="${msg}" /></b></td>
-                                                    <td>VM-{{ instance.uuid}}</td>
+                                                    <td><b><fmt:message key="common.templates" bundle="${msg}" /></b></td>
+                                                    <td>{{instance.template.name}}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td><b><fmt:message key="memory" bundle="${msg}" /></b></td>
-                                                    <td>{{ instance.computeOffering.memory }}</td>
+                                                    <td><b><fmt:message key="offer" bundle="${msg}" /></b></td>
+                                                    <td>{{ instance.computeOffering.name}} <a data-ng-show = "instance.status == 'Stopped'" data-ng-click="templateCategory = 'config'"  class="fa fa-edit m-l-lg"> <fmt:message key="common.edit" bundle="${msg}" /></a></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><b><fmt:message key="common.osType" bundle="${msg}" /></b></td>
+                                                    <td>{{instance.template.osType.description}}</td>
+                                                    
                                                 </tr>
                                                 <tr>
                                                     <td><b><fmt:message key="cpu.cores" bundle="${msg}" /></b></td>
                                                     <td>{{ instance.computeOffering.numberOfCores }}</td>
                                                 </tr>
                                                  <tr>
-                                                    <td><b><fmt:message key="common.host" bundle="${msg}" /></b></td>
-                                                    <td>{{ instance.host.name }}</td>
+                                                    <td><b><fmt:message key="memory" bundle="${msg}" /></b></td>
+                                                    <td>{{ instance.computeOffering.memory }}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td><b><fmt:message key="common.account" bundle="${msg}" /></b></td>
-                                                    <td>{{ instance.instanceOwner.userName}}</td>
+                                                    <td><b><fmt:message key="common.storage" bundle="${msg}" /></b></td>
+                                                    <td>{{volume[0].diskSize / global.Math.pow(2, 30)}} GB</td>
                                                 </tr>
+                                                <tr>
+                                                    <td><b><fmt:message key="common.ip" bundle="${msg}" /></b></td>
+                                                    <td>{{ instance.ipAddress}} | {{instance.network.networkType}} </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><b><fmt:message key="high.availability" bundle="${msg}" /></b></td>
+                                                    <td>{{instance.computeOffering.isHighAvailabilityEnabled}} </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><b><fmt:message key="dynamic.scalable" bundle="${msg}" /></b></td>
+                                                    <td>{{instance.template.dynamicallyScalable}}</td>
+                                                </tr>
+                                                
+                                                
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <table class="table table-condensed table-striped" cellspacing="1" cellpadding="1">
+                                            <tbody>
+                                               <h4 class="text-info">Services and Cost</h4>
+                                                 <tr>
+                                                    <td><b><fmt:message key="subscription.cost" bundle="${msg}" /></b></td>
+                                                    <td><span class="text-danger"><app-currency></app-currency> {{(instance.template.templateCost[0].cost + instance.storageOffering.storagePrice[0].costGbPerMonth +instance.storageOffering.storagePrice[0].costIopsPerMonth+
+															instance.computeOffering.computeCost[0].instanceRunningCostIops+instance.computeOffering.computeCost[0].instanceRunningCostMemory + instance.computeOffering.computeCost[0].instanceRunningCostVcpu
+															+instance.computeOffering.computeCost[0].instanceStoppageCostIops +instance.computeOffering.computeCost[0].instanceStoppageCostMemory+ instance.computeOffering.computeCost[0].instanceStoppageCostVcpu)/30 | number:2
+														}} </span> / <fmt:message key="common.day" bundle="${msg}" /> </td>
+                                                </tr>
+                                                  <tr>
+                                                    <td><b><fmt:message key="common.package" bundle="${msg}" /></b></td>
+                                                    <td>{{instance.computeOffering.name}}</td>
+                                                </tr>
+                                                  
+                                              
                                             </tbody>
                                         </table>
                                     </div>
