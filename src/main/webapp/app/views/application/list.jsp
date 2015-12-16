@@ -88,7 +88,7 @@
 												<td>{{ application.description}}</td>
 												<td>{{ application.status}}</td>
 												<td><a has-permission="EDIT_APPLICATION_TYPE" class="icon-button" title="<fmt:message key="common.edit" bundle="${msg}" />" data-ng-click="edit('md', application)"> <span class="fa fa-edit"></span></a>
-												<a has-permission="DELETE_APPLICATION_TYPE" class="icon-button" title="<fmt:message key="common.delete" bundle="${msg}" />" data-ng-click="delete('sm', application)"><span class="fa fa-trash"></span></a>
+												<a has-permission="EDIT_APPLICATION_TYPE" class="icon-button" title="<fmt:message key="common.delete" bundle="${msg}" />" data-ng-click="delete('sm', application)"><span class="fa fa-trash"></span></a>
 												</td>
 											</tr>
 										</tbody>

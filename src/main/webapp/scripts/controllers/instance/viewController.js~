@@ -225,6 +225,7 @@ $scope.list = function () {
 				  var hasVms = crudService.updates("virtualmachine/console", vm);
 	  				hasVms.then(function(result) {
 	  					console.log(result);
+alert("ddd");
 	  					 $window.open(result.success, 'VM console', 'width=500,height=400');
 	  				});
 			  }

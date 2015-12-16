@@ -108,6 +108,8 @@ function networksCtrl($scope, modalService, promiseAjax, filterFilter, localStor
     };
     $scope.list(1);
 
+
+
     // Delete the Network
     $scope.delete = function (size, network) {
         dialogService.openDialog("app/views/cloud/network/confirm-delete.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
