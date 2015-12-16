@@ -7,7 +7,7 @@
 angular.module('homer').controller('instanceListCtrl', instanceListCtrl)
 		.controller('instanceDetailsCtrl', instanceDetailsCtrl)
 
-function instanceListCtrl($scope, $log, $filter, dialogService, promiseAjax, $state,
+function instanceListCtrl($scope, $sce, $log, $filter, dialogService, promiseAjax, $state,
 		globalConfig, crudService,$modal, localStorageService, $window, notify) {
 	$scope.instanceList = [];
 	$scope.instancesList = [];       
@@ -20,13 +20,31 @@ function instanceListCtrl($scope, $log, $filter, dialogService, promiseAjax, $st
 
 
 
+//	  $scope.showConsole = function(vm) {
+//		  $scope.vm = vm;
+//		  var hasVms = crudService.updates("virtualmachine/console", vm);
+//			hasVms.then(function(result) {
+//				console.log(result);
+//				 $window.open(result.success, 'VM console', 'width=500,height=400');
+//			});
+//	  }
+
 	  $scope.showConsole = function(vm) {
 		  $scope.vm = vm;
 		  var hasVms = crudService.updates("virtualmachine/console", vm);
-			hasVms.then(function(result) {
-				console.log(result);
-				 $window.open(result.success, 'VM console', 'width=500,height=400');
-			});
+				hasVms.then(function(result) {
+					$scope.consoleUrl = $sce.trustAsResourceUrl(result.success);
+					$scope.instance = vm;
+			        dialogService.openDialog("app/views/cloud/instance/view-console.jsp", 'lg', $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
+			          $scope.cancel = function () {
+	  	               $modalInstance.close();
+	  	           };
+			        }]);
+
+
+				});
+
+
 	  }
 
 	$scope.startVm = function(size, item) {
