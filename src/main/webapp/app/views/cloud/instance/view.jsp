@@ -88,13 +88,16 @@
 										</table>
 									</div>
 								</div>
-								<div class=" col-md-5 col-sm-12 col-lg-5 ">
-									<div class="row m-l-lg m-t-lg"
+								<div class=" col-md-7 col-sm-12 col-lg-5 ">
+									<div class=""
 										data-ng-repeat="quota in quotaLimitData">
-										<label class="col-md-6 col-sm-6 col-xs-6 control-label ">
+										<label class="control-label pull-right m-r-lg">
 											<fmt:message key="cpu.utilized" bundle="${msg}" />
-										</label>{{instance.cpuUsage}}
-										<div class="col-md-4  col-sm-4 col-xs-4 m-t-lg m-r-xxs">
+										</label>
+										<div class="clearfix"></div>
+										<span class="cpu-usage text-info">{{instance.cpuUsage}}</span>
+										<div class="clearfix"></div>
+										<div class="m-t-lg pull-right">
 											<canvas donutchart options="quotaChartOptions"
 												data="quota.options" width="175" height="175">
                                             </canvas>
