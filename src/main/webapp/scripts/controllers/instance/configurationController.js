@@ -8,7 +8,7 @@ angular
     .module('homer')
     .controller('configurationCtrl', configurationCtrl)
 
-function configurationCtrl($scope,$stateParams, localStorageService, promiseAjax, $modal, $window, globalConfig, crudService, notify) {
+function configurationCtrl($scope, $stateParams, localStorageService, promiseAjax, $modal, $window, globalConfig, crudService, notify) {
 
     $scope.formSubmitted = false;
     $scope.instanceList = [];

@@ -549,4 +549,13 @@ disk.write.io = Disk Write IO
 cpu.utilized = CPU Utilized
 =======
 volume.required = volume is required
->>>>>>> Stashed changes
+#Instance Monitoring
+common.statistics =  Statistics
+total.cpu = Total CPU
+network.read = Network Read
+network.write = Network Write
+disk.read.bytes = Disk Read (Bytes)
+disk.write.bytes = Disk Write (Bytes)
+disk.read.io = Disk Read IO
+disk.write.io = Disk Write IO
+cpu.utilized = CPU Utilized

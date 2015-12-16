@@ -51,10 +51,15 @@
             			<tr data-ng-repeat="user in userList">
             				<td>{{user.userName}}</td>
             				<td>
-          						<select class="form-control input-group" name="role" data-ng-model="userRoleList[user.id]" data-ng-class="{'error': RoleForm.role.$invalid && formSubmitted}">
+          						 <select class="form-control input-group" name="role" data-ng-model="userRoleList[user.id]" data-ng-class="{'error': RoleForm.role.$invalid && formSubmitted}">
             						<option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
             						<option data-ng-repeat="role in roleList"  data-ng-selected="userRoleList[user.id].id == role.id"   value="{{role}}">{{role.name}}</option>
             					</select>
+
+            					<%-- <select class="form-control input-group" name="role"  data-ng-model="userRoleList[user.id]" ng-options="role.name for role in roleList" data-ng-class="{'error': RoleForm.role.$invalid && formSubmitted}">
+            						<option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
+            					</select> --%>
+
             				</td>
             			</tr>
 

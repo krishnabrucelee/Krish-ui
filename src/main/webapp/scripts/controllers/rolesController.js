@@ -1,4 +1,5 @@
 
+
 angular
         .module('homer')
         .controller('rolesListCtrl', rolesListCtrl)
@@ -6,8 +7,7 @@ angular
 
  function rolesListCtrl($scope, $window, $state, modalService, crudService, notify, promiseAjax, dialogService, $stateParams) {
 
-    $scope.formElements = {
-    };
+    $scope.formElements = {};
     $scope.ids = {};
     $scope.role = {
         department: {}
@@ -231,8 +231,6 @@ angular
         		if(angular.isUndefined($scope.userRoleList))
         			$scope.userRoleList = [];
 
-
-
     			var hasRoles =  promiseAjax.httpTokenRequest( crudService.globalConfig.HTTP_GET, crudService.globalConfig.APP_URL + "roles"  +"/department/"+department.id);
             	hasRoles.then(function (result) {  // this is only run after $http completes0
             		$scope.roleList = result;
@@ -247,6 +245,7 @@ angular
 
        // Assign a new role to our user
         $scope.userRoleList = [];
+        $scope.role.department = "";
         $scope.assignRoleSave = function (form) {
         	$scope.formSubmitted = true;
         	$scope.formSubmitted = true;
@@ -254,8 +253,11 @@ angular
         	angular.forEach($scope.userList, function(obj, key) {
         		var userObject = {};
         		userObject = obj;
-        		userObject.role = $scope.userRoleList[obj.id];
+		if(!angular.isUndefined($scope.userRoleList[obj.id])){
+        		userObject.role = angular.fromJson($scope.userRoleList[obj.id]);
+			userObject.roleId = userObject.role.id ;
         		assignedUsers.push(userObject);
+		}
         	});
 
         	console.log(assignedUsers);
@@ -276,7 +278,7 @@ angular
         	}
         	},
         	   $scope.cancel = function () {
-        		$scope.role.department = {};
+        		$scope.role.department = "";
                 $modalInstance.close();
             };
         }]);
@@ -294,8 +296,6 @@ angular
         		if(angular.isUndefined($scope.userRoleList))
         			$scope.userRoleList = [];
 
-
-
     			var hasRoles =  promiseAjax.httpTokenRequest( crudService.globalConfig.HTTP_GET, crudService.globalConfig.APP_URL + "roles"  +"/department/"+department.id);
             	hasRoles.then(function (result) {  // this is only run after $http completes0
             		$scope.roleList = result;
@@ -308,9 +308,6 @@ angular
                 		});
             	});
         	});
-
-
-
         };
 
        // Assign a new role to our user
@@ -348,3 +345,4 @@ angular
     };
 
 }
+
