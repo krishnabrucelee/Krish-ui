@@ -189,7 +189,6 @@ function accountListCtrl($scope,$state, promiseAjax, $log, notify, crudService, 
                     		$scope.user.domain = "";
                     		$scope.user.role = "";
                     		$scope.user.email = "";
-                    		$scope.user.type = "";
                     		$scope.user.firstName = "";
                     		$scope.user.lastName = "";
                     		$scope.user.projectList = "";
