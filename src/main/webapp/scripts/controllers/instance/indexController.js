@@ -810,12 +810,17 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
                    networkError = false;
                    $scope.showLoaderOffer = false;
                  }).catch(function (result) {
-                     if (!angular.isUndefined(result.data)) {
-                         angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
-                             $scope.computeForm[key].$invalid = true;
-                             $scope.computeForm[key].errorMessage = errorMessage;
-                         });
-                     }
+                	 if(!angular.isUndefined(result) && result.data != null) {
+	      		 		   if(result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])){
+	                      	 var msg = result.data.globalError[0];
+	                      	 notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+	                       }
+		      		 		angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
+	                            $scope.computeForm[key].$invalid = true;
+	                            $scope.computeForm[key].errorMessage = errorMessage;
+	                        });
+         			  }
+
                  });
              }
          }
