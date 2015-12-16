@@ -544,11 +544,17 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
              notify({message: 'instance created successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
              $modalInstance.close();
          }).catch(function (result) {
-             angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
-                 $scope.instanceForm[key].$invalid = true;
-                 $scope.instanceForm[key].errorMessage = errorMessage;
-             });
-
+        	 if (!angular.isUndefined(result.data)) {
+              	if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
+                	    var msg = result.data.globalError[0];
+              	    notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+                  } else if (result.data.fieldErrors != null) {
+                 	 angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
+                          $scope.instanceForm[key].$invalid = true;
+                          $scope.instanceForm[key].errorMessage = errorMessage;
+                      });
+              	}
+              }
          });
      };
 

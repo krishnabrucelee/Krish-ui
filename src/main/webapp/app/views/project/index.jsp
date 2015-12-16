@@ -52,15 +52,15 @@
 								<div class="pull-right">
 									<panda-quick-search></panda-quick-search>
 									<div class="clearfix"></div>
-									<span class="pull-right m-l-sm m-t-sm"> <a
+									<span class="pull-right m-l-sm m-t-sm"> <a has-permission="CREATE_PROJECT"
 										class="btn btn-info" data-ng-click="createProject('md')"><span
-											class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="create.project" bundle="${msg}" /></a> <a class="btn btn-info"
+											class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="create.project" bundle="${msg}" /></a> <a has-permission="EDIT_PROJECT" class="btn btn-info"
 										data-ng-click="editProject('md')"
 										data-ng-disabled="!oneChecked"><span
 											class="fa fa-edit fa-lg m-r-xs"></span><fmt:message key="edit.project" bundle="${msg}" /></a>
 
 
-											 <a
+											 <a has-permission="DELETE_PROJECT"
 										class="btn btn-danger"
 										data-ng-click="projectDeleteConfirmation('sm', project.totalCheckedCount)"
 										data-ng-disabled="!oneChecked"><span
@@ -122,7 +122,7 @@
 													data-ng-class="isSingle == projectObj.id  ? 'text-white' : ''"
 													class="badge badge-info p-xs" ui-sref="dashboard">Enter
 														Project</a>
-														   <a class="icon-button" ui-sref="projects.quotalimit({id: {{projectObj.id}}, quotaType: 'project-quota'})" title="<fmt:message key="common.edit.quota" bundle="${msg}" />">
+														   <a has-permission="PROJECT_RESOURCE_QUOTA_MODIFICATION" class="icon-button" ui-sref="projects.quotalimit({id: {{projectObj.id}}, quotaType: 'project-quota'})" title="<fmt:message key="common.edit.quota" bundle="${msg}" />">
                                                     <span class="fa font-bold pe-7s-edit"> </span>
                                                 </a>
                                                 </td>

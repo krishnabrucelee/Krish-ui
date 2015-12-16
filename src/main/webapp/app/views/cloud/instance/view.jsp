@@ -9,10 +9,10 @@
 
         <ul class="nav nav-tabs" data-ng-init="templateCategory = 'dashboard'">
             <li class="active"><a href="javascript:void(0)" data-ng-click="templateCategory = 'dashboard'" data-toggle="tab">  <i class="fa fa-laptop"></i> <fmt:message key="dashboard" bundle="${msg}" /></a></li>
-            <li data-ng-show ="instance.status == 'Stopped'" class=""><a  data-ng-click="templateCategory = 'config'" data-toggle="tab"> <i class="fa fa-cogs"></i> <fmt:message key="configuration" bundle="${msg}" /></a></li>
+            <li data-ng-show ="instance.status == 'Stopped'" class=""><a has-permission="UPGRADE_VM" data-ng-click="templateCategory = 'config'" data-toggle="tab"> <i class="fa fa-cogs"></i> <fmt:message key="configuration" bundle="${msg}" /></a></li>
             <li class=""><a  data-ng-click="templateCategory = 'storage'" data-toggle="tab"><i class="fa fa-database"></i> <fmt:message key="storage" bundle="${msg}" /></a></li>
             <li class=""><a  data-ng-click="templateCategory = 'network'" data-toggle="tab"> <!--<i class="fa fa-sitemap"></i>--><i class="custom-icon custom-icon-network"></i> <fmt:message key="networking" bundle="${msg}" /></a></li>
-            <li class=""><a data-ng-click="templateCategory = 'monitor'" data-toggle="tab"> <i class="fa fa-desktop"></i> <fmt:message key="monitor" bundle="${msg}" /></a></li>
+            <li class=""><a has-permission="MONITOR_VM_PERFORMANCE" data-ng-click="templateCategory = 'monitor'" data-toggle="tab"> <i class="fa fa-desktop"></i> <fmt:message key="monitor" bundle="${msg}" /></a></li>
         </ul>
 
         <div class="tab-content">
@@ -76,7 +76,7 @@
 														class="col-md-7 col-sm-7 col-xs-7 control-label "><fmt:message
 																key="disk.read.io" bundle="${msg}" /></label></td>
 													<td>{{instance.diskIoRead}} </td>
-													
+
 												</tr>
 												<tr>
 													<td><label
@@ -99,9 +99,9 @@
 										<div class="clearfix"></div>
 										<div class="m-t-lg pull-right">
 											<canvas donutchart options="quotaChartOptions"
-												data="quota.options" width="175" height="175">   
+												data="quota.options" width="175" height="175">
                                             </canvas>
-											
+
 										</div>
 									</div>
 								</div>
@@ -118,37 +118,37 @@
                                 <ul class="list-group">
                                 <div data-ng-show="instance.status != 'Error' || instance.status != 'Expunging' || instance.status != 'Starting' || instance.status != 'Stopping' || instance.status != 'Destroying'  ">
                                     <li  class="list-group-item">
-                                        <a href="javascript:void(0);" title="<fmt:message key="stop" bundle="${msg}" />" data-ng-click="stopVm('sm',instance)" data-ng-show="instance.status == 'Running'"><span class="fa-ban fa font-bold m-xs"></span> <fmt:message key="stop" bundle="${msg}" /></a>
-                                        <a href="javascript:void(0);" title="<fmt:message key="start" bundle="${msg}" />" data-ng-click="startVm('sm',instance)" data-ng-show="instance.status == 'Stopped'"><span class="fa-play fa font-bold m-xs"></span> <fmt:message key="start" bundle="${msg}" /></a>
+                                        <a has-permission="STOP_VM" href="javascript:void(0);" title="<fmt:message key="stop" bundle="${msg}" />" data-ng-click="stopVm('sm',instance)" data-ng-show="instance.status == 'Running'"><span class="fa-ban fa font-bold m-xs"></span> <fmt:message key="stop" bundle="${msg}" /></a>
+                                        <a has-permission="START_VM" href="javascript:void(0);" title="<fmt:message key="start" bundle="${msg}" />" data-ng-click="startVm('sm',instance)" data-ng-show="instance.status == 'Stopped'"><span class="fa-play fa font-bold m-xs"></span> <fmt:message key="start" bundle="${msg}" /></a>
                                     </li>
-                                    <li data-ng-if="instance.status == 'Running'" class="list-group-item">
+                                    <li has-permission="REBOOT_VM" data-ng-if="instance.status == 'Running'" class="list-group-item">
                                         <a href="javascript:void(0);" data-ng-if="instance.status == 'Running'" title="<fmt:message key="restart" bundle="${msg}" />" data-ng-click="rebootVm('sm',instance)"><span class="fa-rotate-left fa font-bold m-xs"></span> <fmt:message key="reboot" bundle="${msg}" /></a>
                                     </li>
-                                    <li class="list-group-item" data-ng-if="instance.status == 'Running'">
+                                    <li has-permission="VIEW_CONSOLE" class="list-group-item" data-ng-if="instance.status == 'Running'">
                                         <a href="javascript:void(0);" title="<fmt:message key="view.console" bundle="${msg}" />" data-ng-click="showConsole(instance)"><span class="fa-desktop fa font-bold m-xs"></span> <fmt:message key="view.console" bundle="${msg}" /></a>
                                     </li>
-                                    <li data-ng-show="instance.passwordEnabled == true && (instance.status == 'Running' || instance.status == 'Stopped')"  class="list-group-item">
+                                    <li has-permission="RESET_PASSWORD" data-ng-show="instance.passwordEnabled == true && (instance.status == 'Running' || instance.status == 'Stopped')"  class="list-group-item">
                                         <a href="javascript:void(0);" title="<fmt:message key="reset.password" bundle="${msg}" />" data-ng-click="showPassword(instance)"><span class="fa-key fa font-bold m-xs"></span> <fmt:message key="show/reset.password" bundle="${msg}" /></a>
                                     </li>
-                                    <li class="list-group-item" data-ng-if="instance.status == 'Running'">
+                                    <li has-permission="REINSTALL_VM" class="list-group-item" data-ng-if="instance.status == 'Running'">
                                         <a href="javascript:void(0);" title="<fmt:message key="reinstall.vm" bundle="${msg}" />" data-ng-click="reInstallVm('md',instance)"><span class="fa fa-history m-xs"></span> <fmt:message key="reinstall.vm" bundle="${msg}" /></a>
                                     </li>
-                                    <li class="list-group-item" data-ng-show="instance.status == 'Running' || instance.status == 'Stopped' ">
+                                    <li has-permission="DESTROY_VM" class="list-group-item" data-ng-show="instance.status == 'Running' || instance.status == 'Stopped' ">
                                         <a href="javascript:void(0);" data-ng-click="reDestroyVm('sm',instance)" title="<fmt:message key="destroy.vm" bundle="${msg}" />"><span class="fa-times-circle fa font-bold m-xs"></span> <fmt:message key="destroy.vm" bundle="${msg}" /></a>
                                     </li>
                                     <li data-ng-if="instance.status == 'Destroyed'" class="list-group-item">
                                         <a href="javascript:void(0);" data-ng-if="instance.status == 'Destroyed'" data-ng-click="recoverVm('sm',instance)" title="<fmt:message key="recover.vm" bundle="${msg}" />"><span class="fa-history fa font-bold m-xs"></span> <fmt:message key="recover.vm" bundle="${msg}" /></a>
                                     </li>
-                                    <li data-ng-show="instance.status == 'Running' || instance.status == 'Stopped'" data-ng-if="instance.isoName === null " class="list-group-item">
+                                    <li has-permission="ATTACH_ISO" data-ng-show="instance.status == 'Running' || instance.status == 'Stopped'" data-ng-if="instance.isoName === null " class="list-group-item">
                                         <a href="javascript:void(0);" title="<fmt:message key="attach.iso" bundle="${msg}" />" data-ng-click="attachISO(instance)"><span class="fa-dot-circle-o fa font-bold m-xs"></span> <fmt:message key="attach.iso" bundle="${msg}" /></a>
                                     </li>
                                     <li data-ng-show="instance.status == 'Running' || instance.status == 'Stopped' "  data-ng-if="instance.isoName !== null " class="list-group-item">
                                         <a href="javascript:void(0);" title="<fmt:message key="detach.iso" bundle="${msg}" />" data-ng-click="detachISO(instance)"><span class="fa-compass fa font-bold m-xs"></span> <fmt:message key="detach.iso" bundle="${msg}" /></a>
                                     </li>
-                                    <li data-ng-show="instance.status == 'Running' || instance.status == 'Stopped'" class="list-group-item">
+                                    <li has-permission="TAKE_VM_SNAPSHOT" data-ng-show="instance.status == 'Running' || instance.status == 'Stopped'" class="list-group-item">
                                         <a href="javascript:void(0);" title="<fmt:message key="vm.snapshot" bundle="${msg}" />" data-ng-click="takeSnapshot(instance)"><span class="fa-camera fa font-bold m-xs"></span> <fmt:message key="take.vm.snapshot" bundle="${msg}" /></a>
                                     </li>
-                                    <li data-ng-if="instance.status == 'Running'" class="list-group-item">
+                                    <li has-permission="MIGRATE_HOST" data-ng-if="instance.status == 'Running'" class="list-group-item">
                                         <a href="javascript:void(0);" title="<fmt:message key="migrate.instance.to.another.host" bundle="${msg}" />" data-ng-click="hostMigrate(instance)"><span class="fa-arrows fa font-bold m-xs"></span> <fmt:message key="migrate.instance.to.another.host" bundle="${msg}" /></a>
                                     </li>
                                     </div>
@@ -172,14 +172,12 @@
                                     <div class="col-md-6">
                                         <table class="table table-condensed table-striped" cellspacing="1" cellpadding="1">
                                             <tbody>
+                                               
                                                 <tr>
-                                                    <td class="col-md-4 col-sm-4"><b><fmt:message key="common.zone" bundle="${msg}" /></b></td>
-                                                    <td class="col-md-8 col-sm-8">{{ instance.zone.name}}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td><b><fmt:message key="display.name" bundle="${msg}" /></b></td>
+                                                <h4 class="text-info">Basic Info</h4>
+                                                    <td><b><fmt:message key="instance.name" bundle="${msg}" /></b></td>
                                                     <td>
-                                                    	<span data-ng-if="!instnaceEdit">{{instance.transDisplayName}}</span>
+                                                    	<span data-ng-if="!instnaceEdit">{{instance.name}}</span>
 														<div data-ng-if="instnaceEdit && instance.status == 'Stopped'" class="form-group"
 															ng-class="{'text-danger': instance.transDisplayName == '' && formSubmitted}">
 															<input type="text" name="transDisplayName"
@@ -196,47 +194,126 @@
                                                     <td><b class="text-uppercase" data-ng-class="instance.status == 'Stopped' ? 'text-danger' : 'text-success' ">{{ instance.status}} </b></td>
                                                 </tr>
                                                 <tr>
-                                                    <td><b><fmt:message key="offer" bundle="${msg}" /></b></td>
-                                                    <td>{{ instance.computeOffering.name}} <a data-ng-show = "instance.status == 'Stopped'" data-ng-click="templateCategory = 'config'"  class="fa fa-edit m-l-lg"> <fmt:message key="common.edit" bundle="${msg}" /></a></td>
+                                                    <td><b><fmt:message key="instance.id" bundle="${msg}" /></b></td>
+                                                    <td>VM-{{ instance.uuid}}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td><b><fmt:message key="disk.size" bundle="${msg}" /></b></td>
-                                                    <td>{{volume[0].diskSize / global.Math.pow(2, 30)}} GB</td>
+                                                    <td><b><fmt:message key="common.company" bundle="${msg}" /></b></td>
+                                                    <td>{{instance.domain.name}}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td><b><fmt:message key="common.ip" bundle="${msg}" /></b></td>
-                                                    <td>{{ instance.ipAddress}} | {{instance.network.networkType}} </td>
+                                                    <td class="col-md-4 col-sm-4"><b><fmt:message key="common.zone" bundle="${msg}" /></b></td>
+                                                    <td class="col-md-8 col-sm-8">{{ instance.zone.name}}</td>
                                                 </tr>
+                                                <tr>
+                                                    <td><b><fmt:message key="common.host" bundle="${msg}" /></b></td>
+                                                    <td>{{ instance.host.name }}</td>
+                                                </tr>
+                                                 <tr>
+                                                    <td class="col-md-4 col-sm-4"><b><fmt:message key="created.on" bundle="${msg}" /></b></td>
+                                                    <td class="col-md-8 col-sm-8">{{ instance.createdDateTime *1000 | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                                                </tr>
+                                                
                                             </tbody>
                                         </table>
                                     </div>
                                     <div class="col-md-6">
                                         <table class="table table-condensed table-striped" cellspacing="1" cellpadding="1">
                                             <tbody>
+                                               <h4 class="text-info">Ownership</h4>
+                                                 <tr>
+                                                    <td><b><fmt:message key="instance.owner" bundle="${msg}" /></b></td>
+                                                    <td>{{instance.department.userName}}</td>
+                                                </tr>
+                                                  <tr>
+                                                    <td><b><fmt:message key="common.company" bundle="${msg}" /></b></td>
+                                                    <td>{{instance.domain.name}}</td>
+                                                </tr>
+                                                  <tr>
+                                                    <td><b><fmt:message key="common.department" bundle="${msg}" /></b></td>
+                                                    <td>{{ instance.department.userName}}</td>
+                                                </tr>
+                                                 <tr>
+                                                    <td><b><fmt:message key="common.project" bundle="${msg}" /></b></td>
+                                                    <td>{{instance.project.name}}</td>
+                                                </tr>
+                                                 <tr>
+                                                    <td><b><fmt:message key="common.application" bundle="${msg}" /></b></td>
+                                                    <td><div data-ng-repeat="application in instance.applicationList"> <span data-ng-show="application.type !== ''">{{application.type}}</span> </div></td>
+                                                </tr>
+                                               </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <table class="table table-condensed table-striped" cellspacing="1" cellpadding="1">
+                                            <tbody>
+                                               
                                                 <tr>
-                                                    <td class="col-md-4 col-sm-4"><b><fmt:message key="created.on" bundle="${msg}" /></b></td>
-                                                    <td class="col-md-8 col-sm-8">{{ instance.createdDateTime *1000 | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                                                <h4 class="text-info">Tech Specification</h4>
+                                                    <td><b><fmt:message key="common.hypervisor" bundle="${msg}" /></b></td>
+                                                    <td>{{instance.template.hypervisor.name}}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td><b><fmt:message key="instance.id" bundle="${msg}" /></b></td>
-                                                    <td>VM-{{ instance.uuid}}</td>
+                                                    <td><b><fmt:message key="common.templates" bundle="${msg}" /></b></td>
+                                                    <td>{{instance.template.name}}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td><b><fmt:message key="memory" bundle="${msg}" /></b></td>
-                                                    <td>{{ instance.computeOffering.memory }}</td>
+                                                    <td><b><fmt:message key="offer" bundle="${msg}" /></b></td>
+                                                    <td>{{ instance.computeOffering.name}} <a data-ng-show = "instance.status == 'Stopped'" data-ng-click="templateCategory = 'config'"  class="fa fa-edit m-l-lg"> <fmt:message key="common.edit" bundle="${msg}" /></a></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><b><fmt:message key="common.osType" bundle="${msg}" /></b></td>
+                                                    <td>{{instance.template.osType.description}}</td>
+                                                    
                                                 </tr>
                                                 <tr>
                                                     <td><b><fmt:message key="cpu.cores" bundle="${msg}" /></b></td>
                                                     <td>{{ instance.computeOffering.numberOfCores }}</td>
                                                 </tr>
                                                  <tr>
-                                                    <td><b><fmt:message key="common.host" bundle="${msg}" /></b></td>
-                                                    <td>{{ instance.host.name }}</td>
+                                                    <td><b><fmt:message key="memory" bundle="${msg}" /></b></td>
+                                                    <td>{{ instance.computeOffering.memory }}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td><b><fmt:message key="common.account" bundle="${msg}" /></b></td>
-                                                    <td>{{ instance.instanceOwner.userName}}</td>
+                                                    <td><b><fmt:message key="common.storage" bundle="${msg}" /></b></td>
+                                                    <td>{{volume[0].diskSize / global.Math.pow(2, 30)}} GB</td>
                                                 </tr>
+                                                <tr>
+                                                    <td><b><fmt:message key="common.ip" bundle="${msg}" /></b></td>
+                                                    <td>{{ instance.ipAddress}} | {{instance.network.networkType}} </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><b><fmt:message key="high.availability" bundle="${msg}" /></b></td>
+                                                    <td>{{instance.computeOffering.isHighAvailabilityEnabled}} </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><b><fmt:message key="dynamic.scalable" bundle="${msg}" /></b></td>
+                                                    <td>{{instance.template.dynamicallyScalable}}</td>
+                                                </tr>
+                                                
+                                                
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <table class="table table-condensed table-striped" cellspacing="1" cellpadding="1">
+                                            <tbody>
+                                               <h4 class="text-info">Services and Cost</h4>
+                                                 <tr>
+                                                    <td><b><fmt:message key="subscription.cost" bundle="${msg}" /></b></td>
+                                                    <td><span class="text-danger"><app-currency></app-currency> {{(instance.template.templateCost[0].cost + instance.storageOffering.storagePrice[0].costGbPerMonth +instance.storageOffering.storagePrice[0].costIopsPerMonth+
+															instance.computeOffering.computeCost[0].instanceRunningCostIops+instance.computeOffering.computeCost[0].instanceRunningCostMemory + instance.computeOffering.computeCost[0].instanceRunningCostVcpu
+															+instance.computeOffering.computeCost[0].instanceStoppageCostIops +instance.computeOffering.computeCost[0].instanceStoppageCostMemory+ instance.computeOffering.computeCost[0].instanceStoppageCostVcpu)/30 | number:2
+														}} </span> / <fmt:message key="common.day" bundle="${msg}" /> </td>
+                                                </tr>
+                                                  <tr>
+                                                    <td><b><fmt:message key="common.package" bundle="${msg}" /></b></td>
+                                                    <td>{{instance.computeOffering.name}}</td>
+                                                </tr>
+                                                  
+                                              
                                             </tbody>
                                         </table>
                                     </div>
