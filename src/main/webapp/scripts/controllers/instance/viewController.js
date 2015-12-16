@@ -246,6 +246,7 @@ $scope.list = function () {
 	  					$scope.consoleUrl = $sce.trustAsResourceUrl(result.success);
 	  					//$scope.consoleUrl = $sce.trustAsResourceUrl("http://192.168.1.152/console/?token=MTkyLjE2OC4xLjE1MnxpLTItNjktVk18bm92bmN0ZXN0");
 	  					$scope.instance = vm;
+	  					 //window.open("app/login.jsp", 'Console', 'width=850,height=485');
 	  			        dialogService.openDialog("app/views/cloud/instance/view-console.jsp", 'lg', $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
 	  			        }]);
 	  				});

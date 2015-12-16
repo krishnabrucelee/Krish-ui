@@ -163,7 +163,7 @@
 															</a>
 													</li>
 													<li
-														data-ng-show="instance.status != 'Error' || instance.status != 'Expunging' || instance.status != 'Starting' || instance.status != 'Stopping' || instance.status != 'Destroying'  ">
+														data-ng-if="instance.status == 'Running'">
 														<a data-ng-click="showConsole(instance)"
 														class="icon-button text-center"
 														title="<fmt:message key="view.console" bundle="${msg}" />"><span
