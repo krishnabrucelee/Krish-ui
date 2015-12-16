@@ -95,7 +95,7 @@
 									class="fa font-bold pe-7s-folder m-r-md" ui-sref="dashboard"> <span class="m-l-sm" ><fmt:message key="common.enter.project" bundle="${msg}" /></span></a>
 									</li>
 									<li class="list-group-item">
-								<a class="fa font-bold pe-7s-edit m-r-md"
+								<a has-permission="PROJECT_RESOURCE_QUOTA_MODIFICATION" class="fa font-bold pe-7s-edit m-r-md"
 									ui-sref="projects.quotalimit({id: projectInfo.id, quotaType: 'project-quota'})"
 									><span class="m-l-sm" >
 									<fmt:message key="common.edit.quota" bundle="${msg}" />
