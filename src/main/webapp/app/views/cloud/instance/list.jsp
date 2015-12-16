@@ -124,7 +124,8 @@
  										</td>
  										<td class="custom-width-xs">{{ instance.computeOffering.numberOfCores}}</td>
  										<td class="custom-width-md">{{ instance.computeOffering.memory}}</td>
-                                        <td class="custom-width-xs">{{ instance.volumeId}}</td>
+                                        <td class="custom-width-xs">{{ instance.volumeSize / global.Math.pow(2, 30)}}</td>
+<!--                                         <td>{{volume[0].diskSize / global.Math.pow(2, 30)}}</td> -->
  										<td>{{ instance.ipAddress}}</td>
                                         <td>{{ instance.network.name}}</td>
                                         <td>{{ instance.host.name}}</td>
