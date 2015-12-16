@@ -64,7 +64,7 @@ pageEncoding="UTF-8"%>
                             <th class="col-md-1 col-xs-1"><fmt:message key="common.type" bundle="${msg}" /></th>
                             <th class="col-md-1 col-xs-1"><fmt:message key="common.plan" bundle="${msg}" /></th>
                             <th class="col-md-2 col-xs-2"><fmt:message key="common.attached.to" bundle="${msg}" /></th>
-                            <th class="col-md-1 col-xs-1"><fmt:message key="common.size" bundle="${msg}" /></th>
+                            <th class="col-md-1 col-xs-1"><fmt:message key="common.size" bundle="${msg}" /> GB</th>
                             <th class="col-md-2 col-xs-1"><fmt:message key="common.created.date" bundle="${msg}" /></th>
                             <th class="col-md-1 col-xs-1"><fmt:message key="common.action" bundle="${msg}" /></th>
                             </tr>
