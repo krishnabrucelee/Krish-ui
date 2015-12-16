@@ -791,7 +791,12 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
             	 $scope.showLoaderOffer = true;
                  var hasguestNetworks = crudService.add("guestnetwork", guestnetwork);
                  hasguestNetworks.then(function (result) {
-                     $scope.listNetwork($scope.instance.department.id);
+                	if($scope.guestnetwork.project == null) {
+                	     $scope.listNetworks($scope.instance.department.id, 'department');
+                 	} else {
+                 		$scope.listNetworks($scope.guestnetwork.project.id, 'project');
+                 	}
+
                      notify({message: 'Added successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                      $scope.instance.networkOfferinglist = $scope.instanceElements.networkOfferingList[0];
                    $scope.guestnetwork.name = "";
