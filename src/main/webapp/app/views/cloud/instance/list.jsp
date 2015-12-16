@@ -134,7 +134,7 @@
                                         <a class="fa fa-cogs dropdown-toggle" data-toggle="dropdown" ></a>
                                                 <ul class="dropdown-menu pull-right">
                                                     <img src="images/dropdown-arw2.png" border="0" class="vol-dropdown-arw">
-													<li
+													<li has-permission="START_VM"
 														data-ng-show="instance.status != 'Error' || instance.status != 'Expunging' || instance.status != 'Starting' || instance.status != 'Stopping' || instance.status != 'Destroying'  ">
 														<a class="icon-button text-center"
 														title="<fmt:message key="start" bundle="${msg}" />"
@@ -143,7 +143,7 @@
 															class="fa fa-play m-xs"></span> <fmt:message key="start" bundle="${msg}" />
 													</a>
 													</li>
-													<li
+													<li has-permission="STOP_VM"
 														data-ng-show="instance.status != 'Error' || instance.status != 'Expunging' || instance.status != 'Starting' || instance.status != 'Stopping' || instance.status != 'Destroying'  ">
 														<a class="icon-button text-center"
 														data-ng-click="stopVm('sm',instance)"
@@ -153,7 +153,7 @@
 													</a>
 													</li>
 
-													<li
+													<li has-permission="REBOOT_VM"
 														data-ng-show="instance.status != 'Error' || instance.status != 'Expunging' || instance.status != 'Starting' || instance.status != 'Stopping' || instance.status != 'Destroying'  ">
 														<a class="icon-button text-center"
 														data-ng-if="instance.status == 'Running'"
@@ -163,7 +163,7 @@
 															<fmt:message key="restart" bundle="${msg}" />
 															</a>
 													</li>
-													<li
+													<li has-permission="VIEW_CONSOLE"
 														data-ng-if="instance.status == 'Running'">
 														<a data-ng-click="showConsole(instance)"
 														class="icon-button text-center"
@@ -200,7 +200,7 @@
 
                             </div>
                     </div>
-           
+
                 </div>
           <pagination-content></pagination-content>
             </div>
