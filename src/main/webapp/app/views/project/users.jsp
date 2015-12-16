@@ -7,7 +7,7 @@
 	<div class="white-content">
 
 
-		<table cellspacing="1" cellpadding="1"
+		<table has-permission="ASSIGN_USERS_TO_PROJECTS" cellspacing="1" cellpadding="1"
 			class="table table-bordered table-striped">
 			<thead>
 				<tr>
@@ -44,7 +44,7 @@
 				<tr ng-repeat="user in projectInfo.userList" class="font-bold text-center">
 					<td>{{user.userName}}</td>
 					<td>{{user.department.userName}}</td>
-					<td><a data-ng-click="removeUser(user)"><span
+					<td><a has-permission="RELEASE_USERS_TO_PROJECTS" data-ng-click="removeUser(user)"><span
 							class="fa fa-trash"></span></a></td>
 				</tr>
 				<!--            deleteRules(rule.id,'Egress')-->
