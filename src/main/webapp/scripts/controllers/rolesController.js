@@ -20,6 +20,7 @@ angular
 
     // Role List
     $scope.list = function (pageNumber) {
+    	$scope.showLoader = true;
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasRoles = crudService.list("roles", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
         hasRoles.then(function (result) {  // this is only run after $http completes0
@@ -29,6 +30,7 @@ angular
             $scope.paginationObject.limit  = limit;
             $scope.paginationObject.currentPage = pageNumber;
             $scope.paginationObject.totalItems = result.totalItems;
+            $scope.showLoader = false;
         });
     };
     $scope.list(1);
@@ -41,11 +43,16 @@ angular
     });
 
     // Load permission
+
     $scope.permissions = {};
     var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
     var hasPermissions = promiseAjax.httpTokenRequest( crudService.globalConfig.HTTP_GET, crudService.globalConfig.APP_URL + "permissions/list");
+
     hasPermissions.then(function (result) {  // this is only run after $http completes0
+    	  $scope.showLoader = true;
     	$scope.permissions = result;
+        $scope.showLoader = false;
+
     });
 
     // Create a new role to our application
@@ -155,6 +162,7 @@ angular
                         $scope.list(1);
                         $scope.homerTemplate = 'app/views/notification/notify.jsp';
                         notify({message: 'Deleted successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
+                        $modalInstance.close();
                     }).catch(function (result) {
                         if (!angular.isUndefined(result) && result.data != null) {
                             if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {

@@ -8,7 +8,10 @@
     <div class="row">
         <div class="col-md-12 col-sm-12">
             <div class="hpanel">
-                <div class="panel-body">
+            <div data-ng-show = "showLoader" style="margin: 1%">
+    					<get-loader-image data-ng-show="showLoader"></get-loader-image>
+      					</div>
+                <div class="panel-body" data-ng-hide = "showLoader">
                     <div class="col-md-6 col-sm-10 m-l-xl">
                         <div class="form-group" ng-class="{'text-danger': RoleForm.name.$invalid && formSubmitted}">
                             <div class="row">
@@ -52,7 +55,10 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-12 col-sm-12" ng-repeat="(key, module) in permissions | groupBy: 'module'">
+         <div data-ng-show = "showLoader" style="margin: 1%">
+    					<get-loader-image data-ng-show="showLoader"></get-loader-image>
+      					</div>
+        <div class="col-md-12 col-sm-12" data-ng-hide = "showLoader" ng-repeat="(key, module) in permissions | groupBy: 'module'">
             <div class="form-group">
                 <div class="white-content">
                 	<div class="panel-heading bg-info no-padding">
