@@ -60,7 +60,7 @@ pageEncoding="UTF-8"%>
                                 <tr>
                                     <th class="col-md-2 col-xs-2"><fmt:message key="common.name" bundle="${msg}" /></th>
                                     <th class="col-md-2 col-xs-1"><fmt:message key="common.department" bundle="${msg}" /></th>
-                                    <th class="col-md-2 col-xs-1"><fmt:message key="common.project" bundle="${msg}" /></th>
+                                    <th class="col-md-1 col-xs-1"><fmt:message key="common.project" bundle="${msg}" /></th>
                             <th class="col-md-1 col-xs-1"><fmt:message key="common.type" bundle="${msg}" /></th>
                             <th class="col-md-1 col-xs-1"><fmt:message key="common.plan" bundle="${msg}" /></th>
                             <th class="col-md-2 col-xs-2"><fmt:message key="common.attached.to" bundle="${msg}" /></th>
