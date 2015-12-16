@@ -71,7 +71,7 @@
     </div>
     <div class="row">
         <div class="col-md-12 text-center">
-            <strong>Panda</strong> - Cloud Management Portal <br/> 2015 Copyright Assistanz Networks
+        Panda Cloud Management Portal<br/> Copyright © 2015 BlueTek Co.Ltd, All rights reserved.
         </div>
     </div>
 </div>
