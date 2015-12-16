@@ -810,6 +810,7 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
                    networkError = false;
                    $scope.showLoaderOffer = false;
                  }).catch(function (result) {
+                	 $scope.showLoaderOffer = false;
                 	 if(!angular.isUndefined(result) && result.data != null) {
 	      		 		   if(result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])){
 	                      	 var msg = result.data.globalError[0];
