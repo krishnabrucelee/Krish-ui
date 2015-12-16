@@ -118,7 +118,7 @@
                                         <a href="javascript:void(0);" title="<fmt:message key="stop" bundle="${msg}" />" data-ng-click="stopVm('sm',instance)" data-ng-show="instance.status == 'Running'"><span class="fa-ban fa font-bold m-xs"></span> <fmt:message key="stop" bundle="${msg}" /></a>
                                         <a href="javascript:void(0);" title="<fmt:message key="start" bundle="${msg}" />" data-ng-click="startVm('sm',instance)" data-ng-show="instance.status == 'Stopped'"><span class="fa-play fa font-bold m-xs"></span> <fmt:message key="start" bundle="${msg}" /></a>
                                     </li>
-                                    <li data-ng-if="instance.status == 'Running'" class="list-group-item">
+                                    <li data-ng-if="instance.status == 'Running'" class="list-group-item ">
                                         <a href="javascript:void(0);" data-ng-if="instance.status == 'Running'" title="<fmt:message key="restart" bundle="${msg}" />" data-ng-click="rebootVm('sm',instance)"><span class="fa-rotate-left fa font-bold m-xs"></span> <fmt:message key="reboot" bundle="${msg}" /></a>
                                     </li>
                                     <li class="list-group-item" data-ng-if="instance.status == 'Running'">
@@ -133,7 +133,7 @@
                                     <li class="list-group-item" data-ng-show="instance.status == 'Running' || instance.status == 'Stopped' ">
                                         <a href="javascript:void(0);" data-ng-click="reDestroyVm('sm',instance)" title="<fmt:message key="destroy.vm" bundle="${msg}" />"><span class="fa-times-circle fa font-bold m-xs"></span> <fmt:message key="destroy.vm" bundle="${msg}" /></a>
                                     </li>
-                                    <li data-ng-if="instance.status == 'Destroyed'" class="list-group-item">
+                                    <li data-ng-if="instance.status == 'Destroyed'" class="list-group-item ">
                                         <a href="javascript:void(0);" data-ng-if="instance.status == 'Destroyed'" data-ng-click="recoverVm('sm',instance)" title="<fmt:message key="recover.vm" bundle="${msg}" />"><span class="fa-history fa font-bold m-xs"></span> <fmt:message key="recover.vm" bundle="${msg}" /></a>
                                     </li>
                                     <li data-ng-show="instance.status == 'Running' || instance.status == 'Stopped'" data-ng-if="instance.isoName === null " class="list-group-item">
@@ -188,15 +188,20 @@
                                                 </tr>
                                                 <tr>
                                                     <td><b><fmt:message key="common.status" bundle="${msg}" /></b></td>
-                                                    <td><b class="text-uppercase" data-ng-class="instance.status == 'Stopped' ? 'text-danger' : 'text-success' ">{{ instance.status}} </b></td>
-                                                </tr>
+<!--                                                     <td><b class="text-uppercase" data-ng-class="instance.status == ' Stopped' ? 'text-danger' : 'text-success' ">{{ instance.status}} </b></td>
+ -->                                            
+					 <td> <b class="text-uppercase text-success" data-ng-if="instance.status == 'Running'" title="{{ instance.status}}">{{ instance.status}}</b>
+ 					  <b class="text-uppercase text-warning" data-ng-if="instance.status == 'Starting'" title="{{ instance.status}}">{{ instance.status}}</b>
+ 					  <b class="text-uppercase text-danger" data-ng-if="instance.status == 'Error'" title="{{ instance.status}}">{{ instance.status}}</b>
+ 					  <b class=" text-uppercase text-danger" data-ng-if="instance.status == 'Stopping'" title="{{ instance.status}}">{{ instance.status}}</b>
+ 					  <b class=" text-uppercase text-danger" data-ng-if="instance.status == 'Stopped'" title="{{ instance.status}}">{{ instance.status}}</b> 
+ 					  <b class=" text-uppercase text-danger" data-ng-if="instance.status == 'Expunging'" title="{{ instance.status}}">{{ instance.status}}</b>
+ 					 <b class=" text-uppercase text-danger" data-ng-if="instance.status == 'Destroyed'" title="{{ instance.status}}">{{ instance.status}}</b>		                                      
+                   </td>
+ 						 </tr>
                                                 <tr>
                                                     <td><b><fmt:message key="instance.id" bundle="${msg}" /></b></td>
                                                     <td>VM-{{ instance.uuid}}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td><b><fmt:message key="common.company" bundle="${msg}" /></b></td>
-                                                    <td>{{instance.domain.name}}</td>
                                                 </tr>
                                                 <tr>
                                                     <td class="col-md-4 col-sm-4"><b><fmt:message key="common.zone" bundle="${msg}" /></b></td>
