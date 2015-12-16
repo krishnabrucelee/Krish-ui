@@ -61,7 +61,10 @@
                         <div class="row" ng-controller="rolesListCtrl">
                             <div class="col-md-12 col-sm-12 col-xs-12 ">
                                 <div class="white-content">
-                                    <div class="table-responsive font-normal">
+                                <div data-ng-show = "showLoader" style="margin: 1%">
+    				  		<get-loader-image data-ng-show="showLoader"></get-loader-image>
+      						</div>
+                                    <div data-ng-hide = "showLoader" class="table-responsive font-normal">
                                         <table cellspacing="1" cellpadding="1" class="table table-bordered table-striped">
                                             <thead>
                                                 <tr>

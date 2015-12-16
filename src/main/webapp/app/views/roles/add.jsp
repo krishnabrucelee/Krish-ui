@@ -8,7 +8,10 @@
     <div class="row">
         <div class="col-md-12 col-sm-12">
             <div class="hpanel">
-                <div class="panel-body">
+                 <div data-ng-show = "showLoader" style="margin: 1%">
+    					<get-loader-image data-ng-show="showLoader"></get-loader-image>
+      					</div>
+                <div class="panel-body" data-ng-hide = "showLoader">
                     <div class="col-md-6 col-sm-10 m-l-xl">
                         <div class="form-group" ng-class="{'text-danger': RoleForm.name.$invalid && formSubmitted}">
                             <div class="row">
@@ -58,15 +61,20 @@
         </div>
     </div>
      <div class="row">
-        <div class="col-md-12 col-sm-12" ng-repeat="(key, module) in permissions | groupBy: 'module'">
+     <div data-ng-show = "showLoader" style="margin: 1%">
+    					<get-loader-image data-ng-show="showLoader"></get-loader-image>
+      					</div>
+        <div class="col-md-12 col-sm-12" data-ng-hide = "showLoader" ng-repeat="(key, module) in permissions | groupBy: 'module'">
             <div class="form-group">
                 <div class="white-content">
-                	<div class="panel-heading bg-info no-padding">
+
+                	<div   class="panel-heading bg-info no-padding">
                        	<label class="font-control p-xxs m-l-sm m-b-none"> <input data-ng-model="permissionGroup[key]"  type="checkbox" data-ng-click="checkAll(module, key)" ><span class="m-l-sm">{{module[0].description}}</span></label>
 					</div>
-                    <div class="panel-body">
-	                	<div class="col-md-4 col-sm-4 col-lg-4" ng-repeat="permission in module">
-	                    	<div class="row">
+                    <div class="panel-body" >
+
+	                	<div   class="col-md-4 col-sm-4 col-lg-4" ng-repeat="permission in module">
+	                    	<div class="row" data-ng-hide = "showLoader" >
 	                        	<label> <input type="checkbox" ng-model="permissionList[permission.id]" data-ng-click="checkOne(permission, module)">  <span class="m-l-sm font-normal">{{permission.action}}</span></label>
 	                        </div>
                         </div>
