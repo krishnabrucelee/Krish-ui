@@ -201,7 +201,6 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
                   $scope.disks = true;
               }
               else {
-
                   $scope.disk = false;
               }
               console.log(item);
@@ -258,9 +257,9 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
          };
          $scope.departmentList();
 
-         $scope.projectList = function (department) {
+         $scope.projectList = function (user) {
         	 $scope.showLoaderDetail = true;
-             var hasProjects = crudService.listAllByObject("projects/department", department);
+             var hasProjects = crudService.listAllByObject("projects/user", user);
              hasProjects.then(function (result) {  // this is only run after $http completes0
             	 $scope.formElements.projecttypeList = result;
             	 $scope.showLoaderDetail = false;
@@ -286,6 +285,13 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
           $scope.projectList(obj);
 	}
           });
+
+
+      $scope.$watch('instance.instanceOwner', function (obj) {
+    		if (!angular.isUndefined(obj)) {
+    	          $scope.projectList(obj);
+    		}
+    	          });
 
       $scope.$watch('instance.project',function (obj) {
     		if (!angular.isUndefined(obj)) {
@@ -480,7 +486,7 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
                 $state.reload();
             }).catch(function (result) {
             	console.log(result.data.globalError[0]);
-         if(result.data.globalError[0] != ''){
+         if(result.data.globalError[0] != '') {
         	 var msg = result.data.globalError[0];
         	 notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
         	 wizard.show(1);
