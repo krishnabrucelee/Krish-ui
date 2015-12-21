@@ -31,20 +31,20 @@ function volumeCtrl($scope, $state, $stateParams, $timeout, globalConfig, promis
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasVolumes = crudService.list("volumes", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
         hasVolumes.then(function (result) {
-        	
+
             $scope.volumeList = result;
             console.log($scope.volumeList);
 
             $scope.volumeList.Count = result.totalItems;
-          
+
             // For pagination
             $scope.paginationObject.limit = limit;
             $scope.paginationObject.currentPage = pageNumber;
             $scope.paginationObject.totalItems = result.totalItems;
             $scope.showLoader = false;
         });
-        
-       
+
+
     };
     $scope.list(1);
 
@@ -307,6 +307,31 @@ function volumeCtrl($scope, $state, $stateParams, $timeout, globalConfig, promis
                 hasProjects.then(function (result) {  // this is only run after $http completes0
                 	$scope.options = result;
                 });
+
+                // Department list from server
+                $scope.department = {};
+                var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
+                var hasDepartment = promiseAjax.httpTokenRequest( crudService.globalConfig.HTTP_GET, crudService.globalConfig.APP_URL + "departments/list");
+                hasDepartment.then(function (result) {  // this is only run after $http completes0
+                	$scope.volumeElements.departmentList = result;
+                });
+
+
+                // Getting list of projects by department
+                $scope.getProjectsByDepartment = function(department) {
+           		 var hasProjects =  promiseAjax.httpTokenRequest( crudService.globalConfig.HTTP_GET, crudService.globalConfig.APP_URL + "projects"  +"/department/"+department.id);
+        		 hasProjects.then(function (result) {  // this is only run after $http completes0
+                    		$scope.options = result;
+                    	 });
+               	};
+
+//                // Getting list of projects by department session
+//                $scope.getProjectsFromDepartmentSession = function(department) {
+//           		 var hasProjects =  promiseAjax.httpTokenRequest( crudService.globalConfig.HTTP_GET, crudService.globalConfig.APP_URL + "projects"  +"/department/"+department.id);
+//        		 hasProjects.then(function (result) {  // this is only run after $http completes0
+//                    		$scope.options = result;
+//                    	 });
+//               	};
 
                 $scope.volume.name = "";
                 $scope.volume.storageTags = "";
