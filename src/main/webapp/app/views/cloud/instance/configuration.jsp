@@ -176,7 +176,7 @@
                             </tr>
                             <tr>
                                 <td class="p-xs col-md-4 col-sm-4"><b><fmt:message key="disk.size" bundle="${msg}" /></b></td>
-                                <td class="p-xs col-md-8 col-sm-8">{{volume[0].diskSize / global.Math.pow(2, 30)}} GB</td>
+                                <td class="p-xs col-md-8 col-sm-8">{{volume[0].diskSize / global.Math.pow(2, 30) || "0"}} GB</td>
                             </tr>
                            <%--  <tr>
                                 <td class="p-xs col-md-4 col-sm-4"><b><fmt:message key="common.network" bundle="${msg}" /></b></td>
