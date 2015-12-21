@@ -70,25 +70,48 @@ function volumeCtrl($scope, $state, $stateParams, $timeout, globalConfig, promis
     // Attach Volume
     $scope.attach = function (size, volume) {
         $scope.volume = volume;
-        dialogService.openDialog("app/views/cloud/volume/attach-volume.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
-
-
             // instance List
-        	$scope.instanceList = function (pageNumber) {
+        	$scope.instanceList = function (volume) {
+        		if($scope.volume.projectId != null) {
+        			console.log("project " + $scope.volume.projectId);
+        			// var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
+        			var hasVolumes = promiseAjax.httpTokenRequest( crudService.globalConfig.HTTP_GET, crudService.globalConfig.APP_URL + "virtualmachine"  +"/volume/project/"+$scope.volume.projectId);
+        			hasVolumes.then(function (result) {
+        				$scope.instanceList = result;
 
-                var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
-                var hasVolumes = crudService.list("virtualmachine", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
-                hasVolumes.then(function (result) {
-                	  $scope.instanceList = result;
+        				// $scope.paginationObject.limit = limit;
+        				// $scope.paginationObject.currentPage = pageNumber;
+        				// $scope.paginationObject.totalItems = result.totalItems;
+        			});
+        		} else {
+        			console.log("department " + $scope.volume.departmentId);
+        			var hasVolumes = promiseAjax.httpTokenRequest( crudService.globalConfig.HTTP_GET, crudService.globalConfig.APP_URL + "virtualmachine"  +"/volume/department/"+$scope.volume.departmentId);
+        			hasVolumes.then(function (result) {
+        				$scope.instanceList = result;
 
-                    $scope.paginationObject.limit = limit;
-                    $scope.paginationObject.currentPage = pageNumber;
-                    $scope.paginationObject.totalItems = result.totalItems;
-                });
-            };
+        				// $scope.paginationObject.limit = limit;
+        				// $scope.paginationObject.currentPage = pageNumber;
+        				// $scope.paginationObject.totalItems = result.totalItems;
+        			});
+        		}
+        	};
             $scope.instanceList(1);
 
-
+//          // instance List
+//        	$scope.instanceList = function (pageNumber) {
+//
+//                var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
+//                var hasVolumes = crudService.list("virtualmachine", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+//                hasVolumes.then(function (result) {
+//                	  $scope.instanceList = result;
+//
+//                    $scope.paginationObject.limit = limit;
+//                    $scope.paginationObject.currentPage = pageNumber;
+//                    $scope.paginationObject.totalItems = result.totalItems;
+//                });
+//            };
+//            $scope.instanceList(1);
+            dialogService.openDialog("app/views/cloud/volume/attach-volume.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
                 $scope.attachVolume = function (form, volume) {
                     volume.vmInstance = $scope.vmInstance;
                     $scope.formSubmitted = true;
@@ -327,7 +350,7 @@ function volumeCtrl($scope, $state, $stateParams, $timeout, globalConfig, promis
 
 //                // Getting list of projects by department session
 //                $scope.getProjectsFromDepartmentSession = function(department) {
-//           		 var hasProjects =  promiseAjax.httpTokenRequest( crudService.globalConfig.HTTP_GET, crudService.globalConfig.APP_URL + "projects"  +"/department/"+department.id);
+//           		 var hasProjects =  promiseAjax.httpTokenRequest( crudService.globalConfig.HTTP_GET, crudService.globalConfig.APP_URL + "projects"  +"/department/"+volume.department.id);
 //        		 hasProjects.then(function (result) {  // this is only run after $http completes0
 //                    		$scope.options = result;
 //                    	 });
