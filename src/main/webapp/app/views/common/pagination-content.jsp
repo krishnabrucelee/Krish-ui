@@ -4,9 +4,9 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 	<div class="row" data-ng-show="(paginationObject.totalItems >  (((paginationObject.currentPage - 1) * paginationObject.limit) + paginationObject.limit)) || paginationObject.currentPage > 1">
-    <div class="col-sm-2" data-ng-show="paginationObject.totalItems > (((paginationObject.currentPage - 1) * paginationObject.limit) + paginationObject.limit)"><div class="dataTables_info" id="example1_info" role="status" aria-live="polite">Showing {{ ((paginationObject.currentPage - 1) * paginationObject.limit) + 1}} to {{ ((paginationObject.limit * paginationObject.currentPage/paginationObject.limit) * paginationObject.limit)}} of {{ paginationObject.totalItems}} </div></div>
+    <div class="col-sm-2" data-ng-show="paginationObject.totalItems > (((paginationObject.currentPage - 1) * paginationObject.limit) + paginationObject.limit)"><div class="dataTables_info" id="example1_info" role="status" aria-live="polite">Showing {{ ((paginationObject.currentPage - 1) * paginationObject.limit) + 1}} to {{ ((paginationObject.limit * paginationObject.currentPage/paginationObject.limit) * paginationObject.limit)}} of {{ paginationObject.totalItems}} entries</div></div>
 
-     <div class="col-sm-2" data-ng-hide="paginationObject.totalItems > (((paginationObject.currentPage - 1) * paginationObject.limit) + paginationObject.limit)"><div class="dataTables_info" id="example1_info" role="status" aria-live="polite">Showing {{ ((paginationObject.currentPage - 1) * paginationObject.limit) + 1}} to {{ paginationObject.totalItems}} of {{ paginationObject.totalItems}} </div></div>
+     <div class="col-sm-2" data-ng-hide="paginationObject.totalItems > (((paginationObject.currentPage - 1) * paginationObject.limit) + paginationObject.limit)"><div class="dataTables_info" id="example1_info" role="status" aria-live="polite">Showing {{ ((paginationObject.currentPage - 1) * paginationObject.limit) + 1}} to {{ paginationObject.totalItems}} of {{ paginationObject.totalItems}} entries</div></div>
     <div class="col-sm-4">
         <div class="dataTables_length" id="example1_length"><label>Show 
                 <select data-ng-model="paginationObject.limit" data-ng-change="list(1)" aria-controls="example1" class="form-control input-sm">
