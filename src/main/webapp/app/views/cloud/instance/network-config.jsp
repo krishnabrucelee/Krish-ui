@@ -11,9 +11,9 @@
         <div class="col-md-12">
             <div class="row">
                 <div class="col-md-12 col-sm-12">
-                      <%-- <span class="pull-right">
+                      <span class="pull-right">
                             <a class="btn btn-info" data-ng-click="addNetworkToVM()"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="add.network.to.vm" bundle="${msg}" /></a>
-                      </span> --%>
+                      </span>
                       <h4>
                           <fmt:message key="instance.network.manager" bundle="${msg}" />
                       </h4>
@@ -79,12 +79,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-
-
-
-
-
-                                                </div>
+						                      </div>
                                             </div>
                                         </div>
                                     </div>
