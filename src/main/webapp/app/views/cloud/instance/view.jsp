@@ -8,31 +8,31 @@ pageEncoding="UTF-8"%>
         <ul class="nav nav-tabs" data-ng-init="templateCategory = 'dashboard'">
             <li class="active">
                 <a href="javascript:void(0)" data-ng-click="templateCategory = 'dashboard'" data-toggle="tab">
-                    <i class="fa fa-laptop"></i> 
+                    <i class="fa fa-laptop"></i>
                     <fmt:message key="dashboard" bundle="${msg}" />
                 </a>
             </li>
             <li data-ng-show ="instance.status == 'Stopped'" class="">
                 <a has-permission="UPGRADE_VM" data-ng-click="templateCategory = 'config'" data-toggle="tab">
-                    <i class="fa fa-cogs"></i> 
+                    <i class="fa fa-cogs"></i>
                     <fmt:message key="configuration" bundle="${msg}" />
                 </a>
             </li>
             <li class="">
                 <a  data-ng-click="templateCategory = 'storage'" data-toggle="tab">
-                    <i class="fa fa-database"></i> 
+                    <i class="fa fa-database"></i>
                     <fmt:message key="storage" bundle="${msg}" />
                 </a>
             </li>
             <li class="">
                 <a  data-ng-click="templateCategory = 'network'" data-toggle="tab">
-                    <!--<i class="fa fa-sitemap"></i>--><i class="custom-icon custom-icon-network"></i> 
+                    <!--<i class="fa fa-sitemap"></i>--><i class="custom-icon custom-icon-network"></i>
                     <fmt:message key="networking" bundle="${msg}" />
                 </a>
             </li>
             <li class="">
                 <a has-permission="MONITOR_VM_PERFORMANCE" data-ng-click="templateCategory = 'monitor'" data-toggle="tab">
-                    <i class="fa fa-desktop"></i> 
+                    <i class="fa fa-desktop"></i>
                     <fmt:message key="monitor" bundle="${msg}" />
                 </a>
             </li>
@@ -68,7 +68,7 @@ pageEncoding="UTF-8"%>
                                                     </td>
                                                      <td data-ng-if="instance.cpuSpeed >= 1000">{{instance.cpuCore}}x{{(instance.cpuSpeed)/1000 | number:2}} <fmt:message key="common.ghz" bundle="${msg}" /></td>
                                                      <td data-ng-if="instance.cpuSpeed < 1000">{{instance.cpuCore}}x{{instance.cpuSpeed}} <fmt:message key="common.mhz" bundle="${msg}" /></td>
-                                                    
+
                                                 </tr>
                                                 <tr>
                                                     <td>
@@ -174,71 +174,71 @@ pageEncoding="UTF-8"%>
                                     <div data-ng-show="instance.status != 'Error' || instance.status != 'Expunging' || instance.status != 'Starting' || instance.status != 'Stopping' || instance.status != 'Destroying'">
                                         <li  class="list-group-item">
                                             <a has-permission="STOP_VM" href="javascript:void(0);" title="<fmt:message key="stop" bundle="${msg}" />
-                                               " data-ng-click="stopVm('sm',instance)" data-ng-show="instance.status == 'Running'"><span class="fa-ban fa font-bold m-xs"></span> 
+                                               " data-ng-click="stopVm('sm',instance)" data-ng-show="instance.status == 'Running'"><span class="fa-ban fa font-bold m-xs"></span>
                                                 <fmt:message key="stop" bundle="${msg}" />
                                             </a>
                                             <a has-permission="START_VM" href="javascript:void(0);" title="<fmt:message key="start" bundle="${msg}" />
-                                               " data-ng-click="startVm('sm',instance)" data-ng-show="instance.status == 'Stopped'"><span class="fa-play fa font-bold m-xs"></span> 
+                                               " data-ng-click="startVm('sm',instance)" data-ng-show="instance.status == 'Stopped'"><span class="fa-play fa font-bold m-xs"></span>
                                                 <fmt:message key="start" bundle="${msg}" />
                                             </a>
                                         </li>
                                         <li has-permission="REBOOT_VM" data-ng-if="instance.status == 'Running'" class="list-group-item">
                                             <a href="javascript:void(0);" data-ng-if="instance.status == 'Running'" title="<fmt:message key="restart" bundle="${msg}" />
-                                               " data-ng-click="rebootVm('sm',instance)"><span class="fa-rotate-left fa font-bold m-xs"></span> 
+                                               " data-ng-click="rebootVm('sm',instance)"><span class="fa-rotate-left fa font-bold m-xs"></span>
                                                 <fmt:message key="reboot" bundle="${msg}" />
                                             </a>
                                         </li>
                                         <li has-permission="VIEW_CONSOLE" class="list-group-item" data-ng-if="instance.status == 'Running'">
                                             <a href="javascript:void(0);" title="<fmt:message key="view.console" bundle="${msg}" />
-                                               " data-ng-click="showConsole(instance)"><span class="fa-desktop fa font-bold m-xs"></span> 
+                                               " data-ng-click="showConsole(instance)"><span class="fa-desktop fa font-bold m-xs"></span>
                                                 <fmt:message key="view.console" bundle="${msg}" />
                                             </a>
                                         </li>
                                         <li has-permission="RESET_PASSWORD" data-ng-show="instance.passwordEnabled == true && (instance.status == 'Running' || instance.status == 'Stopped')"  class="list-group-item">
                                             <a href="javascript:void(0);" title="<fmt:message key="reset.password" bundle="${msg}" />
-                                               " data-ng-click="showPassword(instance)"><span class="fa-key fa font-bold m-xs"></span> 
+                                               " data-ng-click="showPassword(instance)"><span class="fa-key fa font-bold m-xs"></span>
                                                 <fmt:message key="show/reset.password" bundle="${msg}" />
                                             </a>
                                         </li>
                                         <li has-permission="REINSTALL_VM" class="list-group-item" data-ng-if="instance.status == 'Running'">
                                             <a href="javascript:void(0);" title="<fmt:message key="reinstall.vm" bundle="${msg}" />
-                                               " data-ng-click="reInstallVm('md',instance)"><span class="fa fa-history m-xs"></span> 
+                                               " data-ng-click="reInstallVm('md',instance)"><span class="fa fa-history m-xs"></span>
                                                 <fmt:message key="reinstall.vm" bundle="${msg}" />
                                             </a>
                                         </li>
                                         <li has-permission="DESTROY_VM" class="list-group-item" data-ng-show="instance.status == 'Running' || instance.status == 'Stopped'">
                                             <a href="javascript:void(0);" data-ng-click="reDestroyVm('sm', instance)" title="<fmt:message key="destroy.vm" bundle="${msg}" />
-                                               "><span class="fa-times-circle fa font-bold m-xs"></span> 
+                                               "><span class="fa-times-circle fa font-bold m-xs"></span>
                                                 <fmt:message key="destroy.vm" bundle="${msg}" />
                                             </a>
                                         </li>
                                         <li data-ng-if="instance.status == 'Destroyed'" class="list-group-item ">
                                             <a href="javascript:void(0);" data-ng-if="instance.status == 'Destroyed'" data-ng-click="recoverVm('sm', instance)" title="<fmt:message key="recover.vm" bundle="${msg}" />
-                                               "><span class="fa-history fa font-bold m-xs"></span> 
+                                               "><span class="fa-history fa font-bold m-xs"></span>
                                                 <fmt:message key="recover.vm" bundle="${msg}" />
                                             </a>
                                         </li>
                                         <li has-permission="ATTACH_ISO" data-ng-show="instance.status == 'Running' || instance.status == 'Stopped'" data-ng-if="instance.isoName === null" class="list-group-item">
                                             <a href="javascript:void(0);" title="<fmt:message key="attach.iso" bundle="${msg}" />
-                                               " data-ng-click="attachISO(instance)"><span class="fa-dot-circle-o fa font-bold m-xs"></span> 
+                                               " data-ng-click="attachISO(instance)"><span class="fa-dot-circle-o fa font-bold m-xs"></span>
                                                 <fmt:message key="attach.iso" bundle="${msg}" />
                                             </a>
                                         </li>
                                         <li data-ng-show="instance.status == 'Running' || instance.status == 'Stopped'"  data-ng-if="instance.isoName !== null" class="list-group-item">
                                             <a href="javascript:void(0);" title="<fmt:message key="detach.iso" bundle="${msg}" />
-                                               " data-ng-click="detachISO(instance)"><span class="fa-compass fa font-bold m-xs"></span> 
+                                               " data-ng-click="detachISO(instance)"><span class="fa-compass fa font-bold m-xs"></span>
                                                 <fmt:message key="detach.iso" bundle="${msg}" />
                                             </a>
                                         </li>
                                         <li has-permission="TAKE_VM_SNAPSHOT" data-ng-show="instance.status == 'Running' || instance.status == 'Stopped'" class="list-group-item">
                                             <a href="javascript:void(0);" title="<fmt:message key="vm.snapshot" bundle="${msg}" />
-                                               " data-ng-click="takeSnapshot(instance)"><span class="fa-camera fa font-bold m-xs"></span> 
+                                               " data-ng-click="takeSnapshot(instance)"><span class="fa-camera fa font-bold m-xs"></span>
                                                 <fmt:message key="take.vm.snapshot" bundle="${msg}" />
                                             </a>
                                         </li>
                                         <li has-permission="MIGRATE_HOST" data-ng-if="instance.status == 'Running'" class="list-group-item">
                                             <a href="javascript:void(0);" title="<fmt:message key="migrate.instance.to.another.host" bundle="${msg}" />
-                                               " data-ng-click="hostMigrate(instance)"><span class="fa-arrows fa font-bold m-xs"></span> 
+                                               " data-ng-click="hostMigrate(instance)"><span class="fa-arrows fa font-bold m-xs"></span>
                                                 <fmt:message key="migrate.instance.to.another.host" bundle="${msg}" />
                                             </a>
                                         </li>
@@ -271,11 +271,11 @@ pageEncoding="UTF-8"%>
                                             <h4 class="text-info"><fmt:message key="basic.info" bundle="${msg}" /></h4>
                                             <td class="col-md-4 col-sm-4">
                                                 <b>
-                                                    <fmt:message key="instance.name" bundle="${msg}" />
+                                                    <fmt:message key="instance.display.name" bundle="${msg}" />
                                                 </b>
                                             </td>
                                             <td class="col-md-8 col-sm-8">
-                                                <span data-ng-if="!instnaceEdit">{{instance.name}}</span>
+                                                <span data-ng-if="!instnaceEdit">{{instance.displayName}}</span>
                                                 <div data-ng-if="instnaceEdit && instance.status == 'Stopped'" class="form-group"
                                                      ng-class="{'text-danger': instance.transDisplayName == '' && formSubmitted}">
                                                     <input type="text" name="transDisplayName"
@@ -294,19 +294,12 @@ pageEncoding="UTF-8"%>
                                             <tr>
                                                 <td class="col-md-4 col-sm-4">
                                                     <b>
-                                                        <fmt:message key="common.status" bundle="${msg}" />
+                                                        <fmt:message key="instance.internal.name" bundle="${msg}" />
                                                     </b>
                                                 </td>
-                                                <td class="col-md-8 col-sm-8"> <b class="text-uppercase text-success" data-ng-if="instance.status == 'Running'" title="{{ instance.status}}">{{ instance.status}}</b>
-                                                    <b class="text-uppercase text-warning" data-ng-if="instance.status == 'Starting'" title="{{ instance.status}}">{{ instance.status}}</b>
-                                                    <b class="text-uppercase text-danger" data-ng-if="instance.status == 'Error'" title="{{ instance.status}}">{{ instance.status}}</b>
-                                                    <b class=" text-uppercase text-danger" data-ng-if="instance.status == 'Stopping'" title="{{ instance.status}}">{{ instance.status}}</b>
-                                                    <b class=" text-uppercase text-danger" data-ng-if="instance.status == 'Stopped'" title="{{ instance.status}}">{{ instance.status}}</b> 
-                                                    <b class=" text-uppercase text-danger" data-ng-if="instance.status == 'Expunging'" title="{{ instance.status}}">{{ instance.status}}</b>
-                                                    <b class=" text-uppercase text-danger" data-ng-if="instance.status == 'Destroyed'" title="{{ instance.status}}">{{ instance.status}}</b>		                                      
-                                                </td>
+                                                <td class="col-md-8 col-sm-8">{{ instance.instanceInternalName}}</td>
                                             </tr>
-                                            <tr>
+                                             <tr>
                                                 <td class="col-md-4 col-sm-4">
                                                     <b>
                                                         <fmt:message key="instance.id" bundle="${msg}" />
@@ -314,6 +307,22 @@ pageEncoding="UTF-8"%>
                                                 </td>
                                                 <td class="col-md-8 col-sm-8">VM-{{ instance.uuid}}</td>
                                             </tr>
+                                            <tr>
+                                                <td class="col-md-4 col-sm-4">
+                                                    <b>
+                                                        <fmt:message key="common.status" bundle="${msg}" />
+                                                    </b>
+                                                </td>
+                                                <td class="col-md-8 col-sm-8"> <b class="text-uppercase text-success" data-ng-if="instance.status == 'Running'" title="{{ instance.status}}">{{ instance.status}}</b>
+                                                    <b class="text-uppercase text-warning" data-ng-if="instance.status == 'Starting'" title="{{ instance.status}}">{{ instance.status}}</b>
+                                                    <b class="text-uppercase text-danger" data-ng-if="instance.status == 'Error'" title="{{ instance.status}}">{{ instance.status}}</b>
+                                                    <b class=" text-uppercase text-danger" data-ng-if="instance.status == 'Stopping'" title="{{ instance.status}}">{{ instance.status}}</b>
+                                                    <b class=" text-uppercase text-danger" data-ng-if="instance.status == 'Stopped'" title="{{ instance.status}}">{{ instance.status}}</b>
+                                                    <b class=" text-uppercase text-danger" data-ng-if="instance.status == 'Expunging'" title="{{ instance.status}}">{{ instance.status}}</b>
+                                                    <b class=" text-uppercase text-danger" data-ng-if="instance.status == 'Destroyed'" title="{{ instance.status}}">{{ instance.status}}</b>
+                                                </td>
+                                            </tr>
+
                                             <tr>
                                                 <td class="col-md-4 col-sm-4">
                                                     <b>
@@ -419,7 +428,7 @@ pageEncoding="UTF-8"%>
                                                     </b>
                                                 </td>
                                                 <td class="col-md-8 col-sm-8">
-                                                    {{ instance.computeOffering.name}} 
+                                                    {{ instance.computeOffering.name}}
                                                     <a data-ng-show = "instance.status == 'Stopped'" data-ng-click="templateCategory = 'config'"  class="fa fa-edit m-l-lg">
                                                         <fmt:message key="common.edit" bundle="${msg}" />
                                                     </a>
@@ -455,7 +464,7 @@ pageEncoding="UTF-8"%>
                                                         <fmt:message key="common.storage" bundle="${msg}" />
                                                     </b>
                                                 </td>
-                                                <td class="col-md-8 col-sm-8">{{volume[0].diskSize / global.Math.pow(2, 30)}} GB</td>
+                                                <td class="col-md-8 col-sm-8">{{volume[0].diskSize / global.Math.pow(2, 30) || "0" }} GB</td>
                                             </tr>
                                             <tr>
                                                 <td class="col-md-4 col-sm-4">
@@ -500,9 +509,9 @@ pageEncoding="UTF-8"%>
                                                         {{(instance.template.templateCost[0].cost + instance.storageOffering.storagePrice[0].costGbPerMonth + instance.storageOffering.storagePrice[0].costIopsPerMonth +
                                                                  instance.computeOffering.computeCost[0].instanceRunningCostIops + instance.computeOffering.computeCost[0].instanceRunningCostMemory + instance.computeOffering.computeCost[0].instanceRunningCostVcpu
                                                                  + instance.computeOffering.computeCost[0].instanceStoppageCostIops + instance.computeOffering.computeCost[0].instanceStoppageCostMemory + instance.computeOffering.computeCost[0].instanceStoppageCostVcpu)/30 | number:2
-                                                        }} 
+                                                        }}
                                                     </span>
-                                                    / 
+                                                    /
                                             <fmt:message key="common.day" bundle="${msg}" />
                                             </td>
                                             </tr>
