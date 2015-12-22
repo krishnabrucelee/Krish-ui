@@ -9,7 +9,7 @@
 <div id="wrapper">
 
     <div ui-view style="padding:40px"></div>
-
+<div id="footer" ng-include="'app/views/common/footer.jsp'"></div>
 </div>
 </div>
 </div>
