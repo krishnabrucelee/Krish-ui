@@ -53,7 +53,7 @@
 	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="view.projects" bundle="${msg}" /></a>
 	                            <span ng-switch-when="true">{{ state.data.pageName }}</span>
 	                    </span>
-                           
+
                              <span data-ng-if="state.data.pageTitle === 'view.network'">
 	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="view.network" bundle="${msg}" /></a>
 	                            <span ng-switch-when="true">{{ $stateParams.pageTitle}}</span>
@@ -70,6 +70,10 @@
 	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.projects" bundle="${msg}" /></a>
 	                            <span ng-switch-when="true"><fmt:message key="common.projects" bundle="${msg}" /></span>
                             </span>
+                            <span data-ng-if="state.data.pageTitle === 'common.host'">
+	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.host" bundle="${msg}" /></a>
+	                            <a ng-href="{{'#/instance/list/view/'}}" + "{{ $stateParams.id }}" ><span ng-switch-when="true" >{{$stateParams.id}}{{ state.data.pageName }}</span></a>
+	                    	</span>
                         </li>
                     </ol>
                 </div>
@@ -92,5 +96,5 @@
     <div class="content">
         <div ui-view ></div>
     </div>
-
+<div id="footer" ng-include="'app/views/common/footer.jsp'"></div>
 </div>
