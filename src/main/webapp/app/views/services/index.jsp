@@ -29,8 +29,8 @@
         </div>
     </div>
     <div class="content" >
-        <div class="service-landing-page" ui-view >                     
-           
+        <div class="service-landing-page" ui-view >
+
                     <div class="row m-l-xs m-b-xs" id="compute-network">
                     <h3> Cloud & Networks</h3>
                         <div class="row m-r-sm">
@@ -125,11 +125,11 @@
                                 </a>
                             </div>
                         </div>
-                            
+
                 </div>
-                     <hr>   
+                     <hr>
                         <div class="row m-l-xs m-b-xs" id="cloud-storage">
-                          
+
                             <h3>Cloud & Storage Service</h3>
                         <div class="row m-r-sm">
                             <div class="col-md-3">
@@ -162,13 +162,13 @@
                                     </div>
                                 </a>
                             </div>
-                              
+
                         </div>
-            
+
                         </div>
                       <hr>
                     <div class="row m-l-xs m-b-xs" id="netscalar">
-                        
+
                         <h3>Netscalar As A Service</h3>
                            <div class="row m-r-sm">
                                 <div class="col-md-3">
@@ -264,9 +264,9 @@
                            </div>
                     </div>
                 </div>
-                     
-                     
-                         
+
+
+
             </div>
-            </div>
- 
+            <div id="footer" ng-include="'app/views/common/footer.jsp'"></div>
+
