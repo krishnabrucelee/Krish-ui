@@ -5,7 +5,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 	<div class="row" data-ng-show="paginationObject.totalItems > 10">
     <div class="col-sm-6">
-	    <div class="col-sm-6 shown-page" data-ng-show="paginationObject.totalItems >= (((paginationObject.currentPage - 1) * (paginationObject.limit * 1)) + (paginationObject.limit * 1))"><div class="dataTables_info" id="example1_info" role="status" aria-live="polite">Showing {{ ((paginationObject.currentPage - 1) * paginationObject.limit) + 1}} to {{ ((paginationObject.limit * paginationObject.currentPage/paginationObject.limit) * paginationObject.limit)}} of {{ paginationObject.totalItems}} entries</div></div>
+	    <div class="col-sm-6 shown-page" data-ng-show="paginationObject.totalItems > (((paginationObject.currentPage - 1) * (paginationObject.limit * 1)) + (paginationObject.limit * 1))"><div class="dataTables_info" id="example1_info" role="status" aria-live="polite">Showing {{ ((paginationObject.currentPage - 1) * paginationObject.limit) + 1}} to {{ ((paginationObject.limit * paginationObject.currentPage/paginationObject.limit) * paginationObject.limit)}} of {{ paginationObject.totalItems}} entries</div></div>
 	
 	    <div class="col-sm-6 shown-page" data-ng-hide="paginationObject.totalItems > (((paginationObject.currentPage - 1) * (paginationObject.limit * 1)) + (paginationObject.limit * 1))"><div class="dataTables_info" id="example1_info" role="status" aria-live="polite">Showing {{ ((paginationObject.currentPage - 1) * paginationObject.limit) + 1}} to {{ paginationObject.totalItems}} of {{ paginationObject.totalItems}} entries</div></div>
 	    <div class="col-sm-6 shown-entry">
