@@ -118,11 +118,7 @@
 												<td>{{ projectObj.projectOwner.userName }}</td>
 												<td>{{ projectObj.department.userName }}</td>
 												<td>{{ projectObj.createdDateTime*1000 | date:'yyyy-MM-dd HH:mm:ss'}}</td>
-											<td><a
-													data-ng-class="isSingle == projectObj.id  ? 'text-white' : ''"
-													class="badge badge-info p-xs" ui-sref="dashboard">Enter
-														Project</a>
-														   <a has-permission="PROJECT_RESOURCE_QUOTA_MODIFICATION" class="icon-button" ui-sref="projects.quotalimit({id: {{projectObj.id}}, quotaType: 'project-quota'})" title="<fmt:message key="common.edit.quota" bundle="${msg}" />">
+												<td><a has-permission="PROJECT_RESOURCE_QUOTA_MODIFICATION" class="icon-button" ui-sref="projects.quotalimit({id: {{projectObj.id}}, quotaType: 'project-quota'})" title="<fmt:message key="common.edit.quota" bundle="${msg}" />">
                                                     <span class="fa font-bold pe-7s-edit"> </span>
                                                 </a>
                                                 </td>
