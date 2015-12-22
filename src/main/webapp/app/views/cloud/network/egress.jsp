@@ -1,4 +1,4 @@
-<div data-ng-controller="networksCtrl">
+<!-- <div data-ng-controller="networksCtrl">
 <div class="white-content" >
 
 
@@ -24,7 +24,7 @@
                     <td data-ng-show="icmp"><input valid-number  name="icmpCode" data-ng-model="icmpCode" class="form-control " autofocus type="text"></td>
                     <td>
                         <a  class="btn btn-info" data-ng-click="addRule()" ><span class="pe-7s-plus pe-lg font-bold m-r-xs" ></span>Add Rule</a>
-                        <!--<a data-ng-show="delete" class="btn btn-info" data-ng-click="openAddIsolatedNetwork('lg')"><span class="pe-7s-trash pe-lg font-bold m-r-xs"></span></a>-->
+                        <a data-ng-show="delete" class="btn btn-info" data-ng-click="openAddIsolatedNetwork('lg')"><span class="pe-7s-trash pe-lg font-bold m-r-xs"></span></a>
                     </td>
                 </tr>
             </tbody>
@@ -50,10 +50,11 @@
 
                 </td>
 	        </tr>
-<!--            deleteRules(rule.id,'Egress')-->
+           deleteRules(rule.id,'Egress')
             </tbody>
     </table>
 
 
 
 </div></div>
+ -->

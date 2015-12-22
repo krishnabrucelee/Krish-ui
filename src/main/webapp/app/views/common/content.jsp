@@ -70,6 +70,10 @@
 	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.projects" bundle="${msg}" /></a>
 	                            <span ng-switch-when="true"><fmt:message key="common.projects" bundle="${msg}" /></span>
                             </span>
+                            <span data-ng-if="state.data.pageTitle === 'common.host'">
+	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.host" bundle="${msg}" /></a>
+	                            <a ng-href="{{'#/instance/list/view/'}}" + "{{ $stateParams.id }}" ><span ng-switch-when="true" >{{$stateParams.id}}{{ state.data.pageName }}</span></a>
+	                    	</span>
                         </li>
                     </ol>
                 </div>
