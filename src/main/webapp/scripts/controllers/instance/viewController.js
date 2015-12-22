@@ -9,7 +9,6 @@ angular
         .controller('instanceViewCtrl', instanceViewCtrl)
         .controller('instanceDetailsCtrl', instanceDetailsCtrl)
 
-
 function instanceViewCtrl($scope,$log, $sce, dialogService, $modal,$http, $state, $stateParams, promiseAjax, localStorageService, globalConfig, crudService, notify, $window) {
 
     $scope.instanceList = [];
@@ -21,7 +20,8 @@ function instanceViewCtrl($scope,$log, $sce, dialogService, $modal,$http, $state
  	    var hasServer = crudService.read("virtualmachine", $stateParams.id);
         hasServer.then(function (result) {  // this is only run after $http											// completes
             $scope.instance = result;
-
+		$scope.instanceList = result;
+console.log($scope.instance);
             var str = $scope.instance.cpuUsage;
             if(str!=null){
             var newString = str.replace(/^_+|_+$/g,'');
@@ -423,6 +423,16 @@ $scope.list = function () {
 								           };
 								       }]);
 								  };
+
+
+						$scope.hostInformation = function(vm) {
+								  	 dialogService.openDialog("app/views/cloud/instance/listhost.jsp", 'md',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
+					console.log($scope.instance.host);
+								  		var vms = vm;
+
+								  		
+								       }]);
+								  };
 						$scope.showPassword = function(vm) {
 									  	 dialogService.openDialog("app/views/cloud/instance/show-reset-password.jsp", 'md',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
 									  		 $scope.vm = vm;
@@ -599,10 +609,37 @@ $scope.chart=function(used){
 
 }
 }
-function instanceDetailsCtrl($scope, instance, $modalInstance) {
-    $scope.instance = instance;
-    $scope.cancel = function () {
-        $modalInstance.dismiss('cancel');
-    };
-}
-;
+
+function instanceDetailsCtrl($scope,$log, $sce, dialogService, $modal,$http, $state, $stateParams, promiseAjax, localStorageService, globalConfig, crudService, notify, $window) {
+
+    $scope.instanceList = [];
+    $scope.testvar = "test";
+    $scope.global = crudService.globalConfig;
+
+if ($stateParams.id > 0) {
+    	$scope.showLoader = true;
+    	$scope.showLoaderOffer = true;
+ 	    var hasServer = crudService.read("virtualmachine", $stateParams.id);
+        hasServer.then(function (result) {  // this is only run after $http											// completes
+            $scope.instance = result;
+		$scope.instanceList = result;
+console.log($scope.instance);
+            var str = $scope.instance.cpuUsage;
+            if(str!=null){
+            var newString = str.replace(/^_+|_+$/g,'');
+            var num = parseFloat(newString).toFixed(2);
+            $state.current.data.pageName = result.name;
+            $scope.showLoaderOffer = false;
+            $scope.showLoader = false;
+            $scope.chart(num);
+            }
+            else{
+            	   $scope.showLoaderOffer = false;
+            	   $scope.showLoader = false;
+            	 $scope.chart(0);
+            }
+
+        });
+    }
+
+};
