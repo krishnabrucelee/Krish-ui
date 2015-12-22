@@ -433,7 +433,7 @@ $scope.list = function () {
 
 						$scope.hostInformation = function(vm) {
 							
-								  	 dialogService.openDialog("app/views/cloud/instance/listhost.jsp", 'lg',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
+								  	 dialogService.openDialog("app/views/cloud/instance/listhost.jsp", 'md',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
 					console.log($scope.instance.host);
 					  $scope.cancel = function () {
 					        $modalInstance.close();

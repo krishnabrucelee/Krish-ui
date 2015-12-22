@@ -11,44 +11,86 @@
         </div>
         <div class="modal-body">
                         <div class="white-content">
-     
+    			
+			 <div class="row">
+                                    <div class="col-md-12">
+                                        <table class="table table-bordered table-striped" cellspacing="0" cellpadding="0">
+                                            <tbody>
+											<tbody>
+												<tr>
+													<td><label
+														class="col-md-8 col-sm-7 col-xs-4 control-label ">
+														<fmt:message key="common.name" bundle="${msg}" />
+														</label></td>
+														<td>{{ instance.host.name}}</td>
+												</tr>
+											  <tr>
+													<td><label
+														class="col-md-8 col-sm-7 col-xs-4 control-label ">
+														<fmt:message key="common.id" bundle="${msg}" />
+														</label></td>
+														<td>{{ instance.host.uuid}}</td>
+												</tr>
+											 <tr>
+													<td><label
+														class="col-md-8 col-sm-7 col-xs-4 control-label ">
+														<fmt:message key="common.state" bundle="${msg}" />
+														</label></td>
+															<td>{{ instance.host.status}}</td>
+												</tr>
+											<tr>
+													<td><label
+														class="col-md-8 col-sm- col-xs-4 control-label ">
+														<fmt:message key="host.ip.address" bundle="${msg}" />
+														</label></td>
+															<td>{{ instance.host.hostIpaddress}}</td>
+												</tr>
+												<tr>
+													<td><label
+														class="col-md-8 col-sm-7 col-xs-4 control-label ">
+														<fmt:message key="common.hypervisor" bundle="${msg}" />
+														</label></td>
+												<td>{{ instance.hypervisor}}</td>
 
-	<div data-ng-show="showLoader" style="margin: 1%">
-		<get-loader-image data-ng-show="showLoader"></get-loader-image>
-	</div>
-	<div data-ng-hide="showLoader" class="table-responsive col-12-table no-margins">
-		<table cellspacing="1" cellpadding="1"
-			class="table table-bordered table-striped">
-			<thead>
-				<tr>
-				
-					<th class = "col-sm-3"><fmt:message key="common.name" bundle="${msg}" /></th>
-					<th class = "col-sm-1"><fmt:message key="common.id" bundle="${msg}" /></th>
-					<th class = "col-sm-1"><fmt:message key="common.state" bundle="${msg}" /></th>
-				    <th class = "col-sm-2"><fmt:message key="host.ip.address" bundle="${msg}" /></th>
-					<th class = "col-sm-1"><fmt:message key="common.hypervisor" bundle="${msg}" /></th>
-					<th class = "col-sm-2"><fmt:message key="common.zone" bundle="${msg}" /></th>
-					<th class = "col-sm-2"><fmt:message key="common.pod" bundle="${msg}" /></th>
-					<th class = "col-sm-2"><fmt:message key="common.cluster" bundle="${msg}" /></th>
-					<th class = "col-sm-2"><fmt:message key="common.dedicated" bundle="${msg}" /></th>
-				</tr>
-			</thead>
-			<tbody>
-	
-					<td>{{ instance.host.name}}</td>
-					<td>{{ instance.host.id}}</td>
-					<td>{{ instance.host.status}}</td>
-					<td>{{ instance.host.hostIpaddress}}</td>
-					<td>{{ instance.template.hypervisor.name}}</td>
-					<td>{{ instance.zone.name }}</td>
-					<td>{{ instance.host.pod.name }}</td>
-					<td>{{ instance.host.cluster.name }}</td>	 
-					<td>{{ (instance.host.hostHighAvailablility) ? "yes" : "no" }}</td>
-				
-				</tr>
-			</tbody>
-		</table>
-	</div>
+												</tr>
+												<tr>
+													<td><label
+														class="col-md-8 col-sm-7 col-xs-4 control-label ">
+														<fmt:message key="common.zone" bundle="${msg}" />
+														</label></td>
+													<td>{{ instance.zone.name }}</td>
+												</tr>
+												<tr>
+												  <td><label
+														class="col-md-8 col-sm-7 col-xs-4 control-label ">
+														<fmt:message key="common.pod" bundle="${msg}" />
+														</label></td>
+														<td>{{ instance.host.pod.name }}</td>
+												</tr>
+												<tr>
+													<td><label
+														class="col-md-8 col-sm-7 col-xs-4 control-label ">
+														<fmt:message key="common.cluster" bundle="${msg}" />
+														</label></td>
+													<td>{{ instance.host.cluster.name }}</td>	 
+
+												</tr>
+											   	<tr>
+													<td><label
+														class="col-md-8 col-sm-7 col-xs-4 control-label ">
+														<fmt:message key="common.dedicated" bundle="${msg}" />
+														</label></td>
+													<td>{{ (instance.host.hostHighAvailablility) ? "Yes" : "No" }}</td>
+
+												</tr>
+											</tbody>
+											</table>
+											
+												
+												
+		</div>
+</div>
+
 </div>
 </div>
  <div class="modal-footer">
@@ -58,4 +100,5 @@
         </div>
 </div>
 </div>
+
 
