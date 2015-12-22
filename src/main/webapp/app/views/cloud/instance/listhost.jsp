@@ -50,7 +50,7 @@
 														class="col-md-8 col-sm-7 col-xs-4 control-label ">
 														<fmt:message key="common.hypervisor" bundle="${msg}" />
 														</label></td>
-												<td>{{ instance.hypervisor}}</td>
+												<td>{{ instance.host.hypervisor}}</td>
 
 												</tr>
 												<tr>
