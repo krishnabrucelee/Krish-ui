@@ -68,7 +68,7 @@
                         </div>
                         <pagination-content></pagination-content>
                         <div class="white-content m-b-sm m-t-xs">
-                        
+
                          <div data-ng-show = "showLoader" style="margin: 1%">
     				  		<get-loader-image data-ng-show="showLoader"></get-loader-image>
       						</div>
@@ -126,6 +126,7 @@
 
         </div>
     </div>
+<div id="footer" ng-include="'app/views/common/footer.jsp'"></div>
 </div>
 
 
