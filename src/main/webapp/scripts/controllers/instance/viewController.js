@@ -21,6 +21,7 @@ function instanceViewCtrl($scope,$log, $sce, dialogService, $modal,$http, $state
         hasServer.then(function (result) {  // this is only run after $http											// completes
             $scope.instance = result;
 		$scope.instanceList = result;
+		
 console.log($scope.instance);
             var str = $scope.instance.cpuUsage;
             if(str!=null){
@@ -31,17 +32,22 @@ console.log($scope.instance);
             $scope.showLoader = false;
             $scope.chart(num);
             }
+		
             else{
             	   $scope.showLoaderOffer = false;
             	   $scope.showLoader = false;
             	 $scope.chart(0);
-            }
+            } 
+		$scope.cancel = function () {
+            $modalInstance.close();
+        };
 
         });
+        
     }
 
 
-
+ 
 
  // Volume List
 $scope.volume = {};
@@ -426,9 +432,12 @@ $scope.list = function () {
 
 
 						$scope.hostInformation = function(vm) {
-								  	 dialogService.openDialog("app/views/cloud/instance/listhost.jsp", 'md',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
+							
+								  	 dialogService.openDialog("app/views/cloud/instance/listhost.jsp", 'lg',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
 					console.log($scope.instance.host);
-								  		var vms = vm;
+					  $scope.cancel = function () {
+					        $modalInstance.close();
+					    };
 
 								  		
 								       }]);

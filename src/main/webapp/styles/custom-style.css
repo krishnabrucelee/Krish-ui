@@ -213,3 +213,4 @@ border-color: #e74c3c !important;}
 .custom-width-xs{width:50px;}
 
 .cpu-usage{position:absolute; margin-top: 105px; right: 70px; z-index: 1; font-size: 20px; font-weight: bold;}
+.width-md{width:70%;}

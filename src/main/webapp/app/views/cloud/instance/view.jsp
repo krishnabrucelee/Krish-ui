@@ -130,10 +130,10 @@
                                         <a href="javascript:void(0);" title="<fmt:message key="vm.snapshot" bundle="${msg}" />" data-ng-click="takeSnapshot(instance)"><span class="fa-camera fa font-bold m-xs"></span> <fmt:message key="take.vm.snapshot" bundle="${msg}" /></a>
                                     </li>
                                     <li has-permission="MIGRATE_HOST" data-ng-if="instance.status == 'Running'" class="list-group-item">
-                                        <a href="javascript:void(0);" title="<fmt:message key="migrate.instance.to.another.host" bundle="${msg}" />" data-ng-click="hostMigrate(instance)"><span class="fa-arrows fa font-bold m-xs"></span> <fmt:message key="migrate.instance.to.another.host" bundle="${msg}" /></a>
+                                        <a href="javascript:void(0);" title="<fmt:message key="migrate.instance.to.another.host" bundle="${msg}" />" data-ng-click="hostMigrate(instance)"><span class="fa-arrows fa font-bold m-xs pull-left"></span> <span class="pull-left m-l-xs width-md"><fmt:message key="migrate.instance.to.another.host" bundle="${msg}" /></span><div class="clearfix"></div></a>
                                     </li>
                                       <li has-permission="HOST_INFORMATION" data-ng-if="instance.status == 'Running'" class="list-group-item">
-                                        <a href="javascript:void(0);" title="<fmt:message key="host.information" bundle="${msg}" />" ui-sref="cloud.list-instance-host({id: {{ instance.id}}})"><span class="fa-arrows fa font-bold m-xs"></span> <fmt:message key="host.information" bundle="${msg}" /></a>
+                                        <a href="javascript:void(0);" title="<fmt:message key="host.information" bundle="${msg}" />" data-ng-click="hostInformation(instance)" ><span class="fa-square fa font-bold m-xs"></span> <fmt:message key="host.information" bundle="${msg}" /></a>
                                     </li>
                                     </div>
                                     <li class="list-group-item">
