@@ -253,10 +253,7 @@ $scope.list = function () {
 			  	           };
 	  			        }]);*/
 
-
 	  				});
-
-
 			  }
 
 			  $scope.instnaceEdit = false;
