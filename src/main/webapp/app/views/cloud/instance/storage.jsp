@@ -12,7 +12,7 @@
                     <div class="col-md-12 col-sm-12">
                         <h4><fmt:message key="instance.storage.manager" bundle="${msg}" />
                          <span class="pull-right">
-                            <a class="btn btn-info" data-ng-click="attach(md, volume)"><span class="pe-7s-paperclip pe-lg font-bold m-r-xs"></span><fmt:message key="attach.volume" bundle="${msg}" /></a>
+                            <a class="btn btn-info" data-ng-click="attach(md, volume.instanceId)"><span class="pe-7s-paperclip pe-lg font-bold m-r-xs"></span><fmt:message key="attach.volume" bundle="${msg}" /></a>
                             <a class="btn btn-info" data-ng-click="addVolume('md')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="add.volume" bundle="${msg}" /></a>
                         </span>
                         </h4>
