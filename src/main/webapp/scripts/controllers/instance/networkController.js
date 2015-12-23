@@ -45,7 +45,18 @@ function networkCtrl($scope, $modal, $window, $stateParams,globalConfig, localSt
     };
     $scope.list(1);
 
-    $scope.nicList = function () {
+        // Volume List
+	    $scope.list = function (nic) {
+       	var instanceId = $stateParams.id;
+       	var hasNic = promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "nics/listbyinstances?instanceid="+instanceId +"&lang=" + localStorageService.cookie.get('language')+"&sortBy=-id");
+	        hasNic.then(function (result) {
+	            $scope.nicList = result;
+	            console.log($scope.nicList);
+	        });
+	    }; 
+	    $scope.list(1);
+
+   $scope.nicList = function () {
         var hasnicList = crudService.listAll("nics/list");
         hasnicList.then(function (result) {  // this is only run after $http completes0
                 $scope.nicList = result;
@@ -100,13 +111,15 @@ function networkCtrl($scope, $modal, $window, $stateParams,globalConfig, localSt
             }]);
     };
 
-    $scope.removeNicToVM = function(form, nic) {
-      	 dialogService.openDialog("app/views/common/confirm-delete.jsp", 'md', $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+    $scope.removeNicToVM = function(nic) {
+      	 dialogService.openDialog("app/views/common/instance/confirm-delete.jsp", 'md', $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
       		 $scope.deleteId = nic.id;
                $scope.ok = function (nicId) {
-            	   var hasServer = crudService.softDelete("nics", nic);
-                   hasServer.then(function (result) {
+		       $scope.showLoader = true;
+		   var hasNic = crudService.softDelete("nics", nic);
+                    hasNic.then(function (result) {
                        $scope.list(1);
+		       $scope.showLoader = false;
                        notify({message: 'Deleted successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                    });
                    $modalInstance.close();
@@ -121,10 +134,11 @@ function networkCtrl($scope, $modal, $window, $stateParams,globalConfig, localSt
        	 dialogService.openDialog("app/views/cloud/instance/confirm-update.jsp", 'md', $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
           	var instanceId = $stateParams.id;
                    $scope.ok = function (instance) {
+		   $scope.showLoader = true;
                     var hasServer = crudService.update("nics", nic);
                     hasServer.then(function (result) {
                         $scope.list(1);
-
+			 $scope.showLoader = false;
                         notify({message: 'Updated successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                     });
                     $modalInstance.close();
