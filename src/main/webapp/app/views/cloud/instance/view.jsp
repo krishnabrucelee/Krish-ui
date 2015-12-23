@@ -117,15 +117,15 @@
                             <div class="panel-body no-padding">
                                 <ul class="list-group">
                                 <div data-ng-show="instance.status != 'Error' || instance.status != 'Expunging' || instance.status != 'Starting' || instance.status != 'Stopping' || instance.status != 'Destroying'  ">
-                                    
+
                                     <li has-permission="VIEW_CONSOLE" class="list-group-item" data-ng-if="instance.status == 'Running'">
                                         <a href="javascript:void(0);" title="<fmt:message key="view.console" bundle="${msg}" />" data-ng-click="showConsole(instance)"><span class="fa-desktop fa font-bold m-xs"></span> <fmt:message key="view.console" bundle="${msg}" /></a>
                                     </li>
-                                    
+
                                       <li has-permission="ATTACH_ISO" data-ng-show="instance.status == 'Running' || instance.status == 'Stopped'" data-ng-if="instance.isoName === null " class="list-group-item">
                                         <a href="javascript:void(0);" title="<fmt:message key="attach.iso" bundle="${msg}" />" data-ng-click="attachISO(instance)"><span class="fa-dot-circle-o fa font-bold m-xs"></span> <fmt:message key="attach.iso" bundle="${msg}" /></a>
                                     </li>
-                                   
+
                                     <li has-permission="TAKE_VM_SNAPSHOT" data-ng-show="instance.status == 'Running' || instance.status == 'Stopped'" class="list-group-item">
                                         <a href="javascript:void(0);" title="<fmt:message key="vm.snapshot" bundle="${msg}" />" data-ng-click="takeSnapshot(instance)"><span class="fa-camera fa font-bold m-xs"></span> <fmt:message key="take.vm.snapshot" bundle="${msg}" /></a>
                                     </li>
@@ -145,7 +145,7 @@
                                 </ul>
                             </div>
                         </div>
-                        
+
                         <div class="panel panel-info">
                             <div class="panel-heading">
                                 <h3 class="panel-title"><i class="fa fa-bolt"></i>&nbsp;&nbsp;<fmt:message key="disruptive.actions" bundle="${msg}" /></h3>
@@ -160,7 +160,7 @@
                                     <li has-permission="REBOOT_VM" data-ng-if="instance.status == 'Running'" class="list-group-item">
                                         <a href="javascript:void(0);" data-ng-if="instance.status == 'Running'" title="<fmt:message key="restart" bundle="${msg}" />" data-ng-click="rebootVm('sm',instance)"><span class="fa-rotate-left fa font-bold m-xs"></span> <fmt:message key="reboot" bundle="${msg}" /></a>
                                     </li>
-                                   
+
                                     <li has-permission="RESET_PASSWORD" data-ng-show="instance.passwordEnabled == true && (instance.status == 'Running' || instance.status == 'Stopped')"  class="list-group-item">
                                         <a href="javascript:void(0);" title="<fmt:message key="reset.password" bundle="${msg}" />" data-ng-click="showPassword(instance)"><span class="fa-key fa font-bold m-xs"></span> <fmt:message key="show/reset.password" bundle="${msg}" /></a>
                                     </li>
@@ -176,8 +176,8 @@
                                       <li data-ng-show="instance.status == 'Running' || instance.status == 'Stopped' "  data-ng-if="instance.isoName !== null " class="list-group-item">
                                         <a href="javascript:void(0);" title="<fmt:message key="detach.iso" bundle="${msg}" />" data-ng-click="detachISO(instance)"><span class="fa-compass fa font-bold m-xs"></span> <fmt:message key="detach.iso" bundle="${msg}" /></a>
                                     </li>
-                                  
-                                  
+
+
                                     </div>
                                    </ul>
                             </div>
@@ -193,7 +193,7 @@
                                     <div class="col-md-6">
                                         <table class="table table-condensed table-striped" cellspacing="1" cellpadding="1">
                                             <tbody>
-                                               
+
                                                 <tr>
                                                 <h4 class="text-info">Basic Info</h4>
                                                     <td><b><fmt:message key="instance.name" bundle="${msg}" /></b></td>
@@ -213,14 +213,14 @@
                                                 <tr>
                                                     <td><b><fmt:message key="common.status" bundle="${msg}" /></b></td>
 <!--                                                     <td><b class="text-uppercase" data-ng-class="instance.status == ' Stopped' ? 'text-danger' : 'text-success' ">{{ instance.status}} </b></td>
- -->                                            
+ -->
 					 <td> <b class="text-uppercase text-success" data-ng-if="instance.status == 'Running'" title="{{ instance.status}}">{{ instance.status}}</b>
  					  <b class="text-uppercase text-warning" data-ng-if="instance.status == 'Starting'" title="{{ instance.status}}">{{ instance.status}}</b>
  					  <b class="text-uppercase text-danger" data-ng-if="instance.status == 'Error'" title="{{ instance.status}}">{{ instance.status}}</b>
  					  <b class=" text-uppercase text-danger" data-ng-if="instance.status == 'Stopping'" title="{{ instance.status}}">{{ instance.status}}</b>
- 					  <b class=" text-uppercase text-danger" data-ng-if="instance.status == 'Stopped'" title="{{ instance.status}}">{{ instance.status}}</b> 
+ 					  <b class=" text-uppercase text-danger" data-ng-if="instance.status == 'Stopped'" title="{{ instance.status}}">{{ instance.status}}</b>
  					  <b class=" text-uppercase text-danger" data-ng-if="instance.status == 'Expunging'" title="{{ instance.status}}">{{ instance.status}}</b>
- 					 <b class=" text-uppercase text-danger" data-ng-if="instance.status == 'Destroyed'" title="{{ instance.status}}">{{ instance.status}}</b>		                                      
+ 					 <b class=" text-uppercase text-danger" data-ng-if="instance.status == 'Destroyed'" title="{{ instance.status}}">{{ instance.status}}</b>
                    </td>
  						 </tr>
                                                 <tr>
@@ -239,7 +239,7 @@
                                                     <td class="col-md-4 col-sm-4"><b><fmt:message key="created.on" bundle="${msg}" /></b></td>
                                                     <td class="col-md-8 col-sm-8">{{ instance.createdDateTime *1000 | date:'yyyy-MM-dd HH:mm:ss'}}</td>
                                                 </tr>
-                                                
+
                                             </tbody>
                                         </table>
                                     </div>
@@ -275,7 +275,7 @@
                                     <div class="col-md-6">
                                         <table class="table table-condensed table-striped" cellspacing="1" cellpadding="1">
                                             <tbody>
-                                               
+
                                                 <tr>
                                                 <h4 class="text-info">Tech Specification</h4>
                                                     <td><b><fmt:message key="common.hypervisor" bundle="${msg}" /></b></td>
@@ -292,7 +292,7 @@
                                                 <tr>
                                                     <td><b><fmt:message key="common.osType" bundle="${msg}" /></b></td>
                                                     <td>{{instance.template.osType.description}}</td>
-                                                    
+
                                                 </tr>
                                                 <tr>
                                                     <td><b><fmt:message key="cpu.cores" bundle="${msg}" /></b></td>
@@ -304,7 +304,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td><b><fmt:message key="common.storage" bundle="${msg}" /></b></td>
-                                                    <td>{{volume[0].diskSize / global.Math.pow(2, 30)}} GB</td>
+                                                    <td>{{volume[0].diskSize / global.Math.pow(2, 30) || "0"}} GB</td>
                                                 </tr>
                                                 <tr>
                                                     <td><b><fmt:message key="common.ip" bundle="${msg}" /></b></td>
@@ -318,8 +318,8 @@
                                                     <td><b><fmt:message key="dynamic.scalable" bundle="${msg}" /></b></td>
                                                     <td>{{instance.template.dynamicallyScalable}}</td>
                                                 </tr>
-                                                
-                                                
+
+
                                             </tbody>
                                         </table>
                                     </div>
@@ -338,8 +338,8 @@
                                                     <td><b><fmt:message key="common.package" bundle="${msg}" /></b></td>
                                                     <td>{{instance.computeOffering.name}}</td>
                                                 </tr>
-                                                  
-                                              
+
+
                                             </tbody>
                                         </table>
                                     </div>
