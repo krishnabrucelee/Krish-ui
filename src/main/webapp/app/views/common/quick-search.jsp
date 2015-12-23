@@ -8,4 +8,7 @@
         <input data-ng-model="quickSearch" type="text" class="form-control input-medium" placeholder="<fmt:message key="common.quick.search" bundle="${msg}" />" aria-describedby="quicksearch-go">
         <span class="input-group-addon" id="quicksearch-go"><span class="pe-7s-search pe-lg font-bold"></span></span>
     </div>
+    <div data-ng-show="quickSearch" class="quick-search pull-right">
+    <div class="text-info m-t-xs"> {{filteredCount.length}} <fmt:message key="common.matches.found" bundle="${msg}" /> </div>
+    </div>
 </div>

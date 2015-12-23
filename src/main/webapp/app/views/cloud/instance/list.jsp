@@ -102,7 +102,8 @@
                                        </tr>
                                    </tbody>
                                 <tbody data-ng-show="instanceList.length > 0">
-                                   <tr data-ng-repeat="instance in instanceList | filter: quickSearch  |orderBy:sort.column:sort.descending"   >
+
+                                   <tr data-ng-repeat="instance in filteredCount = (instanceList | filter: quickSearch  |orderBy:sort.column:sort.descending)"   >
                                         <td>
                                             <a class="text-info" ui-sref="cloud.list-instance.view-instance({id: {{ instance.id}}})"  title="View Instance" >{{ instance.name}}</a>
                                         </td>

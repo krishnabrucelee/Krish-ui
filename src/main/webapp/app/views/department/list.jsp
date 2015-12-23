@@ -88,7 +88,7 @@
                                         </tr>
                                     </tbody>
                                     <tbody data-ng-show="departmentList.length > 0">
-                                        <tr data-ng-repeat="department in departmentList| filter:quickSearch" >
+                                        <tr data-ng-repeat="department in filteredCount = (departmentList| filter:quickSearch)" >
 											<td>
                                                 {{ department.userName}}
                                             </td>
@@ -128,5 +128,4 @@
     </div>
 <div id="footer" ng-include="'app/views/common/footer.jsp'"></div>
 </div>
-
 
