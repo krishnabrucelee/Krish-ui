@@ -196,9 +196,9 @@
 
                                                 <tr>
                                                 <h4 class="text-info">Basic Info</h4>
-                                                    <td><b><fmt:message key="instance.name" bundle="${msg}" /></b></td>
+                                                    <td><b><fmt:message key="instance.display.name" bundle="${msg}" /></b></td>
                                                     <td>
-                                                    	<span data-ng-if="!instnaceEdit">{{instance.name}}</span>
+                                                    	<span data-ng-if="!instnaceEdit">{{instance.displayName}}</span>
 														<div data-ng-if="instnaceEdit && instance.status == 'Stopped'" class="form-group"
 															ng-class="{'text-danger': instance.transDisplayName == '' && formSubmitted}">
 															<input type="text" name="transDisplayName"
@@ -209,6 +209,14 @@
 														<a data-ng-if="!instnaceEdit && instance.status == 'Stopped'" data-ng-click="editDisplayName(instance)"  class="fa fa-edit m-l-lg"> <fmt:message key="common.edit" bundle="${msg}" /></a>
 														<a data-ng-if="instnaceEdit" data-ng-click="updateDisplayName(instance)"  class="btn btn-sm btn-info pull-right"> <fmt:message key="common.update" bundle="${msg}" /></a>
                                                      </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><b><fmt:message key="instance.internal.name" bundle="${msg}" /></b></td>
+                                                    <td>{{ instance.instanceInternalName}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><b><fmt:message key="instance.id" bundle="${msg}" /></b></td>
+                                                    <td>VM-{{ instance.uuid}}</td>
                                                 </tr>
                                                 <tr>
                                                     <td><b><fmt:message key="common.status" bundle="${msg}" /></b></td>
@@ -223,10 +231,7 @@
  					 <b class=" text-uppercase text-danger" data-ng-if="instance.status == 'Destroyed'" title="{{ instance.status}}">{{ instance.status}}</b>
                    </td>
  						 </tr>
-                                                <tr>
-                                                    <td><b><fmt:message key="instance.id" bundle="${msg}" /></b></td>
-                                                    <td>VM-{{ instance.uuid}}</td>
-                                                </tr>
+
                                                 <tr>
                                                     <td class="col-md-4 col-sm-4"><b><fmt:message key="common.zone" bundle="${msg}" /></b></td>
                                                     <td class="col-md-8 col-sm-8">{{ instance.zone.name}}</td>
