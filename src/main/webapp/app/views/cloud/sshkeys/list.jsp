@@ -41,7 +41,7 @@
 									</tr>
                                 </thead>
                                 <tbody>
-                                    <tr data-ng-repeat="sshkey in sshkeyList  | filter:sshkeySearch">
+                                    <tr data-ng-repeat="sshkey in filteredCount = (sshkeyList  | filter:sshkeySearch)">
                                         <td>
                                             {{ sshkey.name}}
                                         </td>

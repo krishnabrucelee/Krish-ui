@@ -3,7 +3,7 @@ pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<div ui-view ng-controller="networksCtrl">
+<div ng-controller="networksCtrl">
     <div data-ng-hide="viewContent">
         <div class="hpanel">
             <div class="panel-heading">
@@ -33,7 +33,7 @@ pageEncoding="UTF-8"%>
                             </div>
                         </div>
                         <div class="pull-right">
-                            <panda-quick-search></panda-quick-search>
+<panda-quick-search></panda-quick-search>
                             <span class="pull-right m-r-sm">
                                 <select  class="form-control input-group col-xs-5" name="networkView" data-ng-init="network.networkView = dropnetworkLists.views[0]" data-ng-model="network.networkView" data-ng-change="selectView(network.networkView.name)" data-ng-options="networkView.name for networkView in dropnetworkLists.views"></select>
                             </span>
