@@ -98,7 +98,7 @@
 										</thead>
 										<tbody >
 											<tr
-												data-ng-repeat="projectObj in projectList| filter: quickSearch"
+												data-ng-repeat="projectObj in filteredCount = (projectList| filter: quickSearch)"
 												data-ng-class="isSingle === projectObj.id ? 'bg-row text-white' : ''">
 												<td class="">
 													<div class="radio radio-single radio-info">

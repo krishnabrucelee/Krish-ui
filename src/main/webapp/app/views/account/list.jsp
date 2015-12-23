@@ -81,7 +81,7 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                            <tr data-ng-class="{'bg-row text-white' : account.isSelected == true }"  data-ng-repeat="account in accountList| filter: quickSearch">
+                                            <tr data-ng-class="{'bg-row text-white' : account.isSelected == true }"  data-ng-repeat="account in filteredCount = (accountList| filter: quickSearch)">
                                                 <td>
                                                     <div class="checkbox checkbox-single checkbox-info ">
                                                         <input type="checkbox" data-ng-value="account" data-ng-model="account.isSelected" data-ng-click="checkOne(account)" >

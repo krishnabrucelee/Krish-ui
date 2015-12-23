@@ -46,12 +46,8 @@
 									<div class="pull-left"></div>
 								</div>
 								<div class="pull-right">
-									<div class="quick-search">
-										<div class="input-group">
-											<input data-ng-model="applicationSearch" type="text" class="form-control input-medium" placeholder="<fmt:message key="common.quick.search" bundle="${msg}" />" aria-describedby="quicksearch-go">
-											 <span class="input-group-addon" id="quicksearch-go"><span class="pe-7s-search pe-lg font-bold"></span></span>
-										</div>
-									</div>
+									<panda-quick-search></panda-quick-search>
+										<div class="clearfix"></div>
 									<span class="pull-right m-l-sm m-t-sm">
 									<a has-permission="CREATE_APPLICATION_TYPE" class="btn btn-info" ng-click="createApplication('md')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span>
 									<fmt:message key="common.add" bundle="${msg}" /></a> <a class="btn btn-info" ui-sref="applications" title="<fmt:message key="common.refresh" bundle="${msg}" />" ui-sref-opts="{reload: true}">
@@ -82,7 +78,7 @@
 											</tr>
 										</thead>
 										<tbody>
-											<tr data-ng-repeat=" application in applicationList| filter: applicationSearch">
+											<tr data-ng-repeat=" application in filteredCount = (applicationList| filter: quickSearch)">
 												<td>{{ application.domain.name }}</td>
 												<td>{{ application.type}}</td>
 												<td>{{ application.description}}</td>
