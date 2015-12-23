@@ -18,13 +18,13 @@
 			</thead>
 			<tbody>
 				<tr>
-					<td><div custom-select="t as t.userName for t in projectElements.projectuserList | filter: { userName: $searchTerm }" ng-model="project.user">
+					<td class="department-selectbox"><div custom-select="t as t.userName for t in projectElements.projectuserList | filter: { userName: $searchTerm }" ng-model="project.user">
 						<div class="pull-left">
 						<strong>{{ t.userName }}</strong><br />
 						</div>
 						<div class="clearfix"></div>
 						</div></td>
-					<td></td>
+					<td>{{projectInfo.department.userName}}</td>
 					<td><a class="btn btn-info" data-ng-click="addUser(project.user)"><span
 							class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="common.add" bundle="${msg}" /></a> <!--<a data-ng-show="delete" class="btn btn-info" data-ng-click="openAddIsolatedNetwork('lg')"><span class="pe-7s-trash pe-lg font-bold m-r-xs"></span></a>-->
 					</td>
