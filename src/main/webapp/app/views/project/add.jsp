@@ -41,12 +41,12 @@
                             <div class="row">
                                 <label class="col-md-3 col-sm-3 control-label control-normal"><fmt:message key="common.department" bundle="${msg}" /><span class="text-danger">*</span></label>
                                 <div class="col-md-7  col-sm-7 col-xs-7">
-                                    <select required="true" class="form-control input-group" name="department" data-ng-model="project.department" ng-options="department.userName for department in formElements.departmenttypeList" data-ng-class="{'error':  projectForm.department.$invalid && formSubmitted}" >
+                                    <select required="true" class="form-control input-group" name="department" data-ng-model="project.department" data-ng-class="{'error': projectForm.department.$invalid && formSubmitted}" data-ng-options="department.userName for department in formElements.departmenttypeList" data-ng-class="{'error':  projectForm.department.$invalid && formSubmitted}" >
                                         <option value="">Select</option>
 
                                     </select>
-                                    <i  tooltip="<fmt:message key="choose.the.department" bundle="${msg}" />" class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
-                                    <div class="error-area" data-ng-show="RoleForm.department.$invalid && formSubmitted" ><i  tooltip="<fmt:message key="department.is.required" bundle="${msg}" />" class="fa fa-warning error-icon"></i></div>
+                                    <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="<fmt:message key="choose.the.department" bundle="${msg}" />" ></i>
+                                    <div class="error-area" data-ng-show="projectForm.department.$invalid && formSubmitted" ><i  tooltip="<fmt:message key="department.is.required" bundle="${msg}" />" class="fa fa-warning error-icon"></i></div>
                                 </div>
                             </div>
                     </div>
@@ -58,7 +58,7 @@
                             <label class="col-md-3 col-xs-12 col-sm-3 control-label"><fmt:message key="project.owner" bundle="${msg}" />
                                 <span class="text-danger">*</span>
                             </label>
-                            <div class="col-md-5 col-xs-12 col-sm-5">
+                            <div class="col-md-7 col-xs-7 col-sm-5">
                                 <select required="true" class="form-control input-group" name="projectOwner"
                                         data-ng-model="project.projectOwner" data-ng-class="{'error': projectForm.projectOwner.$invalid && formSubmitted}"
                                         data-ng-options="projectOwner.userName group by projectOwner.group for projectOwner in projectElements.projectOwnerList" >
@@ -66,10 +66,6 @@
                                 </select>
                                 <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="<fmt:message key="select.the.project.owner" bundle="${msg}" />" ></i>
                                 <div class="error-area" data-ng-show="projectForm.projectOwner.$invalid && formSubmitted" ><i  tooltip="<fmt:message key="project.owner.is.required" bundle="${msg}" />" class="fa fa-warning error-icon"></i></div>
-                            </div>
-
-                            <div class="col-md-2 col-xs-12 col-sm-2">
-                                <button type="button" class="btn btn-info m-l-lg"  data-ng-click="createUser()"><fmt:message key="create.user" bundle="${msg}" /></button>
                             </div>
                         </div>
                     </div>

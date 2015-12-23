@@ -58,20 +58,41 @@ volumeService, modalService, promiseAjax, notify, globalConfig, crudService) {
 	        $scope.volume = volume;
 	        dialogService.openDialog("app/views/cloud/instance/attach-volume.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
 
-
 	            // instance List
-	        	$scope.volumeList = function (pageNumber) {
-	                var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
-	                var hasVolumes = crudService.list("volumes/listbyvolumetype", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
-	                hasVolumes.then(function (result) {
-	                	  $scope.volumeList = result;
+	        	$scope.volumeList = function (instance) {
 
-	                    $scope.paginationObject.limit = limit;
-	                    $scope.paginationObject.currentPage = pageNumber;
-	                    $scope.paginationObject.totalItems = result.totalItems;
-	                });
-	            };
+	        		if($scope.instance.projectId != null) {
+	        			console.log("project " + $scope.instance.projectId);
+	        			// var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
+	        			var hasVolumes = promiseAjax.httpTokenRequest( crudService.globalConfig.HTTP_GET, crudService.globalConfig.APP_URL + "volumes"  +"/instance/project/"+$scope.instance.projectId);
+	        			hasVolumes.then(function (result) {
+	        				$scope.volumeList = result;
+
+	        			});
+	        		} else {
+	        			console.log("department " + $scope.instance.departmentId);
+	        			var hasVolumes = promiseAjax.httpTokenRequest( crudService.globalConfig.HTTP_GET, crudService.globalConfig.APP_URL + "volumes"  +"/instance/department/"+$scope.instance.departmentId);
+	        			hasVolumes.then(function (result) {
+	        				$scope.volumeList = result;
+
+	        			});
+	        		}
+	        	};
 	            $scope.volumeList(1);
+//
+//	            // instance List
+//	        	$scope.volumeList = function (pageNumber) {
+//	                var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
+//	                var hasVolumes = crudService.list("volumes/listbyvolumetype", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+//	                hasVolumes.then(function (result) {
+//	                	  $scope.volumeList = result;
+//
+//	                    $scope.paginationObject.limit = limit;
+//	                    $scope.paginationObject.currentPage = pageNumber;
+//	                    $scope.paginationObject.totalItems = result.totalItems;
+//	                });
+//	            };
+//	            $scope.volumeList(1);
 
 
 	                $scope.attachVolume = function (form, volume) {

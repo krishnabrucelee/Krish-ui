@@ -67,7 +67,7 @@
     				  		<get-loader-image data-ng-show="showLoader"></get-loader-image>
       						</div>
       						<div  data-ng-hide="showLoader" class="table-responsive col-12-table">
-                        
+
                                     <table cellspacing="1" cellpadding="1" class="table table-bordered table-striped ">
                                         <thead>
                                         <tr>
@@ -81,7 +81,7 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                            <tr data-ng-class="{'bg-row text-white' : account.isSelected == true }"  data-ng-repeat="account in accountList| filter: quickSearch">
+                                            <tr data-ng-class="{'bg-row text-white' : account.isSelected == true }"  data-ng-repeat="account in filteredCount = (accountList| filter: quickSearch)">
                                                 <td>
                                                     <div class="checkbox checkbox-single checkbox-info ">
                                                         <input type="checkbox" data-ng-value="account" data-ng-model="account.isSelected" data-ng-click="checkOne(account)" >
@@ -110,4 +110,5 @@
             </div>
         </div>
     </div>
+<div id="footer" ng-include="'app/views/common/footer.jsp'"></div>
 </div>

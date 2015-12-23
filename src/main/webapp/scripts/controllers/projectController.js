@@ -71,17 +71,21 @@ function projectCtrl($scope, promiseAjax, $modal, $state, modalService, dialogSe
     $scope.userList = function (department) {
     	console.log(department);
     	if(department!= null && !angular.isUndefined(department)){
-       var hasUsers = crudService.listAllByFilter("users/search", department);
-        hasUsers.then(function (result) {  // this is only run after $http completes0
+    		var hasUsers = crudService.listAllByFilter("users/search", department);
+    		hasUsers.then(function (result) {  // this is only run after $http
+											// completes0
         	$scope.projectElements.projectOwnerList = result;
-        	angular.forEach($scope.projectElements.projectOwnerList, function(obj, key) {
-			if (!angular.isUndefined($scope.project.projectOwner)) {
-	    			if(obj.id == $scope.project.projectOwner.id) {
-	    				$scope.project.projectOwner = obj;
-				}
-	    		}
-	    	});
-        });}
+        	 angular.forEach($scope.projectElements.projectOwnerList, function(obj, key) {
+        			if (!angular.isUndefined($scope.project.projectOwner) && $scope.project.projectOwner != null) {
+        	    			if(obj.id == $scope.project.projectOwner.id) {
+        	    				$scope.project.projectOwner = obj;
+        	    				console.log($scope.project.projectOwner);
+        				}
+        	    		}
+        	    	});
+
+    		});
+    	}
     };
 
     $scope.userLists = function (department) {
@@ -105,6 +109,14 @@ function projectCtrl($scope, promiseAjax, $modal, $state, modalService, dialogSe
         var hasDepartments = crudService.listAll("departments/list");
         hasDepartments.then(function (result) {  // this is only run after $http completes0
         	 $scope.formElements.departmenttypeList = result;
+        	 angular.forEach($scope.formElements.departmenttypeList, function(obj, key) {
+     			if (!angular.isUndefined($scope.project.department)) {
+     	    			if(obj.id == $scope.project.department.id) {
+     	    				$scope.project.department = obj;
+     	    				console.log($scope.project.department);
+     				}
+     	    		}
+     	    	});
 
          });
      };
@@ -112,6 +124,14 @@ function projectCtrl($scope, promiseAjax, $modal, $state, modalService, dialogSe
      $scope.$watch('project.department', function (obj) {
 	  if (!angular.isUndefined(obj)) {
     	 	$scope.userList(obj);
+    	 	 angular.forEach($scope.projectElements.projectOwnerList, function(obj, key) {
+    	 		 if (!angular.isUndefined($scope.project.projectOwner) && $scope.project.projectOwner != null) {
+    	   	    			if(obj.id == $scope.project.projectOwner.id) {
+    	   	    				$scope.project.projectOwner = obj;
+    	   	    				console.log($scope.project.projectOwner);
+    	   				}
+    	   	    		}
+    	   	    	});
 	   }
          });
 
@@ -198,14 +218,32 @@ function projectCtrl($scope, promiseAjax, $modal, $state, modalService, dialogSe
     // Edit the project
     $scope.editProject = function (size) {
          $scope.project = $scope.editProjects;
+         angular.forEach($scope.formElements.departmenttypeList, function(obj, key) {
+  			if (!angular.isUndefined($scope.project.department) && $scope.project.department != null) {
+  	    			if(obj.id == $scope.project.department.id) {
+  	    				$scope.project.department = obj;
+  	    				console.log($scope.project.department);
+  				}
+  	    		}
+  	    	});
+         angular.forEach($scope.projectElements.projectOwnerList, function(obj, key) {
+   			if (!angular.isUndefined($scope.project.projectOwner) && $scope.project.projectOwner != null) {
+   	    			if(obj.id == $scope.project.projectOwner.id) {
+   	    				$scope.project.projectOwner = obj;
+   	    				console.log($scope.project.projectOwner);
+   				}
+   	    		}
+   	    	});
         dialogService.openDialog("app/views/project/edit.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
                 // Update project
                 var project = $scope.editProjects;
+
              $scope.update = function (form) {
                     $scope.formSubmitted = true;
                     if (form.$valid) {
                         var project = $scope.project;
                         project.projectOwnerId = $scope.project.projectOwner.id;
+                        project.departmentId = $scope.project.department.id;
                         var hasServer = crudService.update("projects", project);
                         hasServer.then(function (result) {
                         	$scope.oneChecked = false;

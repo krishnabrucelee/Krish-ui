@@ -42,11 +42,11 @@
                     <div class="row" >
                         <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="pull-left">
+                            <div class="pull-left"></div>
                             </div>
                             <div class="pull-right">
                                 <panda-quick-search></panda-quick-search>
                                 <div class="clearfix"></div>
-
                                 <span class="pull-right m-l-sm m-t-sm m-b-sm">
                                 	<a class="btn btn-info" data-ng-click="assignRole('lg')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="assign.user.role" bundle="${msg}" /></a>
                                 	<%-- <a class="btn btn-info" data-ng-click="editAssignedRole('lg')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="edit.user.role" bundle="${msg}" /></a> --%>
@@ -58,8 +58,8 @@
                         <div class="clearfix"></div>
                     </div>
                     <div class="row">
-                        <div class="row" ng-controller="rolesListCtrl">
                             <div class="col-md-12 col-sm-12 col-xs-12 ">
+                            <pagination-content></pagination-content>
                                 <div class="white-content">
                                 <div data-ng-show = "showLoader" style="margin: 1%">
     				  		<get-loader-image data-ng-show="showLoader"></get-loader-image>
@@ -75,7 +75,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr data-ng-repeat="role in roleList| filter:quickSearch">
+                                                <tr data-ng-repeat="role in filteredCount = (roleList| filter: quickSearch)">
                                                     <td>
                                                        {{ role.name}}
 
@@ -95,13 +95,13 @@
                                         </table>
                                     </div>
                                 </div>
+                                 <pagination-content></pagination-content>
                             </div>
-                        </div>
                     </div>
                 </div>
             </div>
 
         </div>
     </div>
-
+<div id="footer" ng-include="'app/views/common/footer.jsp'"></div>
 </div>

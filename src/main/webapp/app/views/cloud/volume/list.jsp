@@ -48,6 +48,7 @@ pageEncoding="UTF-8"%>
                 <div class="clearfix"></div>
             </div>
             <pagination-content></pagination-content>
+
             <div class="row">
                 <div class="col-md-12 col-sm-12 col-xs-12 ">
                     <div class="white-content">
@@ -70,7 +71,7 @@ pageEncoding="UTF-8"%>
                             </tr>
                             </thead>
                             <tbody>
-                                <tr data-ng-repeat="volume in volumeList| filter:quickSearch">
+                                <tr data-ng-repeat="volume in filteredCount = (volumeList| filter:quickSearch)">
                                     <td>
                                         <a class="text-info" href="javascript:void(0)"  title="View Volume" >{{ volume.name}}</a>
                                     </td>
@@ -109,6 +110,7 @@ pageEncoding="UTF-8"%>
                                 </tr>
                             </tbody>
                         </table>
+
                         </div>
                     </div>
                 </div>

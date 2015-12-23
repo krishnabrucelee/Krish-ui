@@ -28,7 +28,7 @@
                         <div class="col-xs-8 p-xs">
                             <div class="h3">150.00 </div>
                             <div>Current Month Cost</div>
-                        </div>       
+                        </div>
                     </div>
                 </div>
             </div>
@@ -39,7 +39,7 @@
                         <div class="col-xs-8 p-xs">
                             <div class="h3">250.00 </div>
                             <div>Estimated Month Cost</div>
-                        </div>       
+                        </div>
                     </div>
                 </div>
             </div>
@@ -51,7 +51,7 @@
                             <div class="col-xs-8 p-xs">
                                 <div class="h3"> 4000.00 </div>
                                 <div>Last 12 Months Cost</div>
-                            </div>       
+                            </div>
                         </div>
                     </div>
                 </a>
@@ -69,7 +69,7 @@
                             </div>
                             <a href="#" class="text-info">Set Budget</a> |
                             <a href="#" class="text-info">Manage Alert</a>
-                        </div>       
+                        </div>
                     </div>
                 </div>
             </div>
@@ -83,15 +83,15 @@
                         <div class="row">
                         <span class="pull-right p-xs">
                                 <select class="form-control" data-ng-init="filters = criteria[6]" data-ng-model="filters" data-ng-change="filterBy()" data-ng-options="filters.name for filters in criteria" >
-                            
+
                                 </select>
                         </span>
                         </div>
                         <h5 class="no-margins text-primary">
                             Top 5 Projects by Cost in {{filters.value | lowercase}}
-                        </h5>  
+                        </h5>
                         <div class="m-t-md">
-                            
+
                             <table cellspacing="1" cellpadding="1" class="top-projects no-margins table table-bordered table-striped">
                                 <thead>
                                     <tr>
@@ -130,15 +130,15 @@
                         <div class="row">
                         <span class="pull-right p-xs">
                                 <select class="form-control" data-ng-init="filterapp = criteria[6]" data-ng-model="filterapp" data-ng-change="filterByApplication()" data-ng-options="filters.name for filters in criteria" >
-                            
+
                                 </select>
                         </span>
                         </div>
                         <h5 class="no-margins text-primary">
                             Top 5 Applications by Cost in {{filterapp.value | lowercase}}
-                        </h5>  
+                        </h5>
                         <div class="m-t-md">
-                            
+
                             <table cellspacing="1" cellpadding="1" class="top-projects no-margins table table-bordered table-striped">
                                 <thead>
                                     <tr>
@@ -177,15 +177,15 @@
                         <div class="row">
                         <span class="pull-right p-xs">
                                 <select class="form-control" data-ng-init="filterdept = criteria[6]" data-ng-model="filterdept" data-ng-change="filterByDepartment()" data-ng-options="filters.name for filters in criteria" >
-                            
+
                                 </select>
                         </span>
                         </div>
                         <h5 class="no-margins text-primary">
                             Top 5 Departments by Cost in {{filterdept.value | lowercase}}
-                        </h5>  
+                        </h5>
                         <div class="m-t-md">
-                            
+
                             <table cellspacing="1" cellpadding="1" class="top-projects no-margins table table-bordered table-striped">
                                 <thead>
                                     <tr>
@@ -279,7 +279,7 @@
                     <div class="panel-body p-sm">
                         <h4 class="no-margins text-primary">
                             Projected cost by project
-                        </h4>  
+                        </h4>
                         <div class="m-t-md">
                             <table cellspacing="1" cellpadding="1" class="projects-by-cost no-margins table table-bordered table-striped">
                                 <thead>
@@ -407,7 +407,8 @@
         </div>
 
     </div>
-    
+    <div id="footer" ng-include="'app/views/common/footer.jsp'"></div>
+
     <script type="text/javascript">
         $(document).ready(function() {
         $('.slimScroll').slimScroll();
@@ -419,4 +420,4 @@
         });
         });
     </script>
-    
+
