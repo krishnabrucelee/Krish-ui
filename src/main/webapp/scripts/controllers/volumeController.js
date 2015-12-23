@@ -325,11 +325,12 @@ function volumeCtrl($scope, $state, $stateParams, $timeout, globalConfig, promis
                 });
 
                 $scope.project = {};
-                var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
-                var hasProjects = promiseAjax.httpTokenRequest( crudService.globalConfig.HTTP_GET, crudService.globalConfig.APP_URL + "projects/list");
-                hasProjects.then(function (result) {  // this is only run after $http completes0
-                	$scope.options = result;
-                });
+                 $scope.projectList = function () {
+                 var hasProjects = promiseAjax.httpTokenRequest( crudService.globalConfig.HTTP_GET, crudService.globalConfig.APP_URL + "projects/list");
+                 hasProjects.then(function (result) {  // this is only run after $http completes0
+                 	$scope.options = result;
+                 });
+                };
 
                 // Department list from server
                 $scope.department = {};
@@ -348,6 +349,16 @@ function volumeCtrl($scope, $state, $stateParams, $timeout, globalConfig, promis
                     	 });
                	};
 
+                $scope.$watch('volume.department', function (obj) {
+                	if (!angular.isUndefined(obj)) {
+                		$scope.getProjectsByDepartment(obj);
+                	} else {
+                		if($scope.global.sessionValues.type != 'ROOT_ADMIN') {
+                			$scope.projectList();
+                		}
+
+                	}
+                          });
 //                // Getting list of projects by department session
 //                $scope.getProjectsFromDepartmentSession = function(department) {
 //           		 var hasProjects =  promiseAjax.httpTokenRequest( crudService.globalConfig.HTTP_GET, crudService.globalConfig.APP_URL + "projects"  +"/department/"+volume.department.id);

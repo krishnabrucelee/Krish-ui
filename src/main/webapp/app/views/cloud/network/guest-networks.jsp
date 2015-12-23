@@ -4,7 +4,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
-<div ui-view>
+<div ui-view ng-controller="networksCtrl">
 
                         <div class="white-content">
 	<div data-ng-show="showLoader" style="margin: 1%">

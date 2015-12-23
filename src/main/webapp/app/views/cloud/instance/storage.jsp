@@ -63,21 +63,21 @@
                                                             <span data-ng-if="volume.volumeType == 'DATADISK'">
                                                                 <button class="btn btn-sm m-t-md dropdown-toggle" data-ng-class="$index == 0 ? 'btn-info' : 'btn-default'" data-toggle="dropdown"><i class="fa fa-cog"></i> <fmt:message key="configure" bundle="${msg}" /> </button>
                                                                 <ul class="dropdown-menu pull-right">
-                                                                    <li><a href="javascript:void(0);" title="<fmt:message key="common.snapshot" bundle="${msg}" />" data-ng-click="downloadSnapshot($event)"><span class="pe-7s-camera font-bold m-xs"></span> <fmt:message key="common.snapshot" bundle="${msg}" /></a></li>
+<%--                                                                     <li><a href="javascript:void(0);" title="<fmt:message key="common.snapshot" bundle="${msg}" />" data-ng-click="downloadSnapshot($event)"><span class="pe-7s-camera font-bold m-xs"></span> <fmt:message key="common.snapshot" bundle="${msg}" /></a></li>
                                                                     <li><a href="javascript:void(0);" data-ng-click="openReccuringSnapshot(volume)" title="<fmt:message key="recurring.snapshot" bundle="${msg}" />"><span class="pe-7s-repeat font-bold m-xs"></span> <fmt:message key="recurring.snapshot" bundle="${msg}" /></a></li>
-                                                                    <li><a href="javascript:void(0);" data-ng-show="volume.vmInstanceId > 0" title="<fmt:message key="detach.volume" bundle="${msg}" />" data-ng-click="detach(md, volume)"><span class="fa fa-unlink m-xs"></span> <fmt:message key="detach.volume" bundle="${msg}" /></a></li>
-                                                                    <li><a href="javascript:void(0);" title="<fmt:message key="download.volume" bundle="${msg}" />" data-ng-click="downloadVolume(volume)"><span class="pe-7s-cloud-download font-bold m-xs"></span> <fmt:message key="download.volume" bundle="${msg}" /></a></li>
+ --%>                                                                    <li><a href="javascript:void(0);" data-ng-show="volume.vmInstanceId > 0" title="<fmt:message key="detach.volume" bundle="${msg}" />" data-ng-click="detach(md, volume)"><span class="fa fa-unlink m-xs"></span> <fmt:message key="detach.volume" bundle="${msg}" /></a></li>
+                                                                    <%-- <li><a href="javascript:void(0);" title="<fmt:message key="download.volume" bundle="${msg}" />" data-ng-click="downloadVolume(volume)"><span class="pe-7s-cloud-download font-bold m-xs"></span> <fmt:message key="download.volume" bundle="${msg}" /></a></li>
                                                                     <li><a href="javascript:void(0);" data-ng-show="volume.status == 'READY'" data-ng-click="resizeVolume(md, volume)" title="<fmt:message key="resize.volume" bundle="${msg}" />"><span class="pe-7s-exapnd2 font-bold m-xs"></span> <fmt:message key="resize.volume" bundle="${msg}" /></a></li>
-                                                                	<li><a href="javascript:void(0);" data-ng-hide="volume.vmInstanceId > 0" data-ng-click="delete('sm', volume)" title="Delete Volume"><span class="fa fa-trash m-xs"></span><fmt:message key="delete.volume" bundle="${msg}" /> </a></li>
+                                                                	 --%><li><a href="javascript:void(0);" data-ng-hide="volume.vmInstanceId > 0" data-ng-click="delete('sm', volume)" title="Delete Volume"><span class="fa fa-trash m-xs"></span><fmt:message key="delete.volume" bundle="${msg}" /> </a></li>
                                                                 </ul>
                                                             </span>
-                                                            <span data-ng-if="volume.volumeType == 'ROOT'">
+<%--                                                             <span data-ng-if="volume.volumeType == 'ROOT'">
                                                                 <button class="btn btn-sm m-t-md dropdown-toggle" data-ng-class="$index == 0 ? 'btn-info' : 'btn-default'" data-toggle="dropdown"><i class="fa fa-cog"></i> <fmt:message key="configure" bundle="${msg}" /> </button>
                                                                 <ul class="dropdown-menu pull-right">
                                                                     <li><a href="javascript:void(0);"  title="<fmt:message key="common.snapshot" bundle="${msg}" />" data-ng-click="downloadSnapshot($event)"><span class="pe-7s-camera font-bold m-xs"></span> <fmt:message key="common.snapshot" bundle="${msg}" /></a></li>
                                                                     <li><a href="javascript:void(0);" data-ng-click="openReccuringSnapshot(volume)"  title="<fmt:message key="recurring.snapshot" bundle="${msg}" />"><span class="pe-7s-repeat font-bold m-xs"></span> <fmt:message key="recurring.snapshot" bundle="${msg}" /></a></li>
                                                                 </ul>
-                                                            </span>
+                                                            </span> --%>
                                                         </div>
                                                     </div>
                                                 </div>
