@@ -8,8 +8,9 @@ angular
         .module('homer')
         .controller('networksCtrl', networksCtrl)
 
-function networksCtrl($scope, modalService, promiseAjax, filterFilter, localStorageService, notify, $state, $stateParams, $timeout, globalConfig, $window, dialogService, crudService) {
+function networksCtrl($scope, $rootScope, modalService, promiseAjax, filterFilter, localStorageService, notify, $state, $stateParams, $timeout, globalConfig, $window, dialogService, crudService) {
 
+	//$scope.quickSearch = "";
     $scope.global = globalConfig;
     $scope.rulesList = [];
     $scope.rules = [];
@@ -23,7 +24,7 @@ function networksCtrl($scope, modalService, promiseAjax, filterFilter, localStor
 
                 // Create a new Isolated Network
                 $scope.save = function (form, network) {
-                	
+
                     $scope.formSubmitted = true;
                     if (form.$valid) {
                    	 $scope.showLoader = true;
@@ -77,7 +78,7 @@ function networksCtrl($scope, modalService, promiseAjax, filterFilter, localStor
     };
 
 
-    $scope.networkList = {};
+    $scope.networkList = [];
     $scope.paginationObject = {};
     $scope.networkForm = {};
     $scope.global = crudService.globalConfig;
@@ -103,9 +104,10 @@ function networksCtrl($scope, modalService, promiseAjax, filterFilter, localStor
             $scope.paginationObject.totalItems = result.totalItems;
        	 $scope.showLoader = false;
         });
-      	
+
 
     };
+    $scope.filteredCount = $scope.networkList;
     $scope.list(1);
 
 

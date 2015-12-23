@@ -107,7 +107,7 @@ pageEncoding="UTF-8"%>
                     </div>
 					  <div class="form-group" >
                         <div class="row">
-                        <div data-ng-if="global.sessionValues.type != 'USER'">
+                        <div data-ng-show="global.sessionValues.type != 'USER'">
                             <label class="col-md-3 col-xs-12 col-sm-2 control-label control-normal"><fmt:message key="common.department" bundle="${msg}" />    <span class="text-danger">*</span></label>
                                 <div class="col-md-5 col-xs-12 col-sm-5">
                                     <select required="true" class="form-control input-group" name="department" data-ng-model="volume.department"
@@ -125,7 +125,7 @@ pageEncoding="UTF-8"%>
                             </div>
                             </div>
                         </div>
-           <div class="form-group" >
+           			<div class="form-group" >
                         <div class="row">
                         <div data-ng-if="global.sessionValues.type != 'USER'">
                             <label class="col-md-3 col-xs-12 col-sm-2 control-label"><fmt:message key="common.project" bundle="${msg}" /> <span class="m-l-xs"></span></label>

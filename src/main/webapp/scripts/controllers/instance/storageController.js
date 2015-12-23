@@ -305,6 +305,43 @@ volumeService, modalService, promiseAjax, notify, globalConfig, crudService) {
 	                $scope.$watch('volume.storageTags', function (val) {
 	                    $scope.diskList(val);
 	                });
+
+	                $scope.project = {};
+	                 $scope.projectList = function () {
+	                 var hasProjects = promiseAjax.httpTokenRequest( crudService.globalConfig.HTTP_GET, crudService.globalConfig.APP_URL + "projects/list");
+	                 hasProjects.then(function (result) {  // this is only run after $http completes0
+	                 	$scope.options = result;
+	                 });
+	                };
+
+	                // Department list from server
+	                $scope.department = {};
+	                var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
+	                var hasDepartment = promiseAjax.httpTokenRequest( crudService.globalConfig.HTTP_GET, crudService.globalConfig.APP_URL + "departments/list");
+	                hasDepartment.then(function (result) {  // this is only run after $http completes0
+	                	$scope.volumeElements.departmentList = result;
+	                });
+
+
+	                // Getting list of projects by department
+	                $scope.getProjectsByDepartment = function(department) {
+	           		 var hasProjects =  promiseAjax.httpTokenRequest( crudService.globalConfig.HTTP_GET, crudService.globalConfig.APP_URL + "projects"  +"/department/"+department.id);
+	        		 hasProjects.then(function (result) {  // this is only run after $http completes0
+	                    		$scope.options = result;
+	                    	 });
+	               	};
+
+	                $scope.$watch('volume.department', function (obj) {
+	                	if (!angular.isUndefined(obj)) {
+	                		$scope.getProjectsByDepartment(obj);
+	                	} else {
+	                		if($scope.global.sessionValues.type != 'ROOT_ADMIN') {
+	                			$scope.projectList();
+	                		}
+
+	                	}
+	                          });
+
 	                $scope.volume.name = "";
 	                $scope.volume.storageTags = "";
 	                $scope.volume.storageOffering = "";
