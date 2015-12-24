@@ -31,7 +31,7 @@
 	<div class="blank" data-ng-controller="consoleCtrl">
 		<div class="iso-header">
 	<div class="console-container">
-
+				<div class="pull-left">{{ consoleVm.name }} : {{ consoleVm.applicationName }}</div>
 				<div class="pull-right">
 					<div class="pull-left">
 						<label>Select ISO :</label>
@@ -50,6 +50,10 @@
 					<button type="button" data-ng-show="consoleVm.status == 'Running' || consoleVm.status == 'Stopped'" data-ng-if="consoleVm.isoName === null" data-ng-click="attachISotoVM(consoleVm)" data-ng-disabled="attachIsoLabel == 'Attaching'" class="btn btn-primary pull-left btn-md">{{ attachIsoLabel }}</button>
 					<button type="button" data-ng-show="consoleVm.status == 'Running' || consoleVm.status == 'Stopped'"  data-ng-if="consoleVm.isoName !== null" data-ng-click="detachISO(consoleVm)"  data-ng-disabled="detachIsoLabel == 'Ejecting'" class="btn btn-primary pull-left btn-md">{{ detachIsoLabel }}</button>
 				</div>
+
+			</div>
+			<div class="console-container">
+				<label>Note : Please click the below header and enter to activate the console</label>
 			</div>
 		</div>
 		<div class="terminal-area">
