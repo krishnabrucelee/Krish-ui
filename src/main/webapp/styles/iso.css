@@ -1,0 +1,18 @@
+body{font-family: 'Open Sans', sans-serif;}
+.iso-header{background-color: #e8edf6; padding: 15px 0px;}
+.no-padding{padding: 0px !important;}
+.no-margins{margin: 0px !important;}
+.form-group.no-margins{margin: 0px !important;}
+.iso-header label{margin-top: 7px;}
+.btn-primary.btn-disable{opacity: 0.3; filter:alpha(opacity=30); cursor:default;}
+.iso-header .pull-left{margin-left:5px !important; margin-right:5px !important;}
+.iso-header select{width: 200px;}
+
+.terminal-area{border:1px #ccc solid;}
+
+.iso-footer{ padding: 10px 0px; margin-top: 2px;}
+.btn-start{color: #449d44; font-weight: bold; border-color: #449d44; margin-right: 15px; }
+.btn-start:hover{background-color: #449d44; color:#ffffff; border-color: #449d44;}
+.btn-stop{color: #c9302c; font-weight: bold; border-color: #c9302c; }
+.btn-stop:hover{background-color: #c9302c; color:#ffffff; border-color: #c9302c;}
+.console-container{width:700px; margin: 0 auto; overflow:hidden;}
