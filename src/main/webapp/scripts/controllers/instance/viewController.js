@@ -222,27 +222,27 @@ $scope.list = function () {
 
 		  $scope.recoverVm = function(size,item) {
 			  	 dialogService.openDialog("app/views/cloud/instance/recoverVm.jsp", size,  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
-			  		 $scope.item =item;
-			  		 $scope.vmRecover= function(item) {
-			  					var event = "VM.CREATE";
-				  				var hasVm = crudService.vmUpdate("virtualmachine/event", item.uuid, event);
-				  				hasVm.then(function(result) {
-				  					$state.reload();
-				  					 $scope.cancel();
-				  				}).catch(function (result) {
-				  					console.log(result.data.globalError[0]);
-				  			         if(result.data.globalError[0] != null){
-				  			        	 var msg = result.data.globalError[0];
-				  			        	 notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
-				  			        	$state.reload();
-					  					$scope.cancel();
-				  			             }
-			                            });
-			  			},
-						  $scope.cancel = function () {
-			               $modalInstance.close();
-			           };
-			       }]);
+		  		 $scope.item =item;
+		  		 $scope.vmRecover= function(item) {
+		  					var event = "VM.CREATE";
+			  				var hasVm = crudService.vmUpdate("virtualmachine/event", item.uuid, event);
+			  				hasVm.then(function(result) {
+			  					$state.reload();
+			  					 $scope.cancel();
+			  				}).catch(function (result) {
+			  					console.log(result.data.globalError[0]);
+			  			         if(result.data.globalError[0] != null){
+			  			        	 var msg = result.data.globalError[0];
+			  			        	 notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+			  			        	$state.reload();
+				  					$scope.cancel();
+			  			             }
+		                            });
+		  			},
+					  $scope.cancel = function () {
+		               $modalInstance.close();
+		           };
+		       }]);
 			  };
 
 			  $scope.showConsole = function(vm) {
@@ -250,19 +250,19 @@ $scope.list = function () {
 				  var hasVms = crudService.updates("virtualmachine/console", vm);
 	  				hasVms.then(function(result) {
 	  					$scope.consoleUrl = $sce.trustAsResourceUrl(result.success);
+
+	  					$window.sessionStorage.setItem("consoleToken", $scope.consoleUrl);
+	  					$window.sessionStorage.setItem("consoleVms", JSON.stringify($scope.vm));
 	  					//$scope.consoleUrl = $sce.trustAsResourceUrl("http://192.168.1.152/console/?token=MTkyLjE2OC4xLjE1MnxpLTItNjktVk18bm92bmN0ZXN0");
 	  					$scope.instance = vm;
-	  					 window.open($scope.consoleUrl, 'Console', 'width=750,height=580');
+	  					 window.open("app/console.jsp", 'Console', 'width=800,height=580');
 	  			        /*dialogService.openDialog("app/views/cloud/instance/view-console.jsp", 'lg', $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
 	  			          $scope.cancel = function () {
 			  	               $modalInstance.close();
 			  	           };
 	  			        }]);*/
 
-
 	  				});
-
-
 			  }
 
 			  $scope.instnaceEdit = false;
@@ -283,8 +283,6 @@ $scope.list = function () {
 		  					 $scope.cancel();
 		  				});
 	  			 	}
-
-
 	  		 };
 
 			  $scope.showDescription = function(vm) {
@@ -309,7 +307,7 @@ $scope.list = function () {
 					  		 var event = "ISO.ATTACH";
 					  		 $scope.attachISotoVM = function(form) {
 					  			$scope.formSubmitted =true;
-					  			 if(form.$valid){
+					  			 if(form.$valid) {
 					  				tempVm.iso = $scope.isos.uuid;
 					  				tempVm.event = event;
 							  		console.log(tempVm.iso);
