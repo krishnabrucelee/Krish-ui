@@ -112,7 +112,7 @@ function networkCtrl($scope, $modal, $window, $stateParams,globalConfig, localSt
     };
 
     $scope.removeNicToVM = function(nic) {
-      	 dialogService.openDialog("app/views/common/instance/confirm-delete.jsp", 'md', $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+      	 dialogService.openDialog("app/views/cloud/instance/confirm-delete.jsp", 'md', $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
       		 $scope.deleteId = nic.id;
                $scope.ok = function (nicId) {
 		       $scope.showLoader = true;

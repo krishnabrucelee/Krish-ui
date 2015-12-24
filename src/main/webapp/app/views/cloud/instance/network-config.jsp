@@ -28,7 +28,7 @@
                     <div class="panel panel-info">
                         <div class="panel-body  text-info text-center">
                             <img src="images/network_icon.jpg" alt="Storage" />
-                            <h5 class="m-t-md"><b class="ng-binding">{{nic.network.name}}</b></h5>
+                            <h5 class="m-t-md"><b class="ng-binding">{{instance.name}}</b></h5>
                         </div>
                     </div>
                 </div>
