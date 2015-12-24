@@ -78,7 +78,7 @@ angular.module('homer', [])
 	$http({
        "method": "GET",
        "data": {},
-       "url": "http://localhost:8181/api/iso/list",
+       "url": globalConfig.APP_URL+ "iso/list",
        "headers": {'x-auth-token': loginSession.token, 'Content-Type': 'application/json', 'Range': "items=0-9"}
    }).then(function (res) {
 	   $scope.isoLists = res.data;
@@ -113,7 +113,7 @@ angular.module('homer', [])
 				$http({
 				       "method": globalConfig.HTTP_GET,
 				       "data": {},
-				       "url": "http://localhost:8181/api/virtualmachine/event?lang=en&vm="+item.uuid+"&event=" + event,
+				       "url": globalConfig.APP_URL+ "virtualmachine/event?lang=en&vm="+item.uuid+"&event=" + event,
 				       "headers": {'x-auth-token': loginSession.token, 'Content-Type': 'application/json', 'Range': "items=0-9"}
 				   }).then(function(result) {
 					   $scope.instanceStartLabel = "Start";
@@ -138,7 +138,7 @@ angular.module('homer', [])
 			$http({
 			       "method": globalConfig.HTTP_GET,
 			       "data": {},
-			       "url": "http://localhost:8181/api/virtualmachine/event?lang=en&vm="+item.uuid+"&event=" + event,
+			       "url": globalConfig.APP_URL+ "virtualmachine/event?lang=en&vm="+item.uuid+"&event=" + event,
 			       "headers": {'x-auth-token': loginSession.token, 'Content-Type': 'application/json', 'Range': "items=0-9"}
 			   }).then(function(result) {
 				   $scope.instanceStopLabel = "Stop";
@@ -165,7 +165,7 @@ angular.module('homer', [])
 		$http({
 		       "method": globalConfig.HTTP_PUT,
 		       "data": tempVm,
-		       "url": "http://localhost:8181/api/virtualmachine/vm?lang=en",
+		       "url": globalConfig.APP_URL+ "virtualmachine/vm?lang=en",
 		       "headers": {'x-auth-token': loginSession.token, 'Content-Type': 'application/json', 'Range': "items=0-9"}
 		   }).then(function(result) {
 				$scope.homerTemplate = 'app/views/notification/notify.jsp';
@@ -193,7 +193,7 @@ angular.module('homer', [])
 		$http({
 		       "method": globalConfig.HTTP_PUT,
 		       "data": $scope.vm,
-		       "url": "http://localhost:8181/api/virtualmachine/vm?lang=en",
+		       "url": globalConfig.APP_URL+ "virtualmachine/vm?lang=en",
 		       "headers": {'x-auth-token': loginSession.token, 'Content-Type': 'application/json', 'Range': "items=0-9"}
 		   }).then(function(result) {
 			   $scope.consoleVm = result.data;
