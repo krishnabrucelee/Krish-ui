@@ -39,7 +39,7 @@ angular.module('homer', [])
         HTTP_POST: 'POST',
         HTTP_PUT: 'PUT',
         HTTP_DELETE: 'DELETE',
-        APP_URL: "http://localhost:8181/api/",
+        APP_URL: "http://localhost:8080/api/",
         CONTENT_LIMIT: 10,
         VIEW_URL : 'app/views/',
         NOTIFICATION_TEMPLATE: 'app/views/notification/notify.jsp',
