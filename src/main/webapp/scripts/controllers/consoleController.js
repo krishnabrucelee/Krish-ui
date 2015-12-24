@@ -106,8 +106,8 @@ angular.module('homer', [])
 
 	$scope.instanceStartLabel = "Start";
 	  $scope.vmStart = function(item) {
-		  var confirm  = confirm("Are you sure do you want to start?");
-		  if(confirm) {
+		  var confirmBox  = confirm("Are you sure do you want to start?");
+		  if(confirmBox) {
 			  	$scope.instanceStartLabel = "Starting";
 				var event = "VM.START";
 				$http({
@@ -131,8 +131,8 @@ angular.module('homer', [])
 
 	$scope.instanceStopLabel = "Stop";
 	$scope.vmStop = function(item) {
-		var confirm = confirm("Are your usre do you want to stop?");
-		if(confirm) {
+		var confirmBox = confirm("Are your usre do you want to stop?");
+		if(confirmBox) {
 			$scope.instanceStopLabel = "Stopping";
 			var event = "VM.STOP";
 			$http({

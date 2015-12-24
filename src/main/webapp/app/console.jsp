@@ -61,16 +61,16 @@
 				<div class="col-md-2 col-sm-2"></div>
 			</div>
 		</div>
-		<div class="iso-footer">
+		<!-- <div class="iso-footer">
 			<div class="console-container">
-				<!-- <button type="submit" class="btn btn-default btn-md" id="">Ctrl+Alt+Delete</button> -->
+				<button type="submit" class="btn btn-default btn-md" id="">Ctrl+Alt+Delete</button>
 				<button type="button" class="btn btn-warning pull-right" data-ng-show="consoleVm.status == 'Starting' || consoleVm.status == 'Stopping'"> {{ consoleVm.status }}</button>
 				<button type="button"
 					class="btn btn-danger btn-md pull-right" data-ng-show="consoleVm.status == 'Running'" data-ng-click="vmStop(consoleVm)" data-ng-disabled="instanceStopLabel == 'Stopping'">{{ instanceStopLabel }}</button>
 				<button type="button"
 					class="btn btn-success btn-start btn-md pull-right" data-ng-show="consoleVm.status == 'Stopped'" data-ng-click="vmStart(consoleVm)" data-ng-disabled="instanceStartLabel == 'Starting'">{{ instanceStartLabel }}</button>
 			</div>
-		</div>
+		</div> -->
 
 	</div>
 </body>
