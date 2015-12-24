@@ -64,17 +64,32 @@ function networkCtrl($scope, $modal, $window, $stateParams,globalConfig, localSt
      };
     // $scope.nicList();
 
-    $scope.addNetworkToVM = function () {
+    $scope.addNetworkToVM = function (instance) {
         dialogService.openDialog("app/views/cloud/instance/add-network.jsp", 'md', $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
-        	$scope.listNetwork = function () {
-            	var instanceId = $stateParams.id;
-            	var hasGuestNetworks =  promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "guestnetwork/list/instance?instanceid="+instanceId +"&lang=" + localStorageService.cookie.get('language')+"&sortBy=-id");
-                   hasGuestNetworks.then(function (result) {  // this is only run after $http
-                       $scope.networkList = result;
-                       console.log($scope.networkList);
-                   });
-               };
-//           	$scope.listNetwork();
+
+        $scope.networkList = function (instance) {
+
+	        		if($scope.instance.projectId != null) {
+	        			console.log("project " + $scope.instance.projectId);
+	    
+	        			var hasNetworks = promiseAjax.httpTokenRequest( crudService.globalConfig.HTTP_GET, crudService.globalConfig.APP_URL + 							"guestnetwork" + "/listall/"+$scope.instance.projectId);
+	        			hasNetworks.then(function (result) {
+	        				$scope.networkList = result;
+
+	        			});
+	        		} else {
+	        			console.log("department " + $scope.instance.departmentId);
+	        			var hasNetworks = promiseAjax.httpTokenRequest( crudService.globalConfig.HTTP_GET, crudService.globalConfig.APP_URL + 							"guestnetwork" + "/list/"+$scope.instance.departmentId);
+	        			hasNetworks.then(function (result) {
+	        				$scope.networkList = result;
+
+	        			});
+	        		}
+	        	};
+	            $scope.networkList(1);
+
+
+
             $scope.addNicToVirtualMachine = function (form, network) {
                 $scope.formSubmitted = true;
                 if (form.$valid) {
@@ -118,9 +133,10 @@ function networkCtrl($scope, $modal, $window, $stateParams,globalConfig, localSt
 		       $scope.showLoader = true;
 		   var hasNic = crudService.softDelete("nics", nic);
                     hasNic.then(function (result) {
-                       $scope.list(1);
+                     
 		       $scope.showLoader = false;
                        notify({message: 'Deleted successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+		$scope.list(1);
                    });
                    $modalInstance.close();
                },
@@ -137,9 +153,10 @@ function networkCtrl($scope, $modal, $window, $stateParams,globalConfig, localSt
 		   $scope.showLoader = true;
                     var hasServer = crudService.update("nics", nic);
                     hasServer.then(function (result) {
-                        $scope.list(1);
+                        
 			 $scope.showLoader = false;
                         notify({message: 'Updated successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+			$scope.list(1);
                     });
                     $modalInstance.close();
                 },

@@ -13,7 +13,7 @@
                 <div class="col-md-12 col-sm-12">
                       <span class="pull-right">
                     
-                            <a class="btn btn-info" has-permission="ADD_NETWORK_TO_VM" data-ng-click="addNetworkToVM()"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="add.network.to.vm" bundle="${msg}" /></a>
+                            <a class="btn btn-info" has-permission="ADD_NETWORK_TO_VM" data-ng-click="addNetworkToVM(instance)"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="add.network.to.vm" bundle="${msg}" /></a>
                       </span>
                       <h4>
                           <fmt:message key="instance.network.manager" bundle="${msg}" />
