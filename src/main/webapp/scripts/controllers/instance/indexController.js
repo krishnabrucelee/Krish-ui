@@ -221,7 +221,7 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
 
           $scope.userList = function (department) {
         	  $scope.showLoaderDetail = true;
-              var hasUsers = crudService.listAllByFilter("users/search", department);
+              var hasUsers = crudService.listAllByFilter("users/departmentusers", department);
               hasUsers.then(function (result) {  // this is only run after $http completes0
                        $scope.formElements.instanceOwnerList = result;
                        $scope.showLoaderDetail = false;

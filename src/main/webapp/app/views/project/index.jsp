@@ -83,22 +83,27 @@
     				  <get-loader-image data-ng-show="showLoader"></get-loader-image>
       				</div>
 									<table data-ng-hide="showLoader" cellspacing="1" cellpadding="1"
-										class="table table-bordered table-striped">
+										class="table dataTable table-bordered table-striped">
 										<thead>
 											<tr>
 												<th class="w-5"></th>
-												<th><fmt:message key="common.name" bundle="${msg}" /></th>
-												<th><fmt:message key="common.status" bundle="${msg}" /></th>
-												<th><fmt:message key="project.owner" bundle="${msg}" /></th>
-												<th><fmt:message key="billing.owner" bundle="${msg}" /></th>
-												<th><fmt:message key="common.department" bundle="${msg}" /></th>
-												<th><fmt:message key="create.time" bundle="${msg}" /></th>
+												<th ng-click="changeSorting('name')" data-ng-class="sort.descending && sort.column =='name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.name" bundle="${msg}" /></th>
+												<th ng-click="changeSorting('status')" data-ng-class="sort.descending && sort.column =='status'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="common.status" bundle="${msg}" /></th>
+												<th ng-click="changeSorting('projectOwner.userName')" data-ng-class="sort.descending && sort.column =='projectOwner.userName'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="project.owner" bundle="${msg}" /></th>
+												<th ng-click="changeSorting('projectOwner.userName')" data-ng-class="sort.descending && sort.column =='projectOwner.userName'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="billing.owner" bundle="${msg}" /></th>
+												<th ng-click="changeSorting('department.userName')" data-ng-class="sort.descending && sort.column =='department.userName'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="common.department" bundle="${msg}" /></th>
+												<th ng-click="changeSorting('createdDateTime')" data-ng-class="sort.descending && sort.column =='createdDateTime'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="create.time" bundle="${msg}" /></th>
 												<th><fmt:message key="operation" bundle="${msg}" /></th>
 											</tr>
 										</thead>
-										<tbody >
+									<tbody data-ng-hide="projectList.length > 0">
+                                        <tr>
+                                            <td class="col-md-11 col-sm-11" colspan="11"><fmt:message key="common.no.records.found" bundle="${msg}" />!!</td>
+                                        </tr>
+                                    </tbody>
+                                    <tbody data-ng-show="projectList.length > 0">
 											<tr
-												data-ng-repeat="projectObj in filteredCount = (projectList| filter: quickSearch)"
+												data-ng-repeat="projectObj in filteredCount = (projectList| filter: quickSearch |orderBy:sort.column:sort.descending)"
 												data-ng-class="isSingle === projectObj.id ? 'bg-row text-white' : ''">
 												<td class="">
 													<div class="radio radio-single radio-info">
