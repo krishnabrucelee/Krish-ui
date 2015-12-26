@@ -70,7 +70,6 @@ function departmentCtrl($scope, notify, promiseAjax, dialogService, crudService)
 
                             $scope.department.userName = "";
                             $scope.department.description = "";
-                            $scope.department.domain = "";
                             $scope.department.firstName = "";
                             $scope.department.lastName = "";
                             $scope.department.email = "";
