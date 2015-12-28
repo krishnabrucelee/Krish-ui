@@ -29,6 +29,32 @@
 				</div>
 			</div>
 		</div>
+		<div class="row  form-group required"  data-ng-if="global.sessionValues.type == 'ROOT_ADMIN'"
+			ng-class="{ 'text-danger' : !instance.domain && templateFormSubmitted}">
+			<div class="col-md-5 col-xs-5 col-sm-5">
+				<span class="control-label"><fmt:message
+						key="department.name" bundle="${msg}" /><span title="<fmt:message key="common.required" bundle="${msg}" />"
+					class="text-danger font-bold">*</span></span>
+			</div>
+			<div class="col-md-6 col-xs-6 col-sm-6">
+					<div  data-ng-class="{'error': !instance.domain && templateFormSubmitted}" custom-select="t as t.name for t in formElements.domainList | filter: { name: $searchTerm }" data-ng-model="instance.domain">
+						<div class="pull-left">
+						<strong>{{ t.name }}</strong><br />
+						</div>
+						<div class="clearfix"></div>
+						</div>
+				<i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"
+					tooltip="<fmt:message key="choose.domain" bundle="${msg}" />"></i>
+				<div class="error-area"
+					data-ng-show="!instance.domain && templateFormSubmitted">
+					<i
+						tooltip="<fmt:message key="domain.is.required" bundle="${msg}" />"
+						class="fa fa-warning error-icon"></i>
+				</div>
+			</div>
+		</div>
+
+
 		<div class="row  form-group required"
 			ng-class="{ 'text-danger' : !instance.department && templateFormSubmitted}">
 			<div class="col-md-5 col-xs-5 col-sm-5">
