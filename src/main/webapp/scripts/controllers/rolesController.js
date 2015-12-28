@@ -76,20 +76,19 @@ angular
                 notify({message: 'Added successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
                 $window.location.href = '#/roles';
             }).catch(function (result) {
-                if (!angular.isUndefined(result.data)) {
-                    if (result.data.globalError != '' && !angular.isUndefined(result.data.globalError)) {
+            	if (!angular.isUndefined(result) && result.data != null) {
+                    if (result.data.globalError[0] != '') {
                         var msg = result.data.globalError[0];
                         $scope.showLoader = false;
                         notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
-                    } else if (result.data.fieldErrors != null) {
-                        angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
-                            $scope.attachvolumeForm[key].$invalid = true;
-                            $scope.attachvolumeForm[key].errorMessage = errorMessage;
-                        });
                     }
-                }
-
+            angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
+                $scope.RoleForm[key].$invalid = true;
+                $scope.RoleForm[key].errorMessage = errorMessage;
             });
+
+}
+        });
         }
     };
         $scope.edit = function (roleId) {

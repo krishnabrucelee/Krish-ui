@@ -8,13 +8,17 @@ angular
     .module('homer')
     .controller('projectCtrl', projectCtrl)
 
-function projectCtrl($scope, promiseAjax, $modal, $state, modalService, dialogService, globalConfig,crudService,$stateParams, notify) {
+function projectCtrl($scope, promiseAjax, $modal, $filter, $state, modalService, dialogService, globalConfig,crudService,$stateParams, notify) {
 	$scope.global = globalConfig;
     $scope.projectList = {};
     $scope.paginationObject = {};
     $scope.accountElements={
 
     };
+    $scope.sort = {
+    		column : '',
+    		descending : false
+    	};
     $scope.oneChecked = false;
     $scope.removeLoader = {};
     $scope.ownerLoader = {};
@@ -44,6 +48,19 @@ function projectCtrl($scope, promiseAjax, $modal, $state, modalService, dialogSe
         });
     };
     $scope.list(1);
+
+    $scope.changeSorting = function(column) {
+
+		var sort = $scope.sort;
+
+		if (sort.column == column) {
+			sort.descending = !sort.descending;
+		} else {
+			sort.column = column;
+			sort.descending = false;
+		}
+		return sort.descending;
+	};
 
     $scope.edit = function (projectId) {
     	$scope.showLoader = true;
@@ -193,6 +210,7 @@ function projectCtrl($scope, promiseAjax, $modal, $state, modalService, dialogSe
          });
          if(!oldUser){
         	 $scope.projectInfo.userList.push(user);
+        	 console.log($scope.projectInfo);
         	 var hasServer = crudService.update("projects", $scope.projectInfo);
              hasServer.then(function (result) {
                  notify({message: 'User updated successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
@@ -309,6 +327,9 @@ function projectCtrl($scope, promiseAjax, $modal, $state, modalService, dialogSe
         modalService.trigger('app/views/project/delete.jsp', size);
     };*/
 
+    $scope.status = {};
+    $scope.status.basic = true;
+    $scope.status.password = true;
 
     $scope.$watch('project.totalCheckedCount', function() {
         $scope.project.oneChecked = false;

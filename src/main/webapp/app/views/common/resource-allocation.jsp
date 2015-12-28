@@ -227,13 +227,12 @@
                                 <label class="col-md-4 col-sm-5 control-label">
                                 </label>
   								<get-loader-image data-ng-show="showLoader"></get-loader-image>
-                                <div class="col-md-4 col-sm-5">
-
+                                <div class="col-md-4 col-sm-5" data-ng-hide="showLoader">
                                     <a class="btn btn-default btn-outline" data-ng-if="type == 'department-quota'"  ui-sref="department""><fmt:message key="common.cancel" bundle="${msg}" /></a>
-                                    <a class="btn btn-default btn-outline" data-ng-if="type == 'project-quota'"  ui-sref="projects""><fmt:message key="common.cancel" bundle="${msg}" /></a>
+                                    <a class="btn btn-default btn-outline" data-ng-if="type == 'project-quota'" ui-sref="projects""><fmt:message key="common.cancel" bundle="${msg}" /> </a>
 
                                     <button data-ng-if="type == 'department-quota'" class="btn btn-info" has-permission="DEPARTMENT_QUOTA_EDIT" data-ng-hide="showLoader" type="submit"><fmt:message key="common.update" bundle="${msg}" /></button>
-                        			<button data-ng-if="type == 'project-quota'" class="btn btn-info" has-permission="PROJECT_QUOTA_EDIT" data-ng-hide="showLoader" type="submit"><fmt:message key="common.update" bundle="${msg}" /></button>
+                        			<button data-ng-if="type == 'project-quota'" class="btn btn-info" has-permission="PROJECT_QUOTA_EDIT"  type="submit"><fmt:message key="common.update" bundle="${msg}" /></button>
                                 </div>
                             </div>
                         </div>

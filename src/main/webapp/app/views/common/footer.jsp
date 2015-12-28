@@ -8,5 +8,5 @@
          <span class="pull-right">
             <fmt:message key="panda.cloud.management.portal" bundle="${msg}" />
         </span>
-<fmt:message key="common.copyright" bundle="${msg}" />.
- </footer>
+<fmt:message key="common.copyright" bundle="${msg}" /> © <fmt:message key="common.footer" bundle="${msg}" />.
+ </footer>>

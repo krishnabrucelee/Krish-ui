@@ -15,9 +15,9 @@
                     <div class="col-lg-9 col-md-8 col-sm-12">
                     <div class="panel panel-info">
                             <div class="panel-heading">
-                                <h3 class="panel-title"><i class="pe-7s-folder pe-2x"></i>&nbsp;&nbsp;<fmt:message key="project.summary" bundle="${msg}" /></h3>
+                                <h3 class="panel-title"><i class="fa-folder fa"></i>&nbsp;&nbsp;<fmt:message key="project.summary" bundle="${msg}" /></h3>
                             </div>
-                        <accordion close-others="false"> <accordion-group is-open="true"> <accordion-heading>
+                        <accordion close-others="false"> <accordion-group is-open="status.basic"> <accordion-heading>
 							<fmt:message key="project.information" bundle="${msg}" /><i class="pull-right glyphicon"
 								ng-class="{'glyphicon-chevron-down': status.basic, 'glyphicon-chevron-right': !status.basic}"></i>
 							</accordion-heading>
@@ -72,7 +72,7 @@
 									</div>
 								</div>
 							</div>
-							</accordion-group > <accordion-group is-open="true"> <accordion-heading>
+							</accordion-group > <accordion-group is-open="status.password"> <accordion-heading>
 							<fmt:message key="users.and.roles" bundle="${msg}" /><i class="pull-right glyphicon"
 								ng-class="{'glyphicon-chevron-down': status.password, 'glyphicon-chevron-right': !status.password}"></i>
 							</accordion-heading>

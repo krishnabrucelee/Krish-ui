@@ -4,7 +4,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<form name="userForm" data-ng-submit="saveUser(user)" method="post" novalidate="">    
+<form name="userForm" data-ng-submit="saveUser(user)" method="post" novalidate="">
     <div class="inmodal" >
         <div class="modal-header">
             <panda-modal-header page-icon="fa fa-user" hide-zone="false"  page-title="<fmt:message key="edit.user" bundle="${msg}" />"></panda-modal-header>
@@ -22,14 +22,14 @@
 										<i ng-attr-tooltip="{{ userForm.username.errorMessage || '<fmt:message key="user.name.is.required" bundle="${msg}" />' }}" class="fa fa-warning error-icon"></i>
 								</div>
 							</div>
-					</div> 
+					</div>
 				</div>
                 </div>
             </div>
         </div>
         <div class="modal-footer">
             <a class="btn btn-default"  data-ng-click="cancel()"><fmt:message key="common.cancel" bundle="${msg}" /></a>
-            <button class="btn btn-info" type="submit"><fmt:message key="common.add" bundle="${msg}" /></button>
+            <button class="btn btn-info" type="submit"><fmt:message key="common.update" bundle="${msg}" /></button>
         </div>
     </div>
 
