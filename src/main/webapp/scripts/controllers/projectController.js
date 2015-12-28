@@ -227,7 +227,7 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams) {
 
     $scope.createProject = function (size) {
     	$scope.newProject = {};
-        $scope.projectForm = [];
+        $scope.projectForm = {};
     	appService.dialogService.openDialog("app/views/project/add.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
         // add project
     	  $scope.save = function (form) {
@@ -239,11 +239,16 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams) {
     		            		 $scope.newProject.domainId = $scope.global.sessionValues.domainId;
     		            	}
     		            }
+    		            else{
+    		            	 $scope.newProject.domainId =  $scope.newProject.domain.id;
+    		            }
     		            var project = $scope.newProject;
     		            console.log(project);
     		            project.isActive = true;
     		            project.departmentId = project.department.id;
     		            project.projectOwnerId = project.projectOwner.id;
+    		            project.domain =  $scope.newProject.domain;
+    		            project.domainId =  $scope.newProject.domainId;
     		            delete project.domain;
     		            delete project.department;
     		            delete project.projectOwner;
@@ -258,10 +263,10 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams) {
 
     		              	$scope.list(1);
     		            }).catch(function (result) {
+    		            	$scope.projectLoader = false;
     		                if(result.data.globalError[0] != '' && result.data.globalError[0] != null ){
     		               	 var msg = result.data.globalError[0];
     		               	 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
-
     		                    }
     		                angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
     		                    $scope.projectForm[key].$invalid = true;
@@ -346,6 +351,7 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams) {
                         var project = $scope.project;
                         project.projectOwnerId = $scope.project.projectOwner.id;
                         project.departmentId = $scope.project.department.id;
+                        project.domainId = $scope.project.domain.id;
                         delete project.domain;
     		            delete project.department;
     		            delete project.projectOwner;

@@ -70,12 +70,6 @@ function promiseAjax($http, $window, globalConfig, notify) {
         		setTimeout(function() {
         			window.location.href = "login";
         		}, 2000);
-            } else if(result.status != null && result.status === 500) {
-        		notify({
-    				message : result.statusText,
-    				classes : 'alert-danger',
-    				templateUrl : global.NOTIFICATION_TEMPLATE
-    			});
             } else {
             	throw result;
             }

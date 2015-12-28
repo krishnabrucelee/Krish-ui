@@ -442,8 +442,10 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
          }
          instance.computeOfferingId = instance.computeOffering.id;
          delete instance.computeOffering;
+         if(!angular.isUndefined(instance.storageOffering) && instance.storageOffering !== null){
          instance.storageOfferingId = instance.storageOffering.id;
          delete instance.storageOffering;
+         }
          instance.templateId = instance.template.id;
          delete instance.template;
          instance.zoneId = $scope.global.zone.id;
