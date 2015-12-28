@@ -19,8 +19,8 @@
                                 <span class="text-danger">*</span>
                             </label>
                             <div class="col-md-5 col-xs-12 col-sm-5">
-                                <input required="true" type="text" name="name" data-ng-model="project.name" class="form-control" data-ng-class="{'error': projectForm.name.$invalid && formSubmitted}">
-                                <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="<fmt:message key="name.of.the.disk" bundle="${msg}" />" ></i>
+                                <input required="true" type="text" name="name" data-ng-model="newProject.name" class="form-control" data-ng-class="{'error': projectForm.name.$invalid && formSubmitted}">
+                                <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="<fmt:message key="name.of.the.project" bundle="${msg}" />" ></i>
                                 <div class="error-area" data-ng-show="projectForm.name.$invalid && formSubmitted" ><i  ng-attr-tooltip="{{ projectForm.name.errorMessage || '<fmt:message key="project.name.is.required" bundle="${msg}" />' }}"  class="fa fa-warning error-icon"></i></div>
                             </div>
                         </div>
@@ -30,18 +30,31 @@
                         <div class="row">
                             <label class="col-md-3 col-xs-12 col-sm-3 control-label"><fmt:message key="common.description" bundle="${msg}" /><span class="m-l-xs"></span></label>
                             <div class="col-md-5 col-xs-12 col-sm-5">
-                                <textarea name="description" data-ng-model="project.description" class="form-control"></textarea>
+                                <textarea name="description" data-ng-model="newProject.description" class="form-control"></textarea>
                             </div>
 
                         </div>
                     </div>
-
+					<div data-ng-if="global.sessionValues.type == 'ROOT_ADMIN'">
+						<div class="form-group" ng-class="{'text-danger':projectForm.domain.$invalid && formSubmitted}">
+	                        <div class="row">
+	                            <label class="col-md-3 col-xs-12 col-sm-3 control-label control-normal"><fmt:message key="common.domain" bundle="${msg}" /><span class="text-danger">*</span></label>
+	                            <div class="col-md-7  col-sm-7 col-xs-12">
+	                                <select required="true" class="form-control input-group" name="domain" data-ng-model="newProject.domain" ng-options="domain.name for domain in formElements.domainList" data-ng-class="{'error': projectForm.domain.$invalid && formSubmitted}" >
+	                                    <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
+	                                </select>
+	                                <i  tooltip="<fmt:message key="choose.domain" bundle="${msg}" /> " class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
+	                                <div class="error-area" data-ng-show="projectForm.domain.$invalid && formSubmitted" ><i  tooltip="<fmt:message key="domain.is.required" bundle="${msg}" />" class="fa fa-warning error-icon"></i></div>
+	                            </div>
+	                        </div>
+	                    </div>
+                    </div>
 
                     <div class="form-group"ng-class="{'text-danger': projectForm.department.$invalid && formSubmitted}">
                             <div class="row">
                                 <label class="col-md-3 col-sm-3 control-label control-normal"><fmt:message key="common.department" bundle="${msg}" /><span class="text-danger">*</span></label>
                                 <div class="col-md-7  col-sm-7 col-xs-7">
-                                    <select required="true" class="form-control input-group" name="department" data-ng-model="project.department" data-ng-class="{'error': projectForm.department.$invalid && formSubmitted}" data-ng-options="department.userName for department in formElements.departmenttypeList" data-ng-class="{'error':  projectForm.department.$invalid && formSubmitted}" >
+                                    <select required="true" class="form-control input-group" name="department" data-ng-model="newProject.department" data-ng-class="{'error': projectForm.department.$invalid && formSubmitted}" data-ng-options="department.userName for department in formElements.departmenttypeList" data-ng-class="{'error':  projectForm.department.$invalid && formSubmitted}" >
                                         <option value="">Select</option>
 
                                     </select>
@@ -60,7 +73,7 @@
                             </label>
                             <div class="col-md-7 col-xs-7 col-sm-5">
                                 <select required="true" class="form-control input-group" name="projectOwner"
-                                        data-ng-model="project.projectOwner" data-ng-class="{'error': projectForm.projectOwner.$invalid && formSubmitted}"
+                                        data-ng-model="newProject.projectOwner" data-ng-class="{'error': projectForm.projectOwner.$invalid && formSubmitted}"
                                         data-ng-options="projectOwner.userName group by projectOwner.group for projectOwner in projectElements.projectOwnerList" >
                                     <option value="">Select a user</option>
                                 </select>
