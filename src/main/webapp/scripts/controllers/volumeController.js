@@ -10,8 +10,7 @@ angular
         .controller('recurringSnapshotCtrl', recurringSnapshotController)
         //.controller('uploadVolumeCtrl', uploadVolumeCtrl)
 
-function volumeCtrl($scope, $state, $stateParams, $timeout, globalConfig, promiseAjax,
-        volumeService, localStorageService, $window, notify, dialogService, crudService) {
+function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeService, $window) {
 
     $scope.global = globalConfig;
     $scope.formSubmitted = false;
@@ -23,13 +22,13 @@ function volumeCtrl($scope, $state, $stateParams, $timeout, globalConfig, promis
 
     $scope.paginationObject = {};
     $scope.storageForm = {};
-    $scope.global = crudService.globalConfig;
+    $scope.global = appService.globalConfig;
 
     // Volume List
     $scope.list = function (pageNumber) {
     	 $scope.showLoader = true;
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
-        var hasVolumes = crudService.list("volumes", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+        var hasVolumes = appService.crudService.list("volumes", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
         hasVolumes.then(function (result) {
 
             $scope.volumeList = result;
@@ -75,7 +74,7 @@ function volumeCtrl($scope, $state, $stateParams, $timeout, globalConfig, promis
         		if($scope.volume.projectId != null) {
         			console.log("project " + $scope.volume.projectId);
         			// var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
-        			var hasVolumes = promiseAjax.httpTokenRequest( crudService.globalConfig.HTTP_GET, crudService.globalConfig.APP_URL + "virtualmachine"  +"/volume/project/"+$scope.volume.projectId);
+        			var hasVolumes = appService.promiseAjax.httpTokenRequest(appService.crudService.globalConfig.HTTP_GET, appService.crudService.globalConfig.APP_URL + "virtualmachine"  +"/volume/project/"+$scope.volume.projectId);
         			hasVolumes.then(function (result) {
         				$scope.instanceList = result;
 
@@ -85,7 +84,7 @@ function volumeCtrl($scope, $state, $stateParams, $timeout, globalConfig, promis
         			});
         		} else {
         			console.log("department " + $scope.volume.departmentId);
-        			var hasVolumes = promiseAjax.httpTokenRequest( crudService.globalConfig.HTTP_GET, crudService.globalConfig.APP_URL + "virtualmachine"  +"/volume/department/"+$scope.volume.departmentId);
+        			var hasVolumes = appService.promiseAjax.httpTokenRequest(appService.crudService.globalConfig.HTTP_GET, appService.crudService.globalConfig.APP_URL + "virtualmachine"  +"/volume/department/"+$scope.volume.departmentId);
         			hasVolumes.then(function (result) {
         				$scope.instanceList = result;
 
@@ -111,16 +110,37 @@ function volumeCtrl($scope, $state, $stateParams, $timeout, globalConfig, promis
 //                });
 //            };
 //            $scope.instanceList(1);
-            dialogService.openDialog("app/views/cloud/volume/attach-volume.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+            appService.dialogService.openDialog("app/views/cloud/volume/attach-volume.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
                 $scope.attachVolume = function (form, volume) {
                     volume.vmInstance = $scope.vmInstance;
                     $scope.formSubmitted = true;
                     if (form.$valid) {
                     	$scope.showLoader = true;
-                        var hasServer = crudService.add("volumes/attach/" + volume.id, volume);
+
+                        if(!angular.isUndefined(volume.vmInstance)) {
+                        	volume.vmInstanceId = volume.vmInstance.id;
+                        	delete volume.vmInstance;
+                        }
+                        if(!angular.isUndefined(volume.storageOffering)) {
+                        	volume.storageOfferingId = volume.storageOffering.id;
+                        	delete volume.storageOffering;
+                        }
+                        if(!angular.isUndefined(volume.department)) {
+                        	volume.departmentId = volume.department.id;
+                        	delete volume.department;
+                        }
+                        if(!angular.isUndefined(volume.project) && volume.project != null) {
+                        	volume.projectId = volume.project.id;
+                        	delete volume.project;
+                        }
+                        if(!angular.isUndefined(volume.zone)) {
+                        	volume.zoneId = volume.zone.id;
+                        	delete volume.zone;
+                        }
+                        var hasServer = appService.crudService.add("volumes/attach/" + volume.id, volume);
                         hasServer.then(function (result) {  // this is only run after $http completes
                         	$scope.showLoader = false;
-                        	notify({message: 'Attached successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                        	appService.notify({message: 'Attached successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                             $window.location.href = '#/volume/list';
                             $modalInstance.close();
                             $scope.list(1);
@@ -129,7 +149,7 @@ function volumeCtrl($scope, $state, $stateParams, $timeout, globalConfig, promis
                                 if (result.data.globalError != '' && !angular.isUndefined(result.data.globalError)) {
                                     var msg = result.data.globalError[0];
                                     $scope.showLoader = false;
-                                    notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                                    appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                                 } else if (result.data.fieldErrors != null) {
                                     angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
                                         $scope.attachvolumeForm[key].$invalid = true;
@@ -149,9 +169,9 @@ function volumeCtrl($scope, $state, $stateParams, $timeout, globalConfig, promis
     // Detach Volume
     $scope.detach = function (size, volume) {
         $scope.volume = volume;
-        dialogService.openDialog("app/views/cloud/volume/detach-volume.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+        appService.dialogService.openDialog("app/views/cloud/volume/detach-volume.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
                 $scope.instanceList = function () {
-                    var hasinstanceList = crudService.listAll("virtualmachine/list");
+                    var hasinstanceList = appService.crudService.listAll("virtualmachine/list");
                     hasinstanceList.then(function (result) {  // this is only run after $http completes0
                         $scope.instanceList = result;
                     });
@@ -160,10 +180,31 @@ function volumeCtrl($scope, $state, $stateParams, $timeout, globalConfig, promis
                 $scope.detachVolume = function (volume) {
                     console.log(volume);
                     $scope.showLoader = true;
-                    var hasServer = crudService.add("volumes/detach/" + volume.id, volume);
+
+                    if(!angular.isUndefined(volume.vmInstance)) {
+                    	volume.vmInstanceId = volume.vmInstance.id;
+                    	delete volume.vmInstance;
+                    }
+                    if(!angular.isUndefined(volume.storageOffering)) {
+                    	volume.storageOfferingId = volume.storageOffering.id;
+                    	delete volume.storageOffering;
+                    }
+                    if(!angular.isUndefined(volume.department)) {
+                    	volume.departmentId = volume.department.id;
+                    	delete volume.department;
+                    }
+                    if(!angular.isUndefined(volume.project) && volume.project != null) {
+                    	volume.projectId = volume.project.id;
+                    	delete volume.project;
+                    }
+                    if(!angular.isUndefined(volume.zone)) {
+                    	volume.zoneId = volume.zone.id;
+                    	delete volume.zone;
+                    }
+                    var hasServer = appService.crudService.add("volumes/detach/" + volume.id, volume);
                     hasServer.then(function (result) {  // this is only run after $http completes
                     	$scope.showLoader = false;
-                        notify({message: 'Detached successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                    	appService.notify({message: 'Detached successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                         $window.location.href = '#/volume/list';
                         $modalInstance.close();
                         $scope.list(1);
@@ -172,7 +213,7 @@ function volumeCtrl($scope, $state, $stateParams, $timeout, globalConfig, promis
                             if (result.data.globalError != '' && !angular.isUndefined(result.data.globalError)) {
                                 var msg = result.data.globalError[0];
                                 $scope.showLoader = false;
-                                notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                                appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                             } else if (result.data.fieldErrors != null) {
                                 angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
                                     $scope.attachvolumeForm[key].$invalid = true;
@@ -193,23 +234,23 @@ function volumeCtrl($scope, $state, $stateParams, $timeout, globalConfig, promis
         $scope.volume = volume;
         $scope.snapshot = {};
         setTimeout(function () {
-            dialogService.openDialog("app/views/cloud/snapshot/download-snapshot.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+        	appService.dialogService.openDialog("app/views/cloud/snapshot/download-snapshot.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
                     $scope.validateConfirmSnapshot = function (form) {
                         $scope.formSubmitted = true;
                         if (form.$valid) {
                             var snapshot = $scope.snapshot;
                             snapshot.volume = $scope.volume;
-                            snapshot.zone = crudService.globalConfig.zone;
-                            var hasServer = crudService.add("snapshots", snapshot);
+                            snapshot.zone = appService.crudService.globalConfig.zone;
+                            var hasServer = appService.crudService.add("snapshots", snapshot);
                             hasServer.then(function (result) {
-                                notify({message: 'Added successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                            	appService.notify({message: 'Added successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                                 $window.location = "#/snapshot/list";
                                 $modalInstance.close();
                             }).catch(function (result) {
                                 if (!angular.isUndefined(result) && result.data != null) {
                                     if (result.data.globalError[0] != '') {
                                         var msg = result.data.globalError[0];
-                                        notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                                        appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                                     }
                                     angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
                                         $scope.confirmsnapshot[key].$invalid = true;
@@ -228,20 +269,20 @@ function volumeCtrl($scope, $state, $stateParams, $timeout, globalConfig, promis
     };
 
     $scope.openUploadVolumeContainer = function (size) {
-        modalService.trigger('app/views/cloud/volume/upload.jsp', size);
+    	appService.modalService.trigger('app/views/cloud/volume/upload.jsp', size);
     };
 
     $scope.openReccuringSnapshot = function (volume) {
-        modalService.trigger('app/views/cloud/volume/recurring-snapshot.jsp', 'lg');
+    	appService.modalService.trigger('app/views/cloud/volume/recurring-snapshot.jsp', 'lg');
     };
 
     //Resize Volume
     $scope.resizeVolume = function (size, volume) {
         $scope.volume = volume;
         $scope.volume = angular.copy(volume);
-        dialogService.openDialog($scope.global.VIEW_URL + "cloud/volume/resize.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
+        appService.dialogService.openDialog($scope.global.VIEW_URL + "cloud/volume/resize.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
                 $scope.diskList = function () {
-                    var hasDisks = crudService.listAll("storages/list");
+                    var hasDisks = appService.crudService.listAll("storages/list");
                     hasDisks.then(function (result) {  // this is only run after
                         // $http completes0
                         $scope.volumeElements.diskOfferingList = result;
@@ -261,18 +302,18 @@ function volumeCtrl($scope, $state, $stateParams, $timeout, globalConfig, promis
                     	$scope.showLoader = true;
                         $scope.volume.zone = $scope.global.zone;
                         var volume = $scope.volume;
-                        var hasVolume = crudService.add("volumes/resize/" + volume.id, volume);
+                        var hasVolume = appService.crudService.add("volumes/resize/" + volume.id, volume);
                         hasVolume.then(function (result) {
                         	$scope.showLoader = false;
                             $scope.list(1);
-                            notify({message: 'Updated successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                            appService.notify({message: 'Updated successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                             $modalInstance.close();
                         }).catch(function (result) {
                             if (!angular.isUndefined(result.data)) {
                                 if (result.data.globalError != '' && !angular.isUndefined(result.data.globalError)) {
                                     var msg = result.data.globalError[0];
                                     $scope.showLoader = false;
-                                    notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                                    appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                                 } else if (result.data.fieldErrors != null) {
                                     angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
                                         $scope.attachvolumeForm[key].$invalid = true;
@@ -293,7 +334,7 @@ function volumeCtrl($scope, $state, $stateParams, $timeout, globalConfig, promis
     $scope.volume = {};
     $scope.volumeForm = {};
     $scope.addVolume = function (size) {
-        dialogService.openDialog($scope.global.VIEW_URL + "cloud/volume/add.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope',
+    	appService.dialogService.openDialog($scope.global.VIEW_URL + "cloud/volume/add.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope',
                                                                                                  function ($scope, $modalInstance, $rootScope) {
 
                 $scope.diskList = function (tag) {
@@ -303,7 +344,7 @@ function volumeCtrl($scope, $state, $stateParams, $timeout, globalConfig, promis
                     	if(tag === null){
                     		tag = "";
                     	}
-                    var hasDisks = crudService.listAllByTag("storages/storagesort", tag);
+                    var hasDisks = appService.crudService.listAllByTag("storages/storagesort", tag);
                     hasDisks.then(function (result) {  // this is only run after
                         // $http completes0
                         $scope.volumeElements.diskOfferingList = result;
@@ -311,7 +352,7 @@ function volumeCtrl($scope, $state, $stateParams, $timeout, globalConfig, promis
                 };
 
                 $scope.diskTag = function () {
-                    var hasDiskTags = crudService.listAll("storages/storagetags");
+                    var hasDiskTags = appService.crudService.listAll("storages/storagetags");
                     hasDiskTags.then(function (result) {  // this is only run after
                         // $http completes0
 
@@ -326,7 +367,7 @@ function volumeCtrl($scope, $state, $stateParams, $timeout, globalConfig, promis
 
                 $scope.project = {};
                  $scope.projectList = function () {
-                 var hasProjects = promiseAjax.httpTokenRequest( crudService.globalConfig.HTTP_GET, crudService.globalConfig.APP_URL + "projects/list");
+                 var hasProjects = appService.promiseAjax.httpTokenRequest(appService.crudService.globalConfig.HTTP_GET, appService.crudService.globalConfig.APP_URL + "projects/list");
                  hasProjects.then(function (result) {  // this is only run after $http completes0
                  	$scope.options = result;
                  });
@@ -335,7 +376,7 @@ function volumeCtrl($scope, $state, $stateParams, $timeout, globalConfig, promis
                 // Department list from server
                 $scope.department = {};
                 var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
-                var hasDepartment = promiseAjax.httpTokenRequest( crudService.globalConfig.HTTP_GET, crudService.globalConfig.APP_URL + "departments/list");
+                var hasDepartment = appService.promiseAjax.httpTokenRequest(appService.crudService.globalConfig.HTTP_GET, appService.crudService.globalConfig.APP_URL + "departments/list");
                 hasDepartment.then(function (result) {  // this is only run after $http completes0
                 	$scope.volumeElements.departmentList = result;
                 });
@@ -343,7 +384,7 @@ function volumeCtrl($scope, $state, $stateParams, $timeout, globalConfig, promis
 
                 // Getting list of projects by department
                 $scope.getProjectsByDepartment = function(department) {
-           		 var hasProjects =  promiseAjax.httpTokenRequest( crudService.globalConfig.HTTP_GET, crudService.globalConfig.APP_URL + "projects"  +"/department/"+department.id);
+           		 var hasProjects =  appService.promiseAjax.httpTokenRequest(appService.crudService.globalConfig.HTTP_GET, appService.crudService.globalConfig.APP_URL + "projects"  +"/department/"+department.id);
         		 hasProjects.then(function (result) {  // this is only run after $http completes0
                     		$scope.options = result;
                     	 });
@@ -377,19 +418,36 @@ function volumeCtrl($scope, $state, $stateParams, $timeout, globalConfig, promis
                     if (form.$valid) {
                     	$scope.showLoader = true;
                         $scope.volume.zone = $scope.global.zone;
-                        var volume = $scope.volume;
-                        var hasVolume = crudService.add("volumes", volume);
+
+                        var volume = angular.copy($scope.volume);
+                        if(!angular.isUndefined($scope.volume.storageOffering) && volume.storageOffering != null) {
+                        	volume.storageOfferingId = volume.storageOffering.id;
+                        	delete volume.storageOffering;
+                        }
+                        if(!angular.isUndefined($scope.volume.department) && volume.department != null) {
+                        	volume.departmentId = volume.department.id;
+                        	delete volume.department;
+                        }
+                        if(!angular.isUndefined($scope.volume.project) && volume.project != null) {
+                        	volume.projectId = volume.project.id;
+                        	delete volume.project;
+                        }
+                        if(!angular.isUndefined($scope.volume.zone) && volume.zone != null) {
+                        	volume.zoneId = volume.zone.id;
+                        	delete volume.zone;
+                        }
+                        var hasVolume = appService.crudService.add("volumes", volume);
                         hasVolume.then(function (result) {
                         	$scope.showLoader = false;
                             $scope.list(1);
-                            notify({message: 'Added successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                            appService.notify({message: 'Added successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                             $modalInstance.close();
                         }).catch(function (result) {
  				if (!angular.isUndefined(result) && result.data != null) {
                                     if (result.data.globalError[0] != '') {
                                         var msg = result.data.globalError[0];
                                         $scope.showLoader = false;
-                                        notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                                        appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                                     }
                             angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
                                 $scope.volumeForm[key].$invalid = true;
@@ -443,7 +501,7 @@ function volumeCtrl($scope, $state, $stateParams, $timeout, globalConfig, promis
 //	$scope.volume = {};
 //	$scope.volumeForm = {};
 	$scope.uploadVolumeCtrl = function (size) {
-		dialogService.openDialog($scope.global.VIEW_URL + "cloud/volume/upload.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope',
+		appService.dialogService.openDialog($scope.global.VIEW_URL + "cloud/volume/upload.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope',
                                                                                                  function ($scope, $modalInstance, $rootScope) {
     $scope.global = globalConfig;
     // Form Field Decleration
@@ -467,7 +525,7 @@ function volumeCtrl($scope, $state, $stateParams, $timeout, globalConfig, promis
 
 	$scope.zoneList = {};
 	 $scope.zoneList = function () {
-	               var hasZones = crudService.listAll("zones/list");
+	               var hasZones = appService.crudService.listAll("zones/list");
 	               hasZones.then(function (result) {  // this is only run
 														// after $http
 														// completes0
@@ -480,7 +538,7 @@ function volumeCtrl($scope, $state, $stateParams, $timeout, globalConfig, promis
 
     $scope.diskList = {};
     $scope.diskList = function () {
-                    var hasDisks = crudService.listAll("storages/list");
+                    var hasDisks = appService.crudService.listAll("storages/list");
                     hasDisks.then(function (result) {  // this is only run after
                         // $http completes0
                         $scope.volumeElements.diskOfferingList = result;
@@ -499,12 +557,22 @@ function volumeCtrl($scope, $state, $stateParams, $timeout, globalConfig, promis
              if(volume.md5checksum == "") {
             	 delete volume.md5checksum;
              }
-             var hasUploadVolume = crudService.add("volumes/upload", volume);
+             var volume = angular.copy($scope.volume);
+             if(!angular.isUndefined(volume.storageOffering) && volume.storageOffering != null) {
+             	volume.storageOfferingId = volume.storageOffering.id;
+             	delete volume.storageOffering;
+             }
+             if(!angular.isUndefined(volume.zone) && volume.zone != null) {
+             	volume.zoneId = volume.zone.id;
+             	delete volume.zone;
+             }
+
+             var hasUploadVolume = appService.crudService.add("volumes/upload", volume);
              hasUploadVolume.then(function (result) {
             	 $scope.showLoader = false;
 
                  $scope.homerTemplate = 'app/views/notification/notify.jsp';
-                 notify({message: 'Uploaded successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
+                 appService.notify({message: 'Uploaded successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
                  $modalInstance.close();
                  $scope.list(1);
              }).catch(function (result) {
@@ -512,7 +580,7 @@ function volumeCtrl($scope, $state, $stateParams, $timeout, globalConfig, promis
                     if (result.data.globalError[0] != '') {
                         var msg = result.data.globalError[0];
                         $scope.showLoader = false;
-                        notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                        appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                     }
             angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
                 $scope.volumeForm[key].$invalid = true;
@@ -531,7 +599,7 @@ function volumeCtrl($scope, $state, $stateParams, $timeout, globalConfig, promis
 
 //Upload volume from local
 $scope.uploadVolumeFromLocalCtrl = function (size) {
-	dialogService.openDialog($scope.global.VIEW_URL + "cloud/volume/upload.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope',
+	appService.dialogService.openDialog($scope.global.VIEW_URL + "cloud/volume/upload.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope',
                                                                                              function ($scope, $modalInstance, $rootScope) {
 $scope.global = globalConfig;
 // Form Field Decleration
@@ -555,17 +623,17 @@ $scope.validateVolume = function (form, volume) {
     if (form.$valid) {
     	 $scope.volume.zone = $scope.global.zone;
          var volume = $scope.volume;
-         var hasUploadVolume = crudService.add("volumes", volume);
+         var hasUploadVolume = appService.crudService.add("volumes", volume);
          hasUploadVolume.then(function (result) {
              $scope.list(1);
              $scope.homerTemplate = 'app/views/notification/notify.jsp';
-             notify({message: 'Uploaded successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
+             appService.notify({message: 'Uploaded successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
              $modalInstance.close();
          }).catch(function (result) {
 				if (!angular.isUndefined(result) && result.data != null) {
                 if (result.data.globalError[0] != '') {
                     var msg = result.data.globalError[0];
-                    notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                    appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                 }
         angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
             $scope.volumeForm[key].$invalid = true;
@@ -585,14 +653,40 @@ $scope.validateVolume = function (form, volume) {
 
 // Delete the Volume
 $scope.delete = function (size, volume) {
-    dialogService.openDialog("app/views/cloud/volume/delete.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+	appService.dialogService.openDialog("app/views/cloud/volume/delete.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
             $scope.deleteObject = volume;
             $scope.ok = function (volume) {
             	$scope.showLoader = true;
-                var hasServer = crudService.softDelete("volumes", volume);
+
+            	console.log(volume);
+
+            	if(!angular.isUndefined(volume.domain) && volume.domain != null ) {
+                	volume.domainId = volume.domain.id;
+                	delete volume.domain;
+                }
+                if(!angular.isUndefined(volume.storageOffering) && volume.storageOffering != null) {
+                	volume.storageOfferingId = volume.storageOffering.id;
+                	delete volume.storageOffering;
+                }
+                if(!angular.isUndefined(volume.department) && volume.department != null) {
+                	volume.departmentId = volume.department.id;
+                	delete volume.department;
+                }
+                if(!angular.isUndefined(volume.project) && volume.project != null) {
+                	volume.projectId = volume.project.id;
+                	delete volume.project;
+                }
+                if(!angular.isUndefined(volume.zone) && volume.zone != null) {
+                	volume.zoneId = volume.zone.id;
+                	delete volume.zone;
+                }
+
+                volume.id = deleteObject.id;
+
+                var hasServer = appService.crudService.softDelete("volumes", volume);
                 hasServer.then(function (result) {
                 	 $scope.homerTemplate = 'app/views/notification/notify.jsp';
-                     notify({message: 'Deleted successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
+                	 appService.notify({message: 'Deleted successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
                      $scope.showLoader = false;
                      $modalInstance.close();
                      $scope.list(1);
@@ -601,7 +695,7 @@ $scope.delete = function (size, volume) {
                         if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
                             var msg = result.data.globalError[0];
                             $scope.showLoader = false;
-                            notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                            appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                         }
                         angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
                             $scope.addnetworkForm[key].$invalid = true;

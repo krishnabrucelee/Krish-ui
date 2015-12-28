@@ -5,7 +5,7 @@ angular
         .controller('rolesListCtrl', rolesListCtrl)
 
 
- function rolesListCtrl($scope, $window, $state, modalService, crudService, notify, promiseAjax, dialogService, $stateParams) {
+ function rolesListCtrl($scope, appService, $window, $state, modalService, $stateParams) {
 
     $scope.formElements = {};
     $scope.ids = {};
@@ -14,7 +14,7 @@ angular
     };
     $scope.paginationObject = {};
     $scope.RoleForm = {};
-    $scope.global = crudService.globalConfig;
+    $scope.global = appService.globalConfig;
     $scope.userList = {};
     $scope.roleList = {};
 
@@ -22,7 +22,7 @@ angular
     $scope.list = function (pageNumber) {
     	$scope.showLoader = true;
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
-        var hasRoles = crudService.list("roles", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+        var hasRoles = appService.crudService.list("roles", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
         hasRoles.then(function (result) {  // this is only run after $http completes0
             $scope.roleList = result;
             console.log($scope.roleList);
@@ -37,7 +37,7 @@ angular
 
     // Department list from server
     $scope.role.department = {};
-    var hasDepartment = crudService.listAll("departments/list");
+    var hasDepartment = appService.crudService.listAll("departments/list");
     hasDepartment.then(function (result) {  // this is only run after $http completes0
     	$scope.formElements.departmentList = result;
     });
@@ -46,7 +46,7 @@ angular
 
     $scope.permissions = {};
     var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
-    var hasPermissions = promiseAjax.httpTokenRequest( crudService.globalConfig.HTTP_GET, crudService.globalConfig.APP_URL + "permissions/list");
+    var hasPermissions = appService.promiseAjax.httpTokenRequest(appService.crudService.globalConfig.HTTP_GET, appService.crudService.globalConfig.APP_URL + "permissions/list");
 
     hasPermissions.then(function (result) {  // this is only run after $http completes0
     	  $scope.showLoader = true;
@@ -69,18 +69,18 @@ angular
             	}
             })
             var role = $scope.role;
-            var hasServer = crudService.add("roles", role);
+            var hasServer = appService.crudService.add("roles", role);
             hasServer.then(function (result) {  // this is only run after $http completes
             	$scope.showLoader = false;
             	$scope.list(1);
-                notify({message: 'Added successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+            	appService.notify({message: 'Added successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
                 $window.location.href = '#/roles';
             }).catch(function (result) {
             	if (!angular.isUndefined(result) && result.data != null) {
                     if (result.data.globalError[0] != '') {
                         var msg = result.data.globalError[0];
                         $scope.showLoader = false;
-                        notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                        appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                     }
             angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
                 $scope.RoleForm[key].$invalid = true;
@@ -92,7 +92,7 @@ angular
         }
     };
         $scope.edit = function (roleId) {
-            var hasRole = crudService.read("roles", roleId);
+            var hasRole = appService.crudService.read("roles", roleId);
             hasRole.then(function (result) {
                 $scope.role = result;
                 angular.forEach($scope.role.permissionList, function(permission, key) {
@@ -124,18 +124,18 @@ angular
                    	}
                 })
             	var role = $scope.role;
-                var hasServer = crudService.update("roles", role);
+                var hasServer = appService.crudService.update("roles", role);
                 hasServer.then(function (result) {
                 	$scope.showLoader = false;
                 $scope.homerTemplate = 'app/views/notification/notify.jsp';
-                notify({message: 'Updated successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
+                appService.notify({message: 'Updated successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
                 $window.location.href = '#/roles';
                 }).catch(function (result) {
                     if (!angular.isUndefined(result.data)) {
                         if (result.data.globalError != '' && !angular.isUndefined(result.data.globalError)) {
                             var msg = result.data.globalError[0];
                             $scope.showLoader = false;
-                            notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                            appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                         } else if (result.data.fieldErrors != null) {
                             angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
                                 $scope.attachvolumeForm[key].$invalid = true;
@@ -150,24 +150,24 @@ angular
 
 
     $scope.delete = function (size, role) {
-        dialogService.openDialog("app/views/roles/confirm-delete.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+    	appService.dialogService.openDialog("app/views/roles/confirm-delete.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
                 $scope.deleteId = role.id;
                 $scope.ok = function (id) {
                 	$scope.showLoader = true;
                 	role.isActive = false;
-                    var hasRole = crudService.softDelete("roles", role);
+                    var hasRole = appService.crudService.softDelete("roles", role);
                     hasRole.then(function (result) {
                     	$scope.showLoader = false;
                         $scope.list(1);
                         $scope.homerTemplate = 'app/views/notification/notify.jsp';
-                        notify({message: 'Deleted successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
+                        appService.notify({message: 'Deleted successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
                         $modalInstance.close();
                     }).catch(function (result) {
                         if (!angular.isUndefined(result) && result.data != null) {
                             if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
                                 var msg = result.data.globalError[0];
                                 $scope.showLoader = false;
-                                notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                                appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                             }
                             angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
                                 $scope.addnetworkForm[key].$invalid = true;
@@ -221,16 +221,16 @@ angular
 
     // Opened user add window
     $scope.assignRole = function (size) {
-        dialogService.openDialog("app/views/roles/assign-role.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
+    	appService.dialogService.openDialog("app/views/roles/assign-role.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
             // Getting list of users and roles by department
         $scope.getUsersByDepartment = function(department) {
-        	var hasUsers =  promiseAjax.httpTokenRequest( crudService.globalConfig.HTTP_GET, crudService.globalConfig.APP_URL + "users"  +"/department/"+department.id);
+        	var hasUsers =  appService.promiseAjax.httpTokenRequest(appService.crudService.globalConfig.HTTP_GET, appService.crudService.globalConfig.APP_URL + "users"  +"/department/"+department.id);
         	hasUsers.then(function (result) {  // this is only run after $http completes0
         		$scope.userList = result;
         		if(angular.isUndefined($scope.userRoleList))
         			$scope.userRoleList = [];
 
-    			var hasRoles =  promiseAjax.httpTokenRequest( crudService.globalConfig.HTTP_GET, crudService.globalConfig.APP_URL + "roles"  +"/department/"+department.id);
+    			var hasRoles =  appService.promiseAjax.httpTokenRequest(appService.crudService.globalConfig.HTTP_GET, appService.crudService.globalConfig.APP_URL + "roles"  +"/department/"+department.id);
             	hasRoles.then(function (result) {  // this is only run after $http completes0
             		$scope.roleList = result;
             			angular.forEach($scope.userList, function(obj, key) {
@@ -261,10 +261,10 @@ angular
 
         	console.log(assignedUsers);
         	if (form.$valid) {
-        		var hasServer = crudService.add("users/assignRole", assignedUsers);
+        		var hasServer = appService.crudService.add("users/assignRole", assignedUsers);
         		hasServer.then(function (result) {  // this is only run after $http completes
         			$scope.list(1);
-        			notify({message: 'Assigned successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+        			appService.notify({message: 'Assigned successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
         			$modalInstance.close();
         		}).catch(function (result) {
         			if(!angular.isUndefined(result) && result.data != null) {
@@ -286,16 +286,16 @@ angular
 
     // Opened user edit window
     $scope.editAssignedRole = function (size) {
-        dialogService.openDialog("app/views/roles/edit-assigned-role.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
+    	appService.dialogService.openDialog("app/views/roles/edit-assigned-role.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
             // Getting list of users and roles by department
         $scope.getUsersByDepartment = function(department) {
-        	var hasUsers =  promiseAjax.httpTokenRequest( crudService.globalConfig.HTTP_GET, crudService.globalConfig.APP_URL + "users"  +"/department/"+department.id);
+        	var hasUsers =  appService.promiseAjax.httpTokenRequest(appService.crudService.globalConfig.HTTP_GET, appService.crudService.globalConfig.APP_URL + "users"  +"/department/"+department.id);
         	hasUsers.then(function (result) {  // this is only run after $http completes0
         		$scope.userList = result;
         		if(angular.isUndefined($scope.userRoleList))
         			$scope.userRoleList = [];
 
-    			var hasRoles =  promiseAjax.httpTokenRequest( crudService.globalConfig.HTTP_GET, crudService.globalConfig.APP_URL + "roles"  +"/department/"+department.id);
+    			var hasRoles =  appService.promiseAjax.httpTokenRequest(appService.crudService.globalConfig.HTTP_GET, appService.crudService.globalConfig.APP_URL + "roles"  +"/department/"+department.id);
             	hasRoles.then(function (result) {  // this is only run after $http completes0
             		$scope.roleList = result;
             			angular.forEach($scope.userList, function(obj, key) {
@@ -321,10 +321,10 @@ angular
         	});
 
         	if (form.$valid) {
-        		var hasServer = crudService.add("users/assignRole", assignedUsers);
+        		var hasServer = appService.crudService.add("users/assignRole", assignedUsers);
         		hasServer.then(function (result) {  // this is only run after $http completes
         			$scope.list(1);
-        			notify({message: 'Updated successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+        			appService.notify({message: 'Updated successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
         			$modalInstance.close();
         		}).catch(function (result) {
         			if(!angular.isUndefined(result) && result.data != null) {

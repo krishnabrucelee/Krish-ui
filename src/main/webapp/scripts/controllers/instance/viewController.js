@@ -21,8 +21,8 @@ function instanceViewCtrl($scope,$log, $sce, dialogService, $modal,$http, $state
         hasServer.then(function (result) {  // this is only run after $http											// completes
             $scope.instance = result;
 		$scope.instanceList = result;
-		
-console.log($scope.instance);
+
+		console.log($scope.instance);
             var str = $scope.instance.cpuUsage;
             if(str!=null){
             var newString = str.replace(/^_+|_+$/g,'');
@@ -32,18 +32,18 @@ console.log($scope.instance);
             $scope.showLoader = false;
             $scope.chart(num);
             }
-		
+
             else{
             	   $scope.showLoaderOffer = false;
             	   $scope.showLoader = false;
             	 $scope.chart(0);
-            } 
+            }
 		$scope.cancel = function () {
             $modalInstance.close();
         };
 
         });
-        
+
     }
 
     // Resize Instance
@@ -55,7 +55,7 @@ console.log($scope.instance);
               };
           }]);
      };
- 
+
 
  // Volume List
 $scope.volume = {};
@@ -438,14 +438,14 @@ $scope.list = function () {
 
 
 						$scope.hostInformation = function(vm) {
-							
+
 								  	 dialogService.openDialog("app/views/cloud/instance/listhost.jsp", 'md',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
 					console.log($scope.instance.host);
 					  $scope.cancel = function () {
 					        $modalInstance.close();
 					    };
 
-								  		
+
 								       }]);
 								  };
 						$scope.showPassword = function(vm) {
