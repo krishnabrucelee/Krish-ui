@@ -346,6 +346,9 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams) {
                         var project = $scope.project;
                         project.projectOwnerId = $scope.project.projectOwner.id;
                         project.departmentId = $scope.project.department.id;
+                        delete project.domain;
+    		            delete project.department;
+    		            delete project.projectOwner;
                         var hasServer = appService.crudService.update("projects", project);
                         hasServer.then(function (result) {
                         	$scope.oneChecked = false;
