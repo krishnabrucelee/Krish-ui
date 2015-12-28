@@ -48,7 +48,7 @@ function networkCtrl($scope, $modal, $window, $stateParams,appService) {
         // Volume List
 	    $scope.list = function (nic) {
        	var instanceId = $stateParams.id;
-       	var hasNic = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbyinstances?instanceid="+instanceId +"&lang=" + appService.localStorageService.cookie.get('language')+"&sortBy=-id");
+       	var hasNic = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbyinstances?	   instanceid="+instanceId +"&lang=" + appService.localStorageService.cookie.get('language')+"&sortBy=-id");
 	        hasNic.then(function (result) {
 	            $scope.nicList = result;
 	            console.log($scope.nicList);
@@ -98,15 +98,16 @@ function networkCtrl($scope, $modal, $window, $stateParams,appService) {
                 	$scope.nic.vmInstance = $scope.instance;
                 	delete $scope.nic.vmInstance.network;
 
-                      $scope.nic.networkId = network.id;
-                     delete $scope.nic.network;
-                    $scope.showLoader = true;
-                    var hasServer = appService.crudService.add("nics", $scope.nic);
-                    hasServer.then(function (result) {  // this is only run after $http completes
+                        $scope.nic.networkId = network.id;
+                     
+		        delete $scope.nic.network;
+                        $scope.showLoader = true;
+                        var hasServer = appService.crudService.add("nics", $scope.nic);
+                        hasServer.then(function (result) {  // this is only run after $http completes
                         $scope.showLoader = false;
                     	appService.notify({message: 'Attached successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                         $modalInstance.close();
-                    }).catch(function (result) {
+               }).catch(function (result) {
                         if (!angular.isUndefined(result.data)) {
                             if (result.data.globalError != '' && !angular.isUndefined(result.data.globalError)) {
                                 var msg = result.data.globalError[0];
@@ -138,7 +139,7 @@ function networkCtrl($scope, $modal, $window, $stateParams,appService) {
                      
 		       $scope.showLoader = false;
                        appService.notify({message: 'Deleted successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
-		$scope.list(1);
+		        $scope.list(1);
                    });
                    $modalInstance.close();
                },
@@ -156,14 +157,14 @@ function networkCtrl($scope, $modal, $window, $stateParams,appService) {
                     var hasServer = appService.crudService.update("nics", nic);
                     hasServer.then(function (result) {
                         
-			 $scope.showLoader = false;
+		       $scope.showLoader = false;
                        appService.notify({message: 'Updated successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
-			$scope.list(1);
+		       $scope.list(1);
                     });
                     $modalInstance.close();
                 },
                 $scope.cancel = function () {
-                    $modalInstance.close();
+                $modalInstance.close();
                 };
             }]);
        };
