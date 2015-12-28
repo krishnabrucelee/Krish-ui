@@ -4,28 +4,28 @@
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.    
- */
-  
+ */ 
+   
 angular         
-        .module('homer')   
+        .module('homer')     
         .controller('accountCtrl', accountCtrl)  
-        .controller('accountListCtrl', accountListCtrl)  
-        .controller('editCtrl', editCtrl)
+        .controller('accountListCtrl', accountListCtrl)   
+        .controller('editCtrl', editCtrl)   
  
-function accountCtrl($scope, promiseAjax, crudService, dialogService,   notify) {
-    $scope.global = crudService.globalConfig;
+function accountCtrl($scope, appService) {
+    $scope.global = appService.globalConfig;
     $scope.userData = "testss";
-    $scope.addUser = function (form) {
-    	console.log(form);
-        $scope.formSubmitted = true;
-        if (form.$valid) { 
+    $scope.addUser = function (form) { 
+    	console.log(form);   
+        $scope.formSubmitted = true;      
+        if (form.$valid) {    
         	console.log($scope.user);
         }
     };
 }
 
 // Load list page of user
-function accountListCtrl($scope,$state, promiseAjax, $log, notify, crudService, dialogService, $timeout, localStorageService) { 
+function accountListCtrl($scope,$state, $log,$timeout, appService) { 
     $scope.accounts = {
         category: "users",
         oneItemSelected: {},
@@ -38,7 +38,7 @@ function accountListCtrl($scope,$state, promiseAjax, $log, notify, crudService, 
     $scope.accountList = {};
     $scope.paginationObject = {};
     $scope.userForm = {};
-    $scope.global = crudService.globalConfig;
+    $scope.global = appService.globalConfig;
     $scope.user = {};
     $scope.accountElements={
 
@@ -47,7 +47,7 @@ function accountListCtrl($scope,$state, promiseAjax, $log, notify, crudService, 
     // Department list load based on the domain
     $scope.domainChange = function() {
         $scope.domains = {};
-        var hasDepartmentList = crudService.listAllByFilter("departments/search", $scope.user.domain);
+        var hasDepartmentList = appService.crudService.listAllByFilter("departments/search", $scope.user.domain);
         hasDepartmentList.then(function (result) {
     	    $scope.accountElements.departmentList = result;
         });
@@ -55,8 +55,8 @@ function accountListCtrl($scope,$state, promiseAjax, $log, notify, crudService, 
 
     // Load department
     $scope.department = {};
-   $scope.userLists = function (domain) {
-    var hasDepartments = crudService.listAllByFilter("departments/search", domain.id);
+    $scope.userLists = function (domain) {
+    var hasDepartments = appService.crudService.listAllByFilter("departments/search", domain.id);
     hasDepartments.then(function (result) {  // this is only run after $http completes0
     	$scope.accountElements.departmentList = result;
     });
@@ -64,7 +64,7 @@ function accountListCtrl($scope,$state, promiseAjax, $log, notify, crudService, 
 
     // Load domain
     $scope.domain = {};
-    var hasDomains = crudService.listAll("domains/list");
+    var hasDomains = appService.crudService.listAll("domains/list");
     hasDomains.then(function (result) {  // this is only run after $http completes0
     	$scope.accountElements.domainList = result;
     });
@@ -81,7 +81,7 @@ function accountListCtrl($scope,$state, promiseAjax, $log, notify, crudService, 
     $scope.list = function (pageNumber) {
     	$scope.showLoader = true;
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
-        var hasUsers = crudService.list("users", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+        var hasUsers = appService.crudService.list("users", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
         hasUsers.then(function (result) {  // this is only run after $http completes0
      
             $scope.accountList = result;
@@ -89,7 +89,7 @@ function accountListCtrl($scope,$state, promiseAjax, $log, notify, crudService, 
             $scope.paginationObject.limit  = limit;
             $scope.paginationObject.currentPage = pageNumber;
             $scope.paginationObject.totalItems = result.totalItems;
-        	$scope.showLoader = false;
+            $scope.showLoader = false;
 
         });
     };
@@ -100,7 +100,7 @@ function accountListCtrl($scope,$state, promiseAjax, $log, notify, crudService, 
     $scope.deletes = false;
     $scope.edit = false;
     $scope.disabled = false;
-    localStorageService.set("edit", null);
+    appService.localStorageService.set("edit", null);
 
     // To check all user list
     $scope.checkAll = function () {
@@ -125,7 +125,7 @@ function accountListCtrl($scope,$state, promiseAjax, $log, notify, crudService, 
     // To check one user
     $scope.checkOne = function (item) {
         $scope.editList = item;
-        localStorageService.set("edit", $scope.editList);
+        appService.localStorageService.set("edit", $scope.editList);
         $scope.accounts.oneItemSelected[$scope.accounts.category] = false;
         $scope.accounts.selectedAll[$scope.accounts.category] = true;
         var count = 0;
@@ -172,18 +172,19 @@ function accountListCtrl($scope,$state, promiseAjax, $log, notify, crudService, 
 
     // Opened user add window
     $scope.addUser = function (size) {
-        dialogService.openDialog("app/views/account/add-user.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
+        appService.dialogService.openDialog("app/views/account/add-user.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
         	$scope.save = function (form) {
                 $scope.formSubmitted = true;
                 if (form.$valid) {
                     var user = angular.copy($scope.user);
+		    if(!angular.isUndefined($scope.user.department)) {
+                       user.departmentId = user.department.id; 
+                    }
                     if (user.password == $scope.account.confirmPassword) {
-                     $scope.showLoader = true;
-                    	var hasServer = crudService.add("users", user);
+                    	var hasServer = appService.crudService.add("users", user);
                     	hasServer.then(function (result) {  // this is only run after $http completes
-                              $scope.showLoader = false;
                     		$scope.list(1);
-                    		notify({message: 'Added successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+                    		appService.notify({message: 'Added successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
                     		$modalInstance.close();
                     		$scope.user.userName = "";
                     		$scope.user.password = "";
@@ -217,12 +218,12 @@ function accountListCtrl($scope,$state, promiseAjax, $log, notify, crudService, 
 
             // Getting list of roles and projects by department
             $scope.getRolesAndProjectsByDepartment = function(department) {
-            	 var hasRoles =  promiseAjax.httpTokenRequest( crudService.globalConfig.HTTP_GET, crudService.globalConfig.APP_URL + "roles"  +"/department/"+department.id);
+            	 var hasRoles =  appService.promiseAjax.httpTokenRequest( appService.crudService.globalConfig.HTTP_GET, appService.crudService.globalConfig.APP_URL + "roles"  +"/department/"+department.id);
             	 hasRoles.then(function (result) {  // this is only run after $http completes0
             		 $scope.accountElements.roleList = result;
             	 });
 
-		 var hasProjects =  promiseAjax.httpTokenRequest( crudService.globalConfig.HTTP_GET, crudService.globalConfig.APP_URL + "projects"  +"/department/"+department.id);
+		 var hasProjects =  appService.promiseAjax.httpTokenRequest( appService.crudService.globalConfig.HTTP_GET, appService.crudService.globalConfig.APP_URL + "projects"  +"/department/"+department.id);
 		 hasProjects.then(function (result) {  // this is only run after $http completes0
             		$scope.options = result;
             	 });
@@ -241,14 +242,14 @@ function accountListCtrl($scope,$state, promiseAjax, $log, notify, crudService, 
             }
    	 });
 
-     var hasServer = crudService.softDelete("users", user);
+     var hasServer = appService.crudService.softDelete("users", user);
      hasServer.then(function (result) {
          $scope.list(1);
-         notify({message: 'Deleted successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+         appService.notify({message: 'Deleted successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
          $modalInstance.close();
      });
 
-    modalService.trigger('app/views/account/delete-user.jsp', size);
+    appService.modalService.trigger('app/views/account/delete-user.jsp', size);
     };
 
     $scope.deleteUsers = function () {
@@ -265,15 +266,17 @@ function accountListCtrl($scope,$state, promiseAjax, $log, notify, crudService, 
              }
     	 });
 
-    	dialogService.openDialog("app/views/account/edit-user.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+    	appService.dialogService.openDialog("app/views/account/edit-user.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
     		$scope.user = angular.copy(user);
 
     		   $scope.saveUser = function (user) {
     		        $scope.formSubmitted = true;
-    		        var hasServer = crudService.update("users",user);
+			var user = $scope.user;
+                        user.departmentId = user.department.id;
+    		        var hasServer = appService.crudService.update("users",user);
     		        hasServer.then(function (result) {
     		            $scope.list(1);
-    		            notify({message: 'Updated successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+    		            appService.notify({message: 'Updated successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
     		            $scope.cancel();
     		        }).catch(function (result) {
                     		if(!angular.isUndefined(result) && result.data != null) {
@@ -315,11 +318,11 @@ function accountListCtrl($scope,$state, promiseAjax, $log, notify, crudService, 
     };
 
     $scope.revoking = function () {
-        modalService.trigger('views/account/revoke.html', 'md');
+        appService.modalService.trigger('views/account/revoke.html', 'md');
     }
 
     $scope.activating = function () {
-        modalService.trigger('views/account/activate.html', 'md');
+        appService.modalService.trigger('views/account/activate.html', 'md');
     }
 }
 
@@ -334,7 +337,7 @@ function editCtrl($scope, account, notify, $modalInstance) {
         $scope.formSubmitted = true;
         if (form.$valid) {
             $scope.homerTemplate = 'views/notification/notify.jsp';
-            notify({message: 'Account updated successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
+            appService.notify({message: 'Account updated successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
             $scope.cancel();
         }
 
