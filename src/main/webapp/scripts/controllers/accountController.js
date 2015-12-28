@@ -270,6 +270,7 @@ function accountListCtrl($scope,$state, $log,$timeout, appService) {
     		$scope.user = angular.copy(user);
 
     		   $scope.saveUser = function (user) {
+                               $scope.showLoader = true;
     		        $scope.formSubmitted = true;
 			var user = $scope.user;
                         user.departmentId = user.department.id;
@@ -278,6 +279,7 @@ function accountListCtrl($scope,$state, $log,$timeout, appService) {
     		            $scope.list(1);
     		            appService.notify({message: 'Updated successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
     		            $scope.cancel();
+                                $scope.showLoader = false;
     		        }).catch(function (result) {
                     		if(!angular.isUndefined(result) && result.data != null) {
                     			angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
