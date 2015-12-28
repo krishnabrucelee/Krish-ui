@@ -76,9 +76,6 @@ function promiseAjax($http, $window, globalConfig, notify) {
     				classes : 'alert-danger',
     				templateUrl : global.NOTIFICATION_TEMPLATE
     			});
-        		setTimeout(function() {
-        			window.location.href = "login";
-        		}, 2000);
             } else {
             	throw result;
             }
