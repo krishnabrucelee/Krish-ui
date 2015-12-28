@@ -158,7 +158,7 @@ pageEncoding="UTF-8"%>
                                             <a href="javascript:void(0);" title="<fmt:message key="vm.snapshot" bundle="${msg}" />" data-ng-click="takeSnapshot(instance)"><span class="fa-camera fa font-bold m-xs"></span> <fmt:message key="take.vm.snapshot" bundle="${msg}" /></a>
                                         </li>
                                         <li has-permission="MIGRATE_HOST" data-ng-if="instance.status == 'Running'" class="list-group-item">
-                                            <a href="javascript:void(0);" title="<fmt:message key="migrate.instance.to.another.host" bundle="${msg}" />" data-ng-click="hostMigrate(instance)"><span class="fa-arrows fa font-bold m-xs pull-left"></span> <span class="pull-left m-l-xs width-md"><fmt:message key="migrate.instance.to.another.host" bundle="${msg}" /></span><div class="clearfix"></div></a>
+                                            <a href="javascript:void(0);" title="<fmt:message key="migrate.to.another.host" bundle="${msg}" />" data-ng-click="hostMigrate(instance)"><span class="fa-arrows fa font-bold m-xs pull-left"></span> <span class="pull-left m-l-xs width-md"><fmt:message key="migrate.to.another.host" bundle="${msg}" /></span><div class="clearfix"></div></a>
                                         </li>
                                         <li has-permission="HOST_INFORMATION" data-ng-if="instance.status == 'Running'" class="list-group-item">
                                             <a href="javascript:void(0);" title="<fmt:message key="host.information" bundle="${msg}" />" data-ng-click="hostInformation(instance)" ><span class="fa-square fa font-bold m-xs"></span> <fmt:message key="host.information" bundle="${msg}" /></a>
@@ -202,6 +202,11 @@ pageEncoding="UTF-8"%>
                                         </li>
                                         <li data-ng-show="instance.status == 'Running' || instance.status == 'Stopped'"  data-ng-if="instance.isoName !== null" class="list-group-item">
                                             <a href="javascript:void(0);" title="<fmt:message key="detach.iso" bundle="${msg}" />" data-ng-click="detachISO(instance)"><span class="fa-compass fa font-bold m-xs"></span> <fmt:message key="detach.iso" bundle="${msg}" /></a>
+                                        </li>
+                                         <li  class="list-group-item" ">
+                                            <a data-ng-show="instance.status == 'Running'"  href="javascript:void(0);" data-ng-click="resize()" title="<fmt:message key="resize.vm" bundle="${msg}" />"><span class="fa fa-expand m-xs"></span> <fmt:message key="resize.vm" bundle="${msg}" /></a>
+                                            <a data-ng-show="instance.status == 'Stopped'" href="javascript:void(0);" data-ng-click="templateCategory = 'config'" title="<fmt:message key="resize.vm" bundle="${msg}" />"><span class="fa fa-expand m-xs"></span> <fmt:message key="resize.vm" bundle="${msg}" /></a>
+                                            
                                         </li>
                                     </div>
                                 </ul>

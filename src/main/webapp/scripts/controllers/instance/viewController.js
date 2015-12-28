@@ -46,7 +46,18 @@ console.log($scope.instance);
         
     }
 
+    // Resize Instance
 
+    
+    $scope.resize = function() {
+    	alert("resize");
+     	 dialogService.openDialog("app/views/cloud/instance/runningresize.jsp", 'sm',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
+     	    	
+   			  $scope.cancel = function () {
+                  $modalInstance.close();
+              };
+          }]);
+     };
  
 
  // Volume List
