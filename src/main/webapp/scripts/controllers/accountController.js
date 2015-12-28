@@ -178,8 +178,10 @@ function accountListCtrl($scope,$state, promiseAjax, $log, notify, crudService, 
                 if (form.$valid) {
                     var user = angular.copy($scope.user);
                     if (user.password == $scope.account.confirmPassword) {
+                     $scope.showLoader = true;
                     	var hasServer = crudService.add("users", user);
                     	hasServer.then(function (result) {  // this is only run after $http completes
+                              $scope.showLoader = false;
                     		$scope.list(1);
                     		notify({message: 'Added successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
                     		$modalInstance.close();
