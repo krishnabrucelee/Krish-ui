@@ -8,13 +8,13 @@ angular
     .module('homer')
     .controller('networkCtrl', networkCtrl)
 
-function networkCtrl($scope, $modal, $window, $stateParams,globalConfig, localStorageService, promiseAjax,dialogService,notify, crudService) {
+function networkCtrl($scope, $modal, $window, $stateParams,appService) {
 
     $scope.networkList = [];
 
     $scope.instanceDetails='';
     if ($stateParams.id > 0) {
-        var hasServer = crudService.read("virtualmachine", $stateParams.id);
+        var hasServer = appService.crudService.read("virtualmachine", $stateParams.id);
         hasServer.then(function (result) {  // this is only run after $http
             $scope.instance = result;
             console.log( $scope.instance);
@@ -26,11 +26,11 @@ function networkCtrl($scope, $modal, $window, $stateParams,globalConfig, localSt
     $scope.networkList = {};
     $scope.paginationObject = {};
     $scope.networkForm = {};
-    $scope.global = crudService.globalConfig;
+    $scope.global = appService.crudService.globalConfig;
     // Guest Network List
     $scope.list = function (pageNumber) {
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
-        var hasGuestNetworks = crudService.list("guestnetwork", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+        var hasGuestNetworks = appService.crudService.list("guestnetwork", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
         hasGuestNetworks.then(function (result) {
             $scope.networkList = result;
             $scope.networkList.Count = 0;
@@ -48,7 +48,7 @@ function networkCtrl($scope, $modal, $window, $stateParams,globalConfig, localSt
         // Volume List
 	    $scope.list = function (nic) {
        	var instanceId = $stateParams.id;
-       	var hasNic = promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "nics/listbyinstances?instanceid="+instanceId +"&lang=" + localStorageService.cookie.get('language')+"&sortBy=-id");
+       	var hasNic = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbyinstances?instanceid="+instanceId +"&lang=" + appService.localStorageService.cookie.get('language')+"&sortBy=-id");
 	        hasNic.then(function (result) {
 	            $scope.nicList = result;
 	            console.log($scope.nicList);
@@ -57,7 +57,7 @@ function networkCtrl($scope, $modal, $window, $stateParams,globalConfig, localSt
 	    $scope.list(1);
 
    $scope.nicList = function () {
-        var hasnicList = crudService.listAll("nics/list");
+        var hasnicList = appService.crudService.listAll("nics/list");
         hasnicList.then(function (result) {  // this is only run after $http completes0
                 $scope.nicList = result;
          });
@@ -65,21 +65,21 @@ function networkCtrl($scope, $modal, $window, $stateParams,globalConfig, localSt
     // $scope.nicList();
 
     $scope.addNetworkToVM = function (instance) {
-        dialogService.openDialog("app/views/cloud/instance/add-network.jsp", 'md', $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+        appService.dialogService.openDialog("app/views/cloud/instance/add-network.jsp", 'md', $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
 
         $scope.networkList = function (instance) {
 
 	        		if($scope.instance.projectId != null) {
 	        			console.log("project " + $scope.instance.projectId);
 	    
-	        			var hasNetworks = promiseAjax.httpTokenRequest( crudService.globalConfig.HTTP_GET, crudService.globalConfig.APP_URL + 							"guestnetwork" + "/listall/"+$scope.instance.projectId);
+	        			var hasNetworks = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "guestnetwork" + "/listall/"+$scope.instance.projectId);
 	        			hasNetworks.then(function (result) {
 	        				$scope.networkList = result;
 
 	        			});
 	        		} else {
 	        			console.log("department " + $scope.instance.departmentId);
-	        			var hasNetworks = promiseAjax.httpTokenRequest( crudService.globalConfig.HTTP_GET, crudService.globalConfig.APP_URL + 							"guestnetwork" + "/list/"+$scope.instance.departmentId);
+	        			var hasNetworks = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "guestnetwork" + "/list/"+$scope.instance.departmentId);
 	        			hasNetworks.then(function (result) {
 	        				$scope.networkList = result;
 
@@ -97,19 +97,21 @@ function networkCtrl($scope, $modal, $window, $stateParams,globalConfig, localSt
                 	$scope.nic = {};
                 	$scope.nic.vmInstance = $scope.instance;
                 	delete $scope.nic.vmInstance.network;
-                	$scope.nic.network = network;
+
+                      $scope.nic.networkId = network.id;
+                     delete $scope.nic.network;
                     $scope.showLoader = true;
-                    var hasServer = crudService.add("nics", $scope.nic);
+                    var hasServer = appService.crudService.add("nics", $scope.nic);
                     hasServer.then(function (result) {  // this is only run after $http completes
                         $scope.showLoader = false;
-                    	notify({message: 'Attached successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                    	appService.notify({message: 'Attached successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                         $modalInstance.close();
                     }).catch(function (result) {
                         if (!angular.isUndefined(result.data)) {
                             if (result.data.globalError != '' && !angular.isUndefined(result.data.globalError)) {
                                 var msg = result.data.globalError[0];
                                 $scope.showLoader = false;
-                                notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                                appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                             } else if (result.data.fieldErrors != null) {
                                 angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
                                     $scope.attachvolumeForm[key].$invalid = true;
@@ -127,15 +129,15 @@ function networkCtrl($scope, $modal, $window, $stateParams,globalConfig, localSt
     };
 
     $scope.removeNicToVM = function(nic) {
-      	 dialogService.openDialog("app/views/cloud/instance/confirm-delete.jsp", 'md', $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+      	 appService.dialogService.openDialog("app/views/cloud/instance/confirm-delete.jsp", 'md', $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
       		 $scope.deleteId = nic.id;
                $scope.ok = function (nicId) {
 		       $scope.showLoader = true;
-		   var hasNic = crudService.softDelete("nics", nic);
+		   var hasNic = appService.crudService.softDelete("nics", nic);
                     hasNic.then(function (result) {
                      
 		       $scope.showLoader = false;
-                       notify({message: 'Deleted successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                       appService.notify({message: 'Deleted successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
 		$scope.list(1);
                    });
                    $modalInstance.close();
@@ -147,15 +149,15 @@ function networkCtrl($scope, $modal, $window, $stateParams,globalConfig, localSt
       };
 
       $scope.updateNicToVM = function(form, nic) {
-       	 dialogService.openDialog("app/views/cloud/instance/confirm-update.jsp", 'md', $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+       	 appService.dialogService.openDialog("app/views/cloud/instance/confirm-update.jsp", 'md', $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
           	var instanceId = $stateParams.id;
-                   $scope.ok = function (instance) {
+                   $scope.ok = function (instanceId) {
 		   $scope.showLoader = true;
-                    var hasServer = crudService.update("nics", nic);
+                    var hasServer = appService.crudService.update("nics", nic);
                     hasServer.then(function (result) {
                         
 			 $scope.showLoader = false;
-                        notify({message: 'Updated successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                       appService.notify({message: 'Updated successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
 			$scope.list(1);
                     });
                     $modalInstance.close();

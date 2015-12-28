@@ -269,12 +269,14 @@ function accountListCtrl($scope,$state, promiseAjax, $log, notify, crudService, 
     		$scope.user = angular.copy(user);
 
     		   $scope.saveUser = function (user) {
+                               $scope.showLoader = true;
     		        $scope.formSubmitted = true;
     		        var hasServer = crudService.update("users",user);
     		        hasServer.then(function (result) {
     		            $scope.list(1);
     		            notify({message: 'Updated successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
     		            $scope.cancel();
+                                $scope.showLoader = false;
     		        }).catch(function (result) {
                     		if(!angular.isUndefined(result) && result.data != null) {
                     			angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
