@@ -89,7 +89,7 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams) {
 
     $scope.userList = function (department) {
     	if(department!= null && !angular.isUndefined(department)){
-    		var hasUsers = appService.crudService.listAllByFilter("users/search", department);
+    		var hasUsers = appService.crudService.listAllByFilter("users/departmentusers", department);
     		hasUsers.then(function (result) {  // this is only run after $http
 											// completes0
         	$scope.projectElements.projectOwnerList = result;
@@ -107,7 +107,7 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams) {
     };
 
     $scope.userLists = function (department) {
-       var hasUsers = appService.crudService.listAllByFilter("users/search", department);
+       var hasUsers = appService.crudService.listAllByFilter("users/departmentusers", department);
         hasUsers.then(function (result) {  // this is only run after $http completes0
         	$scope.projectElements.projectuserList = result;
 
@@ -123,18 +123,36 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams) {
 
     $scope.departmentList = function (domain) {
         var hasDepartments = appService.crudService.listAllByFilter("departments/search", domain);
-        hasDepartments.then(function (result) {  // this is only run after $http completes0
-        	 $scope.formElements.departmenttypeList = result;
-        	 angular.forEach($scope.formElements.departmenttypeList, function(obj, key) {
-     			if (!angular.isUndefined($scope.project.department)) {
-     	    			if(obj.id == $scope.project.department.id) {
+
+		    if($scope.global.sessionValues.type === 'USER') {
+		    	var departments = [];
+		    	var hasDepartments = appService.crudService.read("departments", $scope.global.sessionValues.departmentId);
+		    	hasDepartments.then(function (result) {
+		    		departments.push(result);
+		    		$scope.formElements.departmenttypeList = departments;
+		    		angular.forEach($scope.formElements.departmenttypeList, function(obj, key) {
+		    			if (!angular.isUndefined($scope.project.department)) {
+     	    				if(obj.id == $scope.project.department.id) {
      	    				$scope.project.department = obj;
 
-     				}
-     	    		}
-     	    	});
+     	    				}
+		    			}
+		    		});
+    	    });
+		    } else {
+		    	hasDepartments.then(function (result) {  // this is only run after $http completes0
+		    		$scope.formElements.departmenttypeList = result;
+		    		angular.forEach($scope.formElements.departmenttypeList, function(obj, key) {
+		    			if (!angular.isUndefined($scope.project.department)) {
+     	    				if(obj.id == $scope.project.department.id) {
+     	    				$scope.project.department = obj;
 
-         });
+     	    				}
+		    			}
+		    		});
+
+		    	});
+		    }
      };
 
      $scope.$watch('newProject.department', function (obj) {

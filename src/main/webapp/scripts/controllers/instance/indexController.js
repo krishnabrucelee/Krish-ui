@@ -12,7 +12,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
 
     $scope.global = appService.globalConfig;
     $scope.instanceList = [];
-    $scope.formElements=[];
+    $scope.formElements = [];
     $scope.instanceForm = [];
     $scope.instanceElements = {};
     $scope.instance ={};
@@ -78,13 +78,15 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
 	     });
 
 	 if($scope.global.sessionValues.type !== 'ROOT_ADMIN') {
-	    	if(!angular.isUndefined($scope.global.sessionValues.domainId)){
-	    	 var hasDomain = appService.crudService.read("domains", $scope.global.sessionValues.domainId);
-	    	 hasDomain.then(function (result) {
-	    		 $scope.departmentList(result);
-	         });
-	    	}
-	    }
+	      if(!angular.isUndefined($scope.global.sessionValues.domainId)){
+	    		var hasDomain = appService.crudService.read("domains", $scope.global.sessionValues.domainId);
+	    		hasDomain.then(function (result) {
+	    		$scope.departmentList(result);
+	    	    });
+	      }
+
+	 }
+
 
     $scope.osList = function () {
         var hasOsList = appService.crudService.listAll("oscategorys/list");
@@ -263,11 +265,21 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
 
         $scope.departmentList = function (domain) {
         	$scope.showLoaderDetail = true;
+
+   		    if($scope.global.sessionValues.type === 'USER') {
+   		    	var departments = [];
+   		    	var hasDepartments = appService.crudService.read("departments", $scope.global.sessionValues.departmentId);
+   		    	hasDepartments.then(function (result) {
+   		    		departments.push(result);
+   		    		$scope.formElements.departmenttypeList = departments;
+	    	    });
+   		    } else {
             var hasDepartments = appService.crudService.listAllByFilter("departments/search", domain);
             hasDepartments.then(function (result) {  // this is only run after $http completes0
                    $scope.formElements.departmenttypeList = result;
                    $scope.showLoaderDetail = false;
              });
+   		    }
          };
 
          $scope.projectList = function (user) {
@@ -774,12 +786,12 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
 			guestnetwork.projectId = $scope.guestnetwork.project.id;
 			delete guestnetwork.project;
 			}
-                            
+
                         guestnetwork.zoneId = $scope.guestnetwork.zone.id;
                         guestnetwork.networkOfferingId = $scope.guestnetwork.networkOffering.id;
-                        
+
                         delete guestnetwork.zone;
-                        delete guestnetwork.networkOffering;                       
+                        delete guestnetwork.networkOffering;
 
 
             	 $scope.showLoaderOffer = true;
