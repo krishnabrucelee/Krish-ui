@@ -6,20 +6,21 @@ angular
         .module('homer')
         .controller('departmentCtrl', departmentCtrl)
 
-function departmentCtrl($scope, notify, promiseAjax, dialogService, crudService) {
+function departmentCtrl($scope, appService) {
     $scope.departmentList = {};
     $scope.paginationObject = {};
     $scope.departmentForm = {};
-    $scope.global = crudService.globalConfig;
+    $scope.global = appService.globalConfig;
 
 
 
     // Department List
     $scope.list = function (pageNumber) {
     	$scope.showLoader = true;
+    	$scope.department = {}
     	console.log($scope.global.sessionValues);
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
-        var hasDepartments = crudService.list("departments", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+        var hasDepartments = appService.crudService.list("departments", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
         hasDepartments.then(function (result) {  // this is only run after $http completes0
 
             $scope.departmentList = result;
@@ -41,7 +42,7 @@ function departmentCtrl($scope, notify, promiseAjax, dialogService, crudService)
     $scope.formElements = {};
 
     // Domain List
-	var hasDomains = crudService.listAll("domains/list");
+	var hasDomains = appService.crudService.listAll("domains/list");
 	hasDomains.then(function (result) {  // this is only run after $http completes0
 	      $scope.formElements.domainList = result;
 	      console.log(result);
@@ -49,7 +50,7 @@ function departmentCtrl($scope, notify, promiseAjax, dialogService, crudService)
 
 	// Add New department
     $scope.createDepartment = function (size) {
-        dialogService.openDialog("app/views/department/add.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
+        appService.dialogService.openDialog("app/views/department/add.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
                 // Create a new department
                 $scope.save = function (form) {
                     $scope.formSubmitted = true;
@@ -58,29 +59,22 @@ function departmentCtrl($scope, notify, promiseAjax, dialogService, crudService)
                         var department = angular.copy($scope.department);
                         if(!angular.isUndefined($scope.department.domain)) {
                         	department.domainId = department.domain.id;
+                        	delete department.domain;
                         }
-                        //delete department["domain"]["id"];
-                        var hasServer = crudService.add("departments", department);
+                        var hasServer = appService.crudService.add("departments", department);
                         hasServer.then(function (result) {  // this is only run after $http completes
                         	//$rootScope.department={};
-                            $scope.list(1);
-                            $scope.showLoader = false;
-                            notify({message: 'Added successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+                        	$scope.formSubmitted = false;
                             $modalInstance.close();
-
-                            $scope.department.userName = "";
-                            $scope.department.description = "";
-                            $scope.department.firstName = "";
-                            $scope.department.lastName = "";
-                            $scope.department.email = "";
-                            $scope.department.password = "";
-                            $scope.department.confirmPassword = "";
+                            $scope.showLoader = false;
+                            appService.notify({message: 'Added successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+                            $scope.list(1);
                         }).catch(function (result) {
                         	if(!angular.isUndefined(result) && result.data != null) {
                         	$scope.showLoader = false;
                         	if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
                                	    var msg = result.data.globalError[0];
-                             	    notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+                             	    appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
                                  } else {
                                 	 angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
                                 		 $scope.departmentForm[key].$invalid = true;
@@ -99,7 +93,7 @@ function departmentCtrl($scope, notify, promiseAjax, dialogService, crudService)
 
     // Edit the department
     $scope.edit = function (size, department) {
-        dialogService.openDialog("app/views/department/edit.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+        appService.dialogService.openDialog("app/views/department/edit.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
                 // Update department
                 $scope.department = angular.copy(department);
                 $scope.update = function (form) {
@@ -107,20 +101,21 @@ function departmentCtrl($scope, notify, promiseAjax, dialogService, crudService)
                     if (form.$valid) {
                     	$scope.showLoader = true;
                         var department = $scope.department;
+
                         department.domainId = department.domain.id;
-                        var hasServer = crudService.update("departments", department);
+                    	delete department.domain;
+                        var hasServer = appService.crudService.update("departments", department);
                         hasServer.then(function (result) {
-                        	$scope.department={};
                             $scope.list(1);
                             $scope.showLoader = false;
-                            notify({message: 'Updated successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                            appService.notify({message: 'Updated successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                             $modalInstance.close();
                         }).catch(function (result) {
                         	if(!angular.isUndefined(result) && result.data != null) {
                         	$scope.showLoader = false;
                         	if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
                                	    var msg = result.data.globalError[0];
-                             	    notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+                             	    appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
                                  } else {
                                 	 angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
      	                            	$scope.departmentForm[key].$invalid = true;
@@ -142,19 +137,21 @@ function departmentCtrl($scope, notify, promiseAjax, dialogService, crudService)
     // Delete the department
  // Delete the department
     $scope.delete = function (size, department) {
-        dialogService.openDialog("app/views/department/confirm-delete.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+        appService.dialogService.openDialog("app/views/department/confirm-delete.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
                 $scope.deleteObject = department;
                 $scope.ok = function (deleteObject) {
-                    var hasServer = crudService.softDelete("departments", deleteObject);
+                	deleteObject.domainId = deleteObject.domain.id;
+                	delete deleteObject.domain;
+                    var hasServer = appService.crudService.softDelete("departments", deleteObject);
                     hasServer.then(function (result) {
                         $scope.list(1);
-                        notify({message: 'Deleted successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                        appService.notify({message: 'Deleted successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                     }).catch(function (result) {
 
                   	 if(!angular.isUndefined(result) && result.data != null) {
 	      		 		   if(result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])){
 	                      	 var msg = result.data.globalError[0];
-	                      	 notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+	                      	 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
 	                       }
 	                       angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
 	                      	$scope.departmentForm[key].$invalid = true;
