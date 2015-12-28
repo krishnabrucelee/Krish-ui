@@ -50,7 +50,6 @@ console.log($scope.instance);
 
     
     $scope.resize = function() {
-    	alert("resize");
      	 dialogService.openDialog("app/views/cloud/instance/runningresize.jsp", 'sm',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
      	    	
    			  $scope.cancel = function () {

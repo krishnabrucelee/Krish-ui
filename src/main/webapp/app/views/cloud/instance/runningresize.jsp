@@ -5,8 +5,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <div class="inmodal" >
     <div class="modal-header">
-        <panda-modal-header hide-zone="false" page-icon="fa fa-warning" page-title="<fmt:message key="Resize" bundle="${msg}" />"></panda-modal-header>
-        <!--<h2 class="modal-title" id="myModalLabel">Confirm Detach Volume</h2>-->
+        <panda-modal-header hide-zone="false" page-icon="fa fa-warning" page-title="<fmt:message key="resize.vm" bundle="${msg}" />"></panda-modal-header>
     </div>
 
     <div class="modal-body">
@@ -16,7 +15,7 @@
                 <img src="images/warning.png" alt="">
             </div>
             <div class="form-group has-error col-md-9 col-sm-9  col-xs-9 m-t-md">
-                <p >The Instance Cannot be Resized while the instance is Running </p>
+                <p ><fmt:message key="instance.cannot.resize" bundle="${msg}" /></p>
             </div>
 
 
