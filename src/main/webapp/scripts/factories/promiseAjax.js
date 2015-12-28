@@ -52,10 +52,6 @@ function promiseAjax($http, $window, globalConfig, notify) {
             return data;
         }).catch(function (result) {
 
-        	console.log("=================================********");
-        	console.log(result);
-        	console.log("=================================********");
-
         	if(result.data != null && result.data.status === 401 && result.data.message === "INVALID_TOKEN") {
         		notify({
     				message : "Your session has expired. Please log-in again",
