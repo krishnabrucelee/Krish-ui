@@ -51,10 +51,28 @@ function promiseAjax($http, $window, globalConfig, notify) {
             }
             return data;
         }).catch(function (result) {
-        	console.log(result);
+
         	if(result.data != null && result.data.status === 401 && result.data.message === "INVALID_TOKEN") {
         		notify({
     				message : "Your session has expired. Please log-in again",
+    				classes : 'alert-danger',
+    				templateUrl : global.NOTIFICATION_TEMPLATE
+    			});
+        		setTimeout(function() {
+        			window.location.href = "login";
+        		}, 2000);
+            } else if(result.status != null && result.status === 401 && result.statusText === "Unauthorized") {
+        		notify({
+    				message : "Unauthorized log-in user. Please log-in again",
+    				classes : 'alert-danger',
+    				templateUrl : global.NOTIFICATION_TEMPLATE
+    			});
+        		setTimeout(function() {
+        			window.location.href = "login";
+        		}, 2000);
+            } else if(result.status != null && result.status === 500) {
+        		notify({
+    				message : result.statusText,
     				classes : 'alert-danger',
     				templateUrl : global.NOTIFICATION_TEMPLATE
     			});
