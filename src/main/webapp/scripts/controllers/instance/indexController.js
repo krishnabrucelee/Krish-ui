@@ -294,15 +294,18 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
       $scope.search = {'users': [],'departments':[], 'projects':[]};
 
       $scope.$watch('instance.department', function (obj) {
-	if (!angular.isUndefined(obj)) {
+    	  $scope.instance.instanceOwner = {};
+    	  $scope.instance.project = {};
+    	  if (!angular.isUndefined(obj)) {
     	  $scope.userList(obj);
           $scope.listNetworks(obj.id,'department');
           $scope.projectList(obj);
-	}
+    	  }
           });
 
 
       $scope.$watch('instance.instanceOwner', function (obj) {
+    	  $scope.instance.project = {};
     		if (!angular.isUndefined(obj)) {
     	          $scope.projectList(obj);
     		}
