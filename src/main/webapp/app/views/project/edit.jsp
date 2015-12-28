@@ -27,15 +27,23 @@
 
                         <div class="form-group" >
                             <div class="row">
-                                <label class="col-md-3 col-xs-12 col-sm-3 control-label"><fmt:message key="common.description" bundle="${msg}" /><span class="text-danger">*</span><span class="m-l-xs"></span></label>
-                                <div class="col-md-5 col-xs-12 col-sm-5">
+                                <label class="col-md-3 col-xs-12 col-sm-3 control-label"><fmt:message key="common.description" bundle="${msg}" /><span class="m-l-xs"></span></label>
+                                <div class="col-md-5 col-xs-12 col-sm-5" >
                                     <textarea name="description" data-ng-model="project.description" class="form-control"></textarea>
                                 </div>
 
                             </div>
                         </div>
+                        <div class="form-group">
+                        <div class="row">
+                            <label class="col-md-3 col-xs-12 col-sm-3 control-label control-normal"><fmt:message key="common.domain" bundle="${msg}" /></label>
+                            <div class="col-md-7  col-sm-7 col-xs-12 font-bold">
+                                {{ project.domain.name }}
+                            </div>
+                        </div>
+                    </div>
 
-                         <div class="form-group"ng-class="{'text-danger': projectForm.department.$invalid && formSubmitted}">
+                         <div class="form-group" ng-class="{'text-danger': projectForm.department.$invalid && formSubmitted}">
                             <div class="row">
                                 <label class="col-md-3 col-sm-3 control-label control-normal"><fmt:message key="common.department" bundle="${msg}" /><span class="text-danger">*</span></label>
                                 <div class="col-md-7  col-sm-7 col-xs-7">
