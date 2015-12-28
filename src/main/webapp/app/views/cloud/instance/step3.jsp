@@ -33,7 +33,7 @@
 			ng-class="{ 'text-danger' : !instance.domain && templateFormSubmitted}">
 			<div class="col-md-5 col-xs-5 col-sm-5">
 				<span class="control-label"><fmt:message
-						key="department.name" bundle="${msg}" /><span title="<fmt:message key="common.required" bundle="${msg}" />"
+						key="common.domain" bundle="${msg}" /><span title="<fmt:message key="common.required" bundle="${msg}" />"
 					class="text-danger font-bold">*</span></span>
 			</div>
 			<div class="col-md-6 col-xs-6 col-sm-6">
