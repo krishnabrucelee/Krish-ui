@@ -100,6 +100,26 @@ volumeService, modalService, promiseAjax, notify, globalConfig, crudService) {
 	                    $scope.formSubmitted = true;
 	                    if (form.$valid) {
 	                    	$scope.showLoader = true;
+	                    	if(!angular.isUndefined(volume.vmInstance)) {
+	                        	volume.vmInstanceId = volume.vmInstance.id;
+	                        	delete volume.vmInstance;
+	                        }
+	                        if(!angular.isUndefined(volume.storageOffering)) {
+	                        	volume.storageOfferingId = volume.storageOffering.id;
+	                        	delete volume.storageOffering;
+	                        }
+	                        if(!angular.isUndefined(volume.department)) {
+	                        	volume.departmentId = volume.department.id;
+	                        	delete volume.department;
+	                        }
+	                        if(!angular.isUndefined(volume.project) && volume.project != null) {
+	                        	volume.projectId = volume.project.id;
+	                        	delete volume.project;
+	                        }
+	                        if(!angular.isUndefined(volume.zone)) {
+	                        	volume.zoneId = volume.zone.id;
+	                        	delete volume.zone;
+	                        }
 	                        var hasServer = crudService.add("volumes/attach/" + volume.id, volume);
 	                        hasServer.then(function (result) {  // this is only run after $http completes
 	                        	$scope.showLoader = false;
@@ -143,6 +163,26 @@ volumeService, modalService, promiseAjax, notify, globalConfig, crudService) {
 	                $scope.detachVolume = function (volume) {
 	                    console.log(volume);
 	                    $scope.showLoader = true;
+	                    if(!angular.isUndefined(volume.vmInstance)) {
+	                    	volume.vmInstanceId = volume.vmInstance.id;
+	                    	delete volume.vmInstance;
+	                    }
+	                    if(!angular.isUndefined(volume.storageOffering)) {
+	                    	volume.storageOfferingId = volume.storageOffering.id;
+	                    	delete volume.storageOffering;
+	                    }
+	                    if(!angular.isUndefined(volume.department)) {
+	                    	volume.departmentId = volume.department.id;
+	                    	delete volume.department;
+	                    }
+	                    if(!angular.isUndefined(volume.project) && volume.project != null) {
+	                    	volume.projectId = volume.project.id;
+	                    	delete volume.project;
+	                    }
+	                    if(!angular.isUndefined(volume.zone)) {
+	                    	volume.zoneId = volume.zone.id;
+	                    	delete volume.zone;
+	                    }
 	                    var hasServer = crudService.add("volumes/detach/" + volume.id, volume);
 	                    hasServer.then(function (result) {  // this is only run after $http completes
 	                    	$scope.showLoader = false;
@@ -352,7 +392,25 @@ volumeService, modalService, promiseAjax, notify, globalConfig, crudService) {
 	                    if (form.$valid) {
 	                    	$scope.showLoader = true;
 	                        $scope.volume.zone = $scope.global.zone;
-	                        var volume = $scope.volume;
+
+
+	                        var volume = angular.copy($scope.volume);
+	                        if(!angular.isUndefined($scope.volume.storageOffering) && volume.storageOffering != null) {
+	                        	volume.storageOfferingId = volume.storageOffering.id;
+	                        	delete volume.storageOffering;
+	                        }
+	                        if(!angular.isUndefined($scope.volume.department) && volume.department != null) {
+	                        	volume.departmentId = volume.department.id;
+	                        	delete volume.department;
+	                        }
+	                        if(!angular.isUndefined($scope.volume.project) && volume.project != null) {
+	                        	volume.projectId = volume.project.id;
+	                        	delete volume.project;
+	                        }
+	                        if(!angular.isUndefined($scope.volume.zone) && volume.zone != null) {
+	                        	volume.zoneId = volume.zone.id;
+	                        	delete volume.zone;
+	                        }
 	                        var hasVolume = crudService.add("volumes", volume);
 	                        hasVolume.then(function (result) {
 	                        	$scope.showLoader = false;
@@ -474,6 +532,15 @@ volumeService, modalService, promiseAjax, notify, globalConfig, crudService) {
 	             if(volume.md5checksum == "") {
 	            	 delete volume.md5checksum;
 	             }
+	             var volume = angular.copy($scope.volume);
+	             if(!angular.isUndefined(volume.storageOffering) && volume.storageOffering != null) {
+	             	volume.storageOfferingId = volume.storageOffering.id;
+	             	delete volume.storageOffering;
+	             }
+	             if(!angular.isUndefined(volume.zone) && volume.zone != null) {
+	             	volume.zoneId = volume.zone.id;
+	             	delete volume.zone;
+	             }
 	             var hasUploadVolume = crudService.add("volumes/upload", volume);
 	             hasUploadVolume.then(function (result) {
 	            	 $scope.showLoader = false;
@@ -564,6 +631,30 @@ volumeService, modalService, promiseAjax, notify, globalConfig, crudService) {
 
 	            $scope.ok = function (volume) {
 		            $scope.showLoader = true;
+
+		            if(!angular.isUndefined(volume.domain) && volume.domain != null ) {
+	                	volume.domainId = volume.domain.id;
+	                	delete volume.domain;
+	                }
+	                if(!angular.isUndefined(volume.storageOffering) && volume.storageOffering != null) {
+	                	volume.storageOfferingId = volume.storageOffering.id;
+	                	delete volume.storageOffering;
+	                }
+	                if(!angular.isUndefined(volume.department) && volume.department != null) {
+	                	volume.departmentId = volume.department.id;
+	                	delete volume.department;
+	                }
+	                if(!angular.isUndefined(volume.project) && volume.project != null) {
+	                	volume.projectId = volume.project.id;
+	                	delete volume.project;
+	                }
+	                if(!angular.isUndefined(volume.zone) && volume.zone != null) {
+	                	volume.zoneId = volume.zone.id;
+	                	delete volume.zone;
+	                }
+
+	                volume.id = deleteObject.id;
+
 	                var hasServer = crudService.softDelete("volumes", volume);
 	                hasServer.then(function (result) {
 

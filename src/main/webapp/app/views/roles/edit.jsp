@@ -56,7 +56,6 @@
     </div>
     <div class="row">
          <div data-ng-show = "showLoader" style="margin: 1%">
-    					<get-loader-image data-ng-show="showLoader"></get-loader-image>
       					</div>
         <div class="col-md-12 col-sm-12" data-ng-hide = "showLoader" ng-repeat="(key, module) in permissions | groupBy: 'module'">
             <div class="form-group">
