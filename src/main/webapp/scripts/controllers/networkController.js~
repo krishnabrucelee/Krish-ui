@@ -185,24 +185,28 @@ function networksCtrl($scope,$rootScope,filterFilter,$state, $stateParams, $time
         if (form.$valid) {
             var network = $scope.network;
             $scope.showLoader = true;
-	      if (!angular.isUndefined($scope.network.domain)) {
-		    network.domainId = $scope.network.domain.id;
-		 delete network.domain;
-		}
-		if (!angular.isUndefined($scope.network.department) && $scope.network.department != null) {
-			network.departmentId = $scope.network.department.id;
-			delete network.department;
-		}
-		 if (!angular.isUndefined($scope.network.project) && $scope.network.project != null) {
-		network.projectId = $scope.network.project.id;
-		delete network.project;
-		}
-
-		network.zoneId = $scope.network.zone.id;
-		network.networkOfferingId = $scope.network.networkOffering.id;
-		
-		delete network.zone;
-		delete network.networkOffering;
+alert("asdasd");
+       console.log("----");
+                      if (!angular.isUndefined($scope.network.domain)) {
+                            network.domainId = $scope.network.domain.id;
+			 delete network.domain;
+			}
+alert("asdasd");
+			if (!angular.isUndefined($scope.network.department) && $scope.network.department != null) {
+				network.departmentId = $scope.network.department.id;
+				delete network.department;
+			}
+alert("asdasd");
+			 if (!angular.isUndefined($scope.network.project) && $scope.network.project != null) {
+			network.projectId = $scope.network.project.id;
+			delete network.project;
+			}
+                         alert("asdasd");   
+                        network.zoneId = $scope.network.zone.id;
+                        network.networkOfferingId = $scope.network.networkOffering.id;
+                        
+                        delete network.zone;
+                        delete network.networkOffering;
 
 
             var hasNetwork = appService.crudService.update("guestnetwork", network);
