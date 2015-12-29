@@ -39,20 +39,21 @@
 
         <div data-ng-show="compute  && instance.computeOffering.customized">
 		<div class="row m-b-xl"
-			ng-class="{ 'text-danger' : instanceForm.ram.$modelValue <= 0 && OfferingSubmitted}">
-			<label class="col-md-3 col-sm-3 control-label"><fmt:message key="ram" bundle="${msg}" /> :</label>
+			ng-class="{ 'text-danger' : instanceForm.memory.$modelValue <= 0 && OfferingSubmitted}">
+			<label class="col-md-3 col-sm-3 control-label"><fmt:message key="memory" bundle="${msg}" /> :</label>
 			<div class="col-md-5 col-sm-5">
-				<rzslider rz-slider-model="instance.computeOffer.ram.value"
-					rz-slider-floor="instance.computeOffer.ram.floor"
-					rz-slider-ceil="instance.computeOffer.ram.ceil"
+				<rzslider rz-slider-model="instance.computeOffer.memory.value"
+					rz-slider-floor="instance.computeOffer.memory.floor"
+					rz-slider-ceil="instance.computeOffer.memory.ceil"
 					rz-slider-always-show-bar="true"></rzslider>
 			</div>
+
 			<div class="col-md-3 col-sm-3 digit-2-width">
 				<div class="input-group">
-					<input class="form-control" name="ram" valid-number
-						data-ng-min="{{ instance.computeOffer.ram.floor}}"
-						data-ng-max="{{ instance.computeOffer.ram.ceil}}" type="text"
-						data-ng-model="instance.computeOffer.ram.value"> <span
+					<input class="form-control" name="memory" valid-number
+						data-ng-min="{{ instance.computeOffer.memory.floor}}"
+						data-ng-max="{{ instance.computeOffer.memory.ceil}}" type="text"
+						data-ng-model="instance.computeOffer.memory.value"> <span
 						class="input-group-addon" id="basic-addon2">MB</span>
 				</div>
 			</div>
