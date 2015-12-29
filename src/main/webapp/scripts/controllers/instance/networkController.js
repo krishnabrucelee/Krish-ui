@@ -48,7 +48,7 @@ function networkCtrl($scope, $modal, $window, $stateParams,appService) {
         // Volume List
 	    $scope.list = function (nic) {
        	var instanceId = $stateParams.id;
-       	var hasNic = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbyinstances?	   instanceid="+instanceId +"&lang=" + appService.localStorageService.cookie.get('language')+"&sortBy=-id");
+       	var hasNic = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbyinstances?instanceid="+instanceId +"&lang=" + appService.localStorageService.cookie.get('language')+"&sortBy=-id");
 	        hasNic.then(function (result) {
 	            $scope.nicList = result;
 	            console.log($scope.nicList);
