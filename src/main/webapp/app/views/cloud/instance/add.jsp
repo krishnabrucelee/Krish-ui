@@ -81,10 +81,7 @@
 					<form name="instanceForm" method="POST"
 						data-ng-submit="validateOffering(instanceForm)" novalidate
 						class="form-horizontal">
-						<div data-ng-show = "showLoaderOffer" style="margin: 10%">
-      							<get-loader-image data-ng-show="showLoaderOffer"></get-loader-image>
-      						</div>
-						<div data-ng-hide = "showLoaderOffer" data-ng-include src="'app/views/cloud/instance/step2.jsp'"></div>
+						<div data-ng-include src="'app/views/cloud/instance/step2.jsp'"></div>
 						<div class="row">
 							<button type="button" class="btn btn-info btn-outline"
 								ng-click="wizard.show(1)"><fmt:message key="common.previous" bundle="${msg}" /></button>

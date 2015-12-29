@@ -6,8 +6,10 @@
 
 <form name="instanceForm" data-ng-submit=" " method="post" novalidate=""
 	data-ng-controller="instanceCtrl">
-
-	<div class="m-t-sm">
+    <div data-ng-if= "showLoaderDetail" style="margin: 40%">
+      <get-loader-image-detail data-ng-show="showLoaderDetail"></get-loader-image-detail>
+      </div>
+	<div data-ng-if = "!showLoaderDetail" class="m-t-sm">
 		<div class="row form-group required"
 			ng-class="{ 'text-danger' : instanceTemplateForm.name.$invalid && templateFormSubmitted}">
 			<div class="col-md-5 col-xs-5 col-sm-5">

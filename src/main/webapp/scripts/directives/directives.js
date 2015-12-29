@@ -28,6 +28,8 @@ angular
     .directive('templateQuickSearch', templateQuickSearch)
     .directive('paginationContent', paginationContent)
     .directive('getLoaderImage', getLoaderImage)
+    .directive('getLoaderImageOffer', getLoaderOfferImage)
+    .directive('getLoaderImageDetail', getLoaderDetailImage)
     .directive('passwordVerify', passwordVerify)
     .directive('validInteger', validInteger)
     .directive('hasPermission', hasPermission)
@@ -658,6 +660,26 @@ function getLoaderImage() {
 
         },
         templateUrl: "app/views/common/loader-image.jsp",
+	}
+}
+
+function getLoaderDetailImage() {
+	return {
+		restrict: 'E',
+        link: function (scope, element, attrs) {
+
+        },
+        templateUrl: "app/views/common/loader-image-details.jsp",
+	}
+}
+
+function getLoaderOfferImage() {
+	return {
+		restrict: 'E',
+        link: function (scope, element, attrs) {
+
+        },
+        templateUrl: "app/views/common/loader-image-offer.jsp",
 	}
 }
 

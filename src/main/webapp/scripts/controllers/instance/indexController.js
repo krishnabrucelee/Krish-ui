@@ -236,9 +236,11 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
           }
 
           $scope.userList = function (department) {
+        	  $scope.showLoaderDetail = true;
               var hasUsers = appService.crudService.listAllByFilter("users/departmentusers", department);
               hasUsers.then(function (result) {  // this is only run after $http completes0
                        $scope.formElements.instanceOwnerList = result;
+                       $scope.showLoaderDetail = false;
                });
            };
 
@@ -252,14 +254,17 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
             $scope.zoneList();
 
            $scope.applicationList = function () {
+        	   $scope.showLoaderDetail = true;
                var hasApplication = appService.crudService.listAll("applications/list");
                hasApplication.then(function (result) {  // this is only run after $http completes0
                    $scope.formElements.applicationsList = result;
+                   $scope.showLoaderDetail = false;
             });
         };
         $scope.applicationList();
 
         $scope.departmentList = function (domain) {
+        	$scope.showLoaderDetail = true;
 
    		    if($scope.global.sessionValues.type === 'USER') {
    		    	var departments = [];
@@ -272,14 +277,17 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
             var hasDepartments = appService.crudService.listAllByFilter("departments/search", domain);
             hasDepartments.then(function (result) {  // this is only run after $http completes0
                    $scope.formElements.departmenttypeList = result;
+                   $scope.showLoaderDetail = false;
              });
    		    }
          };
 
          $scope.projectList = function (user) {
+        	 $scope.showLoaderDetail = true;
              var hasProjects = appService.crudService.listAllByObject("projects/user", user);
              hasProjects.then(function (result) {  // this is only run after $http completes0
             	 $scope.formElements.projecttypeList = result;
+            	 $scope.showLoaderDetail = false;
              });
          };
 
@@ -295,6 +303,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
 
 
       $scope.$watch('instance.instanceOwner', function (obj) {
+
     		if (!angular.isUndefined(obj)) {
     	          $scope.projectList(obj);
     		}
@@ -473,6 +482,8 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
              } else {
              	console.log(result.statusText);
              }
+
+     	$scope.wizard.prev();
             });
      };
 
@@ -533,9 +544,11 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
      $scope.addNetworkToVM = function () {
          dialogService.openDialog("app/views/cloud/instance/add-network.jsp", 'md', $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
          	$scope.listNetwork = function () {
+         		$scope.showLoaderDetail = true;
                     var hasGuestNetworks = appService.crudService.findByDepartment("guestnetwork/list");
                     hasGuestNetworks.then(function (result) {  // this is only run after $http
                             $scope.networkList = result;
+                            $scope.showLoaderDetail = false;
                     });
 
                 };
@@ -752,7 +765,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
 
          $scope.saveNetwork = function (networkError) {
              if (!networkError) {
-
+            	 $scope.showLoaderOffer = true;
         	 $scope.guestnetwork.zone = $scope.global.zone;
         	 $scope.guestnetwork.displayText =  $scope.guestnetwork.name;
         	 var guestnetwork = $scope.guestnetwork;
@@ -783,14 +796,12 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
                         delete guestnetwork.zone;
                         delete guestnetwork.networkOffering;
 
-
-            	 $scope.showLoaderOffer = true;
                  var hasguestNetworks = appService.crudService.add("guestnetwork", guestnetwork);
                  hasguestNetworks.then(function (result) {
-                	if($scope.guestnetwork.project == null) {
+                	if($scope.instance.project == null) {
                 	     $scope.listNetworks($scope.instance.department.id, 'department');
                  	} else {
-                 		$scope.listNetworks($scope.guestnetwork.project.id, 'project');
+                 		$scope.listNetworks($scope.instance.project.id, 'project');
                  	}
 
                    appService.notify({message: 'Added successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
