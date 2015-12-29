@@ -122,7 +122,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
     	  template.osCategory = $scope.instance.osCategory;
     	  template.architecture = $scope.instance.architecture;
     	  template.osVersion = $scope.instance.osVersion;
-    	  var hastemplateList = appService.promiseAjax.httpTokenRequest(globalConfig.HTTP_POST , globalConfig.APP_URL + "templates/search?lang=" + appService.localStorageService.cookie.get('language'), '', template);
+    	  var hastemplateList = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_POST , appService.globalConfig.APP_URL + "templates/search?lang=" + appService.localStorageService.cookie.get('language'), '', template);
 
     	  hastemplateList.then(function (result) {
         	  $scope.formElements.templateList= result;
