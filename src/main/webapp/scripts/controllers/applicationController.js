@@ -66,6 +66,7 @@ function applicationListCtrl($scope, appService) {
                             $scope.application.description = "";
                             $scope.application.domain = "";
                         }).catch(function (result) {
+                        	$scope.showLoader = false;
             		    if (!angular.isUndefined(result.data)) {
                 		if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
                   	   	 var msg = result.data.globalError[0];
@@ -94,6 +95,7 @@ function applicationListCtrl($scope, appService) {
                 // Update application
                 $scope.application = angular.copy(application);
                 $scope.update = function (form) {
+                	$scope.showLoader = true;
                     $scope.formSubmitted = true;
                     if (form.$valid) {
                     	$scope.showLoader = true;
@@ -108,6 +110,7 @@ function applicationListCtrl($scope, appService) {
                             $modalInstance.close();
                         }).catch(function (result) {
             	if (!angular.isUndefined(result.data)) {
+            		$scope.showLoader = false;
                 	if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
                   	    var msg = result.data.globalError[0];
                   	    $scope.showLoader = false;

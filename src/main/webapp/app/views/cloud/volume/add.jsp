@@ -31,7 +31,7 @@ pageEncoding="UTF-8"%>
                         <div class="row">
                             <label class="col-md-3 col-xs-12 col-sm-2 control-label"><fmt:message key="common.type" bundle="${msg}" /> <span class="m-l-xs"></span></label>
                             <div class="col-md-5 col-xs-12 col-sm-5">
-                                <select  class="form-control input-group" name="diskOfferings"
+                                <select  class="form-control input-group" name="diskOfferingsTags"
                                         data-ng-model="volume.storageTags"
                                         data-ng-options="storageTags for storageTags in volumeElements.diskOfferingTags" >
                                     <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>

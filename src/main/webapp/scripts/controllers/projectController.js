@@ -252,7 +252,7 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams) {
     	  $scope.save = function (form) {
     		   	 $scope.formSubmitted = true;
     		        if (form.$valid) {
-    		        	$scope.projectLoader = true
+    		        	$scope.projectLoader = true;
     		            if($scope.global.sessionValues.type !== 'ROOT_ADMIN') {
     		            	if(!angular.isUndefined($scope.global.sessionValues.domainId)){
     		            		 $scope.newProject.domainId = $scope.global.sessionValues.domainId;
@@ -364,8 +364,10 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams) {
         appService.dialogService.openDialog("app/views/project/edit.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
                 // Update project
                 var project = $scope.editProjects;
+                $scope.projectForm = {};
 
              $scope.update = function (form) {
+            	 $scope.projectLoader = true;
                     $scope.formSubmitted = true;
                     if (form.$valid) {
                         var project = angular.copy($scope.project);
@@ -377,12 +379,24 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams) {
     		            delete project.projectOwner;
                         var hasServer = appService.crudService.update("projects", project);
                         hasServer.then(function (result) {
+                       	 $scope.projectLoader = false;
                         	$scope.oneChecked = false;
                         	$scope.formSubmitted = false;
                             appService.notify({message: 'Project Updated successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                             $modalInstance.close();
                             $scope.list(1);
-                        });
+                        }).catch(function (result) {
+    		            	$scope.projectLoader = false;
+    		                if(result.data.globalError[0] != '' && result.data.globalError[0] != null ){
+    		               	 var msg = result.data.globalError[0];
+    		               	 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+    		                    }
+    		                angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
+    		                    $scope.projectForm[key].$invalid = true;
+    		                    $scope.projectForm[key].errorMessage = errorMessage;
+    		                });
+
+    		            });
                     }
                 },
                         $scope.cancel = function () {

@@ -424,6 +424,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
      };
 
      $scope.submt = function () {
+    	 $scope.showLoader = true;
     	 $scope.OfferingSubmitted = false;
     	 if($scope.global.sessionValues.type !== 'ROOT_ADMIN') {
           	if(!angular.isUndefined($scope.global.sessionValues.domainId)){
@@ -464,11 +465,13 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
          instance.zoneId = $scope.global.zone.id;
          var hasServer = appService.crudService.add("virtualmachine", instance);
          hasServer.then(function (result) {  // this is only run after $http completes
-            appService.notify({message: result.eventMessage, classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+        	$scope.showLoader = false;
+        	appService.notify({message: result.eventMessage, classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
             $modalInstance.close();
             $state.reload();
 
             }).catch(function (result) {
+            	$scope.showLoader = false;
          if(result.data.globalError[0] != '') {
         	 var msg = result.data.globalError[0];
         	 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
