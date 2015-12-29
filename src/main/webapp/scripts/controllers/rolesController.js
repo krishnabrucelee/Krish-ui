@@ -35,6 +35,8 @@ angular
     };
     $scope.list(1);
 
+
+
     // Department list from server
     $scope.role.department = {};
     var hasDepartment = appService.crudService.listAll("departments/list");
@@ -55,6 +57,22 @@ angular
 
     });
 
+    // Load domain
+    $scope.domain = {};
+    var hasDomains = appService.crudService.listAll("domains/list");
+    hasDomains.then(function (result) {  // this is only run after $http completes0
+    	$scope.formElements.domainList = result;
+    });
+
+    // Department list load based on the domain
+    $scope.domainChange = function() {
+        $scope.domains = {};
+        var hasDepartmentList = appService.crudService.listAllByFilter("departments/search", $scope.role.domain);
+        hasDepartmentList.then(function (result) {
+    	    $scope.formElements.departmentList = result;
+        });
+    };
+
     // Create a new role to our application
     $scope.role = {};
     $scope.permissionList = [];
@@ -68,7 +86,16 @@ angular
             		$scope.role.permissionList.push(permission);
             	}
             })
-            var role = $scope.role;
+
+            var role = angular.copy($scope.role);
+            if(!angular.isUndefined($scope.role.department) && role.department != null) {
+            	role.departmentId = role.department.id;
+            	delete role.department;
+            }
+            if(!angular.isUndefined($scope.role.domain) && role.domain != null) {
+            	role.domainId = role.domain.id;
+            	delete role.domain;
+            }
             var hasServer = appService.crudService.add("roles", role);
             hasServer.then(function (result) {  // this is only run after $http completes
             	$scope.showLoader = false;
@@ -104,6 +131,11 @@ angular
     	    		}
     	    	});
 
+            	angular.forEach($scope.formElements.domainList, function(obj, key) {
+    	    		if(obj.id == $scope.role.domain.id) {
+    	    			$scope.role.domain = obj;
+    	    		}
+    	    	});
             });
 
         };
@@ -123,7 +155,15 @@ angular
                    		$scope.role.permissionList.push(permission);
                    	}
                 })
-            	var role = $scope.role;
+            	var role = angular.copy($scope.role);
+                if(!angular.isUndefined($scope.role.department) && role.department != null) {
+                	role.departmentId = role.department.id;
+                	delete role.department;
+                }
+                if(!angular.isUndefined($scope.role.domain) && role.domain != null) {
+                	role.domainId = role.domain.id;
+                	delete role.domain;
+                }
                 var hasServer = appService.crudService.update("roles", role);
                 hasServer.then(function (result) {
                 	$scope.showLoader = false;
@@ -155,6 +195,17 @@ angular
                 $scope.ok = function (id) {
                 	$scope.showLoader = true;
                 	role.isActive = false;
+
+                	//alert(deleteId);
+                    if(!angular.isUndefined($scope.role.department) && role.department != null) {
+                    	role.departmentId = role.department.id;
+                    	delete role.department;
+                    }
+                    if(!angular.isUndefined($scope.role.domain) && role.domain != null) {
+                    	role.domainId = role.domain.id;
+                    	delete role.domain;
+                    }
+
                     var hasRole = appService.crudService.softDelete("roles", role);
                     hasRole.then(function (result) {
                     	$scope.showLoader = false;
