@@ -45,7 +45,7 @@
                                 <input required="true" type="text"  name="userName" data-ng-model="department.userName"  class="form-control" data-ng-class="{'error': departmentForm.userName.$invalid && formSubmitted}">
                                 <i  tooltip="<fmt:message key="department.name" bundle="${msg}" />" class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
                                 <div class="error-area" data-ng-show="departmentForm.userName.$invalid && formSubmitted" >
-                                    <i ng-attr-tooltip="{{ departmentForm.userName.errorMessage || '<fmt:message key="department.userName.is.required" bundle="${msg}" />' }}" class="fa fa-warning error-icon"></i>
+                                    <i ng-attr-tooltip="{{ departmentForm.userName.errorMessage || '<fmt:message key="department.name.is.required" bundle="${msg}" />' }}" class="fa fa-warning error-icon"></i>
                                 </div>
                             </div>
                         </div>
@@ -74,7 +74,7 @@
 
         <div class="modal-footer">
          <get-loader-image data-ng-show="showLoader"></get-loader-image>
-        
+
             <button type="button" class="btn btn-default "  data-ng-hide="showLoader" ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.cancel" bundle="${msg}" /></button>
             <button   data-ng-hide="showLoader"class="btn btn-info" type="submit"><fmt:message key="common.add" bundle="${msg}" /></button>
 

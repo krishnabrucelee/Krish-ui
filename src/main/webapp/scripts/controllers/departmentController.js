@@ -6,7 +6,7 @@ angular
         .module('homer')
         .controller('departmentCtrl', departmentCtrl)
 
-function departmentCtrl($scope, appService) {
+function departmentCtrl($scope, $sce, appService) {
     $scope.departmentList = {};
     $scope.paginationObject = {};
     $scope.departmentForm = {};
@@ -18,7 +18,6 @@ function departmentCtrl($scope, appService) {
     $scope.list = function (pageNumber) {
     	$scope.showLoader = true;
     	$scope.department = {}
-    	console.log($scope.global.sessionValues);
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasDepartments = appService.crudService.list("departments", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
         hasDepartments.then(function (result) {  // this is only run after $http completes0
@@ -45,7 +44,6 @@ function departmentCtrl($scope, appService) {
 	var hasDomains = appService.crudService.listAll("domains/list");
 	hasDomains.then(function (result) {  // this is only run after $http completes0
 	      $scope.formElements.domainList = result;
-	      console.log(result);
 	});
 
 	// Add New department
@@ -67,7 +65,7 @@ function departmentCtrl($scope, appService) {
                         	$scope.formSubmitted = false;
                             $modalInstance.close();
                             $scope.showLoader = false;
-                            appService.notify({message: 'Added successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+                            appService.notify({message: 'Department added successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
                             $scope.list(1);
                         }).catch(function (result) {
                         	if(!angular.isUndefined(result) && result.data != null) {
@@ -108,7 +106,7 @@ function departmentCtrl($scope, appService) {
                         hasServer.then(function (result) {
                             $scope.list(1);
                             $scope.showLoader = false;
-                            appService.notify({message: 'Updated successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                            appService.notify({message: 'Department updated successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                             $modalInstance.close();
                         }).catch(function (result) {
                         	if(!angular.isUndefined(result) && result.data != null) {
@@ -140,15 +138,17 @@ function departmentCtrl($scope, appService) {
         appService.dialogService.openDialog("app/views/department/confirm-delete.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
                 $scope.deleteObject = department;
                 $scope.ok = function (deleteObject) {
+                	var domainObject =  deleteObject.domain;
                 	deleteObject.domainId = deleteObject.domain.id;
                 	delete deleteObject.domain;
                     var hasServer = appService.crudService.softDelete("departments", deleteObject);
                     hasServer.then(function (result) {
                         $scope.list(1);
-                        appService.notify({message: 'Deleted successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                        appService.notify({message: 'Department deleted successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                     }).catch(function (result) {
 
                   	 if(!angular.isUndefined(result) && result.data != null) {
+                  		deleteObject.domain = domainObject;
 	      		 		   if(result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])){
 	                      	 var msg = result.data.globalError[0];
 	                      	 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });

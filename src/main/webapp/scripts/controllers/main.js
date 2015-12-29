@@ -284,7 +284,6 @@ function appCtrl($http, $scope, $window, $timeout, globalConfig, crudService, pr
      *  Global configuration goes here
      */
     $scope.global = globalConfig;
-    console.log($scope.global.sessionValues);
     $scope.date = new Date();
 
     // Dashboard Activity
