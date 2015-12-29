@@ -254,5 +254,5 @@ border-color: #e74c3c !important;}
 #wrapper > .content {min-height:700px;}
 
 .cg-notify-message{font-size:15px !important;}
-.cg-notify-message ul li{float:left; width:33%; min-height:30px; border-bottom:1px dashed rgba(256, 256, 256, 0.2);}
+.cg-notify-message ul li{float:left; width:33%; min-height:30px; border-bottom:1px dashed rgba(256, 256, 256, 0.2); list-style:none;}
 .cg-notify-message ul{clear:both; overflow:hidden; margin:12px 0 0 0; padding: 0px;}
