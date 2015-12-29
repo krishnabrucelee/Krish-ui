@@ -46,7 +46,7 @@ pageEncoding="UTF-8"%>
                             </div>
                         </div>
                     </div>
-                    <div class="form-group" ng-class="{ 'text-danger' : volumeForm.department.$invalid && formSubmitted}">
+                    <div class="form-group" ng-class="{ 'text-danger' : volumeForm.diskOfferings.$invalid && formSubmitted}">
                         <div class="row" >
                             <label class="col-md-3 col-xs-12 col-sm-2 control-label"><fmt:message key="common.plan" bundle="${msg}" />
                                 <span class="text-danger">*</span>
@@ -54,13 +54,13 @@ pageEncoding="UTF-8"%>
                             <div class="col-md-5 col-xs-12 col-sm-5">
                                 <select required="true" class="form-control input-group" name="diskOfferings"
                                         data-ng-model="volume.storageOffering"
-                                        data-ng-class="{'error': volumeForm.department.$invalid && formSubmitted}"
+                                        data-ng-class="{'error': volumeForm.diskOfferings.$invalid && formSubmitted}"
                                         data-ng-options="storageOffering.name for storageOffering in volumeElements.diskOfferingList" >
                                     <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
                                 </select>
                                 <i  tooltip="<fmt:message key="common.plan" bundle="${msg}" />" class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
-                                    <div class="error-area" data-ng-show="volumeForm.department.$invalid && formSubmitted" >
-                                    <i ng-attr-tooltip="{{ volumeForm.department.errorMessage || '<fmt:message key="plan.is.required" bundle="${msg}" />' }}"
+                                    <div class="error-area" data-ng-show="volumeForm.diskOfferings.$invalid && formSubmitted" >
+                                    <i ng-attr-tooltip="{{ volumeForm.diskOfferings.errorMessage || '<fmt:message key="plan.is.required" bundle="${msg}" />' }}"
 												class="fa fa-warning error-icon"></i>
                                     </div>
                             </div>
@@ -126,14 +126,20 @@ pageEncoding="UTF-8"%>
                                     </div>
                                 </div>
                             </div>
+                            <div data-ng-show="global.sessionValues.type == 'USER'">
+                            <label class="col-md-3 col-xs-12 col-sm-2 control-label control-normal"><fmt:message key="common.department" bundle="${msg}" /> </label>
+                                <div class="col-md-5 col-xs-12 col-sm-5">
+                                   <label  >{{volume.department.userName}}</label>
+                                 </div>
+                                </div>
                             </div>
-                        </div>
+                            </div>
            			<div class="form-group" >
                         <div class="row">
                         <div data-ng-if="global.sessionValues.type != 'USER'">
                             <label class="col-md-3 col-xs-12 col-sm-2 control-label"><fmt:message key="common.project" bundle="${msg}" /> <span class="m-l-xs"></span></label>
                             <div class="col-md-5 col-xs-12 col-sm-5">
-                                <select  class="form-control input-group" name="diskOfferings"
+                                <select  class="form-control input-group" name="user"
                                         data-ng-model="volume.project"
                                         data-ng-options="options.name for options in options" >
                                     <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
@@ -154,7 +160,7 @@ pageEncoding="UTF-8"%>
                         <div data-ng-if="global.sessionValues.type == 'USER'">
                             <label class="col-md-3 col-xs-12 col-sm-2 control-label"><fmt:message key="common.project" bundle="${msg}" /> <span class="m-l-xs"></span></label>
                             <div class="col-md-5 col-xs-12 col-sm-5">
-                                <select  class="form-control input-group" name="diskOfferings"
+                                <select  class="form-control input-group" name="project"
                                         data-ng-model="volume.project"
                                         data-ng-options="options.name for options in options" >
                                     <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>

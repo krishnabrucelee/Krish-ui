@@ -334,6 +334,13 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
     $scope.volume = {};
     $scope.volumeForm = {};
     $scope.addVolume = function (size) {
+    	 if($scope.global.sessionValues.type === 'USER') {
+    	var hasDepartments = appService.crudService.read("departments", $scope.global.sessionValues.departmentId);
+    	hasDepartments.then(function (result) {
+    		$scope.volume.department = result;
+    });
+    	 }
+
     	appService.dialogService.openDialog($scope.global.VIEW_URL + "cloud/volume/add.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope',
                                                                                                  function ($scope, $modalInstance, $rootScope) {
 
@@ -418,7 +425,7 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
                     if (form.$valid) {
                     	$scope.showLoader = true;
                         $scope.volume.zone = $scope.global.zone;
-
+                        console.log($scope.volume);
                         var volume = angular.copy($scope.volume);
                         if(!angular.isUndefined($scope.volume.storageOffering) && volume.storageOffering != null) {
                         	volume.storageOfferingId = volume.storageOffering.id;
