@@ -243,6 +243,7 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams) {
     };
 
 
+
     $scope.createProject = function (size) {
     	$scope.newProject = {};
         $scope.projectForm = {};
@@ -260,7 +261,7 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams) {
     		            else{
     		            	 $scope.newProject.domainId =  $scope.newProject.domain.id;
     		            }
-    		            var project = $scope.newProject;
+    		            var project = angular.copy($scope.newProject);
     		            console.log(project);
     		            project.isActive = true;
     		            project.departmentId = project.department.id;
@@ -281,6 +282,7 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams) {
 
     		              	$scope.list(1);
     		            }).catch(function (result) {
+    		            	console.log($scope.newProject);
     		            	$scope.projectLoader = false;
     		                if(result.data.globalError[0] != '' && result.data.globalError[0] != null ){
     		               	 var msg = result.data.globalError[0];
@@ -366,7 +368,7 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams) {
              $scope.update = function (form) {
                     $scope.formSubmitted = true;
                     if (form.$valid) {
-                        var project = $scope.project;
+                        var project = angular.copy($scope.project);
                         project.projectOwnerId = $scope.project.projectOwner.id;
                         project.departmentId = $scope.project.department.id;
                         project.domainId = $scope.project.domain.id;
