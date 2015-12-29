@@ -681,7 +681,7 @@ $scope.delete = function (size, volume) {
                 	delete volume.zone;
                 }
 
-                volume.id = deleteObject.id;
+                //volume.id = deleteObject.id;
 
                 var hasServer = appService.crudService.softDelete("volumes", volume);
                 hasServer.then(function (result) {
