@@ -98,7 +98,7 @@ function departmentCtrl($scope, $sce, appService) {
                     $scope.formSubmitted = true;
                     if (form.$valid) {
                     	$scope.showLoader = true;
-                        var department = $scope.department;
+                        var department =angular.copy($scope.department);
 
                         department.domainId = department.domain.id;
                     	delete department.domain;
