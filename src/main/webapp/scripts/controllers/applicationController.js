@@ -97,7 +97,7 @@ function applicationListCtrl($scope, appService) {
                     $scope.formSubmitted = true;
                     if (form.$valid) {
                     	$scope.showLoader = true;
-                        var application = $scope.application;
+                        var application = angular.copy($scope.application);
                         application.domainId = application.domain.id;
                     	delete application.domain;
                         var hasServer = appService.crudService.update("applications", application);
