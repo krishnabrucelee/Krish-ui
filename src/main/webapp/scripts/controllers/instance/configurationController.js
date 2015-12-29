@@ -37,15 +37,20 @@ function configurationCtrl($scope, $stateParams, localStorageService, promiseAja
     	$scope.instance = {
         computeOffer: {
             category: 'static',
-            ram: {
-                value: 0,
-                floor: 0,
-                ceil: 64
+            memory: {
+                value: 512,
+                floor: 512,
+                ceil: 4096
             },
             cpuCore: {
-                value: 0,
-                floor: 0,
+                value: 1,
+                floor: 1,
                 ceil: 32
+            },
+            cpuSpeed: {
+                value: 1000,
+                floor: 1000,
+                ceil: 3500
             },
             isOpen: true
         },

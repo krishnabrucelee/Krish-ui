@@ -12,8 +12,7 @@
         </div>
         <div class="modal-body ">
             <div class="form-group has-error">
-                <div>
-                    <textarea placeholder="" class="form-control" cols="18" rows="3" id="comment" name="reason"  data-ng-model="instance.instanceNote" readonly ></textarea>
+                <div data-ng-model="instance.instanceNote" readonly>{{instance.instanceNote}}
                 </div>
             </div>
         </div>
