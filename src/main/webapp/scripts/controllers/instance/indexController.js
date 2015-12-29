@@ -236,11 +236,9 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
           }
 
           $scope.userList = function (department) {
-        	  $scope.showLoaderDetail = true;
               var hasUsers = appService.crudService.listAllByFilter("users/departmentusers", department);
               hasUsers.then(function (result) {  // this is only run after $http completes0
                        $scope.formElements.instanceOwnerList = result;
-                       $scope.showLoaderDetail = false;
                });
            };
 
@@ -254,17 +252,14 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
             $scope.zoneList();
 
            $scope.applicationList = function () {
-        	   $scope.showLoaderDetail = true;
                var hasApplication = appService.crudService.listAll("applications/list");
                hasApplication.then(function (result) {  // this is only run after $http completes0
                    $scope.formElements.applicationsList = result;
-                   $scope.showLoaderDetail = false;
             });
         };
         $scope.applicationList();
 
         $scope.departmentList = function (domain) {
-        	$scope.showLoaderDetail = true;
 
    		    if($scope.global.sessionValues.type === 'USER') {
    		    	var departments = [];
@@ -277,17 +272,14 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
             var hasDepartments = appService.crudService.listAllByFilter("departments/search", domain);
             hasDepartments.then(function (result) {  // this is only run after $http completes0
                    $scope.formElements.departmenttypeList = result;
-                   $scope.showLoaderDetail = false;
              });
    		    }
          };
 
          $scope.projectList = function (user) {
-        	 $scope.showLoaderDetail = true;
              var hasProjects = appService.crudService.listAllByObject("projects/user", user);
              hasProjects.then(function (result) {  // this is only run after $http completes0
             	 $scope.formElements.projecttypeList = result;
-            	 $scope.showLoaderDetail = false;
              });
          };
 
@@ -541,11 +533,9 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
      $scope.addNetworkToVM = function () {
          dialogService.openDialog("app/views/cloud/instance/add-network.jsp", 'md', $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
          	$scope.listNetwork = function () {
-         		$scope.showLoaderDetail = true;
                     var hasGuestNetworks = appService.crudService.findByDepartment("guestnetwork/list");
                     hasGuestNetworks.then(function (result) {  // this is only run after $http
                             $scope.networkList = result;
-                            $scope.showLoaderDetail = false;
                     });
 
                 };

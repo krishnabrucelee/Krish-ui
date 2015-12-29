@@ -107,10 +107,7 @@
 						<form name="instanceTemplateForm" method="POST"
 							data-ng-submit="validateTemplate(instanceTemplateForm)"
 							novalidate class="form-horizontal">
-							<div data-ng-show = "showLoader" style="margin: 20%">
-      							<get-loader-image data-ng-show="showLoaderDetail"></get-loader-image>
-      						</div>
-							<div data-ng-hide="showLoaderDetail" data-ng-include src="'app/views/cloud/instance/step3.jsp'"></div>
+							<div data-ng-include src="'app/views/cloud/instance/step3.jsp'"></div>
 						</form>
 					</div>
 				</div>
