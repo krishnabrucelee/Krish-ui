@@ -2,21 +2,21 @@
 
 /*
  * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
+ * To change this template file, choose Tools | Templates 
  * and open the template in the editor.    
  */ 
-   
-angular         
+      
+angular            
         .module('homer')     
         .controller('accountCtrl', accountCtrl)  
         .controller('accountListCtrl', accountListCtrl)   
         .controller('editCtrl', editCtrl)   
- 
+   
 function accountCtrl($scope, appService) {
     $scope.global = appService.globalConfig;
     $scope.userData = "testss";
     $scope.addUser = function (form) { 
-    	console.log(form);   
+    	console.log(form);     
         $scope.formSubmitted = true;      
         if (form.$valid) {    
         	console.log($scope.user);
@@ -270,11 +270,11 @@ function accountListCtrl($scope,$state, $log,$timeout, appService) {
     		$scope.user = angular.copy(user);
 
     		   $scope.saveUser = function (user) {
-                               $scope.showLoader = true;
-    		        $scope.formSubmitted = true;
+                        $scope.formSubmitted = true;
+			$scope.showLoader = true;
 			var user = $scope.user;
                         user.departmentId = user.department.id;
-    		        var hasServer = appService.crudService.update("users",user);
+    		        var hasServer = appService.crudService.update("users",user); 
     		        hasServer.then(function (result) {
     		            $scope.list(1);
     		            appService.notify({message: 'Updated successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
@@ -283,8 +283,9 @@ function accountListCtrl($scope,$state, $log,$timeout, appService) {
     		        }).catch(function (result) {
                     		if(!angular.isUndefined(result) && result.data != null) {
                     			angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
-				   $scope.userForm[key].$invalid = true;
-                            	   $scope.userForm[key].errorMessage = errorMessage;
+				   		$scope.userForm[key].$invalid = true;
+                            	   		$scope.userForm[key].errorMessage = errorMessage;
+				   		$scope.showLoader = false;
                     			});
                     		}
                     	});
