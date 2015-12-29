@@ -119,8 +119,8 @@
 											<img title="{{ instance.template.osType.description}}" data-ng-show="instance.template.displayText.toLowerCase().indexOf('fedora') > -1" src="images/os/fedora_logo.png" alt="" height="25" width="25" class="m-r-5" >
 											<img title="{{ instance.template.osType.description}}" data-ng-show="instance.template.displayText.toLowerCase().indexOf('redhat') > -1" src="images/os/redhat_logo.png" alt="" height="25" width="25" class="m-r-5" >
 											<img title="{{ instance.template.osType.description}}" data-ng-show="instance.template.displayText.toLowerCase().indexOf('core') > -1" src="images/os/core_logo.png" alt="" height="25" width="25" class="m-r-5" >
-											<img title="{{ instance.template.osType.description}}" data-ng-show="instance.template.displayText.toLowerCase().indexOf('vynta') > -1" src="images/os/vynta_logo.png" alt="" height="25" width="25" class="m-r-5" >
-  											<img title="{{ instance.template.osType.description}}" data-ng-show="instance.template.displayText.toLowerCase().indexOf('windows') > -1" src="images/os/windows_logo.png" alt="" height="25" width="25" class="m-r-5" >
+<!-- 											<img title="{{ instance.template.osType.description}}" data-ng-show="instance.template.displayText.toLowerCase().indexOf('vynta') > -1" src="images/os/vynta_logo.png" alt="" height="25" width="25" class="m-r-5" >
+ -->  											<img title="{{ instance.template.osType.description}}" data-ng-show="instance.template.displayText.toLowerCase().indexOf('windows') > -1" src="images/os/windows_logo.png" alt="" height="25" width="25" class="m-r-5" >
 
  										</td>
  										<td class="custom-width-xs">{{ instance.computeOffering.numberOfCores}}</td>
