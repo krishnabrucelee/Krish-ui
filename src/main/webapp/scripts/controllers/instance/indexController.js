@@ -430,7 +430,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
           		 $scope.instance.domainId = $scope.global.sessionValues.domainId;
           	}
           }
-    	 var instance = $scope.instance;
+    	 var instance = angular.copy($scope.instance);
     	 if (!angular.isUndefined(instance.project)) {
              instance.projectId = instance.project.id;
              delete instance.project;
@@ -768,7 +768,6 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
             	 $scope.showLoaderOffer = true;
         	 $scope.guestnetwork.zone = $scope.global.zone;
         	 $scope.guestnetwork.displayText =  $scope.guestnetwork.name;
-        	 var guestnetwork = $scope.guestnetwork;
         	 $scope.guestnetwork.departmentId= $scope.instance.department.id;
     	 		$scope.guestnetwork.department= $scope.instance.department;
             	 $scope.guestnetwork.domain = $scope.instance.department.domain;
@@ -776,6 +775,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
             	 $scope.guestnetwork.project = $scope.instance.project;
 
 
+            	 var guestnetwork = angular.copy($scope.guestnetwork);
  if (!angular.isUndefined($scope.guestnetwork.domain)) {
                             guestnetwork.domainId = $scope.guestnetwork.domain.id;
 			 delete guestnetwork.domain;
