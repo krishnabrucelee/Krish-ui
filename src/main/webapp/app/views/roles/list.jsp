@@ -69,6 +69,7 @@
                                             <thead>
                                                 <tr>
                                                     <th><fmt:message key="common.name" bundle="${msg}" /> ${messages.getString("locale.profile")}</th>
+                                                    <th><fmt:message key="common.domain" bundle="${msg}" /></th>
                                                     <th><fmt:message key="common.department" bundle="${msg}" /></th>
                                                     <th><fmt:message key="common.description" bundle="${msg}" /></th>
                                                     <th><fmt:message key="common.action" bundle="${msg}" /></th>
@@ -78,6 +79,10 @@
                                                 <tr data-ng-repeat="role in filteredCount = (roleList| filter: quickSearch)">
                                                     <td>
                                                        {{ role.name}}
+
+                                                    </td>
+                                                    <td>
+                                                       {{ role.domain.name}}
 
                                                     </td>
                                                     <td>
