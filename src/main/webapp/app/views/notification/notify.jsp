@@ -6,8 +6,8 @@
 <div class="cg-notify-message homer-notify" ng-class="$classes">
     <div class="p-md">
     <div ng-show="!$messageTemplate">
-
-    	{{ $message }}<!--<fmt:message key="" bundle="${msg}" /> -->
+		<span ng-bind-html="$message"></span>
+    	<!--<fmt:message key="" bundle="${msg}" /> -->
     	<!--
     	<div data-ng-if="$message === 'common.added.successfully'" >
         	<fmt:message key="common.added.successfully" bundle="${msg}" />
