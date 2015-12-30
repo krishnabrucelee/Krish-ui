@@ -56,28 +56,30 @@
 			</div>
 		</div>
 
-
-		<div class="row  form-group required"
-			ng-class="{ 'text-danger' : !instance.department && templateFormSubmitted}">
+        <div data-ng-if="global.sessionValues.type == 'USER'">
+				<div class="form-group" >
+				<div class="col-md-5 col-xs-5 col-sm-5">
+				<span class="control-label"><fmt:message key="department.name" bundle="${msg}" /></span>
+				</div>
+				<div class="col-md-6 col-xs-6 col-sm-6">
+	                  <span class="control-label font-bold">{{instance.department.userName}}</span>
+	             </div>
+	          </div>
+        </div>
+		<div data-ng-if="global.sessionValues.type !== 'USER'">
+			<div class="row  form-group required" ng-class="{ 'text-danger' : !instance.department && templateFormSubmitted}">
 			<div class="col-md-5 col-xs-5 col-sm-5">
 				<span class="control-label"><fmt:message
 						key="department.name" bundle="${msg}" /><span title="<fmt:message key="common.required" bundle="${msg}" />"
 					class="text-danger font-bold">*</span></span>
 			</div>
 			<div class="col-md-6 col-xs-6 col-sm-6">
-				<!-- <input required="true" type="text" name="department"
-					data-ng-model="instance.dept" class="form-control col-md-4"
-					autofocus autocomplete="off"
-					data-ng-class="{'error': instanceTemplateForm.department.$invalid && templateFormSubmitted}">
-			 -->		<div  data-ng-class="{'error': !instance.department && templateFormSubmitted}" custom-select="t as t.userName for t in formElements.departmenttypeList | filter: { name: $searchTerm }" ng-model="instance.department">
+						<div  data-ng-class="{'error': !instance.department && templateFormSubmitted}" custom-select="t as t.userName for t in formElements.departmenttypeList | filter: { name: $searchTerm }" ng-model="instance.department">
 						<div class="pull-left">
 						<strong>{{ t.userName }}</strong><br />
 						</div>
 						<div class="clearfix"></div>
 						</div>
-				<!-- <ul data-ng-show="search.departments.length > 0" style = "padding: 10px; z-index:1000; width: 83%; margin-left:1px; height:150px; overflow:scroll; overflow-x:hidden; background: #FFF none repeat scroll 0% 0%; box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3); margin-bottom: 30px; position:absolute; margin-top:30px;">
-					<li  style = "list-style:none;padding: 5px;" ng-repeat="item in search.departments"><a  data-ng-click="setDepartment(item)">{{ item.name }}</a></li>
-				</ul> -->
 				<i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"
 					tooltip="<fmt:message key="department.name" bundle="${msg}" />"></i>
 				<div class="error-area"
@@ -88,7 +90,19 @@
 				</div>
 			</div>
 		</div>
+		</div>
 
+		<div data-ng-if="global.sessionValues.type == 'USER'">
+				<div class="form-group" >
+				<div class="col-md-5 col-xs-5 col-sm-5">
+				<span class="control-label"><fmt:message key="instance.owner" bundle="${msg}" /></span>
+				</div>
+				<div class="col-md-6 col-xs-6 col-sm-6">
+	                  <span class="control-label font-bold">{{instance.instanceOwner.userName}}</span>
+	             </div>
+	          </div>
+        </div>
+        <div data-ng-if="global.sessionValues.type !== 'USER'">
 		<div class="row form-group required"
 			ng-class="{ 'text-danger' : !instance.instanceOwner && templateFormSubmitted}">
 			<div class="col-md-5 col-xs-5 col-sm-5">
@@ -96,19 +110,13 @@
 						bundle="${msg}" /><span title="<fmt:message key="common.required" bundle="${msg}" />"
 					class="text-danger font-bold">*</span></span>
 			</div>
-			<div class="col-md-6 col-xs-6 col-sm-6"><!--
-				<input required="true" type="text" name="owner"
-					data-ng-model="instance.user" class="form-control col-md-4"
-					autofocus autocomplete="off"
-					data-ng-class="{'error': instanceTemplateForm.owner.$invalid && templateFormSubmitted}"> -->
-
+			<div class="col-md-6 col-xs-6 col-sm-6">
 					<div  data-ng-class="{'error': !instance.instanceOwner && templateFormSubmitted}" custom-select="t as t.userName for t in formElements.instanceOwnerList | filter: { userName: $searchTerm }" ng-model="instance.instanceOwner">
 						<div class="pull-left">
 						<strong>{{ t.userName }}</strong><br />
 						</div>
 						<div class="clearfix"></div>
 						</div>
-<!-- 			<ul data-ng-show="search.users.length > 0" style = "padding: 10px; z-index:1000; width: 83%; margin-left:1px; height:150px; overflow:scroll; overflow-x:hidden; background: #FFF none repeat scroll 0% 0%; box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3); margin-bottom: 30px; position:absolute; margin-top:30px;">
 				<li class="selectlist" ng-repeat="item in search.users" style = "list-style:none;padding: 5px;"><a  data-ng-click="setUser(item)" >{{ item.userName }}</a></li>
 			</ul> -->
 				<i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"
@@ -120,6 +128,7 @@
 						class="fa fa-warning error-icon"></i>
 				</div>
 			</div>
+		</div>
 		</div>
 
 

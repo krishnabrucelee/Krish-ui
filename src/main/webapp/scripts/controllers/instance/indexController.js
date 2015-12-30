@@ -258,20 +258,29 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
                var hasApplication = appService.crudService.listAll("applications/list");
                hasApplication.then(function (result) {  // this is only run after $http completes0
                    $scope.formElements.applicationsList = result;
-                   $scope.showLoaderDetail = false;
             });
         };
         $scope.applicationList();
 
         $scope.departmentList = function (domain) {
-        	$scope.showLoaderDetail = true;
+
+		    	$scope.showLoaderDetail = true;
 
    		    if($scope.global.sessionValues.type === 'USER') {
    		    	var departments = [];
    		    	var hasDepartments = appService.crudService.read("departments", $scope.global.sessionValues.departmentId);
    		    	hasDepartments.then(function (result) {
-   		    		departments.push(result);
-   		    		$scope.formElements.departmenttypeList = departments;
+   		    		$scope.instance.department = result;
+   		    		if (!angular.isUndefined(result)) {
+   		    			$scope.listNetworks(result.id,'department');
+   		    		}
+	    	    });
+   		    	var hasUsers = appService.crudService.read("users", $scope.global.sessionValues.id);
+   		    	hasUsers.then(function (result) {
+   		    		$scope.instance.instanceOwner = result;
+   		    		if (!angular.isUndefined(result)) {
+   	    	          $scope.projectList(result);
+   		    		}
 	    	    });
    		    } else {
             var hasDepartments = appService.crudService.listAllByFilter("departments/search", domain);
@@ -297,16 +306,17 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
     	  if (!angular.isUndefined(obj)) {
     	  $scope.userList(obj);
           $scope.listNetworks(obj.id,'department');
-          $scope.projectList(obj);
+          //$scope.projectList(obj);
     	  }
           });
 
 
       $scope.$watch('instance.instanceOwner', function (obj) {
-
+    	  if($scope.global.sessionValues.type !== 'USER') {
     		if (!angular.isUndefined(obj)) {
     	          $scope.projectList(obj);
     		}
+    	  }
     	          });
 
       $scope.$watch('instance.project',function (obj) {

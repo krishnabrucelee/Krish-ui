@@ -89,7 +89,7 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams) {
 
     $scope.userList = function (department) {
     	if(department!= null && !angular.isUndefined(department)){
-    		var hasUsers = appService.crudService.listAllByFilter("users/departmentusers", department);
+    		var hasUsers = appService.crudService.listAllByFilter("users/search", department);
     		hasUsers.then(function (result) {  // this is only run after $http
 											// completes0
         	$scope.projectElements.projectOwnerList = result;
@@ -98,7 +98,7 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams) {
         	    			if(obj.id == $scope.project.projectOwner.id) {
         	    				$scope.project.projectOwner = obj;
 
-        				}
+        	    			}
         	    		}
         	    	});
 
@@ -107,7 +107,7 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams) {
     };
 
     $scope.userLists = function (department) {
-       var hasUsers = appService.crudService.listAllByFilter("users/departmentusers", department);
+       var hasUsers = appService.crudService.listAllByFilter("users/search", department);
         hasUsers.then(function (result) {  // this is only run after $http completes0
         	$scope.projectElements.projectuserList = result;
 
@@ -127,18 +127,12 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams) {
 		    if($scope.global.sessionValues.type === 'USER') {
 		    	var departments = [];
 		    	var hasDepartments = appService.crudService.read("departments", $scope.global.sessionValues.departmentId);
-		    	hasDepartments.then(function (result) {
-		    		departments.push(result);
-		    		$scope.formElements.departmenttypeList = departments;
-		    		angular.forEach($scope.formElements.departmenttypeList, function(obj, key) {
-		    			if (!angular.isUndefined($scope.project.department)) {
-     	    				if(obj.id == $scope.project.department.id) {
-     	    				$scope.project.department = obj;
-
-     	    				}
-		    			}
-		    		});
-    	    });
+   		    	hasDepartments.then(function (result) {
+   		    		$scope.project.department = result;
+   		    		if (!angular.isUndefined(result)) {
+   		    			$scope.userLists(result);
+   		    		}
+	    	    });
 		    } else {
 		    	hasDepartments.then(function (result) {  // this is only run after $http completes0
 		    		$scope.formElements.departmenttypeList = result;

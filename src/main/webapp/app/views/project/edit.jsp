@@ -34,6 +34,7 @@
 
                             </div>
                         </div>
+                        <div data-ng-if="global.sessionValues.type !== 'USER'">
                         <div class="form-group">
                         <div class="row">
                             <label class="col-md-3 col-xs-12 col-sm-3 control-label control-normal"><fmt:message key="common.domain" bundle="${msg}" /></label>
@@ -42,7 +43,8 @@
                             </div>
                         </div>
                     </div>
-
+                    </div>
+					<div data-ng-if="global.sessionValues.type !== 'USER'">
                          <div class="form-group" ng-class="{'text-danger': projectForm.department.$invalid && formSubmitted}">
                             <div class="row">
                                 <label class="col-md-3 col-sm-3 control-label control-normal"><fmt:message key="common.department" bundle="${msg}" /><span class="text-danger">*</span></label>
@@ -50,10 +52,22 @@
                                     <select required="true" class="form-control input-group" name="department" data-ng-model="project.department" ng-options="department.userName for department in formElements.departmenttypeList" data-ng-class="{'error':  projectForm.department.$invalid && formSubmitted}" >
                                     </select>
                                     <i  tooltip="<fmt:message key="choose.the.department" bundle="${msg}" />" class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
-                                    <div class="error-area" data-ng-show="RoleForm.department.$invalid && formSubmitted" ><i  tooltip="<fmt:message key="department.is.required" bundle="${msg}" />" class="fa fa-warning error-icon"></i></div>
+                                    <div class="error-area" data-ng-show="projectForm.department.$invalid && formSubmitted" ><i  tooltip="<fmt:message key="department.is.required" bundle="${msg}" />" class="fa fa-warning error-icon"></i></div>
                                 </div>
                             </div>
                     	</div>
+                    	</div>
+
+                    	<div data-ng-if="global.sessionValues.type == 'USER'">
+						<div class="form-group" >
+	                        <div class="row">
+	                            <label class="col-md-3 col-xs-12 col-sm-3 control-label control-normal"><fmt:message key="common.department" bundle="${msg}" /></label>
+	                            <div class="col-md-7  col-sm-7 col-xs-12">
+	                            <label class="control-label text-center">{{project.department.userName}}</label>
+	                            </div>
+	                        </div>
+	                    </div>
+                   	 </div>
 
                         <!--<div class="hr-line-dashed"></div>-->
                         <div class="form-group" ng-class="{ 'text-danger' : projectForm.projectOwner.$invalid && formSubmitted}">
