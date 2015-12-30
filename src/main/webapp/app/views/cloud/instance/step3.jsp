@@ -118,7 +118,7 @@
 						<div class="clearfix"></div>
 						</div>
 				<li class="selectlist" ng-repeat="item in search.users" style = "list-style:none;padding: 5px;"><a  data-ng-click="setUser(item)" >{{ item.userName }}</a></li>
-			</ul> -->
+			</ul>
 				<i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"
 					tooltip="<fmt:message key="name.of.the.owner" bundle="${msg}" />"></i>
 				<div class="error-area"

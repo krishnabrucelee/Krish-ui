@@ -258,6 +258,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
                var hasApplication = appService.crudService.listAll("applications/list");
                hasApplication.then(function (result) {  // this is only run after $http completes0
                    $scope.formElements.applicationsList = result;
+                   $scope.showLoaderDetail = false;
             });
         };
         $scope.applicationList();
