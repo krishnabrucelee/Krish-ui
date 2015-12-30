@@ -346,11 +346,7 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
     $scope.volume = {};
     $scope.volumeForm = {};
     $scope.addVolume = function (size) {
-        $scope.volume.name = "";
-        $scope.volume.storageTags = "";
-        $scope.volume.storageOffering = "";
-        $scope.volume.department = "";
-        $scope.volume.project = "";
+        $scope.volume = {};
     	 if($scope.global.sessionValues.type === 'USER') {
     	var hasDepartments = appService.crudService.read("departments", $scope.global.sessionValues.departmentId);
     	hasDepartments.then(function (result) {
@@ -526,12 +522,7 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
                                                                                                  function ($scope, $modalInstance, $rootScope) {
     $scope.global = globalConfig;
     // Form Field Decleration
-    $scope.volume.name = "";
-    $scope.volume.zone = "";
-    $scope.volume.storageOffering = "";
-    $scope.volume.format = "";
-    $scope.volume.md5checksum = "";
-    $scope.volume.url = "";
+    $scope.volume = {};
 
     $scope.formSubmitted = false;
     $scope.formElements = {
@@ -588,6 +579,8 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
              	delete volume.zone;
              }
 
+             delete volume.department;
+             delete volume.project;
              var hasUploadVolume = appService.crudService.add("volumes/upload", volume);
              hasUploadVolume.then(function (result) {
             	 $scope.showLoader = false;
