@@ -253,9 +253,6 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams) {
             		 $scope.newProject.domainId = $scope.global.sessionValues.domainId;
             	}
             }
-            else{
-            	 $scope.newProject.domainId =  $scope.newProject.domain.id;
-            }
             if($scope.global.sessionValues.type === 'USER') {
 		    	var departments = [];
 		    	var hasDepartments = appService.crudService.read("departments", $scope.global.sessionValues.departmentId);
@@ -267,6 +264,7 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams) {
     		   	 $scope.formSubmitted = true;
     		        if (form.$valid) {
     		        	$scope.projectLoader = true;
+    		        	$scope.newProject.domainId =  $scope.newProject.domain.id;
     		            var project = angular.copy($scope.newProject);
     		            console.log(project);
     		            project.isActive = true;
