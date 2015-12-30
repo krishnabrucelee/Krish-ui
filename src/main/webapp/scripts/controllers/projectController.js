@@ -251,6 +251,10 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams) {
             if($scope.global.sessionValues.type !== 'ROOT_ADMIN') {
             	if(!angular.isUndefined($scope.global.sessionValues.domainId)){
             		 $scope.newProject.domainId = $scope.global.sessionValues.domainId;
+            		 var hasDomains = appService.crudService.read("domains", $scope.global.sessionValues.domainId);
+            		 hasDomains.then(function (result) {
+        		    		$scope.newProject.domain = result;
+     	    	    });
             	}
             }
             if($scope.global.sessionValues.type === 'USER') {
