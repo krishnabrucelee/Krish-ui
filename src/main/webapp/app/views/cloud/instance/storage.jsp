@@ -11,7 +11,9 @@
             <div class="row">
                     <div class="col-md-12 col-sm-12">
                         <h4><fmt:message key="instance.storage.manager" bundle="${msg}" />
+
                          <span class="pull-right">
+                          <a title="<fmt:message key="common.refresh" bundle="${msg}" />"  class="btn btn-info" ui-sref="cloud.list-instance.view-instance"  ui-sref-opts="{reload: true}" ><span class="fa fa-refresh fa-lg "></span></a>
                             <a class="btn btn-info" data-ng-click="attach(md, volume.instanceId)"><span class="pe-7s-paperclip pe-lg font-bold m-r-xs"></span><fmt:message key="attach.volume" bundle="${msg}" /></a>
                             <a class="btn btn-info" data-ng-click="addVolume('md')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="add.volume" bundle="${msg}" /></a>
                         </span>
