@@ -129,6 +129,7 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams) {
 		    	var hasDepartments = appService.crudService.read("departments", $scope.global.sessionValues.departmentId);
    		    	hasDepartments.then(function (result) {
    		    		$scope.project.department = result;
+   		    		$scope.newProject.department = result;
    		    		if (!angular.isUndefined(result)) {
    		    			$scope.userLists(result);
    		    		}
