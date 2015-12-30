@@ -25,7 +25,6 @@ angular
         var hasRoles = appService.crudService.list("roles", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
         hasRoles.then(function (result) {  // this is only run after $http completes0
             $scope.roleList = result;
-            console.log($scope.roleList);
             // For pagination
             $scope.paginationObject.limit  = limit;
             $scope.paginationObject.currentPage = pageNumber;

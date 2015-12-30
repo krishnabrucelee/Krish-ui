@@ -36,6 +36,14 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
 
             $scope.volumeList.Count = result.totalItems;
 
+//      		 // Get the count of the listings
+//       		var hasVmCount =  appService.crudService.listAll("volumes/volumeCounts");
+//       		hasVmCount.then(function(result) {
+//       			$scope.attachedCount = result.attachedCount;
+//       			$scope.detachedCount = result.attachedCount;
+//       			$scope.totalCount = result.totalCount;
+//    		});
+
             // For pagination
             $scope.paginationObject.limit = limit;
             $scope.paginationObject.currentPage = pageNumber;
@@ -44,8 +52,12 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
         });
 
 
+
     };
     $scope.list(1);
+
+
+
 
 //    // Delete the volume
 //    $scope.delete = function (size, volume) {
@@ -117,15 +129,15 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
                     if (form.$valid) {
                     	$scope.showLoader = true;
 
-                        if(!angular.isUndefined(volume.vmInstance)) {
+                        if(!angular.isUndefined(volume.vmInstance) && volume.vmInstance != null) {
                         	volume.vmInstanceId = volume.vmInstance.id;
                         	delete volume.vmInstance;
                         }
-                        if(!angular.isUndefined(volume.storageOffering)) {
+                        if(!angular.isUndefined(volume.storageOffering) && volume.storageOffering != null) {
                         	volume.storageOfferingId = volume.storageOffering.id;
                         	delete volume.storageOffering;
                         }
-                        if(!angular.isUndefined(volume.department)) {
+                        if(!angular.isUndefined(volume.department) && volume.department != null) {
                         	volume.departmentId = volume.department.id;
                         	delete volume.department;
                         }
@@ -133,7 +145,7 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
                         	volume.projectId = volume.project.id;
                         	delete volume.project;
                         }
-                        if(!angular.isUndefined(volume.zone)) {
+                        if(!angular.isUndefined(volume.zone) && volume.zone != null) {
                         	volume.zoneId = volume.zone.id;
                         	delete volume.zone;
                         }
@@ -181,15 +193,15 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
                     console.log(volume);
                     $scope.showLoader = true;
 
-                    if(!angular.isUndefined(volume.vmInstance)) {
+                    if(!angular.isUndefined(volume.vmInstance) && volume.vmInstance != null) {
                     	volume.vmInstanceId = volume.vmInstance.id;
                     	delete volume.vmInstance;
                     }
-                    if(!angular.isUndefined(volume.storageOffering)) {
+                    if(!angular.isUndefined(volume.storageOffering) && volume.storageOffering != null) {
                     	volume.storageOfferingId = volume.storageOffering.id;
                     	delete volume.storageOffering;
                     }
-                    if(!angular.isUndefined(volume.department)) {
+                    if(!angular.isUndefined(volume.department) && volume.department != null) {
                     	volume.departmentId = volume.department.id;
                     	delete volume.department;
                     }
@@ -197,7 +209,7 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
                     	volume.projectId = volume.project.id;
                     	delete volume.project;
                     }
-                    if(!angular.isUndefined(volume.zone)) {
+                    if(!angular.isUndefined(volume.zone) && volume.zone != null) {
                     	volume.zoneId = volume.zone.id;
                     	delete volume.zone;
                     }
@@ -334,6 +346,11 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
     $scope.volume = {};
     $scope.volumeForm = {};
     $scope.addVolume = function (size) {
+        $scope.volume.name = "";
+        $scope.volume.storageTags = "";
+        $scope.volume.storageOffering = "";
+        $scope.volume.department = "";
+        $scope.volume.project = "";
     	 if($scope.global.sessionValues.type === 'USER') {
     	var hasDepartments = appService.crudService.read("departments", $scope.global.sessionValues.departmentId);
     	hasDepartments.then(function (result) {
@@ -415,9 +432,6 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
 //                    	 });
 //               	};
 
-                $scope.volume.name = "";
-                $scope.volume.storageTags = "";
-                $scope.volume.storageOffering = "";
                 // Create a new application
                 $scope.save = function (form, volume) {
                     $scope.formSubmitted = true;
