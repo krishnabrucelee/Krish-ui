@@ -242,21 +242,16 @@ $scope.list = function () {
 			  $scope.showConsole = function(vm) {
 				  $scope.vm = vm;
 				  var hasVms = crudService.updates("virtualmachine/console", vm);
-	  				hasVms.then(function(result) {
-	  					$scope.consoleUrl = $sce.trustAsResourceUrl(result.success);
-
-	  					$window.sessionStorage.setItem("consoleToken", $scope.consoleUrl);
-	  					$window.sessionStorage.setItem("consoleVms", JSON.stringify($scope.vm));
-	  					//$scope.consoleUrl = $sce.trustAsResourceUrl("http://192.168.1.152/console/?token=MTkyLjE2OC4xLjE1MnxpLTItNjktVk18bm92bmN0ZXN0");
-	  					$scope.instance = vm;
-	  					 window.open("app/console.jsp", 'Console', 'width=800,height=580');
-	  			        /*dialogService.openDialog("app/views/cloud/instance/view-console.jsp", 'lg', $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
-	  			          $scope.cancel = function () {
-			  	               $modalInstance.close();
-			  	           };
-	  			        }]);*/
-
-	  				});
+					hasVms.then(function(result) {
+						var consoleUrl = result.success;
+						var consoleParams = consoleUrl.split("token=");
+						alert(consoleParams);
+						$window.sessionStorage.setItem("consoleProxy", consoleParams[0]);
+						//$scope.consoleUrl = $sce.trustAsResourceUrl("http://192.168.1.152/console/?token=MTkyLjE2OC4xLjE1MnxpLTItNjktVk18bm92bmN0ZXN0");
+						$scope.instance = vm;
+						var randomnumber = Math.floor((Math.random()*100)+1);
+						 window.open("app/console.jsp?token="+consoleParams[1]+"&iso="+ btoa(vm.isoName), vm.name + vm.id,'width=800,height=580');
+					});
 			  }
 
 			  $scope.instnaceEdit = false;

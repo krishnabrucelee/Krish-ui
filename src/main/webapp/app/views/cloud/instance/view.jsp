@@ -183,14 +183,12 @@ pageEncoding="UTF-8"%>
                                             </a>
                                         </li>
                                         <li has-permission="REBOOT_VM" data-ng-if="instance.status == 'Running'" class="list-group-item">
-                                            <a href="javascript:void(0);" data-ng-if="instance.status == 'Running'" title="<fmt:message key="restart" bundle="${msg}" />
-                                               " data-ng-click="rebootVm('sm',instance)"><span class="fa-rotate-left fa font-bold m-xs"></span>
+                                            <a href="javascript:void(0);" data-ng-if="instance.status == 'Running'" title="<fmt:message key="restart" bundle="${msg}" />" data-ng-click="rebootVm('sm',instance)"><span class="fa-rotate-left fa font-bold m-xs"></span>
                                                 <fmt:message key="reboot" bundle="${msg}" />
                                             </a>
                                         </li>
                                         <li has-permission="VIEW_CONSOLE" class="list-group-item" data-ng-if="instance.status == 'Running'">
-                                            <a href="javascript:void(0);" title="<fmt:message key="view.console" bundle="${msg}" />
-                                               " data-ng-click="showConsole(instance)"><span class="fa-desktop fa font-bold m-xs"></span>
+                                            <a href="javascript:void(0);" title="<fmt:message key="view.console" bundle="${msg}" />" data-ng-click="showConsole(instance)"><span class="fa-desktop fa font-bold m-xs"></span>
                                                 <fmt:message key="view.console" bundle="${msg}" />
                                             </a>
                                         </li>
