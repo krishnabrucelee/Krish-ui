@@ -7,8 +7,9 @@
 angular
         .module('homer')
         .controller('networksCtrl', networksCtrl) 
+        .controller('networkViewCtrl', networkViewCtrl)
 
-function networksCtrl($scope,$rootScope,filterFilter,$state, $stateParams, $timeout,$window,appService) {
+function networksCtrl($scope,$rootScope,filterFilter,$state, $stateParams,modalService, $timeout,$window,appService) {
 
 	//$scope.quickSearch = "";
     $scope.global = appService.globalConfig;
@@ -18,6 +19,24 @@ function networksCtrl($scope,$rootScope,filterFilter,$state, $stateParams, $time
     $scope.vmList = [];
     $scope.formElements = [];
     $scope.allItemsSelected = false;
+
+    $scope.sort = {
+		column : '',
+		descending : false
+	};
+	
+	$scope.changeSorting = function(column) {
+
+		var sort = $scope.sort;
+
+		if (sort.column == column) {
+			sort.descending = !sort.descending;
+		} else {
+			sort.column = column;
+			sort.descending = false;
+		}
+		return sort.descending;
+	};
 
     $scope.openAddIsolatedNetwork = function (size) {
         appService.dialogService.openDialog("app/views/cloud/network/add.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
@@ -419,7 +438,7 @@ function networksCtrl($scope,$rootScope,filterFilter,$state, $stateParams, $time
             {id: 3, name: 'VPC'},
             {id: 4, name: 'VPN Customer Gateway'}
         ],
-        /*protocols: [
+       protocols: [
          {id: 1, name: 'TCP', value: 'tcp'},
          {id: 2, name: 'UDP', value: 'udp'},
          {id: 3, name: 'ICMP', value: 'icmp'},
@@ -440,13 +459,13 @@ function networksCtrl($scope,$rootScope,filterFilter,$state, $stateParams, $time
          {id: 1, name: 'Round-robin', value: 'roundrobin'},
          {id: 2, name: 'Least connections', value: 'leastconn'},
          {id: 3, name: 'Source', value: 'source'}
-         ]*/
+         ]
     };
 
     $scope.tcp = true;
     $scope.udp = true;
 
-    /* $scope.selectProtocol = function (selectedItem) {
+     $scope.selectProtocol = function (selectedItem) {
      if (selectedItem == 'TCP' || selectedItem == 'UDP') {
      $scope.tcp = true;
      $scope.udp = true;
@@ -512,7 +531,7 @@ function networksCtrl($scope,$rootScope,filterFilter,$state, $stateParams, $time
      };
      $scope.portList.push($scope.newport);
      appService.localStorageService.set("ports", $scope.portList);
-     }*/
+     }
     $scope.portList = appService.localStorageService.get("ports");
     $scope.rulesList = appService.localStorageService.get("rules");
     $scope.rules = appService.localStorageService.get("firewall");
@@ -581,7 +600,6 @@ function networksCtrl($scope,$rootScope,filterFilter,$state, $stateParams, $time
         $timeout(function () {
             $scope.acquiringIP = true
         }, 5);
-        $scope.cancel();
         $window.location.href = '#network/list/view/' + $stateParams.id;
     };
     $scope.actionAcquire = false;
@@ -604,31 +622,31 @@ function networksCtrl($scope,$rootScope,filterFilter,$state, $stateParams, $time
     $scope.doDelete = function () {
 
         $scope.deleteRule = true;
-        $timeout($scope.delete, 1000);
+        $timeout($scope.deletes, 500);
     }
 
-//    $scope.delete = function () {
-//        var id = appService.localStorageService.get('deleteRule').id;
-//        var type = appService.localStorageService.get('deleteRule').type;
-//
-//        $timeout(function () {
-//            $scope.deleteRule = true
-//        }, 5);
-//
-//        if (type == 'LB') {
-//            $scope.removeLB(id);
-//        }
-//        if (type == 'Egress') {
-//            $scope.removeRule(id, '');
-//            appService.localStorageService.set('view', 'egress');
-//        }
-//        if (type == 'Port') {
-//            $scope.removePort(id);
-//        }
-//        if (type == 'Firewall') {
-//            $scope.removeRule(id, 'firewall');
-//        }
-//    };
+    $scope.deletes = function () {
+        var id = appService.localStorageService.get('deleteRule').id;
+        var type = appService.localStorageService.get('deleteRule').type;
+
+        $timeout(function () {
+            $scope.deleteRule = true
+        }, 5);
+
+        if (type == 'LB') {
+            $scope.removeLB(id);
+        }
+        if (type == 'Egress') {
+            $scope.removeRule(id, '');
+            appService.localStorageService.set('view', 'egress');
+        }
+        if (type == 'Port') {
+            $scope.removePort(id);
+        }
+        if (type == 'Firewall') {
+            $scope.removeRule(id, 'firewall');
+        }
+    };
 
     $scope.openAddVM = function (form) {
         $scope.loadFormSubmitted = true;
@@ -850,6 +868,9 @@ function networksCtrl($scope,$rootScope,filterFilter,$state, $stateParams, $time
 
     $scope.openAddIP = function (size) {
         modalService.trigger('app/views/cloud/network/acquire-IP.jsp', size);
+        $scope.cancel = function () {
+            $modalInstance.close();
+        };
     };
 
     /**
@@ -891,3 +912,54 @@ function networksCtrl($scope,$rootScope,filterFilter,$state, $stateParams, $time
 }
 ;
 
+
+function networkViewCtrl($scope, $http, notify, globalConfig, localStorageService, modalService, $log, $state, $stateParams, promiseAjax) {
+	   
+		
+		$scope.global = globalConfig;
+	    $scope.networkList = [];
+	    $scope.network = [];
+	    $scope.ipList = [];
+	    $scope.ipDetails = [];
+	    $scope.tabview='';
+	    if ($stateParams.id > 0) {
+
+	        var hasServer = promiseAjax.httpRequest("GET", "api/network.json");
+	        hasServer.then(function (result) {  // this is only run after $http completes
+	            var networkId = $stateParams.id - 1;
+	            $scope.network = result[networkId];
+	            $scope.global.networks.name = result[networkId].name;
+	            if (localStorageService.get("networkIP") != '') {
+	                if($scope.global.networks.name!=''){
+	                localStorageService.set("networkIP", $scope.global.networks.name);}
+	            }
+	            $state.current.data.pageTitle = result[networkId].name;
+	            localStorageService.set('view','details');
+	        });
+	    }
+
+	    if ($stateParams.id1 > 0) {
+
+	        var hasServer = promiseAjax.httpRequest("GET", "api/ipaddress.json");
+	        hasServer.then(function (result) {  // this is only run after $http completes
+	            var ipId = $stateParams.id1 - 1;
+	            $scope.ipDetails = result[ipId];
+	            $state.current.data.pageTitle = result[ipId].ipaddress;
+	            localStorageService.set('view','details');
+	        });
+
+	    }
+
+	 
+	                $scope.selectTab=function(type){
+	                    
+	                   if(type=='firewall') {localStorageService.set('view','firewall'); }
+	                   if(type=='loadBalance'){localStorageService.set('view','load-balance'); }
+	                   if(type=='portForward'){localStorageService.set('view','port-forward');}
+	                
+	                $scope.tabview=localStorageService.get('view');
+	                $state.reload();
+	                }
+	          $scope.tabview=localStorageService.get('view');
+	};
+	

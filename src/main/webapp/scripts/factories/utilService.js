@@ -9,6 +9,20 @@ function utilService(globalConfig) {
     	};
     	return referenceObject;
     };
+    
+/*    object.changeSorting = function(column) {
+
+		var sort = sort;
+
+		if (sort.column == column) {
+			sort.descending = !sort.descending;
+		} else {
+			sort.column = column;
+			sort.descending = false;
+		}
+		return sort.descending;
+	};*/
+
 
     return object;
 };

@@ -1,4 +1,9 @@
-<div class="panel-heading">
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<div class="panel-heading" ui-view>
                 <div class="row">
                     <div class="col-md-3 col-sm-3 col-xs-3 ">
                         <div class="quick-search">
@@ -31,7 +36,8 @@
                     <tbody>
                     <tr>
                         <td>
-                            <a class="text-info"  ui-sref="cloud.list-network.view-network.view-ipaddress({id1:1})"  title="View IP"> {{ network.ip }}[Source NAT]</a>
+                        
+                            <a class="text-info"  ui-sref="cloud.list-network.view-network.view-ipaddress({id1:1})"  title="View IP"> {{ network.gateway }}[Source NAT]</a>
                         </td>
                         <td>{{ network.zone.name }} </td>
                         <td> <b class="text-success text-uppercase">{{network.state}}</b></td>

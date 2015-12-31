@@ -1,5 +1,10 @@
-<div class="hpanel">
-<div class="row m-l-sm m-r-sm panel-body" ng-controller="networkViewCtrl">
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<div class="hpanel" >
+<div class="row m-l-sm m-r-sm panel-body" data-ng-controller="networkViewCtrl" >
 
     <ul class="nav nav-tabs" data-ng-init="templateCategory = tabview">
         <li data-ng-class="{'active' : tabview == 'details'}"><a href="javascript:void(0)" data-ng-click="templateCategory = 'details'" data-toggle="tab">  <i class="fa fa-list"></i> Details</a></li>

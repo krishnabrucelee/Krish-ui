@@ -13,19 +13,20 @@
 
 	<div data-ng-hide="showLoader" class="table-responsive col-12-table">
 		<table cellspacing="1" cellpadding="1"
-			class="table table-bordered table-striped">
+			class="table dataTable table-bordered table-striped">
 			<thead>
+			
 				<tr>
-					<th><fmt:message key="common.name" bundle="${msg}" /></th>
-					<th><fmt:message key="common.account" bundle="${msg}" /></th>
-					<th><fmt:message key="common.type" bundle="${msg}" /></th>
-					<th><fmt:message key="common.cidr" bundle="${msg}" /></th>
-					<th><fmt:message key="gateway" bundle="${msg}" /></th>
+					<th  data-ng-click="changeSorting('name')" data-ng-class="sort.descending && sort.column =='name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.name" bundle="${msg}" /></th>
+					<th  data-ng-click="changeSorting('Account')" data-ng-class="sort.descending && sort.column =='Account'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.account" bundle="${msg}" /></th>
+					<th  data-ng-click="changeSorting('networkType')" data-ng-class="sort.descending && sort.column =='networkType'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.type" bundle="${msg}" /></th>
+					<th  data-ng-click="changeSorting('cIDR')" data-ng-class="sort.descending && sort.column =='cIDR'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.cidr" bundle="${msg}" /></th>
+					<th  data-ng-click="changeSorting('gateway')" data-ng-class="sort.descending && sort.column =='gateway'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="gateway" bundle="${msg}" /></th>
 					<th><fmt:message key="common.action" bundle="${msg}" /></th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr data-ng-repeat="network in filteredCount = (networkList | filter: quickSearch)">
+				<tr data-ng-repeat="network in filteredCount = (networkList | filter: quickSearch | orderBy:sort.column:sort.descending)">
 					<td><a class="text-info"
 						ui-sref="cloud.list-network.view-network({id: {{ network.id }}, view: 'view'})"
 						title="View Network">{{ network.name }}</a></td>
@@ -37,9 +38,10 @@
 						title="<fmt:message key="common.edit" bundle="${msg}" />"
 						ui-sref="cloud.list-network.view-network({id: {{ network.id }}, view: 'edit'})">
 							<span class="fa fa-edit m-r"> </span>
-					</a> <a class="icon-button"
+					</a> <%-- <a class="icon-button"
 						title="<fmt:message key="common.restart" bundle="${msg}" /> "><span
-							class="fa fa-rotate-left m-r"></span></a> <a class="icon-button"
+							class="fa fa-rotate-left m-r"></span></a> --%>
+							 <a class="icon-button"
 						has-permission="DELETE_NETWORK"
 						title="<fmt:message key="common.delete" bundle="${msg}" /> "
 						data-ng-click="delete('sm', network)"><span
@@ -47,6 +49,7 @@
 				</tr>
 			</tbody>
 		</table>
+		
 	</div>
 	</div>
 </div>

@@ -24,6 +24,10 @@ function globalConfig($window) {
         networks:{
             name:''
         },
+    /*    sort : {
+        		column : '',
+        		descending : false
+        	},*/
         rulesLB:[{name:'Test','protocol':'tcp',publicPort:'90',privatePort:'90',publicEndPort:'120',privateEndPort:'120',algorithm:'Round-robin',vms:[{id:'',name: "NorthChina- Beijing",zone:"Beijing"}],state:'active'}],
         Vms:['1','2','3','4'],
         selectedVms:[],

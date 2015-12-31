@@ -1,4 +1,9 @@
-<div class="row" >                
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<div class="row"  >                
     <div class="col-lg-6 col-md-6 col-sm-12"> 
         <div class="row ">
             <div class="p-sm pull-right">
@@ -52,7 +57,7 @@
         </div>
     </div>
 
-    <div class="col-md-6 col-sm-12" data-ng-controller="networkViewCtrl">
+    <div class="col-md-6 col-sm-12" >
             <div class="cloud-diagram1 center-block">
                 <div class="main-title">Internet<span>{{ipDetails.ipaddress}}</span></div>
                 <div class="firewall">
