@@ -5,6 +5,8 @@
 
 function configState($stateProvider, $httpProvider, $urlRouterProvider,
 		$compileProvider, localStorageServiceProvider, PANDA_CONFIG) {
+	
+	
 
 	var VIEW_URL = "app/";
 	// Optimize load start with remove binding information inside the DOM

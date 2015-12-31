@@ -1,3 +1,8 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <div data-ng-controller="networksCtrl">
 <div class="white-content" >
 
@@ -19,7 +24,8 @@
             <tbody>
                 <tr>
                     <td><input  type="text" name="cidr"  valid-cidr placeholder="0.0.0.0/24"  data-ng-model="cidr" class="form-control col-md-2 col-xs-2" ><span class="text-center" data-ng-show="cidrValidate && actionRule" data-ng-class="cidrValidate && actionRule ? 'text-danger' : ''"> Invalid format</span></td>
-                    <td><select  class="form-control col-md-2 col-xs-2" name="protocol" data-ng-model="protocolName" data-ng-init="protocolName = networkLists.fireProtocols[0]" data-ng-change="selectProtocol(protocolName.name)" data-ng-options="protocolName.name for protocolName in networkLists.fireProtocols"></select>   </td>
+                    <td><select  class="form-control col-md-2 col-xs-2" name="protocol" data-ng-model="protocolName" data-ng-init="protocolName = networkLists.fireProtocols[0]" data-ng-change="selectProtocol(protocolName.name)" data-ng-options="protocolName.name for protocolName in dropnetworkLists.fireProtocols"><option value=""><fmt:message key="common.select"
+													bundle="${msg}" /></option></select>   </td>
                     <td ><input data-ng-show="udp || tcp" valid-number  placeholder="" data-ng-min="1" data-ng-max="65535"   type="text" name="startPort" data-ng-model="startPort" class="form-control col-md-1 col-xs-1" autofocus > </td>
                     <td ><input data-ng-show="udp || tcp" valid-number placeholder="" data-ng-min="1" data-ng-max="65535"   type="text" name="endPort" data-ng-model="endPort" class="form-control  col-md-1 col-xs-1" autofocus > </td>
                     <td ><input data-ng-show="icmp" valid-number   name="icmpType" data-ng-model="icmpType" class="form-control  col-md-1 col-xs-1 " autofocus type="text"></td>

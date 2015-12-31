@@ -1,3 +1,8 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <div data-ng-controller="networksCtrl">
 <div class="white-content" >
     <form name="loadform" method="POST" novalidate data-ng-submit="openAddVM(loadform)">
@@ -19,7 +24,7 @@
                     <td><input required="true"  type="text" name="name" data-ng-model="load.name"  class="form-control" ><span class="text-center text-danger" data-ng-show="loadform.name.$invalid && loadFormSubmitted"> * Required</span></td>
                     <td><input required="true" valid-number data-ng-model="publicPort"  data-ng-min="1" data-ng-max="65535"   type="text" name="publicPort" class="form-control " autofocus > <span class="text-center text-danger" data-ng-show="loadform.publicPort.$invalid && loadFormSubmitted"> *Required</span></td>
                     <td><input required="true" valid-number  data-ng-model="privatePort"  data-ng-min="1" data-ng-max="65535"   type="text" name="privatePort"  class="form-control " autofocus > <span class="text-center text-danger" data-ng-show="loadform.privatePort.$invalid && loadFormSubmitted"> *Required</span></td>
-                    <td><select required="true"  class="form-control" name="protocol" data-ng-model="algorithms" data-ng-init="algorithms = networkLists.algorithms[0]" data-ng-change="selectProtocol(algorithms.name)" data-ng-options="algorithms.name for algorithms in networkLists.algorithms"></select> </td>
+                    <td><select required="true"  class="form-control" name="protocol" data-ng-model="algorithms" data-ng-init="algorithms = networkLists.algorithms[0]" data-ng-change="selectProtocol(algorithms.name)" data-ng-options="algorithms.name for algorithms in dropnetworkLists.algorithms"><option value=""><fmt:message key="common.select" bundle="${msg}" /></option></select> </td>
                     <td><input  class="btn btn-info" type="submit" value="Add VM"></td>
                     <td></td>
                     <td></td>

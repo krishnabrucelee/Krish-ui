@@ -1,7 +1,9 @@
-<!-- <div data-ng-controller="networksCtrl">
-<div class="white-content" >
-
-
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<div data-ng-controller="networksCtrl">
         <table cellspacing="1" cellpadding="1" class="table table-bordered table-striped">
             <thead>
                 <tr>
@@ -17,14 +19,15 @@
             <tbody>
                 <tr>
                     <td><input  type="text" name="cidr"  valid-cidr placeholder="0.0.0.0/24"  data-ng-model="cidr" class="form-control input-group " ><span class="text-center" data-ng-show="cidrValidate && actionRule" data-ng-class="cidrValidate && actionRule ? 'text-danger' : ''"> Invalid format</span></td>
-                    <td><select  class="form-control input-group" name="protocol" data-ng-model="protocolName" data-ng-init="protocolName = networkLists.protocols[0]" data-ng-change="selectProtocol(protocolName.name)" data-ng-options="protocolName.name for protocolName in networkLists.protocols"></select></td>
-                    <td data-ng-show="udp || tcp"<input valid-number  placeholder="1-65535" data-ng-min="1" data-ng-max="65535"   type="text" name="startPort" data-ng-model="startPort" class="form-control " autofocus > </td>
+                    <td><select  class="form-control input-group" name="protocol" data-ng-model="protocolName" data-ng-init="protocolName = networkLists.protocols[0]" data-ng-change="selectProtocol(protocolName.name)" data-ng-options="protocolName.name for protocolName in dropnetworkLists.protocols"><option value=""><fmt:message key="common.select"
+													bundle="${msg}" /></option></select></td>
+                    <td data-ng-show="udp || tcp"><input valid-number  placeholder="1-65535" data-ng-min="1" data-ng-max="65535"   type="text" name="startPort" data-ng-model="startPort" class="form-control " autofocus > </td>
                     <td data-ng-show="udp || tcp"><input valid-number placeholder="1-65535" data-ng-min="1" data-ng-max="65535"   type="text" name="endPort" data-ng-model="endPort" class="form-control " autofocus > </td>
                     <td data-ng-show="icmp"><input valid-number   name="icmpType" data-ng-model="icmpType" class="form-control " autofocus type="text"></td>
                     <td data-ng-show="icmp"><input valid-number  name="icmpCode" data-ng-model="icmpCode" class="form-control " autofocus type="text"></td>
                     <td>
                         <a  class="btn btn-info" data-ng-click="addRule()" ><span class="pe-7s-plus pe-lg font-bold m-r-xs" ></span>Add Rule</a>
-                        <a data-ng-show="delete" class="btn btn-info" data-ng-click="openAddIsolatedNetwork('lg')"><span class="pe-7s-trash pe-lg font-bold m-r-xs"></span></a>
+                        <!-- <a data-ng-show="delete" class="btn btn-info" data-ng-click="openAddIsolatedNetwork('lg')"><span class="pe-7s-trash pe-lg font-bold m-r-xs"></span></a> -->
                     </td>
                 </tr>
             </tbody>
@@ -50,11 +53,6 @@
 
                 </td>
 	        </tr>
-           deleteRules(rule.id,'Egress')
             </tbody>
     </table>
-
-
-
-</div></div>
- -->
+</div>

@@ -23,9 +23,10 @@
                                     <label class="col-md-4 col-sm-4 control-label"><fmt:message key="common.department" bundle="${msg}" />:
                                     </label>
                                     <div class="col-md-8 col-sm-8">
-                                        <select   class="form-control input-group" name="department" data-ng-disabled="true" data-ng-model="resourceQuota.department" ng-options="department.userName for department in departmentList" >
+                                        <!-- <select   class="form-control input-group" name="department" data-ng-disabled="true" data-ng-model="resourceQuota.department" ng-options="department.userName for department in departmentList" >
                                             <option value="">Select</option>
-                                        </select>
+                                        </select> -->
+                                       <label> {{resourceQuota.department.userName}}</label>
                                     </div>
                                 </div>
                             </div>
@@ -37,9 +38,10 @@
                                     </label>
                                     <div class="col-md-8 col-sm-8">
 
-                                        <select  class="form-control input-group"  data-ng-disabled="true"  name="project"   data-ng-model="resourceQuota.project" ng-options="project.name for project in projectList" >
+                                        <!-- <select  class="form-control input-group"  data-ng-disabled="true"  name="project"   data-ng-model="resourceQuota.project" ng-options="project.name for project in projectList" >
                                             <option value="">Select</option>
-                                        </select>
+                                        </select> -->
+                                          <label> {{resourceQuota.project.name}}</label>
                                     </div>
                                 </div>
                             </div>
