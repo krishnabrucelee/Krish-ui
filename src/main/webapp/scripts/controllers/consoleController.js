@@ -64,16 +64,21 @@ angular.module('homer', [])
 })
 .controller("consoleCtrl", function ($scope, $http, $sce, globalConfig, $window) {
 
+	$scope.getQueryParameterByName = function (name) {
+	    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+	    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+	        results = regex.exec(location.search);
+	    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+	}
 
 	var loginSession = globalConfig.sessionValues;
     if(loginSession == null) {
     	window.location.href = "login";
     }
-
-    $scope.consoleUrl = $window.sessionStorage.getItem("consoleToken");
+    var consolePorxy = $window.sessionStorage.getItem("consoleProxy");
+    $scope.consoleUrl = consolePorxy + "token=" + $scope.getQueryParameterByName("token");
     $scope.consoleUrl = $sce.trustAsResourceUrl($scope.consoleUrl);
 
-    $scope.consoleVm = angular.fromJson($window.sessionStorage.getItem("consoleVms"));
 
 	$http({
        "method": "GET",
@@ -84,7 +89,7 @@ angular.module('homer', [])
 	   $scope.isoLists = res.data;
 
 	   angular.forEach($scope.isoLists, function(obj, key) {
-		  if(obj.name == $scope.consoleVm.isoName) {
+		  if(obj.name == atob($scope.getQueryParameterByName("iso"))) {
 			  $scope.isos = obj;
 		  }
 	   });

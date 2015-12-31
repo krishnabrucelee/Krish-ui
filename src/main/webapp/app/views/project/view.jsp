@@ -42,9 +42,9 @@
 										<div class="row">
 											<label class="col-md-4 col-sm-4 control-label"> <span
 												class="pull-right"><fmt:message key="project.status" bundle="${msg}" /></span></label>
-											<div class="col-md-6 col-sm-6 col-xs-6"><label class="badge badge-success p-xs" data-ng-show="projectInfo.isActive"
+											<div class="col-md-6 col-sm-6 col-xs-6"><label class="badge badge-success p-xs" data-ng-if="projectInfo.isActive"
 													class="text-success">Active</label> <label class="badge badge-danger p-xs"
-													data-ng-hide="projectInfo.isActive"
+													data-ng-if="!projectInfo.isActive"
 													class="text-danger">In Active</label></div>
 										</div>
 									</div>
