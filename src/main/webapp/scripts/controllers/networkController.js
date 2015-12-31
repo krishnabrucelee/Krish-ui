@@ -20,6 +20,24 @@ function networksCtrl($scope,$rootScope,filterFilter,$state, $stateParams,modalS
     $scope.formElements = [];
     $scope.allItemsSelected = false;
 
+    $scope.sort = {
+		column : '',
+		descending : false
+	};
+	
+	$scope.changeSorting = function(column) {
+
+		var sort = $scope.sort;
+
+		if (sort.column == column) {
+			sort.descending = !sort.descending;
+		} else {
+			sort.column = column;
+			sort.descending = false;
+		}
+		return sort.descending;
+	};
+
     $scope.openAddIsolatedNetwork = function (size) {
         appService.dialogService.openDialog("app/views/cloud/network/add.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
 
@@ -944,3 +962,4 @@ function networkViewCtrl($scope, $http, notify, globalConfig, localStorageServic
 	                }
 	          $scope.tabview=localStorageService.get('view');
 	};
+	
