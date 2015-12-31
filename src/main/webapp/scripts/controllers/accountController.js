@@ -2,30 +2,30 @@
 
 /*
  * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates 
- * and open the template in the editor.    
- */ 
-      
-angular            
-        .module('homer')     
-        .controller('accountCtrl', accountCtrl)  
-        .controller('accountListCtrl', accountListCtrl)   
-        .controller('editCtrl', editCtrl)   
-   
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+angular
+        .module('homer')
+        .controller('accountCtrl', accountCtrl)
+        .controller('accountListCtrl', accountListCtrl)
+        .controller('editCtrl', editCtrl)
+
 function accountCtrl($scope, appService) {
     $scope.global = appService.globalConfig;
     $scope.userData = "testss";
-    $scope.addUser = function (form) { 
-    	console.log(form);     
-        $scope.formSubmitted = true;      
-        if (form.$valid) {    
+    $scope.addUser = function (form) {
+    	console.log(form);
+        $scope.formSubmitted = true;
+        if (form.$valid) {
         	console.log($scope.user);
         }
     };
 }
 
 // Load list page of user
-function accountListCtrl($scope,$state, $log,$timeout, appService) { 
+function accountListCtrl($scope,$state, $log,$timeout, appService) {
     $scope.accounts = {
         category: "users",
         oneItemSelected: {},
@@ -75,15 +75,15 @@ function accountListCtrl($scope,$state, $log,$timeout, appService) {
         $scope.checkOne(item);
     }
 
-   
-    
+
+
     // User List
     $scope.list = function (pageNumber) {
     	$scope.showLoader = true;
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasUsers = appService.crudService.list("users", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
         hasUsers.then(function (result) {  // this is only run after $http completes0
-     
+
             $scope.accountList = result;
             // For pagination
             $scope.paginationObject.limit  = limit;
@@ -178,7 +178,7 @@ function accountListCtrl($scope,$state, $log,$timeout, appService) {
                 if (form.$valid) {
                     var user = angular.copy($scope.user);
 		    if(!angular.isUndefined($scope.user.department)) {
-                       user.departmentId = user.department.id; 
+                       user.departmentId = user.department.id;
                     }
                     if (user.password == $scope.account.confirmPassword) {
                     	var hasServer = appService.crudService.add("users", user);
@@ -186,15 +186,7 @@ function accountListCtrl($scope,$state, $log,$timeout, appService) {
                     		$scope.list(1);
                     		appService.notify({message: 'Added successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
                     		$modalInstance.close();
-                    		$scope.user.userName = "";
-                    		$scope.user.password = "";
-                    		$scope.user.department = "";
-                    		$scope.user.domain = "";
-                    		$scope.user.role = "";
-                    		$scope.user.email = "";
-                    		$scope.user.firstName = "";
-                    		$scope.user.lastName = "";
-                    		$scope.user.projectList = "";
+                    		$scope.user = {};
                     	}).catch(function (result) {
                     		if(!angular.isUndefined(result) && result.data != null) {
                     			angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
@@ -228,8 +220,8 @@ function accountListCtrl($scope,$state, $log,$timeout, appService) {
             		$scope.options = result;
             	 });
            	};
-         }]); 
-          
+         }]);
+
     };
 
     // Delete user data from database
@@ -257,7 +249,7 @@ function accountListCtrl($scope,$state, $log,$timeout, appService) {
     }
 
     // Edit user data
-    $scope.editUser = function (size) {  
+    $scope.editUser = function (size) {
     	var user = {};
     	 angular.forEach($scope.accountList, function (item, key) {
 
@@ -274,7 +266,7 @@ function accountListCtrl($scope,$state, $log,$timeout, appService) {
 			$scope.showLoader = true;
 			var user = $scope.user;
                         user.departmentId = user.department.id;
-    		        var hasServer = appService.crudService.update("users",user); 
+    		        var hasServer = appService.crudService.update("users",user);
     		        hasServer.then(function (result) {
     		            $scope.list(1);
     		            appService.notify({message: 'Updated successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});

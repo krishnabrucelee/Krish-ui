@@ -89,7 +89,7 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams) {
 
     $scope.userList = function (department) {
     	if(department!= null && !angular.isUndefined(department)){
-    		var hasUsers = appService.crudService.listAllByFilter("users/departmentusers", department);
+    		var hasUsers = appService.crudService.listAllByFilter("users/search", department);
     		hasUsers.then(function (result) {  // this is only run after $http
 											// completes0
         	$scope.projectElements.projectOwnerList = result;
@@ -98,7 +98,7 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams) {
         	    			if(obj.id == $scope.project.projectOwner.id) {
         	    				$scope.project.projectOwner = obj;
 
-        				}
+        	    			}
         	    		}
         	    	});
 
@@ -107,7 +107,7 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams) {
     };
 
     $scope.userLists = function (department) {
-       var hasUsers = appService.crudService.listAllByFilter("users/departmentusers", department);
+       var hasUsers = appService.crudService.listAllByFilter("users/search", department);
         hasUsers.then(function (result) {  // this is only run after $http completes0
         	$scope.projectElements.projectuserList = result;
 
@@ -127,18 +127,12 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams) {
 		    if($scope.global.sessionValues.type === 'USER') {
 		    	var departments = [];
 		    	var hasDepartments = appService.crudService.read("departments", $scope.global.sessionValues.departmentId);
-		    	hasDepartments.then(function (result) {
-		    		departments.push(result);
-		    		$scope.formElements.departmenttypeList = departments;
-		    		angular.forEach($scope.formElements.departmenttypeList, function(obj, key) {
-		    			if (!angular.isUndefined($scope.project.department)) {
-     	    				if(obj.id == $scope.project.department.id) {
-     	    				$scope.project.department = obj;
-
-     	    				}
-		    			}
-		    		});
-    	    });
+   		    	hasDepartments.then(function (result) {
+   		    		$scope.project.department = result;
+   		    		if (!angular.isUndefined(result)) {
+   		    			$scope.userLists(result);
+   		    		}
+	    	    });
 		    } else {
 		    	hasDepartments.then(function (result) {  // this is only run after $http completes0
 		    		$scope.formElements.departmenttypeList = result;
@@ -156,6 +150,7 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams) {
      };
 
      $scope.$watch('newProject.department', function (obj) {
+    	 if($scope.global.sessionValues.type !== 'USER') {
 	  if (!angular.isUndefined(obj)) {
     	 	$scope.userList(obj);
     	 	 angular.forEach($scope.projectElements.projectOwnerList, function(obj, key) {
@@ -167,12 +162,15 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams) {
     	   	    		}
     	   	    	});
 	   }
+    	 }
          });
 
      $scope.$watch('newProject.domain', function (obj) {
+    	 if($scope.global.sessionValues.type !== 'USER') {
    	  	if (!angular.isUndefined(obj)) {
        	 	$scope.departmentList(obj);
    	  	}
+    	 }
      });
 
      $scope.$watch('project.department', function (obj) {
@@ -186,7 +184,7 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams) {
        	   				}
        	   	    		}
        	   	    	});
-   	   }
+    	 }
             });
 
         $scope.$watch('project.domain', function (obj) {
@@ -249,18 +247,28 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams) {
         $scope.projectForm = {};
     	appService.dialogService.openDialog("app/views/project/add.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
         // add project
+
+            if($scope.global.sessionValues.type !== 'ROOT_ADMIN') {
+            	if(!angular.isUndefined($scope.global.sessionValues.domainId)){
+            		 $scope.newProject.domainId = $scope.global.sessionValues.domainId;
+            		 var hasDomains = appService.crudService.read("domains", $scope.global.sessionValues.domainId);
+            		 hasDomains.then(function (result) {
+        		    		$scope.newProject.domain = result;
+     	    	    });
+            	}
+            }
+            if($scope.global.sessionValues.type === 'USER') {
+		    	var departments = [];
+		    	var hasDepartments = appService.crudService.read("departments", $scope.global.sessionValues.departmentId);
+   		    	hasDepartments.then(function (result) {
+   		    		$scope.newProject.department = result;
+	    	    });
+		    }
     	  $scope.save = function (form) {
     		   	 $scope.formSubmitted = true;
     		        if (form.$valid) {
     		        	$scope.projectLoader = true;
-    		            if($scope.global.sessionValues.type !== 'ROOT_ADMIN') {
-    		            	if(!angular.isUndefined($scope.global.sessionValues.domainId)){
-    		            		 $scope.newProject.domainId = $scope.global.sessionValues.domainId;
-    		            	}
-    		            }
-    		            else{
-    		            	 $scope.newProject.domainId =  $scope.newProject.domain.id;
-    		            }
+    		        	$scope.newProject.domainId =  $scope.newProject.domain.id;
     		            var project = angular.copy($scope.newProject);
     		            console.log(project);
     		            project.isActive = true;

@@ -25,7 +25,6 @@ angular
         var hasRoles = appService.crudService.list("roles", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
         hasRoles.then(function (result) {  // this is only run after $http completes0
             $scope.roleList = result;
-            console.log($scope.roleList);
             // For pagination
             $scope.paginationObject.limit  = limit;
             $scope.paginationObject.currentPage = pageNumber;
@@ -35,14 +34,6 @@ angular
     };
     $scope.list(1);
 
-
-
-    // Department list from server
-    $scope.role.department = {};
-    var hasDepartment = appService.crudService.listAll("departments/list");
-    hasDepartment.then(function (result) {  // this is only run after $http completes0
-    	$scope.formElements.departmentList = result;
-    });
 
     // Load permission
 
@@ -72,6 +63,17 @@ angular
     	    $scope.formElements.departmentList = result;
         });
     };
+
+//    $scope.$watch('role.domain', function (obj) {
+//    	if (!angular.isUndefined(obj)) {
+//    		$scope.domainChange();
+//    	} else {
+//    		if($scope.global.sessionValues.type != 'ROOT_ADMIN') {
+//    			$scope.departmentList();
+//    		}
+//
+//    	}
+//              });
 
     // Create a new role to our application
     $scope.role = {};
@@ -273,7 +275,15 @@ angular
     // Opened user add window
     $scope.assignRole = function (size) {
     	appService.dialogService.openDialog("app/views/roles/assign-role.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
-            // Getting list of users and roles by department
+
+    	    // Department list from server
+    	    $scope.role.department = {};
+    	    var hasDepartment = appService.crudService.listAll("departments/list");
+    	    hasDepartment.then(function (result) {  // this is only run after $http completes0
+    	    	$scope.formElements.departmentList = result;
+    	    });
+
+    		// Getting list of users and roles by department
         $scope.getUsersByDepartment = function(department) {
         	var hasUsers =  appService.promiseAjax.httpTokenRequest(appService.crudService.globalConfig.HTTP_GET, appService.crudService.globalConfig.APP_URL + "users"  +"/department/"+department.id);
         	hasUsers.then(function (result) {  // this is only run after $http completes0

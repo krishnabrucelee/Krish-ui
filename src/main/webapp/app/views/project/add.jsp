@@ -49,7 +49,7 @@
 	                        </div>
 	                    </div>
                     </div>
-
+					<div data-ng-if="global.sessionValues.type !== 'USER'">
                     <div class="form-group"ng-class="{'text-danger': projectForm.department.$invalid && formSubmitted}">
                             <div class="row">
                                 <label class="col-md-3 col-sm-3 control-label control-normal"><fmt:message key="common.department" bundle="${msg}" /><span class="text-danger">*</span></label>
@@ -62,6 +62,18 @@
                                     <div class="error-area" data-ng-show="projectForm.department.$invalid && formSubmitted" ><i  tooltip="<fmt:message key="department.is.required" bundle="${msg}" />" class="fa fa-warning error-icon"></i></div>
                                 </div>
                             </div>
+                    </div>
+                    </div>
+
+                    <div data-ng-if="global.sessionValues.type == 'USER'">
+						<div class="form-group" >
+	                        <div class="row">
+	                            <label class="col-md-3 col-xs-12 col-sm-3 control-label control-normal"><fmt:message key="common.department" bundle="${msg}" /></label>
+	                            <div class="col-md-7  col-sm-7 col-xs-12">
+	                            <label class="control-label">{{project.department.userName}}</label>
+	                            </div>
+	                        </div>
+	                    </div>
                     </div>
 
                     <!--<div class="hr-line-dashed"></div>-->

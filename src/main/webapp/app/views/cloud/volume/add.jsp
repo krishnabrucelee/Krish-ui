@@ -188,7 +188,7 @@ pageEncoding="UTF-8"%>
             </span>
             <get-loader-image data-ng-show="showLoader"></get-loader-image>
             <a class="btn btn-default"  data-ng-hide="showLoader" data-ng-click="cancel()"><fmt:message key="common.cancel" bundle="${msg}" /></a>
-            <button class="btn btn-info" has-permission="ADD_VOLUME" data-ng-hide="showLoader" type="submit"><fmt:message key="common.add" bundle="${msg}" /></button>
+            <button class="btn btn-info" data-ng-hide="showLoader" type="submit"><fmt:message key="common.add" bundle="${msg}" /></button>
         </div>
     </div>
 </form>
