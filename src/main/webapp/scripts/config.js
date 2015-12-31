@@ -111,6 +111,16 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider,
 					pageTitle : 'view.instance'
 				}
 			})
+			
+			
+			.state('cloud.list-instance-host', {
+				url : "host/list/:id",
+				templateUrl : VIEW_URL + "views/cloud/instance/listhost.jsp",
+				data : {
+					pageTitle : 'common.host'
+				}
+			})
+
 
 			.state('cloud.list-instance.monitor-instance', {
 				url : "/view/:id",

@@ -27,13 +27,47 @@
 
                         <div class="form-group" >
                             <div class="row">
-                                <label class="col-md-3 col-xs-12 col-sm-3 control-label"><fmt:message key="common.description" bundle="${msg}" /><span class="text-danger">*</span><span class="m-l-xs"></span></label>
-                                <div class="col-md-5 col-xs-12 col-sm-5">
+                                <label class="col-md-3 col-xs-12 col-sm-3 control-label"><fmt:message key="common.description" bundle="${msg}" /><span class="m-l-xs"></span></label>
+                                <div class="col-md-5 col-xs-12 col-sm-5" >
                                     <textarea name="description" data-ng-model="project.description" class="form-control"></textarea>
                                 </div>
 
                             </div>
                         </div>
+                        <div data-ng-if="global.sessionValues.type !== 'USER'">
+                        <div class="form-group">
+                        <div class="row">
+                            <label class="col-md-3 col-xs-12 col-sm-3 control-label control-normal"><fmt:message key="common.domain" bundle="${msg}" /></label>
+                            <div class="col-md-7  col-sm-7 col-xs-12 font-bold">
+                                {{ project.domain.name }}
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+					<div data-ng-if="global.sessionValues.type !== 'USER'">
+                         <div class="form-group" ng-class="{'text-danger': projectForm.department.$invalid && formSubmitted}">
+                            <div class="row">
+                                <label class="col-md-3 col-sm-3 control-label control-normal"><fmt:message key="common.department" bundle="${msg}" /><span class="text-danger">*</span></label>
+                                <div class="col-md-7  col-sm-7 col-xs-7">
+                                    <select required="true" class="form-control input-group" name="department" data-ng-model="project.department" ng-options="department.userName for department in formElements.departmenttypeList" data-ng-class="{'error':  projectForm.department.$invalid && formSubmitted}" >
+                                    </select>
+                                    <i  tooltip="<fmt:message key="choose.the.department" bundle="${msg}" />" class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
+                                    <div class="error-area" data-ng-show="projectForm.department.$invalid && formSubmitted" ><i  tooltip="<fmt:message key="department.is.required" bundle="${msg}" />" class="fa fa-warning error-icon"></i></div>
+                                </div>
+                            </div>
+                    	</div>
+                    	</div>
+
+                    	<div data-ng-if="global.sessionValues.type == 'USER'">
+						<div class="form-group" >
+	                        <div class="row">
+	                            <label class="col-md-3 col-xs-12 col-sm-3 control-label control-normal"><fmt:message key="common.department" bundle="${msg}" /></label>
+	                            <div class="col-md-7  col-sm-7 col-xs-12">
+	                            <label class="control-label text-center">{{project.department.userName}}</label>
+	                            </div>
+	                        </div>
+	                    </div>
+                   	 </div>
 
                         <!--<div class="hr-line-dashed"></div>-->
                         <div class="form-group" ng-class="{ 'text-danger' : projectForm.projectOwner.$invalid && formSubmitted}">
@@ -63,9 +97,9 @@
                 <div class="row">
                     <div class="col-md-12">
                         <span class="pull-right">
-                            <a class="btn btn-default"  data-ng-click="cancel()"><fmt:message key="common.cancel" bundle="${msg}" /></a>
-                            <img src="images/loading-bars.svg" data-ng-show="projectLoader" width="30" height="30" />
-                            <button class="btn btn-info"  data-ng-hide="projectLoader"  type="submit"><fmt:message key="common.update" bundle="${msg}" /></button>
+                            <a class="btn btn-default" data-ng-if="!projectLoader"  data-ng-click="cancel()"><fmt:message key="common.cancel" bundle="${msg}" /></a>
+                            <img src="images/loading-bars.svg" data-ng-if="projectLoader" width="30" height="30" />
+                            <button class="btn btn-info"  data-ng-if="!projectLoader"  type="submit"><fmt:message key="common.update" bundle="${msg}" /></button>
                         </span>
                     </div>
                 </div>

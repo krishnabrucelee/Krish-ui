@@ -31,5 +31,5 @@
     <div class="content no-margins no-padding">
         <div ui-view class="p-xxs"></div>
     </div>
-
+<div id="footer" ng-include="'app/views/common/footer.jsp'"></div>
 </div>

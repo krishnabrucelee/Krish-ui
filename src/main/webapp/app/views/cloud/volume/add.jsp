@@ -31,7 +31,7 @@ pageEncoding="UTF-8"%>
                         <div class="row">
                             <label class="col-md-3 col-xs-12 col-sm-2 control-label"><fmt:message key="common.type" bundle="${msg}" /> <span class="m-l-xs"></span></label>
                             <div class="col-md-5 col-xs-12 col-sm-5">
-                                <select  class="form-control input-group" name="diskOfferings"
+                                <select  class="form-control input-group" name="diskOfferingsTags"
                                         data-ng-model="volume.storageTags"
                                         data-ng-options="storageTags for storageTags in volumeElements.diskOfferingTags" >
                                     <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
@@ -58,8 +58,11 @@ pageEncoding="UTF-8"%>
                                         data-ng-options="storageOffering.name for storageOffering in volumeElements.diskOfferingList" >
                                     <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
                                 </select>
-                                <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="<fmt:message key="common.plan" bundle="${msg}" />" ></i>
-                                <div class="error-area" data-ng-show="volumeForm.diskOfferings.$invalid && formSubmitted" ><i  tooltip="<fmt:message key="plan.is.required" bundle="${msg}" />" class="fa fa-warning error-icon"></i></div>
+                                <i  tooltip="<fmt:message key="common.plan" bundle="${msg}" />" class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
+                                    <div class="error-area" data-ng-show="volumeForm.diskOfferings.$invalid && formSubmitted" >
+                                    <i ng-attr-tooltip="{{ volumeForm.diskOfferings.errorMessage || '<fmt:message key="plan.is.required" bundle="${msg}" />' }}"
+												class="fa fa-warning error-icon"></i>
+                                    </div>
                             </div>
                         </div>
                     </div>
@@ -105,9 +108,9 @@ pageEncoding="UTF-8"%>
                             </div>
                         </div>
                     </div>
-					  <div class="form-group" >
+					  <div class="form-group" ng-class="{ 'text-danger' : volumeForm.department.$invalid && formSubmitted}">
                         <div class="row">
-                        <div data-ng-if="global.sessionValues.type != 'USER'">
+                        <div data-ng-show="global.sessionValues.type != 'USER'">
                             <label class="col-md-3 col-xs-12 col-sm-2 control-label control-normal"><fmt:message key="common.department" bundle="${msg}" />    <span class="text-danger">*</span></label>
                                 <div class="col-md-5 col-xs-12 col-sm-5">
                                     <select required="true" class="form-control input-group" name="department" data-ng-model="volume.department"
@@ -123,14 +126,20 @@ pageEncoding="UTF-8"%>
                                     </div>
                                 </div>
                             </div>
+                            <div data-ng-show="global.sessionValues.type == 'USER'">
+                            <label class="col-md-3 col-xs-12 col-sm-2 control-label control-normal"><fmt:message key="common.department" bundle="${msg}" /> </label>
+                                <div class="col-md-5 col-xs-12 col-sm-5">
+                                   <label  >{{volume.department.userName}}</label>
+                                 </div>
+                                </div>
                             </div>
-                        </div>
-           <div class="form-group" >
+                            </div>
+           			<div class="form-group" >
                         <div class="row">
                         <div data-ng-if="global.sessionValues.type != 'USER'">
                             <label class="col-md-3 col-xs-12 col-sm-2 control-label"><fmt:message key="common.project" bundle="${msg}" /> <span class="m-l-xs"></span></label>
                             <div class="col-md-5 col-xs-12 col-sm-5">
-                                <select  class="form-control input-group" name="diskOfferings"
+                                <select  class="form-control input-group" name="user"
                                         data-ng-model="volume.project"
                                         data-ng-options="options.name for options in options" >
                                     <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
@@ -151,7 +160,7 @@ pageEncoding="UTF-8"%>
                         <div data-ng-if="global.sessionValues.type == 'USER'">
                             <label class="col-md-3 col-xs-12 col-sm-2 control-label"><fmt:message key="common.project" bundle="${msg}" /> <span class="m-l-xs"></span></label>
                             <div class="col-md-5 col-xs-12 col-sm-5">
-                                <select  class="form-control input-group" name="diskOfferings"
+                                <select  class="form-control input-group" name="project"
                                         data-ng-model="volume.project"
                                         data-ng-options="options.name for options in options" >
                                     <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
@@ -179,7 +188,7 @@ pageEncoding="UTF-8"%>
             </span>
             <get-loader-image data-ng-show="showLoader"></get-loader-image>
             <a class="btn btn-default"  data-ng-hide="showLoader" data-ng-click="cancel()"><fmt:message key="common.cancel" bundle="${msg}" /></a>
-            <button class="btn btn-info" has-permission="ADD_VOLUME" data-ng-hide="showLoader" type="submit"><fmt:message key="common.add" bundle="${msg}" /></button>
+            <button class="btn btn-info" data-ng-hide="showLoader" type="submit"><fmt:message key="common.add" bundle="${msg}" /></button>
         </div>
     </div>
 </form>

@@ -3,39 +3,15 @@ pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <div class="hpanel">
     <div class="row m-l-sm m-r-sm panel-body" ng-controller="instanceViewCtrl">
         <ul class="nav nav-tabs" data-ng-init="templateCategory = 'dashboard'">
-            <li class="active">
-                <a href="javascript:void(0)" data-ng-click="templateCategory = 'dashboard'" data-toggle="tab">
-                    <i class="fa fa-laptop"></i>
-                    <fmt:message key="dashboard" bundle="${msg}" />
-                </a>
-            </li>
-            <li data-ng-show ="instance.status == 'Stopped'" class="">
-                <a has-permission="UPGRADE_VM" data-ng-click="templateCategory = 'config'" data-toggle="tab">
-                    <i class="fa fa-cogs"></i>
-                    <fmt:message key="configuration" bundle="${msg}" />
-                </a>
-            </li>
-            <li class="">
-                <a  data-ng-click="templateCategory = 'storage'" data-toggle="tab">
-                    <i class="fa fa-database"></i>
-                    <fmt:message key="storage" bundle="${msg}" />
-                </a>
-            </li>
-            <li class="">
-                <a  data-ng-click="templateCategory = 'network'" data-toggle="tab">
-                    <!--<i class="fa fa-sitemap"></i>--><i class="custom-icon custom-icon-network"></i>
-                    <fmt:message key="networking" bundle="${msg}" />
-                </a>
-            </li>
-            <li class="">
-                <a has-permission="MONITOR_VM_PERFORMANCE" data-ng-click="templateCategory = 'monitor'" data-toggle="tab">
-                    <i class="fa fa-desktop"></i>
-                    <fmt:message key="monitor" bundle="${msg}" />
-                </a>
-            </li>
+            <li class="active"><a href="javascript:void(0)" data-ng-click="templateCategory = 'dashboard'" data-toggle="tab">  <i class="fa fa-laptop"></i> <fmt:message key="dashboard" bundle="${msg}" /></a></li>
+            <li data-ng-show ="instance.status == 'Stopped'" class=""><a has-permission="UPGRADE_VM" data-ng-click="templateCategory = 'config'" data-toggle="tab"> <i class="fa fa-cogs"></i> <fmt:message key="configuration" bundle="${msg}" /></a></li>
+            <li class=""><a  data-ng-click="templateCategory = 'storage'" data-toggle="tab"><i class="fa fa-database"></i> <fmt:message key="storage" bundle="${msg}" /></a></li>
+            <li class=""><a  data-ng-click="templateCategory = 'network'" data-toggle="tab"> <!--<i class="fa fa-sitemap"></i>--><i class="custom-icon custom-icon-network"></i> <fmt:message key="networking" bundle="${msg}" /></a></li>
+            <li class=""><a has-permission="MONITOR_VM_PERFORMANCE" data-ng-click="templateCategory = 'monitor'" data-toggle="tab"> <i class="fa fa-desktop"></i> <fmt:message key="monitor" bundle="${msg}" /></a></li>
         </ul>
         <div class="tab-content">
             <div data-ng-show = "showLoaderOffer" style="margin: 20%">
@@ -66,78 +42,78 @@ pageEncoding="UTF-8"%>
                                                                 key="total.cpu" bundle="${msg}" />
                                                         </label>
                                                     </td>
-                                                     <td data-ng-if="instance.cpuSpeed >= 1000">{{instance.cpuCore}}x{{(instance.cpuSpeed)/1000 | number:2}} <fmt:message key="common.ghz" bundle="${msg}" /></td>
-                                                     <td data-ng-if="instance.cpuSpeed < 1000">{{instance.cpuCore}}x{{instance.cpuSpeed}} <fmt:message key="common.mhz" bundle="${msg}" /></td>
-
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <label
-                                                            class="col-md-7 col-sm-7 col-xs-4 control-label ">
-                                                            <fmt:message
-                                                                key="network.read" bundle="${msg}" />
-                                                        </label>
-                                                    </td>
-                                                    <td data-ng-if="instance.networkKbsRead > 1024*1024">{{((instance.networkKbsRead)/1024)/1024 | number:2}} <fmt:message key="common.gb" bundle="${msg}" /></td>
-                                                    <td data-ng-if="instance.networkKbsRead > 1024  && instance.networkKbsRead < 1024*1024">{{(instance.networkKbsRead)/1024 | number:2}} <fmt:message key="common.mb" bundle="${msg}" /></td>
-                                                    <td data-ng-if="instance.networkKbsRead < 1024">{{instance.networkKbsRead | number:2}} <fmt:message key="common.kb" bundle="${msg}" /></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <label
-                                                            class="col-md-7 col-sm-7 col-xs-4 control-label ">
-                                                            <fmt:message
-                                                                key="network.write" bundle="${msg}" />
-                                                        </label>
-                                                    </td>
-                                                    <td data-ng-if="instance.networkKbsWrite > 1024*1024">{{((instance.networkKbsWrite)/1024)/1024 | number:2}} <fmt:message key="common.gb" bundle="${msg}" /></td>
-                                                    <td data-ng-if="instance.networkKbsWrite > 1024  && instance.networkKbsWrite < 1024*1024">{{(instance.networkKbsWrite)/1024 | number:2}} <fmt:message key="common.mb" bundle="${msg}" /></td>
-                                                    <td data-ng-if="instance.networkKbsWrite < 1024">{{instance.networkKbsWrite | number:2}} <fmt:message key="common.kb" bundle="${msg}" /></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <label
-                                                            class="col-md-8 col-sm-7 col-xs-4 control-label ">
-                                                            <fmt:message
-                                                                key="disk.read.bytes" bundle="${msg}" />
-                                                        </label>
-                                                    </td>
-                                                    <td data-ng-if="instance.diskKbsRead > 1024*1024">{{((instance.diskKbsRead)/1024)/1024 | number:2}} <fmt:message key="common.gb" bundle="${msg}" /></td>
-                                                    <td data-ng-if="instance.diskKbsRead > 1024  && instance.diskKbsRead < 1024*1024">{{(instance.diskKbsRead)/1024 | number:2}} <fmt:message key="common.mb" bundle="${msg}" /></td>
-                                                    <td data-ng-if="instance.diskKbsRead < 1024">{{instance.diskKbsRead | number:2}} <fmt:message key="common.kb" bundle="${msg}" /></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <label
-                                                            class="col-md-8 col-sm-7 col-xs-7 control-label ">
-                                                            <fmt:message
-                                                                key="disk.write.bytes" bundle="${msg}" />
-                                                        </label>
-                                                    </td>
-                                                    <td data-ng-if="instance.diskKbsWrite > 1024*1024">{{((instance.diskKbsWrite)/1024)/1024 | number:2}} <fmt:message key="common.gb" bundle="${msg}" /></td>
-                                                    <td data-ng-if="instance.diskKbsWrite > 1024 && instance.diskKbsWrite < 1024*1024">{{(instance.diskKbsWrite)/1024 | number:2}} <fmt:message key="common.mb" bundle="${msg}" /></td>
-                                                    <td data-ng-if="instance.diskKbsWrite < 1024">{{instance.diskKbsWrite | number:2}} <fmt:message key="common.kb" bundle="${msg}" /></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <label
-                                                            class="col-md-7 col-sm-7 col-xs-7 control-label ">
-                                                            <fmt:message
-                                                                key="disk.read.io" bundle="${msg}" />
-                                                        </label>
-                                                    </td>
-                                                    <td>{{instance.diskIoRead}} </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <label
-                                                            class="col-md-7 col-sm-7 col-xs-7 control-label ">
-                                                            <fmt:message
-                                                                key="disk.write.io" bundle="${msg}" />
-                                                        </label>
-                                                    </td>
-                                                    <td>{{instance.diskIoWrite}} </td>
-                                                </tr>
+                                                    <td data-ng-if="instance.cpuSpeed >= 1000">{{instance.cpuCore}}x{{(instance.cpuSpeed)/1000 | number:2}} <fmt:message key="common.ghz" bundle="${msg}" /></td>
+                                            <td data-ng-if="instance.cpuSpeed < 1000">{{instance.cpuCore}}x{{instance.cpuSpeed}} <fmt:message key="common.mhz" bundle="${msg}" /></td>
+                                            </tr>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label
+                                                        class="col-md-7 col-sm-7 col-xs-4 control-label ">
+                                                        <fmt:message
+                                                            key="network.read" bundle="${msg}" />
+                                                    </label>
+                                                </td>
+                                                <td data-ng-if="instance.networkKbsRead > 1024 * 1024">{{((instance.networkKbsRead) / 1024) / 1024 | number:2}} <fmt:message key="common.gb" bundle="${msg}" /></td>
+                                            <td data-ng-if="instance.networkKbsRead > 1024 && instance.networkKbsRead < 1024 * 1024">{{(instance.networkKbsRead)/1024 | number:2}} <fmt:message key="common.mb" bundle="${msg}" /></td>
+                                            <td data-ng-if="instance.networkKbsRead < 1024">{{instance.networkKbsRead| number:2}} <fmt:message key="common.kb" bundle="${msg}" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label
+                                                        class="col-md-7 col-sm-7 col-xs-4 control-label ">
+                                                        <fmt:message
+                                                            key="network.write" bundle="${msg}" />
+                                                    </label>
+                                                </td>
+                                                <td data-ng-if="instance.networkKbsWrite > 1024 * 1024">{{((instance.networkKbsWrite) / 1024) / 1024 | number:2}} <fmt:message key="common.gb" bundle="${msg}" /></td>
+                                            <td data-ng-if="instance.networkKbsWrite > 1024 && instance.networkKbsWrite < 1024 * 1024">{{(instance.networkKbsWrite)/1024 | number:2}} <fmt:message key="common.mb" bundle="${msg}" /></td>
+                                            <td data-ng-if="instance.networkKbsWrite < 1024">{{instance.networkKbsWrite| number:2}} <fmt:message key="common.kb" bundle="${msg}" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label
+                                                        class="col-md-8 col-sm-7 col-xs-4 control-label ">
+                                                        <fmt:message
+                                                            key="disk.read.bytes" bundle="${msg}" />
+                                                    </label>
+                                                </td>
+                                                <td data-ng-if="instance.diskKbsRead > 1024 * 1024">{{((instance.diskKbsRead) / 1024) / 1024 | number:2}} <fmt:message key="common.gb" bundle="${msg}" /></td>
+                                            <td data-ng-if="instance.diskKbsRead > 1024 && instance.diskKbsRead < 1024 * 1024">{{(instance.diskKbsRead)/1024 | number:2}} <fmt:message key="common.mb" bundle="${msg}" /></td>
+                                            <td data-ng-if="instance.diskKbsRead < 1024">{{instance.diskKbsRead| number:2}} <fmt:message key="common.kb" bundle="${msg}" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label
+                                                        class="col-md-8 col-sm-7 col-xs-7 control-label ">
+                                                        <fmt:message
+                                                            key="disk.write.bytes" bundle="${msg}" />
+                                                    </label>
+                                                </td>
+                                                <td data-ng-if="instance.diskKbsWrite > 1024 * 1024">{{((instance.diskKbsWrite) / 1024) / 1024 | number:2}} <fmt:message key="common.gb" bundle="${msg}" /></td>
+                                            <td data-ng-if="instance.diskKbsWrite > 1024 && instance.diskKbsWrite < 1024 * 1024">{{(instance.diskKbsWrite)/1024 | number:2}} <fmt:message key="common.mb" bundle="${msg}" /></td>
+                                            <td data-ng-if="instance.diskKbsWrite < 1024">{{instance.diskKbsWrite| number:2}} <fmt:message key="common.kb" bundle="${msg}" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label
+                                                        class="col-md-7 col-sm-7 col-xs-7 control-label ">
+                                                        <fmt:message
+                                                            key="disk.read.io" bundle="${msg}" />
+                                                    </label>
+                                                </td>
+                                                <td>{{instance.diskIoRead}} </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label
+                                                        class="col-md-7 col-sm-7 col-xs-7 control-label ">
+                                                        <fmt:message
+                                                            key="disk.write.io" bundle="${msg}" />
+                                                    </label>
+                                                </td>
+                                                <td>{{instance.diskIoWrite}} </td>
+                                            </tr>
                                             </tbody>
                                         </table>
                                     </div>
@@ -164,90 +140,75 @@ pageEncoding="UTF-8"%>
                     <div class="col-lg-3 col-md-4 col-sm-5">
                         <div class="panel panel-info">
                             <div class="panel-heading">
-                                <h3 class="panel-title">
-                                    <i class="fa fa-bolt"></i>&nbsp;&nbsp;
-                                    <fmt:message key="quick.actions" bundle="${msg}" />
-                                </h3>
+                                <h3 class="panel-title"><i class="fa fa-bolt"></i>&nbsp;&nbsp;<fmt:message key="quick.actions" bundle="${msg}" /></h3>
                             </div>
                             <div class="panel-body no-padding">
                                 <ul class="list-group">
                                     <div data-ng-show="instance.status != 'Error' || instance.status != 'Expunging' || instance.status != 'Starting' || instance.status != 'Stopping' || instance.status != 'Destroying'">
-                                        <li  class="list-group-item">
-                                            <a has-permission="STOP_VM" href="javascript:void(0);" title="<fmt:message key="stop" bundle="${msg}" />
-                                               " data-ng-click="stopVm('sm',instance)" data-ng-show="instance.status == 'Running'"><span class="fa-ban fa font-bold m-xs"></span>
-                                                <fmt:message key="stop" bundle="${msg}" />
-                                            </a>
-                                            <a has-permission="START_VM" href="javascript:void(0);" title="<fmt:message key="start" bundle="${msg}" />
-                                               " data-ng-click="startVm('sm',instance)" data-ng-show="instance.status == 'Stopped'"><span class="fa-play fa font-bold m-xs"></span>
-                                                <fmt:message key="start" bundle="${msg}" />
-                                            </a>
-                                        </li>
-                                        <li has-permission="REBOOT_VM" data-ng-if="instance.status == 'Running'" class="list-group-item">
-                                            <a href="javascript:void(0);" data-ng-if="instance.status == 'Running'" title="<fmt:message key="restart" bundle="${msg}" />" data-ng-click="rebootVm('sm',instance)"><span class="fa-rotate-left fa font-bold m-xs"></span>
-                                                <fmt:message key="reboot" bundle="${msg}" />
-                                            </a>
-                                        </li>
+
                                         <li has-permission="VIEW_CONSOLE" class="list-group-item" data-ng-if="instance.status == 'Running'">
-                                            <a href="javascript:void(0);" title="<fmt:message key="view.console" bundle="${msg}" />" data-ng-click="showConsole(instance)"><span class="fa-desktop fa font-bold m-xs"></span>
-                                                <fmt:message key="view.console" bundle="${msg}" />
-                                            </a>
+                                            <a href="javascript:void(0);" title="<fmt:message key="view.console" bundle="${msg}" />" data-ng-click="showConsole(instance)"><span class="fa-desktop fa font-bold m-xs"></span> <fmt:message key="view.console" bundle="${msg}" /></a>
                                         </li>
-                                        <li has-permission="RESET_PASSWORD" data-ng-show="instance.passwordEnabled == true && (instance.status == 'Running' || instance.status == 'Stopped')"  class="list-group-item">
-                                            <a href="javascript:void(0);" title="<fmt:message key="reset.password" bundle="${msg}" />
-                                               " data-ng-click="showPassword(instance)"><span class="fa-key fa font-bold m-xs"></span>
-                                                <fmt:message key="show/reset.password" bundle="${msg}" />
-                                            </a>
-                                        </li>
-                                        <li has-permission="REINSTALL_VM" class="list-group-item" data-ng-if="instance.status == 'Running'">
-                                            <a href="javascript:void(0);" title="<fmt:message key="reinstall.vm" bundle="${msg}" />
-                                               " data-ng-click="reInstallVm('md',instance)"><span class="fa fa-history m-xs"></span>
-                                                <fmt:message key="reinstall.vm" bundle="${msg}" />
-                                            </a>
-                                        </li>
-                                        <li has-permission="DESTROY_VM" class="list-group-item" data-ng-show="instance.status == 'Running' || instance.status == 'Stopped'">
-                                            <a href="javascript:void(0);" data-ng-click="reDestroyVm('sm', instance)" title="<fmt:message key="destroy.vm" bundle="${msg}" />
-                                               "><span class="fa-times-circle fa font-bold m-xs"></span>
-                                                <fmt:message key="destroy.vm" bundle="${msg}" />
-                                            </a>
-                                        </li>
-                                        <li data-ng-if="instance.status == 'Destroyed'" class="list-group-item ">
-                                            <a href="javascript:void(0);" data-ng-if="instance.status == 'Destroyed'" data-ng-click="recoverVm('sm', instance)" title="<fmt:message key="recover.vm" bundle="${msg}" />
-                                               "><span class="fa-history fa font-bold m-xs"></span>
-                                                <fmt:message key="recover.vm" bundle="${msg}" />
-                                            </a>
-                                        </li>
+
                                         <li has-permission="ATTACH_ISO" data-ng-show="instance.status == 'Running' || instance.status == 'Stopped'" data-ng-if="instance.isoName === null" class="list-group-item">
-                                            <a href="javascript:void(0);" title="<fmt:message key="attach.iso" bundle="${msg}" />
-                                               " data-ng-click="attachISO(instance)"><span class="fa-dot-circle-o fa font-bold m-xs"></span>
-                                                <fmt:message key="attach.iso" bundle="${msg}" />
-                                            </a>
+                                            <a href="javascript:void(0);" title="<fmt:message key="attach.iso" bundle="${msg}" />" data-ng-click="attachISO(instance)"><span class="fa-dot-circle-o fa font-bold m-xs"></span> <fmt:message key="attach.iso" bundle="${msg}" /></a>
                                         </li>
-                                        <li data-ng-show="instance.status == 'Running' || instance.status == 'Stopped'"  data-ng-if="instance.isoName !== null" class="list-group-item">
-                                            <a href="javascript:void(0);" title="<fmt:message key="detach.iso" bundle="${msg}" />
-                                               " data-ng-click="detachISO(instance)"><span class="fa-compass fa font-bold m-xs"></span>
-                                                <fmt:message key="detach.iso" bundle="${msg}" />
-                                            </a>
-                                        </li>
+
                                         <li has-permission="TAKE_VM_SNAPSHOT" data-ng-show="instance.status == 'Running' || instance.status == 'Stopped'" class="list-group-item">
-                                            <a href="javascript:void(0);" title="<fmt:message key="vm.snapshot" bundle="${msg}" />
-                                               " data-ng-click="takeSnapshot(instance)"><span class="fa-camera fa font-bold m-xs"></span>
-                                                <fmt:message key="take.vm.snapshot" bundle="${msg}" />
-                                            </a>
+                                            <a href="javascript:void(0);" title="<fmt:message key="vm.snapshot" bundle="${msg}" />" data-ng-click="takeSnapshot(instance)"><span class="fa-camera fa font-bold m-xs"></span> <fmt:message key="take.vm.snapshot" bundle="${msg}" /></a>
                                         </li>
                                         <li has-permission="MIGRATE_HOST" data-ng-if="instance.status == 'Running'" class="list-group-item">
-                                            <a href="javascript:void(0);" title="<fmt:message key="migrate.instance.to.another.host" bundle="${msg}" />
-                                               " data-ng-click="hostMigrate(instance)"><span class="fa-arrows fa font-bold m-xs"></span>
-                                                <fmt:message key="migrate.instance.to.another.host" bundle="${msg}" />
-                                            </a>
+                                            <a href="javascript:void(0);" title="<fmt:message key="migrate.to.another.host" bundle="${msg}" />" data-ng-click="hostMigrate(instance)"><span class="fa-arrows fa font-bold m-xs pull-left"></span> <span class="pull-left m-l-xs width-md"><fmt:message key="migrate.to.another.host" bundle="${msg}" /></span><div class="clearfix"></div></a>
+                                        </li>
+                                        <li has-permission="HOST_INFORMATION" data-ng-if="instance.status == 'Running'" class="list-group-item">
+                                            <a href="javascript:void(0);" title="<fmt:message key="host.information" bundle="${msg}" />" data-ng-click="hostInformation(instance)" ><span class="fa-square fa font-bold m-xs"></span> <fmt:message key="host.information" bundle="${msg}" /></a>
                                         </li>
                                     </div>
                                     <li class="list-group-item">
                                         <!--<a href="#" title="Edit Note">  <span class="fa-edit fa font-bold m-xs"></span> Edit Note</a>-->
-                                        <a  title="<fmt:message key="edit.note" bundle="${msg}" />
-                                            " data-ng-click="showDescription(instance)"><span class="fa-edit fa font-bold m-xs"></span>
-                                            <fmt:message key="edit.note" bundle="${msg}" />
-                                        </a>
+                                        <a  title="<fmt:message key="edit.note" bundle="${msg}" />" data-ng-click="showDescription(instance)"><span class="fa-edit fa font-bold m-xs"></span><fmt:message key="edit.note" bundle="${msg}" /></a>
                                     </li>
+
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <h3 class="panel-title"><i class="fa fa-bolt"></i>&nbsp;&nbsp;<fmt:message key="disruptive.actions" bundle="${msg}" /></h3>
+                            </div>
+                            <div class="panel-body no-padding">
+                                <ul class="list-group" >
+                                    <div data-ng-show="instance.status != 'Error' || instance.status != 'Expunging' || instance.status != 'Starting' || instance.status != 'Stopping' || instance.status != 'Destroying'">
+                                        <li  class="list-group-item">
+                                            <a has-permission="STOP_VM" href="javascript:void(0);" title="<fmt:message key="stop" bundle="${msg}" />" data-ng-click="stopVm('sm',instance)" data-ng-show="instance.status == 'Running'"><span class="fa-ban fa font-bold m-xs"></span> <fmt:message key="stop" bundle="${msg}" /></a>
+                                            <a has-permission="START_VM" href="javascript:void(0);" title="<fmt:message key="start" bundle="${msg}" />" data-ng-click="startVm('sm',instance)" data-ng-show="instance.status == 'Stopped'"><span class="fa-play fa font-bold m-xs"></span> <fmt:message key="start" bundle="${msg}" /></a>
+                                        </li>
+                                        <li has-permission="REBOOT_VM" data-ng-if="instance.status == 'Running'" class="list-group-item">
+                                            <a href="javascript:void(0);" data-ng-if="instance.status == 'Running'" title="<fmt:message key="restart" bundle="${msg}" />" data-ng-click="rebootVm('sm',instance)"><span class="fa-rotate-left fa font-bold m-xs"></span> <fmt:message key="reboot" bundle="${msg}" /></a>
+                                        </li>
+
+                                        <li has-permission="RESET_PASSWORD" data-ng-show="instance.passwordEnabled == true && (instance.status == 'Running' || instance.status == 'Stopped')"  class="list-group-item">
+                                            <a href="javascript:void(0);" title="<fmt:message key="reset.password" bundle="${msg}" />" data-ng-click="showPassword(instance)"><span class="fa-key fa font-bold m-xs"></span> <fmt:message key="show/reset.password" bundle="${msg}" /></a>
+                                        </li>
+                                        <li has-permission="REINSTALL_VM" class="list-group-item" data-ng-if="instance.status == 'Running'">
+                                            <a href="javascript:void(0);" title="<fmt:message key="reinstall.vm" bundle="${msg}" />" data-ng-click="reInstallVm('md',instance)"><span class="fa fa-history m-xs"></span> <fmt:message key="reinstall.vm" bundle="${msg}" /></a>
+                                        </li>
+                                        <li has-permission="DESTROY_VM" class="list-group-item" data-ng-show="instance.status == 'Running' || instance.status == 'Stopped'">
+                                            <a href="javascript:void(0);" data-ng-click="reDestroyVm('sm', instance)" title="<fmt:message key="destroy.vm" bundle="${msg}" />"><span class="fa-times-circle fa font-bold m-xs"></span> <fmt:message key="destroy.vm" bundle="${msg}" /></a>
+                                        </li>
+                                        <li data-ng-if="instance.status == 'Destroyed'" class="list-group-item ">
+                                            <a href="javascript:void(0);" data-ng-if="instance.status == 'Destroyed'" data-ng-click="recoverVm('sm', instance)" title="<fmt:message key="recover.vm" bundle="${msg}" />"><span class="fa-history fa font-bold m-xs"></span> <fmt:message key="recover.vm" bundle="${msg}" /></a>
+                                        </li>
+                                        <li data-ng-show="instance.status == 'Running' || instance.status == 'Stopped'"  data-ng-if="instance.isoName !== null" class="list-group-item">
+                                            <a href="javascript:void(0);" title="<fmt:message key="detach.iso" bundle="${msg}" />" data-ng-click="detachISO(instance)"><span class="fa-compass fa font-bold m-xs"></span> <fmt:message key="detach.iso" bundle="${msg}" /></a>
+                                        </li>
+                                         <li  class="list-group-item " >
+                                            <a data-ng-show="instance.status == 'Running'"  href="javascript:void(0);" data-ng-click="resize()" title="<fmt:message key="resize.vm" bundle="${msg}" />"><span class="fa fa-expand m-xs"></span> <fmt:message key="resize.vm" bundle="${msg}" /></a>
+                                            <a data-ng-show="instance.status == 'Stopped'" href="javascript:void(0);" data-ng-click="templateCategory = 'config'" title="<fmt:message key="resize.vm" bundle="${msg}" />"><span class="fa fa-expand m-xs"></span> <fmt:message key="resize.vm" bundle="${msg}" /></a>
+                                            
+                                        </li>
+                                    </div>
                                 </ul>
                             </div>
                         </div>
@@ -255,17 +216,13 @@ pageEncoding="UTF-8"%>
                     <div class="col-lg-12 col-md-12 col-sm-7">
                         <div class="panel panel-info">
                             <div class="panel-heading">
-                                <h3 class="panel-title">
-                                    <i class="fa fa-cloud"></i>&nbsp;&nbsp;
-                                    <fmt:message key="instance.summary" bundle="${msg}" />
-                                </h3>
+                                <h3 class="panel-title"><i class="fa fa-cloud"></i>&nbsp;&nbsp;<fmt:message key="instance.summary" bundle="${msg}" /></h3>
                             </div>
                             <div class="panel-body">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <table class="table table-condensed table-striped" cellspacing="1" cellpadding="1">
                                             <tbody>
-                                                <tr>
                                             <h4 class="text-info"><fmt:message key="basic.info" bundle="${msg}" /></h4>
                                             <td class="col-md-4 col-sm-4">
                                                 <b>
@@ -297,7 +254,7 @@ pageEncoding="UTF-8"%>
                                                 </td>
                                                 <td class="col-md-8 col-sm-8">{{ instance.instanceInternalName}}</td>
                                             </tr>
-                                             <tr>
+                                            <tr>
                                                 <td class="col-md-4 col-sm-4">
                                                     <b>
                                                         <fmt:message key="instance.id" bundle="${msg}" />
@@ -320,7 +277,6 @@ pageEncoding="UTF-8"%>
                                                     <b class=" text-uppercase text-danger" data-ng-if="instance.status == 'Destroyed'" title="{{ instance.status}}">{{ instance.status}}</b>
                                                 </td>
                                             </tr>
-
                                             <tr>
                                                 <td class="col-md-4 col-sm-4">
                                                     <b>
@@ -462,7 +418,7 @@ pageEncoding="UTF-8"%>
                                                         <fmt:message key="common.storage" bundle="${msg}" />
                                                     </b>
                                                 </td>
-                                                <td class="col-md-8 col-sm-8">{{volume[0].diskSize / global.Math.pow(2, 30) || "0" }} GB</td>
+                                                <td class="col-md-8 col-sm-8">{{volume[0].diskSize / global.Math.pow(2, 30) || "0"}} GB</td>
                                             </tr>
                                             <tr>
                                                 <td class="col-md-4 col-sm-4">
@@ -505,8 +461,10 @@ pageEncoding="UTF-8"%>
                                                     <span class="text-danger">
                                                         <app-currency></app-currency>
                                                         {{(instance.template.templateCost[0].cost + instance.storageOffering.storagePrice[0].costGbPerMonth + instance.storageOffering.storagePrice[0].costIopsPerMonth +
-                                                                 instance.computeOffering.computeCost[0].instanceRunningCostIops + instance.computeOffering.computeCost[0].instanceRunningCostMemory + instance.computeOffering.computeCost[0].instanceRunningCostVcpu
-                                                                 + instance.computeOffering.computeCost[0].instanceStoppageCostIops + instance.computeOffering.computeCost[0].instanceStoppageCostMemory + instance.computeOffering.computeCost[0].instanceStoppageCostVcpu)/30 | number:2
+                                                                    instance.computeOffering.computeCost[0].instanceRunningCostIops + instance.computeOffering.computeCost[0].instanceRunningCostMemory + instance.computeOffering.computeCost[0].instanceRunningCostVcpu
+
+                                                                    + instance.computeOffering.computeCost[0].instanceStoppageCostIops + instance.computeOffering.computeCost[0].instanceStoppageCostMemory + instance.computeOffering.computeCost[0].instanceStoppageCostVcpu)/30 | number:2
+	 
                                                         }}
                                                     </span>
                                                     /

@@ -102,7 +102,8 @@
                                        </tr>
                                    </tbody>
                                 <tbody data-ng-show="instanceList.length > 0">
-                                   <tr data-ng-repeat="instance in instanceList | filter: quickSearch  |orderBy:sort.column:sort.descending"   >
+
+                                   <tr data-ng-repeat="instance in filteredCount = (instanceList | filter: quickSearch  |orderBy:sort.column:sort.descending)"   >
                                         <td>
                                             <a class="text-info" ui-sref="cloud.list-instance.view-instance({id: {{ instance.id}}})"  title="View Instance" >{{ instance.name}}</a>
                                         </td>
@@ -118,8 +119,8 @@
 											<img title="{{ instance.template.osType.description}}" data-ng-show="instance.template.displayText.toLowerCase().indexOf('fedora') > -1" src="images/os/fedora_logo.png" alt="" height="25" width="25" class="m-r-5" >
 											<img title="{{ instance.template.osType.description}}" data-ng-show="instance.template.displayText.toLowerCase().indexOf('redhat') > -1" src="images/os/redhat_logo.png" alt="" height="25" width="25" class="m-r-5" >
 											<img title="{{ instance.template.osType.description}}" data-ng-show="instance.template.displayText.toLowerCase().indexOf('core') > -1" src="images/os/core_logo.png" alt="" height="25" width="25" class="m-r-5" >
-											<img title="{{ instance.template.osType.description}}" data-ng-show="instance.template.displayText.toLowerCase().indexOf('vynta') > -1" src="images/os/vynta_logo.png" alt="" height="25" width="25" class="m-r-5" >
-  											<img title="{{ instance.template.osType.description}}" data-ng-show="instance.template.displayText.toLowerCase().indexOf('windows') > -1" src="images/os/windows_logo.png" alt="" height="25" width="25" class="m-r-5" >
+<!-- 											<img title="{{ instance.template.osType.description}}" data-ng-show="instance.template.displayText.toLowerCase().indexOf('vynta') > -1" src="images/os/vynta_logo.png" alt="" height="25" width="25" class="m-r-5" >
+ -->  											<img title="{{ instance.template.osType.description}}" data-ng-show="instance.template.displayText.toLowerCase().indexOf('windows') > -1" src="images/os/windows_logo.png" alt="" height="25" width="25" class="m-r-5" >
 
  										</td>
  										<td class="custom-width-xs">{{ instance.computeOffering.numberOfCores}}</td>

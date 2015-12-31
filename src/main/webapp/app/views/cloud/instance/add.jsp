@@ -81,16 +81,14 @@
 					<form name="instanceForm" method="POST"
 						data-ng-submit="validateOffering(instanceForm)" novalidate
 						class="form-horizontal">
-						<div data-ng-show = "showLoaderOffer" style="margin: 10%">
-      							<get-loader-image data-ng-show="showLoaderOffer"></get-loader-image>
-      						</div>
-						<div data-ng-hide = "showLoaderOffer" data-ng-include src="'app/views/cloud/instance/step2.jsp'"></div>
+						<div data-ng-include src="'app/views/cloud/instance/step2.jsp'"></div>
 						<div class="row">
-							<button type="button" class="btn btn-info btn-outline"
+							<button type="button" data-ng-if="!showLoader" class="btn btn-info btn-outline"
 								ng-click="wizard.show(1)"><fmt:message key="common.previous" bundle="${msg}" /></button>
 							<div class="pull-right">
-								<a class="btn btn-default" ng-click="cancel()"> <fmt:message key="common.cancel" bundle="${msg}" /> </a>
-								<button class="btn btn-info" type="submit"><fmt:message key="common.create" bundle="${msg}" /></button>
+								<img src="images/loading-bars.svg" data-ng-if="showLoader" width="30" height="30" />
+								<a class="btn btn-default" data-ng-if="!showLoader" ng-click="cancel()"> <fmt:message key="common.cancel" bundle="${msg}" /> </a>
+								<button class="btn btn-info" data-ng-if="!showLoader" type="submit"><fmt:message key="common.create" bundle="${msg}" /></button>
 							</div>
 						</div>
 					</form>
@@ -107,10 +105,7 @@
 						<form name="instanceTemplateForm" method="POST"
 							data-ng-submit="validateTemplate(instanceTemplateForm)"
 							novalidate class="form-horizontal">
-							<div data-ng-show = "showLoader" style="margin: 20%">
-      							<get-loader-image data-ng-show="showLoaderDetail"></get-loader-image>
-      						</div>
-							<div data-ng-hide="showLoaderDetail" data-ng-include src="'app/views/cloud/instance/step3.jsp'"></div>
+							<div data-ng-include src="'app/views/cloud/instance/step3.jsp'"></div>
 						</form>
 					</div>
 				</div>

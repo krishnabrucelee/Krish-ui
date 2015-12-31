@@ -1,6 +1,12 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+        pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
  <footer class="footer">
          <span class="pull-right">
-            Panda Cloud Management Portal
+            <fmt:message key="panda.cloud.management.portal" bundle="${msg}" />
         </span>
-Copyright © 2015 BlueTek Co.Ltd, All rights reserved.
-    </footer>
+<fmt:message key="common.copyright" bundle="${msg}" /> Â© <fmt:message key="common.footer" bundle="${msg}" />.
+ </footer>>

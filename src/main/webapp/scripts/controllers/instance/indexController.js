@@ -8,12 +8,11 @@ angular
         .module('homer')
         .controller('instanceCtrl', instanceCtrl)
 
-function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filterFilter, promiseAjax, globalConfig, localStorageService, $window, sweetAlert, notify, crudService) {
+function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter, appService, $window, sweetAlert) {
 
-    $scope.global = globalConfig;
+    $scope.global = appService.globalConfig;
     $scope.instanceList = [];
-    $scope.formElements=[];
-    $scope.global = crudService.globalConfig;
+    $scope.formElements = [];
     $scope.instanceForm = [];
     $scope.instanceElements = {};
     $scope.instance ={};
@@ -23,7 +22,7 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
             templateList: {}
         };
 
-    // Form Field Decleration
+    // Form Field Declaration
     $scope.instance = {
         computeOffer: {
             category: 'static',
@@ -67,8 +66,30 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
 
     $scope.instance.bit64 = true;
 
+    var hasDomains = appService.crudService.listAll("domains/list");
+	hasDomains.then(function (result) {  // this is only run after $http completes0
+	      $scope.formElements.domainList = result;
+	});
+
+	 $scope.$watch('instance.domain', function (obj) {
+	   	  	if (!angular.isUndefined(obj)) {
+	       	 	$scope.departmentList(obj);
+	   	  	}
+	     });
+
+	 if($scope.global.sessionValues.type !== 'ROOT_ADMIN') {
+	      if(!angular.isUndefined($scope.global.sessionValues.domainId)){
+	    		var hasDomain = appService.crudService.read("domains", $scope.global.sessionValues.domainId);
+	    		hasDomain.then(function (result) {
+	    		$scope.departmentList(result);
+	    	    });
+	      }
+
+	 }
+
+
     $scope.osList = function () {
-        var hasOsList = crudService.listAll("oscategorys/list");
+        var hasOsList = appService.crudService.listAll("oscategorys/list");
         hasOsList.then(function (result) {  // this is only run after $http completes0
                 $scope.formElements.osCategoryList = result;
          });
@@ -77,17 +98,16 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
 
      //Os list by filter
      $scope.osListByFilter = function () {
-         var hasOsListByFilter = crudService.listAll("oscategorys/os");
+         var hasOsListByFilter = appService.crudService.listAll("oscategorys/os");
          hasOsListByFilter.then(function (result) {  // this is only run after $http completes0
                  $scope.formElements.osCategoryListByFilter = result;
-                 console.log("-------->"+result);
           });
       };
       $scope.osListByFilter();
 
      $scope.templateList = function () {
     	 $scope.showLoader = true;
-         var hastemplateList = crudService.listAll("templates/list");
+         var hastemplateList = appService.crudService.listAll("templates/list");
          hastemplateList.then(function (result) {  // this is only run after $http completes0
                 $scope.formElements.templateList = result;
                 $scope.showLoader = false;
@@ -102,8 +122,7 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
     	  template.osCategory = $scope.instance.osCategory;
     	  template.architecture = $scope.instance.architecture;
     	  template.osVersion = $scope.instance.osVersion;
-    	  console.log(template);
-    	  var hastemplateList = promiseAjax.httpTokenRequest(globalConfig.HTTP_POST , globalConfig.APP_URL + "templates/search?lang=" + localStorageService.cookie.get('language'), '', template);
+    	  var hastemplateList = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_POST , appService.globalConfig.APP_URL + "templates/search?lang=" + appService.localStorageService.cookie.get('language'), '', template);
 
     	  hastemplateList.then(function (result) {
         	  $scope.formElements.templateList= result;
@@ -134,7 +153,6 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
         };
 
         $scope.setTemplate = function (item){
-                 console.log(item);
         	 $scope.instance.template = item;
              $scope.instance.templateId = item.id;
             }
@@ -203,7 +221,6 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
               else {
                   $scope.disk = false;
               }
-              console.log(item);
           }
 
           $scope.networkFunction = function (item) {
@@ -216,12 +233,11 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
                   $scope.disk = false;
               }
               $scope.listNetworkOffer();
-              console.log(item);
           }
 
           $scope.userList = function (department) {
         	  $scope.showLoaderDetail = true;
-              var hasUsers = crudService.listAllByFilter("users/search", department);
+              var hasUsers = appService.crudService.listAllByFilter("users/departmentusers", department);
               hasUsers.then(function (result) {  // this is only run after $http completes0
                        $scope.formElements.instanceOwnerList = result;
                        $scope.showLoaderDetail = false;
@@ -229,7 +245,7 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
            };
 
            $scope.zoneList = function () {
-               var hasZones = crudService.listAll("zones/list");
+               var hasZones = appService.crudService.listAll("zones/list");
                hasZones.then(function (result) {  // this is only run after $http completes0
                        $scope.zoneList= result[0];
                        $scope.instance.zoneId = result[0].id;
@@ -239,7 +255,7 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
 
            $scope.applicationList = function () {
         	   $scope.showLoaderDetail = true;
-               var hasApplication = crudService.listAll("applications/list");
+               var hasApplication = appService.crudService.listAll("applications/list");
                hasApplication.then(function (result) {  // this is only run after $http completes0
                    $scope.formElements.applicationsList = result;
                    $scope.showLoaderDetail = false;
@@ -247,19 +263,38 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
         };
         $scope.applicationList();
 
-        $scope.departmentList = function () {
-        	$scope.showLoaderDetail = true;
-            var hasDepartments = crudService.listAll("departments/list");
+        $scope.departmentList = function (domain) {
+
+		    	$scope.showLoaderDetail = true;
+
+   		    if($scope.global.sessionValues.type === 'USER') {
+   		    	var departments = [];
+   		    	var hasDepartments = appService.crudService.read("departments", $scope.global.sessionValues.departmentId);
+   		    	hasDepartments.then(function (result) {
+   		    		$scope.instance.department = result;
+   		    		if (!angular.isUndefined(result)) {
+   		    			$scope.listNetworks(result.id,'department');
+   		    		}
+	    	    });
+   		    	var hasUsers = appService.crudService.read("users", $scope.global.sessionValues.id);
+   		    	hasUsers.then(function (result) {
+   		    		$scope.instance.instanceOwner = result;
+   		    		if (!angular.isUndefined(result)) {
+   	    	          $scope.projectList(result);
+   		    		}
+	    	    });
+   		    } else {
+            var hasDepartments = appService.crudService.listAllByFilter("departments/search", domain);
             hasDepartments.then(function (result) {  // this is only run after $http completes0
                    $scope.formElements.departmenttypeList = result;
                    $scope.showLoaderDetail = false;
              });
+   		    }
          };
-         $scope.departmentList();
 
          $scope.projectList = function (user) {
         	 $scope.showLoaderDetail = true;
-             var hasProjects = crudService.listAllByObject("projects/user", user);
+             var hasProjects = appService.crudService.listAllByObject("projects/user", user);
              hasProjects.then(function (result) {  // this is only run after $http completes0
             	 $scope.formElements.projecttypeList = result;
             	 $scope.showLoaderDetail = false;
@@ -267,30 +302,22 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
          };
 
       $scope.search = {'users': [],'departments':[], 'projects':[]};
-      $scope.$watch('instance.user', function (val) {
-      var payload = {'q': val};
-      if(val != '' && val != undefined && val.length > 2){
-      Search.get(payload, "users/search", function(data){
-      $scope.search.users = data;
-      });
-      }else{
-      $scope.search.users = [];
-      }
-      });
 
       $scope.$watch('instance.department', function (obj) {
-	if (!angular.isUndefined(obj)) {
+    	  if (!angular.isUndefined(obj)) {
     	  $scope.userList(obj);
           $scope.listNetworks(obj.id,'department');
-          $scope.projectList(obj);
-	}
+          //$scope.projectList(obj);
+    	  }
           });
 
 
       $scope.$watch('instance.instanceOwner', function (obj) {
+    	  if($scope.global.sessionValues.type !== 'USER') {
     		if (!angular.isUndefined(obj)) {
     	          $scope.projectList(obj);
     		}
+    	  }
     	          });
 
       $scope.$watch('instance.project',function (obj) {
@@ -299,50 +326,6 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
     		}
     	          });
 
-      $scope.$watch('instance.projct', function (val) {
-          var payload = {'q': val};
-          if(val != '' && val != undefined && val.length > 2){
-          Search.get(payload, "projects/search", function(data){
-        	  $scope.search.projects = data;
-          });
-          }else{
-          $scope.search.projects = [];
-          }
-          });
-
-      $scope.$watch('instance.dept', function (val) {
-          var payload = {'q': val};
-          if(val != '' && val != undefined && val.length > 2){
-          Search.get(payload, "departments/search", function(data){
-          $scope.search.departments = data;
-          });
-          }else{
-          $scope.search.departments = [];
-          }
-          });
-
-      $scope.setProject = function(item){
-          $scope.search.projects = [];
-          $scope.instance.projct = item.name;
-          $scope.instance.project = item;
-          $scope.instance.projectId = item.id;
-      };
-
-      $scope.setUser = function(item){
-          $scope.search.users = [];
-          $scope.instance.user = item.userName;
-          $scope.instance.instanceOwner = item;
-          $scope.instance.instanceOwnerId = item.id;
-      };
-
-      $scope.setDepartment = function(item){
-          $scope.search.departments = [];
-          $scope.instance.dept = item.name;
-          $scope.instance.department = item;
-          $scope.instance.departmentId = item.id;
-          $scope.instance.domain = $scope.instance.department.domain;
-          $scope.instance.domainId = $scope.instance.domain.id;
-      };
 
      $scope.sliderTranslate = function (value) {
          return value + " " + this.attributes.rzSliderLabel;
@@ -361,7 +344,7 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
                  else {
                      submitError = true;
                      $scope.homerTemplate = 'app/views/notification/notify.jsp';
-                     notify({message: 'Select the CPU core and RAM', classes: 'alert-danger', "timeOut": "1000", templateUrl: $scope.homerTemplate});
+                     appService.notify({message: 'Select the CPU core and RAM', classes: 'alert-danger', "timeOut": "1000", templateUrl: $scope.homerTemplate});
                      $scope.compute = true;
                      computeOfferValid = false;
                  }
@@ -373,7 +356,7 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
                          $scope.networks = true;
                          $scope.disk = false;
                          $scope.homerTemplate = 'app/views/notification/notify.jsp';
-                         notify({message: 'Enter network name  ', classes: 'alert-danger', templateUrl: $scope.homerTemplate});
+                         appService.notify({message: 'Enter network name  ', classes: 'alert-danger', templateUrl: $scope.homerTemplate});
                      }
                      else {
                          if (angular.isUndefined($scope.instance.networkOffering)) {
@@ -381,7 +364,7 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
                              $scope.networks = true;
                              $scope.disk = false;
                              $scope.homerTemplate = 'app/views/notification/notify.jsp';
-                             notify({message: 'Select network offering ', classes: 'alert-danger', templateUrl: $scope.homerTemplate});
+                             appService.notify({message: 'Select network offering ', classes: 'alert-danger', templateUrl: $scope.homerTemplate});
                          }
                      }
                  }
@@ -405,7 +388,7 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
                          $scope.networks = true;
                          $scope.disk = false;
                          $scope.homerTemplate = 'app/views/notification/notify.jsp';
-                         notify({message: 'Select network offering ', classes: 'alert-danger', templateUrl: $scope.homerTemplate});
+                         appService.notify({message: 'Select network offering ', classes: 'alert-danger', templateUrl: $scope.homerTemplate});
                      }
                  }
              }
@@ -419,7 +402,7 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
                              else {
                                  submitError = true;
                                  $scope.homerTemplate = 'app/views/notification/notify.jsp';
-                                 notify({message: 'Select the disk size and IOPS', classes: 'alert-danger', templateUrl: $scope.homerTemplate});
+                                 appService.notify({message: 'Select the disk size and IOPS', classes: 'alert-danger', templateUrl: $scope.homerTemplate});
                                  $scope.disk = true;
                                  $scope.networks = false;
                                  submitError = true;
@@ -435,10 +418,10 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
 
      $scope.validateTemplate = function (form) {
          $scope.templateFormSubmitted = true;
-         notify.closeAll();
+         appService.notify.closeAll();
          if ($scope.instance.template == null) {
              $scope.homerTemplate = 'app/views/notification/notify.jsp';
-             notify({message: 'Select the template', classes: 'alert-danger', templateUrl: $scope.homerTemplate});
+             appService.notify({message: 'Select the template', classes: 'alert-danger', templateUrl: $scope.homerTemplate});
          } else if (form.$valid) {
              $scope.wizard.next();
          }
@@ -452,19 +435,26 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
      };
 
      $scope.submt = function () {
-    	 var instance = $scope.instance;
+    	 $scope.showLoader = true;
+    	 $scope.OfferingSubmitted = false;
+    	 if($scope.global.sessionValues.type !== 'ROOT_ADMIN') {
+          	if(!angular.isUndefined($scope.global.sessionValues.domainId)){
+          		 $scope.instance.domainId = $scope.global.sessionValues.domainId;
+          	}
+          }
+    	 var instance = angular.copy($scope.instance);
     	 if (!angular.isUndefined(instance.project)) {
              instance.projectId = instance.project.id;
+             delete instance.project;
          }
-    	 if (!angular.isUndefined(instance.department.domain) && instance.department.domain != null) {
-         instance.domain = instance.department.domain;
-         instance.domainId =instance.domain.id;
-
-         }else{
-        	 instance.domainId = 1;
+    	 if (!angular.isUndefined(instance.domain) && instance.domain != null) {
+         instance.domainId = instance.domain.id;
+         delete instance.domain;
          }
          instance.departmentId = instance.department.id;
+         delete instance.department;
          instance.instanceOwnerId = instance.instanceOwner.id;
+         delete instance.instanceOwner;
 
          if (!angular.isUndefined($scope.instance.computeOffer.cpuCore.value)) {
              instance.cpuCore = $scope.instance.computeOffer.cpuCore.value;
@@ -475,40 +465,41 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
          if (!angular.isUndefined($scope.instance.computeOffer.memory.value)) {
              instance.memory = $scope.instance.computeOffer.memory.value;
          }
-         console.log("hi");
-         console.log("=====");
-         console.log(instance);
-         var hasServer = crudService.add("virtualmachine", instance);
+         instance.computeOfferingId = instance.computeOffering.id;
+         delete instance.computeOffering;
+         if(!angular.isUndefined(instance.storageOffering) && instance.storageOffering !== null){
+         instance.storageOfferingId = instance.storageOffering.id;
+         delete instance.storageOffering;
+         }
+         instance.templateId = instance.template.id;
+         delete instance.template;
+         instance.zoneId = $scope.global.zone.id;
+         var hasServer = appService.crudService.add("virtualmachine", instance);
          hasServer.then(function (result) {  // this is only run after $http completes
-            notify({message: result.eventMessage, classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
-                    console.log(result);
-                 $modalInstance.close();
-                $state.reload();
+        	$scope.showLoader = false;
+        	appService.notify({message: result.eventMessage, classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+            $modalInstance.close();
+            $state.reload();
+
             }).catch(function (result) {
-            	console.log(result.data.globalError[0]);
+            	$scope.showLoader = false;
          if(result.data.globalError[0] != '') {
         	 var msg = result.data.globalError[0];
-        	 notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
-        	 wizard.show(1);
-             } else if(result.data.fieldErrors != null){
+        	 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+         } else if(result.data.fieldErrors != null){
               var errorMessages = "";
               angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
                         errorMessages += ","+key+": " + "is incorrect ";
                     });
               errorMessages = errorMessages.slice(1, errorMessages.legnth);
-                 notify({message: errorMessages, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+                 appService.notify({message: errorMessages, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+             } else {
+             	console.log(result.statusText);
              }
+
+     	$scope.wizard.prev();
             });
      };
-
-     $scope.instanceId = function (id) {
-         var hasUsers = crudService.listAll("virtualmachine/list");
-          hasUsers.then(function (result) {  // this is only run after $http completes0
-                 console.log(result);
-          });
-      };
-
-    $scope.instanceId(1);
 
     $scope.addnetwork = function () {
 
@@ -516,12 +507,12 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
           var networkError = false;
           if($scope.guestnetwork.name == null){
           $scope.homerTemplate = 'app/views/notification/notify.jsp';
-          notify({message: 'Enter Network Name', classes: 'alert-danger', templateUrl: $scope.homerTemplate});
+          appService.notify({message: 'Enter Network Name', classes: 'alert-danger', templateUrl: $scope.homerTemplate});
           networkError = true;
 
       } else if ($scope.guestnetwork.networkOffering == null) {
           $scope.homerTemplate = 'app/views/notification/notify.jsp';
-          notify({message: 'Select the Network Offering Type', classes: 'alert-danger', templateUrl: $scope.homerTemplate});
+          appService.notify({message: 'Select the Network Offering Type', classes: 'alert-danger', templateUrl: $scope.homerTemplate});
           networkError = true;
       }
       else {
@@ -545,15 +536,15 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
      $scope.save = function () {
          var instance = $scope.instance;
 
-          var hasServer = crudService.add("virtualmachine", instance);
+          var hasServer = appService.crudService.add("virtualmachine", instance);
          hasServer.then(function (result) {  // this is only run after $http completes
-             notify({message: 'instance created successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+             appService.notify({message: 'instance created successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
              $modalInstance.close();
          }).catch(function (result) {
         	 if (!angular.isUndefined(result.data)) {
               	if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
                 	    var msg = result.data.globalError[0];
-              	    notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+              	    appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
                   } else if (result.data.fieldErrors != null) {
                  	 angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
                           $scope.instanceForm[key].$invalid = true;
@@ -568,7 +559,7 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
          dialogService.openDialog("app/views/cloud/instance/add-network.jsp", 'md', $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
          	$scope.listNetwork = function () {
          		$scope.showLoaderDetail = true;
-                    var hasGuestNetworks = crudService.findByDepartment("guestnetwork/list");
+                    var hasGuestNetworks = appService.crudService.findByDepartment("guestnetwork/list");
                     hasGuestNetworks.then(function (result) {  // this is only run after $http
                             $scope.networkList = result;
                             $scope.showLoaderDetail = false;
@@ -578,28 +569,28 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
             	listNetwork();
          	$scope.add = function (deleteObject) {
          		   if (form.$valid) {
-         	             $scope.instanceNetworkList = localStorageService.get("instanceNetworkList");
+         	             $scope.instanceNetworkList = appService.localStorageService.get("instanceNetworkList");
 
          	             $scope.instanceNetwork = {
          	             };
-         	             // localStorageService.remove('instanceNetworkList');
+         	             // appService.localStorageService.remove('instanceNetworkList');
 
          	             $scope.networks.plan = $scope.networks.networkOffers.name;
 
          	             $scope.instanceNetwork = filterFilter($scope.networkList.networkOffers, {'name': $scope.networks.plan});
          	             if (filterFilter($scope.instanceNetworkList, {'name': $scope.networks.plan})[0] == null) {
          	                 $scope.instanceNetworkList.push($scope.instanceNetwork[0]);
-         	                 localStorageService.set("instanceNetworkList", $scope.instanceNetworkList);
+         	                 appService.localStorageService.set("instanceNetworkList", $scope.instanceNetworkList);
          	                 $scope.homerTemplate = 'app/views/notification/notify.jsp';
-         	                 notify({message: 'Added successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
+         	                 appService.notify({message: 'Added successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
          	                 $scope.cancel();
          	             }
          	             else {
          	                 $scope.homerTemplate = 'app/views/notification/notify.jsp';
-         	                 notify({message: 'Network already exist', classes: 'alert-danger', templateUrl: $scope.homerTemplate});
+         	                 appService.notify({message: 'Network already exist', classes: 'alert-danger', templateUrl: $scope.homerTemplate});
          	             }
-         	             $scope.networkLists = localStorageService.get("instanceNetworkList");
-         	             localStorageService.set('instanceViewTab', 'network');
+         	             $scope.networkLists = appService.localStorageService.get("instanceNetworkList");
+         	             appService.localStorageService.set('instanceViewTab', 'network');
          	             $state.reload();
 
          	         }
@@ -613,28 +604,28 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
      /*$scope.addNetworkVM = function (form) {
          $scope.formSubmitted = true;
          if (form.$valid) {
-             $scope.instanceNetworkList = localStorageService.get("instanceNetworkList");
+             $scope.instanceNetworkList = appService.localStorageService.get("instanceNetworkList");
 
              $scope.instanceNetwork = {
              };
-             // localStorageService.remove('instanceNetworkList');
+             // appService.localStorageService.remove('instanceNetworkList');
 
              $scope.networks.plan = $scope.networks.networkOffers.name;
 
              $scope.instanceNetwork = filterFilter($scope.networkList.networkOffers, {'name': $scope.networks.plan});
              if (filterFilter($scope.instanceNetworkList, {'name': $scope.networks.plan})[0] == null) {
                  $scope.instanceNetworkList.push($scope.instanceNetwork[0]);
-                 localStorageService.set("instanceNetworkList", $scope.instanceNetworkList);
+                 appService.localStorageService.set("instanceNetworkList", $scope.instanceNetworkList);
                  $scope.homerTemplate = 'app/views/notification/notify.jsp';
-                 notify({message: 'Added successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
+                 appService.notify({message: 'Added successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
                  $scope.cancel();
              }
              else {
                  $scope.homerTemplate = 'app/views/notification/notify.jsp';
-                 notify({message: 'Network already exist', classes: 'alert-danger', templateUrl: $scope.homerTemplate});
+                 appService.notify({message: 'Network already exist', classes: 'alert-danger', templateUrl: $scope.homerTemplate});
              }
-             $scope.networkLists = localStorageService.get("instanceNetworkList");
-             localStorageService.set('instanceViewTab', 'network');
+             $scope.networkLists = appService.localStorageService.get("instanceNetworkList");
+             appService.localStorageService.set('instanceViewTab', 'network');
              $state.reload();
 
          }
@@ -674,7 +665,7 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
 
          $scope.computeList = function () {
         	 $scope.showLoaderOffer = true;
-             var hasCompute = crudService.listAll("computes/list");
+             var hasCompute = appService.crudService.listAll("computes/list");
              hasCompute.then(function (result) {  // this is only run after $http completes0
                      $scope.instanceElements.computeOfferingList = result;
                      $scope.showLoaderOffer = false;
@@ -684,7 +675,7 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
 
           $scope.diskList = function () {
          	 $scope.showLoaderOffer = true;
-              var hasDisks = crudService.listAll("storages/list");
+              var hasDisks = appService.crudService.listAll("storages/list");
               hasDisks.then(function (result) {  // this is only run after $http completes0
                      $scope.instanceElements.diskOfferingList = result;
                 	 $scope.showLoaderOffer = false;
@@ -753,16 +744,16 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
          $scope.paginationObject = {};
       $scope.networkForm = {};
       $scope.instance.networks={};
-         $scope.global = crudService.globalConfig;
+         $scope.global = appService.crudService.globalConfig;
          $scope.test = "test";
          // Guest Network List
          $scope.listNetworks = function (department,type) {
         	 $scope.showLoaderOffer = true;
         	 var hasGuestNetworks = {};
         	 if(type === 'department'){
-        		 hasGuestNetworks = crudService.listAllByFilters("guestnetwork/list", department);
+        		 hasGuestNetworks = appService.crudService.listAllByFilters("guestnetwork/list", department);
          	 } else {
-         		hasGuestNetworks = crudService.listAllByID("guestnetwork/listall?projectId="+department);
+         		hasGuestNetworks = appService.crudService.listAllByID("guestnetwork/listall?projectId="+department);
          	 }
              hasGuestNetworks.then(function (result) {  // this is only run after $http
                      $scope.instance.networks.networkList = result;
@@ -773,11 +764,11 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
 
        $scope.networkOfferList = {};
        $scope.networkOfferForm = {};
-       $scope.global = crudService.globalConfig;
+       $scope.global = appService.crudService.globalConfig;
      //  Network Offer List
 
        $scope.listNetworkOffer = function () {
-    	   var hasNetworks =  promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "networkoffer/isolated" +"?lang=" + localStorageService.cookie.get('language')+"&sortBy=-id");
+    	   var hasNetworks =  appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "networkoffer/isolated" +"?lang=" + appService.localStorageService.cookie.get('language')+"&sortBy=-id");
          hasNetworks.then(function (result) {
                  $scope.instance.networks.networkOfferList = result;
          });
@@ -788,10 +779,9 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
 
          $scope.saveNetwork = function (networkError) {
              if (!networkError) {
-
+            	 $scope.showLoaderOffer = true;
         	 $scope.guestnetwork.zone = $scope.global.zone;
         	 $scope.guestnetwork.displayText =  $scope.guestnetwork.name;
-        	 var guestnetwork = $scope.guestnetwork;
         	 $scope.guestnetwork.departmentId= $scope.instance.department.id;
     	 		$scope.guestnetwork.department= $scope.instance.department;
             	 $scope.guestnetwork.domain = $scope.instance.department.domain;
@@ -799,20 +789,37 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
             	 $scope.guestnetwork.project = $scope.instance.project;
 
 
-                 console.log($scope.guestnetwork);
-            	 $scope.showLoaderOffer = true;
-                 var hasguestNetworks = crudService.add("guestnetwork", guestnetwork);
+            	 var guestnetwork = angular.copy($scope.guestnetwork);
+ if (!angular.isUndefined($scope.guestnetwork.domain)) {
+                            guestnetwork.domainId = $scope.guestnetwork.domain.id;
+			 delete guestnetwork.domain;
+			}
+			 if (!angular.isUndefined($scope.guestnetwork.department)) {
+			guestnetwork.departmentId = $scope.guestnetwork.department.id;
+			delete guestnetwork.department;
+			}
+
+			 if (!angular.isUndefined($scope.guestnetwork.project)) {
+			guestnetwork.projectId = $scope.guestnetwork.project.id;
+			delete guestnetwork.project;
+			}
+
+                        guestnetwork.zoneId = $scope.guestnetwork.zone.id;
+                        guestnetwork.networkOfferingId = $scope.guestnetwork.networkOffering.id;
+
+                        delete guestnetwork.zone;
+                        delete guestnetwork.networkOffering;
+
+                 var hasguestNetworks = appService.crudService.add("guestnetwork", guestnetwork);
                  hasguestNetworks.then(function (result) {
-                	if($scope.guestnetwork.project == null) {
+                	if($scope.instance.project == null) {
                 	     $scope.listNetworks($scope.instance.department.id, 'department');
                  	} else {
-                 		$scope.listNetworks($scope.guestnetwork.project.id, 'project');
+                 		$scope.listNetworks($scope.instance.project.id, 'project');
                  	}
 
-                     notify({message: 'Added successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
-                     $scope.instance.networkOfferinglist = $scope.instanceElements.networkOfferingList[0];
-                   $scope.guestnetwork.name = "";
-                   $scope.guestnetwork.networkoffering = "";
+                   appService.notify({message: 'Added successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                   $scope.instance.networkOfferinglist = $scope.instanceElements.networkOfferingList[0];
                    networkError = false;
                    $scope.showLoaderOffer = false;
                  }).catch(function (result) {
@@ -820,7 +827,7 @@ function instanceCtrl($scope, Search, $modalInstance, $state, $stateParams, filt
                 	 if(!angular.isUndefined(result) && result.data != null) {
 	      		 		   if(result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])){
 	                      	 var msg = result.data.globalError[0];
-	                      	 notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+	                      	 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
 	                       }
 		      		 		angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
 	                            $scope.computeForm[key].$invalid = true;

@@ -52,28 +52,14 @@
 							</div>
 						</div>
 					</div>
-					<div class="form-group" ng-class="{'text-danger': applicationForm.status.$invalid && formSubmitted}">
-						<div class="row">
-							<label class="col-md-3 col-xs-12 col-sm-3 control-label"><fmt:message key="common.status" bundle="${msg}" /> <span class="text-danger">*</span>
-							</label>
-							<div class="col-md-6 col-xs-12 col-sm-6">
-                             <select required="true" place class="form-control input-group" name="status" data-ng-model="application.status" ng-options="status for (id, status) in formElements.statusList" data-ng-class="{'error': applicationForm.status.$invalid && formSubmitted}">
-                             <option value="">Select</option>
-                             </select>
-                                    <i tooltip="<fmt:message key="status.of.the.application" bundle="${msg}" />" class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
-								<div class="error-area" data-ng-show="applicationForm.status.$invalid && formSubmitted">
-									<i tooltip="<fmt:message key="application.status.is.required" bundle="${msg}" />" class="fa fa-warning error-icon"></i>
-								</div>
-							</div>
-						</div>
-					</div>
 				</div>
 			</div>
 		</div>
 
 		<div class="modal-footer">
-			<button type="button" class="btn btn-default " ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.cancel" bundle="${msg}" /></button>
-			<button class="btn btn-info" type="submit"><fmt:message key="common.add" bundle="${msg}" /></button>
+			<get-loader-image data-ng-if="showLoader"></get-loader-image>
+			<button type="button" data-ng-if="!showLoader" class="btn btn-default " ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.cancel" bundle="${msg}" /></button>
+			<button class="btn btn-info"  data-ng-if="!showLoader" type="submit"><fmt:message key="common.add" bundle="${msg}" /></button>
 		</div>
 	</div>
 </form>

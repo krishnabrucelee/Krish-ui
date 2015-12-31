@@ -68,7 +68,7 @@
                         </div>
                         <pagination-content></pagination-content>
                         <div class="white-content m-b-sm m-t-xs">
-                        
+
                          <div data-ng-show = "showLoader" style="margin: 1%">
     				  		<get-loader-image data-ng-show="showLoader"></get-loader-image>
       						</div>
@@ -88,7 +88,7 @@
                                         </tr>
                                     </tbody>
                                     <tbody data-ng-show="departmentList.length > 0">
-                                        <tr data-ng-repeat="department in departmentList| filter:quickSearch" >
+                                        <tr data-ng-repeat="department in filteredCount = (departmentList| filter:quickSearch)" >
 											<td>
                                                 {{ department.userName}}
                                             </td>
@@ -126,6 +126,6 @@
 
         </div>
     </div>
+<div id="footer" ng-include="'app/views/common/footer.jsp'"></div>
 </div>
-
 

@@ -216,6 +216,8 @@
 	<script src="scripts/controllers/projectController.js"></script>
 	<script src="scripts/controllers/accountController.js"></script>
     <script src="scripts/controllers/applicationController.js"></script>
+    <script src="scripts/factories/appService.js"></script>
+    <script src="scripts/factories/utilService.js"></script>
 	<script src="scripts/factories/promiseAjax.js"></script>
 	<script src="scripts/factories/globalConfig.js"></script>
 	<script src="scripts/factories/dialogService.js"></script>

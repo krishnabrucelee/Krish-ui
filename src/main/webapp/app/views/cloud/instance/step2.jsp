@@ -3,7 +3,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-
+<div data-ng-if = "showLoaderOffer" style="margin: 40%">
+      <get-loader-image-offer data-ng-show="showLoaderOffer"></get-loader-image-offer>
+      </div>
+	<div data-ng-if = "!showLoaderOffer" >
 <div class="row border-content">
 	<div class="col-offset-3 col-md-12 col-sm-12">
 		<div class="row form-group required"
@@ -266,7 +269,7 @@
             </div>
             <div data-ng-show=" instance.networkOfferinglist.value == 'all' && networks"  >
                 <div class="col-md-12 col-sm-12">
-                    <div class="table-responsive m-t-md">
+                    <div class="table-responsive m-t-md" style="height: 206px; overflow-y: auto; overflow-x: hidden;" >
                         <table cellspacing="1" cellpadding="1" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
@@ -327,7 +330,7 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
+  </div>
 </div>

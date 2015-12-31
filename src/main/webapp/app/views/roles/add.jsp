@@ -26,6 +26,23 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="form-group" ng-class="{'text-danger':RoleForm.domain.$invalid && formSubmitted}">
+                            <div class="row">
+                                <label class="col-md-3 col-sm-3 control-label"><fmt:message key="common.company" bundle="${msg}" /><span class="text-danger">*</span>
+                                </label>
+                                <div class="col-md-7  col-sm-7 col-xs-7">
+                                    <select  required="true" class="form-control form-group-lg" name="domain" data-ng-change="domainChange()"
+                                             data-ng-model="role.domain"
+                                             data-ng-options="domain.name for domain in formElements.domainList" data-ng-class="{'error': RoleForm.domain.$invalid && formSubmitted}">
+                                        <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
+                                    </select>
+                                    <i  tooltip="<fmt:message key="choose.domain" bundle="${msg}" />" class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
+                                    <div class="error-area" data-ng-show="RoleForm.domain.$invalid && formSubmitted" ><i  tooltip="<fmt:message key="company.is.required" bundle="${msg}" />" class="fa fa-warning error-icon"></i></div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="form-group"ng-class="{'text-danger': RoleForm.department.$invalid && formSubmitted}">
                             <div class="row">
                                 <label class="col-md-3 col-sm-3 control-label control-normal"><fmt:message key="common.department" bundle="${msg}" /><span class="text-danger">*</span></label>
@@ -62,7 +79,7 @@
     </div>
      <div class="row">
      <div data-ng-show = "showLoader" style="margin: 1%">
-    					<get-loader-image data-ng-show="showLoader"></get-loader-image>
+
       					</div>
         <div class="col-md-12 col-sm-12" data-ng-hide = "showLoader" ng-repeat="(key, module) in permissions | groupBy: 'module'">
             <div class="form-group">
@@ -86,7 +103,6 @@
     <div class="form-group">
         <div class="row">
             <span class="pull-right">
-            <get-loader-image data-ng-show="showLoader"></get-loader-image>
                 <a class="btn btn-default btn-outline" data-ng-hide="showLoader" ui-sref="roles"><fmt:message key="common.cancel" bundle="${msg}" /></a>
                 <button class="btn btn-info" has-permission="CREATE_ROLE" data-ng-hide="showLoader" type="submit" ng-disabled="form.RoleForm.$invalid" ><fmt:message key="common.add" bundle="${msg}" /></button>
             </span>

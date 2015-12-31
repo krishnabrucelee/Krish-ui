@@ -63,8 +63,9 @@
         </div>
 
         <div class="modal-footer">
-            <button type="button" class="btn btn-default " ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.cancel" bundle="${msg}" /></button>
-            <button class="btn btn-info" type="submit"><fmt:message key="common.update" bundle="${msg}" /></button>
+        	<get-loader-image data-ng-if="showLoader"></get-loader-image>
+            <button data-ng-if="!showLoader" type="button" class="btn btn-default " ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.cancel" bundle="${msg}" /></button>
+            <button data-ng-if="!showLoader" class="btn btn-info" type="submit"><fmt:message key="common.update" bundle="${msg}" /></button>
         </div>
         </div>
 </form>
