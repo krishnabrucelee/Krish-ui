@@ -27,6 +27,7 @@ function instanceListCtrl($scope, $sce, $log, $filter, dialogService, promiseAja
 //			});
 //	  }
 
+
 	$scope.showConsole = function(vm) {
 		  $scope.vm = vm;
 		  var hasVms = crudService.updates("virtualmachine/console", vm);
@@ -37,13 +38,7 @@ function instanceListCtrl($scope, $sce, $log, $filter, dialogService, promiseAja
 				//$scope.consoleUrl = $sce.trustAsResourceUrl("http://192.168.1.152/console/?token=MTkyLjE2OC4xLjE1MnxpLTItNjktVk18bm92bmN0ZXN0");
 				$scope.instance = vm;
 				var randomnumber = Math.floor((Math.random()*100)+1);
-				 window.open("app/console.jsp?token="+consoleParams[1]+"&iso="+ btoa(vm.isoName), vm.name + vm.id,'width=800,height=580');
-		        /*dialogService.openDialog("app/views/cloud/instance/view-console.jsp", 'lg', $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
-		          $scope.cancel = function () {
-	  	               $modalInstance.close();
-	  	           };
-		        }]);*/
-
+				 window.open("app/console.jsp?token="+consoleParams[1]+"&instance="+ btoa(vm.id), vm.name + vm.id,'width=800,height=580');
 			});
 	  }
 

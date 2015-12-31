@@ -75,38 +75,61 @@ angular.module('homer', [])
     if(loginSession == null) {
     	window.location.href = "login";
     }
+
     var consolePorxy = $window.sessionStorage.getItem("consoleProxy");
     $scope.consoleUrl = consolePorxy + "token=" + $scope.getQueryParameterByName("token");
     $scope.consoleUrl = $sce.trustAsResourceUrl($scope.consoleUrl);
 
 
-	$http({
-       "method": "GET",
-       "data": {},
-       "url": globalConfig.APP_URL+ "iso/list",
-       "headers": {'x-auth-token': loginSession.token, 'Content-Type': 'application/json', 'Range': "items=0-9"}
-   }).then(function (res) {
-	   $scope.isoLists = res.data;
+    $scope.isoList = function(vm) {
+		$http({
+	       "method": "GET",
+	       "data": {},
+	       "url": globalConfig.APP_URL+ "iso/list",
+	       "headers": {'x-auth-token': loginSession.token, 'Content-Type': 'application/json', 'Range': "items=0-9"}
+	   }).then(function (res) {
+		   $scope.isoLists = res.data;
 
-	   angular.forEach($scope.isoLists, function(obj, key) {
-		  if(obj.name == atob($scope.getQueryParameterByName("iso"))) {
-			  $scope.isos = obj;
-		  }
-	   });
-   }).catch(function (result) {
-	   	if(result.data != null && result.data.status === 401 && result.data.message === "INVALID_TOKEN") {
-			notify({
-				message : "Your session has expired. Please log-in again",
-				classes : 'alert-danger',
-				templateUrl : global.NOTIFICATION_TEMPLATE
-			});
-			setTimeout(function() {
-				window.location.href = "login";
-			}, 2000);
-	    } else {
-	    	throw result;
-	    }
+		   angular.forEach($scope.isoLists, function(obj, key) {
+			   console.log(vm);
+			  if(obj.name == vm.isoName) {
+				  $scope.isos = obj;
+			  }
+		   });
+	   }).catch(function (result) {
+		   	if(result.data != null && result.data.status === 401 && result.data.message === "INVALID_TOKEN") {
+				notify({
+					message : "Your session has expired. Please log-in again",
+					classes : 'alert-danger',
+					templateUrl : global.NOTIFICATION_TEMPLATE
+				});
+				setTimeout(function() {
+					window.location.href = "login";
+				}, 2000);
+		    } else {
+		    	throw result;
+		    }
+		});
+    }
+
+
+    var vmInstanceId = atob($scope.getQueryParameterByName("instance"));
+    $http({
+	       "method": globalConfig.HTTP_GET,
+	       "data": {},
+	       "url": globalConfig.APP_URL+ "virtualmachine/"+ vmInstanceId +"?lang=en",
+	       "headers": {'x-auth-token': loginSession.token, 'Content-Type': 'application/json', 'Range': "items=0-9"}
+		   }).then(function(result) {
+			   $scope.consoleVm = result.data;
+			   $scope.isoList($scope.consoleVm);
+		}).catch(function (result) {
+	      if(result.data.globalError[0] != null){
+	     	 var msg = result.data.globalError[0];
+	     	 alert(msg);
+	      }
 	});
+
+
 
 
 	$scope.instanceStartLabel = "Start";

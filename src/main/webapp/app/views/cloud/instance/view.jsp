@@ -206,7 +206,7 @@ pageEncoding="UTF-8"%>
                                          <li  class="list-group-item " >
                                             <a data-ng-show="instance.status == 'Running'"  href="javascript:void(0);" data-ng-click="resize()" title="<fmt:message key="resize.vm" bundle="${msg}" />"><span class="fa fa-expand m-xs"></span> <fmt:message key="resize.vm" bundle="${msg}" /></a>
                                             <a data-ng-show="instance.status == 'Stopped'" href="javascript:void(0);" data-ng-click="templateCategory = 'config'" title="<fmt:message key="resize.vm" bundle="${msg}" />"><span class="fa fa-expand m-xs"></span> <fmt:message key="resize.vm" bundle="${msg}" /></a>
-                                            
+
                                         </li>
                                     </div>
                                 </ul>
@@ -464,7 +464,7 @@ pageEncoding="UTF-8"%>
                                                                     instance.computeOffering.computeCost[0].instanceRunningCostIops + instance.computeOffering.computeCost[0].instanceRunningCostMemory + instance.computeOffering.computeCost[0].instanceRunningCostVcpu
 
                                                                     + instance.computeOffering.computeCost[0].instanceStoppageCostIops + instance.computeOffering.computeCost[0].instanceStoppageCostMemory + instance.computeOffering.computeCost[0].instanceStoppageCostVcpu)/30 | number:2
-	 
+
                                                         }}
                                                     </span>
                                                     /
