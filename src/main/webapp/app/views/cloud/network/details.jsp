@@ -40,9 +40,9 @@ pageEncoding="UTF-8"%>
                 </div>
                 <div class="panel-body no-padding">
                     <ul class="list-group">
-                        <li class="list-group-item">
+                       <%--  <li class="list-group-item">
                             <a href="javascript:void(0);" title=" <fmt:message key="restart.network" bundle="${msg}" />"><span class="fa-repeat fa font-bold m-xs"></span><fmt:message key="restart.network" bundle="${msg}" /></a>
-                        </li>
+                        </li> --%>
                         <li class="list-group-item">
                             <a has-permission="DELETE_NETWORK" href="javascript:void(0);" title=" <fmt:message key="delete.network" bundle="${msg}" />" data-ng-click="delete('sm', network)"><span class="fa-trash fa font-bold m-xs"></span> <fmt:message key="delete.network" bundle="${msg}" /></a>
                         </li>
