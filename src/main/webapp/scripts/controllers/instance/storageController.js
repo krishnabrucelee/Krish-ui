@@ -147,7 +147,7 @@ volumeService, modalService, globalConfig) {
 	                    $modalInstance.close();
 	                };
 	            }]);
-	    };
+	    	};
 
 	    // Detach Volume
 	    $scope.detach = function (size, volume) {
@@ -208,7 +208,7 @@ volumeService, modalService, globalConfig) {
 	                    $modalInstance.close();
 	                };
 	            }]);
-	    };
+	    	};
 
 	    // Creating snapshot
 	    $scope.createSnapshot = function (size, volume) {
@@ -305,16 +305,23 @@ volumeService, modalService, globalConfig) {
 	                        });
 	                    }
 	                },
-	                        $scope.cancel = function () {
-	                            $modalInstance.close();
-	                        };
+	                  $scope.cancel = function () {
+	                        $modalInstance.close();
+	                  };
 	            }]);
-	    };
+	    	};
 
 	    //Create volume
 	    $scope.volume = {};
 	    $scope.volumeForm = {};
 	    $scope.addVolume = function (size) {
+	    	$scope.volume = {};
+	    	 if($scope.global.sessionValues.type === 'USER') {
+	    	    	var hasDepartments = appService.crudService.read("departments", $scope.global.sessionValues.departmentId);
+	    	    	hasDepartments.then(function (result) {
+	    	    		$scope.volume.department = result;
+	    	    });
+	      	 }
 	    	appService.dialogService.openDialog($scope.global.VIEW_URL + "cloud/volume/add.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope',
 	                                                                                                 function ($scope, $modalInstance, $rootScope) {
 
@@ -348,10 +355,10 @@ volumeService, modalService, globalConfig) {
 
 	                $scope.project = {};
 	                 $scope.projectList = function () {
-	                 var hasProjects = appService.promiseAjax.httpTokenRequest( appService.crudService.globalConfig.HTTP_GET, appService.crudService.globalConfig.APP_URL + "projects/list");
-	                 hasProjects.then(function (result) {  // this is only run after $http completes0
-	                 	$scope.options = result;
-	                 });
+	                	 var hasProjects = appService.promiseAjax.httpTokenRequest( appService.crudService.globalConfig.HTTP_GET, appService.crudService.globalConfig.APP_URL + "projects/list");
+	                	 hasProjects.then(function (result) {  // this is only run after $http completes0
+	                	 	$scope.options = result;
+	                	 });
 	                };
 
 	                // Department list from server
@@ -365,10 +372,10 @@ volumeService, modalService, globalConfig) {
 
 	                // Getting list of projects by department
 	                $scope.getProjectsByDepartment = function(department) {
-	           		 var hasProjects =  appService.promiseAjax.httpTokenRequest( appService.crudService.globalConfig.HTTP_GET, appService.crudService.globalConfig.APP_URL + "projects"  +"/department/"+department.id);
-	        		 hasProjects.then(function (result) {  // this is only run after $http completes0
-	                    		$scope.options = result;
-	                    	 });
+	           		 	var hasProjects =  appService.promiseAjax.httpTokenRequest( appService.crudService.globalConfig.HTTP_GET, appService.crudService.globalConfig.APP_URL + "projects"  +"/department/"+department.id);
+	           		 	hasProjects.then(function (result) {  // this is only run after $http completes0
+	           		 		$scope.options = result;
+	           		 	});
 	               	};
 
 	                $scope.$watch('volume.department', function (obj) {
@@ -378,13 +385,9 @@ volumeService, modalService, globalConfig) {
 	                		if($scope.global.sessionValues.type != 'ROOT_ADMIN') {
 	                			$scope.projectList();
 	                		}
-
 	                	}
-	                          });
+	                });
 
-	                $scope.volume.name = "";
-	                $scope.volume.storageTags = "";
-	                $scope.volume.storageOffering = "";
 	                // Create a new application
 	                $scope.save = function (form, volume) {
 	                    $scope.formSubmitted = true;
@@ -418,26 +421,26 @@ volumeService, modalService, globalConfig) {
 	                            appService.notify({message: 'Added successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
 	                            $modalInstance.close();
 	                        }).catch(function (result) {
-	 				if (!angular.isUndefined(result) && result.data != null) {
+	                        	if (!angular.isUndefined(result) && result.data != null) {
 	                                    if (result.data.globalError[0] != '') {
 	                                        var msg = result.data.globalError[0];
 	                                        $scope.showLoader = false;
 	                                        appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
 	                                    }
-	                            angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
-	                                $scope.volumeForm[key].$invalid = true;
-	                                $scope.volumeForm[key].errorMessage = errorMessage;
-	                            });
+	                                    angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
+	                                    	$scope.volumeForm[key].$invalid = true;
+	                                    	$scope.volumeForm[key].errorMessage = errorMessage;
+	                                    });
 
-					}
+	                        	}
 	                        });
 	                    }
 	                },
-	                        $scope.cancel = function () {
-	                            $modalInstance.close();
-	                        };
+	                $scope.cancel = function () {
+	                	$modalInstance.close();
+	                };
 	            }]);
-	    };
+	    	};
 
 	    $scope.volumeElements = volumeService.volumeElements;
 
@@ -498,21 +501,18 @@ volumeService, modalService, globalConfig) {
 	        }
 	    };
 
-		$scope.zoneList = {};
-		 $scope.zoneList = function () {
+					$scope.zoneList = {};
+					$scope.zoneList = function () {
 		               var hasZones = appService.crudService.listAll("zones/list");
-		               hasZones.then(function (result) {  // this is only run
-															// after $http
-															// completes0
+		               hasZones.then(function (result) {
 		                       $scope.zoneList = result;
-		console.log($scope.zoneList );
-
+		                       console.log($scope.zoneList );
 		                });
 		            };
 		            $scope.zoneList();
 
-	    $scope.diskList = {};
-	    $scope.diskList = function () {
+		            $scope.diskList = {};
+		            $scope.diskList = function () {
 	                    var hasDisks = appService.crudService.listAll("storages/list");
 	                    hasDisks.then(function (result) {  // this is only run after
 	                        // $http completes0
@@ -556,18 +556,17 @@ volumeService, modalService, globalConfig) {
 	                        $scope.showLoader = false;
 	                        appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
 	                    }
-	            angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
-	                $scope.volumeForm[key].$invalid = true;
-	                $scope.volumeForm[key].errorMessage = errorMessage;
-	            });
-
-					}
-	                        });
-	                    }
-	                },
-	                $scope.cancel = function () {
-	                    $modalInstance.close();
-	                };
+	                    angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
+	                    	$scope.volumeForm[key].$invalid = true;
+	                    	$scope.volumeForm[key].errorMessage = errorMessage;
+	                    });
+	  				}
+	             });
+	           }
+	        },
+	        $scope.cancel = function () {
+	             $modalInstance.close();
+	        };
 	    }]);
 	};
 
@@ -604,25 +603,24 @@ volumeService, modalService, globalConfig) {
 	             appService.notify({message: 'Uploaded successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
 	             $modalInstance.close();
 	         }).catch(function (result) {
-					if (!angular.isUndefined(result) && result.data != null) {
+				if (!angular.isUndefined(result) && result.data != null) {
 	                if (result.data.globalError[0] != '') {
 	                    var msg = result.data.globalError[0];
 	                    appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
 	                }
-	        angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
-	            $scope.volumeForm[key].$invalid = true;
-	            $scope.volumeForm[key].errorMessage = errorMessage;
-	        });
-
+	                angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
+	                	$scope.volumeForm[key].$invalid = true;
+	                	$scope.volumeForm[key].errorMessage = errorMessage;
+	                });
 				}
-	                    });
-	                }
-	            },
-	            $scope.cancel = function () {
-	                $modalInstance.close();
-	            };
+	         });
+           }
+	 	},
+	    $scope.cancel = function () {
+	 		$modalInstance.close();
+	    };
 	}]);
-	};
+};
 
 	// Delete the Volume
 	$scope.delete = function (size, volume) {
@@ -664,143 +662,10 @@ volumeService, modalService, globalConfig) {
 	                });
 	                $modalInstance.close();
 	            },
-	                    $scope.cancel = function () {
-	                        $modalInstance.close();
-	                    };
+	            $scope.cancel = function () {
+	            	$modalInstance.close();
+	            };
 	        }]);
-	};
+		};
 
 	};
-
-
-//    $scope.global = globalConfig;
-//    $scope.storageDetails = {};
-//    $scope.volumeElements = volumeService.volumeElements;
-//    $scope.volume = {};
-////    if (localStorageService.get("volumeList") == null) {
-////        var hasServer = promiseAjax.httpRequest("GET", "api/instance.json");
-////        hasServer.then(function (result) {  // this is only run after $http completes
-////            $scope.instanceName = result[$stateParams.id - 1].name;
-////            $scope.volumeList = result[$stateParams.id - 1].volumeList;
-////            localStorageService.set("volumeList", $scope.volumeList);
-////        });
-////    } else {
-////        var hasServer = promiseAjax.httpRequest("GET", "api/instance.json");
-////        hasServer.then(function (result) {
-////           $scope.instanceName = result[$stateParams.id - 1].name;
-////        });
-////        $scope.volumeList = localStorageService.get("volumeList");
-////    }
-//
-//
-////    $scope.addVolume = function(size) {
-////    	modalService.trigger('app/views/cloud/instance/add-volume.jsp', 'md');
-////
-////    };
-//    //Add volume
-//    $scope.volume = {};
-//    $scope.volumeForm = {};
-//    $scope.addVolume = function (size) {
-//        dialogService.openDialog($scope.global.VIEW_URL + "cloud/volume/add.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope',
-//                                                                                                 function ($scope, $modalInstance, $rootScope) {
-//
-//                $scope.diskList = function (tag) {
-//                    if (angular.isUndefined(tag)) {
-//                        tag = "";
-//                    }
-//                    	if(tag === null){
-//                    		tag = "";
-//                    	}
-//                    var hasDisks = crudService.listAllByTag("storages/storagesort", tag);
-//                    hasDisks.then(function (result) {  // this is only run after
-//                        // $http completes0
-//                        $scope.volumeElements.diskOfferingList = result;
-//                    });
-//                };
-//
-////                $scope.diskTag = function () {
-////                    var hasDiskTags = crudService.listAll("storages/storagetags");
-////                    hasDiskTags.then(function (result) {  // this is only run after
-////                        // $http completes0
-////
-////                        $scope.volumeElements.diskOfferingTags = result;
-////                    });
-////                };
-////                $scope.diskTag();
-//
-//                $scope.$watch('volume.storageTags', function (val) {
-//                    $scope.diskList(val);
-//                });
-//                $scope.volume.name = "";
-//                $scope.volume.storageTags = "";
-//                $scope.volume.storageOffering = "";
-//                // Create a new application
-//                $scope.save = function (form, volume) {
-//                    $scope.formSubmitted = true;
-//
-//                    if (form.$valid) {
-//                        $scope.volume.zone = $scope.global.zone;
-//                        var volume = $scope.volume;
-//                        var hasVolume = crudService.add("volumes", volume);
-//                        hasVolume.then(function (result) {
-//                            $scope.list(1);
-//                            notify({message: 'Added successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
-//                            $modalInstance.close();
-//                        }).catch(function (result) {
-// 				if (!angular.isUndefined(result) && result.data != null) {
-//                                    if (result.data.globalError[0] != '') {
-//                                        var msg = result.data.globalError[0];
-//                                        notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
-//                                    }
-//                            angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
-//                                $scope.volumeForm[key].$invalid = true;
-//                                $scope.volumeForm[key].errorMessage = errorMessage;
-//                            });
-//
-//				}
-//                        });
-//                    }
-//                },
-//                        $scope.cancel = function () {
-//                            $modalInstance.close();
-//                        };
-//            }]);
-//    };
-//
-//    $scope.resetDiskValues = function(volumeType) {
-//
-//        $scope.volume.type = volumeType;
-//        $scope.volume.diskOfferings = null;
-//        $scope.volumeElements.diskOffer.diskSize.value = 1;
-//        $scope.volumeElements.diskOffer.iops.value = 1;
-//    };
-//
-//
-//    $scope.save = function(form) {
-//        $scope.instanceId = $stateParams.id;
-//        $scope.formSubmitted = true;
-//        var diskValid = true;
-//        if($scope.volume.diskOfferings.custom &&
-//                ($scope.volumeElements.diskOffer.diskSize.value <= 0 || $scope.volumeElements.diskOffer.iops.value <= 0)) {
-//            diskValid = false;
-//        }
-//        if (form.$valid && diskValid) {
-//            if(filterFilter($scope.volumeList,{'name':$scope.volume.name})[0]== null){
-//                $scope.volumeList = volumeService.saveByInstance($scope.volume, $scope.instanceId);
-//                localStorageService.set('volumeList', $scope.volumeList);
-//                localStorageService.set('instanceViewTab', 'storage');
-//
-//                $scope.homerTemplate = 'app/views/notification/notify.jsp';
-//                notify({message: 'Added successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
-//                $scope.cancel();
-//                $state.reload();
-//            }
-//            else {
-//                $scope.homerTemplate = 'app/views/notification/notify.jsp';
-//                notify({message: 'Disk already added', classes: 'alert-danger', templateUrl: $scope.homerTemplate});
-//
-//            }
-//        }
-//    };
-
-
