@@ -315,6 +315,13 @@ volumeService, modalService, globalConfig) {
 	    $scope.volume = {};
 	    $scope.volumeForm = {};
 	    $scope.addVolume = function (size) {
+	    	$scope.volume = {};
+	    	 if($scope.global.sessionValues.type === 'USER') {
+	    	    	var hasDepartments = appService.crudService.read("departments", $scope.global.sessionValues.departmentId);
+	    	    	hasDepartments.then(function (result) {
+	    	    		$scope.volume.department = result;
+	    	    });
+	    	    	 }
 	    	appService.dialogService.openDialog($scope.global.VIEW_URL + "cloud/volume/add.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope',
 	                                                                                                 function ($scope, $modalInstance, $rootScope) {
 
@@ -382,9 +389,6 @@ volumeService, modalService, globalConfig) {
 	                	}
 	                          });
 
-	                $scope.volume.name = "";
-	                $scope.volume.storageTags = "";
-	                $scope.volume.storageOffering = "";
 	                // Create a new application
 	                $scope.save = function (form, volume) {
 	                    $scope.formSubmitted = true;

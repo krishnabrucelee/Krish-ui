@@ -61,9 +61,9 @@ pageEncoding="UTF-8"%>
                                 <tr>
                                     <th class="col-md-2 col-xs-2"><fmt:message key="common.name" bundle="${msg}" /></th>
                                     <th class="col-md-2 col-xs-1"><fmt:message key="common.department" bundle="${msg}" /></th>
-                                    <th class="col-md-1 col-xs-1"><fmt:message key="common.project" bundle="${msg}" /></th>
-                            <th class="col-md-1 col-xs-1"><fmt:message key="common.type" bundle="${msg}" /></th>
-                            <th class="col-md-1 col-xs-1"><fmt:message key="common.plan" bundle="${msg}" /></th>
+                                    <th class="col-md-2 col-xs-1"><fmt:message key="common.project" bundle="${msg}" /></th>
+                            <th class="col-md-2 col-xs-1"><fmt:message key="common.type" bundle="${msg}" /></th>
+                            <th class="col-md-2 col-xs-1"><fmt:message key="common.plan" bundle="${msg}" /></th>
                             <th class="col-md-2 col-xs-2"><fmt:message key="common.attached.to" bundle="${msg}" /></th>
                             <th class="col-md-1 col-xs-1"><fmt:message key="common.size" bundle="${msg}" /> GB</th>
                             <th class="col-md-2 col-xs-1"><fmt:message key="common.created.date" bundle="${msg}" /></th>
@@ -73,7 +73,7 @@ pageEncoding="UTF-8"%>
                             <tbody>
                                 <tr data-ng-repeat="volume in filteredCount = (volumeList| filter:quickSearch)">
                                     <td>
-                                        <a class="text-info" href="javascript:void(0)"  title="View Volume" >{{ volume.name}}</a>
+                                        <!-- <a class="text-info" href="javascript:void(0)"  title="View Volume" > -->{{ volume.name}}<!-- </a> -->
                                     </td>
                                     <td>{{ volume.department.userName || " - "}}</td>
                                     <td>{{ volume.project.name || " - "}}</td>
