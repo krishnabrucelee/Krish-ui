@@ -6,7 +6,7 @@ pageEncoding="UTF-8"%>
 <form name="volumeForm" data-ng-submit="uploadVolume(volumeForm, volume)" method="POST" novalidate="">
     <div class="inmodal" >
         <div class="modal-header">
-            <panda-modal-header page-icon="fa fa-cloud-upload" page-title="<fmt:message key="common.upload" bundle="${msg}" />"></panda-modal-header>
+            <panda-modal-header page-icon="fa fa-database" page-title="<fmt:message key="common.upload" bundle="${msg}" />"></panda-modal-header>
         </div>
         <div class="modal-body">
             <div class="row"  >

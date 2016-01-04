@@ -179,13 +179,13 @@ pageEncoding="UTF-8"%>
             </div>
         </div>
         <div class="modal-footer">
-            <span class="pull-left" data-ng-show="volume.storageOffering.isCustomDisk">
+<!--             <span class="pull-left" data-ng-show="volume.storageOffering.isCustomDisk">
                 <h4 class="text-danger price-text m-l-lg">
                     <app-currency></app-currency> <span data-ng-if="volume.diskSize">{{ (volume.storageOffering.storagePrice[0].costGbPerMonth * volume.diskSize)}}</span>
                     <span data-ng-if="volume.diskSize">{{ (volume.storageOffering.storagePrice[0].costGbPerMonth * 0)}}</span><span data-ng-if="!volume.diskSize">0</span> <span>/ hour</span>
                      <small class="text-right text-muted m-l-sm">(<app-currency></app-currency><span data-ng-if="volume.diskSize">{{ volume.storageOffering.storagePrice[0].costGbPerMonth * volume.diskSize * 720}} / month)</span><span data-ng-if="!volume.diskSize">0 / month)</span></small>
                 </h4>
-            </span>
+            </span> -->
             <get-loader-image data-ng-show="showLoader"></get-loader-image>
             <a class="btn btn-default"  data-ng-hide="showLoader" data-ng-click="cancel()"><fmt:message key="common.cancel" bundle="${msg}" /></a>
             <button class="btn btn-info" data-ng-hide="showLoader" type="submit"><fmt:message key="common.add" bundle="${msg}" /></button>

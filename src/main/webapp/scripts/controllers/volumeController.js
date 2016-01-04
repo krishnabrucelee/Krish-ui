@@ -520,7 +520,7 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
 	$scope.uploadVolumeCtrl = function (size) {
 		appService.dialogService.openDialog($scope.global.VIEW_URL + "cloud/volume/upload.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope',
                                                                                                  function ($scope, $modalInstance, $rootScope) {
-    $scope.global = globalConfig;
+			$scope.global = appService.globalConfig;
     // Form Field Decleration
     $scope.volume = {};
 
@@ -535,7 +535,7 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
         }
     };
 
-	$scope.zoneList = {};
+	/*$scope.zoneList = {};*/
 	 $scope.zoneList = function () {
 	               var hasZones = appService.crudService.listAll("zones/list");
 	               hasZones.then(function (result) {  // this is only run
