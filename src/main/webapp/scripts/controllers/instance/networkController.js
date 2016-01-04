@@ -75,8 +75,6 @@ function networkCtrl($scope, $modal, $window, $stateParams,appService) {
         				var networkList = [];
         				$scope.networkList = result;
     					angular.forEach(result, function(network, networkKey) {
-    						alert("test"+network.id);
-    						alert(network.id);
         					if($scope.nicArray.indexOf(network.id) < 0) {
         						networkList.push(network);
         					}
