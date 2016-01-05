@@ -56,6 +56,15 @@ function instanceViewCtrl($scope, $state, $stateParams, appService, $window) {
           }]);
      };
 
+    $scope.selectab = function() {
+    	
+	$scope.templateCategory = 'config';
+	$scope.active = true;
+	
+	}
+     
+     
+
 
  // Volume List
 $scope.volume = {};
