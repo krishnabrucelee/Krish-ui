@@ -36,13 +36,13 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
 
             $scope.volumeList.Count = result.totalItems;
 
-//      		 // Get the count of the listings
-//       		var hasVmCount =  appService.crudService.listAll("volumes/volumeCounts");
-//       		hasVmCount.then(function(result) {
-//       			$scope.attachedCount = result.attachedCount;
-//       			$scope.detachedCount = result.attachedCount;
-//       			$scope.totalCount = result.totalCount;
-//    		});
+      		 // Get the count of the listings
+       		var hasVmCount =  appService.crudService.listAll("volumes/volumeCounts");
+       		hasVmCount.then(function(result) {
+       			$scope.attachedCount = result.attachedCount;
+       			$scope.detachedCount = result.detachedCount;
+       			$scope.totalCount = result.totalCount;
+    		});
 
             // For pagination
             $scope.paginationObject.limit = limit;
