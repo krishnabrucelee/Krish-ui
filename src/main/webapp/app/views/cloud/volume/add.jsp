@@ -108,6 +108,7 @@ pageEncoding="UTF-8"%>
                             </div>
                         </div>
                     </div>
+
 					  <div class="form-group" ng-class="{ 'text-danger' : volumeForm.department.$invalid && formSubmitted}">
                         <div class="row">
                         <div data-ng-show="global.sessionValues.type != 'USER'">
