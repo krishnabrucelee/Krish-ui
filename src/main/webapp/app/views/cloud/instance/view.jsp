@@ -316,7 +316,7 @@ pageEncoding="UTF-8"%>
                                                         <fmt:message key="instance.owner" bundle="${msg}" />
                                                     </b>
                                                 </td>
-                                                <td class="col-md-8 col-sm-8">{{instance.department.userName}}</td>
+                                                <td class="col-md-8 col-sm-8">{{instance.instanceOwner.userName}}</td>
                                             </tr>
                                             <tr>
                                                 <td class="col-md-4 col-sm-4" >
