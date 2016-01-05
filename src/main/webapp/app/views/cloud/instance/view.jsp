@@ -234,9 +234,9 @@ pageEncoding="UTF-8"%>
                                                 <div data-ng-if="instnaceEdit && instance.status == 'Stopped'" class="form-group"
                                                      ng-class="{'text-danger': instance.transDisplayName == '' && formSubmitted}">
                                                     <input type="text" name="transDisplayName"
-                                                           data-ng-model="instance.transDisplayName"
+                                                           data-ng-model="instance.displayName"
                                                            class="form-control editedinput "
-                                                           data-ng-class="{'error': instance.transDisplayName == '' && formSubmitted}">
+                                                           data-ng-class="{'error': instance.displayName == '' && formSubmitted}">
                                                 </div>
                                                 <a data-ng-if="!instnaceEdit && instance.status == 'Stopped'" data-ng-click="editDisplayName(instance)"  class="fa fa-edit m-l-lg">
                                                     <fmt:message key="common.edit" bundle="${msg}" />
