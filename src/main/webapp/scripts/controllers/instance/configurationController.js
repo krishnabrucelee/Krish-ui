@@ -31,7 +31,6 @@ function configurationCtrl($scope, $stateParams, localStorageService, promiseAja
 	hasServers.then(function (result) {
 	$scope.instances = result;
         $scope.computeList();
-        console.log($scope.instances);
 	});
 
     	$scope.instance = {
@@ -90,13 +89,11 @@ function configurationCtrl($scope, $stateParams, localStorageService, promiseAja
              var hasCompute = crudService.listAll("computes/list");
              hasCompute.then(function (result) {  // this is only run after $http completes0
                      $scope.instanceElements.computeOfferingList = result;
-                     //console.log($scope.instanceElements.computeOfferingList);
                      angular.forEach(result, function(item){
                     	 if (!angular.isUndefined($scope.instances.computeOffering)) {
                     		 if(item.name === $scope.instances.computeOffering.name){
                     			 var index = $scope.instanceElements.computeOfferingList.indexOf(item);
 					 $scope.instance.computeOffering = result[index];
-					  console.log(result[index]);
                     		 }
                     	 }
                     	 	});
@@ -116,7 +113,6 @@ function configurationCtrl($scope, $stateParams, localStorageService, promiseAja
           	}
 
           		$scope.save = function (form, instance) {
-          		console.log($scope.instances);
           		$scope.formSubmitted = true;
           		if (form.$valid) {
           			$scope.showLoader= true;
@@ -129,7 +125,6 @@ function configurationCtrl($scope, $stateParams, localStorageService, promiseAja
           				notify({message: 'Updated successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
           				//$modalInstance.close();
           			}).catch(function (result) {
-                        console.log(result.data.globalError[0]);
                         if (!angular.isUndefined(result) && result.data != null) {
 	                        if (result.data.globalError[0] != '') {
 	                            var msg = result.data.globalError[0];

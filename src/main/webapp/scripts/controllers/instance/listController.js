@@ -22,7 +22,6 @@ function instanceListCtrl($scope, $sce, $log, $filter, dialogService, promiseAja
 //		  $scope.vm = vm;
 //		  var hasVms = crudService.updates("virtualmachine/console", vm);
 //			hasVms.then(function(result) {
-//				console.log(result);
 //				 $window.open(result.success, 'VM console', 'width=500,height=400');
 //			});
 //	  }

@@ -199,7 +199,6 @@ function uploadTemplateCtrl($scope, globalConfig, $modalInstance, notify) {
     }
      $scope.save = function(form) {
         $scope.formSubmitted = true;
-        console.log(form);
         if (form.$valid) {
             $scope.homerTemplate = 'app/views/notification/notify.jsp';
             notify({message: 'Uploaded successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});

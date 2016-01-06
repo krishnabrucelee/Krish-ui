@@ -22,7 +22,6 @@ function sshkeyListCtrl($scope, notify, dialogService, crudService) {
         var hasSSHKeys = crudService.list("sshkeys", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
         hasSSHKeys.then(function (result) {  // this is only run after $http completes0
             $scope.sshkeyList = result;
-            console.log($scope.sshkeyList);
             // For pagination
             $scope.paginationObject.limit = limit;
             $scope.paginationObject.currentPage = pageNumber;
@@ -46,7 +45,7 @@ function sshkeyListCtrl($scope, notify, dialogService, crudService) {
 	      } else {
 		$scope.isRoot = false;
 	      }
-	      console.log(result.length);
+
 	});
 };
    $scope.listDomain();
@@ -71,7 +70,6 @@ function sshkeyListCtrl($scope, notify, dialogService, crudService) {
                     $scope.formSubmitted = true;
                     if (form.$valid) {
                         var sshkey = $scope.sshkey;
-                        console.log($scope.sshkey);
                         var hasServer = crudService.add("sshkeys", sshkey);
                         hasServer.then(function (result) {  // this is only run after $http completes
  			    $scope.sshkeyss = $scope.sshkeyList[$scope.sshkeyList.length-1];
@@ -85,7 +83,6 @@ function sshkeyListCtrl($scope, notify, dialogService, crudService) {
             		$scope.sshkeyList = result;
 			var sshkeyss = $scope.sshkeyList[$scope.sshkeyList.length-1];
 		        $scope.sshkeyList[$scope.sshkeyList.length-1] = $scope.sshkeyss;
-            		console.log($scope.sshkeyList);
             		// For pagination
             		$scope.paginationObject.limit = limit;
             		$scope.paginationObject.currentPage = pageNumber;
@@ -95,13 +92,11 @@ function sshkeyListCtrl($scope, notify, dialogService, crudService) {
     			$scope.list(1);
                             notify({message: 'Added successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                             $modalInstance.close();
-			    console.log($scope.sshkeyList);
                             $scope.sshkey.name = "";
                             $scope.sshkey.publicKey = "";
 				$scope.sshkey.privateKey = result.privatekey;
                             $scope.sshkey.domain = {};
                         }).catch(function (result) {
-                          	console.log(result.data.globalError[0]);
                             if(result.data.globalError[0] != ''){
                            	 var msg = result.data.globalError[0];
                            	 notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
@@ -124,9 +119,7 @@ function sshkeyListCtrl($scope, notify, dialogService, crudService) {
                     hasServer.then(function (result) {
                         $scope.list(1);
                         notify({message: 'Deleted successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
-
                     }).catch(function (result) {
-                          	console.log(result.data.globalError[0]);
                             if(result.data.globalError[0] != ''){
                            	 var msg = result.data.globalError[0];
                            	 notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });

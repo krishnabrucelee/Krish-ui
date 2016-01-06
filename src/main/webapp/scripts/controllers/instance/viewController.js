@@ -18,11 +18,9 @@ function instanceViewCtrl($scope, $state, $stateParams, appService, $window) {
     	$scope.showLoader = true;
     	$scope.showLoaderOffer = true;
  	    var hasServer = appService.crudService.read("virtualmachine", $stateParams.id);
-        hasServer.then(function (result) {  // this is only run after $http											// completes
+        hasServer.then(function (result) {  
             $scope.instance = result;
 		$scope.instanceList = result;
-
-		console.log($scope.instance);
             var str = $scope.instance.cpuUsage;
             if(str!=null){
             var newString = str.replace(/^_+|_+$/g,'');
@@ -80,7 +78,6 @@ $scope.list = function () {
 
     $scope.startVm = function(size, item) {
     	$scope.instance = item;
-    	console.log($scope.instance);
     	appService.dialogService.openDialog("app/views/cloud/instance/start.jsp", 'md',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
 	  		var vms = item;
 	  		 var event = "VM.START";
@@ -89,13 +86,13 @@ $scope.list = function () {
 	  			$scope.formSubmitted = true;
                 if (form.$valid) {
                 	vms.hostUuid = $scope.instance.host.uuid;
-                	console.log(vms.hostUuid + " " + vms.event);
+
 		  				var hasVm = appService.crudService.updates("virtualmachine/vm", vms);
 		  				hasVm.then(function(result) {
 		                    $state.reload();
 		  					$scope.cancel();
 		  				}).catch(function (result) {
-		  					console.log(result.data.globalError[0]);
+
 		  			         if(result.data.globalError[0] != null){
 		  			        	 var msg = result.data.globalError[0];
 		  			        	appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
@@ -121,7 +118,7 @@ $scope.list = function () {
   					$state.reload();
   					 $scope.cancel();
   				}).catch(function (result) {
-  					console.log(result.data.globalError[0]);
+
  			         if(result.data.globalError[0] != null){
  			        	 var msg = result.data.globalError[0];
  			        	 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
@@ -137,8 +134,7 @@ $scope.list = function () {
 
   $scope.isoList = function () {
       var hasisoList = appService.crudService.listAll("iso/list");
-      hasisoList.then(function (result) {  // this is only run after $http
-											// completes0
+      hasisoList.then(function (result) { 
               $scope.isoLists = result;
        });
    };
@@ -146,7 +142,7 @@ $scope.list = function () {
 
    $scope.hostList = function () {
 	      var hashostList = appService.crudService.listAll("host/list");
-	      hashostList.then(function (result) {  // this is only run after $http
+	      hashostList.then(function (result) { 
 				$scope.hostLists = result;
 	       });
 	   };
@@ -162,7 +158,7 @@ $scope.list = function () {
   					$state.reload();
   					 $scope.cancel();
   				}).catch(function (result) {
-  					console.log(result.data.globalError[0]);
+
  			         if(result.data.globalError[0] != null){
  			        	 var msg = result.data.globalError[0];
  			        	 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
@@ -188,7 +184,7 @@ $scope.list = function () {
 	  					$state.reload();
 	  					 $scope.cancel();
 	  				}).catch(function (result) {
-	  					console.log(result.data.globalError[0]);
+
 	  			         if(result.data.globalError[0] != null){
 	  			        	 var msg = result.data.globalError[0];
 	  			        	 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
@@ -215,7 +211,7 @@ $scope.list = function () {
 			  					$state.reload();
 			  					 $scope.cancel();
 			  				}).catch(function (result) {
-			  					console.log(result.data.globalError[0]);
+
 			  			         if(result.data.globalError[0] != null){
 			  			        	 var msg = result.data.globalError[0];
 			  			        	 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
@@ -230,7 +226,7 @@ $scope.list = function () {
 		  					$state.reload();
 		  					$scope.cancel();
 		  				}).catch(function (result) {
-		  					console.log(result.data.globalError[0]);
+
 		  			         if(result.data.globalError[0] != null){
 		  			        	 var msg = result.data.globalError[0];
 		  			        	 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
@@ -256,7 +252,7 @@ $scope.list = function () {
 			  					$state.reload();
 			  					 $scope.cancel();
 			  				}).catch(function (result) {
-			  					console.log(result.data.globalError[0]);
+
 			  			         if(result.data.globalError[0] != null){
 			  			        	 var msg = result.data.globalError[0];
 			  			        	 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
@@ -329,8 +325,7 @@ $scope.list = function () {
 					  			 if(form.$valid) {
 					  				tempVm.iso = $scope.isos.uuid;
 					  				tempVm.event = event;
-							  		console.log(tempVm.iso);
-							  		console.log(tempVm.event);
+							  		
 						  				var hasVm = appService.crudService.updates("virtualmachine/vm", tempVm);
 						  				hasVm.then(function(result) {
 						  					$scope.homerTemplate = 'app/views/notification/notify.jsp';
@@ -338,8 +333,7 @@ $scope.list = function () {
 						  					$state.reload();
 						  					 $scope.cancel();
 						  				}).catch(function (result) {
-						  					console.log(result);
-						  					console.log(result.data.globalError[0]);
+						  					
 						  			         if(result.data.globalError[0] != null){
 						  			        	 var msg = result.data.globalError[0];
 						  			        	 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
@@ -367,8 +361,7 @@ $scope.list = function () {
 							  					$state.reload();
 							  					$scope.cancel();
 							  				}).catch(function (result) {
-							  					console.log(result);
-							  					console.log(result.data.globalError[0]);
+							  				
 							  			         if(result.data.globalError[0] != null){
 							  			        	 var msg = result.data.globalError[0];
 							  			        	 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
@@ -401,7 +394,7 @@ $scope.list = function () {
 								  					 $state.reload();
 								  					 $scope.cancel();
 								  				}).catch(function (result) {
-								  					console.log(result.data.globalError[0]);
+								  					
 								  				  $scope.homerTemplate = 'app/views/notification/notify.jsp';
 								                     appService.notify({message: result.data.globalError[0], classes: 'alert-danger', "timeOut": "5000", templateUrl: $scope.homerTemplate});
 								                     $state.reload();
@@ -431,7 +424,7 @@ $scope.list = function () {
 									  					$state.reload();
 									  					 $scope.cancel();
 									  				}).catch(function (result) {
-									  					console.log(result.data.globalError[0]);
+
 									  			         if(result.data.globalError[0] != null){
 									  			        	 var msg = result.data.globalError[0];
 									  			        	 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
@@ -451,7 +444,7 @@ $scope.list = function () {
 						$scope.hostInformation = function(vm) {
 
 								  	 appService.dialogService.openDialog("app/views/cloud/instance/listhost.jsp", 'md',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
-					console.log($scope.instance.host);
+
 					  $scope.cancel = function () {
 					        $modalInstance.close();
 					    };
@@ -473,8 +466,7 @@ $scope.list = function () {
 										  					$state.reload();
 										  					 $scope.cancel();
 										  				}).catch(function (result) {
-										  					console.log(result);
-										  					console.log(result.data.globalError[0]);
+										  				
 										  			         if(result.data.globalError[0] != null){
 										  			        	 var msg = result.data.globalError[0];
 										  			        	appService.notify({message: msg, classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
@@ -649,7 +641,6 @@ if ($stateParams.id > 0) {
         hasServer.then(function (result) {  // this is only run after $http											// completes
             $scope.instance = result;
 		$scope.instanceList = result;
-console.log($scope.instance);
             var str = $scope.instance.cpuUsage;
             if(str!=null){
             var newString = str.replace(/^_+|_+$/g,'');

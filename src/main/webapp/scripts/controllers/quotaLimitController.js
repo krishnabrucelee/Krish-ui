@@ -13,14 +13,14 @@ angular
 function quotaReasonCtrl($scope, $modalInstance, userForm, quotaReason, notify) {
 
     $scope.quotaReason = quotaReason;
-    console.log(quotaReason.title);
+
     $scope.submitForm = function () {
         if ($scope.form.userForm.$valid) {
             $scope.homerTemplate = 'app/views/notification/notify.jsp';
             notify({message: 'Request has been sent successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
             $modalInstance.close('closed');
         } else {
-            console.log('userform is not in scope');
+
         }
     };
 

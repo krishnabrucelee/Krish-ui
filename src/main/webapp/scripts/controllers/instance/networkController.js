@@ -17,11 +17,10 @@ function networkCtrl($scope, $modal, $window, $stateParams,appService) {
         var hasServer = appService.crudService.read("virtualmachine", $stateParams.id);
         hasServer.then(function (result) {  // this is only run after $http
             $scope.instance = result;
-            console.log( $scope.instance);
             $scope.networkList = result.network;
 
         });
-    }
+    } 
 
     $scope.networkList = {};
     $scope.paginationObject = {};

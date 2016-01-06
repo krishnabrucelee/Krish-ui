@@ -16,10 +16,8 @@ function accountCtrl($scope, appService) {
     $scope.global = appService.globalConfig;
     $scope.userData = "testss";
     $scope.addUser = function (form) {
-    	console.log(form);
         $scope.formSubmitted = true;
         if (form.$valid) {
-        	console.log($scope.user);
         }
     };
 }

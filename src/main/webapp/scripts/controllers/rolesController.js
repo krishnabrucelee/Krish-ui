@@ -320,7 +320,6 @@ angular
 		}
         	});
 
-        	console.log(assignedUsers);
         	if (form.$valid) {
         		var hasServer = appService.crudService.add("users/assignRole", assignedUsers);
         		hasServer.then(function (result) {  // this is only run after $http completes
@@ -362,7 +361,6 @@ angular
             			angular.forEach($scope.userList, function(obj, key) {
             				$scope.userRoleList[obj.id] = $scope.roleList[0];
                 			if(!angular.isUndefined(obj.role) && obj.role != null && obj.role != "") {
-                				console.log(obj.role);
             					$scope.userRoleList[obj.id] = obj.role;
                 			}
                 		});
