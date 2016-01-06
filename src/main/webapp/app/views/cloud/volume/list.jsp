@@ -48,7 +48,6 @@ pageEncoding="UTF-8"%>
                 <div class="clearfix"></div>
             </div>
             <pagination-content></pagination-content>
-
             <div class="row">
                 <div class="col-md-12 col-sm-12 col-xs-12 ">
                     <div class="white-content">
