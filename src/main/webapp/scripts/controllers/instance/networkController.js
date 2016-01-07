@@ -20,7 +20,7 @@ function networkCtrl($scope, $modal, $window, $stateParams,appService) {
             $scope.networkList = result.network;
 
         });
-    } 
+    }
 
     $scope.networkList = {};
     $scope.paginationObject = {};
@@ -93,15 +93,14 @@ function networkCtrl($scope, $modal, $window, $stateParams,appService) {
                 	$scope.nic = {};
                 	$scope.nic.vmInstance = $scope.instance;
                 	delete $scope.nic.vmInstance.network;
-
-                        $scope.nic.networkId = network.id;
+                    $scope.nic.networkId = network.id;
 
 		        delete $scope.nic.network;
                         $scope.showLoader = true;
                         var hasServer = appService.crudService.add("nics", $scope.nic);
                         hasServer.then(function (result) {  // this is only run after $http completes
                         $scope.showLoader = false;
-                    	appService.notify({message: 'Attached successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                    	appService.notify({message: 'NIC attached successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                         $modalInstance.close();
         	    	    $scope.instanceNicList();
                }).catch(function (result) {
@@ -129,20 +128,21 @@ function networkCtrl($scope, $modal, $window, $stateParams,appService) {
     $scope.removeNicToVM = function(nic) {
       	 appService.dialogService.openDialog("app/views/cloud/instance/confirm-delete.jsp", 'md', $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
       		 $scope.deleteId = nic.id;
-               $scope.ok = function (nicId) {
-		       $scope.showLoader = true;
-		   var hasNic = appService.crudService.softDelete("nics", nic);
-                    hasNic.then(function (result) {
+             $scope.ok = function (nicId) {
+		     $scope.showLoader = true;
+		     var hasNic = appService.crudService.softDelete("nics", nic);
+             hasNic.then(function (result) {
 
 		       $scope.showLoader = false;
-                       appService.notify({message: 'Deleted successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
-		        $scope.list(1);
-                   });
-                   $modalInstance.close();
-               },
-               $scope.cancel = function () {
-                   $modalInstance.close();
-               };
+               appService.notify({message: 'NIC deleted successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+               $modalInstance.close();
+               $scope.instanceNicList();
+             });
+
+             },
+             $scope.cancel = function () {
+                  $modalInstance.close();
+             };
            }]);
       };
 
@@ -150,15 +150,16 @@ function networkCtrl($scope, $modal, $window, $stateParams,appService) {
        	 appService.dialogService.openDialog("app/views/cloud/instance/confirm-update.jsp", 'md', $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
           	var instanceId = $stateParams.id;
                    $scope.ok = function (instanceId) {
-		   $scope.showLoader = true;
+                	$scope.showLoader = true;
                     var hasServer = appService.crudService.update("nics", nic);
                     hasServer.then(function (result) {
 
-		       $scope.showLoader = false;
-                       appService.notify({message: 'Updated successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
-		       $scope.list(1);
+                       $scope.showLoader = false;
+                       appService.notify({message: 'NIC updated successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                       $modalInstance.close();
+                       $scope.instanceNicList();
                     });
-                    $modalInstance.close();
+
                 },
                 $scope.cancel = function () {
                 $modalInstance.close();
