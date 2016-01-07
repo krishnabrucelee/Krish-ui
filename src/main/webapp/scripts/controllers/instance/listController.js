@@ -8,21 +8,18 @@ angular.module('homer').controller('instanceListCtrl', instanceListCtrl)
 		.controller('instanceDetailsCtrl', instanceDetailsCtrl)
 
 function instanceListCtrl($scope, $sce, $log, $filter, dialogService, promiseAjax, $state,
-		globalConfig, crudService,$modal, localStorageService, $window, notify) {
+		globalConfig, crudService,$modal, localStorageService, $window, notify, appService) {
 	$scope.instanceList = [];
 	$scope.instancesList = [];
         $scope.global = crudService.globalConfig;
 	$scope.paginationObject = {};
-	$scope.sort = {
-		column : '',
-		descending : false
-	};
-
+    $scope.sort = appService.globalConfig.sort;
+    $scope.changeSorting = appService.utilService.changeSorting;
+    
 //	  $scope.showConsole = function(vm) {
 //		  $scope.vm = vm;
 //		  var hasVms = crudService.updates("virtualmachine/console", vm);
 //			hasVms.then(function(result) {
-//				console.log(result);
 //				 $window.open(result.success, 'VM console', 'width=500,height=400');
 //			});
 //	  }
@@ -92,18 +89,7 @@ function instanceListCtrl($scope, $sce, $log, $filter, dialogService, promiseAja
          }]);
     };
 
-	$scope.changeSorting = function(column) {
 
-		var sort = $scope.sort;
-
-		if (sort.column == column) {
-			sort.descending = !sort.descending;
-		} else {
-			sort.column = column;
-			sort.descending = false;
-		}
-		return sort.descending;
-	};
 
 	$scope.vm = {};
 

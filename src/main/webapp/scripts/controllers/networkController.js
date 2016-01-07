@@ -20,23 +20,9 @@ function networksCtrl($scope,$rootScope,filterFilter,$state, $stateParams,modalS
     $scope.formElements = [];
     $scope.allItemsSelected = false;
 
-    $scope.sort = {
-		column : '',
-		descending : false
-	};
-	
-	$scope.changeSorting = function(column) {
-
-		var sort = $scope.sort;
-
-		if (sort.column == column) {
-			sort.descending = !sort.descending;
-		} else {
-			sort.column = column;
-			sort.descending = false;
-		}
-		return sort.descending;
-	};
+    $scope.sort = appService.globalConfig.sort;
+    $scope.changeSorting = appService.utilService.changeSorting;
+    
 
     $scope.openAddIsolatedNetwork = function (size) {
         appService.dialogService.openDialog("app/views/cloud/network/add.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
@@ -129,7 +115,6 @@ function networksCtrl($scope,$rootScope,filterFilter,$state, $stateParams,modalS
         hasGuestNetworks.then(function (result) {
         	$scope.showLoader = true;
             $scope.networkList = angular.copy(result);
-            console.log($scope.networkList);
             $scope.networkList.Count = 0;
             if (result.length != 0) {
                 $scope.networkList.Count = result.totalItems;
@@ -190,7 +175,15 @@ function networksCtrl($scope,$rootScope,filterFilter,$state, $stateParams,modalS
         hasnetwork.then(function (result) {
             $scope.network = result;
             appService.localStorageService.set('view', 'details');
+            
+            angular.forEach($scope.networkList, function(obj, key) {
+	    		if(obj.id == $scope.network.networkOffering.id) {
+	    			$scope.network.networkOffering = obj;
+	    		}
+	    	});
+        
         });
+      
     };
 
     if (!angular.isUndefined($stateParams.id) && $stateParams.id != '') {
@@ -199,15 +192,16 @@ function networksCtrl($scope,$rootScope,filterFilter,$state, $stateParams,modalS
 
     // Update the Network
     $scope.update = function (form) {
-        console.log(form);
         $scope.formSubmitted = true;
         if (form.$valid) {
             var network = $scope.network;
             $scope.showLoader = true;
+     	
 	      if (!angular.isUndefined($scope.network.domain)) {
 		    network.domainId = $scope.network.domain.id;
 		 delete network.domain;
 		}
+	   
 		if (!angular.isUndefined($scope.network.department) && $scope.network.department != null) {
 			network.departmentId = $scope.network.department.id;
 			delete network.department;
@@ -269,7 +263,7 @@ function networksCtrl($scope,$rootScope,filterFilter,$state, $stateParams,modalS
         var hasZones = appService.crudService.listAll("zones/list");
         hasZones.then(function (result) {  // this is only run after $http completes0
             $scope.zoneList = result;
-            console.log($scope.zoneList);
+
         });
     };
     $scope.zoneList();
@@ -279,7 +273,7 @@ function networksCtrl($scope,$rootScope,filterFilter,$state, $stateParams,modalS
         var hasZones = appService.crudService.listAll("domains/list");
         hasZones.then(function (result) {  // this is only run after $http completes0
             $scope.domainList = result;
-            console.log($scope.domainList);
+
         });
     };
     $scope.domainList();
@@ -297,7 +291,7 @@ function networksCtrl($scope,$rootScope,filterFilter,$state, $stateParams,modalS
         var hasProjects = appService.crudService.listAllByObject("projects/department", department);
         hasProjects.then(function (result) {  // this is only run after $http completes0
         	$scope.projectList = result;
-        	console.log($scope.projectList);
+
         });
     };
 
@@ -542,7 +536,7 @@ function networksCtrl($scope,$rootScope,filterFilter,$state, $stateParams,modalS
 //        var CheckIP = /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\/\d{1,2}$/;
         var CheckIP = /^([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\/([1-9]|[12][0-9]|3[012])$/;
         if ($scope.cidr != null && $scope.cidr != '') {
-            console.log(CheckIP.test($scope.cidr));
+
             if (CheckIP.test($scope.cidr)) {
                 $scope.rules.push({'id': $scope.rules.length + 1, 'algorithm': 'roundrobin', 'name': '', 'cidr': $scope.cidr, 'protocol': $scope.protocolName.name, 'startPort': $scope.startPort, 'endPort': $scope.endPort, 'icmpType': $scope.icmpType, 'icmpCode': $scope.icmpCode, 'privateStart': '90', 'privateEnd': '120', 'vms': []});
                 appService.localStorageService.set("firewall", $scope.rules);
@@ -567,10 +561,10 @@ function networksCtrl($scope,$rootScope,filterFilter,$state, $stateParams,modalS
             $scope.cidrValidate = true;
         }
     };
-    console.log($scope.rules);
+
     $scope.removeRule = function (id, type) {
         $scope.rules = appService.localStorageService.get("firewall");
-        console.log(id);
+
         var index = -1;
         var comArr = eval($scope.rules);
         for (var i = 0; i < comArr.length; i++) {
@@ -587,11 +581,11 @@ function networksCtrl($scope,$rootScope,filterFilter,$state, $stateParams,modalS
             appService.localStorageService.set('view', 'firewall');
         }
         appService.localStorageService.set("firewall", $scope.rules);
-        console.log($scope.rules);
+
         $state.reload();
         $scope.cancel();
     };
-    console.log($scope.rules);
+
     $scope.acquiringIP = false;
     $scope.ok = function () {
         $timeout(function () {
@@ -663,7 +657,7 @@ function networksCtrl($scope,$rootScope,filterFilter,$state, $stateParams,modalS
     $scope.addLB = function () {
         $scope.ruleList = appService.localStorageService.get("rules");
         $scope.vms = appService.localStorageService.get("vms");
-        console.log('hid' + $scope.vms);
+
         if ($scope.vms == '') {
             $scope.vmlerror = true;
             $scope.homerTemplate = 'app/views/notification/notify.jsp';
@@ -674,7 +668,7 @@ function networksCtrl($scope,$rootScope,filterFilter,$state, $stateParams,modalS
             $scope.addedRule = {'id': $scope.ruleList.length + 1, 'algorithm': $scope.global.rulesLB[0].algorithm, 'name': $scope.global.rulesLB[0].name, 'cidr': '', 'protocol': '', 'startPort': $scope.global.rulesLB[0].publicPort, 'endPort': $scope.global.rulesLB[0].privatePort, 'icmpType': '', 'icmpCode': '', 'privateStart': '', 'privateEnd': '', 'vms': $scope.vms};
             $scope.ruleList.push($scope.addedRule);
             appService.localStorageService.set("rules", $scope.ruleList);
-            console.log($scope.ruleList);
+
             appService.notify({message: 'Rule added successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
             $scope.cancel();
             appService.localStorageService.set('view', 'load-balance');
@@ -781,7 +775,6 @@ function networksCtrl($scope,$rootScope,filterFilter,$state, $stateParams,modalS
     }, true);
 //
 //        if (!$scope.instanceList[id].isChecked) {
-//            console.log($scope.instanceList[id]);
 //            $scope.vmList.push($scope.instanceList[id]);
 //            appService.localStorageService.set("vms", $scope.vmList);
 //            $scope.allItemsSelected = false;

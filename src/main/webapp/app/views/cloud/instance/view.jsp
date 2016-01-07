@@ -6,13 +6,15 @@ pageEncoding="UTF-8"%>
 
 <div class="hpanel">
     <div class="row m-l-sm m-r-sm panel-body" ng-controller="instanceViewCtrl">
+    
         <ul class="nav nav-tabs" data-ng-init="templateCategory = 'dashboard'">
-            <li class="active"><a href="javascript:void(0)" data-ng-click="templateCategory = 'dashboard'" data-toggle="tab">  <i class="fa fa-laptop"></i> <fmt:message key="dashboard" bundle="${msg}" /></a></li>
-            <li data-ng-show ="instance.status == 'Stopped'" class=""><a has-permission="UPGRADE_VM" data-ng-click="templateCategory = 'config'" data-toggle="tab"> <i class="fa fa-cogs"></i> <fmt:message key="configuration" bundle="${msg}" /></a></li>
+            <li data-ng-class="{'active' : templateCategory == 'dashboard'}"><a href="javascript:void(0)" data-ng-click="templateCategory = 'dashboard'" data-toggle="tab">  <i class="fa fa-laptop"></i> <fmt:message key="dashboard" bundle="${msg}" /></a></li>
+            <li data-ng-show ="instance.status == 'Stopped'" data-ng-class="{'active' : templateCategory == 'config'}"><a has-permission="UPGRADE_VM" data-ng-click="templateCategory = 'config'"  data-toggle="tab"> <i class="fa fa-cogs"></i> <fmt:message key="configuration" bundle="${msg}" /></a></li>
             <li class=""><a  data-ng-click="templateCategory = 'storage'" data-toggle="tab"><i class="fa fa-database"></i> <fmt:message key="storage" bundle="${msg}" /></a></li>
             <li class=""><a  data-ng-click="templateCategory = 'network'" data-toggle="tab"> <!--<i class="fa fa-sitemap"></i>--><i class="custom-icon custom-icon-network"></i> <fmt:message key="networking" bundle="${msg}" /></a></li>
             <li class=""><a has-permission="MONITOR_VM_PERFORMANCE" data-ng-click="templateCategory = 'monitor'" data-toggle="tab"> <i class="fa fa-desktop"></i> <fmt:message key="monitor" bundle="${msg}" /></a></li>
         </ul>
+      
         <div class="tab-content">
             <div data-ng-show = "showLoaderOffer" style="margin: 20%">
                 <get-loader-image data-ng-show="showLoaderOffer"></get-loader-image>
@@ -205,7 +207,7 @@ pageEncoding="UTF-8"%>
                                         </li>
                                          <li  class="list-group-item " >
                                             <a data-ng-show="instance.status == 'Running'"  href="javascript:void(0);" data-ng-click="resize()" title="<fmt:message key="resize.vm" bundle="${msg}" />"><span class="fa fa-expand m-xs"></span> <fmt:message key="resize.vm" bundle="${msg}" /></a>
-                                            <a data-ng-show="instance.status == 'Stopped'" href="javascript:void(0);" data-ng-click="templateCategory = 'config'" title="<fmt:message key="resize.vm" bundle="${msg}" />"><span class="fa fa-expand m-xs"></span> <fmt:message key="resize.vm" bundle="${msg}" /></a>
+                                            <a data-ng-show="instance.status == 'Stopped'" href="javascript:void(0);"   data-ng-click="selectab()" title="<fmt:message key="resize.vm" bundle="${msg}" />"><span class="fa fa-expand m-xs"></span> <fmt:message key="resize.vm" bundle="${msg}" /></a>
 
                                         </li>
                                     </div>
@@ -234,9 +236,9 @@ pageEncoding="UTF-8"%>
                                                 <div data-ng-if="instnaceEdit && instance.status == 'Stopped'" class="form-group"
                                                      ng-class="{'text-danger': instance.transDisplayName == '' && formSubmitted}">
                                                     <input type="text" name="transDisplayName"
-                                                           data-ng-model="instance.transDisplayName"
+                                                           data-ng-model="instance.displayName"
                                                            class="form-control editedinput "
-                                                           data-ng-class="{'error': instance.transDisplayName == '' && formSubmitted}">
+                                                           data-ng-class="{'error': instance.displayName == '' && formSubmitted}">
                                                 </div>
                                                 <a data-ng-if="!instnaceEdit && instance.status == 'Stopped'" data-ng-click="editDisplayName(instance)"  class="fa fa-edit m-l-lg">
                                                     <fmt:message key="common.edit" bundle="${msg}" />
@@ -314,7 +316,7 @@ pageEncoding="UTF-8"%>
                                                         <fmt:message key="instance.owner" bundle="${msg}" />
                                                     </b>
                                                 </td>
-                                                <td class="col-md-8 col-sm-8">{{instance.department.userName}}</td>
+                                                <td class="col-md-8 col-sm-8">{{instance.instanceOwner.userName}}</td>
                                             </tr>
                                             <tr>
                                                 <td class="col-md-4 col-sm-4" >

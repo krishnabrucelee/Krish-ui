@@ -16,10 +16,8 @@ function accountCtrl($scope, appService) {
     $scope.global = appService.globalConfig;
     $scope.userData = "testss";
     $scope.addUser = function (form) {
-    	console.log(form);
         $scope.formSubmitted = true;
         if (form.$valid) {
-        	console.log($scope.user);
         }
     };
 }
@@ -40,6 +38,8 @@ function accountListCtrl($scope,$state, $log,$timeout, appService) {
     $scope.userForm = {};
     $scope.global = appService.globalConfig;
     $scope.user = {};
+    $scope.sort = appService.globalConfig.sort;
+    $scope.changeSorting = appService.utilService.changeSorting;
     $scope.accountElements={
 
     };

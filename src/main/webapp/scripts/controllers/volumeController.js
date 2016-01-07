@@ -13,6 +13,10 @@ angular
 function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeService, $window) {
 
     $scope.global = appService.globalConfig;
+    $scope.sort = appService.globalConfig.sort;
+    $scope.changeSorting = appService.utilService.changeSorting;
+    
+
     $scope.formSubmitted = false;
     // Form Field Decleration
     $scope.volume = {
@@ -32,7 +36,6 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
         hasVolumes.then(function (result) {
 
             $scope.volumeList = result;
-            console.log($scope.volumeList);
 
             $scope.volumeList.Count = result.totalItems;
 
@@ -84,7 +87,6 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
             // instance List
         	$scope.instanceList = function (volume) {
         		if($scope.volume.projectId != null) {
-        			console.log("project " + $scope.volume.projectId);
         			// var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         			var hasVolumes = appService.promiseAjax.httpTokenRequest(appService.crudService.globalConfig.HTTP_GET, appService.crudService.globalConfig.APP_URL + "virtualmachine"  +"/volume/project/"+$scope.volume.projectId);
         			hasVolumes.then(function (result) {
@@ -95,7 +97,6 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
         				// $scope.paginationObject.totalItems = result.totalItems;
         			});
         		} else {
-        			console.log("department " + $scope.volume.departmentId);
         			var hasVolumes = appService.promiseAjax.httpTokenRequest(appService.crudService.globalConfig.HTTP_GET, appService.crudService.globalConfig.APP_URL + "virtualmachine"  +"/volume/department/"+$scope.volume.departmentId);
         			hasVolumes.then(function (result) {
         				$scope.instanceList = result;
@@ -190,7 +191,6 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
                 };
                 $scope.instanceList();
                 $scope.detachVolume = function (volume) {
-                    console.log(volume);
                     $scope.showLoader = true;
 
                     if(!angular.isUndefined(volume.vmInstance) && volume.vmInstance != null) {
@@ -348,16 +348,16 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
     $scope.addVolume = function (size) {
         $scope.volume = {};
     	 if($scope.global.sessionValues.type === 'USER') {
-    	var hasDepartments = appService.crudService.read("departments", $scope.global.sessionValues.departmentId);
-    	hasDepartments.then(function (result) {
-    		$scope.volume.department = result;
-    });
+    		 var hasDepartments = appService.crudService.read("departments", $scope.global.sessionValues.departmentId);
+    		 hasDepartments.then(function (result) {
+    			 $scope.volume.department = result;
+    		 });
     	 }
 
     	appService.dialogService.openDialog($scope.global.VIEW_URL + "cloud/volume/add.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope',
                                                                                                  function ($scope, $modalInstance, $rootScope) {
 
-                $scope.diskList = function (tag) {
+    		$scope.diskList = function (tag) {
                     if (angular.isUndefined(tag)) {
                         tag = "";
                     }
@@ -435,7 +435,6 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
                     if (form.$valid) {
                     	$scope.showLoader = true;
                         $scope.volume.zone = $scope.global.zone;
-                        console.log($scope.volume);
                         var volume = angular.copy($scope.volume);
                         if(!angular.isUndefined($scope.volume.storageOffering) && volume.storageOffering != null) {
                         	volume.storageOfferingId = volume.storageOffering.id;
@@ -515,14 +514,23 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
 
 
  // Upload volume
-//	$scope.volume = {};
-//	$scope.volumeForm = {};
+	$scope.volume = {};
+	$scope.volumeForm = {};
 	$scope.uploadVolumeCtrl = function (size) {
+    $scope.volume = {};
+   	 if($scope.global.sessionValues.type === 'USER') {
+   		 var hasDepartments = appService.crudService.read("departments", $scope.global.sessionValues.departmentId);
+   		 hasDepartments.then(function (result) {
+   			 $scope.volume.department = result;
+   		 });
+   	 }
+
 		appService.dialogService.openDialog($scope.global.VIEW_URL + "cloud/volume/upload.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope',
                                                                                                  function ($scope, $modalInstance, $rootScope) {
+
 			$scope.global = appService.globalConfig;
     // Form Field Decleration
-    $scope.volume = {};
+
 
     $scope.formSubmitted = false;
     $scope.formElements = {
@@ -542,8 +550,6 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
 														// after $http
 														// completes0
 	                       $scope.zoneList = result;
-	console.log($scope.zoneList );
-
 	                });
 	            };
 	            $scope.zoneList();
@@ -557,6 +563,42 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
                     });
                 };
                 $scope.diskList();
+
+                $scope.project = {};
+                $scope.projectList = function () {
+                var hasProjects = appService.promiseAjax.httpTokenRequest(appService.crudService.globalConfig.HTTP_GET, appService.crudService.globalConfig.APP_URL + "projects/list");
+                hasProjects.then(function (result) {  // this is only run after $http completes0
+                	$scope.options = result;
+                });
+               };
+
+               // Department list from server
+               $scope.department = {};
+               var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
+               var hasDepartment = appService.promiseAjax.httpTokenRequest(appService.crudService.globalConfig.HTTP_GET, appService.crudService.globalConfig.APP_URL + "departments/list");
+               hasDepartment.then(function (result) {  // this is only run after $http completes0
+               	$scope.volumeElements.departmentList = result;
+               });
+
+
+               // Getting list of projects by department
+               $scope.getProjectsByDepartment = function(department) {
+          		 var hasProjects =  appService.promiseAjax.httpTokenRequest(appService.crudService.globalConfig.HTTP_GET, appService.crudService.globalConfig.APP_URL + "projects"  +"/department/"+department.id);
+       		 hasProjects.then(function (result) {  // this is only run after $http completes0
+                   		$scope.options = result;
+                   	 });
+              	};
+
+               $scope.$watch('volume.department', function (obj) {
+               	if (!angular.isUndefined(obj)) {
+               		$scope.getProjectsByDepartment(obj);
+               	} else {
+               		if($scope.global.sessionValues.type != 'ROOT_ADMIN') {
+               			$scope.projectList();
+               		}
+
+               	}
+             });
 
     $scope.uploadVolume = function (form, volume) {
         $scope.formSubmitted = true;
@@ -578,9 +620,16 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
              	volume.zoneId = volume.zone.id;
              	delete volume.zone;
              }
+             if(!angular.isUndefined($scope.volume.department) && volume.department != null) {
+             	volume.departmentId = volume.department.id;
+             	delete volume.department;
+             }
+             if(!angular.isUndefined($scope.volume.project) && volume.project != null) {
+             	volume.projectId = volume.project.id;
+             	delete volume.project;
+             }
 
-             delete volume.department;
-             delete volume.project;
+
              var hasUploadVolume = appService.crudService.add("volumes/upload", volume);
              hasUploadVolume.then(function (result) {
             	 $scope.showLoader = false;
@@ -671,8 +720,6 @@ $scope.delete = function (size, volume) {
             $scope.deleteObject = volume;
             $scope.ok = function (volume) {
             	$scope.showLoader = true;
-
-            	console.log(volume);
 
             	if(!angular.isUndefined(volume.domain) && volume.domain != null ) {
                 	volume.domainId = volume.domain.id;

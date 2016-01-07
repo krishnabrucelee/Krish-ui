@@ -93,7 +93,7 @@ localStorageService, $window, dialogService, notify) {
 	        $scope.paginationObject.limit  = limit;
 	        $scope.paginationObject.currentPage = pageNumber;
 	        $scope.paginationObject.totalItems = result.totalItems;
-	        console.log($scope.paginationObject);
+
 	    });
     }
     $scope.list(1);
@@ -135,7 +135,6 @@ localStorageService, $window, dialogService, notify) {
 		  					$state.reload();
 		  					 $scope.cancel();
 		  				}).catch(function (result) {
-		  					console.log(result.data.globalError[0]);
 		  				  $scope.homerTemplate = 'app/views/notification/notify.jsp';
 		                     notify({message: result.data.globalError[0], classes: 'alert-danger', "timeOut": "5000", templateUrl: $scope.homerTemplate});
 
@@ -182,7 +181,7 @@ localStorageService, $window, dialogService, notify) {
                      notify({message: 'Deleting '+snapshot.name, classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
 
                  }).catch(function (result) {
- 					console.log(result.data.globalError[0]);
+
 			         if(result.data.globalError[0] != null){
 			        	 var msg = result.data.globalError[0];
 			        	 notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
@@ -223,7 +222,7 @@ localStorageService, $window, dialogService, notify) {
 				  $scope.cancel();
 				  notify({message: 'Reverting snapshot in VM '+vmsnapshot.vm.name, classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
 				}).catch(function (result) {
-					console.log(result.data.globalError[0]);
+
 			         if(result.data.globalError[0] != null){
 			        	 var msg = result.data.globalError[0];
 			        	 notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });

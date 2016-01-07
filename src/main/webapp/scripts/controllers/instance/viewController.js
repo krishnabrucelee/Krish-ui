@@ -9,20 +9,18 @@ angular
         .controller('instanceViewCtrl', instanceViewCtrl)
         .controller('instanceDetailsCtrl', instanceDetailsCtrl)
 
-function instanceViewCtrl($scope,$log, $sce, dialogService, $modal,$http, $state, $stateParams, promiseAjax, localStorageService, globalConfig, crudService, notify, $window) {
+function instanceViewCtrl($scope, $state, $stateParams, appService, $window) {
 
     $scope.instanceList = [];
     $scope.testvar = "test";
-    $scope.global = crudService.globalConfig;
+    $scope.global = appService.crudService.globalConfig;
     if ($stateParams.id > 0) {
     	$scope.showLoader = true;
     	$scope.showLoaderOffer = true;
- 	    var hasServer = crudService.read("virtualmachine", $stateParams.id);
-        hasServer.then(function (result) {  // this is only run after $http											// completes
+ 	    var hasServer = appService.crudService.read("virtualmachine", $stateParams.id);
+        hasServer.then(function (result) {  
             $scope.instance = result;
 		$scope.instanceList = result;
-
-		console.log($scope.instance);
             var str = $scope.instance.cpuUsage;
             if(str!=null){
             var newString = str.replace(/^_+|_+$/g,'');
@@ -49,12 +47,21 @@ function instanceViewCtrl($scope,$log, $sce, dialogService, $modal,$http, $state
     // Resize Instance
 
     $scope.resize = function() {
-     	 dialogService.openDialog("app/views/cloud/instance/runningresize.jsp", 'sm',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
+     	 appService.dialogService.openDialog("app/views/cloud/instance/runningresize.jsp", 'sm',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
    			  $scope.cancel = function () {
                   $modalInstance.close();
               };
           }]);
      };
+
+    $scope.selectab = function() {
+    	
+	$scope.templateCategory = 'config';
+	$scope.active = true;
+	
+	}
+     
+     
 
 
  // Volume List
@@ -62,7 +69,7 @@ $scope.volume = {};
 $scope.volume = [];
 $scope.list = function () {
        	var instanceId = $stateParams.id;
-       	var hasVolume = promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "volumes/listbyinstancesandvolumetype?instanceid="+instanceId +"&lang=" + localStorageService.cookie.get('language')+"&sortBy=-id");
+       	var hasVolume = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "volumes/listbyinstancesandvolumetype?instanceid="+instanceId +"&lang=" + appService.localStorageService.cookie.get('language')+"&sortBy=-id");
 	        hasVolume.then(function (result) {
 	            $scope.volume = result;
 	        });
@@ -70,43 +77,51 @@ $scope.list = function () {
 	    $scope.list();
 
     $scope.startVm = function(size, item) {
-		  dialogService.openDialog("app/views/cloud/instance/start.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
-			  $scope.item =item;
-			  $scope.vmStart = function(item) {
-					var event = "VM.START";
-					var hasVm = crudService.vmUpdate("virtualmachine/event", item.uuid, event);
-					hasVm.then(function(result) {
-						$state.reload();
-						 $scope.cancel();
-					}).catch(function (result) {
-	  					console.log(result.data.globalError[0]);
-	  			         if(result.data.globalError[0] != null){
-	  			        	 var msg = result.data.globalError[0];
-	  			        	 notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+    	$scope.instance = item;
+    	appService.dialogService.openDialog("app/views/cloud/instance/start.jsp", 'md',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
+	  		var vms = item;
+	  		 var event = "VM.START";
+	  		 $scope.update= function(form) {
+	  			vms.event = event;
+	  			$scope.formSubmitted = true;
+                if (form.$valid) {
+                	vms.hostUuid = $scope.instance.host.uuid;
 
-	  			             }
-                           });
-				},
-			  $scope.cancel = function () {
-                $modalInstance.close();
-            };
-        }]);
+		  				var hasVm = appService.crudService.updates("virtualmachine/vm", vms);
+		  				hasVm.then(function(result) {
+		                    $state.reload();
+		  					$scope.cancel();
+		  				}).catch(function (result) {
+
+		  			         if(result.data.globalError[0] != null){
+		  			        	 var msg = result.data.globalError[0];
+		  			        	appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+		  			        	$state.reload();
+			  					$scope.cancel();
+		  			         }
+	                            });
+	  		 }
+                },
+				  $scope.cancel = function () {
+	               $modalInstance.close();
+	           };
+	       }]);
   };
 
   $scope.stopVm = function(size,item) {
-  	 dialogService.openDialog("app/views/cloud/instance/stop.jsp", size, $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance, $rootScope) {
+  	 appService.dialogService.openDialog("app/views/cloud/instance/stop.jsp", size, $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance, $rootScope) {
   		 $scope.item =item;
   		 $scope.vmStop = function(item) {
   				var event = "VM.STOP";
-  				var hasVm = crudService.vmUpdate("virtualmachine/event", item.uuid, event);
+  				var hasVm = appService.crudService.vmUpdate("virtualmachine/event", item.uuid, event);
   				hasVm.then(function(result) {
   					$state.reload();
   					 $scope.cancel();
   				}).catch(function (result) {
-  					console.log(result.data.globalError[0]);
+
  			         if(result.data.globalError[0] != null){
  			        	 var msg = result.data.globalError[0];
- 			        	 notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+ 			        	 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
 
  			             }
                        });
@@ -118,36 +133,35 @@ $scope.list = function () {
   };
 
   $scope.isoList = function () {
-      var hasisoList = crudService.listAll("iso/list");
-      hasisoList.then(function (result) {  // this is only run after $http
-											// completes0
+      var hasisoList = appService.crudService.listAll("iso/list");
+      hasisoList.then(function (result) { 
               $scope.isoLists = result;
        });
    };
    $scope.isoList();
 
    $scope.hostList = function () {
-	      var hashostList = crudService.listAll("host/list");
-	      hashostList.then(function (result) {  // this is only run after $http
+	      var hashostList = appService.crudService.listAll("host/list");
+	      hashostList.then(function (result) { 
 				$scope.hostLists = result;
 	       });
 	   };
 	   $scope.hostList();
 
   $scope.rebootVm = function(size,item) {
-  	 dialogService.openDialog("app/views/cloud/instance/reboot.jsp", size,  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
+  	 appService.dialogService.openDialog("app/views/cloud/instance/reboot.jsp", size,  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
   		 $scope.item =item;
   		 $scope.vmRestart = function(item) {
   				var event = "VM.REBOOT";
-  				var hasVm = crudService.vmUpdate("virtualmachine/event", item.uuid, event);
+  				var hasVm = appService.crudService.vmUpdate("virtualmachine/event", item.uuid, event);
   				hasVm.then(function(result) {
   					$state.reload();
   					 $scope.cancel();
   				}).catch(function (result) {
-  					console.log(result.data.globalError[0]);
+
  			         if(result.data.globalError[0] != null){
  			        	 var msg = result.data.globalError[0];
- 			        	 notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+ 			        	 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
 
  			             }
                        });
@@ -161,19 +175,19 @@ $scope.list = function () {
   $scope.actionExpunge = false;
 
   $scope.reInstallVm = function(size,item) {
-	  	 dialogService.openDialog("app/views/cloud/instance/reinstall.jsp", size,  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
+	  	 appService.dialogService.openDialog("app/views/cloud/instance/reinstall.jsp", size,  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
 	  		 $scope.item =item;
 	  		 $scope.vmRestart = function(item) {
 	  				var event = "VM.RESTORE";
-	  				var hasVm = crudService.vmUpdate("virtualmachine/event", item.uuid, event);
+	  				var hasVm = appService.crudService.vmUpdate("virtualmachine/event", item.uuid, event);
 	  				hasVm.then(function(result) {
 	  					$state.reload();
 	  					 $scope.cancel();
 	  				}).catch(function (result) {
-	  					console.log(result.data.globalError[0]);
+
 	  			         if(result.data.globalError[0] != null){
 	  			        	 var msg = result.data.globalError[0];
-	  			        	 notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+	  			        	 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
 	  			        	$state.reload();
 		  					$scope.cancel();
 	  			             }
@@ -186,36 +200,36 @@ $scope.list = function () {
 	  };
 
 	  $scope.reDestroyVm = function(size,item) {
-		  	 dialogService.openDialog("app/views/cloud/instance/vmdestroy.jsp", size,  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
+		  	 appService.dialogService.openDialog("app/views/cloud/instance/vmdestroy.jsp", size,  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
 		  		 $scope.item =item;
 		  		 $scope.vmDestroy = function(item) {
 		  			$scope.actionExpunge = true;
 		  				if ($scope.agree == true) {
 		  					var event = "VM.EXPUNGE";
-			  				var hasVm = crudService.vmUpdate("virtualmachine/event", item.uuid, event);
+			  				var hasVm = appService.crudService.vmUpdate("virtualmachine/event", item.uuid, event);
 			  				hasVm.then(function(result) {
 			  					$state.reload();
 			  					 $scope.cancel();
 			  				}).catch(function (result) {
-			  					console.log(result.data.globalError[0]);
+
 			  			         if(result.data.globalError[0] != null){
 			  			        	 var msg = result.data.globalError[0];
-			  			        	 notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+			  			        	 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
 			  			        	$state.reload();
 				  					$scope.cancel();
 			  			             }
 		                            });
 		  		        } else{
 		  		        	var event = "VM.DESTROY";
-		  		        	var hasVm = crudService.vmUpdate("virtualmachine/event", item.uuid, event);
+		  		        	var hasVm = appService.crudService.vmUpdate("virtualmachine/event", item.uuid, event);
 		  		        	hasVm.then(function(result) {
 		  					$state.reload();
 		  					$scope.cancel();
 		  				}).catch(function (result) {
-		  					console.log(result.data.globalError[0]);
+
 		  			         if(result.data.globalError[0] != null){
 		  			        	 var msg = result.data.globalError[0];
-		  			        	 notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+		  			        	 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
 		  			        	$state.reload();
 			  					$scope.cancel();
 		  			             }
@@ -229,19 +243,19 @@ $scope.list = function () {
 		  };
 
 		  $scope.recoverVm = function(size,item) {
-			  	 dialogService.openDialog("app/views/cloud/instance/recoverVm.jsp", size,  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
+			  	 appService.dialogService.openDialog("app/views/cloud/instance/recoverVm.jsp", size,  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
 		  		 $scope.item =item;
 		  		 $scope.vmRecover= function(item) {
 		  					var event = "VM.CREATE";
-			  				var hasVm = crudService.vmUpdate("virtualmachine/event", item.uuid, event);
+			  				var hasVm = appService.crudService.vmUpdate("virtualmachine/event", item.uuid, event);
 			  				hasVm.then(function(result) {
 			  					$state.reload();
 			  					 $scope.cancel();
 			  				}).catch(function (result) {
-			  					console.log(result.data.globalError[0]);
+
 			  			         if(result.data.globalError[0] != null){
 			  			        	 var msg = result.data.globalError[0];
-			  			        	 notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+			  			        	 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
 			  			        	$state.reload();
 				  					$scope.cancel();
 			  			             }
@@ -255,12 +269,11 @@ $scope.list = function () {
 
 			  $scope.showConsole = function(vm) {
 				  $scope.vm = vm;
-				  var hasVms = crudService.updates("virtualmachine/console", vm);
+				  var hasVms = appService.crudService.updates("virtualmachine/console", vm);
 					hasVms.then(function(result) {
 						var consoleUrl = result.success;
 						var consoleParams = consoleUrl.split("token=");
 						$window.sessionStorage.setItem("consoleProxy", consoleParams[0]);
-						//$scope.consoleUrl = $sce.trustAsResourceUrl("http://192.168.1.152/console/?token=MTkyLjE2OC4xLjE1MnxpLTItNjktVk18bm92bmN0ZXN0");
 						$scope.instance = vm;
 						var randomnumber = Math.floor((Math.random()*100)+1);
 						 window.open("app/console.jsp?token="+consoleParams[1]+"&instance="+ btoa(vm.id), vm.name + vm.id,'width=800,height=580');
@@ -278,9 +291,9 @@ $scope.list = function () {
 	  			 	$scope.vm = vm;
 	  			 	if($scope.vm.transDisplayName != "") {
 	  			 		$scope.vm.transDisplayName=$scope.vm.transDisplayName;
-	  			 		var hasVm = crudService.update("virtualmachine", $scope.vm);
+	  			 		var hasVm = appService.crudService.update("virtualmachine", $scope.vm);
 		  				hasVm.then(function(result) {
-		  					notify({message: "Updated successfully", classes: 'alert-success', "timeOut": "5000", templateUrl: $scope.homerTemplate});
+		  					appService.notify({message: "Updated successfully", classes: 'alert-success', "timeOut": "5000", templateUrl: $scope.homerTemplate});
 		  					$state.reload();
 		  					 $scope.cancel();
 		  				});
@@ -288,10 +301,10 @@ $scope.list = function () {
 	  		 };
 
 			  $scope.showDescription = function(vm) {
-				  	 dialogService.openDialog("app/views/cloud/instance/editnote.jsp", 'sm',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
+				  	 appService.dialogService.openDialog("app/views/cloud/instance/editnote.jsp", 'sm',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
 				  		 $scope.vm = vm;
 				  		 $scope.update= function(form) {
-					  				var hasVm = crudService.update("virtualmachine", $scope.vm);
+					  				var hasVm = appService.crudService.update("virtualmachine", $scope.vm);
 					  				hasVm.then(function(result) {
 					  					$state.reload();
 					  					 $scope.cancel();
@@ -304,7 +317,7 @@ $scope.list = function () {
 				       }]);
 				  };
 				  $scope.attachISO = function(vm) {
-					  	 dialogService.openDialog("app/views/cloud/instance/attach-ISO.jsp", 'md',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
+					  	 appService.dialogService.openDialog("app/views/cloud/instance/attach-ISO.jsp", 'md',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
 					  		var tempVm = vm;
 					  		 var event = "ISO.ATTACH";
 					  		 $scope.attachISotoVM = function(form) {
@@ -312,20 +325,18 @@ $scope.list = function () {
 					  			 if(form.$valid) {
 					  				tempVm.iso = $scope.isos.uuid;
 					  				tempVm.event = event;
-							  		console.log(tempVm.iso);
-							  		console.log(tempVm.event);
-						  				var hasVm = crudService.updates("virtualmachine/vm", tempVm);
+							  		
+						  				var hasVm = appService.crudService.updates("virtualmachine/vm", tempVm);
 						  				hasVm.then(function(result) {
 						  					$scope.homerTemplate = 'app/views/notification/notify.jsp';
-						                     notify({message: $scope.isos.name+" is attaching to this VM", classes: 'alert-success', "timeOut": "5000", templateUrl: $scope.homerTemplate});
+						                     appService.notify({message: $scope.isos.name+" is attaching to this VM", classes: 'alert-success', "timeOut": "5000", templateUrl: $scope.homerTemplate});
 						  					$state.reload();
 						  					 $scope.cancel();
 						  				}).catch(function (result) {
-						  					console.log(result);
-						  					console.log(result.data.globalError[0]);
+						  					
 						  			         if(result.data.globalError[0] != null){
 						  			        	 var msg = result.data.globalError[0];
-						  			        	 notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+						  			        	 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
 						  			        	$state.reload();
 							  					$scope.cancel();
 						  			             }
@@ -338,23 +349,22 @@ $scope.list = function () {
 					       }]);
 					  };
 					  $scope.detachISO = function(vm) {
-						  	 dialogService.openDialog("app/views/cloud/instance/detach-ISO.jsp", 'md',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
+						  	 appService.dialogService.openDialog("app/views/cloud/instance/detach-ISO.jsp", 'md',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
 						  		 $scope.vm = vm;
 						  		 var event = "ISO.DETACH";
 						  		 $scope.update = function() {
 						  			$scope.vm.event = event;
-							  				var hasVm = crudService.updates("virtualmachine/vm", $scope.vm);
+							  				var hasVm = appService.crudService.updates("virtualmachine/vm", $scope.vm);
 							  				hasVm.then(function(result) {
 							  					$scope.homerTemplate = 'app/views/notification/notify.jsp';
-							                     notify({message: $scope.vm.isoName+" is detaching from this VM", classes: 'alert-success', "timeOut": "5000", templateUrl: $scope.homerTemplate});
+							                     appService.notify({message: $scope.vm.isoName+" is detaching from this VM", classes: 'alert-success', "timeOut": "5000", templateUrl: $scope.homerTemplate});
 							  					$state.reload();
 							  					$scope.cancel();
 							  				}).catch(function (result) {
-							  					console.log(result);
-							  					console.log(result.data.globalError[0]);
+							  				
 							  			         if(result.data.globalError[0] != null){
 							  			        	 var msg = result.data.globalError[0];
-							  			        	 notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+							  			        	 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
 							  			        	$state.reload();
 								  					$scope.cancel();
 							  			             }
@@ -367,7 +377,7 @@ $scope.list = function () {
 						  };
 
 						  $scope.takeSnapshot = function(vm) {
-							  	 dialogService.openDialog("app/views/cloud/instance/createVmSnapshot.jsp", 'md',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance, $rootScope) {
+							  	 appService.dialogService.openDialog("app/views/cloud/instance/createVmSnapshot.jsp", 'md',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance, $rootScope) {
 							  		 $scope.instance = vm;
 							  		 $scope.validateVMSnapshot= function(form) {
 								  			$scope.formSubmitted = true;
@@ -377,16 +387,16 @@ $scope.list = function () {
 						                    	if (angular.isUndefined($scope.vmsnapshot.snapshotMemory) || $scope.vmsnapshot.snapshotMemory === null || $scope.vmsnapshot.snapshotMemory === '') {
 						                    	$scope.vmsnapshot.snapshotMemory = false;
 						                    	}
-								  				var hasVm = crudService.add("vmsnapshot",$scope.vmsnapshot);
+								  				var hasVm = appService.crudService.add("vmsnapshot",$scope.vmsnapshot);
 								  				hasVm.then(function(result) {
 								  					$scope.homerTemplate = 'app/views/notification/notify.jsp';
-								                     notify({message: $scope.vmsnapshot.name+" is creating for "+$scope.instance.name, classes: 'alert-success', "timeOut": "5000", templateUrl: $scope.homerTemplate});
+								                     appService.notify({message: $scope.vmsnapshot.name+" is creating for "+$scope.instance.name, classes: 'alert-success', "timeOut": "5000", templateUrl: $scope.homerTemplate});
 								  					 $state.reload();
 								  					 $scope.cancel();
 								  				}).catch(function (result) {
-								  					console.log(result.data.globalError[0]);
+								  					
 								  				  $scope.homerTemplate = 'app/views/notification/notify.jsp';
-								                     notify({message: result.data.globalError[0], classes: 'alert-danger', "timeOut": "5000", templateUrl: $scope.homerTemplate});
+								                     appService.notify({message: result.data.globalError[0], classes: 'alert-danger', "timeOut": "5000", templateUrl: $scope.homerTemplate});
 								                     $state.reload();
 									  			     $scope.cancel();
 						                        });
@@ -399,7 +409,7 @@ $scope.list = function () {
 							  };
 
 						$scope.hostMigrate = function(vm) {
-								  	 dialogService.openDialog("app/views/cloud/instance/host-migrate.jsp", 'md',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
+								  	 appService.dialogService.openDialog("app/views/cloud/instance/host-migrate.jsp", 'md',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
 								  		var vms = vm;
 								  		 var event = "VM.MIGRATE";
 								  		 $scope.update= function(form) {
@@ -407,17 +417,17 @@ $scope.list = function () {
 								  			$scope.formSubmitted = true;
 						                    if (form.$valid) {
 						                    	vms.hostUuid = $scope.host.uuid;
-									  				var hasVm = crudService.updates("virtualmachine/vm", vms);
+									  				var hasVm = appService.crudService.updates("virtualmachine/vm", vms);
 									  				hasVm.then(function(result) {
 									  					$scope.homerTemplate = 'app/views/notification/notify.jsp';
-									                    notify({message: $scope.host.name+" is migrating", classes: 'alert-success', "timeOut": "5000", templateUrl: $scope.homerTemplate});
+									                    appService.notify({message: $scope.host.name+" is migrating", classes: 'alert-success', "timeOut": "5000", templateUrl: $scope.homerTemplate});
 									  					$state.reload();
 									  					 $scope.cancel();
 									  				}).catch(function (result) {
-									  					console.log(result.data.globalError[0]);
+
 									  			         if(result.data.globalError[0] != null){
 									  			        	 var msg = result.data.globalError[0];
-									  			        	 notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+									  			        	 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
 									  			        	$state.reload();
 										  					$scope.cancel();
 									  			         }
@@ -433,8 +443,8 @@ $scope.list = function () {
 
 						$scope.hostInformation = function(vm) {
 
-								  	 dialogService.openDialog("app/views/cloud/instance/listhost.jsp", 'md',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
-					console.log($scope.instance.host);
+								  	 appService.dialogService.openDialog("app/views/cloud/instance/listhost.jsp", 'md',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
+
 					  $scope.cancel = function () {
 					        $modalInstance.close();
 					    };
@@ -443,7 +453,7 @@ $scope.list = function () {
 								       }]);
 								  };
 						$scope.showPassword = function(vm) {
-									  	 dialogService.openDialog("app/views/cloud/instance/show-reset-password.jsp", 'md',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
+									  	 appService.dialogService.openDialog("app/views/cloud/instance/show-reset-password.jsp", 'md',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
 									  		 $scope.vm = vm;
 									  		 var event = "VM.RESETPASSWORD";
 									  		 $scope.update= function(form) {
@@ -451,16 +461,15 @@ $scope.list = function () {
 									  			$scope.formSubmitted = true;
 									  			if(form.$valid) {
 									  				   $scope.vm.password = $scope.passwords;
-										  				var hasVm = crudService.updates("virtualmachine/vm", $scope.vm);
+										  				var hasVm = appService.crudService.updates("virtualmachine/vm", $scope.vm);
 										  				hasVm.then(function(result) {
 										  					$state.reload();
 										  					 $scope.cancel();
 										  				}).catch(function (result) {
-										  					console.log(result);
-										  					console.log(result.data.globalError[0]);
+										  				
 										  			         if(result.data.globalError[0] != null){
 										  			        	 var msg = result.data.globalError[0];
-										  			        	notify({message: msg, classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+										  			        	appService.notify({message: msg, classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
 										  			        	$state.reload();
 											  					$scope.cancel();
 										  			         }
@@ -474,14 +483,14 @@ $scope.list = function () {
 							};
 
     $scope.templateCategory = 'dashboard';
-    var instanceViewTab = localStorageService.get("instanceViewTab");
+    var instanceViewTab = appService.localStorageService.get("instanceViewTab");
     if (!angular.isUndefined(instanceViewTab) && instanceViewTab != null) {
         $scope.templateCategory = instanceViewTab;
-        localStorageService.set("instanceViewTab", 'dashboard');
+        appService.localStorageService.set("instanceViewTab", 'dashboard');
     }
 
     $scope.reloadMonitor = function () {
-        localStorageService.set("instanceViewTab", 'monitor');
+        appService.localStorageService.set("instanceViewTab", 'monitor');
         $state.reload();
     }
 
@@ -632,7 +641,6 @@ if ($stateParams.id > 0) {
         hasServer.then(function (result) {  // this is only run after $http											// completes
             $scope.instance = result;
 		$scope.instanceList = result;
-console.log($scope.instance);
             var str = $scope.instance.cpuUsage;
             if(str!=null){
             var newString = str.replace(/^_+|_+$/g,'');

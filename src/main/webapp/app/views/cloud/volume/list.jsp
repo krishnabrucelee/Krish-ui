@@ -56,22 +56,23 @@ pageEncoding="UTF-8"%>
     				  		<get-loader-image data-ng-show="showLoader"></get-loader-image>
       						</div>
       						<div  data-ng-hide="showLoader" class="table-responsive col-12-table">
-                        <table cellspacing="1" cellpadding="1" class="table table-bordered table-striped">
+                        <table cellspacing="1" cellpadding="1" class="table dataTable table-bordered table-striped">
                             <thead>
-                                <tr>
-                            		<th class="col-md-2 col-xs-2"><fmt:message key="common.name" bundle="${msg}" /></th>
-                            		<th class="col-md-2 col-xs-1"><fmt:message key="common.department" bundle="${msg}" /></th>
-									<th class="col-md-2 col-xs-1"><fmt:message key="common.project" bundle="${msg}" /></th>
-                            		<th class="col-md-2 col-xs-1"><fmt:message key="common.type" bundle="${msg}" /></th>
-                            		<th class="col-md-2 col-xs-1"><fmt:message key="common.plan" bundle="${msg}" /></th>
-                            		<th class="col-md-2 col-xs-2"><fmt:message key="common.attached.to" bundle="${msg}" /></th>
-                            		<th class="col-md-1 col-xs-1"><fmt:message key="common.size" bundle="${msg}" /> GB</th>
-                            		<th class="col-md-2 col-xs-1"><fmt:message key="common.created.date" bundle="${msg}" /></th>
+                               <tr>
+                            	    <th  data-ng-click="changeSorting('name')" data-ng-class="sort.descending && sort.column =='name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.name" bundle="${msg}" /></th>
+                            	    <th  data-ng-click="changeSorting('department.userName')" data-ng-class="sort.descending && sort.column =='department.userName'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.department" bundle="${msg}" /></th>
+                            		<th  data-ng-click="changeSorting('project.name')" data-ng-class="sort.descending && sort.column =='project.name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.project" bundle="${msg}" /></th>
+                            	    <th  data-ng-click="changeSorting('volumeType')" data-ng-class="sort.descending && sort.column =='volumeType'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.type" bundle="${msg}" /></th>
+                            	    <th  data-ng-click="changeSorting('storageOffering.name')" data-ng-class="sort.descending && sort.column =='storageOffering.name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.plan" bundle="${msg}" /></th>
+                            		<th  data-ng-click="changeSorting('vmInstance.name')" data-ng-class="sort.descending && sort.column =='vmInstance.name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.attached.to" bundle="${msg}" /></th>
+                            	    <th  data-ng-click="changeSorting('diskSize')" data-ng-class="sort.descending && sort.column =='diskSize'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.size" bundle="${msg}" /></th>
+                            	    <th  data-ng-click="changeSorting('createdDateTime')" data-ng-class="sort.descending && sort.column =='createdDateTime'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.created.date" bundle="${msg}" /></th>
+                            	    
                             		<th class="col-md-1 col-xs-1"><fmt:message key="common.action" bundle="${msg}" /></th>
                             	</tr>
                             </thead>
                             <tbody>
-                                <tr data-ng-repeat="volume in filteredCount = (volumeList| filter:quickSearch)">
+                                <tr data-ng-repeat="volume in filteredCount = (volumeList| filter:quickSearch | orderBy:sort.column:sort.descending)">
                                     <td>
                                         <!-- <a class="text-info" href="javascript:void(0)"  title="View Volume" > -->{{ volume.name}}<!-- </a> -->
                                     </td>

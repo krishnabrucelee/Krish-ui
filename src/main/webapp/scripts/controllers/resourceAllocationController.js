@@ -52,7 +52,6 @@ function resourceAllocationCtrl($scope, crudService, globalConfig, notify, $stat
     // Save Resource limits based on the quota type.
 	$scope.save = function(form) {
 		//if(form.$valid) {
-		console.log($scope.type);
 		if($scope.type == "project-quota") {
 			if(!angular.isUndefined($scope.resourceQuota.project)) {
 				$scope.saveProjectQuota(form);
@@ -76,7 +75,6 @@ function resourceAllocationCtrl($scope, crudService, globalConfig, notify, $stat
 
 			$scope.stateid = $stateParams.id;
 			$scope.type = $stateParams.quotaType;
-			console.log($scope.type);
 			$scope.departmentList = result;
 
 			angular.forEach($scope.departmentList, function(obj, key) {

@@ -136,9 +136,10 @@ pageEncoding="UTF-8"%>
                                         <td><b><fmt:message key="common.network.offering" bundle="${msg}" /></b></td>
                                         <td>
                                             <label data-ng-if="type != 'edit'"  >{{network.networkOffering.name}}</label>
-                                            <select  data-ng-if="type == 'edit'"  class="form-control input-group editedinput" name="networkoffering" data-ng-init="" data-ng-model="network.networkOffering" ng-options="networkoffering.displayText for networkoffering in networkOfferList" data-ng-class="{'error': addnetworkForm.networkoffering.$invalid && formSubmitted}" >
+                                            <select  data-ng-if="type == 'edit'"  class="form-control input-group editedinput" name="networkoffering" data-ng-init="" data-ng-model="network.networkOffering" data-ng-options="networkoffering.displayText for networkoffering in networkOfferList"  >
                                                 <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
                                             </select>
+                                                                                                                                    
                                         </td>
                                     </tr>
                                     <tr>
