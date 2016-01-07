@@ -18,7 +18,7 @@ function instanceViewCtrl($scope, $state, $stateParams, appService, $window) {
     	$scope.showLoader = true;
     	$scope.showLoaderOffer = true;
  	    var hasServer = appService.crudService.read("virtualmachine", $stateParams.id);
-        hasServer.then(function (result) {  
+        hasServer.then(function (result) {
             $scope.instance = result;
 		$scope.instanceList = result;
             var str = $scope.instance.cpuUsage;
@@ -55,13 +55,13 @@ function instanceViewCtrl($scope, $state, $stateParams, appService, $window) {
      };
 
     $scope.selectab = function() {
-    	
+
 	$scope.templateCategory = 'config';
 	$scope.active = true;
-	
+
 	}
-     
-     
+
+
 
 
  // Volume List
@@ -134,7 +134,7 @@ $scope.list = function () {
 
   $scope.isoList = function () {
       var hasisoList = appService.crudService.listAll("iso/list");
-      hasisoList.then(function (result) { 
+      hasisoList.then(function (result) {
               $scope.isoLists = result;
        });
    };
@@ -142,7 +142,7 @@ $scope.list = function () {
 
    $scope.hostList = function () {
 	      var hashostList = appService.crudService.listAll("host/list");
-	      hashostList.then(function (result) { 
+	      hashostList.then(function (result) {
 				$scope.hostLists = result;
 	       });
 	   };
@@ -325,7 +325,7 @@ $scope.list = function () {
 					  			 if(form.$valid) {
 					  				tempVm.iso = $scope.isos.uuid;
 					  				tempVm.event = event;
-							  		
+
 						  				var hasVm = appService.crudService.updates("virtualmachine/vm", tempVm);
 						  				hasVm.then(function(result) {
 						  					$scope.homerTemplate = 'app/views/notification/notify.jsp';
@@ -333,7 +333,7 @@ $scope.list = function () {
 						  					$state.reload();
 						  					 $scope.cancel();
 						  				}).catch(function (result) {
-						  					
+
 						  			         if(result.data.globalError[0] != null){
 						  			        	 var msg = result.data.globalError[0];
 						  			        	 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
@@ -361,7 +361,7 @@ $scope.list = function () {
 							  					$state.reload();
 							  					$scope.cancel();
 							  				}).catch(function (result) {
-							  				
+
 							  			         if(result.data.globalError[0] != null){
 							  			        	 var msg = result.data.globalError[0];
 							  			        	 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
@@ -394,7 +394,7 @@ $scope.list = function () {
 								  					 $state.reload();
 								  					 $scope.cancel();
 								  				}).catch(function (result) {
-								  					
+
 								  				  $scope.homerTemplate = 'app/views/notification/notify.jsp';
 								                     appService.notify({message: result.data.globalError[0], classes: 'alert-danger', "timeOut": "5000", templateUrl: $scope.homerTemplate});
 								                     $state.reload();
@@ -449,38 +449,42 @@ $scope.list = function () {
 					        $modalInstance.close();
 					    };
 
-
 								       }]);
 								  };
-						$scope.showPassword = function(vm) {
-									  	 appService.dialogService.openDialog("app/views/cloud/instance/show-reset-password.jsp", 'md',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
-									  		 $scope.vm = vm;
-									  		 var event = "VM.RESETPASSWORD";
-									  		 $scope.update= function(form) {
-									  			$scope.vm.event = event;
-									  			$scope.formSubmitted = true;
-									  			if(form.$valid) {
-									  				   $scope.vm.password = $scope.passwords;
-										  				var hasVm = appService.crudService.updates("virtualmachine/vm", $scope.vm);
-										  				hasVm.then(function(result) {
-										  					$state.reload();
-										  					 $scope.cancel();
-										  				}).catch(function (result) {
-										  				
-										  			         if(result.data.globalError[0] != null){
-										  			        	 var msg = result.data.globalError[0];
-										  			        	appService.notify({message: msg, classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
-										  			        	$state.reload();
-											  					$scope.cancel();
-										  			         }
-									                            });
-									  			}
-									  			},
-												  $scope.cancel = function () {
-									               $modalInstance.close();
-									           };
-									       }]);
-							};
+					  $scope.showPassword = function(vm) {
+							dialogService.openDialog("app/views/cloud/instance/show-reset-password.jsp", 'md',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
+							    $scope.cancel = function () {
+							        $modalInstance.close();
+								};
+							}]);
+						};
+
+						$scope.resetPassword= function(vm) {
+							var event = "VM.RESETPASSWORD";
+			  			 	$scope.vm = vm;
+			  			 	$scope.vm.event = event;
+			  			 	$scope.vm.password = "reset";
+				  			$scope.formSubmitted = true;
+
+			  				var hasVm = crudService.updates("virtualmachine/vm", $scope.vm);
+			  				hasVm.then(function(result) {
+			  					notify({message: "VM password updated successfully. Please refresh and click show password", classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+			  					$state.reload();
+			  					$scope.cancel();
+			  				}).catch(function (result) {
+			  			         if(result.data.globalError[0] != null){
+			  			        	var msg = result.data.globalError[0];
+			  			        	if(msg === "SUCCESS") {
+			  			        		msg = "VM password updated successfully. Please refresh and click show password";
+			  			        		notify({message: msg, classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+			  			        	} else {
+			  			        		notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+			  			        	}
+			  			        	$state.reload();
+				  					$scope.cancel();
+			  			         }
+		                    });
+			  		     };
 
     $scope.templateCategory = 'dashboard';
     var instanceViewTab = appService.localStorageService.get("instanceViewTab");
