@@ -15,7 +15,7 @@
                 <div class="col-md-12">
                 <div class="form-group"ng-class="{'text-danger': applicationForm.application.$invalid && formSubmitted}">
                         <div class="row">
-                            <label class="col-md-4 col-xs-12 col-sm-4 control-label control-normal"><fmt:message key="common.domain" bundle="${msg}" /><span class="text-danger">*</span></label>
+                            <label class="col-md-3 col-xs-12 col-sm-3 control-label control-normal"><fmt:message key="common.domain" bundle="${msg}" /><span class="text-danger">*</span></label>
                             <div class="col-md-6  col-sm-6 col-xs-12">
                                 {{ application.domain.name }}
                             </div>
