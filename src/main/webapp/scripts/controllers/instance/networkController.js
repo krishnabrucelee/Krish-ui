@@ -17,10 +17,11 @@ function networkCtrl($scope, $modal, $window, $stateParams,appService) {
         var hasServer = appService.crudService.read("virtualmachine", $stateParams.id);
         hasServer.then(function (result) {  // this is only run after $http
             $scope.instance = result;
+            console.log( $scope.instance);
             $scope.networkList = result.network;
 
         });
-    } 
+    }
 
     $scope.networkList = {};
     $scope.paginationObject = {};
@@ -44,47 +45,60 @@ function networkCtrl($scope, $modal, $window, $stateParams,appService) {
     };
     $scope.list(1);
 
-        //Instance Nic List
-	    $scope.instanceNicList = function () {
+        
+
+
+    // $scope.nicList();
+	$scope.nicLists = function (nic, networkList) {
        	var instanceId = $stateParams.id;
+
        	var hasNic = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbyinstances?instanceid="+instanceId +"&lang=" + appService.localStorageService.cookie.get('language')+"&sortBy=-id");
-	        hasNic.then(function (result) {
-	            $scope.nicList = result;
-	            $scope.nicArray = [];
-	            angular.forEach($scope.nicList, function(nic, nicKey) {
-	            	$scope.nicArray.push(nic.network.id);
-	    		})
-	        });
-	    };
-	    $scope.instanceNicList();
+		hasNic.then(function (result) {
+	            var networkList = [];
+		    $scope.nicList = result;
 
-
+		    if(!angular.isUndefined(networkList)) {
+			    angular.forEach($scope.nicList, function(nic, key) {
+				angular.forEach(networkList, function(network, networkKey) {
+					if(nic.network.id != network.id) {
+					   networkList.push(network);				
+					}
+			    	});	
+			    });
+			    $scope.networkList = networkList;
+	            }
+		});
+	    }; 
+	    $scope.nicLists(1);
 
     $scope.addNetworkToVM = function (instance) {
+	var nicList = $scope.nicLists;
         appService.dialogService.openDialog("app/views/cloud/instance/add-network.jsp", 'md', $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
-        	$scope.networkList = function (instance) {
-        	var networkAction = "";
+
+        $scope.networkList = function (instance) {
+
 	        		if($scope.instance.projectId != null) {
-	        			networkAction = "/listall/"+$scope.instance.projectId;
+	        			console.log("project " + $scope.instance.projectId);
+	    
+	        			var hasNetworks = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "guestnetwork" + "/listall/"+$scope.instance.projectId);
+	        			hasNetworks.then(function (result) {
+	        				$scope.networkList = result;
+						 $scope.nicLists(1, result);
+	        			});
 	        		} else {
-	        			networkAction = "/list/"+$scope.instance.departmentId;
+	        			console.log("department " + $scope.instance.departmentId);
+	        			var hasNetworks = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "guestnetwork" + "/list/"+$scope.instance.departmentId);
+	        			hasNetworks.then(function (result) {
+	        				$scope.networkList = result;
+						 $scope.nicLists(1, result);
+
+	        			});
 	        		}
-	        		var hasNetworks = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "guestnetwork" + networkAction);
-        			hasNetworks.then(function (result) {
-        				var networkList = [];
-        				$scope.networkList = result;
-    					angular.forEach(result, function(network, networkKey) {
-        					if($scope.nicArray.indexOf(network.id) < 0) {
-        						networkList.push(network);
-        					}
-        				})
-        				$scope.networkList = networkList;
-
-        			});
 	        	};
-	    	    $scope.networkList(1);
+	            $scope.networkList(1);
 
-
+		// Volume List
+	    	nicList(1);
 
             $scope.addNicToVirtualMachine = function (form, network) {
                 $scope.formSubmitted = true;
@@ -95,7 +109,7 @@ function networkCtrl($scope, $modal, $window, $stateParams,appService) {
                 	delete $scope.nic.vmInstance.network;
 
                         $scope.nic.networkId = network.id;
-
+                     
 		        delete $scope.nic.network;
                         $scope.showLoader = true;
                         var hasServer = appService.crudService.add("nics", $scope.nic);
@@ -103,7 +117,7 @@ function networkCtrl($scope, $modal, $window, $stateParams,appService) {
                         $scope.showLoader = false;
                     	appService.notify({message: 'Attached successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                         $modalInstance.close();
-        	    	    $scope.instanceNicList();
+                        $scope.list(1);
                }).catch(function (result) {
                         if (!angular.isUndefined(result.data)) {
                             if (result.data.globalError != '' && !angular.isUndefined(result.data.globalError)) {
@@ -133,7 +147,7 @@ function networkCtrl($scope, $modal, $window, $stateParams,appService) {
 		       $scope.showLoader = true;
 		   var hasNic = appService.crudService.softDelete("nics", nic);
                     hasNic.then(function (result) {
-
+                     
 		       $scope.showLoader = false;
                        appService.notify({message: 'Deleted successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
 		        $scope.list(1);
@@ -153,7 +167,7 @@ function networkCtrl($scope, $modal, $window, $stateParams,appService) {
 		   $scope.showLoader = true;
                     var hasServer = appService.crudService.update("nics", nic);
                     hasServer.then(function (result) {
-
+                        
 		       $scope.showLoader = false;
                        appService.notify({message: 'Updated successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
 		       $scope.list(1);
