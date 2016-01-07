@@ -13,6 +13,8 @@ function applicationListCtrl($scope, appService) {
     $scope.paginationObject = {};
     $scope.applicationForm = {};
     $scope.global = appService.globalConfig;
+    $scope.sort = appService.globalConfig.sort;
+    $scope.changeSorting = appService.utilService.changeSorting;
 
     // Application List
     $scope.list = function (pageNumber) {

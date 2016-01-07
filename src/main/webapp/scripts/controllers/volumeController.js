@@ -13,6 +13,10 @@ angular
 function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeService, $window) {
 
     $scope.global = appService.globalConfig;
+    $scope.sort = appService.globalConfig.sort;
+    $scope.changeSorting = appService.utilService.changeSorting;
+    
+
     $scope.formSubmitted = false;
     // Form Field Decleration
     $scope.volume = {

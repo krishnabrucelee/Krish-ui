@@ -10,9 +10,8 @@ function utilService(globalConfig) {
     	return referenceObject;
     };
     
-/*    object.changeSorting = function(column) {
-
-		var sort = sort;
+    object.changeSorting = function(column) {
+		var sort = globalConfig.sort;
 
 		if (sort.column == column) {
 			sort.descending = !sort.descending;
@@ -21,7 +20,7 @@ function utilService(globalConfig) {
 			sort.descending = false;
 		}
 		return sort.descending;
-	};*/
+	};
 
 
     return object;

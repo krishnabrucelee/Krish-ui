@@ -52,9 +52,6 @@ pageEncoding="UTF-8"%>
                    <pagination-content></pagination-content>
 
 
-
-
-
 					<div class="white-content">
 
                         <div class="table-responsive">
@@ -69,20 +66,21 @@ pageEncoding="UTF-8"%>
 								<div data-ng-hide="showLoader"
 									class="table-responsive col-12-table">
 									<table cellspacing="1" cellpadding="1"
-										class="table table-bordered table-striped">
-										<thead>
-											<tr>
-												<th><fmt:message key="common.name" bundle="${msg}" /></th>
-												<th><fmt:message key="common.account" bundle="${msg}" /></th>
-												<th><fmt:message key="common.type" bundle="${msg}" /></th>
-												<th><fmt:message key="common.cidr" bundle="${msg}" /></th>
-												<th><fmt:message key="gateway" bundle="${msg}" /></th>
-												<th><fmt:message key="common.action" bundle="${msg}" /></th>
-											</tr>
-										</thead>
+										class="table table-bordered dataTable table-striped">
+									<thead>
+			
+				<tr>
+					<th  data-ng-click="changeSorting('name')" data-ng-class="sort.descending && sort.column =='name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.name" bundle="${msg}" /></th>
+					<th  data-ng-click="changeSorting('department.userName')" data-ng-class="sort.descending && sort.column =='Account'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.account" bundle="${msg}" /></th>
+					<th  data-ng-click="changeSorting('networkType')" data-ng-class="sort.descending && sort.column =='networkType'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.type" bundle="${msg}" /></th>
+					<th  data-ng-click="changeSorting('cIDR')" data-ng-class="sort.descending && sort.column =='cIDR'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.cidr" bundle="${msg}" /></th>
+					<th  data-ng-click="changeSorting('gateway')" data-ng-class="sort.descending && sort.column =='gateway'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="gateway" bundle="${msg}" /></th>
+					<th><fmt:message key="common.action" bundle="${msg}" /></th>
+				</tr>
+			</thead>
 										<tbody>
 											<tr
-												data-ng-repeat="network in filteredCount = (networkList | filter: quickSearch)">
+												data-ng-repeat="network in filteredCount = (networkList | filter: quickSearch | orderBy:sort.column:sort.descending)">
 												<td><a class="text-info"
 													ui-sref="cloud.list-network.view-network({id: {{ network.id }}, view: 'view'})"
 													title="View Network">{{ network.name }}</a></td>

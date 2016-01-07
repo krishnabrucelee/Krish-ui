@@ -8,6 +8,8 @@ angular
  function rolesListCtrl($scope, appService, $window, $state, modalService, $stateParams) {
 
     $scope.formElements = {};
+    $scope.sort = appService.globalConfig.sort;
+    $scope.changeSorting = appService.utilService.changeSorting;
     $scope.ids = {};
     $scope.role = {
         department: {}

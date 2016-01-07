@@ -73,12 +73,12 @@
     				  		<get-loader-image data-ng-show="showLoader"></get-loader-image>
       						</div>
                             <div data-ng-hide="showLoader" class="table-responsive">
-                                <table cellspacing="1" cellpadding="1" class="table table-bordered table-striped">
+                                <table cellspacing="1" cellpadding="1" class="table dataTable table-bordered table-striped">
                                     <thead>
                                         <tr>
-                                            <th class="col-md-2 col-sm-2"><fmt:message key="common.name" bundle="${msg}" /> </th>
-                                            <th class="col-md-2 col-sm-2"><fmt:message key="common.domain" bundle="${msg}" /> </th>
-                                            <th class="col-md-3 col-sm-3"><fmt:message key="common.description" bundle="${msg}" /> </th>
+                                            <th class="col-md-2 col-sm-2"  data-ng-click="changeSorting('userName')" data-ng-class="sort.descending && sort.column =='userName'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.name" bundle="${msg}" /></th>
+                                             <th class="col-md-2 col-sm-2"  data-ng-click="changeSorting('domain.name')" data-ng-class="sort.descending && sort.column =='domain.name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.domain" bundle="${msg}" /></th> 
+                                             <th class="col-md-2 col-sm-2"  data-ng-click="changeSorting('description')" data-ng-class="sort.descending && sort.column =='description'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.description" bundle="${msg}" /></th> 
                                             <th class="col-md-1 col-sm-1"><fmt:message key="common.action" bundle="${msg}" /> </th>
                                         </tr>
                                     </thead>
@@ -88,7 +88,7 @@
                                         </tr>
                                     </tbody>
                                     <tbody data-ng-show="departmentList.length > 0">
-                                        <tr data-ng-repeat="department in filteredCount = (departmentList| filter:quickSearch)" >
+                                        <tr data-ng-repeat="department in filteredCount = (departmentList| filter:quickSearch | orderBy:sort.column:sort.descending)" >
 											<td>
                                                 {{ department.userName}}
                                             </td>

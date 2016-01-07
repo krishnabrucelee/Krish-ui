@@ -20,23 +20,9 @@ function networksCtrl($scope,$rootScope,filterFilter,$state, $stateParams,modalS
     $scope.formElements = [];
     $scope.allItemsSelected = false;
 
-    $scope.sort = {
-		column : '',
-		descending : false
-	};
-	
-	$scope.changeSorting = function(column) {
-
-		var sort = $scope.sort;
-
-		if (sort.column == column) {
-			sort.descending = !sort.descending;
-		} else {
-			sort.column = column;
-			sort.descending = false;
-		}
-		return sort.descending;
-	};
+    $scope.sort = appService.globalConfig.sort;
+    $scope.changeSorting = appService.utilService.changeSorting;
+    
 
     $scope.openAddIsolatedNetwork = function (size) {
         appService.dialogService.openDialog("app/views/cloud/network/add.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
@@ -189,13 +175,15 @@ function networksCtrl($scope,$rootScope,filterFilter,$state, $stateParams,modalS
         hasnetwork.then(function (result) {
             $scope.network = result;
             appService.localStorageService.set('view', 'details');
-        });
+            
+            angular.forEach($scope.networkList, function(obj, key) {
+	    		if(obj.id == $scope.network.networkOffering.id) {
+	    			$scope.network.networkOffering = obj;
+	    		}
+	    	});
         
-     	angular.forEach($scope.networkList, function(obj, key) {
-    		if(obj.id == $scope.network.networkOffering.id) {
-    			$scope.network.networkOffering = obj;
-    		}
-    	});
+        });
+      
     };
 
     if (!angular.isUndefined($stateParams.id) && $stateParams.id != '') {
@@ -208,15 +196,12 @@ function networksCtrl($scope,$rootScope,filterFilter,$state, $stateParams,modalS
         if (form.$valid) {
             var network = $scope.network;
             $scope.showLoader = true;
+     	
 	      if (!angular.isUndefined($scope.network.domain)) {
 		    network.domainId = $scope.network.domain.id;
 		 delete network.domain;
 		}
-	      
-	      
-	      
-             
-	      
+	   
 		if (!angular.isUndefined($scope.network.department) && $scope.network.department != null) {
 			network.departmentId = $scope.network.department.id;
 			delete network.department;

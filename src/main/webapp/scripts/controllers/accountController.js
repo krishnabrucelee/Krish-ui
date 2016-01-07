@@ -38,6 +38,8 @@ function accountListCtrl($scope,$state, $log,$timeout, appService) {
     $scope.userForm = {};
     $scope.global = appService.globalConfig;
     $scope.user = {};
+    $scope.sort = appService.globalConfig.sort;
+    $scope.changeSorting = appService.utilService.changeSorting;
     $scope.accountElements={
 
     };
