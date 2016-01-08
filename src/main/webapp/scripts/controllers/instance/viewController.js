@@ -208,8 +208,8 @@ $scope.list = function () {
 		  					var event = "VM.EXPUNGE";
 			  				var hasVm = appService.crudService.vmUpdate("virtualmachine/event", item.uuid, event);
 			  				hasVm.then(function(result) {
-			  					$state.reload();
-			  					 $scope.cancel();
+			  					$scope.cancel();
+			  					$window.location.href = '#/instance/list';
 			  				}).catch(function (result) {
 
 			  			         if(result.data.globalError[0] != null){
