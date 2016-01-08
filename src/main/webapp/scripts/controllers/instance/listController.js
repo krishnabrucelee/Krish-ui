@@ -15,7 +15,7 @@ function instanceListCtrl($scope, $sce, $log, $filter, dialogService, promiseAja
 	$scope.paginationObject = {};
     $scope.sort = appService.globalConfig.sort;
     $scope.changeSorting = appService.utilService.changeSorting;
-    
+
 //	  $scope.showConsole = function(vm) {
 //		  $scope.vm = vm;
 //		  var hasVms = crudService.updates("virtualmachine/console", vm);
@@ -30,13 +30,13 @@ function instanceListCtrl($scope, $sce, $log, $filter, dialogService, promiseAja
 		  var hasVms = crudService.updates("virtualmachine/console", vm);
 			hasVms.then(function(result) {
 				var consoleUrl = result.success;
-				var consoleParams = consoleUrl.split("token=");
+				window.open($sce.trustAsResourceUrl(consoleUrl), vm.name + vm.id,'width=750,height=460');
+/*				var consoleParams = consoleUrl.split("token=");
 				$window.sessionStorage.setItem("consoleProxy", consoleParams[0]);
-				//$scope.consoleUrl = $sce.trustAsResourceUrl("http://192.168.1.152/console/?token=MTkyLjE2OC4xLjE1MnxpLTItNjktVk18bm92bmN0ZXN0");
 				$scope.instance = vm;
 				var randomnumber = Math.floor((Math.random()*100)+1);
 				 window.open("app/console.jsp?token="+consoleParams[1]+"&instance="+ btoa(vm.id), vm.name + vm.id,'width=800,height=580');
-			});
+*/			});
 	  }
 
 

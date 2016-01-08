@@ -3,10 +3,10 @@
  * instanceCtrl
  *
  */
- 
+
 angular
         .module('homer')
-        .controller('networksCtrl', networksCtrl) 
+        .controller('networksCtrl', networksCtrl)
         .controller('networkViewCtrl', networkViewCtrl)
 
 function networksCtrl($scope,$rootScope,filterFilter,$state, $stateParams,modalService, $timeout,$window,appService) {
@@ -17,19 +17,100 @@ function networksCtrl($scope,$rootScope,filterFilter,$state, $stateParams,modalS
     $scope.rules = [];
     $scope.portList = [];
     $scope.vmList = [];
-    $scope.formElements = [];
+    $scope.formElements = {};
     $scope.allItemsSelected = false;
-
     $scope.sort = appService.globalConfig.sort;
     $scope.changeSorting = appService.utilService.changeSorting;
-    
+
+    $scope.firewallRulesList = {};
+    $scope.paginationObject = {};
+    $scope.egressForm = {};
+    $scope.global = appService.globalConfig;
+    $scope.sort = appService.globalConfig.sort;
+    $scope.changeSorting = appService.utilService.changeSorting;
+
+    // Egress Rule List
+    $scope.firewallRulesList = function (pageNumber) {
+        $scope.firewallRules = {};
+    	var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
+        var hasFirewallRuless = appService.crudService.list("egress", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+        hasFirewallRuless.then(function (result) {  // this is only run after $http completes0
+            $scope.egressRuleList = result;
+
+            // For pagination
+            $scope.paginationObject.limit = limit;
+            $scope.paginationObject.currentPage = pageNumber;
+            $scope.paginationObject.totalItems = result.totalItems;
+        });
+    };
+    $scope.firewallRulesList(1);
+
+    // Open dialogue box to create egress rule
+    $scope.firewallRules = {};
+
+    // Create a new egress rule
+    $scope.firewallRules.networkId = $stateParams.id;
+    $scope.egressSave = function (firewallRules) {
+    $scope.formSubmitted = true;
+    if ($scope.firewallRules.cidr && $scope.firewallRules.protocol && $scope.firewallRules.startPort && $scope.firewallRules.endPort) {
+        var hasServer = appService.crudService.add("egress", firewallRules);
+        hasServer.then(function (result) {  // this is only run after $http completes
+            $scope.formSubmitted = false;
+            appService.notify({message: 'Egress rule added successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+            $scope.firewallRulesList(1);
+            }).catch(function (result) {
+            	if (!angular.isUndefined(result.data)) {
+                    if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
+                	    var msg = result.data.globalError[0];
+                	    appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+                    	} else if (result.data.fieldErrors != null) {
+                        	angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
+                            	$scope.egressForm[key].$invalid = true;
+                            	$scope.egressForm[key].errorMessage = errorMessage;
+                        	});
+                		}
+                	}
+            });
+    }
+    };
+    $scope.cancel = function () {
+        $modalInstance.close();
+    };
+
+    // Delete the egress rule
+    $scope.deleteEgress = function (size, firewallRules) {
+    	appService.dialogService.openDialog($scope.global.VIEW_URL + "cloud/network/delete-egress.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+                $scope.deleteObject = firewallRules;
+                $scope.ok = function (deleteObject) {
+                	$scope.showLoader = true;
+                	firewallRules.isActive = false;
+                    var hasServer = appService.crudService.softDelete("egress", deleteObject);
+                    hasServer.then(function (result) {
+                        $scope.list(1);
+                        $scope.showLoader = false;
+                        appService.notify({message: 'Egress rule deleted successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                    }).catch(function (result) {
+                    	if (!angular.isUndefined(result.data)) {
+                        	if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
+                          	    var msg = result.data.globalError[0];
+                        	    appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+                            }
+                        }
+                    });
+                    $modalInstance.close();
+                },
+                 $scope.cancel = function () {
+                     $modalInstance.close();
+                 };
+            }]);
+    };
 
     $scope.openAddIsolatedNetwork = function (size) {
         appService.dialogService.openDialog("app/views/cloud/network/add.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
 
                 // Create a new Isolated Network
                 $scope.save = function (form, network) {
-                	
+
 
                     $scope.formSubmitted = true;
                     if (form.$valid) {
@@ -49,14 +130,14 @@ function networksCtrl($scope,$rootScope,filterFilter,$state, $stateParams,modalS
 			network.projectId = $scope.network.project.id;
 			delete network.project;
 			}
-                            
+
                         network.zoneId = $scope.network.zone.id;
                         network.networkOfferingId = $scope.network.networkOffering.id;
-                        
+
                         delete network.zone;
                         delete network.networkOffering;
-                        
-                     
+
+
                         var hasguestNetworks = appService.crudService.add("guestnetwork", network);
                         hasguestNetworks.then(function (result) {
                             $scope.list(1);
@@ -177,15 +258,15 @@ function networksCtrl($scope,$rootScope,filterFilter,$state, $stateParams,modalS
         hasnetwork.then(function (result) {
             $scope.network = result;
             appService.localStorageService.set('view', 'details');
-            
+
             angular.forEach($scope.networkList, function(obj, key) {
 	    		if(obj.id == $scope.network.networkOffering.id) {
 	    			$scope.network.networkOffering = obj;
 	    		}
 	    	});
-        
+
         });
-      
+
     };
 
     if (!angular.isUndefined($stateParams.id) && $stateParams.id != '') {
@@ -198,12 +279,12 @@ function networksCtrl($scope,$rootScope,filterFilter,$state, $stateParams,modalS
         if (form.$valid) {
             var network = $scope.network;
             $scope.showLoader = true;
-     	
+
 	      if (!angular.isUndefined($scope.network.domain)) {
 		    network.domainId = $scope.network.domain.id;
 		 delete network.domain;
 		}
-	   
+
 		if (!angular.isUndefined($scope.network.department) && $scope.network.department != null) {
 			network.departmentId = $scope.network.department.id;
 			delete network.department;
@@ -215,7 +296,7 @@ function networksCtrl($scope,$rootScope,filterFilter,$state, $stateParams,modalS
 
 		network.zoneId = $scope.network.zone.id;
 		network.networkOfferingId = $scope.network.networkOffering.id;
-		
+
 		delete network.zone;
 		delete network.networkOffering;
 
@@ -386,6 +467,14 @@ function networksCtrl($scope,$rootScope,filterFilter,$state, $stateParams,modalS
             {id: 3, name: 'Month'}
         ]};
 
+    $scope.protocolList = {
+                "0":"TCP",
+                "1":"UDP",
+                "2":"ICMP",
+                "3":"All"
+            };
+
+
     $scope.dropnetworkLists = {
         /* networkOffers: [
          {
@@ -435,10 +524,10 @@ function networksCtrl($scope,$rootScope,filterFilter,$state, $stateParams,modalS
             {id: 4, name: 'VPN Customer Gateway'}
         ],
        protocols: [
-         {id: 1, name: 'TCP', value: 'tcp'},
-         {id: 2, name: 'UDP', value: 'udp'},
-         {id: 3, name: 'ICMP', value: 'icmp'},
-         {id: 4, name: 'All', value: 'all'}
+         {id: 1, name: 'TCP', value: 'TCP'},
+         {id: 2, name: 'UDP', value: 'UDP'},
+         {id: 3, name: 'ICMP', value: 'ICMP'},
+         {id: 4, name: 'All', value: 'All'}
 
          ],
          portProtocols: [
@@ -904,13 +993,48 @@ function networksCtrl($scope,$rootScope,filterFilter,$state, $stateParams,modalS
         $state.reload();
     }
     $scope.tabview = appService.localStorageService.get('view');
-}
-;
 
+//Add the sticky policy
+$scope.createStickiness = function (size) {
+    appService.dialogService.openDialog($scope.global.VIEW_URL + "cloud/network/stickiness.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
+            // Create a new sticky policy
+            $scope.addStickiness = function (form) {
+                $scope.formSubmitted = true;
+                if (form.$valid) {
+                	appService.notify({message: 'Configured sticky policy successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+                	$modalInstance.close();
+                }
+            	},
+             	$scope.cancel = function () {
+                 	$modalInstance.close();
+             	};
+        	}]);
+	};
+
+	 $scope.formElements = {
+			 stickinessList: [
+			              {id: 1, name: 'None'},
+			              {id: 2, name: 'SourceBased'},
+			              {id: 3, name: 'AppCookie'},
+			              {id: 4, name: 'LbCookie'},
+			          ]
+	    };
+
+	 $scope.healthCheck = function (form) {
+	        $scope.loadFormSubmitted = true;
+	        if (form.$valid) {
+	            $scope.global.rulesLB[0].name = $scope.load.name;
+	            $scope.global.rulesLB[0].publicPort = $scope.publicPort;
+	            $scope.global.rulesLB[0].privatePort = $scope.privatePort;
+	            modalService.trigger('app/views/cloud/network/healthCheck.jsp', 'md');
+	        }
+	    };
+
+	};
 
 function networkViewCtrl($scope, $http, notify, globalConfig, localStorageService, modalService, $log, $state, $stateParams, promiseAjax) {
-	   
-		
+
+
 		$scope.global = globalConfig;
 	    $scope.networkList = [];
 	    $scope.network = [];
@@ -945,16 +1069,16 @@ function networkViewCtrl($scope, $http, notify, globalConfig, localStorageServic
 
 	    }
 
-	 
+
 	                $scope.selectTab=function(type){
-	                    
+
 	                   if(type=='firewall') {localStorageService.set('view','firewall'); }
 	                   if(type=='loadBalance'){localStorageService.set('view','load-balance'); }
 	                   if(type=='portForward'){localStorageService.set('view','port-forward');}
-	                
+
 	                $scope.tabview=localStorageService.get('view');
 	                $state.reload();
 	                }
 	          $scope.tabview=localStorageService.get('view');
 	};
-	
+
