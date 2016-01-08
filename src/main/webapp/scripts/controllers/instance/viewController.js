@@ -20,12 +20,12 @@ function instanceViewCtrl($scope, $state, $stateParams, appService, $window) {
  	    var hasServer = appService.crudService.read("virtualmachine", $stateParams.id);
         hasServer.then(function (result) {
             $scope.instance = result;
-		$scope.instanceList = result;
+		    $scope.instanceList = result;
+		    $state.current.data.pageName = result.name;
             var str = $scope.instance.cpuUsage;
             if(str!=null){
             var newString = str.replace(/^_+|_+$/g,'');
             var num = parseFloat(newString).toFixed(2);
-            $state.current.data.pageName = result.name;
             $scope.showLoaderOffer = false;
             $scope.showLoader = false;
             $scope.chart(num);
