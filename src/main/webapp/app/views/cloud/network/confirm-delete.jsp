@@ -26,7 +26,7 @@
         <get-loader-image data-ng-show="showLoader"></get-loader-image>
 
         <button type="button" data-ng-hide="showLoader" class="btn btn-default "  ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.cancel" bundle="${msg}" /></button>
-        <button type="button" data-ng-hide="showLoader" class="btn btn-default btn-danger2"   ng-click="ok(deleteObject)" data-dismiss="modal"><fmt:message key="common.ok" bundle="${msg}" /></button>
+        <button type="button" data-ng-hide="showLoader" class="btn btn-default btn-danger2"   ng-click="ok(deleteObject)" data-dismiss="modal"><fmt:message key="common.delete" bundle="${msg}" /></button>
 
     </div>
 </div>
