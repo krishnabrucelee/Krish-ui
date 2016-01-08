@@ -20,7 +20,7 @@ pageEncoding="UTF-8"%>
             <tbody>
                 <tr>
                        <td><input  type="text" name="cidr"  valid-cidr placeholder="0.0.0.0/24"  data-ng-model="firewallRules.cidr" class="form-control input-group " ><span class="text-center" data-ng-show="cidrValidate && actionRule" data-ng-class="cidrValidate && actionRule ? 'text-danger' : ''"> Invalid format</span></td>
-                    <td><select  class="form-control input-group" name="protocol" data-ng-model="firewallRules.protocolName" data-ng-init="protocolName = networkLists.protocols[0]" data-ng-change="selectProtocol(protocolName.name)" data-ng-options="protocolName.name for protocolName in dropnetworkLists.protocols"><option value=""><fmt:message key="common.select"
+                    <td><select  class="form-control input-group" name="protocol" data-ng-model="firewallRules.protocol"  data-ng-change="selectProtocol(protocol)" ng-options="protocol for (id, protocol) in protocolList"><option value=""><fmt:message key="common.select"
 													bundle="${msg}" /></option></select></td>
                     <td data-ng-show="udp || tcp"><input valid-number  placeholder="1-65535" data-ng-min="1" data-ng-max="65535"   type="text" name="startPort" data-ng-model="firewallRules.startPort" class="form-control " autofocus > </td>
                     <td data-ng-show="udp || tcp"><input valid-number placeholder="1-65535" data-ng-min="1" data-ng-max="65535"   type="text" name="endPort" data-ng-model="firewallRules.endPort" class="form-control " autofocus > </td>
@@ -46,7 +46,7 @@ pageEncoding="UTF-8"%>
             </thead>
             <tbody>
                <tr ng-repeat="firewallRules in egressRuleList" class="font-bold text-center">
-             	<td>{{firewallRules.cidr}}</td>
+             	<td>{{firewallRules.sourceCIDR}}</td>
 		<td>{{firewallRules.protocol}}</td>
                 <td><div  data-ng-show=" (firewallRules.startPort == '' || firewallRules.startPort!='') ">{{firewallRules.startPort}}</div> <div  data-ng-show=" (firewallRules.icmpType=='' || firewallRules.icmpType!='') ">{{firewallRules.icmpType}}</div></td>
                 <td><div data-ng-show=" (firewallRules.endPort =='' || firewallRules.endPort!='')">{{firewallRules.endPort}} </div> <div data-ng-show="(firewallRules.icmpCode=='' || firewallRules.icmpCode!='')" >{{firewallRules.icmpCode}}</div></td>

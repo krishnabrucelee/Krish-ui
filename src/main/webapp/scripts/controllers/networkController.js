@@ -49,13 +49,13 @@ function networksCtrl($scope,$rootScope,filterFilter,$state, $stateParams,modalS
     $scope.firewallRules = {};
 
     // Create a new egress rule
+    $scope.firewallRules.networkId = $stateParams.id;
     $scope.egressSave = function (firewallRules) {
-    //$scope.formSubmitted = true;
-    //if ($scope.firewallRules.cidr || $scope.firewallRules.protocolName || $scope.firewallRules.startPort || $scope.firewallRules.endPort == null) {
+    $scope.formSubmitted = true;
+    if ($scope.firewallRules.cidr && $scope.firewallRules.protocol && $scope.firewallRules.startPort && $scope.firewallRules.endPort) {
         var hasServer = appService.crudService.add("egress", firewallRules);
         hasServer.then(function (result) {  // this is only run after $http completes
             $scope.formSubmitted = false;
-            $modalInstance.close();
             appService.notify({message: 'Egress rule added successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
             $scope.firewallRulesList(1);
             }).catch(function (result) {
@@ -71,7 +71,7 @@ function networksCtrl($scope,$rootScope,filterFilter,$state, $stateParams,modalS
                 		}
                 	}
             });
-    //}
+    }
     };
     $scope.cancel = function () {
         $modalInstance.close();
@@ -467,6 +467,14 @@ function networksCtrl($scope,$rootScope,filterFilter,$state, $stateParams,modalS
             {id: 3, name: 'Month'}
         ]};
 
+    $scope.protocolList = {
+                "0":"TCP",
+                "1":"UDP",
+                "2":"ICMP",
+                "3":"All"
+            };
+
+
     $scope.dropnetworkLists = {
         /* networkOffers: [
          {
@@ -516,10 +524,10 @@ function networksCtrl($scope,$rootScope,filterFilter,$state, $stateParams,modalS
             {id: 4, name: 'VPN Customer Gateway'}
         ],
        protocols: [
-         {id: 1, name: 'TCP', value: 'tcp'},
-         {id: 2, name: 'UDP', value: 'udp'},
-         {id: 3, name: 'ICMP', value: 'icmp'},
-         {id: 4, name: 'All', value: 'all'}
+         {id: 1, name: 'TCP', value: 'TCP'},
+         {id: 2, name: 'UDP', value: 'UDP'},
+         {id: 3, name: 'ICMP', value: 'ICMP'},
+         {id: 4, name: 'All', value: 'All'}
 
          ],
          portProtocols: [
