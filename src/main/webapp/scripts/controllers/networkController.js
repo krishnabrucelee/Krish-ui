@@ -22,6 +22,88 @@ function networksCtrl($scope,$rootScope,filterFilter,$state, $stateParams,modalS
     $scope.sort = appService.globalConfig.sort;
     $scope.changeSorting = appService.utilService.changeSorting;
 
+    $scope.firewallRulesList = {};
+    $scope.paginationObject = {};
+    $scope.egressForm = {};
+    $scope.global = appService.globalConfig;
+    $scope.sort = appService.globalConfig.sort;
+    $scope.changeSorting = appService.utilService.changeSorting;
+
+    // Egress Rule List
+    $scope.firewallRulesList = function (pageNumber) {
+        $scope.firewallRules = {};
+    	var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
+        var hasFirewallRuless = appService.crudService.list("egress", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+        hasFirewallRuless.then(function (result) {  // this is only run after $http completes0
+            $scope.egressRuleList = result;
+
+            // For pagination
+            $scope.paginationObject.limit = limit;
+            $scope.paginationObject.currentPage = pageNumber;
+            $scope.paginationObject.totalItems = result.totalItems;
+        });
+    };
+    $scope.firewallRulesList(1);
+
+    // Open dialogue box to create egress rule
+    $scope.firewallRules = {};
+
+    // Create a new egress rule
+    $scope.egressSave = function (firewallRules) {
+    //$scope.formSubmitted = true;
+    //if ($scope.firewallRules.cidr || $scope.firewallRules.protocolName || $scope.firewallRules.startPort || $scope.firewallRules.endPort == null) {
+        var hasServer = appService.crudService.add("egress", firewallRules);
+        hasServer.then(function (result) {  // this is only run after $http completes
+            $scope.formSubmitted = false;
+            $modalInstance.close();
+            appService.notify({message: 'Egress rule added successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+            $scope.firewallRulesList(1);
+            }).catch(function (result) {
+            	if (!angular.isUndefined(result.data)) {
+                    if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
+                	    var msg = result.data.globalError[0];
+                	    appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+                    	} else if (result.data.fieldErrors != null) {
+                        	angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
+                            	$scope.egressForm[key].$invalid = true;
+                            	$scope.egressForm[key].errorMessage = errorMessage;
+                        	});
+                		}
+                	}
+            });
+    //}
+    };
+    $scope.cancel = function () {
+        $modalInstance.close();
+    };
+
+    // Delete the egress rule
+    $scope.deleteEgress = function (size, firewallRules) {
+    	appService.dialogService.openDialog($scope.global.VIEW_URL + "cloud/network/delete-egress.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+                $scope.deleteObject = firewallRules;
+                $scope.ok = function (deleteObject) {
+                	$scope.showLoader = true;
+                	firewallRules.isActive = false;
+                    var hasServer = appService.crudService.softDelete("egress", deleteObject);
+                    hasServer.then(function (result) {
+                        $scope.list(1);
+                        $scope.showLoader = false;
+                        appService.notify({message: 'Egress rule deleted successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                    }).catch(function (result) {
+                    	if (!angular.isUndefined(result.data)) {
+                        	if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
+                          	    var msg = result.data.globalError[0];
+                        	    appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+                            }
+                        }
+                    });
+                    $modalInstance.close();
+                },
+                 $scope.cancel = function () {
+                     $modalInstance.close();
+                 };
+            }]);
+    };
 
     $scope.openAddIsolatedNetwork = function (size) {
         appService.dialogService.openDialog("app/views/cloud/network/add.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
