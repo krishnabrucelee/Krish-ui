@@ -452,7 +452,7 @@ $scope.list = function () {
 								       }]);
 								  };
 					  $scope.showPassword = function(vm) {
-							dialogService.openDialog("app/views/cloud/instance/show-reset-password.jsp", 'md',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
+						  appService.dialogService.openDialog("app/views/cloud/instance/show-reset-password.jsp", 'md',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
 							    $scope.cancel = function () {
 							        $modalInstance.close();
 								};
@@ -466,9 +466,9 @@ $scope.list = function () {
 			  			 	$scope.vm.password = "reset";
 				  			$scope.formSubmitted = true;
 
-			  				var hasVm = crudService.updates("virtualmachine/vm", $scope.vm);
+			  				var hasVm = appService.crudService.updates("virtualmachine/vm", $scope.vm);
 			  				hasVm.then(function(result) {
-			  					notify({message: "VM password updated successfully. Please refresh and click show password", classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+			  					appService.notify({message: "VM password updated successfully. Please refresh and click show password", classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
 			  					$state.reload();
 			  					$scope.cancel();
 			  				}).catch(function (result) {
@@ -476,9 +476,9 @@ $scope.list = function () {
 			  			        	var msg = result.data.globalError[0];
 			  			        	if(msg === "SUCCESS") {
 			  			        		msg = "VM password updated successfully. Please refresh and click show password";
-			  			        		notify({message: msg, classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+			  			        		appService.notify({message: msg, classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
 			  			        	} else {
-			  			        		notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+			  			        		appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
 			  			        	}
 			  			        	$state.reload();
 				  					$scope.cancel();

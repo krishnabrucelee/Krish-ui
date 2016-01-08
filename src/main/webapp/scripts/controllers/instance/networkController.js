@@ -45,7 +45,7 @@ function networkCtrl($scope, $modal, $window, $stateParams,appService) {
     };
     $scope.list(1);
 
-        
+
 
 
     // $scope.nicList();
@@ -61,14 +61,14 @@ function networkCtrl($scope, $modal, $window, $stateParams,appService) {
 			    angular.forEach($scope.nicList, function(nic, key) {
 				angular.forEach(networkList, function(network, networkKey) {
 					if(nic.network.id != network.id) {
-					   networkList.push(network);				
+					   networkList.push(network);
 					}
-			    	});	
+			    	});
 			    });
 			    $scope.networkList = networkList;
 	            }
 		});
-	    }; 
+	    };
 	    $scope.nicLists(1);
 
     $scope.addNetworkToVM = function (instance) {
@@ -79,7 +79,7 @@ function networkCtrl($scope, $modal, $window, $stateParams,appService) {
 
 	        		if($scope.instance.projectId != null) {
 	        			console.log("project " + $scope.instance.projectId);
-	    
+
 	        			var hasNetworks = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "guestnetwork" + "/listall/"+$scope.instance.projectId);
 	        			hasNetworks.then(function (result) {
 	        				$scope.networkList = result;
@@ -108,7 +108,7 @@ function networkCtrl($scope, $modal, $window, $stateParams,appService) {
                 	$scope.nic.vmInstance = $scope.instance;
                 	delete $scope.nic.vmInstance.network;
                     $scope.nic.networkId = network.id;
-                     
+
 		        delete $scope.nic.network;
                         $scope.showLoader = true;
                         var hasServer = appService.crudService.add("nics", $scope.nic);
@@ -146,11 +146,11 @@ function networkCtrl($scope, $modal, $window, $stateParams,appService) {
 		     $scope.showLoader = true;
 		     var hasNic = appService.crudService.softDelete("nics", nic);
              hasNic.then(function (result) {
-                     
+
 		       $scope.showLoader = false;
                appService.notify({message: 'NIC deleted successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                $modalInstance.close();
-               $scope.instanceNicList();
+               $scope.list(1);
              });
 
              },
@@ -167,11 +167,11 @@ function networkCtrl($scope, $modal, $window, $stateParams,appService) {
                 	$scope.showLoader = true;
                     var hasServer = appService.crudService.update("nics", nic);
                     hasServer.then(function (result) {
-                        
+
                        $scope.showLoader = false;
                        appService.notify({message: 'NIC updated successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                        $modalInstance.close();
-                       $scope.instanceNicList();
+                       $scope.list(1);
                     });
 
                 },
