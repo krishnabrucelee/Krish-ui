@@ -3,10 +3,10 @@
  * instanceCtrl
  *
  */
- 
+
 angular
         .module('homer')
-        .controller('networksCtrl', networksCtrl) 
+        .controller('networksCtrl', networksCtrl)
         .controller('networkViewCtrl', networkViewCtrl)
 
 function networksCtrl($scope,$rootScope,filterFilter,$state, $stateParams,modalService, $timeout,$window,appService) {
@@ -17,19 +17,18 @@ function networksCtrl($scope,$rootScope,filterFilter,$state, $stateParams,modalS
     $scope.rules = [];
     $scope.portList = [];
     $scope.vmList = [];
-    $scope.formElements = [];
+    $scope.formElements = {};
     $scope.allItemsSelected = false;
-
     $scope.sort = appService.globalConfig.sort;
     $scope.changeSorting = appService.utilService.changeSorting;
-    
+
 
     $scope.openAddIsolatedNetwork = function (size) {
         appService.dialogService.openDialog("app/views/cloud/network/add.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
 
                 // Create a new Isolated Network
                 $scope.save = function (form, network) {
-                	
+
 
                     $scope.formSubmitted = true;
                     if (form.$valid) {
@@ -49,14 +48,14 @@ function networksCtrl($scope,$rootScope,filterFilter,$state, $stateParams,modalS
 			network.projectId = $scope.network.project.id;
 			delete network.project;
 			}
-                            
+
                         network.zoneId = $scope.network.zone.id;
                         network.networkOfferingId = $scope.network.networkOffering.id;
-                        
+
                         delete network.zone;
                         delete network.networkOffering;
-                        
-                     
+
+
                         var hasguestNetworks = appService.crudService.add("guestnetwork", network);
                         hasguestNetworks.then(function (result) {
                             $scope.list(1);
@@ -175,15 +174,15 @@ function networksCtrl($scope,$rootScope,filterFilter,$state, $stateParams,modalS
         hasnetwork.then(function (result) {
             $scope.network = result;
             appService.localStorageService.set('view', 'details');
-            
+
             angular.forEach($scope.networkList, function(obj, key) {
 	    		if(obj.id == $scope.network.networkOffering.id) {
 	    			$scope.network.networkOffering = obj;
 	    		}
 	    	});
-        
+
         });
-      
+
     };
 
     if (!angular.isUndefined($stateParams.id) && $stateParams.id != '') {
@@ -196,12 +195,12 @@ function networksCtrl($scope,$rootScope,filterFilter,$state, $stateParams,modalS
         if (form.$valid) {
             var network = $scope.network;
             $scope.showLoader = true;
-     	
+
 	      if (!angular.isUndefined($scope.network.domain)) {
 		    network.domainId = $scope.network.domain.id;
 		 delete network.domain;
 		}
-	   
+
 		if (!angular.isUndefined($scope.network.department) && $scope.network.department != null) {
 			network.departmentId = $scope.network.department.id;
 			delete network.department;
@@ -213,7 +212,7 @@ function networksCtrl($scope,$rootScope,filterFilter,$state, $stateParams,modalS
 
 		network.zoneId = $scope.network.zone.id;
 		network.networkOfferingId = $scope.network.networkOffering.id;
-		
+
 		delete network.zone;
 		delete network.networkOffering;
 
@@ -902,13 +901,48 @@ function networksCtrl($scope,$rootScope,filterFilter,$state, $stateParams,modalS
         $state.reload();
     }
     $scope.tabview = appService.localStorageService.get('view');
-}
-;
 
+//Add the sticky policy
+$scope.createStickiness = function (size) {
+    appService.dialogService.openDialog($scope.global.VIEW_URL + "cloud/network/stickiness.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
+            // Create a new sticky policy
+            $scope.addStickiness = function (form) {
+                $scope.formSubmitted = true;
+                if (form.$valid) {
+                	appService.notify({message: 'Configured sticky policy successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+                	$modalInstance.close();
+                }
+            	},
+             	$scope.cancel = function () {
+                 	$modalInstance.close();
+             	};
+        	}]);
+	};
+
+	 $scope.formElements = {
+			 stickinessList: [
+			              {id: 1, name: 'None'},
+			              {id: 2, name: 'SourceBased'},
+			              {id: 3, name: 'AppCookie'},
+			              {id: 4, name: 'LbCookie'},
+			          ]
+	    };
+
+	 $scope.healthCheck = function (form) {
+	        $scope.loadFormSubmitted = true;
+	        if (form.$valid) {
+	            $scope.global.rulesLB[0].name = $scope.load.name;
+	            $scope.global.rulesLB[0].publicPort = $scope.publicPort;
+	            $scope.global.rulesLB[0].privatePort = $scope.privatePort;
+	            modalService.trigger('app/views/cloud/network/healthCheck.jsp', 'md');
+	        }
+	    };
+
+	};
 
 function networkViewCtrl($scope, $http, notify, globalConfig, localStorageService, modalService, $log, $state, $stateParams, promiseAjax) {
-	   
-		
+
+
 		$scope.global = globalConfig;
 	    $scope.networkList = [];
 	    $scope.network = [];
@@ -943,16 +977,16 @@ function networkViewCtrl($scope, $http, notify, globalConfig, localStorageServic
 
 	    }
 
-	 
+
 	                $scope.selectTab=function(type){
-	                    
+
 	                   if(type=='firewall') {localStorageService.set('view','firewall'); }
 	                   if(type=='loadBalance'){localStorageService.set('view','load-balance'); }
 	                   if(type=='portForward'){localStorageService.set('view','port-forward');}
-	                
+
 	                $scope.tabview=localStorageService.get('view');
 	                $state.reload();
 	                }
 	          $scope.tabview=localStorageService.get('view');
 	};
-	
+
