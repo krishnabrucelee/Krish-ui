@@ -15,15 +15,15 @@
                 <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="table-responsive">
                         <table cellspacing="2" cellpadding="5"  class="table table-hover table-striped table-bordered ">
-                            <tr> <td><label>Name</label></td><td>{{ templateObj.name}}</td></tr>
-                            <tr>  <td><label>Size</label></td> <td>{{templateObj.size}}</td></tr>
-                            <tr> <td><label>Status</label></td> <td>{{ templateObj.status}}</td></tr>
-                            <tr>  <td><label>Template Owner</label></td> <td>{{templateObj.owner}}</td></tr>
-                            <tr> <td><label>Register Date</label></td> <td>{{ templateObj.registerDate}}</td></tr>
-                            <tr> <td><label>Format</label></td> <td>{{ templateObj.format}}</td></tr>
-                            <tr> <td><label>HVM</label></td><td>{{ templateObj.hvm}}</td></tr>
-                            <tr> <td><label>Password Enabled </label></td><td>{{ templateObj.passwordEnabled}}</td></tr>
-                             <tr> <td><label>Dynamically Scalable</label></td><td>{{ templateObj.dynamicallyScalable}}</td></tr>
+                            <tr> <td><label><fmt:message key="common.name" bundle="${msg}" /></label></td><td>{{ templateObj.name}}</td></tr>
+                            <tr>  <td><label><fmt:message key="common.size" bundle="${msg}" /></label></td> <td>{{(templateObj.size / global.Math.pow(2, 30))}}</td></tr>
+                            <tr> <td><label><fmt:message key="common.status" bundle="${msg}" /></label></td> <td>{{ templateObj.status}}</td></tr>
+                            <tr>  <td><label><fmt:message key="template.owner" bundle="${msg}" /></label></td> <td>{{templateObj.owner || " - " }}</td></tr>
+                            <tr> <td><label><fmt:message key="register.date" bundle="${msg}" /></label></td> <td>{{ templateObj.createdDateTime *1000 | date:'yyyy-MM-dd HH:mm:ss'}}</td></tr>
+                            <tr> <td><label><fmt:message key="common.format" bundle="${msg}" /></label></td> <td>{{ templateObj.format}}</td></tr>
+                            <tr> <td><label><fmt:message key="common.hvm" bundle="${msg}" /></label></td><td>{{ templateObj.hvm || " - " }}</td></tr>
+                            <tr> <td><label><fmt:message key="password.enabled" bundle="${msg}" /></label></td><td>{{ (templateObj.passwordEnabled) ? "Yes" : "No"}}</td></tr>
+                             <tr> <td><label><fmt:message key="dynamically.scalable" bundle="${msg}" /></label></td><td>{{ (templateObj.dynamicallyScalable) ? "Yes" : "No"}}</td></tr>
                         </table>
                     </div>
                 </div>
@@ -31,7 +31,7 @@
             </div>
         </div>
         <div class="modal-footer">
-                    <button type="button" class="btn btn-info " ng-click="cancel()" data-dismiss="modal">Ok</button>
+                    <button type="button" class="btn btn-info " ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.ok" bundle="${msg}" /></button>
                 </div>
     </div>
 

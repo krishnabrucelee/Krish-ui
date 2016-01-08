@@ -31,7 +31,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                                <tr   data-ng-repeat="template in filteredCount = (template.templateList| filter:quickSearch)">
+                                <tr data-ng-if="template.share && template.featured" data-ng-repeat="template in filteredCount = (template.templateList| filter:quickSearch)">
                                     <td>
                                         <a data-ng-click="showDescription(template)">
                                            <img data-ng-show="template.osCategory.name.indexOf('windows') > -1" src="images/os/windows_logo.png" alt="" height="35" width="35" class="m-r-5" >
