@@ -9,7 +9,7 @@ angular
         .controller('instanceViewCtrl', instanceViewCtrl)
         .controller('instanceDetailsCtrl', instanceDetailsCtrl)
 
-function instanceViewCtrl($scope, $state, $stateParams, appService, $window) {
+function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $window) {
 
     $scope.instanceList = [];
     $scope.testvar = "test";
@@ -272,12 +272,13 @@ $scope.list = function () {
 				  var hasVms = appService.crudService.updates("virtualmachine/console", vm);
 					hasVms.then(function(result) {
 						var consoleUrl = result.success;
-						var consoleParams = consoleUrl.split("token=");
+						window.open($sce.trustAsResourceUrl(consoleUrl), vm.name + vm.id,'width=750,height=460');
+		/*				var consoleParams = consoleUrl.split("token=");
 						$window.sessionStorage.setItem("consoleProxy", consoleParams[0]);
 						$scope.instance = vm;
 						var randomnumber = Math.floor((Math.random()*100)+1);
 						 window.open("app/console.jsp?token="+consoleParams[1]+"&instance="+ btoa(vm.id), vm.name + vm.id,'width=800,height=580');
-					});
+		*/			});
 			  }
 
 			  $scope.instnaceEdit = false;
