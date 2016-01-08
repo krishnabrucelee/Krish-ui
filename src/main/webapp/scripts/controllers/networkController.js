@@ -153,6 +153,8 @@ function networksCtrl($scope,$rootScope,filterFilter,$state, $stateParams,modalS
                                 var msg = result.data.globalError[0];
                                 $scope.showLoader = false;
                                 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                                $modalInstance.close();
+
                             }
                             angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
                                 $scope.addnetworkForm[key].$invalid = true;
