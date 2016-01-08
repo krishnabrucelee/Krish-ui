@@ -13,6 +13,10 @@ angular
 function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeService, $window) {
 
     $scope.global = appService.globalConfig;
+    $scope.sort = appService.globalConfig.sort;
+    $scope.changeSorting = appService.utilService.changeSorting;
+    
+
     $scope.formSubmitted = false;
     // Form Field Decleration
     $scope.volume = {
@@ -32,7 +36,6 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
         hasVolumes.then(function (result) {
 
             $scope.volumeList = result;
-            console.log($scope.volumeList);
 
             $scope.volumeList.Count = result.totalItems;
 
@@ -84,7 +87,6 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
             // instance List
         	$scope.instanceList = function (volume) {
         		if($scope.volume.projectId != null) {
-        			console.log("project " + $scope.volume.projectId);
         			// var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         			var hasVolumes = appService.promiseAjax.httpTokenRequest(appService.crudService.globalConfig.HTTP_GET, appService.crudService.globalConfig.APP_URL + "virtualmachine"  +"/volume/project/"+$scope.volume.projectId);
         			hasVolumes.then(function (result) {
@@ -95,7 +97,6 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
         				// $scope.paginationObject.totalItems = result.totalItems;
         			});
         		} else {
-        			console.log("department " + $scope.volume.departmentId);
         			var hasVolumes = appService.promiseAjax.httpTokenRequest(appService.crudService.globalConfig.HTTP_GET, appService.crudService.globalConfig.APP_URL + "virtualmachine"  +"/volume/department/"+$scope.volume.departmentId);
         			hasVolumes.then(function (result) {
         				$scope.instanceList = result;
@@ -190,7 +191,6 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
                 };
                 $scope.instanceList();
                 $scope.detachVolume = function (volume) {
-                    console.log(volume);
                     $scope.showLoader = true;
 
                     if(!angular.isUndefined(volume.vmInstance) && volume.vmInstance != null) {
@@ -435,7 +435,6 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
                     if (form.$valid) {
                     	$scope.showLoader = true;
                         $scope.volume.zone = $scope.global.zone;
-                        console.log($scope.volume);
                         var volume = angular.copy($scope.volume);
                         if(!angular.isUndefined($scope.volume.storageOffering) && volume.storageOffering != null) {
                         	volume.storageOfferingId = volume.storageOffering.id;
@@ -551,8 +550,6 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
 														// after $http
 														// completes0
 	                       $scope.zoneList = result;
-	console.log($scope.zoneList );
-
 	                });
 	            };
 	            $scope.zoneList();
@@ -723,8 +720,6 @@ $scope.delete = function (size, volume) {
             $scope.deleteObject = volume;
             $scope.ok = function (volume) {
             	$scope.showLoader = true;
-
-            	console.log(volume);
 
             	if(!angular.isUndefined(volume.domain) && volume.domain != null ) {
                 	volume.domainId = volume.domain.id;

@@ -28,7 +28,6 @@ volumeService, modalService, globalConfig) {
 //	        var hasServer = crudService.read("virtualmachine", $stateParams.id);
 //	        hasServer.then(function (result) {  // this is only run after $http
 //	            $scope.instance = result;
-//	            console.log( $scope.instance);
 //	            $scope.volumeList = result.volume;
 //
 //	        });
@@ -40,7 +39,7 @@ volumeService, modalService, globalConfig) {
        	var hasVolumes = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "volumes/listbyinstances?instanceid="+instanceId +"&lang=" + appService.localStorageService.cookie.get('language')+"&sortBy=-id");
 	        hasVolumes.then(function (result) {
 	            $scope.volumeList = result;
-	            console.log($scope.volumeList);
+
 	        });
 	    };
 	    $scope.list(1);
@@ -62,7 +61,6 @@ volumeService, modalService, globalConfig) {
 	        	$scope.volumeList = function (instance) {
 
 	        		if($scope.instance.projectId != null) {
-	        			console.log("project " + $scope.instance.projectId);
 	        			// var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
 	        			var hasVolumes = appService.promiseAjax.httpTokenRequest( appService.crudService.globalConfig.HTTP_GET, appService.crudService.globalConfig.APP_URL + "volumes"  +"/instance/project/"+$scope.instance.projectId);
 	        			hasVolumes.then(function (result) {
@@ -70,7 +68,7 @@ volumeService, modalService, globalConfig) {
 
 	        			});
 	        		} else {
-	        			console.log("department " + $scope.instance.departmentId);
+
 	        			var hasVolumes = appService.promiseAjax.httpTokenRequest( appService.crudService.globalConfig.HTTP_GET, appService.crudService.globalConfig.APP_URL + "volumes"  +"/instance/department/"+$scope.instance.departmentId);
 	        			hasVolumes.then(function (result) {
 	        				$scope.volumeList = result;
@@ -161,7 +159,7 @@ volumeService, modalService, globalConfig) {
 	                };
 	                $scope.instanceList();
 	                $scope.detachVolume = function (volume) {
-	                    console.log(volume);
+
 	                    $scope.showLoader = true;
 	                    if(!angular.isUndefined(volume.vmInstance) && volume.vmInstance != null) {
 	                    	volume.vmInstanceId = volume.vmInstance.id;
@@ -506,7 +504,7 @@ volumeService, modalService, globalConfig) {
 		               var hasZones = appService.crudService.listAll("zones/list");
 		               hasZones.then(function (result) {
 		                       $scope.zoneList = result;
-		                       console.log($scope.zoneList );
+
 		                });
 		            };
 		            $scope.zoneList();

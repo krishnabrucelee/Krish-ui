@@ -91,7 +91,7 @@ angular.module('homer', [])
 		   $scope.isoLists = res.data;
 
 		   angular.forEach($scope.isoLists, function(obj, key) {
-			   console.log(vm);
+
 			  if(obj.name == vm.isoName) {
 				  $scope.isos = obj;
 			  }
@@ -148,7 +148,7 @@ angular.module('homer', [])
 					   $scope.consoleVm = result.data;
 				}).catch(function (result) {
 					 $scope.vmStarting = false;
-					console.log(result.data.globalError[0]);
+
 			         if(result.data.globalError[0] != null){
 			        	 var msg = result.data.globalError[0];
 			        	 alert(msg);
@@ -204,8 +204,7 @@ angular.module('homer', [])
 					$scope.attachIsoLabel = "Attach";
 				}, 3000);
 		}).catch(function (result) {
-			console.log(result);
-			console.log(result.data.globalError[0]);
+			
 	         if(result.data.globalError[0] != null){
 	        	 var msg = result.data.globalError[0];
 	        	 alert(msg);

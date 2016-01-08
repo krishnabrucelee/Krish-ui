@@ -209,7 +209,6 @@ function domainListCtrl($scope,$state, promiseAjax, $log, notify, crudService, d
     	$scope.user = angular.copy(user);
     	$scope.userForm = {};
     	$scope.saveUser = function (form) {
-    		console.log(form);
     		var user = $scope.user;
     		$scope.formSubmitted = true;
     		if (form.$valid) {
@@ -221,7 +220,6 @@ function domainListCtrl($scope,$state, promiseAjax, $log, notify, crudService, d
     		}).catch(function (result) {
         		if(!angular.isUndefined(result) && result.data != null) {
         			angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
-        				console.log($scope.userForm);
                 	    $scope.userForm[key].$invalid = true;
                 	    $scope.userForm[key].errorMessage = errorMessage;
         			});

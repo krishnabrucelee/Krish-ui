@@ -494,7 +494,6 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
               errorMessages = errorMessages.slice(1, errorMessages.legnth);
                  appService.notify({message: errorMessages, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
              } else {
-             	console.log(result.statusText);
              }
 
      	$scope.wizard.prev();

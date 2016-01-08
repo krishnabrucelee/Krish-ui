@@ -13,6 +13,8 @@ function applicationListCtrl($scope, appService) {
     $scope.paginationObject = {};
     $scope.applicationForm = {};
     $scope.global = appService.globalConfig;
+    $scope.sort = appService.globalConfig.sort;
+    $scope.changeSorting = appService.utilService.changeSorting;
 
     // Application List
     $scope.list = function (pageNumber) {
@@ -40,7 +42,6 @@ function applicationListCtrl($scope, appService) {
 	var hasDomains = appService.crudService.listAll("domains/list");
 	hasDomains.then(function (result) {  // this is only run after $http completes0
 	      $scope.formElements.domainList = result;
-	      console.log(result);
 	});
 
 	// Add the application

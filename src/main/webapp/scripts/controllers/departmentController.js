@@ -11,6 +11,8 @@ function departmentCtrl($scope, $sce, appService) {
     $scope.paginationObject = {};
     $scope.departmentForm = {};
     $scope.global = appService.globalConfig;
+    $scope.sort = appService.globalConfig.sort;
+    $scope.changeSorting = appService.utilService.changeSorting;
 
 
 

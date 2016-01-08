@@ -16,10 +16,8 @@ function accountCtrl($scope, appService) {
     $scope.global = appService.globalConfig;
     $scope.userData = "testss";
     $scope.addUser = function (form) {
-    	console.log(form);
         $scope.formSubmitted = true;
         if (form.$valid) {
-        	console.log($scope.user);
         }
     };
 }
@@ -40,6 +38,8 @@ function accountListCtrl($scope,$state, $log,$timeout, appService) {
     $scope.userForm = {};
     $scope.global = appService.globalConfig;
     $scope.user = {};
+    $scope.sort = appService.globalConfig.sort;
+    $scope.changeSorting = appService.utilService.changeSorting;
     $scope.accountElements={
 
     };
@@ -176,6 +176,7 @@ function accountListCtrl($scope,$state, $log,$timeout, appService) {
         	$scope.save = function (form) {
                 $scope.formSubmitted = true;
                 if (form.$valid) {
+		    $scope.showLoader = true;
                     var user = angular.copy($scope.user);
 		    if(!angular.isUndefined($scope.user.department)) {
                        user.departmentId = user.department.id;
@@ -184,12 +185,14 @@ function accountListCtrl($scope,$state, $log,$timeout, appService) {
                     	var hasServer = appService.crudService.add("users", user);
                     	hasServer.then(function (result) {  // this is only run after $http completes
                     		$scope.list(1);
+				$scope.showLoader = false;
                     		appService.notify({message: 'Added successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
                     		$modalInstance.close();
                     		$scope.user = {};
                     	}).catch(function (result) {
                     		if(!angular.isUndefined(result) && result.data != null) {
-                    			angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
+				   $scope.showLoader = false;
+                    		   angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
 				   $scope.userForm[key].$invalid = true;
                             	   $scope.userForm[key].errorMessage = errorMessage;
                     			});
@@ -248,7 +251,7 @@ function accountListCtrl($scope,$state, $log,$timeout, appService) {
         $scope.cancel();
     }
 
-    // Edit user data
+    // Edit user dataq
     $scope.editUser = function (size) {
     	var user = {};
     	 angular.forEach($scope.accountList, function (item, key) {

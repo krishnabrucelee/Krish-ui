@@ -68,20 +68,22 @@
       						</div>
       						<div  data-ng-hide="showLoader" class="table-responsive col-12-table">
 
-                                    <table cellspacing="1" cellpadding="1" class="table table-bordered table-striped ">
+                                    <table cellspacing="1" cellpadding="1" class="table table-bordered dataTable table-striped ">
                                         <thead>
                                         <tr>
                                                 <th class="w-5"><div class="checkbox checkbox-single checkbox-info col-sm-1 col-md-1">
-                                            <input type="checkbox" data-ng-model="accounts.selectedAll.users" data-ng-click="checkAll();"><label></label>                                        </div></th>
-                                        <th><fmt:message key="user.name" bundle="${msg}" /></th>
-                                        <th><fmt:message key="first.name" bundle="${msg}" /></th>
-                                        <th><fmt:message key="user.type" bundle="${msg}" /></th>
-                                        <th><fmt:message key="common.email" bundle="${msg}" /></th>
-                                        <th><fmt:message key="common.status" bundle="${msg}" /></th>
+                                            <input type="checkbox" data-ng-model="accounts.selectedAll.users" data-ng-click="checkAll();"><label></label></div></th>
+                                        
+                                     	<th  data-ng-click="changeSorting('userName')" data-ng-class="sort.descending && sort.column =='userName'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="user.name" bundle="${msg}" /></th>
+                                     	<th  data-ng-click="changeSorting('firstName')" data-ng-class="sort.descending && sort.column =='firstName'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="first.name" bundle="${msg}" /></th>
+                                     	<th  data-ng-click="changeSorting('type')" data-ng-class="sort.descending && sort.column =='type'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="user.type" bundle="${msg}" /></th>
+                                     	<th  data-ng-click="changeSorting('email')" data-ng-class="sort.descending && sort.column =='email'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.email" bundle="${msg}" /></th>
+                                     	<th  data-ng-click="changeSorting('userName')" data-ng-class="sort.descending && sort.column =='userName'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.status" bundle="${msg}" /></th>
+                                        
                                         </tr>
                                         </thead>
                                         <tbody>
-                                            <tr data-ng-class="{'bg-row text-white' : account.isSelected == true }"  data-ng-repeat="account in filteredCount = (accountList| filter: quickSearch)">
+                                            <tr data-ng-class="{'bg-row text-white' : account.isSelected == true }"  data-ng-repeat="account in filteredCount = (accountList| filter: quickSearch | orderBy:sort.column:sort.descending)">
                                                 <td>
                                                     <div class="checkbox checkbox-single checkbox-info ">
                                                         <input type="checkbox" data-ng-value="account" data-ng-model="account.isSelected" data-ng-click="checkOne(account)" >

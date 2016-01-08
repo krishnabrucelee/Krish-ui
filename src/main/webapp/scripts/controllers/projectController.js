@@ -270,7 +270,7 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams) {
     		        	$scope.projectLoader = true;
     		        	$scope.newProject.domainId =  $scope.newProject.domain.id;
     		            var project = angular.copy($scope.newProject);
-    		            console.log(project);
+
     		            project.isActive = true;
     		            project.departmentId = project.department.id;
     		            project.projectOwnerId = project.projectOwner.id;
@@ -290,7 +290,6 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams) {
 
     		              	$scope.list(1);
     		            }).catch(function (result) {
-    		            	console.log($scope.newProject);
     		            	$scope.projectLoader = false;
     		                if(result.data.globalError[0] != '' && result.data.globalError[0] != null ){
     		               	 var msg = result.data.globalError[0];
