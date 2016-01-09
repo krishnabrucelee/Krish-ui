@@ -36,12 +36,8 @@
     <div class="content">
         <div ui-view >
             <div class="hpanel" ng-controller="templatesCtrl">
-
                 <div class="panel-body" >
-
                     <div class="tab-content">
-
-
                         <div class="row m-t-n-md">
                             <ul class="nav nav-tabs" data-ng-init="formElements.category = 'community'">
                                 <li class="active"><a href="javascript:void(0)" data-ng-click="formElements.category = 'community'" data-toggle="tab"> <fmt:message key="common.community" bundle="${msg}" /></a></li>
@@ -50,9 +46,7 @@
                                 <li class=""><a href="javascript:void(0)" data-ng-click="formElements.category = 'snapshot'" data-toggle="tab">Snapshot</a></li> -->
                             </ul>
                         </div>
-
                         <div class="tab-pane" data-ng-class="{'active' : formElements.category == 'community'}" id="step1-community">
-
                             <div class="row">
                                 <div class="col-md-12 col-sm-12 col-xs-12 ">
                                     <div class="pull-left">
@@ -90,10 +84,7 @@
 										
 								</div>
                             </div>
-								
-
                         </div>
-
                         <div class="tab-pane" data-ng-class="{'active' : formElements.category == 'featured'}" id="step1-featured">
                             <div class="row">
                                 <div class="col-md-12 col-sm-12 col-xs-12 ">
@@ -199,9 +190,8 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
-    <app-scroll></app-scroll>
-<div id="footer" ng-include="'app/views/common/footer.jsp'"></div>
+<!--     <app-scroll></app-scroll>
+ --><div id="footer" ng-include="'app/views/common/footer.jsp'"></div>
 </div>
