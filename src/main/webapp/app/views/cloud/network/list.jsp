@@ -4,7 +4,7 @@ pageEncoding="UTF-8"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <div  ui-view ng-controller="networksCtrl">
-    <div data-ng-hide="viewContent">
+    <div data-ng-hide="viewContent" data-ng-init="list(1)">
         <div class="hpanel">
             <div class="panel-heading">
                 <div class="row">
@@ -68,7 +68,7 @@ pageEncoding="UTF-8"%>
 									<table cellspacing="1" cellpadding="1"
 										class="table table-bordered dataTable table-striped">
 									<thead>
-			
+
 				<tr>
 					<th  data-ng-click="changeSorting('name')" data-ng-class="sort.descending && sort.column =='name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.name" bundle="${msg}" /></th>
 					<th  data-ng-click="changeSorting('department.userName')" data-ng-class="sort.descending && sort.column =='Account'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.account" bundle="${msg}" /></th>
