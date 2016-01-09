@@ -6,8 +6,6 @@ pageEncoding="UTF-8"%>
 <div class="m-t-sm">
     <div  data-ng-if="templateObj.share && templateObj.featured" class="col-md-4 col-lg-4 col-xs-12 col-sm-12 template-panel-area" data-ng-repeat="templateObj in template.templateList|orderBy:template.name | filter: quickSearch">
         <div class="hpanel">
-
-
             <div  class="panel-body p-xs template-panel" data-ng-class="templateObj.openDescription ? 'template-panel-active': ''">
                 <div class="row">
                     <div class="col-md-12 col-sm-12">
@@ -19,8 +17,10 @@ pageEncoding="UTF-8"%>
                 </div>
                 <div class="row">
                     <div class="col-md-2 col-sm-2">
-                        <img data-ng-show="templateObj.osCategory.name.indexOf('Windows') > -1" src="images/os/windows_logo.png" alt="" height="50" width="50" class="m-r-5 m-t-md" >
+                       <img data-ng-show="templateObj.osCategory.name.indexOf('Windows') > -1" src="images/os/windows_logo.png" alt="" height="50" width="50" class="m-r-5 m-t-md" >
                         <img data-ng-show="templateObj.osCategory.name.indexOf('CentOS') > -1" src="images/os/centos_logo.png" alt="" height="50" width="50" class="m-r-5 m-t-md" >
+                        <img data-ng-show="templateObj.osCategory.name.indexOf('Ubuntu') > -1" src="images/os/ubuntu_logo.png" alt="" height="50" width="50" class="m-r-5 m-t-md" >
+                        <img data-ng-show="templateObj.osCategory.name.indexOf('RedHat') > -1" src="images/os/redhat_logo.png" alt="" height="50" width="50" class="m-r-5 m-t-md" >
                     </div>
                     <div class="col-md-7 col-sm-7 ">
                         <div class="row">
@@ -55,7 +55,6 @@ pageEncoding="UTF-8"%>
                         <div class="row m-t-md" >
                             <div class="col-md-12 col-sm-12 col-xs-12 ">
                                 <button class="btn btn-info btn-sm pull-right" title="Launch VM" data-ng-click="openAddInstance(templateObj)"><i class="fa fa-power-off"></i> <fmt:message key="common.launch" bundle="${msg}" /></button>
-
                             </div>
                         </div>
                     </div>

@@ -98,7 +98,6 @@
 																 <input icheck type="radio" data-ng-model="instance.template.id" value="{{templateObj.id}}" data-ng-checked="instance.template.id===templateObj.id"  data-ng-change="setTemplate(templateObj)" 
 																>
 															</label>
-
 													</div>
 											 </div>
 												</td>
