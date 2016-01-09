@@ -97,6 +97,30 @@ function templatesCtrl($scope, $stateParams,appService, $timeout, promiseAjax, g
 
         });
     };
+    
+    
+    $scope.openAddInstance = function(templateObj) {
+    	
+    	appService.localStorageService.set("selectedTemplate",templateObj);         
+		var modalInstance = $modal.open({
+			templateUrl : 'app/views/cloud/instance/add.jsp',
+			controller : 'instanceCtrl',
+			size : 'lg',
+			backdrop : 'static',
+			windowClass : "hmodal-info",
+			resolve : {
+				items : function() {
+					return $scope.items;
+				}
+			}
+			 		});
+
+		modalInstance.result.then(function(templateObj) {
+			$scope.selected = templateObj;
+		});
+
+	};
+    
 
 }
 

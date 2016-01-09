@@ -202,6 +202,6 @@
 
         </div>
     </div>
-    <app-scroll></app-scroll>
-<div id="footer" ng-include="'app/views/common/footer.jsp'"></div>
+<!--     <app-scroll></app-scroll>
+ --><div id="footer" ng-include="'app/views/common/footer.jsp'"></div>
 </div>
