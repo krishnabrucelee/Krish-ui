@@ -19,11 +19,11 @@ pageEncoding="UTF-8"%>
             </thead>
             <tbody>
                 <tr>
-                       <td><input  type="text" name="cidr"  valid-cidr placeholder="0.0.0.0/24"  data-ng-model="firewallRules.cidr" class="form-control input-group " ><span class="text-center" data-ng-show="cidrValidate && actionRule" data-ng-class="cidrValidate && actionRule ? 'text-danger' : ''"> Invalid format</span></td>
-                    <td><select  class="form-control input-group" name="protocol" data-ng-model="firewallRules.protocol"  data-ng-change="selectProtocol(protocol)" ng-options="protocol for (id, protocol) in protocolList"><option value=""><fmt:message key="common.select"
-													bundle="${msg}" /></option></select></td>
-                    <td data-ng-show="udp || tcp"><input valid-number  placeholder="1-65535" data-ng-min="1" data-ng-max="65535"   type="text" name="startPort" data-ng-model="firewallRules.startPort" class="form-control " autofocus > </td>
-                    <td data-ng-show="udp || tcp"><input valid-number placeholder="1-65535" data-ng-min="1" data-ng-max="65535"   type="text" name="endPort" data-ng-model="firewallRules.endPort" class="form-control " autofocus > </td>
+                       <td><input required="true" type="text" name="sourceCIDR"  valid-cidr placeholder="0.0.0.0/24"  data-ng-model="firewallRules.sourceCIDR" class="form-control input-group " ><span class="text-center" data-ng-show="cidrValidate && actionRule" data-ng-class="cidrValidate && actionRule ? 'text-danger' : ''"> Invalid format</span></td>
+                    <td><select required="true" class="form-control input-group" name="protocol" data-ng-model="firewallRules.protocol"  data-ng-change="selectProtocol(protocol)" ng-options="protocol for (id, protocol) in protocolList"><option value=""><fmt:message key="common.select"
+													bundle="${msg}" /></option></select> <span class="text-center text-danger" data-ng-show="firewallRules.protocol == null && formSubmitted"> *Required</span></td>
+                    <td data-ng-show="udp || tcp"><input required="true" valid-number  placeholder="1-65535" data-ng-min="1" data-ng-max="65535"   type="text" name="startPort" data-ng-model="firewallRules.startPort" class="form-control " autofocus ><span class="text-center text-danger" data-ng-show="firewallRules.startPort == null && formSubmitted"> *Required</span> </td>
+                    <td data-ng-show="udp || tcp"><input required="true" valid-number placeholder="1-65535" data-ng-min="1" data-ng-max="65535"   type="text" name="endPort" data-ng-model="firewallRules.endPort" class="form-control " autofocus ><span class="text-center text-danger" data-ng-show="firewallRules.endPort == null && formSubmitted"> *Required</span> </td>
                     <td data-ng-show="icmp"><input valid-number   name="icmpType" data-ng-model="firewallRules.icmpType" class="form-control " autofocus type="text"></td>
                     <td data-ng-show="icmp"><input valid-number  name="icmpCode" data-ng-model="firewallRules.icmpCode" class="form-control " autofocus type="text"></td>
                     <td>
@@ -47,7 +47,7 @@ pageEncoding="UTF-8"%>
             <tbody>
                <tr ng-repeat="firewallRules in egressRuleList" class="font-bold text-center">
              	<td>{{firewallRules.sourceCIDR}}</td>
-		<td>{{firewallRules.protocol}}</td>
+		        <td>{{firewallRules.protocol}}</td>
                 <td><div  data-ng-show=" (firewallRules.startPort == '' || firewallRules.startPort!='') ">{{firewallRules.startPort}}</div> <div  data-ng-show=" (firewallRules.icmpType=='' || firewallRules.icmpType!='') ">{{firewallRules.icmpType}}</div></td>
                 <td><div data-ng-show=" (firewallRules.endPort =='' || firewallRules.endPort!='')">{{firewallRules.endPort}} </div> <div data-ng-show="(firewallRules.icmpCode=='' || firewallRules.icmpCode!='')" >{{firewallRules.icmpCode}}</div></td>
                 <td>
