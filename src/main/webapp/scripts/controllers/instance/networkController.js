@@ -10,6 +10,12 @@ angular
 
 function networkCtrl($scope, $modal, $window, $stateParams,appService) {
 
+	$scope.nicLists = {};
+    $scope.paginationObject = {};
+    $scope.nicForm = {};
+    $scope.global = appService.globalConfig;
+    $scope.sort = appService.globalConfig.sort;
+    $scope.changeSorting = appService.utilService.changeSorting;
     $scope.networkList = [];
 
     $scope.instanceDetails='';
@@ -22,6 +28,91 @@ function networkCtrl($scope, $modal, $window, $stateParams,appService) {
 
         });
     }
+
+    // Nic List
+    $scope.nicList = function (pageNumber) {
+    	$scope.showLoader = true;
+        $scope.nic = {};
+    	var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
+        var hasNics = appService.crudService.list("nics", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+        hasNics.then(function (result) {  // this is only run after $http completes0
+            $scope.nicLists = result;
+
+            // For pagination
+            $scope.paginationObject.limit = limit;
+            $scope.paginationObject.currentPage = pageNumber;
+            $scope.paginationObject.totalItems = result.totalItems;
+            $scope.showLoader = false;
+        });
+    };
+    $scope.nicList(1);
+
+ // Add the IP Address
+    $scope.acquireNewIP = function (size) {
+        appService.dialogService.openDialog($scope.global.VIEW_URL + "cloud/instance/addIP.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
+                // Create a new IP
+                $scope.saveIP = function (form) {
+                    $scope.formSubmitted = true;
+                    if (form.$valid) {
+                    	$scope.showLoader = true;
+                        var hasServer = appService.crudService.add("nics", nic);
+                        hasServer.then(function (result) {  // this is only run after $http completes
+                            $scope.formSubmitted = false;
+                            $modalInstance.close();
+                            $scope.showLoader = false;
+                            appService.notify({message: 'IP Address acquired successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+                            $scope.nicList(1);
+                        }).catch(function (result) {
+                        	$scope.showLoader = false;
+            		    if (!angular.isUndefined(result.data)) {
+                		if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
+                  	   	 var msg = result.data.globalError[0];
+                  	   	 $scope.showLoader = false;
+                	    	 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+                    	} else if (result.data.fieldErrors != null) {
+                       	$scope.showLoader = false;
+                        	angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
+                            	$scope.nicForm[key].$invalid = true;
+                            	$scope.nicForm[key].errorMessage = errorMessage;
+                        	});
+                		}
+                	}
+            	});
+                    	}
+                	},
+                 	$scope.cancel = function () {
+                     	$modalInstance.close();
+                 	};
+            	}]);
+    	};
+
+    	 // Delete the Ip Address
+        $scope.deleteIP = function (size, nic) {
+        	appService.dialogService.openDialog($scope.global.VIEW_URL + "cloud/instance/deleteIP.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+                    $scope.deleteObject = nic;
+                    $scope.ok = function (deleteObject) {
+                    	$scope.showLoader = true;
+                        nic.isActive = false;
+                        var hasServer = appService.crudService.softDelete("nics", deleteObject);
+                        hasServer.then(function (result) {
+                            $scope.nicList(1);
+                            $scope.showLoader = false;
+                            appService.notify({message: 'IP deleted successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                        }).catch(function (result) {
+                        	if (!angular.isUndefined(result.data)) {
+                            	if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
+                              	    var msg = result.data.globalError[0];
+                            	    appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+                                }
+                            }
+                        });
+                        $modalInstance.close();
+                    },
+                     $scope.cancel = function () {
+                         $modalInstance.close();
+                     };
+                }]);
+        };
 
     $scope.networkList = {};
     $scope.paginationObject = {};

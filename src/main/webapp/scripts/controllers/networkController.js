@@ -72,7 +72,6 @@ function networksCtrl($scope,$rootScope,filterFilter,$state, $stateParams,modalS
 
     $scope.egressSave = function (firewallRules) {
     $scope.formSubmitted = true;
- alert("test");
         var CheckIP = /^([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\/([1-9]|[12][0-9]|3[012])$/;
         if ($scope.firewallRules.sourceCIDR && $scope.firewallRules.protocol && $scope.firewallRules.startPort && $scope.firewallRules.endPort) {
 
@@ -82,7 +81,7 @@ function networksCtrl($scope,$rootScope,filterFilter,$state, $stateParams,modalS
             	        hasServer.then(function (result) {  // this is only run after $http completes
             	            $scope.formSubmitted = false;
             	            appService.notify({message: 'Egress rule added successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
-            	            $scope.firewallRulesList(1);
+            	            $scope.firewallRulesLists(1);
             $scope.templateCategory = 'egress';
             	            }).catch(function (result) {
             	            	if (!angular.isUndefined(result.data)) {

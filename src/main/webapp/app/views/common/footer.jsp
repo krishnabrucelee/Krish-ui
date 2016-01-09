@@ -9,4 +9,4 @@
             <fmt:message key="panda.cloud.management.portal" bundle="${msg}" />
         </span>
 <fmt:message key="common.copyright" bundle="${msg}" /> © <fmt:message key="common.footer" bundle="${msg}" />.
- </footer>>
+ </footer>
