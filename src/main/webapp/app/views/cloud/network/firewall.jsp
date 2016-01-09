@@ -5,9 +5,7 @@ pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <div data-ng-controller="networksCtrl">
 <div class="white-content" >
-
-
-        <table cellspacing="1" cellpadding="1" class="table table-bordered table-striped">
+<table cellspacing="1" cellpadding="1" class="table table-bordered table-striped">
             <thead>
                 <tr>
                     <th class="col-md-2 col-xs-2">Source CIDR</th>
@@ -63,11 +61,11 @@ pageEncoding="UTF-8"%>
                 <td>
                     <a data-ng-click="deleteRules(rule.id,'Firewall')" title="Delete"><span class="fa fa-trash"></span></a>
                 </td>
-	        </tr> 
-            
+	        </tr>
+
             </tbody>
     </table>
 
- 
-   
+
+
 </div></div>

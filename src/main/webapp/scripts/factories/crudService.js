@@ -9,6 +9,14 @@ function crudService($window, localStorageService, globalConfig, $stateParams, p
         return promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + moduleName +"?lang=" + localStorageService.cookie.get('language') + "&sortBy=+id&limit="+data.limit, headers, data);
     };
 
+    object.listAllByQuery = function(moduleNameWithQuery, headers, data) {
+        return promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + moduleNameWithQuery +"&lang=" + localStorageService.cookie.get('language') + "&sortBy=+id&limit="+data.limit, headers, data);
+    };
+
+    object.listByQuery = function(moduleNameWithQuery) {
+        return promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + moduleNameWithQuery);
+    };
+
     object.listAll = function(moduleName) {
         return promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + moduleName +"?lang=" + localStorageService.cookie.get('language')+"&sortBy=-id");
     };
