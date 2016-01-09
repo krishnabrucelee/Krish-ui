@@ -7,8 +7,8 @@
 <div class="row m-l-sm m-r-sm panel-body" data-ng-controller="networksCtrl">
      <ul class="nav nav-tabs" data-ng-init="templateCategory = tabview">
         <li data-ng-class="{'active' : tabview != 'egress'}"><a href="javascript:void(0)" data-ng-click="templateCategory = 'details'" data-toggle="tab">  <i class="fa fa-list"></i> <fmt:message key="common.details" bundle="${msg}" /></a></li>
-        <li data-ng-class="{'active' : tabview == 'egress'}"><a  data-ng-click="templateCategory = 'egress'" data-toggle="tab"><!--<i class="fa fa-sign-in"></i>--> <i class="custom-icon custom-icon-egress"></i><fmt:message key="common.egressrule" bundle="${msg}" /></a></li>
-        <li ><a  data-ng-click="templateCategory = 'ip'" data-toggle="tab"> <!--<i class="fa fa-sitemap"></i>--> <i class="custom-icon custom-icon-ip"></i><fmt:message key="ip.address" bundle="${msg}" /></a></li>
+        <li data-ng-class="{'active' : tabview == 'egress'}"><a  data-ng-click="firewallRulesLists(1)" data-toggle="tab"><!--<i class="fa fa-sign-in"></i>--> <i class="custom-icon custom-icon-egress"></i><fmt:message key="common.egressrule" bundle="${msg}" /></a></li>
+        <li ><a  data-ng-click="ipLists(1)" data-toggle="tab"> <!--<i class="fa fa-sitemap"></i>--> <i class="custom-icon custom-icon-ip"></i><fmt:message key="ip.address" bundle="${msg}" /></a></li>
         <li ><a data-ng-click="templateCategory = 'instance'" data-toggle="tab"> <i class="fa fa-cloud"></i> <fmt:message key="common.instance" bundle="${msg}" /></a></li>
     </ul>
      <div class="tab-content">
