@@ -119,11 +119,10 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
         			if (!angular.isUndefined(appService.localStorageService.get("selectedTemplate")) && appService.localStorageService.get("selectedTemplate") != null) {
         	    			if(obj.id == appService.localStorageService.get("selectedTemplate").id) {
         	    				$scope.instance.template = obj;
-appService.localStorageService.set("selectedTemplate",{});
+        	    				appService.localStorageService.set("selectedTemplate",{});
         	    			}
         	    		}
         	    	});
-console.log($scope.instance.template);
                 $scope.showLoader = false;
           });
       };
