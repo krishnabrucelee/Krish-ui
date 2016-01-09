@@ -21,14 +21,14 @@ pageEncoding="UTF-8"%>
                                 <span class="pull-right"><fmt:message key="attached.volume" bundle="${msg}" /></span>
                                 <div class="clearfix"></div>
                                 <span class="pull-left m-t-xs"><img src="images/volume-icon.png"></span>
-                                <b class="pull-right">{{volumeList.Count}}</b>
+                                <b class="pull-right">{{attachedCount}}</b>
                                 <div class="clearfix"></div>
                             </div>
                             <div class="dashboard-box pull-left">
                                 <span class="pull-right"><fmt:message key="detached.volume" bundle="${msg}" /></span>
                                 <div class="clearfix"></div>
                                 <span class="pull-left m-t-xs"><img src="images/volume-icon.png"></span>
-                                <b class="pull-right">0</b>
+                                <b class="pull-right">{{detachedCount}}</b>
                                 <div class="clearfix"></div>
                             </div>
                         </div>
@@ -48,7 +48,6 @@ pageEncoding="UTF-8"%>
                 <div class="clearfix"></div>
             </div>
             <pagination-content></pagination-content>
-
             <div class="row">
                 <div class="col-md-12 col-sm-12 col-xs-12 ">
                     <div class="white-content">

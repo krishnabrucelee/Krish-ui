@@ -37,12 +37,36 @@
 						<div class="tab-pane"
 							data-ng-class="{'active' : templateCategory == 'iso'}"
 							id="step1-iso">
-							<div data-ng-include src="'app/views/cloud/instance/step1.jsp'"></div>
+							<div data-ng-include src="'app/views/cloud/instance/step1-iso.jsp'"></div>
 						</div>
 
 					</div>
 
+					<div class="panel panel-default" data-ng-show="instance.template" data-ng-if = "templateCategory == 'iso'">
+						<div class="panel-body no-padding">
+							<ul class="list-group">
 
+								<li class="list-group-item ">
+									<div class="row">
+										<div class="col-sm-12 col-md-12">
+											<div class="col-md-6  col-sm-6 col-xs-6" class="stats-title">
+												<h5 class="font-bold text-info"><fmt:message key="common.hypervisor" bundle="${msg}" /></h5>
+											 </div>
+											 <div class="col-md-6  col-sm-6 col-xs-6">
+											 	<select required="true"
+											 		class="form-control input-group"
+											 		name="hypervisor" data-ng-model="instance.hypervisor"
+											 		ng-options="hypervisor.name for hypervisor in formElements.hypervisorList"
+											 		data-ng-class="{'error': TemplateForm.hypervisor.$invalid && formSubmitted}" >
+                                        			<option value="">Select</option>
+                                   			 	</select>
+                                   			 </div>
+										</div>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</div>
 
 					<div class="panel panel-default" data-ng-show="instance.template">
 						<div class="panel-heading">

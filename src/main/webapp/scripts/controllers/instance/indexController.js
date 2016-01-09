@@ -17,6 +17,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
     $scope.instanceElements = {};
     $scope.instance = {};
     $scope.instance.networks = {};
+    $scope.paginationObject = {};
 
     $scope.template = {
         templateList: {}
@@ -126,14 +127,66 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
     };
     $scope.templateList();
 
+      // Hypervisors list from server
+      $scope.hypervisorList = function () {
+    	  var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
+    	  var hashypervisorList = appService.crudService.list("hypervisors", $scope.global.paginationHeaders(1, limit), {"limit": limit});
+    	  hashypervisorList.then(function (result) {
+    		  $scope.formElements.hypervisorList = result;
+    	  });
+      };
+      $scope.hypervisorList();
+
+//      $scope.templateCategory = function(category) {
+//    	  var templateList = [];
+//    	  $scope.showLoader = true;
+//    	  var template = {};
+//    	  if (category == "template") {
+//
+//    	  } else if (category == "iso") {
+//
+//    	  }
+//
+//
+//    	  hastemplateList.then(function (result) {
+//        	  $scope.formElements.templateList= result;
+//        	  $scope.showLoader = false;
+//          });
+//      }
+
     $scope.getTemplatesByFilters = function () {
         var templateList = [];
         $scope.showLoader = true;
         var template = {};
         template.osCategory = $scope.instance.osCategory;
+    	  if(!angular.isUndefined(template.osCategory) && template.osCategory != null) {
+    		  template.osCategoryId = template.osCategory.id;
+          	delete template.osCategory;
+          }
+//    	  template.osCategory = $scope.instance.osCategory;
         template.architecture = $scope.instance.architecture;
         template.osVersion = $scope.instance.osVersion;
-        var hastemplateList = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_POST, appService.globalConfig.APP_URL + "templates/search?lang=" + appService.localStorageService.cookie.get('language'), '', template);
+        var hastemplateList = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_POST, appService.globalConfig.APP_URL + "templates/searchtemplate?lang=" + appService.localStorageService.cookie.get('language'), '', template);
+
+    	  hastemplateList.then(function (result) {
+        	  $scope.formElements.templateList= result;
+        	  $scope.showLoader = false;
+          });
+      }
+
+      $scope.getIsoByFilters = function() {
+    	  var templateList = [];
+    	  $scope.showLoader = true;
+    	  var template = {};
+    	  template.osCategory = $scope.instance.osCategory;
+    	  if(!angular.isUndefined(template.osCategory) && template.osCategory != null) {
+    		  template.osCategoryId = template.osCategory.id;
+          	delete template.osCategory;
+          }
+//    	  template.osCategory = $scope.instance.osCategory;
+    	  template.architecture = $scope.instance.architecture;
+    	  template.osVersion = $scope.instance.osVersion;
+    	  var hastemplateList = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_POST , appService.globalConfig.APP_URL + "templates/searchiso?lang=" + appService.localStorageService.cookie.get('language'), '', template);
 
         hastemplateList.then(function (result) {
             $scope.formElements.templateList = result;
@@ -483,6 +536,10 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
         }
         instance.templateId = instance.template.id;
         delete instance.template;
+         if (!angular.isUndefined(instance.hypervisor) && instance.hypervisor !== null){
+        	 instance.hypervisorId = instance.hypervisor.id;
+        	 delete instance.hypervisor;
+         }
         instance.zoneId = $scope.global.zone.id;
         var hasServer = appService.crudService.add("virtualmachine", instance);
         hasServer.then(function (result) {  // this is only run after $http completes
@@ -612,13 +669,13 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
      $scope.formSubmitted = true;
      if (form.$valid) {
      $scope.instanceNetworkList = appService.localStorageService.get("instanceNetworkList");
-     
+
      $scope.instanceNetwork = {
      };
      // appService.localStorageService.remove('instanceNetworkList');
-     
+
      $scope.networks.plan = $scope.networks.networkOffers.name;
-     
+
      $scope.instanceNetwork = filterFilter($scope.networkList.networkOffers, {'name': $scope.networks.plan});
      if (filterFilter($scope.instanceNetworkList, {'name': $scope.networks.plan})[0] == null) {
      $scope.instanceNetworkList.push($scope.instanceNetwork[0]);
@@ -634,7 +691,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
      $scope.networkLists = appService.localStorageService.get("instanceNetworkList");
      appService.localStorageService.set('instanceViewTab', 'network');
      $state.reload();
-     
+
      }
      };
      */

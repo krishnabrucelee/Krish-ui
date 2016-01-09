@@ -18,7 +18,7 @@
 							</div>
 							<div class="col-md-12 col-xs-12 col-sm-12 p-xs">
 								<select class="form-control input-group" name="osCategory"
-									data-ng-model="instance.osCategory" ng-change="getTemplatesByFilters()"
+									data-ng-model="instance.osCategory" ng-change="getIsoByFilters()"
 									ng-options="osCategory.name for osCategory in formElements.osCategoryListByFilter">
 									<option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
 								</select>
@@ -63,19 +63,19 @@
 		<div data-ng-hide = "showLoader" class="hpanel">
 			<div class="panel-body  no-padding">
 				<ul class="mailbox-list borders no-margins">
-					<li class="border-bottom"><a href="javascript:void(0);"><fmt:message key="common.templates" bundle="${msg}" /></a>
+					<li class="border-bottom"><a href="javascript:void(0);"><fmt:message key="common.iso" bundle="${msg}" /></a>
 					</li>
 					<div class="scroll-220">
 						<div class="row">
 							<div class="col-md-12" >
 								<div class="instance-templates"
-									style="height: 246px; overflow-y: auto; overflow-x: hidden;">
+									style=" overflow-y: auto; overflow-x: hidden;">
 									<div>
 										<table cellspacing="1" cellpadding="1" class="table table-striped no-margins">
 										<tr data-ng-show="formElements.templateList.length == 0">
 											<td><fmt:message key="common.no.records.found" bundle="${msg}" /></td>
 										</tr>
-											<tr data-ng-if = "templateObj.format!='ISO'" data-ng-repeat="templateObj in formElements.templateList | filter: instance.osVersion ">
+											<tr  data-ng-if = "templateObj.format=='ISO'" data-ng-repeat="templateObj in formElements.templateList | filter: instance.osVersion ">
 												<td>
 												<div class="col-md-3 col-sm-3">
 
@@ -92,11 +92,9 @@
 											 <div class="col-md-8 col-sm-8"><label class="col-md-11 col-sm-11">{{templateObj.name}}</label><span class="col-md-11 col-sm-11">{{templateObj.displayText}}</span></div>
 											 <div class="col-md-1 col-sm-1">
 													<div class="form-group">
-															<label class=" "> <!-- <input icheck type="radio" 
-																data-ng-model="instance.template" value=""  data-ng-change="setTemplate(templateObj)"
-																name="template"> -->
-																 <input icheck type="radio" data-ng-model="instance.template.id" value="{{templateObj.id}}" data-ng-checked="instance.template.id===templateObj.id"  data-ng-change="setTemplate(templateObj)" 
-																>
+															<label class=" "> <input icheck type="radio"
+																data-ng-model="instance.template" value="" data-ng-change="setTemplate(templateObj)"
+																name="template">
 															</label>
 
 													</div>
