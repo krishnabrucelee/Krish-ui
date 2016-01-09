@@ -92,14 +92,13 @@ $scope.list = function () {
 		                    $state.reload();
 		  					$scope.cancel();
 		  				}).catch(function (result) {
-
-		  			         if(result.data.globalError[0] != null){
-		  			        	 var msg = result.data.globalError[0];
+		  					if(result.data.globalError[0] != null){
+		  			        	var msg = result.data.globalError[0];
 		  			        	appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
 		  			        	$state.reload();
 			  					$scope.cancel();
 		  			         }
-	                            });
+	                    });
 	  		 }
                 },
 				  $scope.cancel = function () {
