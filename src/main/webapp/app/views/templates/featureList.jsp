@@ -12,10 +12,9 @@
 
                 <div class="white-content">
                     <div class="table-responsive">
-                        <table cellspacing="1" cellpadding="1" class="table dataTable table-bordered table-striped table-hover table-mailbox">
+                        <table cellspacing="1" cellpadding="1" class="table table-bordered dataTable table-striped table-hover table-mailbox">
                             <thead>
                                 <tr>
-
 
                             <th class="col-md-2 col-sm-2"  data-ng-click="changeSorting('name')" data-ng-class="sort.descending && sort.column =='name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.name" bundle="${msg}" /></th>
                             <th class="col-md-1 col-sm-1"  data-ng-click="changeSorting('size')" data-ng-class="sort.descending && sort.column =='size'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.size" bundle="${msg}" />(<fmt:message key="common.gb" bundle="${msg}" />)</th>
@@ -27,10 +26,11 @@
                             <th class="col-md-1 col-sm-1"  data-ng-click="changeSorting('passwordEnabled')" data-ng-class="sort.descending && sort.column =='passwordEnabled'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.hvm" bundle="${msg}" /></th>
                             <th class="col-md-1 col-sm-1"  data-ng-click="changeSorting('dynamicallyScalable')" data-ng-class="sort.descending && sort.column =='dynamicallyScalable'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="password.enabled" bundle="${msg}" /></th>
 							<th class="col-md-1 col-sm-1"><fmt:message key="common.action" bundle="${msg}" /></th>
+                            
                             </tr>
                             </thead>
                             <tbody>
-                                <tr   data-ng-repeat="template in filteredCount = (template.templateList| filter:quickSearch| orderBy:sort.column:sort.descending)">
+                                <tr data-ng-if="template.share && template.featured" data-ng-repeat="template in filteredCount = (template.templateList| filter:quickSearch | orderBy:sort.column:sort.descending)">
                                     <td>
                                         <a data-ng-click="showDescription(template)">
                                            <img data-ng-show="template.osCategory.name.indexOf('windows') > -1" src="images/os/windows_logo.png" alt="" height="35" width="35" class="m-r-5" >

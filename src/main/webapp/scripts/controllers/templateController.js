@@ -4,24 +4,33 @@
  *
  */
 
+
 angular
         .module('homer')
         .controller('templatesCtrl', templatesCtrl)
         .controller('templateDetailsCtrl', templateDetailsCtrl)
         .controller('uploadTemplateCtrl', uploadTemplateCtrl)
 
-function templatesCtrl($scope, $stateParams, $timeout, promiseAjax, globalConfig, $modal, $log) {
+function templatesCtrl($scope, $stateParams,appService, $timeout, promiseAjax, globalConfig, $modal, $log) {
 
     $scope.global = globalConfig;
+    $scope.sort = appService.globalConfig.sort;
+    $scope.changeSorting = appService.utilService.changeSorting;
+
     $scope.template = {
         templateList: {}
     };
 
-    var hasServer = promiseAjax.httpRequest("GET", "api/templates.json");
-    hasServer.then(function (result) {
-       $scope.template.templateList = result;
-    });
-
+    $scope.templateList = function () {
+   	 $scope.showLoader = true;
+        var hastemplateList = appService.crudService.listAll("templates/list");
+        hastemplateList.then(function (result) {  // this is only run after $http completes0
+               $scope.template.templateList = result;
+               $scope.showLoader = false;
+         });
+     };
+     $scope.templateList();
+     
     $scope.showTemplateContent = function() {
         $scope.showLoader = true;
         $timeout(function() {
@@ -64,14 +73,11 @@ function templatesCtrl($scope, $stateParams, $timeout, promiseAjax, globalConfig
         });
     }
 
-
-
     // INFO PAGE
 
     $scope.templateInfo = $scope.template.templateList[$stateParams.id - 1];
 
     $scope.showDescription = function (templateObj) {
-        //modalService.trigger('app/views/servicecatalog/viewnetwork.jsp', 'md', 'View Network Offering');
         var modalInstance = $modal.open({
             animation: $scope.animationsEnabled,
             templateUrl: 'app/views/templates/properties.jsp',
@@ -89,10 +95,9 @@ function templatesCtrl($scope, $stateParams, $timeout, promiseAjax, globalConfig
         modalInstance.result.then(function (selectedItem) {
             $scope.selected = selectedItem;
 
-        }, function () {
-            $log.info('Modal dismissed at: ' + new Date());
         });
     };
+
 }
 
 angular.module('homer').controller('PopoverDemoCtrl', function ($scope) {
@@ -103,7 +108,8 @@ angular.module('homer').controller('PopoverDemoCtrl', function ($scope) {
     };
 });
 
-function templateDetailsCtrl($scope, templateObj, $modalInstance) {
+function templateDetailsCtrl($scope, templateObj,globalConfig, $modalInstance) {
+	$scope.global = globalConfig;
     $scope.templateObj = templateObj;
     $scope.cancel = function () {
         $modalInstance.dismiss('cancel');
@@ -214,3 +220,4 @@ function uploadTemplateCtrl($scope, globalConfig, $modalInstance, notify) {
         $modalInstance.dismiss('cancel');
     };
 }
+

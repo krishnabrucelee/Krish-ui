@@ -628,7 +628,7 @@ function appScroll() {
         link: function (scope, element, attrs) {
 
         },
-        template: "setTimeout(function() {<script type='text/javascript'>$('.slimScroll').slimScroll();</script>},1000)",
+        template: "<script type='text/javascript'>setTimeout(function() { $('.slimScroll').slimScroll(); },1000)</script>",
     };
 }
 
