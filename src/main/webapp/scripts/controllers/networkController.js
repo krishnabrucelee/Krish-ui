@@ -49,28 +49,48 @@ function networksCtrl($scope,$rootScope,filterFilter,$state, $stateParams,modalS
     $scope.firewallRules = {};
 
     // Create a new egress rule
+    $scope.actionRule = false;
+    $scope.cidrValidate = false;
     $scope.firewallRules.networkId = $stateParams.id;
+
     $scope.egressSave = function (firewallRules) {
     $scope.formSubmitted = true;
-    if ($scope.firewallRules.cidr && $scope.firewallRules.protocol && $scope.firewallRules.startPort && $scope.firewallRules.endPort) {
-        var hasServer = appService.crudService.add("egress", firewallRules);
-        hasServer.then(function (result) {  // this is only run after $http completes
-            $scope.formSubmitted = false;
-            appService.notify({message: 'Egress rule added successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
-            $scope.firewallRulesList(1);
-            }).catch(function (result) {
-            	if (!angular.isUndefined(result.data)) {
-                    if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
-                	    var msg = result.data.globalError[0];
-                	    appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
-                    	} else if (result.data.fieldErrors != null) {
-                        	angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
-                            	$scope.egressForm[key].$invalid = true;
-                            	$scope.egressForm[key].errorMessage = errorMessage;
-                        	});
-                		}
-                	}
-            });
+ alert("test");
+        var CheckIP = /^([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\/([1-9]|[12][0-9]|3[012])$/;
+        if ($scope.firewallRules.sourceCIDR && $scope.firewallRules.protocol && $scope.firewallRules.startPort && $scope.firewallRules.endPort) {
+
+            if (CheckIP.test($scope.firewallRules.sourceCIDR)) {
+            	 if ($scope.firewallRules.sourceCIDR && $scope.firewallRules.protocol && $scope.firewallRules.startPort && $scope.firewallRules.endPort) {
+            	        var hasServer = appService.crudService.add("egress", firewallRules);
+            	        hasServer.then(function (result) {  // this is only run after $http completes
+            	            $scope.formSubmitted = false;
+            	            appService.notify({message: 'Egress rule added successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+            	            $scope.firewallRulesList(1);
+            	            }).catch(function (result) {
+            	            	if (!angular.isUndefined(result.data)) {
+            	                    if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
+            	                	    var msg = result.data.globalError[0];
+            	                	    appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+            	                    	} else if (result.data.fieldErrors != null) {
+            	                        	angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
+            	                            	$scope.egressForm[key].$invalid = true;
+            	                            	$scope.egressForm[key].errorMessage = errorMessage;
+            	                        	});
+            	                		}
+            	                	}
+            	            });
+            	    }
+                $scope.actionRule = false;
+            }
+            else {
+                $scope.actionRule = true;
+                $scope.cidrValidate = true;
+            }
+        }
+
+    else {
+        $scope.actionRule = true;
+        $scope.cidrValidate = true;
     }
     };
     $scope.cancel = function () {
@@ -86,7 +106,7 @@ function networksCtrl($scope,$rootScope,filterFilter,$state, $stateParams,modalS
                 	firewallRules.isActive = false;
                     var hasServer = appService.crudService.softDelete("egress", deleteObject);
                     hasServer.then(function (result) {
-                        $scope.list(1);
+                        $scope.firewallRulesList(1);
                         $scope.showLoader = false;
                         appService.notify({message: 'Egress rule deleted successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                     }).catch(function (result) {
