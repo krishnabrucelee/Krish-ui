@@ -116,7 +116,7 @@ function networkCtrl($scope, $modal, $window, $stateParams,appService) {
                         $scope.showLoader = false;
                     	appService.notify({message: 'NIC attached successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                         $modalInstance.close();
-                        $scope.list(1);
+                        $scope.nicLists(1);
                }).catch(function (result) {
                         if (!angular.isUndefined(result.data)) {
                             if (result.data.globalError != '' && !angular.isUndefined(result.data.globalError)) {
@@ -150,7 +150,7 @@ function networkCtrl($scope, $modal, $window, $stateParams,appService) {
 		       $scope.showLoader = false;
                appService.notify({message: 'NIC deleted successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                $modalInstance.close();
-               $scope.list(1);
+               $scope.nicLists(1);
              });
 
              },
@@ -171,7 +171,7 @@ function networkCtrl($scope, $modal, $window, $stateParams,appService) {
                        $scope.showLoader = false;
                        appService.notify({message: 'NIC updated successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                        $modalInstance.close();
-                       $scope.list(1);
+                       $scope.nicLists(1);
                     });
 
                 },

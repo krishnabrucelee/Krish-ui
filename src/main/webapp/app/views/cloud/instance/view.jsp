@@ -6,7 +6,7 @@ pageEncoding="UTF-8"%>
 
 <div class="hpanel">
     <div class="row m-l-sm m-r-sm panel-body" ng-controller="instanceViewCtrl">
-    
+
         <ul class="nav nav-tabs" data-ng-init="templateCategory = 'dashboard'">
             <li data-ng-class="{'active' : templateCategory == 'dashboard'}"><a href="javascript:void(0)" data-ng-click="templateCategory = 'dashboard'" data-toggle="tab">  <i class="fa fa-laptop"></i> <fmt:message key="dashboard" bundle="${msg}" /></a></li>
             <li data-ng-show ="instance.status == 'Stopped'" data-ng-class="{'active' : templateCategory == 'config'}"><a has-permission="UPGRADE_VM" data-ng-click="templateCategory = 'config'"  data-toggle="tab"> <i class="fa fa-cogs"></i> <fmt:message key="configuration" bundle="${msg}" /></a></li>
@@ -14,7 +14,7 @@ pageEncoding="UTF-8"%>
             <li class=""><a  data-ng-click="templateCategory = 'network'" data-toggle="tab"> <!--<i class="fa fa-sitemap"></i>--><i class="custom-icon custom-icon-network"></i> <fmt:message key="networking" bundle="${msg}" /></a></li>
             <li class=""><a has-permission="MONITOR_VM_PERFORMANCE" data-ng-click="templateCategory = 'monitor'" data-toggle="tab"> <i class="fa fa-desktop"></i> <fmt:message key="monitor" bundle="${msg}" /></a></li>
         </ul>
-      
+
         <div class="tab-content">
             <div data-ng-show = "showLoaderOffer" style="margin: 20%">
                 <get-loader-image data-ng-show="showLoaderOffer"></get-loader-image>
@@ -190,7 +190,7 @@ pageEncoding="UTF-8"%>
                                             <a href="javascript:void(0);" data-ng-if="instance.status == 'Running'" title="<fmt:message key="restart" bundle="${msg}" />" data-ng-click="rebootVm('sm',instance)"><span class="fa-rotate-left fa font-bold m-xs"></span> <fmt:message key="reboot" bundle="${msg}" /></a>
                                         </li>
 
-                                        <li has-permission="RESET_PASSWORD" data-ng-show="instance.passwordEnabled == true && (instance.status == 'Running' || instance.status == 'Stopped')"  class="list-group-item">
+                                        <li has-permission="RESET_PASSWORD" data-ng-show="instance.passwordEnabled == true && (instance.status == 'Running' || instance.status == 'Stopped') && instance.vncPassword !== null"  class="list-group-item">
                                             <a href="javascript:void(0);" title="<fmt:message key="show.password" bundle="${msg}" />" data-ng-click="showPassword(instance)"><span class="fa-key fa font-bold m-xs"></span> <fmt:message key="show.password" bundle="${msg}" /></a>
                                         </li>
                                         <li has-permission="RESET_PASSWORD" data-ng-show="instance.passwordEnabled == true && instance.status == 'Stopped'"  class="list-group-item">
