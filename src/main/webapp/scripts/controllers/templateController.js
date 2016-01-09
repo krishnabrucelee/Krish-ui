@@ -11,7 +11,7 @@ angular
         .controller('templateDetailsCtrl', templateDetailsCtrl)
         .controller('uploadTemplateCtrl', uploadTemplateCtrl)
 
-function templatesCtrl($scope, $stateParams,appService, $timeout, promiseAjax, globalConfig, $modal, $log) {
+function templatesCtrl($scope, $stateParams, appService, $timeout, promiseAjax, globalConfig, $modal, $log) {
 
     $scope.global = globalConfig;
     $scope.sort = appService.globalConfig.sort;
@@ -22,23 +22,21 @@ function templatesCtrl($scope, $stateParams,appService, $timeout, promiseAjax, g
     };
 
     $scope.templateList = function () {
-   	 $scope.showLoader = true;
+        $scope.showLoader = true;
         var hastemplateList = appService.crudService.listAll("templates/list");
         hastemplateList.then(function (result) {  // this is only run after $http completes0
-               $scope.template.templateList = result;
-               $scope.showLoader = false;
-         });
-     };
-     $scope.templateList();
-     
-    $scope.showTemplateContent = function() {
-        $scope.showLoader = true;
-        $timeout(function() {
+            $scope.template.templateList = result;
             $scope.showLoader = false;
-            $scope.listView =!$scope.listView;
+        });
+    };
+    $scope.templateList();
 
+    $scope.showTemplateContent = function () {
+        $scope.showLoader = true;
+        $timeout(function () {
+            $scope.showLoader = false;
+            $scope.listView = !$scope.listView;
         }, 800);
-
     };
 
     $scope.uploadTemplateContainer = function () {
@@ -61,7 +59,6 @@ function templatesCtrl($scope, $stateParams,appService, $timeout, promiseAjax, g
             $log.info('Modal dismissed at: ' + new Date());
         });
     };
-
 
     $scope.openDescription = function (index) {
         angular.forEach($scope.template.templateList, function (value, key) {
@@ -91,37 +88,32 @@ function templatesCtrl($scope, $stateParams,appService, $timeout, promiseAjax, g
                 }
             }
         });
-
         modalInstance.result.then(function (selectedItem) {
             $scope.selected = selectedItem;
-
         });
     };
-    
-    
-    $scope.openAddInstance = function(templateObj) {
-    	
-    	appService.localStorageService.set("selectedTemplate",templateObj);         
-		var modalInstance = $modal.open({
-			templateUrl : 'app/views/cloud/instance/add.jsp',
-			controller : 'instanceCtrl',
-			size : 'lg',
-			backdrop : 'static',
-			windowClass : "hmodal-info",
-			resolve : {
-				items : function() {
-					return $scope.items;
-				}
-			}
-			 		});
 
-		modalInstance.result.then(function(templateObj) {
-			$scope.selected = templateObj;
-		});
+    $scope.openAddInstance = function (templateObj) {
 
-	};
-    
+        appService.localStorageService.set("selectedTemplate", templateObj);
+        var modalInstance = $modal.open({
+            templateUrl: 'app/views/cloud/instance/add.jsp',
+            controller: 'instanceCtrl',
+            size: 'lg',
+            backdrop: 'static',
+            windowClass: "hmodal-info",
+            resolve: {
+                items: function () {
+                    return $scope.items;
+                }
+            }
+        });
 
+        modalInstance.result.then(function (templateObj) {
+            $scope.selected = templateObj;
+        });
+
+    };
 }
 
 angular.module('homer').controller('PopoverDemoCtrl', function ($scope) {
@@ -132,13 +124,14 @@ angular.module('homer').controller('PopoverDemoCtrl', function ($scope) {
     };
 });
 
-function templateDetailsCtrl($scope, templateObj,globalConfig, $modalInstance) {
-	$scope.global = globalConfig;
+function templateDetailsCtrl($scope, templateObj, globalConfig, $modalInstance) {
+    $scope.global = globalConfig;
     $scope.templateObj = templateObj;
     $scope.cancel = function () {
         $modalInstance.dismiss('cancel');
     };
-};
+}
+;
 
 
 function uploadTemplateCtrl($scope, globalConfig, $modalInstance, notify) {
@@ -217,7 +210,6 @@ function uploadTemplateCtrl($scope, globalConfig, $modalInstance, notify) {
                 ]
             },
         ],
-
         osTypeList: [
             {id: 1, name: 'Apple Mac OS X 10.6 (32-bit)'},
             {id: 2, name: 'Apple Mac OS X 10.6 (64-bit)'},
@@ -227,7 +219,7 @@ function uploadTemplateCtrl($scope, globalConfig, $modalInstance, notify) {
             {id: 6, name: 'Windows Server 2008 (64-bit)'},
         ]
     }
-     $scope.save = function(form) {
+    $scope.save = function (form) {
         $scope.formSubmitted = true;
         if (form.$valid) {
             $scope.homerTemplate = 'app/views/notification/notify.jsp';
