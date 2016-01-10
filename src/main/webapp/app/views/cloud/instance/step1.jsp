@@ -92,10 +92,10 @@
 											 <div class="col-md-8 col-sm-8"><label class="col-md-11 col-sm-11">{{templateObj.name}}</label><span class="col-md-11 col-sm-11">{{templateObj.displayText}}</span></div>
 											 <div class="col-md-1 col-sm-1">
 													<div class="form-group">
-															<label class=" "> <!-- <input icheck type="radio" 
+															<label class=" "> <!-- <input icheck type="radio"
 																data-ng-model="instance.template" value=""  data-ng-change="setTemplate(templateObj)"
 																name="template"> -->
-																 <input icheck type="radio" data-ng-model="instance.template.id" value="{{templateObj.id}}" data-ng-checked="instance.template.id===templateObj.id"  data-ng-change="setTemplate(templateObj)" 
+																 <input icheck type="radio" data-ng-model="instance.template.id" value="{{templateObj.id}}" data-ng-checked="instance.template.id===templateObj.id"  data-ng-change="setTemplate(templateObj)"
 																>
 															</label>
 
