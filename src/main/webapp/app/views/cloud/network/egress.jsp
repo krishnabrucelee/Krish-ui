@@ -4,7 +4,6 @@ pageEncoding="UTF-8"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <div data-ng-controller="networksCtrl">
-  <pagination-content></pagination-content>
 	<form name = "egressForm"  data-ng-submit="egressSave(egressForm,firewallRules)" method="post">
 
         <table cellspacing="1" cellpadding="1" class="table table-bordered table-striped">
@@ -59,5 +58,4 @@ pageEncoding="UTF-8"%>
 	        </tr>
             </tbody>
     </table>
-      <pagination-content></pagination-content>
 </div>
