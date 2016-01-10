@@ -22,7 +22,6 @@ pageEncoding="UTF-8"%>
                <div class="clearfix"></div>
 </div>
 <div class="white-content">
- <pagination-content></pagination-content>
 <form>
  <table cellspacing="1" cellpadding="1" class="table table-bordered table-striped">
                     <thead>
@@ -50,5 +49,4 @@ pageEncoding="UTF-8"%>
           </tbody>
 </table>
 </form>
- <pagination-content></pagination-content>
 </div>

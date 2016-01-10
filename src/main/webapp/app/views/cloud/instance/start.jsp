@@ -44,7 +44,7 @@
         </div>
         <div class="modal-footer">
             <a class="btn btn-default"  data-ng-click="cancel()"><fmt:message key="common.cancel" bundle="${msg}" /></a>
-            <button class="btn btn-info" type="submit"><fmt:message key="common.add" bundle="${msg}" /></button>
+            <button class="btn btn-info" type="submit"><fmt:message key="common.ok" bundle="${msg}" /></button>
 
 
         </div>

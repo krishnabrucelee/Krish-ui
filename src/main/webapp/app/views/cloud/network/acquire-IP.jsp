@@ -3,7 +3,7 @@ pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<form name="ipform" ng-controller="networksCtrl" >
+<form name="ipform" >
 <div class="inmodal"  >
         <div class="modal-header">
             <panda-modal-header page-custom-icon="images/ip-icon-big.png"  page-title="Acquire IP"></panda-modal-header>
