@@ -30,16 +30,16 @@
                                 <tr   data-ng-repeat="template in filteredCount = (template.templateList| filter:quickSearch| orderBy:sort.column:sort.descending)">
                                     <td>
                                         <a data-ng-click="showDescription(template)">
-                                          
+
                        					   <img data-ng-show="templateObj.osCategory.name.indexOf('Windows') > -1" src="images/os/windows_logo.png" alt="" height="35" width="35" class="m-r-5" >
                        					   <img data-ng-show="templateObj.osCategory.name.indexOf('CentOS') > -1" src="images/os/centos_logo.png" alt=""   height="35" width="35" class="m-r-5" >
                         				   <img data-ng-show="templateObj.osCategory.name.indexOf('Ubuntu') > -1" src="images/os/ubuntu_logo.png" alt="" height="35" width="35" class="m-r-5" >
                                            <img data-ng-show="templateObj.osCategory.name.indexOf('RedHat') > -1" src="images/os/redhat_logo.png" alt="" height="35" width="35" class="m-r-5" >
-                       					   
+
                        					   {{ template.name }}
                                         </a>
                                     </td>
-                                    <td>{{ template.size / global.Math.pow(2, 30)}}</td> 
+                                    <td>{{ template.size / global.Math.pow(2, 30)}}</td>
                                     <td>{{ template.status }}</td>
                                     <td>{{ template.owner|| " - " }}</td>
                                     <td>{{ template.createdDateTime *1000 | date:'yyyy-MM-dd HH:mm:ss'}}</td>
@@ -48,7 +48,7 @@
                                     <td>{{ (template.passwordEnabled) ? "Yes" : "No"}}</td>
                                     <td>{{ (template.dynamicallyScalable) ? "Yes" : "No" }}</td>
                                     <td>
-                                        <button title="Launch" class="btn btn-info btn-sm pull-right" data-ng-click="openAddInstance(templateObj)"><i class="fa fa-power-off"></i> <fmt:message key="common.launch" bundle="${msg}" /></button>
+                                        <button title="Launch" class="btn btn-info btn-sm pull-right" data-ng-click="openAddInstance(template)"><i class="fa fa-power-off"></i> <fmt:message key="common.launch" bundle="${msg}" /></button>
                                     </td>
 
                                 </tr>

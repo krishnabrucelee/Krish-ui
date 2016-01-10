@@ -28,6 +28,10 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
     {
         $scope.instance.template = appService.localStorageService.get("selectedTemplate");
     }
+    if (!angular.isUndefined(appService.localStorageService.get("view")) && appService.localStorageService.get("view") != "")
+    {
+        $scope.templateCategory = appService.localStorageService.get("view");
+    }
     // Form Field Declaration
     $scope.instance = {
         computeOffer: {
@@ -117,8 +121,11 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
             angular.forEach($scope.formElements.templateList, function (obj, key) {
                 if (!angular.isUndefined(appService.localStorageService.get("selectedTemplate")) && appService.localStorageService.get("selectedTemplate") != null) {
                     if (obj.id == appService.localStorageService.get("selectedTemplate").id) {
-                        $scope.instance.template = obj;
+
+                        $scope.instance.template = appService.localStorageService.get("selectedTemplate");
                         appService.localStorageService.set("selectedTemplate", {});
+                        $scope.templateCategory = appService.localStorageService.get("view");
+                        appService.localStorageService.set("view", "");
                     }
                 }
             });

@@ -17,19 +17,18 @@
 
 				<div ng-show="step == 1">
 
-					<ul class="nav nav-tabs"
-						data-ng-init="templateCategory = 'template'">
-						<li class="active"><a href="javascript:void(0)"
+					<ul class="nav nav-tabs">
+						<li data-ng-class="{'active' : (templateCategory == 'template' || templateCategory == null) }"><a href="javascript:void(0)"
 							data-ng-click="templateCategory = 'template'" data-toggle="tab">
 								<fmt:message key="common.template" bundle="${msg}" /></a></li>
-						<li class=""><a href="javascript:void(0)"
+						<li data-ng-class="{'active' : templateCategory == 'iso'}"><a href="javascript:void(0)"
 							data-ng-click="templateCategory = 'iso'" data-toggle="tab"><fmt:message key="common.iso" bundle="${msg}" /></a></li>
 					</ul>
 
 					<div class="tab-content">
 
 						<div class="tab-pane"
-							data-ng-class="{'active' : templateCategory == 'template'}"
+							data-ng-class="{'active' : (templateCategory == 'template' || templateCategory == null)}"
 							id="step1-tempalte">
 							<div data-ng-include src="'app/views/cloud/instance/step1.jsp'"></div>
 

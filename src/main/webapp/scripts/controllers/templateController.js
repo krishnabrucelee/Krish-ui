@@ -96,6 +96,11 @@ function templatesCtrl($scope, $stateParams, appService, $timeout, promiseAjax, 
     $scope.openAddInstance = function (templateObj) {
 
         appService.localStorageService.set("selectedTemplate", templateObj);
+        if(templateObj.format == "ISO") {
+            appService.localStorageService.set("view", "iso");
+        } else {
+        	appService.localStorageService.set("view", "template");
+        }
         var modalInstance = $modal.open({
             templateUrl: 'app/views/cloud/instance/add.jsp',
             controller: 'instanceCtrl',
