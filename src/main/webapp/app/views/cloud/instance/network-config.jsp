@@ -77,10 +77,10 @@
                                                                     <div class="span12 field-box p-xxs"><label class="headerLabel m-r-xs"><fmt:message key="gateway" bundle="${msg}" />:</label><span>{{nic.gateway}}</span></div>
                                                                     <div class="span12 field-box p-xxs"><label class="headerLabel m-r-xs"><fmt:message key="netmask" bundle="${msg}" />:</label><span>{{nic.netMask}}</span></div>
                                                                     <div class="span12 field-box p-xxs"><label class="headerLabel m-r-xs"><fmt:message key="is.default" bundle="${msg}" />:</label><span data-ng-class="nic.isDefault== 'true' ? 'text-info' : 'text-default' ">{{nic.isDefault}}</span></div>
-                                                                    <div class="pull-right">
+                                       <%--                              <div class="pull-right">
 									<span class="pull-right m-l-sm m-t-sm"> <a class="btn btn-info" ui-sref="cloud.list-instance.view-instance-ipAddress"><fmt:message key="edit.secondary.ips" bundle="${msg}" /></a>
 									</span>
-								</div>
+								</div> --%>
 
 
                                                                 </div>
