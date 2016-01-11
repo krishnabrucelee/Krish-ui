@@ -14,15 +14,15 @@
      <div class="tab-content">
         <div class="tab-pane" data-ng-class="{'active' : templateCategory == 'details'}" id="step1-dashboard">
             <div data-ng-include src="'app/views/cloud/network/details.jsp'"></div>
-         </div>
-          <div class="tab-pane"  data-ng-class="{'active' : templateCategory == 'egress'}" id="step1-config">
+        </div>
+        <div class="tab-pane"  data-ng-class="{'active' : templateCategory == 'egress'}" id="step1-config">
             <div data-ng-include src="'app/views/cloud/network/egress.jsp'"></div>
         </div>
         <div class="tab-pane"  data-ng-class="{'active' : templateCategory == 'ip'}" id="step1-storage">
             <div data-ng-include src="'app/views/cloud/network/ip-address.jsp'"></div>
         </div>
         <div class="tab-pane"  data-ng-class="{'active' : templateCategory == 'instance'}" id="step1-network">
-        <div data-ng-include src="'app/views/cloud/network/instance.jsp'"></div>
+       		 <div data-ng-include src="'app/views/cloud/network/instance.jsp'"></div>
         </div>
      </div>
  </div>

@@ -199,29 +199,56 @@ function networksCtrl($scope, $sce, $rootScope,filterFilter,$state, $stateParams
     $scope.egressSave = function (firewallRules) {
     $scope.formSubmitted = true;
         var CheckIP = /^([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\/([1-9]|[12][0-9]|3[012])$/;
-        if ($scope.firewallRules.sourceCIDR && $scope.firewallRules.protocol && $scope.firewallRules.startPort && $scope.firewallRules.endPort) {
+        if ($scope.firewallRules.sourceCIDR && $scope.firewallRules.protocol) {
 
             if (CheckIP.test($scope.firewallRules.sourceCIDR)) {
-            	 if ($scope.firewallRules.sourceCIDR && $scope.firewallRules.protocol && $scope.firewallRules.startPort && $scope.firewallRules.endPort) {
-            	        var hasServer = appService.crudService.add("egress", firewallRules);
-            	        hasServer.then(function (result) {  // this is only run after $http completes
-            	            $scope.formSubmitted = false;
-            	            appService.notify({message: 'Egress rule added successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
-            	            $scope.firewallRulesLists(1);
-            $scope.templateCategory = 'egress';
-            	            }).catch(function (result) {
-            	            	if (!angular.isUndefined(result.data)) {
-            	                    if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
-            	                	    var msg = result.data.globalError[0];
-            	                	    appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
-            	                    	} else if (result.data.fieldErrors != null) {
-            	                        	angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
-            	                            	$scope.egressForm[key].$invalid = true;
-            	                            	$scope.egressForm[key].errorMessage = errorMessage;
-            	                        	});
-            	                		}
-            	                	}
-            	            });
+            	 if ($scope.firewallRules.sourceCIDR && $scope.firewallRules.protocol) {
+            		 if($scope.firewallRules.protocol == 'TCP' || $scope.firewallRules.protocol == 'UDP'){
+            			 if ($scope.firewallRules.startPort && $scope.firewallRules.endPort){
+            				 var hasServer = appService.crudService.add("egress", firewallRules);
+                 	        hasServer.then(function (result) {  // this is only run after $http completes
+                 	            $scope.formSubmitted = false;
+                 	            appService.notify({message: 'Egress rule added successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+                 	            $scope.firewallRulesLists(1);
+                 $scope.templateCategory = 'egress';
+                 	            }).catch(function (result) {
+                 	            	if (!angular.isUndefined(result.data)) {
+                 	                    if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
+                 	                	    var msg = result.data.globalError[0];
+                 	                	    appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+                 	                    	} else if (result.data.fieldErrors != null) {
+                 	                        	angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
+                 	                            	$scope.egressForm[key].$invalid = true;
+                 	                            	$scope.egressForm[key].errorMessage = errorMessage;
+                 	                        	});
+                 	                		}
+                 	                	}
+                 	            });
+            			 }
+            		 } else {
+            			 if ($scope.firewallRules.icmpMessage && $scope.firewallRules.icmpCode){
+            				 var hasServer = appService.crudService.add("egress", firewallRules);
+                  	        hasServer.then(function (result) {  // this is only run after $http completes
+                  	            $scope.formSubmitted = false;
+                  	            appService.notify({message: 'Egress rule added successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+                  	            $scope.firewallRulesLists(1);
+                  $scope.templateCategory = 'egress';
+                  	            }).catch(function (result) {
+                  	            	if (!angular.isUndefined(result.data)) {
+                  	                    if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
+                  	                	    var msg = result.data.globalError[0];
+                  	                	    appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+                  	                    	} else if (result.data.fieldErrors != null) {
+                  	                        	angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
+                  	                            	$scope.egressForm[key].$invalid = true;
+                  	                            	$scope.egressForm[key].errorMessage = errorMessage;
+                  	                        	});
+                  	                		}
+                  	                	}
+                  	            });
+            			 }
+            		 }
+
             	    }
                 $scope.actionRule = false;
             }
