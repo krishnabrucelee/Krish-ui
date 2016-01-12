@@ -31,10 +31,10 @@
                                     <td>
                                         <a data-ng-click="showDescription(template)">
 
-                       					   <img data-ng-show="templateObj.osCategory.name.indexOf('Windows') > -1" src="images/os/windows_logo.png" alt="" height="35" width="35" class="m-r-5" >
-                       					   <img data-ng-show="templateObj.osCategory.name.indexOf('CentOS') > -1" src="images/os/centos_logo.png" alt=""   height="35" width="35" class="m-r-5" >
-                        				   <img data-ng-show="templateObj.osCategory.name.indexOf('Ubuntu') > -1" src="images/os/ubuntu_logo.png" alt="" height="35" width="35" class="m-r-5" >
-                                           <img data-ng-show="templateObj.osCategory.name.indexOf('RedHat') > -1" src="images/os/redhat_logo.png" alt="" height="35" width="35" class="m-r-5" >
+                       					   <img data-ng-show="template.osCategory.name.indexOf('Windows') > -1" src="images/os/windows_logo.png" alt="" height="35" width="35" class="m-r-5" >
+                       					   <img data-ng-show="template.osCategory.name.indexOf('CentOS') > -1" src="images/os/centos_logo.png" alt=""   height="35" width="35" class="m-r-5" >
+                        				   <img data-ng-show="template.osCategory.name.indexOf('Ubuntu') > -1" src="images/os/ubuntu_logo.png" alt="" height="35" width="35" class="m-r-5" >
+                                           <img data-ng-show="template.osCategory.name.indexOf('RedHat') > -1" src="images/os/redhat_logo.png" alt="" height="35" width="35" class="m-r-5" >
 
                        					   {{ template.name }}
                                         </a>
