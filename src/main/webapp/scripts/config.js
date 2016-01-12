@@ -51,6 +51,13 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider,
 					pageTitle : 'Profile Settings',
 				}
 			})
+			.state('invoice', {
+				url : "/invoice",
+				templateUrl : VIEW_URL + "views/common/retail-invoice.html",
+				data : {
+					pageTitle : 'Invoice',
+				}
+			})
 
 			// Analytics
 			.state('analytics', {

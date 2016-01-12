@@ -1,1 +1,231 @@
-Invoice content changes from prakash
+<!DOCTYPE html>
+<html data-ng-app="homer">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title page-title></title>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/angular/angular.min.js"></script>
+	<script src="scripts/factories/globalConfig.js"></script>
+    <link rel="stylesheet" href="styles/custom.css">
+
+</head>
+<body>
+<div class = "container">
+  <!-- <div class ="text-center"><h3><b>Retail Invoice/Bill</b></h3></div> -->
+  <div class="row">
+<header class="header-style">
+         <span class="text-center"><h3><b>Invoice/Bill</b></h3></span>
+ </header></div>
+
+  <div class="row">
+  	<div class="col-md-6">
+  	<label ><h4><b>Consumer Address:</b></h4></label>
+  	<div>WS Retail Services Pvt. Ltd.,<br>Warehouse Address: NO. 42/1 & 43,<br> KACHERAKANAHALLI VILLAGE,<br> JADIGENAHALLI HOBLI,<br>HOSKOTE TALUK,<br> Bangalore,<br>Karnataka,<br>India - 560067
+  	</div>
+    </div>
+    <div class="col-md-6">
+    <table class="table table-bordered">
+    <tbody>
+      <tr>
+        <th class="col-md-6" scope="row">Invoice Date</th>
+        <td class="col-md-6">25-12-2015</td>
+      </tr>
+      <tr>
+        <th class="col-md-6" scope="row">Due Date</th>
+        <td class="col-md-6">10-01-2016</td>
+      </tr>
+      <tr>
+        <th class="col-md-6" scope="row">Project Number</th>
+        <td class="col-md-6">51</td>
+      </tr>
+      <tr>
+        <th class="col-md-6" scope="row">Currency</th>
+        <td class="col-md-6"><app-currency></app-currency></td>
+      </tr>
+      <tr>
+        <th class="col-md-6" scope="row">Invoice Number</th>
+        <td class="col-md-6"># BLR_WFLD20150601139277</td>
+      </tr>
+    </tbody>
+  </table>
+    </div>
+  </div>
+  <div class="row">
+  	<div class="col-md-6">
+  	<label><h4><b>Administration Address:</b></h4></label>
+  	<div>WS Retail Services Pvt. Ltd.,<br>Warehouse Address: NO. 42/1 & 43,<br> KACHERAKANAHALLI VILLAGE,<br> JADIGENAHALLI HOBLI,<br>HOSKOTE TALUK,<br> Bangalore,<br>Karnataka,<br>India - 560067
+  	</div>
+    </div>
+    <div class="col-md-6">
+    <table class="table table-bordered">
+    <tbody>
+      <tr>
+        <th class="col-md-6" scope="row">Previous Balance</th>
+        <td class="col-md-6 ">20<app-currency></app-currency></td>
+      </tr>
+      <tr>
+        <th class="col-md-6" scope="row">Payments</th>
+        <td class="col-md-6">40<app-currency></app-currency></td>
+      </tr>
+      <tr>
+        <th class="col-md-6" scope="row">Credit</th>
+        <td class="col-md-6">5<app-currency></app-currency></td>
+      </tr>
+      <tr>
+        <th class="col-md-6" scope="row">Currency Charge</th>
+        <td class="col-md-6">25<app-currency></app-currency></td>
+      </tr>
+      <tr>
+        <th class="col-md-6" scope="row">Total Payable</th>
+        <td class="col-md-6">55<app-currency></app-currency></td>
+      </tr>
+    </tbody>
+  </table>
+    </div>
+  </div>
+  <div class="row">
+  <div class ="col-md-12">
+  <label><h4><b>Charges for this Invoice:</b></h4></label>
+  <table class="table table-condensed highlight" >
+    <thead>
+      <tr>
+        <th class="col-md-3">Service Offered</th>
+        <th class="col-md-1">Unit</th>
+        <th class="col-md-1">Unit Price</th>
+        <th class="col-md-1">Qty</th>
+        <th class="col-md-1">Price</th>
+        <th class="col-md-1">Discount(%)</th>
+        <th class="col-md-1">Discount</th>
+        <th class="col-md-1">Tax(%)</th>
+        <th class="col-md-1">Tax</th>
+        <th class="col-md-1">Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="table-border"><h5><b>Running Instance</b></h5></td>
+        <td class="table-border"></td>
+        <td class="table-border"></td>
+        <td class="table-border"></td>
+        <td class="table-border"></td>
+        <td class="table-border"></td>
+        <td class="table-border"></td>
+        <td class="table-border"></td>
+        <td class="table-border"></td>
+        <td class="table-border"></td>
+
+      </tr>
+      <tr>
+        <td class="table-border">VM1</td>
+        <td class="table-border">2</td>
+        <td class="table-border">10</td>
+        <td class="table-border">2</td>
+        <td class="table-border">20</td>
+        <td class="table-border">10</td>
+        <td class="table-border">0.20</td>
+        <td class="table-border">0</td>
+        <td class="table-border">0.00</td>
+        <td class="table-border">20</td>
+
+      </tr>
+      <tr>
+        <td class="table-border">VM2</td>
+        <td class="table-border">2</td>
+        <td class="table-border">10</td>
+        <td class="table-border">2</td>
+        <td class="table-border">20</td>
+        <td class="table-border">10</td>
+        <td class="table-border">0.20</td>
+        <td class="table-border">0</td>
+        <td class="table-border">0.00</td>
+        <td class="table-border">20</td>
+
+      </tr>
+      <tr>
+        <td class="table-border"><h5><b>Storage</b></h5></td>
+        <td class="table-border"></td>
+        <td class="table-border"></td>
+        <td class="table-border"></td>
+        <td class="table-border"></td>
+        <td class="table-border"></td>
+        <td class="table-border"></td>
+        <td class="table-border"></td>
+        <td class="table-border"></td>
+        <td class="table-border"></td>
+      </tr>
+      <tr>
+        <td class="table-border">Small(5GB)</td>
+        <td class="table-border">5</td>
+        <td class="table-border">10</td>
+        <td class="table-border">2</td>
+        <td class="table-border">50</td>
+        <td class="table-border">10</td>
+        <td class="table-border">0.20</td>
+        <td class="table-border">0</td>
+        <td class="table-border">0.00</td>
+        <td class="table-border">50</td>
+      </tr>
+      <tr>
+        <td class="table-border">Medium(10GB)</td>
+        <td class="table-border">5</td>
+        <td class="table-border">10</td>
+        <td class="table-border">2</td>
+        <td class="table-border">50</td>
+        <td class="table-border">10</td>
+        <td class="table-border">0.20</td>
+        <td class="table-border">0</td>
+        <td class="table-border">0.00</td>
+        <td class="table-border">50</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+   </div>
+  <div class="row">
+  <div class="col-md-12">
+  	<label class="pull-right"><h4><b>Grand Total=</b>140<app-currency></app-currency></h4></label>
+    	</div>
+  </div>
+  <div class="row">
+  <div class ="col-md-12">
+  <label><h4><b>Payment Summary:</b></h4></label>
+  <table class="table table-condensed highlight" >
+    <thead>
+      <tr>
+        <th class="col-md-4">Reference Number</th>
+        <th class="col-md-2">Payment Date</th>
+        <th class="col-md-2">Amount</th>
+        <th class="col-md-2">Processing Fee</th>
+        <th class="col-md-2">Total Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="table-border">12895423</td>
+        <td class="table-border">12-01-2016</td>
+        <td class="table-border">20</td>
+        <td class="table-border">20</td>
+        <td class="table-border">50</td>
+      </tr>
+      <tr>
+        <td class="table-border">12895523</td>
+        <td class="table-border">12-01-2016</td>
+        <td class="table-border">40</td>
+        <td class="table-border">20</td>
+        <td class="table-border">70</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+   </div>
+   <div class="row">
+<footer class="footer-style">
+         <span class="pull-right">Panda Cloud Management Portal
+        </span>Copyright © 2015 BlueTek Co.Ltd, All rights reserved.
+ </footer></div>
+</div>
+</body>
+</html>
