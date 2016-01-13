@@ -979,7 +979,7 @@ function networksCtrl($scope, $sce, $rootScope,filterFilter,$state, $stateParams
         appService.dialogService.openDialog("app/views/cloud/network/edit-rule.jsp", size , $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
                 $scope.ok = function () {
                 
-                        appService.notify({message: 'Deleted successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
+                        appService.notify({message: 'Updated successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
                 },
                         $scope.cancel = function () {
                             $modalInstance.close();
@@ -988,16 +988,7 @@ function networksCtrl($scope, $sce, $rootScope,filterFilter,$state, $stateParams
     };
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-
-    $scope.doDelete = function () {
+   $scope.doDelete = function () {
 
         $scope.deleteRule = true;
         $timeout($scope.deletes, 500);
@@ -1038,13 +1029,21 @@ function networksCtrl($scope, $sce, $rootScope,filterFilter,$state, $stateParams
     };
     
     $scope.openAddVMlist = function () {
-        
+       appService.dialogService.openDialog("app/views/cloud/network/vm-list.jsp", 'lg' , $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+            $scope.ok = function () {
+            
+//                    appService.notify({message: 'Deleted successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
+            },
+                    $scope.cancel = function () {
+                        $modalInstance.close();
+                    };
+        }]);
+    	    	
             $scope.global.rulesLB[0].name = $scope.load.name;
             $scope.global.rulesLB[0].publicPort = $scope.publicPort;
             $scope.global.rulesLB[0].privatePort = $scope.privatePort;
             $scope.global.rulesLB[0].algorithm = $scope.algorithms.value;
-            modalService.trigger('app/views/cloud/network/vm-list.jsp', 'lg');
-      
+         
     };
     
     

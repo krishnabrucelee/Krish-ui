@@ -22,6 +22,10 @@ pageEncoding="UTF-8"%>
                         <img data-ng-show="templateObj.osCategory.name.indexOf('Ubuntu') > -1" src="images/os/ubuntu_logo.png" alt="" height="40" width="40" class="m-r-5 m-t-md" >
                         <img data-ng-show="templateObj.osCategory.name.indexOf('RedHat') > -1" src="images/os/redhat_logo.png" alt="" height="40" width="40" class="m-r-5 m-t-md" >
                         <img data-ng-show="templateObj.osCategory.name.indexOf('Debian') > -1" src="images/os/debian_logo.png" alt="" height="40" width="40" class="m-r-5 m-t-md" >
+                        <img data-ng-show="templateObj.osCategory.name.indexOf('SUSE') > -1" src="images/os/suse-logo.png" alt="" height="40" width="40" class="m-r-5 m-t-md" >
+                		<img data-ng-show="templateObj.osCategory.name.indexOf('Oracle') > -1" src="images/os/oracle-os.png" alt="" height="40" width="40" class="m-r-5 m-t-md" >
+                		<img data-ng-show="templateObj.osCategory.name.indexOf('Novel') > -1" src="images/os/novell-os.png" alt="" height="40" width="40" class="m-r-5 m-t-md" >
+                		<img data-ng-show="templateObj.osCategory.name.indexOf('Unix') > -1" src="images/os/unix-logo.png" alt="" height="40" width="40" class="m-r-5 m-t-md" >
                     </div>
                     <div class="col-md-7 col-sm-7 ">
                         <div class="row">
