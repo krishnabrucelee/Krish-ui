@@ -366,8 +366,6 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
                     $scope.listNetworks(result.id, 'department');
 
                 }
-                instance.department="";
-
             });
             var hasUsers = appService.crudService.read("users", $scope.global.sessionValues.id);
             hasUsers.then(function (result) {

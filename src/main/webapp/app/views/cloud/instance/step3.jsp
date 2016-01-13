@@ -184,10 +184,8 @@
 						<div  custom-select="t as t.name for t in formElements.projecttypeList | filter: { name: $searchTerm }"   data-ng-model="instance.project" >
 						
 						<div class="pull-left">
-						<span class="control-label font-bold">{{t.name }}</span>
-						
-<!-- 						<strong>{{t.name }}</strong>
- -->						<br />
+						<strong>{{t.name }}</strong>
+						<br />
 						</div>
 						<div class="clearfix"></div>
 						</div>
