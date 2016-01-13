@@ -10,8 +10,7 @@ angular
 
 function networkCtrl($scope, $modal, $window, $stateParams,appService) {
 
-	$scope.nicLists = {};
-    $scope.paginationObject = {};
+    $scope.nicIPLists = {};
     $scope.nicForm = {};
     $scope.global = appService.globalConfig;
     $scope.sort = appService.globalConfig.sort;
@@ -30,38 +29,34 @@ function networkCtrl($scope, $modal, $window, $stateParams,appService) {
     }
 
     // Nic List
-    $scope.nicList = function (pageNumber) {
+    $scope.nicIPList = function () {
     	$scope.showLoader = true;
         $scope.nic = {};
-    	var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
-        var hasNics = appService.crudService.list("nics", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
-        hasNics.then(function (result) {  // this is only run after $http completes0
-            $scope.nicLists = result;
-
-            // For pagination
-            $scope.paginationObject.limit = limit;
-            $scope.paginationObject.currentPage = pageNumber;
-            $scope.paginationObject.totalItems = result.totalItems;
+        var instanceId = $stateParams.id;
+       	var hasNicIP = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbyvminstances?instanceid="+instanceId +"&lang=" + appService.localStorageService.cookie.get('language')+"&sortBy=-id");
+        hasNicIP.then(function (result) {
+            $scope.nicIPLists = result;
             $scope.showLoader = false;
         });
     };
-    $scope.nicList(1);
+    $scope.nicIPList();
 
  // Add the IP Address
     $scope.acquireNewIP = function (size) {
         appService.dialogService.openDialog($scope.global.VIEW_URL + "cloud/instance/addIP.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
                 // Create a new IP
-                $scope.saveIP = function (form) {
+                $scope.nic.id = $stateParams.id1;
+                $scope.saveIP = function (form,nic) {
                     $scope.formSubmitted = true;
                     if (form.$valid) {
                     	$scope.showLoader = true;
-                        var hasServer = appService.crudService.add("nics", nic);
-                        hasServer.then(function (result) {  // this is only run after $http completes
+                        var hasServer = appService.crudService.add("nics/acquire/" + $scope.nic.id,nic);
+                        hasServer.then(function (result) {
                             $scope.formSubmitted = false;
                             $modalInstance.close();
                             $scope.showLoader = false;
                             appService.notify({message: 'IP Address acquired successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
-                            $scope.nicList(1);
+                            $scope.nicIPList();
                         }).catch(function (result) {
                         	$scope.showLoader = false;
             		    if (!angular.isUndefined(result.data)) {
@@ -88,16 +83,19 @@ function networkCtrl($scope, $modal, $window, $stateParams,appService) {
 
     	 // Delete the Ip Address
         $scope.deleteIP = function (size, nic) {
+
         	appService.dialogService.openDialog($scope.global.VIEW_URL + "cloud/instance/deleteIP.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
-                    $scope.deleteObject = nic;
+
                     $scope.ok = function (deleteObject) {
+                        $scope.deleteObject = nic;
                     	$scope.showLoader = true;
-                        nic.isActive = false;
-                        var hasServer = appService.crudService.softDelete("nics", deleteObject);
+                    	nic.isActive = false;
+ 			var hasServer =  appService.crudService.add("nics/release/" + nic.id,nic);
                         hasServer.then(function (result) {
-                            $scope.nicList(1);
+                        	$scope.nicIPList();
                             $scope.showLoader = false;
                             appService.notify({message: 'IP deleted successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                            $state.reload();
                         }).catch(function (result) {
                         	if (!angular.isUndefined(result.data)) {
                             	if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
