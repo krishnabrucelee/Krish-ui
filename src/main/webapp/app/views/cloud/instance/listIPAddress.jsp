@@ -3,10 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-
-
-		<div ui-view>
-			<div ng-controller="networkCtrl">
+<div class="hpanel" >
+			<div  ng-controller="networkCtrl">
 				<div class="hpanel">
 					<div class="panel-heading">
 						<div class="row">
@@ -19,7 +17,7 @@
 										<div class="clearfix"></div>
 									<span class="pull-right m-l-sm m-t-sm">
 									<a class="btn btn-info" ng-click="acquireNewIP('md')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span>
-									<fmt:message key="acquire.new.secondary.ip" bundle="${msg}" /></a> <a class="btn btn-info" ui-sref="cloud.list-instance.view-instance-ipAddress" title="<fmt:message key="common.refresh" bundle="${msg}" />" ui-sref-opts="{reload: true}">
+									<fmt:message key="acquire.new.secondary.ip" bundle="${msg}" /></a> <a class="btn btn-info" ui-sref="cloud.list-instance.view-instance.view-ipaddress" title="<fmt:message key="common.refresh" bundle="${msg}" />" ui-sref-opts="{reload: true}">
 									<span class="fa fa-refresh fa-lg"></span></a>
 									</span>
 								</div>
@@ -44,9 +42,10 @@
 											</tr>
 										</thead>
 										<tbody>
-											<tr data-ng-repeat=" nic in filteredCount = (nicLists| filter: quickSearch | orderBy:sort.column:sort.descending)">
+											<tr data-ng-repeat=" nic in filteredCount = (nicIPLists| filter: quickSearch | orderBy:sort.column:sort.descending)">
 												<td>{{ nic.vmInstance.name }}</td>
-												<td>{{ nic.vmIpAddressId}}</td>
+												<td>{{ nic.guestIpAddress}}</td>
+
 												<td><a  class="icon-button" title="<fmt:message key="common.delete" bundle="${msg}" />" data-ng-click="deleteIP('sm', nic)"><span class="fa fa-trash"></span></a>
 												</td>
 											</tr>
@@ -58,4 +57,3 @@
 					</div>
 				</div>
 			</div>
-		</div>
