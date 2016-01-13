@@ -39,7 +39,7 @@
 					class="text-danger font-bold">*</span></span>
 			</div>
 			<div class="col-md-6 col-xs-6 col-sm-6">
-					<div  data-ng-class="{'error': !instance.domain && templateFormSubmitted}" custom-select="t as t.name for t in formElements.domainList | filter: { name: $searchTerm }" data-ng-model="instance.domain">
+					<div  data-ng-class="{'error': !instance.domain && templateFormSubmitted}" custom-select="t as t.name for t in formElements.domainList | filter: { name: $searchTerm }" data-ng-model="instance.domain" data-ng-change="changedomain()">
 						<div class="pull-left">
 						<strong>{{ t.name }}</strong><br />
 						</div>
@@ -74,7 +74,7 @@
 					class="text-danger font-bold">*</span></span>
 			</div>
 			<div class="col-md-6 col-xs-6 col-sm-6">
-						<div  data-ng-class="{'error': !instance.department && templateFormSubmitted}" custom-select="t as t.userName for t in formElements.departmenttypeList | filter: { name: $searchTerm }" ng-model="instance.department">
+						<div  data-ng-class="{'error': !instance.department && templateFormSubmitted}" custom-select="t as t.userName for t in formElements.departmenttypeList | filter: { name: $searchTerm }" ng-model="instance.department"  data-ng-change="changedepartment()">
 						<div class="pull-left">
 						<strong>{{ t.userName }}</strong><br />
 						</div>
@@ -111,7 +111,7 @@
 					class="text-danger font-bold">*</span></span>
 			</div>
 			<div class="col-md-6 col-xs-6 col-sm-6">
-					<div  data-ng-class="{'error': !instance.instanceOwner && templateFormSubmitted}" custom-select="t as t.userName for t in formElements.instanceOwnerList | filter: { userName: $searchTerm }" ng-model="instance.instanceOwner">
+					<div  data-ng-class="{'error': !instance.instanceOwner && templateFormSubmitted}" custom-select="t as t.userName for t in formElements.instanceOwnerList | filter: { userName: $searchTerm }" ng-model="instance.instanceOwner"  data-ng-change="changeinstanceowner()">
 						<div class="pull-left">
 						<strong>{{ t.userName }}</strong><br />
 						</div>
@@ -181,9 +181,11 @@
 			<div class="col-md-6 col-xs-6 col-sm-6"><!--
 				<input type="text" name="project" data-ng-model="instance.projct"
 					class="form-control col-md-4" autofocus autocomplete="off"> -->
-						<div  custom-select="t as t.name for t in formElements.projecttypeList | filter: { name: $searchTerm }" data-ng-model="instance.project">
+						<div  custom-select="t as t.name for t in formElements.projecttypeList | filter: { name: $searchTerm }"   data-ng-model="instance.project" >
+						
 						<div class="pull-left">
-						<strong>{{ t.name }}</strong><br />
+						<strong>{{t.name }}</strong>
+						<br />
 						</div>
 						<div class="clearfix"></div>
 						</div>

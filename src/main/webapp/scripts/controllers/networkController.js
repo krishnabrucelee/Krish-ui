@@ -30,7 +30,7 @@ function networksCtrl($scope, $sce, $rootScope,filterFilter,$state, $stateParams
     $scope.global = appService.globalConfig;
     $scope.sort = appService.globalConfig.sort;
     $scope.changeSorting = appService.utilService.changeSorting;
-
+    
     // Egress Rule List
     $scope.firewallRulesLists = function (pageNumber) {
     	$scope.templateCategory = 'egress';
