@@ -47,16 +47,16 @@ pageEncoding="UTF-8"%>
                             <a class="text-info" >{{ instance.name }}</a>
                              <div  data-ng-show="instance.selected" > {{ instance.ipAddress}}</div>
                              
-                  <div data-ng-show="instance.selected" class="m-t-sm">
+              <%--     <div data-ng-show="instance.selected" class="m-t-sm">
 				<select  multiple="multiple" class="form-control input-group" name="ipaddress" data-ng-model="instance.ipAddress" ng-options="instance.ipAddress for ipaddress in vmList"  >
                 <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
                 </select>
-				</div>
+				</div> --%>
                              
                              
-                       <!--      <input type="hidden" data-ng-model="instances.id" value="{{ instance.id }}"/>
-                            <input type="hidden" data-ng-model="instances.name" value="{{ instance.name }}"/> -->
-                        </td>
+                    <!--   <input type="hidden" data-ng-model="instance.ipAddress" value="{{ instance.ipAddress }}"/>
+                           <input type="hidden" data-ng-model="instances.name" value="{{ instance.name }}"/>
+                        </td> -->
 					<td >{{instance.instanceInternalName}} </td>
 					<td >{{instance.displayName}} </td>
                     <td >{{instance.zone.name}} </td> 

@@ -332,6 +332,26 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
         });
     };
     $scope.applicationList();
+    
+    $scope.changedomain=function ()
+    {
+    	$scope.instance.department.userName = '';
+    	$scope.instance.instanceOwner.userName = '';
+    	$scope.instance.project='';
+    }
+    
+    $scope.changedepartment=function ()
+    {
+    	$scope.instance.instanceOwner.userName = '';
+    	$scope.instance.project='';
+    }
+    
+    $scope.changeinstanceowner=function ()
+    {
+    	$scope.instance.project='';
+    }
+    
+  
 
     $scope.departmentList = function (domain) {
 
@@ -344,7 +364,10 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
                 $scope.instance.department = result;
                 if (!angular.isUndefined(result)) {
                     $scope.listNetworks(result.id, 'department');
+
                 }
+                instance.department="";
+
             });
             var hasUsers = appService.crudService.read("users", $scope.global.sessionValues.id);
             hasUsers.then(function (result) {
