@@ -34,33 +34,42 @@ pageEncoding="UTF-8"%>
                     <thead>
                     <tr>
                         <th>Name </th>
-<!--                        <th>Template</th>
-                        <th>IP</th>
-                        <th>VPC</th>-->
+                       <th>Internal Name</th>
+                        <th>Display Name</th>
                         <th>Zone</th>
                         <th>State</th>
                         <th>Select</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr data-ng-repeat="instance in instanceList | filter: instanceSearch">
+                    <tr data-ng-repeat="instance in vmList | filter: instanceSearch">
                         <td>
                             <a class="text-info" >{{ instance.name }}</a>
-                             <div  data-ng-show="instances.isChecked" > {{ instance.ip}}|(Primary)</div>
-                            <input type="hidden" data-ng-model="instances.id" value="{{ instance.id }}"/>
-                            <input type="hidden" data-ng-model="instances.name" value="{{ instance.name }}"/>
+                             <div  data-ng-show="instance.selected" > {{ instance.ipAddress}}</div>
+                             
+                  <div data-ng-show="instance.selected" class="m-t-sm">
+				<select  multiple="multiple" class="form-control input-group" name="ipaddress" data-ng-model="instance.ipAddress" ng-options="instance.ipAddress for ipaddress in vmList"  >
+                <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
+                </select>
+				</div>
+                             
+                             
+                       <!--      <input type="hidden" data-ng-model="instances.id" value="{{ instance.id }}"/>
+                            <input type="hidden" data-ng-model="instances.name" value="{{ instance.name }}"/> -->
                         </td>
-                        <td>{{ instance.zone.name }}  
+					<td >{{instance.instanceInternalName}} </td>
+					<td >{{instance.displayName}} </td>
+                    <td >{{instance.zone.name}} </td> 
                          <input type="hidden" data-ng-model="instances.zoneName" value="{{ instance.zone.name }}"/></td>
                         <td>
-                            <label class="label label-success" data-ng-if="instance.state == 'Running'">{{ instance.state }}</label>
-                            <label class="label label-danger" data-ng-if="instance.state == 'Stopped'">{{ instance.state }}</label>
-                           <input type="hidden" data-ng-model="instances.status" value="{{ instance.state }}"/>
+                            <label class="label label-success" data-ng-if="instance.status == 'Running'">{{ instance.status }}</label>
+                            <label class="label label-danger" data-ng-if="instance.status == 'Stopped'">{{ instance.status }}</label>
+                           <input type="hidden" data-ng-model="instances.status" value="{{ instance.status }}"/>
                         </td>
                         <td>
                             <label class="">
                       <div class="icheckbox_square-green" style="position: relative;" >
-                                 <input type="checkbox" icheck data-ng-model="instance.selected" value="{{ instance.name }}" name="selectVM[]">
+                                 <input type="checkbox" icheck data-ng-model="instance.selected" value="{{ instance.name }}" name="selectVM">
                                  <label></label>         
                              </div>
                             </label>

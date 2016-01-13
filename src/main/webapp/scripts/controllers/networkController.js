@@ -93,6 +93,7 @@ function networksCtrl($scope, $sce, $rootScope,filterFilter,$state, $stateParams
         var hasVms = appService.crudService.listByQuery("virtualmachine/network?networkId="+$stateParams.id);
         hasVms.then(function (result) {  // this is only run after $http completes0
             $scope.vmList = result;
+            
         });
     };
     $scope.vmLists(1);
@@ -961,11 +962,40 @@ function networksCtrl($scope, $sce, $rootScope,filterFilter,$state, $stateParams
         }
     }
 
-    $scope.deleteRules = function (id, type) {
-        appService.localStorageService.set('deleteRule', {'id': id, 'type': type});
-        modalService.trigger('app/views/cloud/network/delete-rule.jsp', 'md');
 
-    }
+    $scope.deleteRules = function (id, type) {
+        appService.dialogService.openDialog("app/views/cloud/network/delete-rule.jsp", 'sm', $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+                $scope.ok = function () {
+                
+                        appService.notify({message: 'Deleted successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
+                },
+                        $scope.cancel = function () {
+                            $modalInstance.close();
+                        };
+            }]);
+    };
+    
+    $scope.editrule = function (size, rule) {
+        appService.dialogService.openDialog("app/views/cloud/network/edit-rule.jsp", size , $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+                $scope.ok = function () {
+                
+                        appService.notify({message: 'Deleted successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
+                },
+                        $scope.cancel = function () {
+                            $modalInstance.close();
+                        };
+            }]);
+    };
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
     $scope.doDelete = function () {
 
@@ -1006,6 +1036,19 @@ function networksCtrl($scope, $sce, $rootScope,filterFilter,$state, $stateParams
             modalService.trigger('app/views/cloud/network/vm-list.jsp', 'lg');
         }
     };
+    
+    $scope.openAddVMlist = function () {
+        
+            $scope.global.rulesLB[0].name = $scope.load.name;
+            $scope.global.rulesLB[0].publicPort = $scope.publicPort;
+            $scope.global.rulesLB[0].privatePort = $scope.privatePort;
+            $scope.global.rulesLB[0].algorithm = $scope.algorithms.value;
+            modalService.trigger('app/views/cloud/network/vm-list.jsp', 'lg');
+      
+    };
+    
+    
+    
     $scope.lbCheck = false;
     $scope.vmlerror = false;
     $scope.addLB = function () {
@@ -1306,8 +1349,26 @@ $scope.createStickiness = function (size) {
 	            $scope.global.rulesLB[0].name = $scope.load.name;
 	            $scope.global.rulesLB[0].publicPort = $scope.publicPort;
 	            $scope.global.rulesLB[0].privatePort = $scope.privatePort;
-	            modalService.trigger('app/views/cloud/network/healthCheck.jsp', 'md');
+	            modalService.trigger('app/views/cloud/network/healthCheck.jsp', 'sm');
 	        }
+	    };
+	    
+	    $scope.healthChecklist = function () {
+	    	
+	    	  appService.dialogService.openDialog("app/views/cloud/network/healthChecklist.jsp", 'md', $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+	                $scope.ok = function () {
+	                
+	                },
+	                        $scope.cancel = function () {
+	                            $modalInstance.close();
+	                        };
+	            }]);
+	        
+//	            $scope.global.rulesLB[0].name = $scope.load.name;
+//	            $scope.global.rulesLB[0].publicPort = $scope.publicPort;
+//	            $scope.global.rulesLB[0].privatePort = $scope.privatePort;
+//	            modalService.trigger('app/views/cloud/network/healthCheck.jsp', 'sm');
+	       
 	    };
 
 	};

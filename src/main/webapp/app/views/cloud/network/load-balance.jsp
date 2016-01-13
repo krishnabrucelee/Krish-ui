@@ -43,9 +43,10 @@ pageEncoding="UTF-8"%>
                     <th class="col-md-1 col-xs-1"></th>
                     <th class="col-md-1 col-xs-1"></th>
                     <th class="col-md-2 col-xs-2"></th>
-                    <th class="col-md-2 col-xs-2"></th>
-                    <th class="col-md-2 col-xs-2"></th>
-                    <th class="col-md-2 col-xs-2"></th>
+                    <th class="col-md-1 col-xs-2"></th>
+                    <th class="col-md-1 col-xs-2"></th>
+                    <th class="col-md-1 col-xs-2"></th>
+                    <th class="col-md-1 col-xs-2"></th>
                 </tr>
             </thead>
             <tbody>
@@ -54,9 +55,19 @@ pageEncoding="UTF-8"%>
                 <td>{{rule.startPort}}</td>
                 <td>{{rule.endPort}}</td>
                 <td>{{rule.algorithm}}</td>
-                <td><div data-ng-repeat="vm in rule.vms"> {{$index+1}}.{{vm.name}}({{vm.ip}}) <br/></div></td>
+                <td><a  class="btn btn-info" ng-click="createStickiness('md')">Configure</a></td>
+                <td><a  class="btn btn-info" ng-click="healthChecklist()">Configure</a></td>
+                <td><a  class="btn btn-info" ng-click="openAddVMlist()">Add VM</a></td>
+<!--                 <td><div data-ng-repeat="vm in rule.vms"> {{$index+1}}.{{vm.name}}({{vm.ip}})xcxc <br/></div></td> -->
                 <td>Active</td>
-                <td><a data-ng-click="deleteRules(rule.id,'LB')"><span class="fa fa-trash"></span></a></td>
+                <td>
+                <a class="icon-button"  data-ng-click="editrule('md', rule)" title="<fmt:message key="common.edit" bundle="${msg}" />"
+				    >
+				<span class="fa fa-edit m-r"> </span> </a> 
+												
+		        <a class="icon-button"  title="<fmt:message key="common.delete" bundle="${msg}" /> "
+					data-ng-click="deleteRules(rule.id,'LB')"><span	class="fa fa-trash"></span></a>
+                
                 </tr>
 
             </tbody>
