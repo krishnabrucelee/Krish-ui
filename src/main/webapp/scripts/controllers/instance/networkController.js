@@ -8,7 +8,7 @@ angular
     .module('homer')
     .controller('networkCtrl', networkCtrl)
 
-function networkCtrl($scope, $modal, $window, $stateParams,appService) {
+function networkCtrl($scope, $modal, $state, $window, $stateParams,appService) {
 
     $scope.nicIPLists = {};
     $scope.nicForm = {};
@@ -172,14 +172,14 @@ function networkCtrl($scope, $modal, $window, $stateParams,appService) {
 	        			var hasNetworks = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "guestnetwork" + "/listall/"+$scope.instance.projectId);
 	        			hasNetworks.then(function (result) {
 	        				$scope.networkList = result;
-						 $scope.nicLists(1, result);
+						 //$scope.nicLists(1, result);
 	        			});
 	        		} else {
 	        			console.log("department " + $scope.instance.departmentId);
 	        			var hasNetworks = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "guestnetwork" + "/list/"+$scope.instance.departmentId);
 	        			hasNetworks.then(function (result) {
 	        				$scope.networkList = result;
-						 $scope.nicLists(1, result);
+						// $scope.nicLists(1, result);
 
 	        			});
 	        		}
@@ -187,7 +187,7 @@ function networkCtrl($scope, $modal, $window, $stateParams,appService) {
 	            $scope.networkList(1);
 
 		// Volume List
-	    	nicList(1);
+	    	//nicList(1);
 
             $scope.addNicToVirtualMachine = function (form, network) {
                 $scope.formSubmitted = true;
@@ -221,7 +221,28 @@ function networkCtrl($scope, $modal, $window, $stateParams,appService) {
                         }
                     });
                 }
-            };
+            },
+            $scope.nicLists = function (nic, networkList) {
+               	var instanceId = $stateParams.id;
+
+               	var hasNic = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbyinstances?instanceid="+instanceId +"&lang=" + appService.localStorageService.cookie.get('language')+"&sortBy=-id");
+        		hasNic.then(function (result) {
+        	            var networkList = [];
+        		    $scope.nicList = result;
+
+        		    if(!angular.isUndefined(networkList)) {
+        			    angular.forEach($scope.nicList, function(nic, key) {
+        				angular.forEach(networkList, function(network, networkKey) {
+        					if(nic.network.id != network.id) {
+        					   networkList.push(network);
+        					}
+        			    	});
+        			    });
+        			    $scope.networkList = networkList;
+        	            }
+        		    $state.reload();
+        		});
+        	    },
             $scope.cancel = function () {
                 $modalInstance.close();
             };
@@ -243,6 +264,27 @@ function networkCtrl($scope, $modal, $window, $stateParams,appService) {
              });
 
              },
+             $scope.nicLists = function (nic, networkList) {
+                	var instanceId = $stateParams.id;
+
+                	var hasNic = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbyinstances?instanceid="+instanceId +"&lang=" + appService.localStorageService.cookie.get('language')+"&sortBy=-id");
+         		hasNic.then(function (result) {
+         	            var networkList = [];
+         		    $scope.nicList = result;
+
+         		    if(!angular.isUndefined(networkList)) {
+         			    angular.forEach($scope.nicList, function(nic, key) {
+         				angular.forEach(networkList, function(network, networkKey) {
+         					if(nic.network.id != network.id) {
+         					   networkList.push(network);
+         					}
+         			    	});
+         			    });
+         			    $scope.networkList = networkList;
+         	            }
+         		    $state.reload();
+         		});
+         	    },
              $scope.cancel = function () {
                   $modalInstance.close();
              };
@@ -264,6 +306,27 @@ function networkCtrl($scope, $modal, $window, $stateParams,appService) {
                     });
 
                 },
+                $scope.nicLists = function (nic, networkList) {
+                   	var instanceId = $stateParams.id;
+
+                   	var hasNic = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbyinstances?instanceid="+instanceId +"&lang=" + appService.localStorageService.cookie.get('language')+"&sortBy=-id");
+            		hasNic.then(function (result) {
+            	            var networkList = [];
+            		    $scope.nicList = result;
+
+            		    if(!angular.isUndefined(networkList)) {
+            			    angular.forEach($scope.nicList, function(nic, key) {
+            				angular.forEach(networkList, function(network, networkKey) {
+            					if(nic.network.id != network.id) {
+            					   networkList.push(network);
+            					}
+            			    	});
+            			    });
+            			    $scope.networkList = networkList;
+            			    $state.reload();
+            	            }
+            		});
+            	    },
                 $scope.cancel = function () {
                 $modalInstance.close();
                 };

@@ -18,20 +18,19 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
     $scope.instance = {};
     $scope.instance.networks = {};
     $scope.paginationObject = {};
-
+    $scope.templateCategories = {};
+    $scope.templateVM = {};
     $scope.template = {
         templateList: {}
     };
+    $scope.templateCategories = appService.localStorageService.get("view");
+    $scope.templateVM = appService.localStorageService.get("selectedTemplate");
+    if (!angular.isUndefined($scope.templateVM) && $scope.templateVM != null)
+    {
+        $scope.instance.template = $scope.templateVM;
+    }
 
 
-    if (!angular.isUndefined(appService.localStorageService.get("selectedTemplate")) && appService.localStorageService.get("selectedTemplate") != null)
-    {
-        $scope.instance.template = appService.localStorageService.get("selectedTemplate");
-    }
-    if (!angular.isUndefined(appService.localStorageService.get("view")) && appService.localStorageService.get("view") != "")
-    {
-        $scope.templateCategory = appService.localStorageService.get("view");
-    }
     // Form Field Declaration
     $scope.instance = {
         computeOffer: {
@@ -333,6 +332,26 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
         });
     };
     $scope.applicationList();
+    
+    $scope.changedomain=function ()
+    {
+    	$scope.instance.department.userName = '';
+    	$scope.instance.instanceOwner.userName = '';
+    	$scope.instance.project='';
+    }
+    
+    $scope.changedepartment=function ()
+    {
+    	$scope.instance.instanceOwner.userName = '';
+    	$scope.instance.project='';
+    }
+    
+    $scope.changeinstanceowner=function ()
+    {
+    	$scope.instance.project='';
+    }
+    
+  
 
     $scope.departmentList = function (domain) {
 
@@ -345,6 +364,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
                 $scope.instance.department = result;
                 if (!angular.isUndefined(result)) {
                     $scope.listNetworks(result.id, 'department');
+
                 }
             });
             var hasUsers = appService.crudService.read("users", $scope.global.sessionValues.id);

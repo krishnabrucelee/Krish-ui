@@ -81,8 +81,8 @@ pageEncoding="UTF-8"%>
                 </div>
                 <div class="child-right pull-right">
                     Load Balancing
-                    <a href="javascript:void(0)"  class="btn-diagram"><span>View</span></a>
-              <!--   data-ng-click="selectTab('loadBalance')" -->
+                    <a href="javascript:void(0)" data-ng-click="selectTab('loadBalance')" class="btn-diagram"><span>View</span></a>
+                
                 </div>
 
             </div>

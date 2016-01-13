@@ -43,25 +43,49 @@ pageEncoding="UTF-8"%>
                     <th class="col-md-1 col-xs-1"></th>
                     <th class="col-md-1 col-xs-1"></th>
                     <th class="col-md-2 col-xs-2"></th>
+                    <th class="col-md-1 col-xs-2"></th>
+                    <th class="col-md-1 col-xs-2"></th>
+                    <th class="col-md-1 col-xs-2"></th>
+                    <th class="col-md-1 col-xs-2"></th>
                     <th class="col-md-2 col-xs-2"></th>
-                    <th class="col-md-2 col-xs-2"></th>
-                    <th class="col-md-2 col-xs-2"></th>
+                    
                 </tr>
             </thead>
             <tbody>
-               <tr data-ng-repeat="rule in rulesList" class="font-bold text-center">
-                <td>{{rule.name}}</td>
+                            
+               <tr ng-repeat-start="rule in rulesList" class="font-bold text-center" >
+                <td> 
+                <button data-ng-if="rule.expanded" data-ng-click="rule.expanded = false">-</button>
+                <button data-ng-if="!rule.expanded" data-ng-click="rule.expanded = true">+</button>
+                {{rule.name}}  </td>
                 <td>{{rule.startPort}}</td>
                 <td>{{rule.endPort}}</td>
                 <td>{{rule.algorithm}}</td>
-                <td><div data-ng-repeat="vm in rule.vms"> {{$index+1}}.{{vm.name}}({{vm.ip}}) <br/></div></td>
+                <td><a  class="btn btn-info" data-ng-click="createStickiness('md')">Configure</a></td>
+                <td><a  class="btn btn-info" data-ng-click="healthChecklist()">Configure</a></td>
+                <td><a  class="btn btn-info" data-ng-click="openAddVMlist()">Add VM</a></td>
                 <td>Active</td>
-                <td><a data-ng-click="deleteRules(rule.id,'LB')"><span class="fa fa-trash"></span></a></td>
+                <td>
+                <a class="icon-button"  data-ng-click="editrule('md', rule)" title="<fmt:message key="common.edit" bundle="${msg}" />"
+				    >
+				<span class="fa fa-edit m-r"> </span> </a> 
+												
+		        <a class="icon-button"  title="<fmt:message key="common.delete" bundle="${msg}" /> "
+					data-ng-click="deleteRules(rule.id,'LB')"><span	class="fa fa-trash"></span></a>
+		
+                </td>
                 </tr>
-
-            </tbody>
+                 <tr ng-if="rule.expanded" ng-repeat-end="">
+                 <td > {{rule.name}}</td>
+                  <td>{{rule.endPort}}</td>
+                <td>{{rule.algorithm}}</td>
+                 <td>x</td>
+                 </tr>
+                 </tbody>
     </table>
+    
     </form>
 
 
 </div></div>
+

@@ -34,6 +34,7 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams) {
     $scope.projectForm = [];
 
     $scope.list = function (pageNumber) {
+    	
     	$scope.showLoader = true;
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasProjects = appService.crudService.list("projects", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});

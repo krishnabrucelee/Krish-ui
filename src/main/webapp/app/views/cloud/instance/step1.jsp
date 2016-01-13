@@ -95,8 +95,7 @@
 															<label class=" "> <!-- <input icheck type="radio"
 																data-ng-model="instance.template" value=""  data-ng-change="setTemplate(templateObj)"
 																name="template"> -->
-																 <input icheck type="radio" data-ng-model="instance.template.id" value="{{templateObj.id}}" data-ng-checked="instance.template.id===templateObj.id"  data-ng-change="setTemplate(templateObj)"
-																>
+																 <input icheck type="radio" data-ng-model="instance.template.id" name="template" value="{{templateObj.id}}" data-ng-checked="instance.template.id===templateObj.id" >
 															</label>
 
 													</div>
