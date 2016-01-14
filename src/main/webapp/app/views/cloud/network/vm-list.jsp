@@ -6,11 +6,11 @@ pageEncoding="UTF-8"%>
   <div class="inmodal" ng-controller="networksCtrl"   >
         <div class="modal-header">
             <panda-modal-header page-icon="fa fa-cloud" page-title="Add VMs"></panda-modal-header>
-            
+
         </div>
         <div class="modal-body">
             <div class="row">
-                
+
 <div  ng-controller="networksCtrl">
         <div class="hpanel">
             <div class="panel-heading">
@@ -23,11 +23,11 @@ pageEncoding="UTF-8"%>
                             </div>
                         </div>
                     </div>
-                   
+
                 </div>
                <div class="clearfix"></div>
             </div>
-            
+
             <div class="white-content">
                 <div class="table-responsive">
                     <table cellspacing="1" cellpadding="1" class="table table-bordered table-striped">
@@ -46,20 +46,20 @@ pageEncoding="UTF-8"%>
                         <td>
                             <a class="text-info" >{{ instance.name }}</a>
                              <div  data-ng-show="instance.selected" > {{ instance.ipAddress}}</div>
-                             
+
               <%--     <div data-ng-show="instance.selected" class="m-t-sm">
 				<select  multiple="multiple" class="form-control input-group" name="ipaddress" data-ng-model="instance.ipAddress" ng-options="instance.ipAddress for ipaddress in vmList"  >
                 <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
                 </select>
 				</div> --%>
-                             
-                             
+
+
                     <!--   <input type="hidden" data-ng-model="instance.ipAddress" value="{{ instance.ipAddress }}"/>
                            <input type="hidden" data-ng-model="instances.name" value="{{ instance.name }}"/>
                         </td> -->
 					<td >{{instance.instanceInternalName}} </td>
 					<td >{{instance.displayName}} </td>
-                    <td >{{instance.zone.name}} </td> 
+                    <td >{{instance.zone.name}} </td>
                          <input type="hidden" data-ng-model="instances.zoneName" value="{{ instance.zone.name }}"/></td>
                         <td>
                             <label class="label label-success" data-ng-if="instance.status == 'Running'">{{ instance.status }}</label>
@@ -70,7 +70,7 @@ pageEncoding="UTF-8"%>
                             <label class="">
                       <div class="icheckbox_square-green" style="position: relative;" >
                                  <input type="checkbox" icheck data-ng-model="instance.selected" value="{{ instance.name }}" name="selectVM">
-                                 <label></label>         
+                                 <label></label>
                              </div>
                             </label>
                             <!--<label class=""> <div class="icheckbox_square-green" style="position: relative;"><input icheck="" type="checkbox" ng-model="template.extractable" class="ng-pristine ng-untouched ng-valid" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background-color: rgb(255, 255, 255); border: 0px; opacity: 0; background-position: initial initial; background-repeat: initial initial;"></ins></div> Extractable </label>-->
@@ -84,10 +84,10 @@ pageEncoding="UTF-8"%>
     </div>
             </div></div>
   <div class="modal-footer">
-            
-         
+
+
             <a class="btn btn-default"  data-ng-click="cancel()">Cancel</a>
-            <a class="btn btn-info" data-ng-click="addLB()">Apply</a>
+            <a class="btn btn-info" data-ng-click="loadbalancerSave(instance)">Apply</a>
 
 
         </div>
