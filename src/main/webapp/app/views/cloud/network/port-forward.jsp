@@ -23,7 +23,7 @@ pageEncoding="UTF-8"%>
                     <td><div class="col-xs-6"><input required="true" data-ng-show="udp || tcp" valid-number  placeholder="Start Port" data-ng-min="1" data-ng-max="65535"   type="text" name="publicstartPort" data-ng-model="publicStartPort" class="form-control" autofocus ><span class="text-center text-danger" data-ng-show="portform.publicstartPort.$invalid && portFormSubmitted"> *Required</span> </div><div class="col-xs-6"><input data-ng-show="udp || tcp" required="true" valid-number  placeholder="End Port" data-ng-min="1" data-ng-max="65535"   type="text" name="publicendPort" data-ng-model="publicEndPort" class="form-control " autofocus ><span class="text-center text-danger" data-ng-show="portform.publicendPort.$invalid && portFormSubmitted"> *Required</span></div></td>
                     <td><select required="true" class="form-control input-group" name="protocol" data-ng-model="protocolName" data-ng-init="protocolName = networkLists.portProtocols[0]" data-ng-change="selectProtocol(protocolName.name)" data-ng-options="protocolName.name for protocolName in dropnetworkLists.portProtocols">
                     <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>  </select> </td>
-                    <td><!-- <input  class="btn btn-info" type="submit" value="Add VM" > --></td>
+                    <td><input  class="btn btn-info" type="submit" value="Add VM" ></td>
                     <td></td>
                     <td> </td>
                 </tr>
@@ -50,7 +50,7 @@ pageEncoding="UTF-8"%>
                 <span>IP: {{rule.vmGuestIp}}</span></td>
                 <td><span ng-if="rule.isActive">Active</span><span ng-if="!rule.isActive">InActive</span></td>
                 <td>
-                   <!--  <a data-ng-click="deleteRules(rule.id,'Port')" title="Delete"><span class="fa fa-trash"></span></a> -->
+                    <a data-ng-click="deleteRules(rule.id,'Port')" title="Delete"><span class="fa fa-trash"></span></a>
                 </td>
 	        </tr>
 

@@ -33,38 +33,35 @@ pageEncoding="UTF-8"%>
                     <table cellspacing="1" cellpadding="1" class="table table-bordered table-striped">
                     <thead>
                     <tr>
-                        <th>Name </th>
-<!--                        <th>Template</th>
-                        <th>IP</th>
-                        <th>VPC</th>-->
+                         <th>Name </th>
+                       <th>Internal Name</th>
+                        <th>Display Name</th>
                         <th>Zone</th>
                         <th>State</th>
                         <th>Select</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr data-ng-repeat="instance in instanceList | filter: instanceSearch">
+                    <tr data-ng-repeat="instance in vmList | filter: instanceSearch">
                         <td>
                             <a class="text-info" >{{ instance.name }}</a>
-                             <div  data-ng-show="instances.isChecked" > {{ instance.ip}}|(Primary)</div>
+                             <div  data-ng-if="instance.selected" > {{ instance.ipAddress}}</div>
                             <input type="hidden" data-ng-model="instances.id" value="{{ instance.id }}"/>
                             <input type="hidden" data-ng-model="instances.name" value="{{ instance.name }}"/>
                         </td>
-<!--                     <td>{{ instance.template.name }}</td>
-                        <td>{{ instance.ip }}</td>
-                        <td>{{ instance.vpc }}</td>-->
+                  		 <td>{{ instance.instanceInternalName}}</td>
+                        <td>{{ instance.displayName }}</td>
                         <td>{{ instance.zone.name }}  
                          <input type="hidden" data-ng-model="instances.zoneName" value="{{ instance.zone.name }}"/></td>
                         <td>
-                            <label class="label label-success" data-ng-if="instance.state == 'Running'">{{ instance.state }}</label>
-                            <label class="label label-danger" data-ng-if="instance.state == 'Stopped'">{{ instance.state }}</label>
-                           <input type="hidden" data-ng-model="instances.status" value="{{ instance.state }}"/>
+                            <label class="label label-success" data-ng-if="instance.status == 'Running'">{{ instance.status }}</label>
+                            <label class="label label-danger" data-ng-if="instance.status == 'Stopped'">{{ instance.status }}</label>
+                           <input type="hidden" data-ng-model="instance.status" value="{{ instance.status }}"/>
                         </td>
                          <td>
                             <label class="">
-                      <div class="icheckbox_square-green" style="position: relative;" >
-                                 <input type="checkbox" icheck data-ng-model="instance.selected" value="{{ instance.name }}" name="selectVMPort[]">
-                                 <label></label>         
+                      <div  style="position: relative;" >
+                                 <input type="radio" icheck data-ng-model="instance.selected" value ="{{instance.name}}"  name="selectvm">
                              </div>
                             </label>
                             <!--<label class=""> <div class="icheckbox_square-green" style="position: relative;"><input icheck="" type="checkbox" ng-model="template.extractable" class="ng-pristine ng-untouched ng-valid" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background-color: rgb(255, 255, 255); border: 0px; opacity: 0; background-position: initial initial; background-repeat: initial initial;"></ins></div> Extractable </label>-->
