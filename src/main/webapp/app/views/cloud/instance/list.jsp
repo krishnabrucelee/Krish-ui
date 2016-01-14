@@ -69,18 +69,18 @@
                                 <thead>
                                     <tr>
                                         <th  ng-click="changeSorting('name')" data-ng-class="sort.descending && sort.column =='name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="instance.name" bundle="${msg}" /></th>
-                                        <th ng-click="changeSorting('owner')" data-ng-class="sort.descending && sort.column =='owner'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="owner" bundle="${msg}" /> </th>
+                                        <th ng-click="changeSorting('instanceOwner.userName')" data-ng-class="sort.descending && sort.column =='instanceOwner.userName'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="owner" bundle="${msg}" /> </th>
                                         <th class="custom-width-sm" ng-click="changeSorting('application')" data-ng-class="sort.descending && sort.column =='application'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.application" bundle="${msg}" /> </th>
                                         <%-- <th ng-click="changeSorting('project')" data-ng-class="sort.descending && sort.column =='project'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.project" bundle="${msg}" /></th> --%>
 <%--                                         <th ng-click="changeSorting('department')" class="w-10" data-ng-class="sort.descending && sort.column =='department'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.department" bundle="${msg}" /> </th>
 --%>                                    <th class="custom-width-xs" ng-click="changeSorting('ostype')" data-ng-class="sort.descending && sort.column =='ostype'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.osType" bundle="${msg}" /></th>
-                                        <th class="custom-width-xs" ng-click="changeSorting('vCpu')" data-ng-class="sort.descending && sort.column =='vCpu'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="vcpu" bundle="${msg}" /></th>
-                                        <th class="custom-width-md" ng-click="changeSorting('memory')" data-ng-class="sort.descending && sort.column =='memory'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="memory" bundle="${msg}" /></th>
-                                        <th class="custom-width-xs" ng-click="changeSorting('disk')" data-ng-class="sort.descending && sort.column =='disk'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="disk" bundle="${msg}" /></th>
+                                        <th class="custom-width-xs" ng-click="changeSorting('computeOffering.numberOfCores')" data-ng-class="sort.descending && sort.column =='computeOffering.numberOfCores'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="vcpu" bundle="${msg}" /></th>
+                                        <th class="custom-width-md" ng-click="changeSorting('computeOffering.memory')" data-ng-class="sort.descending && sort.column =='computeOffering.memory'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="memory" bundle="${msg}" /></th>
+                                        <th class="custom-width-xs" ng-click="changeSorting('volumeSize')" data-ng-class="sort.descending && sort.column =='volumeSize'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="disk" bundle="${msg}" /></th>
                                        <%--  <th ng-click="changeSorting('template.name')" data-ng-class="sort.descending && sort.column =='template.name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.template" bundle="${msg}" /> </th> --%>
-                                        <th ng-click="changeSorting('ip')" data-ng-class="sort.descending && sort.column =='ip'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.ip" bundle="${msg}" /></th>
-                                        <th ng-click="changeSorting('networkList[0].name')" data-ng-class="sort.descending && sort.column =='networkList[0].name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.network" bundle="${msg}" /></th>
-                                        <th ng-click="changeSorting('host')" data-ng-class="sort.descending && sort.column =='host'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.host" bundle="${msg}" /></th>
+                                        <th ng-click="changeSorting('ipAddress')" data-ng-class="sort.descending && sort.column =='ipAddress'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.ip" bundle="${msg}" /></th>
+                                        <th ng-click="changeSorting('network.name')" data-ng-class="sort.descending && sort.column =='network.name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.network" bundle="${msg}" /></th>
+                                        <th ng-click="changeSorting('host.name')" data-ng-class="sort.descending && sort.column =='host.name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.host" bundle="${msg}" /></th>
 <%--                                         <th class="col-md-1" ng-click="changeSorting('state')" class="col-md-1" data-ng-class="sort.descending && sort.column =='state'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.state" bundle="${msg}" /></th>
  --%>                                        <th><fmt:message key="common.action" bundle="${msg}" /></th>
 <!--                                        <th  ng-click="changeSorting('name')" >Name <span class="pull-right" data-ng-class="sort.descending && sort.column =='name'? 'pe-7s-angle-up-circle' : 'pe-7s-angle-down-circle' "></span></th>
@@ -180,6 +180,14 @@
 														data-ng-click="showDescription(instance)"><span
 															class="fa-file-text fa m-xs"></span>
 														<fmt:message key="display.note" bundle="${msg}" />
+														</a>
+													</li>
+
+													<li data-ng-if="instance.application == null"><a class="icon-button text-center"
+														title="<fmt:message key="instance.application.assign" bundle="${msg}" />"
+														data-ng-click="addApplication(instance)"><span
+															class="fa-plus fa m-xs"></span>
+														<fmt:message key="instance.application.assign" bundle="${msg}" />
 														</a>
 													</li>
                                                 </ul>
