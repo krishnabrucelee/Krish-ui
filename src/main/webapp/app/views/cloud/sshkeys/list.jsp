@@ -19,7 +19,7 @@
 						</div>
                         <span class="pull-right m-l-sm m-t-sm m-b-sm">
                             <a has-permission="CREATE_SSH_KEY" class="btn btn-info"  ng-click="createSSHKey('md')"  data-backdrop="static" data-keyboard="false"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="create.ssh.key.pair" bundle="${msg}" /></a>
-                            <a class="btn btn-info" ui-sref="cloud.list-ssh" href="#/sshkeys/list" title="<fmt:message key="common.refresh" bundle="${msg}" />"  ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
+                            <a class="btn btn-info" ui-sref="cloud.list-ssh"  title="<fmt:message key="common.refresh" bundle="${msg}" />"  ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
                         </span>
                     </div>
                 </div>
@@ -29,19 +29,22 @@
                 <div class="col-md-12 col-sm-12 col-xs-12 ">
                 <pagination-content></pagination-content>
                     <div class="white-content">
-                        <div class="table-responsive">
-                            <table cellspacing="1" cellpadding="1" class="table table-bordered table-striped">
+                    <div data-ng-show = "showLoader" style="margin: 1%">
+    				  		<get-loader-image data-ng-show="showLoader"></get-loader-image>
+      						</div>
+                        <div data-ng-hide="showLoader" class="table-responsive">
+                            <table cellspacing="1" cellpadding="1" class="table dataTable table-bordered table-striped">
                                 <thead>
                                     <tr>
-								    	<th class="col-md-2 col-sm-2"><fmt:message key="common.name" bundle="${msg}" /> </th>
-										<th class="col-md-2 col-sm-3"><fmt:message key="common.company" bundle="${msg}" /></th>
-										<th class="col-md-2 col-sm-5"><fmt:message key="common.account" bundle="${msg}" /></th>
-										<th class="col-md-3 col-sm-2"><fmt:message key="common.private.key" bundle="${msg}" /></th>
+								    	<th class="col-md-2 col-sm-2" data-ng-click="changeSorting('name')" data-ng-class="sort.descending && sort.column =='name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.name" bundle="${msg}" /> </th>
+										<th class="col-md-2 col-sm-3" data-ng-click="changeSorting('department.domain.name')" data-ng-class="sort.descending && sort.column =='department.domain.name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.company" bundle="${msg}" /></th>
+										<th class="col-md-2 col-sm-5" data-ng-click="changeSorting('department.userName')" data-ng-class="sort.descending && sort.column =='department.userName'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.account" bundle="${msg}" /></th>
+										<th class="col-md-3 col-sm-2" ><fmt:message key="common.private.key" bundle="${msg}" /></th>
 										<th class="col-md-1 col-sm-2"><fmt:message key="common.action" bundle="${msg}" /></th>
 									</tr>
                                 </thead>
                                 <tbody>
-                                    <tr data-ng-repeat="sshkey in filteredCount = (sshkeyList  | filter:sshkeySearch)">
+                                    <tr data-ng-repeat="sshkey in filteredCount = (sshkeyList  | filter:sshkeySearch | orderBy:sort.column:sort.descending)">
                                         <td>
                                             {{ sshkey.name}}
                                         </td>
