@@ -182,6 +182,14 @@
 														<fmt:message key="display.note" bundle="${msg}" />
 														</a>
 													</li>
+
+													<li data-ng-if="instance.application == null"><a class="icon-button text-center"
+														title="<fmt:message key="instance.application.assign" bundle="${msg}" />"
+														data-ng-click="addApplication(instance)"><span
+															class="fa-plus fa m-xs"></span>
+														<fmt:message key="instance.application.assign" bundle="${msg}" />
+														</a>
+													</li>
                                                 </ul>
 
                                                 <button class="btn btn-xs btn-success btn-circle" data-ng-if="instance.status == 'Running'" title="{{ instance.status}}"></button>

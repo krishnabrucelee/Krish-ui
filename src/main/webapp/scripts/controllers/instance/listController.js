@@ -32,6 +32,14 @@ function instanceListCtrl($scope, $sce, $log, $filter, dialogService, promiseAja
 	   };
 	   $scope.hostList();
 
+	   $scope.applicationList = function () {
+	      var hasapplicationList = appService.crudService.listAll("applications/list");
+	      hasapplicationList.then(function (result) {
+	              $scope.applicationLists = result;
+	       });
+	   };
+	   $scope.applicationList();
+
 	$scope.showConsole = function(vm) {
 		  $scope.vm = vm;
 		  var hasVms = crudService.updates("virtualmachine/console", vm);
@@ -204,6 +212,40 @@ function instanceListCtrl($scope, $sce, $log, $filter, dialogService, promiseAja
 			$log.info('Modal dismissed at: ' + new Date());
 		});
 	};
+
+	$scope.addApplication = function(vm) {
+	  	 appService.dialogService.openDialog("app/views/cloud/instance/add-application.jsp", 'md',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
+	  		var tempVm = vm;
+	  		 var event = "ADD.APPLICATION";
+	  		 $scope.addApplicationtoVM = function(form) {
+	  			$scope.formSubmitted =true;
+	  			 if(form.$valid) {
+	  				tempVm.application = $scope.application;
+	  				tempVm.applicationList = $scope.applications;
+	  				tempVm.event = event;
+
+		  				var hasVm = appService.crudService.updates("virtualmachine/vm", tempVm);
+		  				hasVm.then(function(result) {
+		  					$scope.homerTemplate = 'app/views/notification/notify.jsp';
+		                     appService.notify({message: $scope.application+" is adding to this VM", classes: 'alert-success', "timeOut": "5000", templateUrl: $scope.homerTemplate});
+		  					 $state.reload();
+		  					 $scope.cancel();
+		  				}).catch(function (result) {
+
+		  			         if(result.data.globalError[0] != null){
+		  			        	 var msg = result.data.globalError[0];
+		  			        	 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+		  			        	$state.reload();
+			  					$scope.cancel();
+		  			             }
+	                            });
+	  			 }
+	  			},
+				  $scope.cancel = function () {
+	               $modalInstance.close();
+	           };
+	       }]);
+	  };
 
 }
 function instanceDetailsCtrl($scope, instance, notify, $modalInstance) {
