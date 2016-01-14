@@ -1093,14 +1093,23 @@ function networksCtrl($scope, $sce, $rootScope,filterFilter,$state, $stateParams
     }
 
     $scope.addVM = function (form) {
+    	
+    
         $scope.portFormSubmitted = true;
         if (form.$valid) {
+        	
             $scope.global.rulesLB[0].publicPort = $scope.publicStartPort;
             $scope.global.rulesLB[0].privatePort = $scope.privateStartPort;
             $scope.global.rulesLB[0].privateEndPort = $scope.privateEndPort;
             $scope.global.rulesLB[0].publicEndPort = $scope.publicEndPort;
-            $scope.global.rulesLB[0].protocol = $scope.protocolName.value;
-            modalService.trigger('app/views/cloud/network/vm-list1.jsp', 'lg');
+            $scope.global.rulesLB[0].protocol = $scope.protocolName;
+            //modalService.trigger('app/views/cloud/network/vm-list1.jsp', 'lg');
+            appService.dialogService.openDialog("app/views/cloud/network/vm-list1.jsp", 'lg', $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
+                
+            	$scope.cancel = function () {
+                    $modalInstance.close();
+                };
+            	}]);
         }
     }
 

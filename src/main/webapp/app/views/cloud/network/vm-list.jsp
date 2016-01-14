@@ -84,8 +84,6 @@ pageEncoding="UTF-8"%>
     </div>
             </div></div>
   <div class="modal-footer">
-            
-         
             <a class="btn btn-default"  data-ng-click="cancel()">Cancel</a>
             <a class="btn btn-info" data-ng-click="addLB()">Apply</a>
 
