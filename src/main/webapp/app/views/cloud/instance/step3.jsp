@@ -4,8 +4,6 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
-<form name="instanceForm" data-ng-submit=" " method="post" novalidate=""
-	data-ng-controller="instanceCtrl">
     <div data-ng-if= "showLoaderDetail" style="margin: 40%">
       <get-loader-image-detail data-ng-show="showLoaderDetail"></get-loader-image-detail>
       </div>
@@ -39,7 +37,7 @@
 					class="text-danger font-bold">*</span></span>
 			</div>
 			<div class="col-md-6 col-xs-6 col-sm-6">
-					<div  data-ng-class="{'error': !instance.domain && templateFormSubmitted}" custom-select="t as t.name for t in formElements.domainList | filter: { name: $searchTerm }" data-ng-model="instance.domain">
+					<div  data-ng-class="{'error': !instance.domain && templateFormSubmitted}" custom-select="t as t.name for t in formElements.domainList | filter: { name: $searchTerm }" data-ng-model="instance.domain" data-ng-change="changedomain(instance.domain)">
 						<div class="pull-left">
 						<strong>{{ t.name }}</strong><br />
 						</div>
@@ -55,7 +53,6 @@
 				</div>
 			</div>
 		</div>
-
         <div data-ng-if="global.sessionValues.type == 'USER'">
 				<div class="form-group" >
 				<div class="col-md-5 col-xs-5 col-sm-5">
@@ -67,14 +64,14 @@
 	          </div>
         </div>
 		<div data-ng-if="global.sessionValues.type !== 'USER'">
-			<div class="row  form-group required" ng-class="{ 'text-danger' : !instance.department && templateFormSubmitted}">
+			<div class="row  form-group required" ng-class="{ 'text-danger' : !instance.department && instance.department==null && templateFormSubmitted}">
 			<div class="col-md-5 col-xs-5 col-sm-5">
 				<span class="control-label"><fmt:message
 						key="department.name" bundle="${msg}" /><span title="<fmt:message key="common.required" bundle="${msg}" />"
 					class="text-danger font-bold">*</span></span>
 			</div>
 			<div class="col-md-6 col-xs-6 col-sm-6">
-						<div  data-ng-class="{'error': !instance.department && templateFormSubmitted}" custom-select="t as t.userName for t in formElements.departmenttypeList | filter: { name: $searchTerm }" ng-model="instance.department" >
+						<div  data-ng-class="{'error': !instance.department && instance.department==null && templateFormSubmitted}" custom-select="t as t.userName for t in formElements.departmenttypeList | filter: { name: $searchTerm }" ng-model="instance.department" data-ng-change="changedepartment(instance.department)">
 						<div class="pull-left">
 						<strong>{{ t.userName }}</strong><br />
 						</div>
@@ -83,7 +80,7 @@
 				<i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"
 					tooltip="<fmt:message key="department.name" bundle="${msg}" />"></i>
 				<div class="error-area"
-					data-ng-show="!instance.department && templateFormSubmitted">
+					data-ng-show="!instance.department && instance.department==null && templateFormSubmitted">
 					<i
 						tooltip="<fmt:message key="department.name.is.required" bundle="${msg}" />"
 						class="fa fa-warning error-icon"></i>
@@ -91,7 +88,6 @@
 			</div>
 		</div>
 		</div>
-
 		<div data-ng-if="global.sessionValues.type == 'USER'">
 				<div class="form-group" >
 				<div class="col-md-5 col-xs-5 col-sm-5">
@@ -111,7 +107,7 @@
 					class="text-danger font-bold">*</span></span>
 			</div>
 			<div class="col-md-6 col-xs-6 col-sm-6">
-					<div  data-ng-class="{'error': !instance.instanceOwner && templateFormSubmitted}" custom-select="t as t.userName for t in formElements.instanceOwnerList | filter: { userName: $searchTerm }" ng-model="instance.instanceOwner" >
+					<div  data-ng-class="{'error': !instance.instanceOwner && templateFormSubmitted}" custom-select="t as t.userName for t in formElements.instanceOwnerList | filter: { userName: $searchTerm }" ng-model="instance.instanceOwner" data-ng-change="changeinstanceowner(instance.instanceOwner)" >
 						<div class="pull-left">
 						<strong>{{ t.userName }}</strong><br />
 						</div>
@@ -130,15 +126,12 @@
 			</div>
 		</div>
 		</div>
-
-
 		<div class="row  form-group required"
 			ng-class="{ 'text-danger' : instanceTemplateForm.application.$invalid && templateFormSubmitted}">
 			<div class="col-md-5 col-xs-5 col-sm-5">
 				<span class="control-label"><fmt:message
 						key="application.name" bundle="${msg}" /><span title="<fmt:message key="common.required" bundle="${msg}" />"
 					class="text-danger font-bold">*</span></span>
-
 			</div>
 			<div class="col-md-6 col-xs-6 col-sm-6">
 				<input required="true" type="text" name="application"
@@ -155,9 +148,6 @@
 				</div>
 			</div>
 		</div>
-
-
-
 		<div class="row  form-group required"
 			ng-class="{ 'text-danger' : !instance.applicationList && templateFormSubmitted}">
 			<div class="col-md-12 col-xs-12 col-sm-12">
@@ -172,7 +162,6 @@
 				</div>
 			</div>
 		</div>
-
 		<div class="row  form-group">
 			<div class="col-md-5 col-xs-5 col-sm-5">
 
@@ -181,7 +170,7 @@
 			<div class="col-md-6 col-xs-6 col-sm-6"><!--
 				<input type="text" name="project" data-ng-model="instance.projct"
 					class="form-control col-md-4" autofocus autocomplete="off"> -->
-						<div  custom-select="t as t.name for t in formElements.projecttypeList | filter: { name: $searchTerm }"   data-ng-model="instance.project" >
+						<div  custom-select="t as t.name for t in formElements.projecttypeList | filter: { name: $searchTerm }"   data-ng-model="instance.project" data-ng-change="changeproject(instance.project)">
 
 						<div class="pull-left">
 						<strong>{{t.name }}</strong>
@@ -194,17 +183,11 @@
 				<li ng-repeat="item in search.projects" style = "list-style:none;padding: 5px;"><a  data-ng-click="setProject(item)" >{{ item.name }}</a></li>
 				</ul> -->
 				<i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="<fmt:message key="name.of.the.project" bundle="${msg}" />"></i>
-
 			</div>
-
-
 		</div>
-
 		<div class="h-90"></div>
-
 		<div class="pull-right">
 			<a class="btn btn-default" ng-click="cancel()"> <fmt:message key="common.cancel" bundle="${msg}" /> </a>
 			<button type="submit" class="btn btn-info"><fmt:message key="common.next" bundle="${msg}" /></button>
 		</div>
 	</div>
-</form>
