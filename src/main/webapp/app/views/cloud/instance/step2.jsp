@@ -40,12 +40,9 @@
 				<input required="true" type="hidden" name="computeoffer"
 					data-ng-model="instance.computeOffering.customized" class="form-control"
 					data-ng-class="{'error': instanceForm.computeoffer.$invalid && OfferingSubmitted}">
-
 			</div>
-
 		</div>
 	</div>
-
 	<div
 		data-ng-show="compute  && instance.computeOffering.customized">
 		<div class="row m-b-xl"
@@ -57,7 +54,6 @@
 					rz-slider-ceil="instance.computeOffer.memory.ceil"
 					rz-slider-always-show-bar="true"></rzslider>
 			</div>
-
 			<div class="col-md-3 col-sm-3 digit-2-width">
 				<div class="input-group">
 					<input class="form-control" name="memory" valid-number
@@ -132,15 +128,10 @@
 				</div>
 			</div>
 		</div>
-
 	</div>
-
 </div>
-
 <div class="row border-content">
 	<div class="col-offset-3 col-md-12 col-sm-12">
-
-
 		<div class="row  form-group">
 			<div class="col-md-5 col-xs-5 col-sm-5">
 				<div class="pull-left m-r-xs m-t-xxs"
@@ -151,7 +142,6 @@
 					</a>
 				</div>
 				<label class="section-title"> <fmt:message key="common.disk.offering" bundle="${msg}" /></label>
-
 			</div>
 			<div class="col-md-6 col-xs-6 col-sm-6">
 				<select class="form-control input-group" name="storageOffering"
@@ -164,12 +154,8 @@
 					name="storageOffering" data-ng-model="instance.storageOffering.name"
 					class="form-control">
 			</div>
-
-
-
 		</div>
 	</div>
-
 	<div data-ng-show="disk && instance.diskOffering.isCustom == 'somes'">
 		<div class="row m-b-xl"
 			ng-class="{ 'text-danger' : instanceForm.diskSize.$modelValue <= 0 && OfferingSubmitted}">
@@ -215,10 +201,8 @@
 				</div>
 			</div>
 		</div>
-
 	</div>
 </div>
-
 <div class="row border-content">
     <div class="col-md-12 col-sm-12">
         <div class="row  form-group" ng-class="{ 'text-danger' : instanceForm.networkoffer.$invalid && OfferingSubmitted}">
@@ -239,7 +223,6 @@
                 <div class="error-area" data-ng-show="instanceForm.networkoffer.$invalid && OfferingSubmitted" ><i  tooltip="<fmt:message key="network.offering.is.required" bundle="${msg}" />" class="fa fa-warning error-icon"></i></div>
                 <input required="true" type="hidden" name="networkoffer" data-ng-model="instance.networkOfferinglist.name" class="form-control" data-ng-class="{'error': instanceForm.networkoffer.$invalid && OfferingSubmitted}"  >
             </div>
-
             <div data-ng-show="instance.networkOfferinglist.value == 'new' && networks" >
                 <div class="col-md-12 col-sm-12">
                     <div class="table-responsive m-t-md">
@@ -261,9 +244,8 @@
                                     </td>
                                 </tr>
                              </tbody>
-
                         </table>
-                                                <button  class="btn btn-info btn-sm pull-right" type="button" data-ng-click=addnetwork()> <fmt:message key="common.add" bundle="${msg}" /></button>
+                       <button  class="btn btn-info btn-sm pull-right" type="button" data-ng-click=addnetwork()> <fmt:message key="common.add" bundle="${msg}" /></button>
                     </div>
                 </div>
             </div>
@@ -282,7 +264,6 @@
                                 <tr data-ng-repeat="networks in instance.networks.networkList">
                                     <td>
                                         <label><input  data-ng-model="instance.networks[$index]" type="checkbox" required="true"  name="network" value="{{networks}}" > {{ networks.name}}</label>
-
                                     </td>
                                     <td>{{ networks.networkType}}</td>
                                     <td>
@@ -290,15 +271,12 @@
                                         <input type="text" valid-cidr required="true" placeholder="<fmt:message key="ip.address" bundle="${msg}" />"  class="input-small" data-ng-model="networks.ipaddress" />
                                         <span ><label><input type="radio" name="instance.networks.default"  data-ng-model="instance.networkc" value="{{networks}}" > <fmt:message key="common.default" bundle="${msg}" /></label></span>
                                     </td>
-
                                 </tr>
                             </tbody>
-
                         </table>
                     </div>
                 </div>
             </div>
-
             <div data-ng-show=" instance.networkOfferinglist.value == 'vpc' && networks" >
                 <div class="col-md-12 col-sm-12">
                     <div class="table-responsive m-t-md">
@@ -314,7 +292,6 @@
                                 <tr data-ng-repeat="networks in instance.networks.networkList| filter:{ vpc : true }">
                                     <td>
                                         <label><input data-ng-model="networks.selected" type="checkbox" required="true" name="instance.networks" value="networks" > {{ networks.name}}</label>
-
                                     </td>
                                     <td>{{ networks.type}}</td>
                                     <td>
@@ -322,10 +299,8 @@
                                         <input type="text" required="true" valid-cidr placeholder="<fmt:message key="ip.address" bundle="${msg}" />"  class="input-small" data-ng-model="networks.ipaddress" />
                                         <span ><label><input type="radio" name="instance.networks.default" data-ng-model="instance.networks[$index]" value="{{networks}}" > <fmt:message key="common.default" bundle="${msg}" /></label></span>
                                     </td>
-
                                 </tr>
                             </tbody>
-
                         </table>
                     </div>
                 </div>
