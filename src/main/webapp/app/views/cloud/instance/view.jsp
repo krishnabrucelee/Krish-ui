@@ -193,7 +193,7 @@ pageEncoding="UTF-8"%>
                                         <li has-permission="RESET_PASSWORD" data-ng-show="instance.passwordEnabled == true && (instance.status == 'Running' || instance.status == 'Stopped') && instance.vncPassword !== null"  class="list-group-item">
                                             <a href="javascript:void(0);" title="<fmt:message key="show.password" bundle="${msg}" />" data-ng-click="showPassword(instance)"><span class="fa-key fa font-bold m-xs"></span> <fmt:message key="show.password" bundle="${msg}" /></a>
                                         </li>
-                                        <li has-permission="RESET_PASSWORD" data-ng-show="instance.passwordEnabled == true && instance.status == 'Stopped'"  class="list-group-item">
+                                        <li has-permission="RESET_PASSWORD" data-ng-show="instance.passwordEnabled == true && (instance.status == 'Running' || instance.status == 'Stopped')"  class="list-group-item">
                                             <a href="javascript:void(0);" title="<fmt:message key="reset.password" bundle="${msg}" />" data-ng-click="resetPassword(instance)"><span class="fa-key fa font-bold m-xs"></span> <fmt:message key="reset.password" bundle="${msg}" /></a>
                                         </li>
                                         <li has-permission="REINSTALL_VM" class="list-group-item" data-ng-if="instance.status == 'Running'">
