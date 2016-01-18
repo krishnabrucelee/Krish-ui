@@ -4,7 +4,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<div class="inmodal" data-ng-contoller="networksCtrl">
     <div class="modal-header">
         <panda-modal-header hide-zone="false" page-icon="fa fa-warning" page-title="<fmt:message key="delete.confirmation" bundle="${msg}" />"></panda-modal-header>
     </div>
@@ -27,10 +26,9 @@
         <get-loader-image data-ng-show="showLoader"></get-loader-image>
 
         <button type="button" data-ng-hide="showLoader" class="btn btn-default "  ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.cancel" bundle="${msg}" /></button>
-        <button type="button" data-ng-hide="showLoader" class="btn btn-default btn-danger2"   ng-click="ng-click="doDelete()"" data-dismiss="modal"><fmt:message key="common.delete" bundle="${msg}" /></button>
+        <button type="button" data-ng-hide="showLoader" class="btn btn-default btn-danger2"  ng-click="delete()" data-dismiss="modal"><fmt:message key="common.delete" bundle="${msg}" /></button>
 
     </div>
-</div>
 
 
 

@@ -3,10 +3,9 @@ pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<div data-ng-controller="networksCtrl">
     <div class="white-content">
         <form name="loadform" method="POST" novalidate
-              data-ng-submit="openAddVM(loadform)">
+              data-ng-submit="openAddVM(loadform,loadBalancer)">
 
             <table cellspacing="1" cellpadding="1"
                    class="table table-bordered table-striped">
@@ -26,30 +25,30 @@ pageEncoding="UTF-8"%>
                 <tbody>
                     <tr>
                         <td><input required="true" type="text" name="name"
-                                   data-ng-model="load.name" class="form-control"><span
+                                   data-ng-model="loadBalancer.name" class="form-control"><span
                                    class="text-center text-danger"
                                    data-ng-show="loadform.name.$invalid && loadFormSubmitted">
                                 * Required</span></td>
                         <td><input required="true" valid-number
-                                   data-ng-model="publicPort" data-ng-min="1" data-ng-max="65535"
+                                   data-ng-model="loadBalancer.publicPort" data-ng-min="1" data-ng-max="65535"
                                    type="text" name="publicPort" class="form-control " autofocus>
                             <span class="text-center text-danger"
                                   data-ng-show="loadform.publicPort.$invalid && loadFormSubmitted">
                                 *Required</span></td>
                         <td><input required="true" valid-number
-                                   data-ng-model="privatePort" data-ng-min="1" data-ng-max="65535"
+                                   data-ng-model="loadBalancer.privatePort" data-ng-min="1" data-ng-max="65535"
                                    type="text" name="privatePort" class="form-control " autofocus>
                             <span class="text-center text-danger"
                                   data-ng-show="loadform.privatePort.$invalid && loadFormSubmitted">
                                 *Required</span></td>
                         <td><select required="true" class="form-control"
-                                    name="protocol" data-ng-model="algorithms"
-                                    data-ng-init="algorithms = networkLists.algorithms[0]"
-                                    data-ng-change="selectProtocol(algorithms.name)"
+                                    name="protocol" data-ng-model="loadBalancer.algorithms"
+                                    data-ng-init="loadBalancer.algorithms = networkLists.algorithms[0]"
+                                    data-ng-change="selectAlgorithm(algorithms.name)"
                                     data-ng-options="algorithms.name for algorithms in dropnetworkLists.algorithms"><option
                                     value=""><fmt:message key="common.select"
                                     bundle="${msg}" /></option></select> <span class="text-center text-danger"
-                                                                       data-ng-show="loadform.protocol.$invalid && loadFormSubmitted">
+                                                                       data-ng-show="loadform.algorithm.$invalid && loadFormSubmitted">
                                 *Required</span></td>
                         <td><a class="btn btn-info" ng-click="createStickiness('md')">Configure</a></td>
                         <td><a class="btn btn-info" ng-click="healthCheck(loadform)">Configure</a></td>
@@ -76,18 +75,19 @@ pageEncoding="UTF-8"%>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat-start="rule in rulesList"
+                    <tr ng-repeat-start="loadBalancer in rulesList"
                         class="font-bold text-center">
                         <td>
-                        <span data-ng-if="rule.expanded"  data-ng-click="rule.expanded = false" class="pe-lg font-bold m-r-xs pe-7s-angle-up-circle"></span>
-                        <span data-ng-if="!rule.expanded"  data-ng-click="rule.expanded = true" class="pe-7s-angle-down-circle pe-lg font-bold m-r-xs"></span>
+                        <span data-ng-if="loadBalancer.expanded"  data-ng-click="loadBalancer.expanded = false" class="pe-lg font-bold m-r-xs pe-7s-angle-up-circle"></span>
+                        <span data-ng-if="!loadBalancer.expanded"  data-ng-click="loadBalancer.expanded = true" class="pe-7s-angle-down-circle pe-lg font-bold m-r-xs"></span>
 
                             <!-- <button data-ng-if="rule.expanded"  data-ng-click="rule.expanded = false">-</button>
                             <button data-ng-if="!rule.expanded" data-ng-click="rule.expanded = true">+</button> --> {{rule.name}}
                         </td>
-                        <td>{{rule.startPort}}</td>
-                        <td>{{rule.endPort}}</td>
-                        <td>{{rule.algorithm}}</td>
+                        <td>{{loadBalancer.name}}</td>
+                        <td>{{loadBalancer.publicPort}}</td>
+                        <td>{{loadBalancer.privatePort}}</td>
+                        <td>{{loadBalancer.algorithm}}</td>
                         <td><a class="btn btn-info"
                                data-ng-click="createStickiness('md')">Configure</a></td>
                         <td><a class="btn btn-info" data-ng-click="healthChecklist()">Configure</a></td>
@@ -95,15 +95,15 @@ pageEncoding="UTF-8"%>
                                 VM</a></td>
                         <td>Active</td>
                         <td><a class="icon-button"
-                               data-ng-click="editrule('md', rule)"
+                               data-ng-click="editrule('md', loadBalancer)"
                                title="<fmt:message key="common.edit" bundle="${msg}" />">
                                <span class="fa fa-edit m-r"> </span>
                             </a> <a class="icon-button"
                                     title="<fmt:message key="common.delete" bundle="${msg}" /> "
-                                    data-ng-click="deleteRules(rule.id,'LB')"><span
+                                    data-ng-click="deleteRules('sm', loadBalancer)"><span
                                     class="fa fa-trash"></span></a></td>
                     </tr>
-                    <tr ng-if="rule.expanded" ng-repeat-end="" class="text-center">
+                    <tr ng-if="loadBalancer.expanded" ng-repeat-end="" class="text-center">
                         <td colspan="2">{{rule.name}}</td>
                         <td colspan="2">{{rule.endPort}}</td>
                         <td colspan="3">{{rule.algorithm}}</td>
@@ -116,5 +116,4 @@ pageEncoding="UTF-8"%>
             </table>
         </form>
     </div>
-</div>
 
