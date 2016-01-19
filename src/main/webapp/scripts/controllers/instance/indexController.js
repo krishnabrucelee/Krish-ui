@@ -15,9 +15,9 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
     $scope.formElements = [];
     $scope.instanceForm = [];
     $scope.instanceElements = {};
-    $scope.instance = {};
+    $scope.instance = {}; 
     $scope.instance.networks = {};
-    $scope.paginationObject = {};
+    $scope.paginationObject = {}; 
     $scope.templateCategories = {};
     $scope.templateVM = {};
     $scope.template = {
@@ -80,11 +80,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
         $scope.formElements.domainList = result;
     });
 
-    $scope.$watch('instance.domain', function (obj) {
-        if (!angular.isUndefined(obj)) {
-            $scope.departmentList(obj);
-        }
-    });
+
 
     if ($scope.global.sessionValues.type !== 'ROOT_ADMIN') {
         if (!angular.isUndefined($scope.global.sessionValues.domainId)) {
@@ -333,24 +329,48 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
     };
     $scope.applicationList();
     
-    $scope.changedomain=function ()
+    $scope.changedomain=function (obj)
     {
-    	$scope.instance.department.userName = '';
-    	$scope.instance.instanceOwner.userName = '';
-    	$scope.instance.project='';
+	$scope.instance.department =null;
+    	$scope.instance.instanceOwner = null;
+	$scope.instance.project = null;
+        $scope.instance.networks.networkList  = {};
+	if (!angular.isUndefined(obj)) {
+            $scope.departmentList(obj);
+        }
+ 	
     }
     
-    $scope.changedepartment=function ()
+    $scope.changedepartment=function (obj)
     {
-    	$scope.instance.instanceOwner.userName = '';
-    	$scope.instance.project='';
+	$scope.instance.instanceOwner =null;
+	$scope.instance.project = null;
+        $scope.instance.networks.networkList  = null;
+ 	if (!angular.isUndefined(obj)) {
+            $scope.userList(obj);
+            $scope.listNetworks(obj.id, 'department');
+
+        }
+
     }
     
-    $scope.changeinstanceowner=function ()
+    $scope.changeinstanceowner=function (obj)
     {
-    	$scope.instance.project='';
+	$scope.instance.project = null;
+  	if ($scope.global.sessionValues.type !== 'USER') {
+            if (!angular.isUndefined(obj)) {
+                $scope.projectList(obj);
+            }
+        }
     }
     
+	$scope.changeproject=function (obj)
+   	 {
+        $scope.instance.networks.networkList  = null;
+  	  if (!angular.isUndefined(obj)) {
+            $scope.listNetworks(obj.id, 'project');
+        }
+  	  }
   
 
     $scope.departmentList = function (domain) {
@@ -394,27 +414,27 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
 
     $scope.search = {'users': [], 'departments': [], 'projects': []};
 
-    $scope.$watch('instance.department', function (obj) {
+  /*  $scope.$watch('instance.department', function (obj) {
         if (!angular.isUndefined(obj)) {
             $scope.userList(obj);
             $scope.listNetworks(obj.id, 'department');
             //$scope.projectList(obj);
         }
-    });
+    });*/
 
-    $scope.$watch('instance.instanceOwner', function (obj) {
+   /* $scope.$watch('instance.instanceOwner', function (obj) {
         if ($scope.global.sessionValues.type !== 'USER') {
             if (!angular.isUndefined(obj)) {
                 $scope.projectList(obj);
             }
         }
-    });
+    });*/
 
-    $scope.$watch('instance.project', function (obj) {
+   /* $scope.$watch('instance.project', function (obj) {
         if (!angular.isUndefined(obj)) {
             $scope.listNetworks(obj.id, 'project');
         }
-    });
+    });*/
 
 
     $scope.sliderTranslate = function (value) {
@@ -512,7 +532,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
         if ($scope.instance.template == null) {
             $scope.homerTemplate = 'app/views/notification/notify.jsp';
             appService.notify({message: 'Select the template', classes: 'alert-danger', templateUrl: $scope.homerTemplate});
-        } else if (form.$valid) {
+        } else if (form.$valid && $scope.instance.department != null &&  $scope.instance.instanceOwner != null) {
             $scope.wizard.next();
         }
     };

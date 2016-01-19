@@ -49,11 +49,11 @@
                                                     <div class="col-md-7 col-sm-7 col-xs-7"> : {{quota.options[1].value}} </div>
                                                 </div>
 
-                                                <div class="row" >
+                                             <!--    <div class="row" >
                                                     <div class="col-md-12">
                                                         <a href="javascript:void(0);" title="Request" class="btn btn-sm btn-default-focus pull-right" data-toggle="modal" ng-click="showForm(quota)" data-target="#smallModal" data-backdrop="static" data-keyboard="false">Request</a>
                                                     </div>
-                                                </div>
+                                                </div> -->
                                             </div>
 
                                         </div>
