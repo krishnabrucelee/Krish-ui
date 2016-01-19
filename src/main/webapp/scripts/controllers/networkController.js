@@ -27,11 +27,12 @@ function networksCtrl($scope, $sce, $rootScope,filterFilter,$state, $stateParams
     $scope.paginationObject = {};
     $scope.egressForm = {};
     $scope.ipList = {};
-   $scope.loadBalancer = {};
+    $scope.loadBalancer = {};
+    $scope.portForward = {};
     $scope.global = appService.globalConfig;
     $scope.sort = appService.globalConfig.sort;
     $scope.changeSorting = appService.utilService.changeSorting;
-    
+
     // Egress Rule List
     $scope.firewallRulesLists = function (pageNumber) {
     	$scope.templateCategory = 'egress';
@@ -79,6 +80,7 @@ function networksCtrl($scope, $sce, $rootScope,filterFilter,$state, $stateParams
             $scope.paginationObject.totalItems = result.totalItems;
         });
     };
+    $scope.portRulesLists(1);
 
     $scope.hostList = function () {
 	      var hashostList = appService.crudService.listAll("host/list");
@@ -94,7 +96,7 @@ function networksCtrl($scope, $sce, $rootScope,filterFilter,$state, $stateParams
         var hasVms = appService.crudService.listByQuery("virtualmachine/network?networkId="+$stateParams.id);
         hasVms.then(function (result) {  // this is only run after $http completes0
             $scope.vmList = result;
-            
+
         });
     };
     $scope.vmLists(1);
@@ -967,7 +969,7 @@ function networksCtrl($scope, $sce, $rootScope,filterFilter,$state, $stateParams
   //  $scope.deleteRules = function (id, type) {
     //    appService.dialogService.openDialog("app/views/cloud/network/delete-rule.jsp", 'sm', $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
            //     $scope.ok = function () {
-                
+
                      //   appService.notify({message: 'Deleted successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
            //     },
               //          $scope.cancel = function () {
@@ -975,11 +977,11 @@ function networksCtrl($scope, $sce, $rootScope,filterFilter,$state, $stateParams
                        // };
            // }]);
    // };
-    
+
    // $scope.editrule = function (size, rule) {
      //   appService.dialogService.openDialog("app/views/cloud/network/edit-rule.jsp", size , $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
 //scope.ok = function () {
-                
+
                         //appService.notify({message: 'Updated successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
            //     },
                       //  $scope.cancel = function () {
@@ -987,8 +989,8 @@ function networksCtrl($scope, $sce, $rootScope,filterFilter,$state, $stateParams
                        // };
            // }]);
     //};
-    
-    
+
+
    $scope.doDelete = function () {
 
         $scope.deleteRule = true;
@@ -1053,26 +1055,26 @@ if(!angular.isUndefined($stateParams.id1)){
             modalService.trigger('app/views/cloud/network/vm-list.jsp', 'lg');
         }
     };
-    
+
     $scope.openAddVMlist = function () {
        appService.dialogService.openDialog("app/views/cloud/network/vm-list.jsp", 'lg' , $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
             $scope.ok = function () {
-            
+
 //                    appService.notify({message: 'Deleted successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
             },
                     $scope.cancel = function () {
                         $modalInstance.close();
                     };
         }]);
-    	    	
+
             $scope.global.rulesLB[0].name = $scope.loadBalancer.name;
             $scope.global.rulesLB[0].publicPort = $scope.loadBalancer.algorithmspublicPort;
             $scope.global.rulesLB[0].privatePort = $scope.loadBalancer.algorithms.privatePort;
             $scope.global.rulesLB[0].algorithm = $scope.loadBalancer.algorithms.value;
-         
+
     };
 
-  
+
 $scope.loadbalancerSave = function(loadBalancer) {
 	$scope.loadBalancer =  $scope.global.rulesLB[0];
          $scope.formSubmitted = true;
@@ -1082,7 +1084,7 @@ $scope.loadbalancerSave = function(loadBalancer) {
 	console.log( $scope.loadBalancer.protocol.toUpperCase());
 	$scope.loadBalancer = $scope.createStickiness;
         $scope.loadBalancer.protocol = $scope.loadBalancer.protocol.toUpperCase();
-	$scope.loadBalancer.state = $scope.loadBalancer.state.toUpperCase();		   
+	$scope.loadBalancer.state = $scope.loadBalancer.state.toUpperCase();
         var hasLoadBalancer = appService.crudService.add("loadBalancer",$scope.loadBalancer);
         hasLoadBalancer.then(function(result) { // this is only run after $http completes
         $scope.formSubmitted = false;
@@ -1096,7 +1098,7 @@ $scope.loadbalancerSave = function(loadBalancer) {
     $scope.LBlist(1);
    }).catch(function(result) {
         $scope.showLoader = false;
-        if (!angular.isUndefined(result.data)) {	
+        if (!angular.isUndefined(result.data)) {
              if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
                  var msg = result.data.globalError[0];
                  $scope.showLoader = false;
@@ -1114,12 +1116,12 @@ $scope.loadbalancerSave = function(loadBalancer) {
             }
         }
      });
-  
+
  $scope.cancel = function() {
   $modalInstance.close();
         };
-    }; 
-    
+    };
+
     // Edit the load balancer
      $scope.editrule = function (size, loadBalancer) {
         appService.dialogService.openDialog("app/views/cloud/network/edit-rule.jsp", size , $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
@@ -1144,7 +1146,7 @@ $scope.loadbalancerSave = function(loadBalancer) {
                         	}
 
                         });
-                  
+
                 },
                         $scope.cancel = function () {
                             $modalInstance.close();
@@ -1185,7 +1187,7 @@ $scope.loadbalancerSave = function(loadBalancer) {
     };
 
 
-    
+
     $scope.lbCheck = false;
     $scope.vmlerror = false;
     $scope.addLB = function () {
@@ -1210,49 +1212,98 @@ $scope.loadbalancerSave = function(loadBalancer) {
         }
     }
 
-
-
-    $scope.vmperror = false;
-    $scope.addPort = function () {
-        $scope.portList = appService.localStorageService.get("ports");
-        $scope.vms = appService.localStorageService.get("vmsPort");
-        if ($scope.vms == '') {
-            $scope.vmperror = true;
-            $scope.homerTemplate = 'app/views/notification/notify.jsp';
-            appService.notify({message: 'Select atleast one VM', classes: 'alert-danger', "timeOut": "1000", templateUrl: $scope.homerTemplate});
-        }
-        else {
-            appService.localStorageService.set("vmsPort", null);
-            $scope.addedRule = {'id': $scope.portList.length + 1, 'algorithm': '', 'name': '', 'cidr': '', 'protocol': $scope.global.rulesLB[0].protocol, 'startPort': $scope.global.rulesLB[0].publicPort, 'endPort': $scope.global.rulesLB[0].publicEndPort, 'icmpType': '', 'icmpCode': '', 'privateStart': $scope.global.rulesLB[0].privatePort, 'privateEnd': $scope.global.rulesLB[0].privateEndPort, 'vms': $scope.vms};
-            $scope.portList.push($scope.addedRule);
-            appService.localStorageService.set("ports", $scope.portList);
-            appService.notify({message: 'Rule added successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
-            $scope.cancel();
-            appService.localStorageService.set('view', 'port-forward');
-            $state.reload();
-        }
-    }
-
+    $scope.instances = {};
     $scope.addVM = function (form) {
-    	
-    
         $scope.portFormSubmitted = true;
         if (form.$valid) {
-        	
-            $scope.global.rulesLB[0].publicPort = $scope.publicStartPort;
-            $scope.global.rulesLB[0].privatePort = $scope.privateStartPort;
-            $scope.global.rulesLB[0].privateEndPort = $scope.privateEndPort;
-            $scope.global.rulesLB[0].publicEndPort = $scope.publicEndPort;
-            $scope.global.rulesLB[0].protocol = $scope.protocolName;
-            //modalService.trigger('app/views/cloud/network/vm-list1.jsp', 'lg');
-            appService.dialogService.openDialog("app/views/cloud/network/vm-list1.jsp", 'lg', $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
-                
-            	$scope.cancel = function () {
-                    $modalInstance.close();
-                };
-            	}]);
+            $scope.global.rulesPF[0].privateStartPort = $scope.portForward.privateStartPort;
+            $scope.global.rulesPF[0].privateEndPort = $scope.portForward.privateEndPort;
+            $scope.global.rulesPF[0].publicStartPort = $scope.portForward.publicStartPort;
+            $scope.global.rulesPF[0].publicEndPort = $scope.portForward.publicEndPort;
+            $scope.global.rulesPF[0].protocolType = $scope.portForward.protocolType;
+
+            appService.dialogService.openDialog("app/views/cloud/network/vm-list-port.jsp", "lg", $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
+            	  $scope.portforwardSave = function(portForward) {
+              	  $scope.portForward =  $scope.global.rulesPF[0];
+                  $scope.formSubmitted = true;
+                  $scope.showLoader = true;
+                  $scope.portForward.vmInstanceId = $scope.instances.id;
+                  $scope.portForward.networkId = $stateParams.id;
+                  $scope.portForward.vmGuestIp = $scope.instances.ipAddress;
+                  $scope.portForward.ipAddressId = $stateParams.id1;
+                  $scope.portForward.protocolType = $scope.portForward.protocolType.name;
+
+                  var hasPortForward = appService.crudService.add("portforwarding",$scope.portForward);
+                  hasPortForward.then(function(result) { // this is only run after $http completes
+                  $scope.formSubmitted = false;
+                  $modalInstance.close();
+                  $scope.showLoader = false;
+                  appService.notify({
+                      message: 'Rule added successfully',
+                      classes: 'alert-success',
+                      templateUrl: $scope.global.NOTIFICATION_TEMPLATE
+                  });
+                  $scope.portRulesLists(1);
+                 }).catch(function(result) {
+                      $scope.showLoader = false;
+                      if (!angular.isUndefined(result.data)) {
+                           if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
+                               var msg = result.data.globalError[0];
+                               $scope.showLoader = false;
+                               if(msg === "0") {
+                            	   $scope.formSubmitted = false;
+                                   $modalInstance.close();
+                            	   appService.notify({message: 'Rule added successfully. Please refresh the page', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                            	   $scope.portRulesLists(1);
+                               } else {
+                            	   appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                               }
+                            } else if (result.data.fieldErrors != null) {
+                               $scope.showLoader = false;
+                               angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
+                               $scope.portForwardForm[key].$invalid = true;
+                               $scope.portForwardForm[key].errorMessage = errorMessage;
+                              });
+                          }
+                      }
+                   });
+                  },
+                  $scope.setVM = function(VM){
+                	  $scope.instances = VM;
+                  },
+        	$scope.cancel = function () {
+                $modalInstance.close();
+            };
+        	}]);
         }
     }
+
+    $scope.deletePortRules = function (size, portForward) {
+    	appService.dialogService.openDialog("app/views/cloud/network/confirm-delete.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+                $scope.deleteId = portForward.id;
+                $scope.ok = function (deleteId) {
+                	$scope.showLoader = true;
+                    var hasStorage = appService.crudService.delete("portforwarding", portForward.id);
+                    hasStorage.then(function (result) {
+                        $scope.showLoader = false;
+                        appService.notify({message: 'Deleted successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                        $scope.portRulesLists(1);
+                    }).catch(function (result) {
+                        if (!angular.isUndefined(result.data)) {
+                        	if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
+                          	    var msg = result.data.globalError[0];
+                          	  $scope.showLoader = false;
+                          	appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+                            }
+                        }
+                    });
+                    $modalInstance.close();
+                },
+                $scope.cancel = function () {
+                    $modalInstance.close();
+                };
+            }]);
+    };
 
     $scope.removeLB = function (id) {
         $scope.ruleList = appService.localStorageService.get("rules");
@@ -1501,23 +1552,23 @@ $scope.createStickiness = function (size) {
 	            modalService.trigger('app/views/cloud/network/healthCheck.jsp', 'sm');
 	        }
 	    };
-	    
+
 	    $scope.healthChecklist = function () {
-	    	
+
 	    	  appService.dialogService.openDialog("app/views/cloud/network/healthChecklist.jsp", 'md', $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
 	                $scope.ok = function () {
-	                
+
 	                },
 	                        $scope.cancel = function () {
 	                            $modalInstance.close();
 	                        };
 	            }]);
-	        
+
 //	            $scope.global.rulesLB[0].name = $scope.load.name;
 //	            $scope.global.rulesLB[0].publicPort = $scope.publicPort;
 //	            $scope.global.rulesLB[0].privatePort = $scope.privatePort;
 //	            modalService.trigger('app/views/cloud/network/healthCheck.jsp', 'sm');
-	       
+
 	    };
 
 	};
