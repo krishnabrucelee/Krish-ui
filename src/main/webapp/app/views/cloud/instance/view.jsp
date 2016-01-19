@@ -159,7 +159,7 @@ pageEncoding="UTF-8"%>
                                         <li has-permission="TAKE_VM_SNAPSHOT" data-ng-show="instance.status == 'Running' || instance.status == 'Stopped'" class="list-group-item">
                                             <a href="javascript:void(0);" title="<fmt:message key="vm.snapshot" bundle="${msg}" />" data-ng-click="takeSnapshot(instance)"><span class="fa-camera fa font-bold m-xs"></span> <fmt:message key="take.vm.snapshot" bundle="${msg}" /></a>
                                         </li>
-                                        <li has-permission="MIGRATE_HOST" data-ng-if="instance.status == 'Running'" class="list-group-item">
+                                        <li has-permission="MIGRATE_HOST" data-ng-if="instance.status == 'Running' && global.sessionValues.type === 'ROOT_ADMIN'" class="list-group-item">
                                             <a href="javascript:void(0);" title="<fmt:message key="migrate.to.another.host" bundle="${msg}" />" data-ng-click="hostMigrate(instance)"><span class="fa-arrows fa font-bold m-xs pull-left"></span> <span class="pull-left m-l-xs width-md"><fmt:message key="migrate.to.another.host" bundle="${msg}" /></span><div class="clearfix"></div></a>
                                         </li>
                                         <li has-permission="HOST_INFORMATION" data-ng-if="instance.status == 'Running'" class="list-group-item">
@@ -407,7 +407,7 @@ pageEncoding="UTF-8"%>
                                                         <fmt:message key="cpu.cores" bundle="${msg}" />
                                                     </b>
                                                 </td>
-                                                <td class="col-md-8 col-sm-8">{{ instance.computeOffering.numberOfCores}}</td>
+                                                 <td class="col-md-8 col-sm-8"><span data-ng-if="!instance.computeOffering.customized">{{ instance.computeOffering.numberOfCores}}</span><span data-ng-if="instance.computeOffering.customized">{{ instance.cpuCore}}</span></td>
                                             </tr>
                                             <tr>
                                                 <td class="col-md-4 col-sm-4">
@@ -415,7 +415,7 @@ pageEncoding="UTF-8"%>
                                                         <fmt:message key="memory" bundle="${msg}" />
                                                     </b>
                                                 </td>
-                                                <td class="col-md-8 col-sm-8">{{ instance.computeOffering.memory}}</td>
+                                                <td class="col-md-8 col-sm-8"><span data-ng-if="!instance.computeOffering.customized">{{ instance.computeOffering.memory}}</span><span data-ng-if="instance.computeOffering.customized">{{ instance.memory}}</span></td>
                                             </tr>
                                             <tr>
                                                 <td class="col-md-4 col-sm-4">
@@ -423,7 +423,7 @@ pageEncoding="UTF-8"%>
                                                         <fmt:message key="common.storage" bundle="${msg}" />
                                                     </b>
                                                 </td>
-                                                <td class="col-md-8 col-sm-8">{{volume[0].diskSize / global.Math.pow(2, 30) || "0"}} GB</td>
+                                                <td class="col-md-8 col-sm-8"><span data-ng-if="instance.volumeSize > 0">{{ instance.volumeSize / global.Math.pow(2, 30)}} GB</span><span data-ng-if="!(instance.volumeSize > 0)">-No Disk-</span></td>
                                             </tr>
                                             <tr>
                                                 <td class="col-md-4 col-sm-4">

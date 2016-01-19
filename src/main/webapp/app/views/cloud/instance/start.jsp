@@ -20,7 +20,7 @@
 
                     <br/>
                     <!--<div class="hr-line-dashed"></div>-->
-                    <div class="form-group" ng-class="{ 'text-danger' : hostForm.hostlist.$invalid && formSubmitted}">
+                    <div data-ng-if="global.sessionValues.type === 'ROOT_ADMIN'" class="form-group" ng-class="{ 'text-danger' : hostForm.hostlist.$invalid && formSubmitted}">
 
                         <div class="row" >
                             <label class="col-md-offset-1 col-sm-offset-1  col-md-2 col-xs-3 col-sm-1 control-label "><fmt:message key="common.host" bundle="${msg}" /><span class="text-danger">*</span>
@@ -44,7 +44,7 @@
         </div>
         <div class="modal-footer">
             <a class="btn btn-default"  data-ng-click="cancel()"><fmt:message key="common.cancel" bundle="${msg}" /></a>
-            <button class="btn btn-info" type="submit"><fmt:message key="common.ok" bundle="${msg}" /></button>
+            <button class="btn btn-default btn-danger2" type="submit"><fmt:message key="common.ok" bundle="${msg}" /></button>
 
 
         </div>

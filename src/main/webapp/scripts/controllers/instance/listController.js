@@ -57,7 +57,12 @@ function instanceListCtrl($scope, $sce, $log, $filter, dialogService, promiseAja
 
 	 $scope.startVm = function(size, item) {
 	    	$scope.instance = item;
-	    	appService.dialogService.openDialog("app/views/cloud/instance/start.jsp", 'md',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
+	    	if($scope.global.sessionValues.type === 'ROOT_ADMIN'){
+	    		size = 'md';
+	    	} else {
+	    		size = 'sm';
+	    	}
+	    	appService.dialogService.openDialog("app/views/cloud/instance/start.jsp", size,  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
 		  		var vms = item;
 		  		 var event = "VM.START";
 		  		 $scope.update= function(form) {
@@ -139,7 +144,6 @@ function instanceListCtrl($scope, $sce, $log, $filter, dialogService, promiseAja
 		$scope.borderContent = status
 		hasUsers.then(function(result) { // this is only run after $http
 			// completes0
-
 			$scope.instanceList = result;
 			// For pagination
 
