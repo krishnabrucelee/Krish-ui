@@ -13,19 +13,19 @@ pageEncoding="UTF-8"%>
                 <div class="col-md-12">
 
 
-                    <div class="form-group" ng-class="{
-                                            'text-danger'
-                                            : volumeForm.name.$invalid && formSubmitted}">
+					<div class="form-group" ng-class="{ 'text-danger' : volumeForm.name.$invalid && formSubmitted}">
                         <div class="row">
-                            <label class="col-md-3 col-sm-3 control-label"><fmt:message key="common.name" bundle="${msg}" /><span class="text-danger">*</span>
+                            <label  class="col-md-3 col-xs-12 col-sm-2 control-label"><fmt:message key="common.name" bundle="${msg}" />
+                                <span class="text-danger">*</span>
                             </label>
-                            <div class="col-md-5 col-sm-5">
+                            <div class="col-md-5 col-xs-12 col-sm-5">
                                 <input required="true" type="text" name="name" data-ng-model="volume.name" class="form-control" data-ng-class="{'error': volumeForm.name.$invalid && formSubmitted}" >
-                                <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="<fmt:message key="name.of.the.disk" bundle="${msg}" />" ></i>
-                                <div class="error-area" data-ng-show="volumeForm.name.$invalid && formSubmitted" ><i  tooltip="<fmt:message key="name.of.the.disk" bundle="${msg}" />" class="fa fa-warning error-icon"></i></div>
-
+                                <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="<fmt:message key="common.name" bundle="${msg}" />" ></i>
+                                <div class="error-area" data-ng-show="volumeForm.name.$invalid && formSubmitted" >
+                                <i ng-attr-tooltip="{{ volumeForm.name.errorMessage || '<fmt:message key="volume.required" bundle="${msg}" />' }}"
+												class="fa fa-warning error-icon"></i>
+							</div>
                             </div>
-
                         </div>
                     </div>
 

@@ -30,8 +30,20 @@ function quotaReasonCtrl($scope, $modalInstance, userForm, quotaReason, notify) 
 }
 ;
 
-function quotaLimitCtrl($scope, $modal, $log) {
+function quotaLimitCtrl($scope, $state, $stateParams, appService, filterFilter, $window,
+		volumeService, modalService, globalConfig) {
 
+	$scope.global = globalConfig;
+	$scope.global = appService.globalConfig;
+	$scope.resourceDomainList = [];
+
+    $scope.resourceDomainList = function () {
+        var hasresourceDomainList = appService.crudService.listAll("resourceDomains/listresourcedomains");
+        hasresourceDomainList.then(function (result) {  // this is only run after $http completes0
+            $scope.resourceDomainList = result;
+        });
+    };
+    $scope.resourceDomainList(1);
 
     $scope.showForm = function (quotaReason) {
         //$scope.quota = quota;
@@ -59,14 +71,14 @@ function quotaLimitCtrl($scope, $modal, $log) {
         "title": "Instance",
         "options": [
             {
-                value: 20,
+                value: 40,
                 color: "#A9A9A9",
                 highlight: "#57b32c",
                 label: "Available",
                 showLabels: "true",
             },
             {
-                value: 80,
+                value: 10,
                 color: "#3399FF",
                 highlight: "#e74c3c",
                 label: "Used",
