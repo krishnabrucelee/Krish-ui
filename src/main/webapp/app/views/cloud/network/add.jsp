@@ -48,7 +48,7 @@ pageEncoding="UTF-8"%>
                             </div>
                         </div>
                     </div>
-                    <div class="form-group"ng-class="{'text-danger':addnetworkForm.networkoffering.$invalid && formSubmitted}">
+                    <div class="form-group" ng-class="{'text-danger':addnetworkForm.networkoffering.$invalid && formSubmitted}">
                         <div class="row">
                             <label class="col-md-4 col-xs-12 col-sm-4 control-label control-normal"><fmt:message key="common.networkoffering" bundle="${msg}" /><span class="text-danger">*</span></label>
                             <div class="col-md-6  col-sm-6 col-xs-12">
@@ -91,7 +91,7 @@ pageEncoding="UTF-8"%>
                         </div>
                     </div>
                     <div class="form-group">
-                        <div class="row">
+                        <div class="row" data-ng-if="global.sessionValues.type != 'USER'">
                             <label class="col-md-4 col-xs-12 col-sm-4 control-label control-normal"><fmt:message key="common.domain" bundle="${msg}" /></label>
                             <div class="col-md-6  col-sm-6 col-xs-12">
                                 <select  class="form-control input-group" name="domain" data-ng-model="network.domain" ng-options="domain.name for domain in domainList"  >
@@ -101,31 +101,25 @@ pageEncoding="UTF-8"%>
                             </div>
                         </div>
                     </div>
-                    <div class="form-group" ng-class="{'text-danger': !network.department && formSubmitted}" data-ng-if="network.domain">
-                        <div class="row">
-                            <label class="col-md-4 col-xs-12 col-sm-4 control-label"><fmt:message
-                                    key="common.department" bundle="${msg}" /> <span
-                                    class="text-danger">*</span> </label>
-                            <div class="col-md-6 col-xs-12 col-sm-6 department-selectbox">
-                                <div
-                                    data-ng-class="{'error': !network.department && formSubmitted}"
-                                    custom-select="t as t.userName for t in formElements.departmenttypeList | filter: { name: $searchTerm }"
-                                    ng-model="network.department">
-                                    <div class="pull-left">
-                                        <strong>{{ t.userName}}</strong><br />
-                                    </div>
-                                    <div class="clearfix"></div>
+                    <div class="form-group">
+                        <div class="row" ng-class="{'text-danger':addnetworkForm.department.$invalid && formSubmitted}" data-ng-show="global.sessionValues.type != 'USER'" data-ng-if="network.domain" >
+                            <label class="col-md-4 col-xs-12 col-sm-4 control-label control-normal"><fmt:message key="common.department" bundle="${msg}" /><span class="text-danger">*</span></label>
+                            <div class="col-md-6  col-sm-6 col-xs-12">
+                                <select required="true" class="form-control input-group" name="department" data-ng-model="network.department" data-ng-class="{'error': addnetworkForm.department.$invalid && formSubmitted}" ng-options="department.userName for department in formElements.departmenttypeList"  >
+                                    <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
+                                </select>
+                                  <div class="error-area" data-ng-show="addnetworkForm.department.$invalid && formSubmitted" >
+                                    <i ng-attr-tooltip="{{ addnetworkForm.account.errorMessage || '<fmt:message key="account.is.required" bundle="${msg}" />' }}" class="fa fa-warning error-icon"></i>
                                 </div>
-                                <i tooltip="<fmt:message key="common.department" bundle="${msg}" />"
-                                   class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
-                                <div class="error-area"
-                                     data-ng-show="addnetworkForm.account.$invalid && formSubmitted">
-                                    <i
-                                        ng-attr-tooltip="{{ addnetworkForm.account.errorMessage || '<fmt:message key="account.is.required" bundle="${msg}" />' }}"
-                                        class="fa fa-warning error-icon"></i>
-                                </div>
+                                <i  tooltip="<fmt:message key="common.department" bundle="${msg}" /> " class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
                             </div>
                         </div>
+                          <div class = "row" data-ng-show="global.sessionValues.type == 'USER'" >
+                            <label class="col-md-4 col-xs-12 col-sm-4 control-label control-normal"><fmt:message key="common.department" bundle="${msg}" /> </label>
+                                <div class="col-md-6 col-xs-12 col-sm-6">
+                                   <label  >{{network.department.userName}}</label>
+                                 </div>
+                                </div>
                     </div>
                     <div class="form-group">
                         <div class="row">
