@@ -312,15 +312,18 @@ volumeService, modalService, globalConfig) {
 	    //Create volume
 	    $scope.volume = {};
 	    $scope.volumeForm = {};
+
 	    $scope.addVolume = function (size) {
 	    	$scope.volume = {};
+	    	$scope.volume.project = $scope.projects;
+	    	$scope.volume.department = $scope.departments;
 	    	 if($scope.global.sessionValues.type === 'USER') {
 	    	    	var hasDepartments = appService.crudService.read("departments", $scope.global.sessionValues.departmentId);
 	    	    	hasDepartments.then(function (result) {
 	    	    		$scope.volume.department = result;
 	    	    });
 	      	 }
-	    	appService.dialogService.openDialog($scope.global.VIEW_URL + "cloud/volume/add.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope',
+	    	appService.dialogService.openDialog($scope.global.VIEW_URL + "cloud/instance/add-volume.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope',
 	                                                                                                 function ($scope, $modalInstance, $rootScope) {
 
 	                $scope.diskList = function (tag) {
@@ -359,32 +362,29 @@ volumeService, modalService, globalConfig) {
 	                	 });
 	                };
 
-	                // Department list from server
+	                // Get current Department list from instnace id.
 	                $scope.department = {};
-	                var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
-	                var hasDepartment = appService.promiseAjax.httpTokenRequest( appService.crudService.globalConfig.HTTP_GET, appService.crudService.globalConfig.APP_URL + "departments/list");
+	                var hasDepartment = appService.crudService.read("departments" , $scope.instance.departmentId);
 	                hasDepartment.then(function (result) {  // this is only run after $http completes0
 	                	$scope.volumeElements.departmentList = result;
 	                });
 
-
 	                // Getting list of projects by department
-	                $scope.getProjectsByDepartment = function(department) {
-	           		 	var hasProjects =  appService.promiseAjax.httpTokenRequest( appService.crudService.globalConfig.HTTP_GET, appService.crudService.globalConfig.APP_URL + "projects"  +"/department/"+department.id);
+	                $scope.project = {};
+	           		 	var hasProjects =  appService.crudService.read("projects" , $scope.instance.projectId);
 	           		 	hasProjects.then(function (result) {  // this is only run after $http completes0
 	           		 		$scope.options = result;
 	           		 	});
-	               	};
 
-	                $scope.$watch('volume.department', function (obj) {
-	                	if (!angular.isUndefined(obj)) {
-	                		$scope.getProjectsByDepartment(obj);
-	                	} else {
-	                		if($scope.global.sessionValues.type != 'ROOT_ADMIN') {
-	                			$scope.projectList();
-	                		}
-	                	}
-	                });
+//	                $scope.$watch('volume.department', function (obj) {
+//	                	if (!angular.isUndefined(obj)) {
+//	                		$scope.getProjectsByDepartment(obj);
+//	                	} else {
+//	                		if($scope.global.sessionValues.type != 'ROOT_ADMIN') {
+//	                			$scope.projectList();
+//	                		}
+//	                	}
+//	                });
 
 	                // Create a new application
 	                $scope.save = function (form, volume) {
@@ -393,7 +393,6 @@ volumeService, modalService, globalConfig) {
 	                    if (form.$valid) {
 	                    	$scope.showLoader = true;
 	                        $scope.volume.zone = $scope.global.zone;
-
 
 	                        var volume = angular.copy($scope.volume);
 	                        if(!angular.isUndefined($scope.volume.storageOffering) && volume.storageOffering != null) {
