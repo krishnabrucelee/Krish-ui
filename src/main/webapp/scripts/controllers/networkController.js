@@ -99,7 +99,7 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
 
         });
     };
-    $scope.vmLists(1);
+   // $scope.vmLists(1);
 
     $scope.showConsole = function (vm) {
         $scope.vm = vm;
@@ -623,8 +623,8 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
 
     $scope.domainList = {};
     $scope.domainList = function () {
-        var hasZones = appService.crudService.listAll("domains/list");
-        hasZones.then(function (result) {  // this is only run after $http completes0
+        var hasDomains = appService.crudService.listAll("domains/list");
+        hasDomains.then(function (result) {  // this is only run after $http completes0
             $scope.domainList = result;
 
         });

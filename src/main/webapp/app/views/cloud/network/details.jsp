@@ -46,7 +46,7 @@ pageEncoding="UTF-8"%>
                         <li class="list-group-item">
                             <a has-permission="DELETE_NETWORK" href="javascript:void(0);" title=" <fmt:message key="delete.network" bundle="${msg}" />" data-ng-click="delete('sm', network)"><span class="fa-trash fa font-bold m-xs"></span> <fmt:message key="delete.network" bundle="${msg}" /></a>
                         </li>
-                        <li class="list-group-item">
+                        <li   data-ng-if="type != 'edit'" class="list-group-item">
                             <a  has-permission="EDIT_NETWORK"  title=" <fmt:message key="edit.network" bundle="${msg}" />" href="#/network/list/edit/{{ network.id}}" >
                                 <span class="fa fa-edit font-bold m-xs"></span> <fmt:message key="edit.network" bundle="${msg}" />
                             </a>
@@ -139,7 +139,7 @@ pageEncoding="UTF-8"%>
                                             <select  data-ng-if="type == 'edit'"  class="form-control input-group editedinput" name="networkoffering" data-ng-init="" data-ng-model="network.networkOffering" data-ng-options="networkoffering.displayText for networkoffering in networkOfferList"  >
                                                 <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
                                             </select>
-                                                                                                                                    
+
                                         </td>
                                     </tr>
                                     <tr>
