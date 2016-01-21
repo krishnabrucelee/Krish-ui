@@ -130,80 +130,86 @@
 		</div>
 	</div>
 </div>
-<div class="row border-content">
-	<div class="col-offset-3 col-md-12 col-sm-12">
-		<div class="row  form-group">
-			<div class="col-md-5 col-xs-5 col-sm-5">
-				<div class="pull-left m-r-xs m-t-xxs"
-					data-ng-show="disks && instance.diskOffering.name == 'Custom'">
-					<a ng-click="diskSlide(); computeSlide();"> <span
-						data-ng-hide="disk" class="pe pe-lg pe-7s-plus"></span> <span
-						data-ng-show="disk" class="pe pe-lg pe-7s-less"></span>
-					</a>
+	<div class="row border-content">
+		<div class="col-offset-3 col-md-12 col-sm-12">
+			<div class="row  form-group">
+				<div class="col-md-5 col-xs-5 col-sm-5">
+
+					<label class="section-title"> <fmt:message
+							key="common.disk.offering" bundle="${msg}" /></label>
 				</div>
-				<label class="section-title"> <fmt:message key="common.disk.offering" bundle="${msg}" /></label>
-			</div>
-			<div class="col-md-6 col-xs-6 col-sm-6">
-				<select class="form-control input-group" name="storageOffering"
-					data-ng-model="instance.storageOffering"
-					ng-change='diskFunction(instance.storageOffering.name)'
-					ng-options="storageOffering.name for storageOffering in instanceElements.diskOfferingList">
-					<option value=""><fmt:message key="no.thanks" bundle="${msg}" /></option>
-				</select> <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"
-					tooltip="<fmt:message key="secondary.disk.and.iops" bundle="${msg}" />"></i> <input type="hidden"
-					name="storageOffering" data-ng-model="instance.storageOffering.name"
-					class="form-control">
-			</div>
-		</div>
-	</div>
-	<div data-ng-show="disk && instance.diskOffering.isCustom == 'somes'">
-		<div class="row m-b-xl"
-			ng-class="{ 'text-danger' : instanceForm.diskSize.$modelValue <= 0 && OfferingSubmitted}">
-			<label class="col-md-3 col-sm-3 control-label"><fmt:message key="disk.size" bundle="${msg}" /> :</label>
-			<div class="col-md-5 col-sm-5">
-				<rzslider rz-slider-model="instance.diskOffer.diskSize.value"
-					rz-slider-floor="instance.diskOffer.diskSize.floor"
-					rz-slider-ceil="instance.diskOffer.diskSize.ceil"
-					rz-slider-always-show-bar="true"></rzslider>
-			</div>
-			<div class="col-md-4 col-sm-3 digit-4-width">
-				<div class="input-group">
-					<input valid-number
-						data-ng-min="{{ instance.diskOffer.diskSize.floor}}"
-						data-ng-max="{{ instance.diskOffer.diskSize.ceil}}" type="text"
-						class="form-control input-mini" name="diskSize"
-						data-ng-model="instance.diskOffer.diskSize.value"> <span
-						class="input-group-addon">GB</span>
+				<div class="col-md-6 col-xs-6 col-sm-6">
+					<select class="form-control input-group" name="storageOffering"
+						data-ng-model="instance.storageOffering"
+						ng-change='diskFunction(instance.storageOffering.name)'
+						ng-options="storageOffering.name for storageOffering in instanceElements.diskOfferingList">
+						<option value=""><fmt:message key="no.thanks"
+								bundle="${msg}" /></option>
+					</select> <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"
+						tooltip="<fmt:message key="secondary.disk.and.iops" bundle="${msg}" />"></i>
+					<input type="hidden" name="storageOffering"
+						data-ng-model="instance.storageOffering.name" class="form-control">
 				</div>
 			</div>
 		</div>
-		<div class="row m-b-xl">
-			<div class="col-md-5 col-sm-6">
-				<div class="form-group"
-					ng-class="{ 'text-danger' : instanceForm.minIops.$modelValue <= 0 && OfferingSubmitted}">
-					<label class="col-md-7 col-sm-7 control-label"><fmt:message key="min.iops" bundle="${msg}" /> :</label>
-					<div class="col-md-5 col-sm-5">
-						<input class="form-control ng-pristine ng-valid ng-touched"
-							type="text" data-ng-model="instance.diskOffer.minIops.value"
-							valid-number="" name="minIops">
+		<div data-ng-show="instance.storageOffering.isCustomDisk">
+			<div class="form-group"
+				ng-class="{ 'text-danger' : instanceForm.diskSize <= 0 && formSubmitted}">
+				<div class="row">
+					<label class="col-md-3 col-xs-12 col-sm-2 control-label">Size
+						(GB) <span class="text-danger">*</span>
+					</label>
+					<div class="col-md-6 col-xs-12 col-sm-6">
+						<rzslider rz-slider-model="instance.diskSize"
+							data-ng-init="instance.diskSize=0"
+							rz-slider-floor="instance.diskOffer.diskSize.floor"
+							rz-slider-ceil="instance.diskOffer.diskSize.ceil"
+							rz-slider-always-show-bar="true"></rzslider>
+					</div>
+					<div class="col-md-2 col-xs-12 col-sm-3">
+						<input type="text"
+							data-ng-min="{{ instance.diskOffer.diskSize.floor }}"
+							data-ng-max="{{ instance.diskOffer.diskSize.ceil}}"
+							class="form-control input-mini" name="diskSize"
+							data-ng-model="instance.diskSize" valid-number="">
 					</div>
 				</div>
 			</div>
-			<div class="col-md-5 col-sm-6">
-				<div class="form-group"
-					ng-class="{ 'text-danger' : instanceForm.maxIops.$modelValue <= 0 && OfferingSubmitted}">
-					<label class="col-md-7 col-sm-7 control-label"><fmt:message key="max.iops" bundle="${msg}" /> :</label>
-					<div class="col-md-5 col-sm-5">
-						<input class="form-control ng-pristine ng-valid ng-touched"
-							type="text" data-ng-model="instance.diskOffer.maxIops.value"
-							valid-number="" name="maxIops">
+			<div class=""
+				ng-class="{ 'text-danger' : instanceForm.diskMinIops <= 0 && formSubmitted}"
+				data-ng-show="instance.storageOffering.isCustomizedIops">
+				<div class=" m-b-xl">
+					<div class="col-md-5 col-sm-6">
+						<div class="form-group"
+							ng-class="{ 'text-danger' : instanceForm.diskMinIops <= 0 && OfferingSubmitted}">
+							<label class="col-md-6 col-xs-12 col-sm-6 control-label"><fmt:message
+									key="min.iops" bundle="${msg}" /> <span class="text-danger">*</span>
+							</label>
+							<div class="col-md-6 col-sm-6">
+								<input class="form-control ng-pristine ng-valid ng-touched"
+									type="text" data-ng-model="instance.diskMinIops"
+									valid-number="" name="diskMinIops">
+							</div>
+						</div>
+					</div>
+					<div class="col-md-5 col-sm-6">
+						<div class="form-group"
+							ng-class="{ 'text-danger' : instanceForm.diskMaxIops <= 0 && OfferingSubmitted}">
+							<label class="col-md-6 col-xs-12 col-sm-6 control-label"><fmt:message
+									key="max.iops" bundle="${msg}" /><span class="text-danger">*</span>
+							</label>
+							<div class="col-md-6 col-sm-6">
+								<input class="form-control ng-pristine ng-valid ng-touched"
+									type="text" data-ng-model="instance.diskMaxIops"
+									valid-number="" name="diskMaxIops">
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-</div>
-<div class="row border-content">
+	<div class="row border-content">
     <div class="col-md-12 col-sm-12">
         <div class="row  form-group" ng-class="{ 'text-danger' : instanceForm.networkoffer.$invalid && OfferingSubmitted}">
             <div class="col-md-5 col-xs-5 col-sm-5">

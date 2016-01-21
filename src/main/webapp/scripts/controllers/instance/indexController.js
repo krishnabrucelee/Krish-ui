@@ -15,9 +15,9 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
     $scope.formElements = [];
     $scope.instanceForm = [];
     $scope.instanceElements = {};
-    $scope.instance = {}; 
+    $scope.instance = {};
     $scope.instance.networks = {};
-    $scope.paginationObject = {}; 
+    $scope.paginationObject = {};
     $scope.templateCategories = {};
     $scope.templateVM = {};
     $scope.template = {
@@ -328,7 +328,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
         });
     };
     $scope.applicationList();
-    
+
     $scope.changedomain=function (obj)
     {
 	$scope.instance.department =null;
@@ -338,9 +338,9 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
 	if (!angular.isUndefined(obj)) {
             $scope.departmentList(obj);
         }
- 	
+
     }
-    
+
     $scope.changedepartment=function (obj)
     {
 	$scope.instance.instanceOwner =null;
@@ -353,7 +353,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
         }
 
     }
-    
+
     $scope.changeinstanceowner=function (obj)
     {
 	$scope.instance.project = null;
@@ -363,7 +363,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
             }
         }
     }
-    
+
 	$scope.changeproject=function (obj)
    	 {
         $scope.instance.networks.networkList  = null;
@@ -371,7 +371,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
             $scope.listNetworks(obj.id, 'project');
         }
   	  }
-  
+
 
     $scope.departmentList = function (domain) {
 

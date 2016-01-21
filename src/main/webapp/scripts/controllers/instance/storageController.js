@@ -418,19 +418,21 @@ volumeService, modalService, globalConfig) {
 	                            appService.notify({message: 'Added successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
 	                            $modalInstance.close();
 	                        }).catch(function (result) {
-	                        	if (!angular.isUndefined(result) && result.data != null) {
-	                                    if (result.data.globalError[0] != '') {
-	                                        var msg = result.data.globalError[0];
-	                                        $scope.showLoader = false;
-	                                        appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
-	                                    }
-	                                    angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
-	                                    	$scope.volumeForm[key].$invalid = true;
-	                                    	$scope.volumeForm[key].errorMessage = errorMessage;
-	                                    });
-
-	                        	}
-	                        });
+	                        	$scope.showLoader = false;
+	                		    if (!angular.isUndefined(result.data)) {
+	                    		if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
+	                      	   	 var msg = result.data.globalError[0];
+	                      	   	 $scope.showLoader = false;
+	                    	    	 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+	                        	} else if (result.data.fieldErrors != null) {
+	                           	$scope.showLoader = false;
+	                            	angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
+	                                	$scope.volumeForm[key].$invalid = true;
+	                                	$scope.volumeForm[key].errorMessage = errorMessage;
+	                            	});
+	                    		}
+	                    	}
+	                	});;
 	                    }
 	                },
 	                $scope.cancel = function () {

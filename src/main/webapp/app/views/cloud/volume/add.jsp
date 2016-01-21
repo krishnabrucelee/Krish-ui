@@ -73,7 +73,7 @@ pageEncoding="UTF-8"%>
                                     <span class="text-danger">*</span>
                                 </label>
                                 <div class="col-md-6 col-xs-12 col-sm-6">
-                                    <rzslider rz-slider-model="volume.diskSize" rz-slider-floor="volumeElements.diskOffer.diskSize.floor" rz-slider-ceil="volumeElements.diskOffer.diskSize.ceil" rz-slider-always-show-bar="true"></rzslider>
+                                    <rzslider rz-slider-model="volume.diskSize" data-ng-init="volume.diskSize=0" rz-slider-floor="volumeElements.diskOffer.diskSize.floor" rz-slider-ceil="volumeElements.diskOffer.diskSize.ceil" rz-slider-always-show-bar="true"></rzslider>
                                 </div>
                                 <div class="col-md-2 col-xs-12 col-sm-3">
                                     <input type="text" data-ng-min="{{ volumeElements.diskOffer.diskSize.floor }}" data-ng-max="{{ volumeElements.diskOffer.diskSize.ceil}}"
@@ -85,7 +85,7 @@ pageEncoding="UTF-8"%>
                             <div class="row" >
                                 <div class="col-md-6 col-sm-6">
                                     <div class="form-group" ng-class="{ 'text-danger' : volumeForm.diskMinIops <= 0 && OfferingSubmitted}">
-                                        <label class="col-md-3 col-sm-3 control-label"><fmt:message key="min.iops" bundle="${msg}" /> 	 <span class="text-danger">*</span>
+                                        <label class="col-md-4 col-sm-4 control-label"><fmt:message key="min.iops" bundle="${msg}" /> 	 <span class="text-danger">*</span>
                                         </label>
                                         <div class="col-md-5 col-sm-5">
                                             <input class="form-control ng-pristine ng-valid ng-touched"
@@ -96,7 +96,7 @@ pageEncoding="UTF-8"%>
                                 </div>
                                 <div class="col-md-6 col-sm-6">
                                     <div class="form-group" ng-class="{ 'text-danger' : volumeForm.diskMaxIops <= 0 && OfferingSubmitted}">
-                                        <label class="col-md-3 col-sm-3 control-label"><fmt:message key="max.iops" bundle="${msg}" /><span class="text-danger">*</span>
+                                        <label class="col-md-4 col-sm-4 control-label"><fmt:message key="max.iops" bundle="${msg}" /><span class="text-danger">*</span>
                                         </label>
                                         <div class="col-md-5 col-sm-5">
                                             <input class="form-control ng-pristine ng-valid ng-touched"

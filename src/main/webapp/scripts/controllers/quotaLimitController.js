@@ -36,11 +36,47 @@ function quotaLimitCtrl($scope, $state, $stateParams, appService, filterFilter, 
 	$scope.global = globalConfig;
 	$scope.global = appService.globalConfig;
 	$scope.resourceDomainList = [];
+	$scope.resourceQuota = {};
+	$scope.resourceTypeList = [
+	                            "Instance",
+		                        /** Number of public IP addresses a user can own. */
+		                        "IP",
+		                        /**  Number of disk volumes a user can create. */
+		                        "Volume",
+		                        /** Number of snapshots a user can create. */
+		                        "Snapshot",
+		                        /** Number of templates that a user can register/create. */
+		                        "Template",
+		                        /** Number of projects an account can own. */
+		                        "Project",
+		                        /** Number of guest network a user can create. */
+		                        "Network",
+		                        /** Number of VPC a user can create. */
+		                        "VPC",
+		                        /** Total number of CPU cores a user can use. */
+		                        "CPU",
+		                        /** Total Memory (in MB) a user can use. */
+		                        "Memory",
+		                        /** Total primary storage space (in GiB) a user can use. */
+		                        "PrimaryStorage",
+		                        /** Total secondary storage space (in GiB) a user can use. */
+		                        "SecondaryStorage"];
+
 
     $scope.resourceDomainList = function () {
         var hasresourceDomainList = appService.crudService.listAll("resourceDomains/listresourcedomains");
         hasresourceDomainList.then(function (result) {  // this is only run after $http completes0
-            $scope.resourceDomainList = result;
+           $scope.resourceDomainList = result;
+
+			var i=0;
+			angular.forEach(result, function(object, key) {
+				i++;
+				$scope.resourceQuota[object.resourceType] = object.usedLimit;
+				$scope.resourceQuota[object.resourceType] = object.available;
+				console.log("usedLimit =" + object.usedLimit +"--"+ "available =" + object.available);
+
+			});
+
         });
     };
     $scope.resourceDomainList(1);
@@ -66,6 +102,18 @@ function quotaLimitCtrl($scope, $state, $stateParams, appService, filterFilter, 
 
 
     };
+
+//    var quotaList = [];
+//	for(var i=0; i < $scope.resourceTypeList.length; i++) {
+//		if(i != 5) {
+//			var resourceObject = {};
+//			resourceObject.usedLimt = $scope.quota[$scope.resourceTypeList[i]];
+//			resourceObject.available = $scope.quota[$scope.resourceTypeList[i]];
+//			quotaList.push(resourceObject);
+//		}
+//	}
+
+
 
     var instanceLimit = {
         "title": "Instance",
