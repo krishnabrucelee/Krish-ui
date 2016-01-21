@@ -13,7 +13,7 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
 
     $scope.instanceList = [];
     $scope.testvar = "test";
-    $scope.global = appService.crudService.globalConfig;
+    $scope.global = appService.globalConfig;
     if ($stateParams.id > 0) {
     	$scope.showLoader = true;
     	$scope.showLoaderOffer = true;
@@ -78,7 +78,12 @@ $scope.list = function () {
 
     $scope.startVm = function(size, item) {
     	$scope.instance = item;
-    	appService.dialogService.openDialog("app/views/cloud/instance/start.jsp", 'md',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
+    	if($scope.global.sessionValues.type === 'ROOT_ADMIN'){
+    		size = 'md';
+    	} else {
+    		size = 'sm';
+    	}
+    	appService.dialogService.openDialog("app/views/cloud/instance/start.jsp", size,  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
 	  		var vms = item;
 	  		 var event = "VM.START";
 	  		 $scope.update= function(form) {
@@ -354,6 +359,7 @@ $scope.list = function () {
 						  		 var event = "ISO.DETACH";
 						  		 $scope.update = function() {
 						  			$scope.vm.event = event;
+						  			console.log($scope.vm);
 							  				var hasVm = appService.crudService.updates("virtualmachine/vm", $scope.vm);
 							  				hasVm.then(function(result) {
 							  					$scope.homerTemplate = 'app/views/notification/notify.jsp';
