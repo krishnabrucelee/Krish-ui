@@ -9,7 +9,6 @@ angular
         .controller('quotaLimitCtrl', quotaLimitCtrl)
         .controller('quotaReasonCtrl', quotaReasonCtrl)
 
-
 function quotaReasonCtrl($scope, $modalInstance, userForm, quotaReason, notify) {
 
     $scope.quotaReason = quotaReason;
@@ -27,8 +26,7 @@ function quotaReasonCtrl($scope, $modalInstance, userForm, quotaReason, notify) 
     $scope.cancel = function () {
         $modalInstance.dismiss('cancel');
     };
-}
-;
+};
 
 function quotaLimitCtrl($scope, $state, $stateParams, appService, filterFilter, $window,
 		volumeService, modalService, globalConfig) {
@@ -73,8 +71,6 @@ function quotaLimitCtrl($scope, $state, $stateParams, appService, filterFilter, 
 				i++;
 				$scope.resourceQuota[object.resourceType] = object.usedLimit;
 				$scope.resourceQuota[object.resourceType] = object.available;
-				console.log("usedLimit =" + object.usedLimit +"--"+ "available =" + object.available);
-
 			});
 
         });
@@ -102,18 +98,6 @@ function quotaLimitCtrl($scope, $state, $stateParams, appService, filterFilter, 
 
 
     };
-
-//    var quotaList = [];
-//	for(var i=0; i < $scope.resourceTypeList.length; i++) {
-//		if(i != 5) {
-//			var resourceObject = {};
-//			resourceObject.usedLimt = $scope.quota[$scope.resourceTypeList[i]];
-//			resourceObject.available = $scope.quota[$scope.resourceTypeList[i]];
-//			quotaList.push(resourceObject);
-//		}
-//	}
-
-
 
     var instanceLimit = {
         "title": "Instance",
@@ -314,6 +298,7 @@ function quotaLimitCtrl($scope, $state, $stateParams, appService, filterFilter, 
                 showLabels: "true",
             }]
     };
+
     /**
      * Data for Doughnut chart
      */
@@ -329,10 +314,7 @@ function quotaLimitCtrl($scope, $state, $stateParams, appService, filterFilter, 
         vpcLimit,
         primarystorageLimit,
         secondarystorageLimit
-
-
     ];
-
 
     /**
      * Options for Doughnut chart
@@ -353,8 +335,6 @@ function quotaLimitCtrl($scope, $state, $stateParams, appService, filterFilter, 
         tooltipXPadding: 6,
         legend:true
     };
-
-
 
 }
 
