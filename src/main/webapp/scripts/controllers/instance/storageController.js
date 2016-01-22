@@ -7,8 +7,7 @@ angular
     .module('homer')
     .controller('storageCtrl', storageCtrl)
 
-function storageCtrl($scope, $state, $stateParams, appService, filterFilter, $window,
-    volumeService, modalService) {
+function storageCtrl($scope, $state, $stateParams, appService, $window) {
 
     $scope.global = appService.globalConfig;
     $scope.formSubmitted = false;
@@ -243,11 +242,11 @@ function storageCtrl($scope, $state, $stateParams, appService, filterFilter, $wi
     };
 
     $scope.openUploadVolumeContainer = function(size) {
-        modalService.trigger('app/views/cloud/volume/upload.jsp', size);
+        appService.modalService.trigger('app/views/cloud/volume/upload.jsp', size);
     };
 
     $scope.openReccuringSnapshot = function(volume) {
-        modalService.trigger('app/views/cloud/volume/recurring-snapshot.jsp', 'lg');
+    	appService.modalService.trigger('app/views/cloud/volume/recurring-snapshot.jsp', 'lg');
     };
 
     //Resize Volume
@@ -442,7 +441,7 @@ function storageCtrl($scope, $state, $stateParams, appService, filterFilter, $wi
         ]);
     };
 
-    $scope.volumeElements = volumeService.volumeElements;
+    $scope.volumeElements = appService.volumeService.volumeElements;
     $scope.downloads = false;
     $scope.download = function() {
         $scope.downloadLoding = true;

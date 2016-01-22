@@ -114,12 +114,12 @@ pageEncoding="UTF-8"%>
                             </div>
                         </div>
                     </div>
-
                     <div class="form-group" data-ng-class="{ 'text-danger' : volumeForm.department.$invalid && formSubmitted}">
                         <div class="row">
                             <div>
                                 <label class="col-md-3 col-xs-12 col-sm-2 control-label control-normal">
-                                    <fmt:message key="common.department" bundle="${msg}" /> </label>
+                                    <fmt:message key="common.department" bundle="${msg}" />
+                               	</label>
                                 <div class="col-md-5 col-xs-12 col-sm-5">
                                     <label>{{ instance.department.userName }}</label>
                                     <input type="hidden" readonly="readonly" data-ng-model="volume.department" data-ng-init="volume.department=instance.department" />
@@ -128,7 +128,6 @@ pageEncoding="UTF-8"%>
 
                         </div>
                     </div>
-
                     <div class="form-group">
                         <div class="row">
                             <label class="col-md-3 col-xs-12 col-sm-2 control-label control-normal">

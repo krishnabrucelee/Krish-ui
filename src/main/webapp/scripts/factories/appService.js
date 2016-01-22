@@ -20,8 +20,14 @@ function appService(crudService, localStorageService, globalConfig, promiseAjax,
     // Applicaiton Utilities
     object.utilService = utilService
 
- // Application ajax calls goes here
+    // Application ajax calls goes here
     object.dialogService = dialogService
+
+    // Model service calls goes here
+    object.modalService = modalService
+
+    // Volume service calls goes here
+    object.volumeService = volumeService
 
     return object;
 

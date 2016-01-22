@@ -24,7 +24,8 @@
                         <option value="">
                             <fmt:message key="common.select" bundle="${msg}" />
                         </option>
-                    </select> <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="<fmt:message key=" memory.and.cpu.for.the.instance " bundle="${msg} " />"></i>
+                    </select>
+                    <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="<fmt:message key=" memory.and.cpu.for.the.instance " bundle="${msg} " />"></i>
                     <div class="error-area" data-ng-show="instanceForm.computeoffer.$invalid && OfferingSubmitted">
                         <i tooltip="<fmt:message key=" compute.offering.is.required " bundle="${msg} " />" class="fa fa-warning error-icon"></i>
                     </div>
@@ -35,7 +36,8 @@
         <div data-ng-show="compute  && instance.computeOffering.customized">
             <div class="row m-b-xl" data-ng-class="{ 'text-danger' : instanceForm.memory.$modelValue <= 0 && OfferingSubmitted}">
                 <label class="col-md-3 col-sm-3 control-label">
-                    <fmt:message key="memory" bundle="${msg}" /> :</label>
+                    <fmt:message key="memory" bundle="${msg}" /> :
+                </label>
                 <div class="col-md-5 col-sm-5">
                     <rzslider rz-slider-model="instance.computeOffer.memory.value" rz-slider-floor="instance.computeOffer.memory.floor" rz-slider-ceil="instance.computeOffer.memory.ceil" rz-slider-always-show-bar="true"></rzslider>
                 </div>
@@ -47,7 +49,8 @@
             </div>
             <div class="row m-b-xl" data-ng-class="{ 'text-danger' : instanceForm.cpuCore.$modelValue <= 0 && OfferingSubmitted}">
                 <label class="col-md-3 col-sm-3 control-label">
-                    <fmt:message key="cpu.cores" bundle="${msg}" /> :</label>
+                    <fmt:message key="cpu.cores" bundle="${msg}" /> :
+               	</label>
                 <div class="col-md-5 col-sm-5">
                     <rzslider rz-slider-model="instance.computeOffer.cpuCore.value" rz-slider-floor="instance.computeOffer.cpuCore.floor" rz-slider-ceil="instance.computeOffer.cpuCore.ceil" rz-slider-always-show-bar="true"></rzslider>
                 </div>
@@ -60,7 +63,8 @@
             </div>
             <div class="row m-b-xl" data-ng-class="{ 'text-danger' : instanceForm.cpuSpeed.$modelValue <= 1000 && OfferingSubmitted}">
                 <label class="col-md-3 col-sm-3 control-label">
-                    <fmt:message key="cpu.speed" bundle="${msg}" /> :</label>
+                    <fmt:message key="cpu.speed" bundle="${msg}" /> :
+             	</label>
                 <div class="col-md-5 col-sm-5">
                     <rzslider rz-slider-model="instance.computeOffer.cpuSpeed.value" rz-slider-floor="instance.computeOffer.cpuSpeed.floor" rz-slider-ceil="instance.computeOffer.cpuSpeed.ceil" rz-slider-always-show-bar="true"></rzslider>
                 </div>
@@ -74,7 +78,8 @@
                 <div class="col-md-5 col-sm-6">
                     <div class="form-group" data-ng-class="{ 'text-danger' : instanceForm.minIops.$modelValue <= 0 && OfferingSubmitted}">
                         <label class="col-md-7 col-sm-7 control-label">
-                            <fmt:message key="min.iops" bundle="${msg}" /> :</label>
+                            <fmt:message key="min.iops" bundle="${msg}" /> :
+                      	</label>
                         <div class="col-md-5 col-sm-5">
                             <input class="form-control ng-pristine ng-valid ng-touched" type="text" data-ng-model="instance.computeOffer.minIops.value" valid-number="" name="minIops">
                         </div>
@@ -83,7 +88,8 @@
                 <div class="col-md-5 col-sm-6">
                     <div class="form-group" data-ng-class="{ 'text-danger' : instanceForm.maxIops.$modelValue <= 0 && OfferingSubmitted}">
                         <label class="col-md-7 col-sm-7 control-label">
-                            <fmt:message key="max.iops" bundle="${msg}" /> :</label>
+                            <fmt:message key="max.iops" bundle="${msg}" /> :
+                      	</label>
                         <div class="col-md-5 col-sm-5">
                             <input class="form-control ng-pristine ng-valid ng-touched" type="text" data-ng-model="instance.computeOffer.maxIops.value" valid-number="" name="maxIops">
                         </div>
@@ -105,7 +111,8 @@
                         <option value="">
                             <fmt:message key="no.thanks" bundle="${msg}" />
                         </option>
-                    </select> <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="<fmt:message key=" secondary.disk.and.iops " bundle="${msg} " />"></i>
+                    </select>
+                    <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="<fmt:message key=" secondary.disk.and.iops " bundle="${msg} " />"></i>
                     <input type="hidden" name="storageOffering" data-ng-model="instance.storageOffering.name" class="form-control">
                 </div>
             </div>
@@ -115,7 +122,8 @@
                 <div class="row">
                     <label class="col-md-3 col-xs-12 col-sm-2 control-label">
                         <fmt:message key="common.size" bundle="${msg}" />
-                        <fmt:message key="common.gb" bundle="${msg}" /> <span class="text-danger">*</span>
+                        <fmt:message key="common.gb" bundle="${msg}" />
+                        <span class="text-danger">*</span>
                     </label>
                     <div class="col-md-6 col-xs-12 col-sm-6">
                         <rzslider rz-slider-model="instance.diskSize" data-ng-init="instance.diskSize=1" rz-slider-floor="instance.diskOffer.diskSize.floor" rz-slider-ceil="instance.diskOffer.diskSize.ceil" rz-slider-always-show-bar="true"></rzslider>
@@ -174,7 +182,8 @@
                         <option value="">
                             <fmt:message key="common.select" bundle="${msg}" />
                         </option>
-                    </select> <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="<fmt:message key=" networks.offerings " bundle="${msg} " />"></i>
+                    </select>
+                    	<i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="<fmt:message key=" networks.offerings " bundle="${msg} " />"></i>
                     <div class="error-area" data-ng-show="instanceForm.networkoffer.$invalid && OfferingSubmitted">
                         <i tooltip="<fmt:message key=" network.offering.is.required " bundle="${msg} " />" class="fa fa-warning error-icon"></i>
                     </div>
@@ -197,10 +206,12 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td width="35%"><b><fmt:message
-													key="common.networkoffering" bundle="${msg}" /> :<span
-												title="<fmt:message key="common.required" bundle="${msg}" />"
-												class="text-danger font-bold">*</span></b>
+                                        <td width="35%">
+                                        <b><fmt:message key="common.networkoffering" bundle="${msg}" /> :
+											<span title="<fmt:message key="common.required" bundle="${msg}" />"
+												class="text-danger font-bold">*
+											</span>
+										</b>
                                         </td>
                                         <td width="65%">
                                             <select required="true" class="form-control" name="networkOffering" data-ng-model="guestnetwork.networkOffering" ng-options="networkOffering.displayText for networkOffering in instance.networks.networkOfferList">
@@ -239,16 +250,22 @@
                                     <tr data-ng-repeat="networks in instance.networks.networkList">
                                         <td>
                                             <label>
-                                                <input data-ng-model="instance.networks[$index]" type="checkbox" required="true" name="network" value="{{networks}}"> {{ networks.name}}</label>
+                                                <input data-ng-model="instance.networks[$index]" type="checkbox" required="true" name="network" value="{{networks}}"> {{ networks.name}}
+                                         	</label>
                                         </td>
                                         <td>{{ networks.networkType}}</td>
                                         <td>
                                             <a title="<fmt:message key=" ip.address " bundle="${msg} " />"></a>
-                                            <input type="text" valid-cidr required="true" placeholder="<fmt:message key=" ip.address " bundle="${msg} " />" class="input-small" data-ng-model="networks.ipaddress" /> <span><label><input
-													type="radio" name="instance.networks.default"
-													data-ng-model="instance.networkc" value="{{networks}}">
-													<fmt:message key="common.default" bundle="${msg}" /></label></span>
-                                        </td>
+                                            <input type="text" valid-cidr required="true" placeholder="<fmt:message key=" ip.address " bundle="${msg} " />" class="input-small" data-ng-model="networks.ipaddress" />
+											<span>
+												<label>
+													<input type="radio"
+														name="instance.networks.default"
+														data-ng-model="instance.networkc" value="{{networks}}">
+														<fmt:message key="common.default" bundle="${msg}" />
+												</label>
+											</span>
+										</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -276,16 +293,21 @@
                                     <tr data-ng-repeat="networks in instance.networks.networkList| filter:{ vpc : true }">
                                         <td>
                                             <label>
-                                                <input data-ng-model="networks.selected" type="checkbox" required="true" name="instance.networks" value="networks"> {{ networks.name}}</label>
+                                                <input data-ng-model="networks.selected" type="checkbox" required="true" name="instance.networks" value="networks"> {{ networks.name}}
+                                         	</label>
                                         </td>
                                         <td>{{ networks.type}}</td>
                                         <td>
                                             <a title="<fmt:message key=" ip.address " bundle="${msg} " />"></a>
-                                            <input type="text" required="true" valid-cidr placeholder="<fmt:message key=" ip.address " bundle="${msg} " />" class="input-small" data-ng-model="networks.ipaddress" /> <span><label><input
-													type="radio" name="instance.networks.default"
-													data-ng-model="instance.networks[$index]"
-													value="{{networks}}"> <fmt:message
-														key="common.default" bundle="${msg}" /></label></span>
+                                            <input type="text" required="true" valid-cidr placeholder="<fmt:message key=" ip.address " bundle="${msg} " />" class="input-small" data-ng-model="networks.ipaddress" />
+                                            <span>
+                                            	<label>
+                                            		<input type="radio"
+														name="instance.networks.default"
+														data-ng-model="instance.networks[$index]"
+														value="{{networks}}"> <fmt:message key="common.default" bundle="${msg}" />
+												</label>
+											</span>
                                         </td>
                                     </tr>
                                 </tbody>

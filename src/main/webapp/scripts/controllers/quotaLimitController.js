@@ -31,8 +31,7 @@ function quotaReasonCtrl($scope, $modalInstance, userForm, quotaReason, notify) 
     };
 };
 
-function quotaLimitCtrl($scope, $state, $stateParams, appService, filterFilter, $window,
-    volumeService, modalService) {
+function quotaLimitCtrl($scope, $state, $stateParams, appService, $window) {
 
     $scope.global = appService.globalConfig;
     $scope.resourceDomainList = [];
