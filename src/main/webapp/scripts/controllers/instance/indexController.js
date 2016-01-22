@@ -575,6 +575,13 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
         if (!angular.isUndefined($scope.instance.computeOffer.memory.value)) {
             instance.memory = $scope.instance.computeOffer.memory.value;
         }
+	if (!angular.isUndefined($scope.instance.computeOffer.minIops.value)) {
+            instance.computeMinIops = $scope.instance.computeOffer.minIops.value;
+        }
+	
+ 	if (!angular.isUndefined($scope.instance.computeOffer.maxIops.value)) {
+            instance.computeMaxIops = $scope.instance.computeOffer.maxIops.value;
+        }
         instance.computeOfferingId = instance.computeOffering.id;
         delete instance.computeOffering;
         if (!angular.isUndefined(instance.storageOffering) && instance.storageOffering !== null) {
