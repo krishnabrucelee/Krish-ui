@@ -7,7 +7,7 @@ angular
     .module('homer')
     .controller('storageCtrl', storageCtrl)
 
-function storageCtrl($scope, $state, $stateParams, appService, $window) {
+function storageCtrl($scope, $state, $stateParams, appService, $window, volumeService) {
 
     $scope.global = appService.globalConfig;
     $scope.formSubmitted = false;
@@ -441,7 +441,7 @@ function storageCtrl($scope, $state, $stateParams, appService, $window) {
         ]);
     };
 
-    $scope.volumeElements = appService.volumeService.volumeElements;
+    $scope.volumeElements = volumeService.volumeElements;
     $scope.downloads = false;
     $scope.download = function() {
         $scope.downloadLoding = true;
