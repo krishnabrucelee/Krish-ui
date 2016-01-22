@@ -502,7 +502,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
             }
         }
         var instance = angular.copy($scope.instance);
-        if (!angular.isUndefined(instance.project)) {
+        if (!angular.isUndefined(instance.project) && instance.project != null) {
             instance.projectId = instance.project.id;
             delete instance.project;
         }
@@ -839,7 +839,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
                 delete guestnetwork.department;
             }
 
-            if (!angular.isUndefined($scope.guestnetwork.project)) {
+            if (!angular.isUndefined($scope.guestnetwork.project) && $scope.guestnetwork.project != null) {
                 guestnetwork.projectId = $scope.guestnetwork.project.id;
                 delete guestnetwork.project;
             }
