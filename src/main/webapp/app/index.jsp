@@ -166,13 +166,15 @@
 	<!--<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDQTpXj82d8UpCi97wzo_nKXL7nYrd4G70"></script>-->
 
 	<!-- build:js({.tmp,app}) scripts/scripts.js -->
+	<script src="scripts/angular-momentjs.js"></script>
+    <script src="scripts/moment-timezone.js"></script>
 	<script type="text/javascript" src="scripts/js"></script>
 	<script src="scripts/homer.js"></script>
 	<script src="scripts/app.js"></script>
 	<script src="scripts/config.js"></script>
-	<script src="scripts/common.js"></script>
+<!-- 	<script src="scripts/common.js"></script>
 	<script src="scripts/util.js"></script>
-	<script src="scripts/stats.js"></script>
+	<script src="scripts/stats.js"></script> -->
 	<script src="scripts/filters/props.js"></script>
 	<script src="scripts/directives/directives.js"></script>
 	<script src="scripts/controllers/main.js"></script>
@@ -218,6 +220,8 @@
     <script src="scripts/controllers/applicationController.js"></script>
     <script src="scripts/factories/appService.js"></script>
     <script src="scripts/factories/utilService.js"></script>
+    <script src="scripts/factories/loginService.js"></script>
+    <script src="scripts/factories/interceptor.js"></script>
 	<script src="scripts/factories/promiseAjax.js"></script>
 	<script src="scripts/factories/globalConfig.js"></script>
 	<script src="scripts/factories/dialogService.js"></script>
