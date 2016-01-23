@@ -253,6 +253,8 @@ border-color: #e74c3c !important;}
 .template-panel{width:97%;}
 .animated-panel{width:90%;}
 
+.quota-limit .tooltip{}
+
 @media (min-width: 768px) and (max-width: 1023px) {
 .shown-page{width:100% !important;}
 .shown-entry{width:100% !important;}

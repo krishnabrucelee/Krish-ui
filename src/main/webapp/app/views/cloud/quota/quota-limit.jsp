@@ -29,8 +29,8 @@
                                             </div>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
 
-                                                <div class="row">
-                                                    <canvas donutchart options="quotaChartOptions" data="quota.options" width="100" height="80">
+                                                <div class="row quota-limit">
+                                                    <canvas  donutchart options="quotaChartOptions" data="quota.options" width="100" height="80">
                                                     </canvas>
                                                 </div>
 
@@ -41,12 +41,12 @@
                                                     <div class="col-md-5 col-sm-5 col-xs-5">
 
                                                         Used</div>
-                                                    <div class="col-md-7 col-sm-7 col-xs-7"> : {{quota.options[0].value}} </div>
+                                                    <div class="col-md-7 col-sm-7 col-xs-7"> : {{quota.options[1].value}} </div>
                                                 </div>
                                                 <div class="row m-b-sm" >
                                                     <div class="col-md-5 col-sm-5 col-xs-5">
                                                         Available</div>
-                                                    <div class="col-md-7 col-sm-7 col-xs-7"> : {{quota.options[1].value}} </div>
+                                                    <div class="col-md-7 col-sm-7 col-xs-7"> : {{quota.options[0].value}} </div>
                                                 </div>
 
                                              <!--    <div class="row" >
