@@ -5,16 +5,14 @@ function interceptorAPI($q, globalConfig, $injector) {
     var global = globalConfig;
     var promiseInterceptor = {
         request : function(config) {
-        	config.requestTimestamp = new Date().getTime();
+            config.requestTimestamp = new Date().getTime();
             config.sessionToken = config.headers['x-auth-token'];
-
             var loginService = $injector.get('loginSession');
             loginService.authLogin(config);
             return config;
-
         },
         response : function(response) {
-        	response.config.responseTimestamp = new Date().getTime();
+            response.config.responseTimestamp = new Date().getTime();
             return response;
         },
         responseError : function(response) {
@@ -38,8 +36,8 @@ function interceptorAPI($q, globalConfig, $injector) {
                         templateUrl : global.NOTIFICATION_TEMPLATE
                     });
                     setTimeout(function() {
-            			window.location.href = "login";
-            		}, 3000);
+                        window.location.href = "login";
+                    }, 3000);
                 }
             }
             // otherwise
@@ -48,7 +46,6 @@ function interceptorAPI($q, globalConfig, $injector) {
     };
     return promiseInterceptor;
 };
-
 
 angular.module('homer')
 .factory('interceptorAPI', interceptorAPI)
