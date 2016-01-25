@@ -13,13 +13,13 @@ function loginSession(globalConfig, $window, $http, $injector, $moment) {
 	            var lastAccessTime = globalConfig.sessionValues.loginTime + 14400;
 	            var updateSessionTime = globalConfig.sessionValues.loginTime + 30;
 	            if (lastAccessTime <= currentTimeStamp) {
-	                $window.sessionStorage.removeItem("pandaUserSession");
+	                $window.sessionStorage.removeItem("loginSession");
 	                window.location.href = "login";
 	            } else if (updateSessionTime <= currentTimeStamp) {
-	                var currentSession = JSON.parse($window.sessionStorage.getItem("pandaUserSession"));
+	                var currentSession = JSON.parse($window.sessionStorage.getItem("loginSession"));
 	                currentSession.loginTime = currentTimeStamp;
-	                $window.sessionStorage.setItem("pandaUserSession", JSON.stringify(currentSession));
-	                globalConfig.sessionValues = JSON.parse($window.sessionStorage.getItem("pandaUserSession"));
+	                $window.sessionStorage.setItem("loginSession", JSON.stringify(currentSession));
+	                globalConfig.sessionValues = JSON.parse($window.sessionStorage.getItem("loginSession"));
 	                return config;
 	            }
 	            return config;
