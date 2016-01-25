@@ -49,7 +49,6 @@
 	href="bower_components/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" />
 <link rel="stylesheet"
 	href="bower_components/blueimp-gallery/css/blueimp-gallery.min.css" />
-<!--<link rel="stylesheet" href="bower_components/angularjs-slider/dist/rzslider.css" />-->
 <!-- endbower -->
 <!-- endbuild -->
 
@@ -91,9 +90,6 @@
 	<c:set var="msg" scope="session" value="${msg}" />
 
 	<div ui-view autoscroll="true"></div>
-
-	<!-- build:js(.) scripts/vendor.js -->
-
 
 	<script src="bower_components/jquery/dist/jquery.min.js"></script>
 	<script src="bower_components/jquery-ui/jquery-ui.min.js"></script>
@@ -163,7 +159,6 @@
  https://developers.google.com/maps/documentation/javascript/tutorial#api_key
  After your sign up replace the key in the URL below..
 -->
-	<!--<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDQTpXj82d8UpCi97wzo_nKXL7nYrd4G70"></script>-->
 
 	<!-- build:js({.tmp,app}) scripts/scripts.js -->
 	<script src="scripts/angular-momentjs.js"></script>
@@ -172,9 +167,6 @@
 	<script src="scripts/homer.js"></script>
 	<script src="scripts/app.js"></script>
 	<script src="scripts/config.js"></script>
-<!-- 	<script src="scripts/common.js"></script>
-	<script src="scripts/util.js"></script>
-	<script src="scripts/stats.js"></script> -->
 	<script src="scripts/filters/props.js"></script>
 	<script src="scripts/directives/directives.js"></script>
 	<script src="scripts/controllers/main.js"></script>
@@ -185,8 +177,6 @@
 	<script src="scripts/directives/customSelect.js"></script>
 
 	<script src="scripts/controllers/resourceAllocationController.js"></script>
-
-
 	<script src="scripts/controllers/instance/indexController.js"></script>
 	<script src="scripts/controllers/instance/viewController.js"></script>
 	<script src="scripts/controllers/instance/listController.js"></script>
@@ -195,19 +185,13 @@
 	<script src="scripts/controllers/instance/storageController.js"></script>
 	<script src="scripts/controllers/instance/monitorController.js"></script>
 	<script src="scripts/controllers/instance/networkController.js"></script>
-
 	<script src="scripts/controllers/vpcController.js"></script>
 	<script src="scripts/controllers/departmentController.js"></script>
-
 	<script src="scripts/controllers/rolesController.js"></script>
-
 	<script src="scripts/controllers/domainController.js"></script>
-
-
 	<script src="scripts/controllers/reportCtrl.js"></script>
 	<script src="scripts/controllers/activityController.js"></script>
 	<script src="scripts/controllers/volumeController.js"></script>
-
 	<script src="scripts/controllers/billingController.js"></script>
 	<script src="scripts/controllers/quotaLimitController.js"></script>
 	<script src="scripts/controllers/templateController.js"></script>

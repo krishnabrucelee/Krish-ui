@@ -6,7 +6,6 @@
  * @author - Jamseer N
  */
 
-
 function promiseAjax($http, $window, globalConfig, notify) {
 
      var global = globalConfig;
@@ -20,13 +19,13 @@ function promiseAjax($http, $window, globalConfig, notify) {
         if(loginSession == null) {
         	window.location.href = "login";
         }
+
         var config = {
             "method": method,
             "data": data,
             "url": url,
             "headers": {'x-auth-token': globalConfig.sessionValues.token, 'x-requested-with': '', 'Content-Type': 'application/json', 'Range': "items=0-9"}
         };
-
 
         if(headers != null && !angular.isUndefined(headers) && headers != '') {
             angular.forEach(headers, (function(value, key) {
@@ -56,7 +55,6 @@ function promiseAjax($http, $window, globalConfig, notify) {
     };
 
     var httpRequest = function(method, url, data) {
-
         return $http({method:method, url:url}).then(function(result){
             return result.data;
         });
@@ -64,11 +62,9 @@ function promiseAjax($http, $window, globalConfig, notify) {
     return { httpRequest: httpRequest, httpTokenRequest: httpTokenRequest };
 }
 
-
 /**
  * Pass function into module
  */
 angular
     .module('homer')
     .factory('promiseAjax', promiseAjax)
-
