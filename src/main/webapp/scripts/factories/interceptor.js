@@ -55,4 +55,3 @@ angular.module('homer')
 .config([ '$httpProvider', function($httpProvider) {
     $httpProvider.interceptors.push('interceptorAPI');
 } ]);
-
