@@ -36,7 +36,7 @@ pageEncoding="UTF-8"%>
                             </div>
                         </div>
                     </div>
-                    <div class="form-group"ng-class="{'text-danger':addnetworkForm.zone.$invalid && formSubmitted}">
+                    <div class="form-group" ng-class="{'text-danger':addnetworkForm.zone.$invalid && formSubmitted}">
                         <div class="row">
                             <label class="col-md-4 col-xs-12 col-sm-4 control-label control-normal"><fmt:message key="common.zone" bundle="${msg}" /><span class="text-danger">*</span></label>
                             <div class="col-md-6  col-sm-6 col-xs-12">

@@ -99,7 +99,7 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
 
         });
     };
-   // $scope.vmLists(1);
+    $scope.vmLists(1);
 
     $scope.showConsole = function (vm) {
         $scope.vm = vm;
@@ -385,10 +385,9 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
                 // Create a new Isolated Network
                 $scope.save = function (form, network) {
                     $scope.formSubmitted = true;
+                    var network = $scope.network;
                     if (form.$valid) {
-                        $scope.showLoader = true;
-
-                        var guestnetwork = $scope.guestnetwork;
+            
                         if (!angular.isUndefined($scope.network.domain) && $scope.network.domain != null) {
                             network.domainId = $scope.network.domain.id;
                             delete network.domain;
@@ -401,11 +400,10 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
                             network.projectId = $scope.network.project.id;
                             delete network.project;
                         }
-                        network.zoneId = $scope.network.zone.id;
-                        network.networkOfferingId = $scope.network.networkOffering.id;
-                        delete network.zone;
-                        delete network.networkOffering;
+                            network.zoneId = $scope.network.zone.id;
+                            network.networkOfferingId = $scope.network.networkOffering.id;
 
+                        $scope.showLoader = true;
                         var hasguestNetworks = appService.crudService.add("guestnetwork", network);
                         hasguestNetworks.then(function (result) {
                             $scope.list(1);
@@ -417,9 +415,7 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
                                 if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
                                     var msg = result.data.globalError[0];
                                     $scope.showLoader = false;
-
                                     appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
-//                                    $modalInstance.close();
                                 }
                                 angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
                                     $scope.addnetworkForm[key].$invalid = true;

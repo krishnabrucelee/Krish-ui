@@ -72,6 +72,7 @@ pageEncoding="UTF-8"%>
 				<tr>
 					<th  data-ng-click="changeSorting('name')" data-ng-class="sort.descending && sort.column =='name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.name" bundle="${msg}" /></th>
 					<th  data-ng-click="changeSorting('department.userName')" data-ng-class="sort.descending && sort.column =='Account'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.account" bundle="${msg}" /></th>
+					<th  data-ng-click="changeSorting('project.name')" data-ng-class="sort.descending && sort.column =='project.name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.project" bundle="${msg}" /></th>
 					<th  data-ng-click="changeSorting('networkType')" data-ng-class="sort.descending && sort.column =='networkType'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.type" bundle="${msg}" /></th>
 					<th  data-ng-click="changeSorting('cIDR')" data-ng-class="sort.descending && sort.column =='cIDR'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.cidr" bundle="${msg}" /></th>
 					<th  data-ng-click="changeSorting('gateway')" data-ng-class="sort.descending && sort.column =='gateway'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="gateway" bundle="${msg}" /></th>
@@ -84,7 +85,8 @@ pageEncoding="UTF-8"%>
 												<td><a class="text-info"
 													ui-sref="cloud.list-network.view-network({id: {{ network.id }}, view: 'view'})"
 													title="View Network">{{ network.name }}</a></td>
-												<td>{{ network.department.userName}}</td>
+												<td>{{ network.department.userName || '-'}}</td>
+												<td>{{ network.project.name || '-'}}</td>
 												<td>{{ network.networkType }}</td>
 												<td>{{ network.cIDR }}</td>
 												<td>{{ network.gateway}}</td>
