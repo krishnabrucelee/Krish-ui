@@ -34,8 +34,9 @@
             </li>
             <li class="dropdown" dropdown>
 
-                <a class="dropdown-toggle icon-content" href="#" dropdown-toggle>
+                <a class="dropdown-toggle icon-content username-area" href="#" dropdown-toggle>
                     <i class="pe-7s-user"></i>
+                    <label class=" m-l-sm username">{{global.sessionValues.userName}} </label>
                     <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu hdropdown flipInX">
