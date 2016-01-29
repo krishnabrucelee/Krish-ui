@@ -1,6 +1,6 @@
 /**
  *
- * instanceCtrl
+ * networksCtrl
  *
  */
 
@@ -9,9 +9,8 @@ angular
         .controller('networksCtrl', networksCtrl)
         .controller('networkViewCtrl', networkViewCtrl)
 
-function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $stateParams, modalService, $timeout, $window, appService) {
+function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $stateParams, $timeout, $window, appService) {
 
-    //$scope.quickSearch = "";
     $scope.global = appService.globalConfig;
     $scope.rulesList = [];
     $scope.rules = [];
@@ -23,7 +22,6 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
     $scope.allItemsSelected = false;
     $scope.sort = appService.globalConfig.sort;
     $scope.changeSorting = appService.utilService.changeSorting;
-
     $scope.paginationObject = {};
     $scope.egressForm = {};
     $scope.ipList = {};
@@ -39,8 +37,8 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
         $scope.firewallRules = {};
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasFirewallRuless = appService.crudService.listAllByQuery("egress/firewallrules?network=" + $stateParams.id + "&type=egress", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
-        hasFirewallRuless.then(function (result) {  // this is only run after $http completes0
-            $scope.egressRuleList = result;
+        hasFirewallRuless.then(function (result) {
+	    $scope.egressRuleList = result;
 
             // For pagination
             $scope.paginationObject.limit = limit;
@@ -55,7 +53,8 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
         $scope.firewallRules = {};
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasFirewallRuless = appService.crudService.listAllByQuery("egress/firewallrules?network=" + $stateParams.id1 + "&type=ingress", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
-        hasFirewallRuless.then(function (result) {  // this is only run after $http completes0
+        hasFirewallRuless.then(function (result) {  // this is only run after
+													// $http completes0
             $scope.firewallRulesList = result;
 
             // For pagination
@@ -71,7 +70,8 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
         $scope.firewallRules = {};
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasFirewallRuless = appService.crudService.listAllByQuery("portforwarding/list?ipaddress=" + $stateParams.id1, $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
-        hasFirewallRuless.then(function (result) {  // this is only run after $http completes0
+        hasFirewallRuless.then(function (result) {  // this is only run after
+													// $http completes0
             $scope.portList = result;
 
             // For pagination
@@ -94,12 +94,22 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
         $scope.templateCategory = 'instance';
         $scope.vmList = [];
         var hasVms = appService.crudService.listByQuery("virtualmachine/network?networkId=" + $stateParams.id);
-        hasVms.then(function (result) {  // this is only run after $http completes0
-            $scope.vmList = result;
-
+        hasVms.then(function (result) {  // this is only run after $http
+											// completes0
+        $scope.vmList = result;
         });
     };
     $scope.vmLists(1);
+
+    $scope.nicIPList = function (instance) {
+	var instanceId = instance.id;
+       	var hasNicIP = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbyvminstances?instanceid="+instanceId +"&lang=" + appService.localStorageService.cookie.get('language')+"&sortBy=-id");
+        hasNicIP.then(function (result) {
+            $scope.nicIPLists = result;
+            $scope.showLoader = false;
+        });
+    };
+    // $scope.nicIPList();
 
     $scope.showConsole = function (vm) {
         $scope.vm = vm;
@@ -107,12 +117,14 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
         hasVms.then(function (result) {
             var consoleUrl = result.success;
             window.open($sce.trustAsResourceUrl(consoleUrl), vm.name + vm.id, 'width=750,height=460');
-            /*				var consoleParams = consoleUrl.split("token=");
-             $window.sessionStorage.setItem("consoleProxy", consoleParams[0]);
-             $scope.instance = vm;
-             var randomnumber = Math.floor((Math.random()*100)+1);
-             window.open("app/console.jsp?token="+consoleParams[1]+"&instance="+ btoa(vm.id), vm.name + vm.id,'width=800,height=580');
-             */			});
+            /*
+			 * var consoleParams = consoleUrl.split("token=");
+			 * $window.sessionStorage.setItem("consoleProxy", consoleParams[0]);
+			 * $scope.instance = vm; var randomnumber =
+			 * Math.floor((Math.random()*100)+1);
+			 * window.open("app/console.jsp?token="+consoleParams[1]+"&instance="+
+			 * btoa(vm.id), vm.name + vm.id,'width=800,height=580');
+			 */			});
     }
 
     $scope.startVm = function (size, item) {
@@ -176,12 +188,12 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
                         };
             }]);
     };
-
     $scope.ipLists = function (pageNumber) {
         $scope.templateCategory = 'ip';
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasFirewallRuless = appService.crudService.listAllByQuery("ipAddresses/iplist?network=" + $stateParams.id, $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
-        hasFirewallRuless.then(function (result) {  // this is only run after $http completes0
+        hasFirewallRuless.then(function (result) {  // this is only run after
+													// $http completes0
             $scope.ipList = result;
 
             // For pagination
@@ -209,7 +221,10 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
                     if ($scope.firewallRules.protocol == 'TCP' || $scope.firewallRules.protocol == 'UDP') {
                         if ($scope.firewallRules.startPort && $scope.firewallRules.endPort) {
                             var hasServer = appService.crudService.add("egress", firewallRules);
-                            hasServer.then(function (result) {  // this is only run after $http completes
+                            hasServer.then(function (result) {  // this is only
+																// run after
+																// $http
+																// completes
                                 $scope.formSubmitted = false;
                                 appService.notify({message: 'Egress rule added successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                                 $scope.firewallRulesLists(1);
@@ -231,7 +246,10 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
                     } else {
                         if ($scope.firewallRules.icmpMessage && $scope.firewallRules.icmpCode) {
                             var hasServer = appService.crudService.add("egress", firewallRules);
-                            hasServer.then(function (result) {  // this is only run after $http completes
+                            hasServer.then(function (result) {  // this is only
+																// run after
+																// $http
+																// completes
                                 $scope.formSubmitted = false;
                                 appService.notify({message: 'Egress rule added successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                                 $scope.firewallRulesLists(1);
@@ -260,7 +278,6 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
                 $scope.cidrValidate = true;
             }
         }
-
         else {
             $scope.actionRule = true;
             $scope.cidrValidate = true;
@@ -281,7 +298,8 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
             if (CheckIP.test($scope.firewallRuleIngress.sourceCIDR)) {
                 if ($scope.firewallRuleIngress.sourceCIDR && $scope.firewallRuleIngress.protocol && $scope.firewallRuleIngress.startPort && $scope.firewallRuleIngress.endPort) {
                     var hasServer = appService.crudService.add("egress/ingress", $scope.firewallRuleIngress);
-                    hasServer.then(function (result) {  // this is only run after $http completes
+                    hasServer.then(function (result) {  // this is only run
+														// after $http completes
                         $scope.formSubmitted = false;
                         appService.notify({message: 'Firewall rule added successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                         $scope.firewallRule(1);
@@ -307,13 +325,11 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
                 $scope.cidrValidates = true;
             }
         }
-
         else {
             $scope.actionRules = true;
             $scope.cidrValidates = true;
         }
     }
-
     $scope.cancel = function () {
         $modalInstance.close();
     };
@@ -387,7 +403,7 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
                     $scope.formSubmitted = true;
                     var network = $scope.network;
                     if (form.$valid) {
-            
+
                         if (!angular.isUndefined($scope.network.domain) && $scope.network.domain != null) {
                             network.domainId = $scope.network.domain.id;
                             delete network.domain;
@@ -522,7 +538,6 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
         });
 
     };
-
     $scope.editIpaddress = function (ipaddressId) {
         var hasIpaddress = appService.crudService.read("ipAddresses", ipaddressId);
         hasIpaddress.then(function (result) {
@@ -531,11 +546,9 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
         });
 
     };
-
     if (!angular.isUndefined($stateParams.id) && $stateParams.id != '') {
         $scope.edit($stateParams.id);
     }
-
     if (!angular.isUndefined($stateParams.id1) && $stateParams.id1 != '') {
         $scope.editIpaddress($stateParams.id1);
     }
@@ -567,7 +580,6 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
             delete network.zone;
             delete network.networkOffering;
 
-
             var hasNetwork = appService.crudService.update("guestnetwork", network);
             hasNetwork.then(function (result) {
                 $scope.showLoader = false;
@@ -592,12 +604,11 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
     $scope.cancel = function () {
         $window.location.href = '#/network/list';
     };
-
     $scope.networkOfferList = {};
     $scope.networkOfferForm = {};
     $scope.global = appService.globalConfig;
 
-    //  Network Offer List
+    // Network Offer List
 
     $scope.listNetworkOffer = function () {
         var hasNetworks = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "networkoffer/isolated" + "?lang=" + appService.localStorageService.cookie.get('language') + "&sortBy=-id");
@@ -610,37 +621,36 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
     $scope.zoneList = {};
     $scope.zoneList = function () {
         var hasZones = appService.crudService.listAll("zones/list");
-        hasZones.then(function (result) {  // this is only run after $http completes0
+        hasZones.then(function (result) {  // this is only run after $http
+											// completes0
             $scope.zoneList = result;
 
         });
     };
     $scope.zoneList();
-
     $scope.domainList = {};
     $scope.domainList = function () {
         var hasDomains = appService.crudService.listAll("domains/list");
-        hasDomains.then(function (result) {  // this is only run after $http completes0
+        hasDomains.then(function (result) {  // this is only run after $http
+												// completes0
             $scope.domainList = result;
-
         });
     };
     $scope.domainList();
-
     $scope.departmentList = function (domain) {
         var hasDepartments = appService.crudService.listAllByFilter("departments/search", domain);
-        hasDepartments.then(function (result) {  // this is only run after $http completes0
+        hasDepartments.then(function (result) {  // this is only run after
+													// $http completes0
             $scope.formElements.departmenttypeList = result;
-
         });
     };
 
     $scope.projectList = {};
     $scope.getProjectList = function (department) {
         var hasProjects = appService.crudService.listAllByObject("projects/department", department);
-        hasProjects.then(function (result) {  // this is only run after $http completes0
+        hasProjects.then(function (result) {  // this is only run after $http
+												// completes0
             $scope.projectList = result;
-
         });
     };
 
@@ -650,82 +660,64 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
         $scope.getProjectList(department);
     }
 
-    //appService.localStorageService.clearAll();
-    //appService.localStorageService.set("rules",null);
-    /*   appService.localStorageService.set("networkList", null);
-     if (appService.localStorageService.get("networkList") == null) {
-     var hasServer = appService.promiseAjax.httpRequest("GET", "api/network.json");
-     hasServer.then(function (result) {  // this is only run after $http completes
-     $scope.networkList = result;
-     appService.localStorageService.set("networkList", result);
-     });
-     } else {
-     $scope.networkList = appService.localStorageService.get("networkList");
-     }*/
-    /* $scope.selectView=function(selectedItem){
-
-     if(selectedItem == 'Guest Networks' || selectedItem==null ){
-     var hasServer = appService.promiseAjax.httpRequest("GET", "api/network.json");
-     hasServer.then(function (result) {  // this is only run after $http completes
-     $scope.networkList = result;
-     appService.localStorageService.set("networkList", result);
-     });
-     }
-     if(selectedItem == 'VPC'){
-     var hasServer = appService.promiseAjax.httpRequest("GET", "api/vpc.json");
-     hasServer.then(function (result) {  // this is only run after $http completes
-     $scope.networkList = result;
-     appService.localStorageService.set("networkList", result);
-     });
-     }
-     if(selectedItem == 'Security Groups'){
-     var hasServer = appService.promiseAjax.httpRequest("GET", "api/securityGroups.json");
-     hasServer.then(function (result) {  // this is only run after $http completes
-     $scope.networkList = result;
-     appService.localStorageService.set("networkList", result);
-     });
-     }
-     if(selectedItem == 'VPN Customer Gateway'){
-     var hasServer = appService.promiseAjax.httpRequest("GET", "api/vpn.json");
-     hasServer.then(function (result) {  // this is only run after $http completes
-     $scope.networkList = result;
-     appService.localStorageService.set("networkList", result);
-     });
-     }
-     };
-
-
-     $scope.selectedNetwork=function(selectedItem){
-
-     if(selectedItem == 'Guest Networks' || selectedItem==null ){
-     var hasServer = appService.promiseAjax.httpRequest("GET", "api/network.json");
-     hasServer.then(function (result) {  // this is only run after $http completes
-     $scope.networkList = result;
-     appService.localStorageService.set("networkList", result);
-     });
-     }
-     if(selectedItem == 'VPC'){
-     var hasServer = appService.promiseAjax.httpRequest("GET", "api/vpc.json");
-     hasServer.then(function (result) {  // this is only run after $http completes
-     $scope.networkList = result;
-     appService.localStorageService.set("networkList", result);
-     });
-     }
-     if(selectedItem == 'Security Groups'){
-     var hasServer = appService.promiseAjax.httpRequest("GET", "api/securityGroups.json");
-     hasServer.then(function (result) {  // this is only run after $http completes
-     $scope.networkList = result;
-     appService.localStorageService.set("networkList", result);
-     });
-     }
-     if(selectedItem == 'VPN Customer Gateway'){
-     var hasServer = appService.promiseAjax.httpRequest("GET", "api/vpn.json");
-     hasServer.then(function (result) {  // this is only run after $http completes
-     $scope.networkList = result;
-     appService.localStorageService.set("networkList", result);
-     });
-     }
-     };*/
+    // appService.localStorageService.clearAll();
+    // appService.localStorageService.set("rules",null);
+    /*
+	 * appService.localStorageService.set("networkList", null); if
+	 * (appService.localStorageService.get("networkList") == null) { var
+	 * hasServer = appService.promiseAjax.httpRequest("GET",
+	 * "api/network.json"); hasServer.then(function (result) { // this is only
+	 * run after $http completes $scope.networkList = result;
+	 * appService.localStorageService.set("networkList", result); }); } else {
+	 * $scope.networkList = appService.localStorageService.get("networkList"); }
+	 */
+    /*
+	 * $scope.selectView=function(selectedItem){
+	 *
+	 * if(selectedItem == 'Guest Networks' || selectedItem==null ){ var
+	 * hasServer = appService.promiseAjax.httpRequest("GET",
+	 * "api/network.json"); hasServer.then(function (result) { // this is only
+	 * run after $http completes $scope.networkList = result;
+	 * appService.localStorageService.set("networkList", result); }); }
+	 * if(selectedItem == 'VPC'){ var hasServer =
+	 * appService.promiseAjax.httpRequest("GET", "api/vpc.json");
+	 * hasServer.then(function (result) { // this is only run after $http
+	 * completes $scope.networkList = result;
+	 * appService.localStorageService.set("networkList", result); }); }
+	 * if(selectedItem == 'Security Groups'){ var hasServer =
+	 * appService.promiseAjax.httpRequest("GET", "api/securityGroups.json");
+	 * hasServer.then(function (result) { // this is only run after $http
+	 * completes $scope.networkList = result;
+	 * appService.localStorageService.set("networkList", result); }); }
+	 * if(selectedItem == 'VPN Customer Gateway'){ var hasServer =
+	 * appService.promiseAjax.httpRequest("GET", "api/vpn.json");
+	 * hasServer.then(function (result) { // this is only run after $http
+	 * completes $scope.networkList = result;
+	 * appService.localStorageService.set("networkList", result); }); } };
+	 *
+	 * $scope.selectedNetwork=function(selectedItem){
+	 *
+	 * if(selectedItem == 'Guest Networks' || selectedItem==null ){ var
+	 * hasServer = appService.promiseAjax.httpRequest("GET",
+	 * "api/network.json"); hasServer.then(function (result) { // this is only
+	 * run after $http completes $scope.networkList = result;
+	 * appService.localStorageService.set("networkList", result); }); }
+	 * if(selectedItem == 'VPC'){ var hasServer =
+	 * appService.promiseAjax.httpRequest("GET", "api/vpc.json");
+	 * hasServer.then(function (result) { // this is only run after $http
+	 * completes $scope.networkList = result;
+	 * appService.localStorageService.set("networkList", result); }); }
+	 * if(selectedItem == 'Security Groups'){ var hasServer =
+	 * appService.promiseAjax.httpRequest("GET", "api/securityGroups.json");
+	 * hasServer.then(function (result) { // this is only run after $http
+	 * completes $scope.networkList = result;
+	 * appService.localStorageService.set("networkList", result); }); }
+	 * if(selectedItem == 'VPN Customer Gateway'){ var hasServer =
+	 * appService.promiseAjax.httpRequest("GET", "api/vpn.json");
+	 * hasServer.then(function (result) { // this is only run after $http
+	 * completes $scope.networkList = result;
+	 * appService.localStorageService.set("networkList", result); }); } };
+	 */
 
     $scope.networkElements = {actions: [
             {id: 1, name: 'Hours'},
@@ -745,49 +737,21 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
         "2": "ICMP"
     };
 
-
     $scope.dropnetworkLists = {
-        /* networkOffers: [
-         {
-         "id": 1,
-         "name": "Advanced Network",
-         "networkID": "f6dfee50-690c-4210-b77c-c9bf3179b159",
-         "networkType": {
-         "id": 2,
-         "name": "Isolated"
-         },
-         "ip": "10.1.10.92",
-         "gateway": "10.1.1.1",
-         "netmask": "255.255.255.0",
-         "isDefault": "No"
-         },
-         {
-         "id": 2,
-         "name": "Custom Network",
-         "networkID": "f6dfee50-690c-4210-b77c-c9bf31734e59",
-         "networkType": {
-         "id": 1,
-         "name": "Shared Network"
-         },
-         "ip": "10.2.2.92",
-         "gateway": "10.2.2.1",
-         "netmask": "255.255.255.0",
-         "isDefault": "NO"
-         },
-         {
-         "id": 3,
-         "name": "Default Network",
-         "networkID": "f6dfee50-690c-4210-b77c-m4fd452321e3",
-         "networkType": {
-         "id": 2,
-         "name": "Isolated"
-         },
-         "ip": "10.1.10.92",
-         "gateway": "10.1.1.1",
-         "netmask": "255.255.255.0",
-         "isDefault": "NO"
-         }
-         ],*/
+        /*
+		 * networkOffers: [ { "id": 1, "name": "Advanced Network", "networkID":
+		 * "f6dfee50-690c-4210-b77c-c9bf3179b159", "networkType": { "id": 2,
+		 * "name": "Isolated" }, "ip": "10.1.10.92", "gateway": "10.1.1.1",
+		 * "netmask": "255.255.255.0", "isDefault": "No" }, { "id": 2, "name":
+		 * "Custom Network", "networkID":
+		 * "f6dfee50-690c-4210-b77c-c9bf31734e59", "networkType": { "id": 1,
+		 * "name": "Shared Network" }, "ip": "10.2.2.92", "gateway": "10.2.2.1",
+		 * "netmask": "255.255.255.0", "isDefault": "NO" }, { "id": 3, "name":
+		 * "Default Network", "networkID":
+		 * "f6dfee50-690c-4210-b77c-m4fd452321e3", "networkType": { "id": 2,
+		 * "name": "Isolated" }, "ip": "10.1.10.92", "gateway": "10.1.1.1",
+		 * "netmask": "255.255.255.0", "isDefault": "NO" } ],
+		 */
         views: [
             {id: 1, name: 'Guest Networks'},
             {id: 2, name: 'Security Groups'},
@@ -877,7 +841,7 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
     $scope.cidrValidate = false;
     $scope.addRule = function (type) {
         $scope.rules = appService.localStorageService.get("firewall");
-//        var CheckIP = /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\/\d{1,2}$/;
+// var CheckIP = /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\/\d{1,2}$/;
         var CheckIP = /^([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\/([1-9]|[12][0-9]|3[012])$/;
         if ($scope.cidr != null && $scope.cidr != '') {
 
@@ -951,31 +915,35 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
         }
     }
 
+    // $scope.deleteRules = function (id, type) {
+    // appService.dialogService.openDialog("app/views/cloud/network/delete-rule.jsp",
+	// 'sm', $scope, ['$scope', '$modalInstance', function ($scope,
+	// $modalInstance) {
+    // $scope.ok = function () {
 
-    //  $scope.deleteRules = function (id, type) {
-    //    appService.dialogService.openDialog("app/views/cloud/network/delete-rule.jsp", 'sm', $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
-    //     $scope.ok = function () {
-
-    //   appService.notify({message: 'Deleted successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
-    //     },
-    //          $scope.cancel = function () {
-    //   $modalInstance.close();
+    // appService.notify({message: 'Deleted successfully', classes:
+	// 'alert-success', templateUrl: $scope.homerTemplate});
+    // },
+    // $scope.cancel = function () {
+    // $modalInstance.close();
     // };
     // }]);
     // };
 
     // $scope.editrule = function (size, rule) {
-    //   appService.dialogService.openDialog("app/views/cloud/network/edit-rule.jsp", size , $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
-//scope.ok = function () {
+    // appService.dialogService.openDialog("app/views/cloud/network/edit-rule.jsp",
+	// size , $scope, ['$scope', '$modalInstance', function ($scope,
+	// $modalInstance) {
+// scope.ok = function () {
 
-    //appService.notify({message: 'Updated successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
-    //     },
-    //  $scope.cancel = function () {
-    //  $modalInstance.close();
+    // appService.notify({message: 'Updated successfully', classes:
+	// 'alert-success', templateUrl: $scope.homerTemplate});
+    // },
+    // $scope.cancel = function () {
+    // $modalInstance.close();
     // };
     // }]);
-    //};
-
+    // };
 
     $scope.doDelete = function () {
 
@@ -1020,17 +988,19 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
     }
 
     // $scope.LBlist = function (pageNumber) {
-    //  var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
-    //   var hasLoadBalancer = appService.crudService.list("loadBalancer", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
-    //   hasLoadBalancer.then(function (result) {
-    //    $scope.rulesList = result;
+    // var limit = (angular.isUndefined($scope.paginationObject.limit)) ?
+	// $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
+    // var hasLoadBalancer = appService.crudService.list("loadBalancer",
+	// $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+    // hasLoadBalancer.then(function (result) {
+    // $scope.rulesList = result;
     // For pagination
-    //     $scope.paginationObject.limit = limit;
-    //     $scope.paginationObject.currentPage = pageNumber;
-    //      $scope.paginationObject.totalItems = result.totalItems;
-    //   });
-    //  };
-    //  $scope.LBlist(1);
+    // $scope.paginationObject.limit = limit;
+    // $scope.paginationObject.currentPage = pageNumber;
+    // $scope.paginationObject.totalItems = result.totalItems;
+    // });
+    // };
+    // $scope.LBlist(1);
     $scope.openAddVM = function (form) {
         $scope.loadFormSubmitted = true;
         if (form.$valid) {
@@ -1045,8 +1015,8 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
     $scope.openAddVMlist = function () {
         appService.dialogService.openDialog("app/views/cloud/network/vm-list.jsp", 'lg', $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
                 $scope.ok = function () {
-
-//                    appService.notify({message: 'Deleted successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
+// appService.notify({message: 'Deleted successfully', classes: 'alert-success',
+// templateUrl: $scope.homerTemplate});
                 },
                         $scope.cancel = function () {
                             $modalInstance.close();
@@ -1060,19 +1030,19 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
 
     };
 
-
     $scope.loadbalancerSave = function (loadBalancer) {
         $scope.loadBalancer = $scope.global.rulesLB[0];
         $scope.formSubmitted = true;
         $scope.loadBalancer.ipAddressId = $stateParams.id1;
-        //var loadBalancer = angular.copy($scope.loadBalancer);
+        // var loadBalancer = angular.copy($scope.loadBalancer);
         $scope.showLoader = true;
         console.log($scope.loadBalancer.protocol.toUpperCase());
         $scope.loadBalancer = $scope.createStickiness;
         $scope.loadBalancer.protocol = $scope.loadBalancer.protocol.toUpperCase();
         $scope.loadBalancer.state = $scope.loadBalancer.state.toUpperCase();
         var hasLoadBalancer = appService.crudService.add("loadBalancer", $scope.loadBalancer);
-        hasLoadBalancer.then(function (result) { // this is only run after $http completes
+        hasLoadBalancer.then(function (result) { // this is only run after
+													// $http completes
             $scope.formSubmitted = false;
             $modalInstance.close();
             $scope.showLoader = false;
@@ -1145,9 +1115,7 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
                 $scope.deleteObject = loadBalancer;
                 $scope.delete = function (deleteObject) {
                     var hasServer = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_DELETE, appService.globalConfig.APP_URL + "loadBalancer/delete/" + loadBalancer.id + "?lang=" + appService.localStorageService.cookie.get('language'), '', loadBalancer);
-
                     hasServer.then(function (result) {
-
                         $scope.LBlist(1);
                         appService.notify({message: 'Deleted successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                     }).catch(function (result) {
@@ -1195,7 +1163,6 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
             $state.reload();
         }
     }
-
     $scope.instances = {};
     $scope.addVM = function (form) {
         $scope.portFormSubmitted = true;
@@ -1218,7 +1185,10 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
                         $scope.portForward.protocolType = $scope.portForward.protocolType.name;
 
                         var hasPortForward = appService.crudService.add("portforwarding", $scope.portForward);
-                        hasPortForward.then(function (result) { // this is only run after $http completes
+                        hasPortForward.then(function (result) { // this is only
+																// run after
+																// $http
+																// completes
                             $scope.formSubmitted = false;
                             $modalInstance.close();
                             $scope.showLoader = false;
@@ -1333,7 +1303,8 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
 
     if (appService.localStorageService.get("instanceList") == null) {
         var hasServer = appService.promiseAjax.httpRequest("GET", "api/instance.json");
-        hasServer.then(function (result) {  // this is only run after $http completes
+        hasServer.then(function (result) {  // this is only run after $http
+											// completes
             $scope.instanceList = result;
             appService.localStorageService.set("instanceList", result);
         });
@@ -1355,12 +1326,12 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
         appService.localStorageService.set("vmsPort", $scope.vmList);
     }, true);
 //
-//        if (!$scope.instanceList[id].isChecked) {
-//            $scope.vmList.push($scope.instanceList[id]);
-//            appService.localStorageService.set("vms", $scope.vmList);
-//            $scope.allItemsSelected = false;
-//            return;
-//        }
+// if (!$scope.instanceList[id].isChecked) {
+// $scope.vmList.push($scope.instanceList[id]);
+// appService.localStorageService.set("vms", $scope.vmList);
+// $scope.allItemsSelected = false;
+// return;
+// }
 
     $scope.selectVMPort = function () {
         appService.localStorageService.set("vmsPort", filterFilter($scope.instanceList, {selected: true}));
@@ -1369,42 +1340,37 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
 
     $scope.tabview = appService.localStorageService.get('view');
 
-//    $scope.global = appService.globalConfig;
-//    $scope.networkList = [];
-//    $scope.network = [];
-//    $scope.ipList = [];
-//    $scope.ipDetails = [];
-//    $scope.tabview = '';
+// $scope.global = appService.globalConfig;
+// $scope.networkList = [];
+// $scope.network = [];
+// $scope.ipList = [];
+// $scope.ipDetails = [];
+// $scope.tabview = '';
 
-    /* if($stateParams.id > 0) {
-     var hasServer = appService.promiseAjax.httpRequest("GET", "api/network.json");
-     hasServer.then(function (result) {  // this is only run after $http completes
-     var networkId = $stateParams.id - 1;
-     $scope.network = result[networkId];
-     $scope.global.networks.name = result[networkId].name;
-     if (appService.localStorageService.get("networkIP") != '') {
-     if($scope.global.networks.name!=''){
-     appService.localStorageService.set("networkIP", $scope.global.networks.name);}
-     }
-     $state.current.data.pageTitle = result[networkId].name;
-     appService.localStorageService.set('view','details');
-     });
-     }
-
-     if ($stateParams.id1 > 0) {
-     var hasServer = appService.promiseAjax.httpRequest("GET", "api/ipaddress.json");
-     hasServer.then(function (result) {  // this is only run after $http completes
-     var ipId = $stateParams.id1 - 1;
-     $scope.ipDetails = result[ipId];
-     $state.current.data.pageTitle = result[ipId].ipaddress;
-     appService.localStorageService.set('view','details');
-     });
-
-     }*/
+    /*
+	 * if($stateParams.id > 0) { var hasServer =
+	 * appService.promiseAjax.httpRequest("GET", "api/network.json");
+	 * hasServer.then(function (result) { // this is only run after $http
+	 * completes var networkId = $stateParams.id - 1; $scope.network =
+	 * result[networkId]; $scope.global.networks.name = result[networkId].name;
+	 * if (appService.localStorageService.get("networkIP") != '') {
+	 * if($scope.global.networks.name!=''){
+	 * appService.localStorageService.set("networkIP",
+	 * $scope.global.networks.name);} } $state.current.data.pageTitle =
+	 * result[networkId].name;
+	 * appService.localStorageService.set('view','details'); }); }
+	 *
+	 * if ($stateParams.id1 > 0) { var hasServer =
+	 * appService.promiseAjax.httpRequest("GET", "api/ipaddress.json");
+	 * hasServer.then(function (result) { // this is only run after $http
+	 * completes var ipId = $stateParams.id1 - 1; $scope.ipDetails =
+	 * result[ipId]; $state.current.data.pageTitle = result[ipId].ipaddress;
+	 * appService.localStorageService.set('view','details'); }); }
+	 */
 
     /**
-     * Data for Line chart
-     */
+	 * Data for Line chart
+	 */
     $scope.lineData = {
         labels: ["10.00", "10.05", "10.10", "10.15", "10.20", "10.25", "10.30"],
         datasets: [
@@ -1465,8 +1431,8 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
     };
 
     /**
-     * Options for Line chart
-     */
+	 * Options for Line chart
+	 */
     $scope.lineOptions = {
         scaleShowGridLines: true,
         scaleGridLineColor: "rgba(0,0,0,.05)",
@@ -1480,8 +1446,8 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
         datasetStroke: true,
         datasetStrokeWidth: 1,
         datasetFill: false,
-//        responsive: true,
-//        maintainAspectRatio: true
+// responsive: true,
+// maintainAspectRatio: true
     };
 
     $scope.selectTab = function (type) {
@@ -1501,7 +1467,7 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
     }
     $scope.tabview = appService.localStorageService.get('view');
 
-//Add the sticky policy
+// Add the sticky policy
     $scope.createStickiness = function (size) {
         appService.dialogService.openDialog($scope.global.VIEW_URL + "cloud/network/stickiness.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
                 // Create a new sticky policy
@@ -1548,10 +1514,10 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
                         };
             }]);
 
-//	            $scope.global.rulesLB[0].name = $scope.load.name;
-//	            $scope.global.rulesLB[0].publicPort = $scope.publicPort;
-//	            $scope.global.rulesLB[0].privatePort = $scope.privatePort;
-//	            modalService.trigger('app/views/cloud/network/healthCheck.jsp', 'sm');
+// $scope.global.rulesLB[0].name = $scope.load.name;
+// $scope.global.rulesLB[0].publicPort = $scope.publicPort;
+// $scope.global.rulesLB[0].privatePort = $scope.privatePort;
+// modalService.trigger('app/views/cloud/network/healthCheck.jsp', 'sm');
 
     };
 
@@ -1568,7 +1534,8 @@ function networkViewCtrl($scope, $http, notify, globalConfig, localStorageServic
     if ($stateParams.id > 0) {
 
         var hasServer = promiseAjax.httpRequest("GET", "api/network.json");
-        hasServer.then(function (result) {  // this is only run after $http completes
+        hasServer.then(function (result) {  // this is only run after $http
+											// completes
             var networkId = $stateParams.id - 1;
             $scope.network = result[networkId];
             $scope.global.networks.name = result[networkId].name;
@@ -1585,7 +1552,8 @@ function networkViewCtrl($scope, $http, notify, globalConfig, localStorageServic
     if ($stateParams.id1 > 0) {
 
         var hasServer = promiseAjax.httpRequest("GET", "api/ipaddress.json");
-        hasServer.then(function (result) {  // this is only run after $http completes
+        hasServer.then(function (result) {  // this is only run after $http
+											// completes
             var ipId = $stateParams.id1 - 1;
             $scope.ipDetails = result[ipId];
             $state.current.data.pageTitle = result[ipId].ipaddress;
