@@ -51,6 +51,16 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
                 floor: 1000,
                 ceil: 3500
             },
+            minIops: {
+            	value: 0,
+                floor: 0,
+                ceil: 500
+            },
+            maxIops: {
+            	value: 0,
+                floor: 0,
+                ceil: 500
+            },
             isOpen: true
         },
         diskOffer: {
@@ -395,6 +405,11 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
             if ($scope.instance.computeOffering.customized == "true") {
                 if ($scope.instance.computeOffer.cpuCore.value != 0 && $scope.instance.computeOffer.memory.value != 0) {
                     $scope.compute = false;
+                }
+                if ($scope.instance.computeOffering.customizedIops == "true") {
+                	if($scope.instance.computeOffer.minIops.value != 0 && $scope.instance.computeOffer.maxIops.value != 0 ) {
+                		$scope.compute = false;
+                	}
                 }
                 else {
                     submitError = true;
