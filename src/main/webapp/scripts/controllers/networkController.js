@@ -80,7 +80,7 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
             $scope.paginationObject.totalItems = result.totalItems;
         });
     };
-    $scope.portRulesLists(1);
+    //$scope.portRulesLists(1);
 
     $scope.hostList = function () {
         var hashostList = appService.crudService.listAll("host/list");
@@ -99,9 +99,10 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
         $scope.vmList = result;
         });
     };
-    $scope.vmLists(1);
+   // $scope.vmLists(1);
 
     $scope.nicIPList = function (instance) {
+    	  $scope.instances = instance;
 	var instanceId = instance.id;
        	var hasNicIP = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbyvminstances?instanceid="+instanceId +"&lang=" + appService.localStorageService.cookie.get('language')+"&sortBy=-id");
         hasNicIP.then(function (result) {
@@ -109,7 +110,7 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
             $scope.showLoader = false;
         });
     };
-    // $scope.nicIPList();
+
 
     $scope.showConsole = function (vm) {
         $scope.vm = vm;
@@ -1036,7 +1037,6 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
         $scope.loadBalancer.ipAddressId = $stateParams.id1;
         // var loadBalancer = angular.copy($scope.loadBalancer);
         $scope.showLoader = true;
-        console.log($scope.loadBalancer.protocol.toUpperCase());
         $scope.loadBalancer = $scope.createStickiness;
         $scope.loadBalancer.protocol = $scope.loadBalancer.protocol.toUpperCase();
         $scope.loadBalancer.state = $scope.loadBalancer.state.toUpperCase();
@@ -1175,6 +1175,7 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
 
             appService.dialogService.openDialog("app/views/cloud/network/vm-list-port.jsp", "lg", $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
                     $scope.portforwardSave = function (portForward) {
+
                         $scope.portForward = $scope.global.rulesPF[0];
                         $scope.formSubmitted = true;
                         $scope.showLoader = true;
@@ -1183,7 +1184,6 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
                         $scope.portForward.vmGuestIp = $scope.instances.ipAddress;
                         $scope.portForward.ipAddressId = $stateParams.id1;
                         $scope.portForward.protocolType = $scope.portForward.protocolType.name;
-
                         var hasPortForward = appService.crudService.add("portforwarding", $scope.portForward);
                         hasPortForward.then(function (result) { // this is only
 																// run after
