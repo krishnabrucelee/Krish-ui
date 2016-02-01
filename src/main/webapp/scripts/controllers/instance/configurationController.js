@@ -8,7 +8,7 @@ angular
     .module('homer')
     .controller('configurationCtrl', configurationCtrl)
 
-function configurationCtrl($scope, $stateParams, localStorageService, promiseAjax, $modal, $window, globalConfig, crudService, notify) {
+function configurationCtrl($scope, $stateParams, localStorageService, promiseAjax, $modal, $window, globalConfig, crudService, notify, $state) {
 
     $scope.formSubmitted = false;
     $scope.instanceList = [];
@@ -119,11 +119,10 @@ function configurationCtrl($scope, $stateParams, localStorageService, promiseAja
           			$scope.instances.computeOfferingId = $scope.instance.computeOffering.id;
           			$scope.instances.computeOffering = $scope.instance.computeOffering;
           			var hasServer =crudService.updates("virtualmachine/resize", $scope.instances);
-          			hasServer.then(function (result) {  // this is only run after $http completes
-          				//$scope.list(1);
+          			hasServer.then(function (result) {
           				$scope.showLoader= false;
           				notify({message: 'Updated successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
-          				//$modalInstance.close();
+          				$state.reload();
           			}).catch(function (result) {
                         if (!angular.isUndefined(result) && result.data != null) {
 	                        if (result.data.fieldErrors != '') {
