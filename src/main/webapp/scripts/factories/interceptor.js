@@ -19,12 +19,15 @@ function interceptorAPI($q, globalConfig, $injector) {
             if (response.data != null && response.status !== 401) {
                 if (!angular.isUndefined(response.data.globalError) && response.data.globalError[0] != null) {
                     var msg = response.data.globalError[0];
-                    var appService = $injector.get('appService');
-                    appService.notify({
-                        message : msg,
-                        classes : 'alert-danger',
-                        templateUrl : global.NOTIFICATION_TEMPLATE
-                    });
+                    var errorList = msg.split(global.TOKEN_SEPARATOR);
+                    if(errorList[0] != global.PAGE_ERROR_SEPARATOR) {
+	                    var appService = $injector.get('appService');
+	                    appService.notify({
+	                        message : msg,
+	                        classes : 'alert-danger',
+	                        templateUrl : global.NOTIFICATION_TEMPLATE
+	                    });
+                    }
                 }
             } else if(response.data != null && response.status === 401) {
             	if (!angular.isUndefined(response.data.message) && response.data.message != null) {

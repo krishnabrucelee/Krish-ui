@@ -151,10 +151,20 @@ function departmentCtrl($scope, $sce, appService) {
 
                   	 if(!angular.isUndefined(result) && result.data != null) {
                   		deleteObject.domain = domainObject;
-	      		 		   if(result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])){
-	                      	 var msg = result.data.globalError[0];
-	                      	 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+      		 		   	if(result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])){
+	                      	 var errorMsgs = result.data.globalError[0];
+	                      	 var errorList = errorMsgs.split("@@");
+	                     	 appService.notify.closeAll();
+	                      		var msg = "You have following resources for this department: <br><ul>" +
+	                  	 		"<li>Project :"+ errorList[1] +"</li>" +
+	                  	 		"<li>Instance :"+ errorList[2] + "</li>" +
+	                  	 		"<li>Role :"+ errorList[3] + "</li>" +
+	                  	 		"<li>Volume :"+ errorList[4] + "</li>" +
+	                  	 		"<li>User :"+ errorList[5] + "</li>" +
+	                  	 		"</ul><br>Kindly delete associated resources and try again";
+	                      		appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
 	                       }
+
 	                       angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
 	                      	$scope.departmentForm[key].$invalid = true;
 	                       	$scope.departmentForm[key].errorMessage = errorMessage;
