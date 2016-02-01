@@ -3,7 +3,6 @@
  * instanceViewCtrl
  *
  */
-
 angular
         .module('homer')
         .controller('instanceViewCtrl', instanceViewCtrl)
@@ -36,9 +35,6 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
             	   $scope.showLoader = false;
             	 $scope.chart(0);
             }
-		$scope.cancel = function () {
-            $modalInstance.close();
-        };
 
         });
 
@@ -92,17 +88,14 @@ $scope.list = function () {
                 if (form.$valid) {
                 	vms.hostUuid = $scope.instance.host.uuid;
 
-		  				var hasVm = appService.crudService.updates("virtualmachine/vm", vms);
+		  				var hasVm = appService.crudService.updates("virtualmachine/handleevent/vm", vms);
 		  				hasVm.then(function(result) {
 		                    $state.reload();
 		  					$scope.cancel();
 		  				}).catch(function (result) {
-		  					if(result.data.globalError[0] != null){
-		  			        	var msg = result.data.globalError[0];
-		  			        	appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
-		  			        	$state.reload();
-			  					$scope.cancel();
-		  			         }
+		  				  $state.reload();
+                                                  $scope.cancel();
+
 	                    });
 	  		 }
                 },
@@ -117,17 +110,13 @@ $scope.list = function () {
   		 $scope.item =item;
   		 $scope.vmStop = function(item) {
   				var event = "VM.STOP";
-  				var hasVm = appService.crudService.vmUpdate("virtualmachine/event", item.uuid, event);
+  				var hasVm = appService.crudService.vmUpdate("virtualmachine/handlevmevent", item.uuid, event);
   				hasVm.then(function(result) {
   					$state.reload();
   					 $scope.cancel();
   				}).catch(function (result) {
-
- 			         if(result.data.globalError[0] != null){
- 			        	 var msg = result.data.globalError[0];
- 			        	 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
-
- 			             }
+  				  $state.reload();
+                                  $scope.cancel();
                        });
   			},
 			  $scope.cancel = function () {
@@ -157,17 +146,13 @@ $scope.list = function () {
   		 $scope.item =item;
   		 $scope.vmRestart = function(item) {
   				var event = "VM.REBOOT";
-  				var hasVm = appService.crudService.vmUpdate("virtualmachine/event", item.uuid, event);
+  				var hasVm = appService.crudService.vmUpdate("virtualmachine/handlevmevent", item.uuid, event);
   				hasVm.then(function(result) {
   					$state.reload();
   					 $scope.cancel();
   				}).catch(function (result) {
-
- 			         if(result.data.globalError[0] != null){
- 			        	 var msg = result.data.globalError[0];
- 			        	 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
-
- 			             }
+  				  $state.reload();
+                                  $scope.cancel();
                        });
   			},
 			  $scope.cancel = function () {
@@ -183,18 +168,13 @@ $scope.list = function () {
 	  		 $scope.item =item;
 	  		 $scope.vmRestart = function(item) {
 	  				var event = "VM.RESTORE";
-	  				var hasVm = appService.crudService.vmUpdate("virtualmachine/event", item.uuid, event);
+	  				var hasVm = appService.crudService.vmUpdate("virtualmachine/handlevmevent", item.uuid, event);
 	  				hasVm.then(function(result) {
 	  					$state.reload();
 	  					 $scope.cancel();
 	  				}).catch(function (result) {
-
-	  			         if(result.data.globalError[0] != null){
-	  			        	 var msg = result.data.globalError[0];
-	  			        	 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
-	  			        	$state.reload();
-		  					$scope.cancel();
-	  			             }
+	  				  $state.reload();
+                                          $scope.cancel();
                            });
 	  			},
 				  $scope.cancel = function () {
@@ -202,41 +182,35 @@ $scope.list = function () {
 	           };
 	       }]);
 	  };
-
+	  $scope.agree = {
+	          value1 : false,
+	          value2 : true
+	        };
 	  $scope.reDestroyVm = function(size,item) {
 		  	 appService.dialogService.openDialog("app/views/cloud/instance/vmdestroy.jsp", size,  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
 		  		 $scope.item =item;
 		  		 $scope.vmDestroy = function(item) {
 		  			$scope.actionExpunge = true;
-		  				if ($scope.agree == true) {
+		  				if ($scope.agree.value1) {
 		  					var event = "VM.EXPUNGE";
-			  				var hasVm = appService.crudService.vmUpdate("virtualmachine/event", item.uuid, event);
+			  				var hasVm = appService.crudService.vmUpdate("virtualmachine/handlevmevent", item.uuid, event);
 			  				hasVm.then(function(result) {
-			  					$scope.cancel();
-			  					$window.location.href = '#/instance/list';
+			  				        $scope.cancel();
+			  				        $state.reload();
 			  				}).catch(function (result) {
+			  				  $state.reload();
+                                                          $scope.cancel();
 
-			  			         if(result.data.globalError[0] != null){
-			  			        	 var msg = result.data.globalError[0];
-			  			        	 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
-			  			        	$state.reload();
-				  					$scope.cancel();
-			  			             }
 		                            });
-		  		        } else{
+		  		        } else {
 		  		        	var event = "VM.DESTROY";
-		  		        	var hasVm = appService.crudService.vmUpdate("virtualmachine/event", item.uuid, event);
+		  		        	var hasVm = appService.crudService.vmUpdate("virtualmachine/handlevmevent", item.uuid, event);
 		  		        	hasVm.then(function(result) {
 		  					$state.reload();
 		  					$scope.cancel();
 		  				}).catch(function (result) {
-
-		  			         if(result.data.globalError[0] != null){
-		  			        	 var msg = result.data.globalError[0];
-		  			        	 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
-		  			        	$state.reload();
-			  					$scope.cancel();
-		  			             }
+		  				  $state.reload();
+                                                  $scope.cancel();
 	                            });
 		  		        }
 		  			},
@@ -251,18 +225,14 @@ $scope.list = function () {
 		  		 $scope.item =item;
 		  		 $scope.vmRecover= function(item) {
 		  					var event = "VM.CREATE";
-			  				var hasVm = appService.crudService.vmUpdate("virtualmachine/event", item.uuid, event);
+			  				var hasVm = appService.crudService.vmUpdate("virtualmachine/handlevmevent", item.uuid, event);
 			  				hasVm.then(function(result) {
 			  					$state.reload();
 			  					 $scope.cancel();
 			  				}).catch(function (result) {
+			  				  $state.reload();
+                                                          $scope.cancel();
 
-			  			         if(result.data.globalError[0] != null){
-			  			        	 var msg = result.data.globalError[0];
-			  			        	 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
-			  			        	$state.reload();
-				  					$scope.cancel();
-			  			             }
 		                            });
 		  			},
 					  $scope.cancel = function () {
@@ -276,13 +246,7 @@ $scope.list = function () {
 				  var hasVms = appService.crudService.updates("virtualmachine/console", vm);
 					hasVms.then(function(result) {
 						var consoleUrl = result.success;
-						window.open($sce.trustAsResourceUrl(consoleUrl), vm.name + vm.id,'width=750,height=460');
-		/*				var consoleParams = consoleUrl.split("token=");
-						$window.sessionStorage.setItem("consoleProxy", consoleParams[0]);
-						$scope.instance = vm;
-						var randomnumber = Math.floor((Math.random()*100)+1);
-						 window.open("app/console.jsp?token="+consoleParams[1]+"&instance="+ btoa(vm.id), vm.name + vm.id,'width=800,height=580');
-		*/			});
+						window.open($sce.trustAsResourceUrl(consoleUrl), vm.name + vm.id,'width=750,height=460');			});
 			  }
 
 			  $scope.instnaceEdit = false;
@@ -331,20 +295,15 @@ $scope.list = function () {
 					  				tempVm.iso = $scope.isos.uuid;
 					  				tempVm.event = event;
 
-						  				var hasVm = appService.crudService.updates("virtualmachine/vm", tempVm);
+						  				var hasVm = appService.crudService.updates("virtualmachine/handleevent/vm", tempVm);
 						  				hasVm.then(function(result) {
 						  					$scope.homerTemplate = 'app/views/notification/notify.jsp';
 						                     appService.notify({message: $scope.isos.name+" is attaching to this VM", classes: 'alert-success', "timeOut": "5000", templateUrl: $scope.homerTemplate});
 						  					$state.reload();
 						  					 $scope.cancel();
 						  				}).catch(function (result) {
-
-						  			         if(result.data.globalError[0] != null){
-						  			        	 var msg = result.data.globalError[0];
-						  			        	 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
-						  			        	$state.reload();
-							  					$scope.cancel();
-						  			             }
+						  				  $state.reload();
+                                                                                  $scope.cancel();
 					                            });
 					  			 }
 					  			},
@@ -360,20 +319,16 @@ $scope.list = function () {
 						  		 $scope.update = function() {
 						  			$scope.vm.event = event;
 						  			console.log($scope.vm);
-							  				var hasVm = appService.crudService.updates("virtualmachine/vm", $scope.vm);
+							  				var hasVm = appService.crudService.updates("virtualmachine/handleevent/vm", $scope.vm);
 							  				hasVm.then(function(result) {
 							  					$scope.homerTemplate = 'app/views/notification/notify.jsp';
 							                     appService.notify({message: $scope.vm.isoName+" is detaching from this VM", classes: 'alert-success', "timeOut": "5000", templateUrl: $scope.homerTemplate});
 							  					$state.reload();
 							  					$scope.cancel();
 							  				}).catch(function (result) {
+							  				  $state.reload();
+                                                                                          $scope.cancel();
 
-							  			         if(result.data.globalError[0] != null){
-							  			        	 var msg = result.data.globalError[0];
-							  			        	 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
-							  			        	$state.reload();
-								  					$scope.cancel();
-							  			             }
 						                            });
 						  			},
 									  $scope.cancel = function () {
@@ -400,10 +355,7 @@ $scope.list = function () {
 								  					 $state.reload();
 								  					 $scope.cancel();
 								  				}).catch(function (result) {
-
-								  				  $scope.homerTemplate = 'app/views/notification/notify.jsp';
-								                     appService.notify({message: result.data.globalError[0], classes: 'alert-danger', "timeOut": "5000", templateUrl: $scope.homerTemplate});
-								                     $state.reload();
+								  				    $state.reload();
 									  			     $scope.cancel();
 						                        });
 						                    }
@@ -423,20 +375,15 @@ $scope.list = function () {
 								  			$scope.formSubmitted = true;
 						                    if (form.$valid) {
 						                    	vms.hostUuid = $scope.host.uuid;
-									  				var hasVm = appService.crudService.updates("virtualmachine/vm", vms);
+									  				var hasVm = appService.crudService.updates("virtualmachine/handleevent/vm", vms);
 									  				hasVm.then(function(result) {
 									  					$scope.homerTemplate = 'app/views/notification/notify.jsp';
 									                    appService.notify({message: $scope.host.name+" is migrating", classes: 'alert-success', "timeOut": "5000", templateUrl: $scope.homerTemplate});
 									  					$state.reload();
 									  					 $scope.cancel();
 									  				}).catch(function (result) {
-
-									  			         if(result.data.globalError[0] != null){
-									  			        	 var msg = result.data.globalError[0];
-									  			        	 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
-									  			        	$state.reload();
-										  					$scope.cancel();
-									  			         }
+									  				  $state.reload();
+		                                                                                                $scope.cancel();
 								                            });
 								  		 }
 						                    },
@@ -472,23 +419,14 @@ $scope.list = function () {
 			  			 	$scope.vm.password = "reset";
 				  			$scope.formSubmitted = true;
 
-			  				var hasVm = appService.crudService.updates("virtualmachine/vm", $scope.vm);
+			  				var hasVm = appService.crudService.updates("virtualmachine/handleevent/vm", $scope.vm);
 			  				hasVm.then(function(result) {
 			  					appService.notify({message: "VM password updated successfully. Please refresh and click show password", classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
 			  					$state.reload();
 			  					$scope.cancel();
 			  				}).catch(function (result) {
-			  			         if(result.data.globalError[0] != null){
-			  			        	var msg = result.data.globalError[0];
-			  			        	if(msg === "SUCCESS") {
-			  			        		msg = "VM password updated successfully. Please refresh and click show password";
-			  			        		appService.notify({message: msg, classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
-			  			        	} else {
-			  			        		appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
-			  			        	}
-			  			        	$state.reload();
-				  					$scope.cancel();
-			  			         }
+			  				  //$state.reload();
+
 		                    });
 			  		     };
 

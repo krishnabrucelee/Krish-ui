@@ -70,17 +70,13 @@ function instanceListCtrl($scope, $sce, $log, $filter, dialogService, promiseAja
 		  			$scope.formSubmitted = true;
 	                if (form.$valid) {
 	                	vms.hostUuid = $scope.instance.host.uuid;
-			  				var hasVm = appService.crudService.updates("virtualmachine/vm", vms);
+			  				var hasVm = appService.crudService.updates("virtualmachine/handleevent/vm", vms);
 			  				hasVm.then(function(result) {
 			                    $state.reload();
 			  					$scope.cancel();
 			  				}).catch(function (result) {
-			  					if(result.data.globalError[0] != null){
-			  			        	var msg = result.data.globalError[0];
-			  			        	appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
-			  			        	$state.reload();
-				  					$scope.cancel();
-			  			         }
+			  				  $state.reload();
+                                                          $scope.cancel();
 		                    });
 		  		 }
 	                },
@@ -94,7 +90,7 @@ function instanceListCtrl($scope, $sce, $log, $filter, dialogService, promiseAja
     		 $scope.item =item;
     		 $scope.vmStop = function(item) {
     				var event = "VM.STOP";
-    				var hasVm = crudService.vmUpdate("virtualmachine/event", item.uuid, event);
+    				var hasVm = crudService.vmUpdate("virtualmachine/handlevmevent", item.uuid, event);
     				hasVm.then(function(result) {
     					$state.reload();
     					 $scope.cancel();
@@ -110,7 +106,7 @@ function instanceListCtrl($scope, $sce, $log, $filter, dialogService, promiseAja
     		 $scope.item =item;
     		 $scope.vmRestart = function(item) {
     				var event = "VM.REBOOT";
-    				var hasVm = crudService.vmUpdate("virtualmachine/event", item.uuid, event);
+    				var hasVm = crudService.vmUpdate("virtualmachine/handlevmevent", item.uuid, event);
     				hasVm.then(function(result) {
     					$state.reload();
     					 $scope.cancel();
@@ -228,20 +224,15 @@ function instanceListCtrl($scope, $sce, $log, $filter, dialogService, promiseAja
 	  				tempVm.applicationList = $scope.applications;
 	  				tempVm.event = event;
 
-		  				var hasVm = appService.crudService.updates("virtualmachine/vm", tempVm);
+		  				var hasVm = appService.crudService.updates("virtualmachine/handleevent/vm", tempVm);
 		  				hasVm.then(function(result) {
 		  					$scope.homerTemplate = 'app/views/notification/notify.jsp';
 		                     appService.notify({message: $scope.application+" is adding to this VM", classes: 'alert-success', "timeOut": "5000", templateUrl: $scope.homerTemplate});
 		  					 $state.reload();
 		  					 $scope.cancel();
 		  				}).catch(function (result) {
-
-		  			         if(result.data.globalError[0] != null){
-		  			        	 var msg = result.data.globalError[0];
-		  			        	 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
-		  			        	$state.reload();
-			  					$scope.cancel();
-		  			             }
+		  				  $state.reload();
+                                                  $scope.cancel();
 	                            });
 	  			 }
 	  			},

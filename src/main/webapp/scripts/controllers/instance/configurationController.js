@@ -126,16 +126,13 @@ function configurationCtrl($scope, $stateParams, localStorageService, promiseAja
           				//$modalInstance.close();
           			}).catch(function (result) {
                         if (!angular.isUndefined(result) && result.data != null) {
-	                        if (result.data.globalError[0] != '') {
-	                            var msg = result.data.globalError[0];
-						        $scope.showLoader= false;
-	                            notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
-	                        }
+	                        if (result.data.fieldErrors != '') {
 	                            angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
 	                            $scope.instanceForm[key].$invalid = true;
 	                            $scope.instanceForm[key].errorMessage = errorMessage;
 	                            });
 	                            }
+                        }
                         });
           			}
           		},

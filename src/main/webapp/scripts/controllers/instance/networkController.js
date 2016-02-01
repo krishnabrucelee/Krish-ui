@@ -60,11 +60,7 @@ function networkCtrl($scope, $modal, $state, $window, $stateParams,appService) {
                         }).catch(function (result) {
                         	$scope.showLoader = false;
             		    if (!angular.isUndefined(result.data)) {
-                		if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
-                  	   	 var msg = result.data.globalError[0];
-                  	   	 $scope.showLoader = false;
-                	    	 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
-                    	} else if (result.data.fieldErrors != null) {
+                		 if (result.data.fieldErrors != null) {
                        	$scope.showLoader = false;
                         	angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
                             	$scope.nicForm[key].$invalid = true;
@@ -97,12 +93,7 @@ function networkCtrl($scope, $modal, $state, $window, $stateParams,appService) {
                             appService.notify({message: 'IP deleted successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                             $state.reload();
                         }).catch(function (result) {
-                        	if (!angular.isUndefined(result.data)) {
-                            	if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
-                              	    var msg = result.data.globalError[0];
-                            	    appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
-                                }
-                            }
+                            $state.reload();
                         });
                         $modalInstance.close();
                     },
@@ -208,11 +199,7 @@ function networkCtrl($scope, $modal, $state, $window, $stateParams,appService) {
                         $scope.nicLists(1);
                }).catch(function (result) {
                         if (!angular.isUndefined(result.data)) {
-                            if (result.data.globalError != '' && !angular.isUndefined(result.data.globalError)) {
-                                var msg = result.data.globalError[0];
-                                $scope.showLoader = false;
-                                appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
-                            } else if (result.data.fieldErrors != null) {
+                             if (result.data.fieldErrors != null) {
                                 angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
                                     $scope.attachvolumeForm[key].$invalid = true;
                                     $scope.attachvolumeForm[key].errorMessage = errorMessage;
