@@ -18,6 +18,7 @@
                             <label class="col-md-4 col-xs-12 col-sm-4 control-label control-normal"><fmt:message key="common.domain" bundle="${msg}" /><span class="text-danger">*</span></label>
                             <div class="col-md-6  col-sm-6 col-xs-12">
                                 {{ global.sessionValues.domainName }}
+                                <input type="hidden" name="domain"  data-ng-model="department.domain" data-ng-init="department.domainId=global.sessionValues.domainId" />
                             </div>
                         </div>
                         </div>
