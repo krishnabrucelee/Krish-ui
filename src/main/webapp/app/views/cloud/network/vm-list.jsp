@@ -3,7 +3,7 @@ pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-  <div class="inmodal" ng-controller="networksCtrl"   >
+
         <div class="modal-header">
             <panda-modal-header page-icon="fa fa-cloud" page-title="Add VMs"></panda-modal-header>
 
@@ -11,7 +11,6 @@ pageEncoding="UTF-8"%>
         <div class="modal-body">
             <div class="row">
 
-<div  ng-controller="networksCtrl">
         <div class="hpanel">
             <div class="panel-heading">
                 <div class="row">
@@ -47,11 +46,11 @@ pageEncoding="UTF-8"%>
                             <a class="text-info" >{{ instance.name }}</a>
                              <div  data-ng-show="instance.selected" > {{ instance.ipAddress}}</div>
 
-              <%--     <div data-ng-show="instance.selected" class="m-t-sm">
+                  <div data-ng-show="instance.selected" class="m-t-sm">
 				<select  multiple="multiple" class="form-control input-group" name="ipaddress" data-ng-model="instance.ipAddress" ng-options="instance.ipAddress for ipaddress in vmList"  >
                 <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
                 </select>
-				</div> --%>
+				</div>
 
 
                     <!--   <input type="hidden" data-ng-model="instance.ipAddress" value="{{ instance.ipAddress }}"/>
@@ -82,12 +81,13 @@ pageEncoding="UTF-8"%>
             </div>
         </div>
     </div>
-            </div></div>
+            </div>
   <div class="modal-footer">
 
+            <get-loader-image data-ng-show="showLoader"></get-loader-image>
 
-            <a class="btn btn-default"  data-ng-click="cancel()">Cancel</a>
-            <a class="btn btn-info" data-ng-click="loadbalancerSave(instance)">Apply</a>
+            <a class="btn btn-default" data-ng-hide="showLoader" data-ng-click="cancel()">Cancel</a>
+            <a class="btn btn-info" data-ng-hide="showLoader" data-ng-click="loadbalancerSave(instance)">Apply</a>
 
 
         </div>

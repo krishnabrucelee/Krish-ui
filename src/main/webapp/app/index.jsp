@@ -193,6 +193,7 @@
 	<script src="scripts/controllers/instance/storageController.js"></script>
 	<script src="scripts/controllers/instance/monitorController.js"></script>
 	<script src="scripts/controllers/instance/networkController.js"></script>
+	<script src="scripts/controllers/instance/secondaryipController.js"></script>
 
 	<script src="scripts/controllers/vpcController.js"></script>
 	<script src="scripts/controllers/departmentController.js"></script>
@@ -205,7 +206,6 @@
 	<script src="scripts/controllers/reportCtrl.js"></script>
 	<script src="scripts/controllers/activityController.js"></script>
 	<script src="scripts/controllers/volumeController.js"></script>
-
 	<script src="scripts/controllers/billingController.js"></script>
 	<script src="scripts/controllers/quotaLimitController.js"></script>
 	<script src="scripts/controllers/templateController.js"></script>

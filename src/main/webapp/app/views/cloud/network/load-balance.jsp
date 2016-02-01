@@ -81,15 +81,13 @@ pageEncoding="UTF-8"%>
                         <span data-ng-if="loadBalancer.expanded"  data-ng-click="loadBalancer.expanded = false" class="pe-lg font-bold m-r-xs pe-7s-angle-up-circle"></span>
                         <span data-ng-if="!loadBalancer.expanded"  data-ng-click="loadBalancer.expanded = true" class="pe-7s-angle-down-circle pe-lg font-bold m-r-xs"></span>
 
-                            <!-- <button data-ng-if="rule.expanded"  data-ng-click="rule.expanded = false">-</button>
-                            <button data-ng-if="!rule.expanded" data-ng-click="rule.expanded = true">+</button> --> {{rule.name}}
-                        </td>
-                        <td>{{loadBalancer.name}}</td>
+
+                        {{loadBalancer.name}}</td>
                         <td>{{loadBalancer.publicPort}}</td>
                         <td>{{loadBalancer.privatePort}}</td>
                         <td>{{loadBalancer.algorithm}}</td>
                         <td><a class="btn btn-info"
-                               data-ng-click="createStickiness('md')">Configure</a></td>
+                               data-ng-click="createStickiness('md')">{{loadBalancer.stickinessMethod || 'Configure'}}</a></td>
                         <td><a class="btn btn-info" data-ng-click="healthChecklist()">Configure</a></td>
                         <td><a class="btn btn-info" data-ng-click="openAddVMlist()">Add
                                 VM</a></td>

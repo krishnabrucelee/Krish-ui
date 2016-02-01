@@ -43,10 +43,10 @@
             </div>
         </div>
         <div class="modal-footer">
-								<get-loader-image data-ng-show="showLoader"></get-loader-image>
+							<get-loader-image data-ng-show="showLoader"></get-loader-image>
 
-            <a class="btn btn-default"   data-ng-hide="showLoader"data-ng-click="cancel()"><fmt:message key="common.cancel" bundle="${msg}" /></a>
-            <button class="btn btn-info"   data-ng-hide="showLoader" type="submit"><fmt:message key="common.add" bundle="${msg}" /></button>
+            <a class="btn btn-default"   data-ng-if="!showLoader"  data-ng-click="cancel()"><fmt:message key="common.cancel" bundle="${msg}" /></a>
+            <button class="btn btn-info"   data-ng-if="!showLoader"   type="submit"><fmt:message key="common.add" bundle="${msg}" /></button>
 
 
         </div>
