@@ -71,16 +71,12 @@ function departmentCtrl($scope, $sce, appService) {
                             $scope.list(1);
                         }).catch(function (result) {
                         	if(!angular.isUndefined(result) && result.data != null) {
-                        	$scope.showLoader = false;
-                        	if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
-                               	    var msg = result.data.globalError[0];
-                             	    appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
-                                 } else {
-                                	 angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
-                                		 $scope.departmentForm[key].$invalid = true;
-                                		 $scope.departmentForm[key].errorMessage = errorMessage;
-                                	 });
-                                 }
+                        		$scope.showLoader = false;
+                        		 angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
+                            		 $scope.departmentForm[key].$invalid = true;
+                            		 $scope.departmentForm[key].errorMessage = errorMessage;
+                            	 });
+
                         	}
                         });
                     }
@@ -112,17 +108,12 @@ function departmentCtrl($scope, $sce, appService) {
                             $modalInstance.close();
                         }).catch(function (result) {
                         	if(!angular.isUndefined(result) && result.data != null) {
-                        	$scope.showLoader = false;
-                        	if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
-                               	    var msg = result.data.globalError[0];
-                             	    appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
-                                 } else {
-                                	 angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
-     	                            	$scope.departmentForm[key].$invalid = true;
-     	                                $scope.departmentForm[key].errorMessage = errorMessage;
-     	                            });
-                                 }
-                        	}
+                        		$scope.showLoader = false;
+                    		 	angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
+ 	                            	$scope.departmentForm[key].$invalid = true;
+ 	                                $scope.departmentForm[key].errorMessage = errorMessage;
+ 	                            });
+                            }
 
                         });
                     }
