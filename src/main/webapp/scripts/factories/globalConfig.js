@@ -29,6 +29,7 @@ function globalConfig($window) {
         		descending : false
         	},
         rulesLB:[{name:'Test','protocol':'tcp',publicPort:'90',privatePort:'90',publicEndPort:'120',privateEndPort:'120',algorithm:'Round-robin',vms:[{id:'',name: "NorthChina- Beijing",zone:"Beijing"}],state:'active'}],
+        rulesPF:[{publicStartPort:90,privateStartPort:90,publicEndPort:120,privateEndPort:120,protocolType:'TCP',state:true}],
         Vms:['1','2','3','4'],
         selectedVms:[],
         date: {

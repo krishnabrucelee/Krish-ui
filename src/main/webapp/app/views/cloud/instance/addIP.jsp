@@ -24,7 +24,7 @@
 						<div class="row">
 							<label class="col-md-3 col-xs-12 col-sm-3 control-label"><fmt:message key="ip.address" bundle="${msg}" /></label>
 							<div class="col-md-6 col-xs-12 col-sm-6">
-								<input  type="text" name="vmIpAddress" data-ng-model="nic.vmIpAddress" class="form-control">
+								<input  type="text" name="secondaryIpAddress" data-ng-model="nic.secondaryIpAddress" class="form-control">
 							</div>
 						</div>
 					</div>
