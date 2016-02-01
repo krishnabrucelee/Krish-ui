@@ -50,6 +50,8 @@ function globalConfig($window) {
         CONTENT_LIMIT: 10,
         VIEW_URL : 'app/views/',
         NOTIFICATION_TEMPLATE: 'app/views/notification/notify.jsp',
+        TOKEN_SEPARATOR: "@@",
+        PAGE_ERROR_SEPARATOR: "PAGE_ERROR",
 
         paginationHeaders: function(pageNumber, limit) {
             var headers = {};
