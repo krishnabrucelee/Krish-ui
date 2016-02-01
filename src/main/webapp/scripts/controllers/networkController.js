@@ -137,7 +137,7 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
                     $scope.formSubmitted = true;
                     if (form.$valid) {
                         vms.hostUuid = $scope.instance.host.uuid;
-                        var hasVm = appService.crudService.updates("virtualmachine/vm", vms);
+                        var hasVm = appService.crudService.updates("virtualmachine/handleevent/vm", vms);
                         hasVm.then(function (result) {
                             $state.reload();
                             $scope.cancel();
@@ -161,7 +161,7 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
                 $scope.item = item;
                 $scope.vmStop = function (item) {
                     var event = "VM.STOP";
-                    var hasVm = appService.crudService.vmUpdate("virtualmachine/event", item.uuid, event);
+                    var hasVm = appService.crudService.vmUpdate("virtualmachine/handlevmevent", item.uuid, event);
                     hasVm.then(function (result) {
                         $state.reload();
                         $scope.cancel();
@@ -177,7 +177,7 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
                 $scope.item = item;
                 $scope.vmRestart = function (item) {
                     var event = "VM.REBOOT";
-                    var hasVm = appService.crudService.vmUpdate("virtualmachine/event", item.uuid, event);
+                    var hasVm = appService.crudService.vmUpdate("virtualmachine/handlevmevent", item.uuid, event);
                     hasVm.then(function (result) {
                         $state.reload();
                         $scope.cancel();
