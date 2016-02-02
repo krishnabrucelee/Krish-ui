@@ -118,7 +118,6 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
     };
    // $scope.vmLists(1);
 
-<<<<<<< Updated upstream
     $scope.nicIPList = function (instance) {
     	  $scope.instances = instance;
 	var instanceId = instance.id;
@@ -145,7 +144,6 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
 			 * btoa(vm.id), vm.name + vm.id,'width=800,height=580');
 			 */			});
     }
-=======
  $scope.nicIPList = function (instance) {
     	//  $scope.instances = instance;
 	var instanceId = instance.id;
@@ -232,7 +230,6 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
            };
        }]);
   };
->>>>>>> Stashed changes
 
     $scope.startVm = function (size, item) {
         $scope.instance = item;
@@ -1125,13 +1122,12 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
         $scope.loadBalancer.ipAddressId = $stateParams.id1;
         // var loadBalancer = angular.copy($scope.loadBalancer);
         $scope.loadBalancer.protocol = $scope.loadBalancer.protocol.toUpperCase();
-<<<<<<< Updated upstream
         $scope.loadBalancer.state = $scope.loadBalancer.state.toUpperCase();
 console.log($scope.stickiness);
-=======
+
 	$scope.loadBalancer.state = $scope.loadBalancer.state.toUpperCase();
 	console.log($scope.stickiness);
->>>>>>> Stashed changes
+
 	    if (!angular.isUndefined($scope.stickiness.stickinessName) && $scope.stickiness.stickinessName != null) {
 	$scope.loadBalancer.stickinessName = $scope.stickiness.stickinessName;
 	}
@@ -1178,17 +1174,17 @@ console.log($scope.stickiness);
             $scope.showLoader = false;
             appService.notify({
         message: 'LoadBalancer rule added successfully ',
-<<<<<<< Updated upstream
+
                 classes: 'alert-success',
                 templateUrl: $scope.global.NOTIFICATION_TEMPLATE
 	
             });
-=======
+
         classes: 'alert-success',
         templateUrl: $scope.global.NOTIFICATION_TEMPLATE
 
     });
->>>>>>> Stashed changes
+
     $modalInstance.close();
             $scope.LBlist(1);
         }).catch(function (result) {
@@ -1492,13 +1488,6 @@ console.log($scope.stickiness);
         appService.localStorageService.set("vms", $scope.vmList);
         appService.localStorageService.set("vmsPort", $scope.vmList);
     }, true);
-//
-// if (!$scope.instanceList[id].isChecked) {
-// $scope.vmList.push($scope.instanceList[id]);
-// appService.localStorageService.set("vms", $scope.vmList);
-// $scope.allItemsSelected = false;
-// return;
-// }
 
     $scope.selectVMPort = function () {
         appService.localStorageService.set("vmsPort", filterFilter($scope.instanceList, {selected: true}));
@@ -1507,35 +1496,8 @@ console.log($scope.stickiness);
 
     $scope.tabview = appService.localStorageService.get('view');
 
-// $scope.global = appService.globalConfig;
-// $scope.networkList = [];
-// $scope.network = [];
-// $scope.ipList = [];
-// $scope.ipDetails = [];
-// $scope.tabview = '';
 
-    /*
-	 * if($stateParams.id > 0) { var hasServer =
-	 * appService.promiseAjax.httpRequest("GET", "api/network.json");
-	 * hasServer.then(function (result) { // this is only run after $http
-	 * completes var networkId = $stateParams.id - 1; $scope.network =
-	 * result[networkId]; $scope.global.networks.name = result[networkId].name;
-	 * if (appService.localStorageService.get("networkIP") != '') {
-	 * if($scope.global.networks.name!=''){
-	 * appService.localStorageService.set("networkIP",
-	 * $scope.global.networks.name);} } $state.current.data.pageTitle =
-	 * result[networkId].name;
-	 * appService.localStorageService.set('view','details'); }); }
-	 *
-	 * if ($stateParams.id1 > 0) { var hasServer =
-	 * appService.promiseAjax.httpRequest("GET", "api/ipaddress.json");
-	 * hasServer.then(function (result) { // this is only run after $http
-	 * completes var ipId = $stateParams.id1 - 1; $scope.ipDetails =
-	 * result[ipId]; $state.current.data.pageTitle = result[ipId].ipaddress;
-	 * appService.localStorageService.set('view','details'); }); }
-	 */
-
-    /**
+    	/**
 	 * Data for Line chart
 	 */
     $scope.lineData = {
@@ -1634,7 +1596,7 @@ console.log($scope.stickiness);
     }
     $scope.tabview = appService.localStorageService.get('view');
 
-<<<<<<< Updated upstream
+
 // Add the sticky policy
     $scope.createStickiness = function (size) {
         appService.dialogService.openDialog($scope.global.VIEW_URL + "cloud/network/stickiness.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
@@ -1645,16 +1607,14 @@ console.log($scope.stickiness);
          });
       };
                 // Create a new sticky policy
-=======
+
 //Add the sticky policy
 $scope.createStickiness = function (size) {
     appService.dialogService.openDialog($scope.global.VIEW_URL + "cloud/network/stickiness.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope',function ($scope, $modalInstance, $rootScope) {
 	    //Assign loadbalancer stickiness in object
-
->>>>>>> Stashed changes
             $scope.addStickiness = function (form,stickiness) {
  		$scope.stickiness = stickiness;
-<<<<<<< Updated upstream
+
 		console.log($scope.stickiness);
                     $scope.formSubmitted = true;
                     if (form.$valid) {
@@ -1690,7 +1650,7 @@ $scope.createStickiness = function (size) {
             modalService.trigger('app/views/cloud/network/healthCheck.jsp', 'sm');
         }
     };
-=======
+
                 $scope.formSubmitted = true;
 
 
@@ -1809,7 +1769,7 @@ $scope.editStickiness = function (size,loadBalancer) {
 	            modalService.trigger('app/views/cloud/network/healthCheck.jsp', 'sm');
 	        }
 	    };
->>>>>>> Stashed changes
+
 
     $scope.healthChecklist = function () {
 
