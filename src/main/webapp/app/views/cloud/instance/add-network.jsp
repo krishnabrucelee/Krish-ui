@@ -34,17 +34,13 @@
                                 <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="<fmt:message key="select.the.network" bundle="${msg}" />" ></i>
                                 <div class="error-area" data-ng-show="networkForm.networkOffers.$invalid && formSubmitted" ><i  tooltip="<fmt:message key="network.is.required" bundle="${msg}" />" class="fa fa-warning error-icon"></i></div>
                             </div>
-
                         </div>
                     </div>
-
-
                 </div>
             </div>
         </div>
         <div class="modal-footer">
-							<get-loader-image data-ng-show="showLoader"></get-loader-image>
-
+			<get-loader-image data-ng-show="showLoader"></get-loader-image>
             <a class="btn btn-default"   data-ng-if="!showLoader"  data-ng-click="cancel()"><fmt:message key="common.cancel" bundle="${msg}" /></a>
             <button class="btn btn-info"   data-ng-if="!showLoader"   type="submit"><fmt:message key="common.add" bundle="${msg}" /></button>
 

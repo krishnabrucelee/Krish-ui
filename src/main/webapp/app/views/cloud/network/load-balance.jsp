@@ -86,8 +86,9 @@ pageEncoding="UTF-8"%>
                         <td>{{loadBalancer.publicPort}}</td>
                         <td>{{loadBalancer.privatePort}}</td>
                         <td>{{loadBalancer.algorithm}}</td>
-                        <td><a class="btn btn-info"
-                               data-ng-click="createStickiness('md')">{{loadBalancer.stickinessMethod || 'Configure'}}</a></td>
+                        <td><a class= "btn btn-info" data-ng-if = "loadBalancer.stickinessMethod!=null"  data-ng-click="editStickiness('md',loadBalancer)"> {{loadBalancer.stickinessMethod}}</a>
+                        <a class="btn btn-info" data-ng-if = "loadBalancer.stickinessMethod ==null"
+                               data-ng-click="createStickiness('md')">{{'Configure'}}</a></td>
                         <td><a class="btn btn-info" data-ng-click="healthChecklist()">Configure</a></td>
                         <td><a class="btn btn-info" data-ng-click="openAddVMlist()">Add
                                 VM</a></td>

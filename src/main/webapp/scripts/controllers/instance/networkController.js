@@ -29,6 +29,7 @@ function networkCtrl($scope, $modal, $state, $window, $stateParams,appService) {
 
         });
 
+    }
     $scope.networkList = {};
     $scope.paginationObject = {};
     $scope.networkForm = {};

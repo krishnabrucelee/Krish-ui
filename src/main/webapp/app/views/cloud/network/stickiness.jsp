@@ -4,16 +4,13 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
 <form name="stickinessForm" data-ng-submit="addStickiness(stickinessForm, stickiness)" method="post" novalidate=""  >
-
     <div class="inmodal" >
         <div class="modal-header">
             <panda-modal-header hide-zone="false" page-icon="fa fa-plus-circle" page-title="<fmt:message key="configure.sticky.policy" bundle="${msg}" />"></panda-modal-header>
         </div>
-
         <div class="modal-body">
             <div class="row"  >
                 <div class="col-md-12">
-
 	<div class="row">
                     <div class="form-group">
 						<div class="row">
@@ -26,12 +23,10 @@
 											<option value=""><fmt:message key="common.select"
 													bundle="${msg}" /></option>
 										</select>
-                            <!--  <select class="form-control input-group" name="stickinessMethod" data-ng-model="stickiness.stickinessMethod" ng-init="stickiness.stickinessMethod= formElements.stickinessList[0]" ng-options="stickiness.name for stickiness in formElements.stickinessList">
-                            </select> -->
-							</div>
+      							</div>
 						</div>
 					</div>
-                    <div class="form-group" ng-class="{'text-danger': stickinessForm.stickyName.$invalid && formSubmitted}" data-ng-show="stickiness.stickinessMethod == 'SOURCEBASED'">
+                    <div class="form-group" ng-class="{'text-danger': stickinessForm.stickyName.$invalid && formSubmitted}" data-ng-show="stickiness.stickinessMethod == 'SourceBased' || stickiness.stickinessMethod == 'AppCookie'">
 						<div class="row">
 							<label class="col-md-3 col-xs-12 col-sm-3 control-label"><fmt:message key="sticky.name" bundle="${msg}" /> <span class="text-danger">*</span></label>
 							<div class="col-md-6 col-xs-12 col-sm-6">
@@ -42,7 +37,7 @@
 							</div>
 						</div>
 					</div>
-                     <div class="form-group" data-ng-show="stickiness.stickinessMethod == 'SOURCEBASED'">
+                     <div class="form-group" data-ng-show="stickiness.stickinessMethod == 'SourceBased'">
 						<div class="row">
 							<label class="col-md-3 col-xs-12 col-sm-3 control-label"><fmt:message key="table.size" bundle="${msg}" /></label>
 							<div class="col-md-6 col-xs-12 col-sm-6">
@@ -50,7 +45,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="form-group" data-ng-show="stickiness.stickinessMethod == 'SOURCEBASED'">
+					<div class="form-group" data-ng-show="stickiness.stickinessMethod == 'SourceBased'">
 						<div class="row">
 							<label class="col-md-3 col-xs-12 col-sm-3 control-label"><fmt:message key="expires" bundle="${msg}" /></label>
 							<div class="col-md-6 col-xs-12 col-sm-6">
@@ -58,7 +53,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="form-group" data-ng-show="stickiness.stickinessMethod == 'LBCOOKIE' || stickiness.stickinessMethod == 'APPCOOKIE'">
+					<div class="form-group" data-ng-show="stickiness.stickinessMethod == 'LbCookie' || stickiness.stickinessMethod == 'AppCookie'">
 						<div class="row">
 							<label class="col-md-3 col-xs-12 col-sm-3 control-label"><fmt:message key="cookie.name" bundle="${msg}" /></label>
 							<div class="col-md-6 col-xs-12 col-sm-6">
@@ -66,7 +61,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="form-group" data-ng-show="stickiness.stickinessMethod == 'LBCOOKIE'  || stickiness.stickinessMethod == 'APPCOOKIE'">
+					<div class="form-group" data-ng-show="stickiness.stickinessMethod == 'LbCookie'  || stickiness.stickinessMethod == 'AppCookie'">
 						<div class="row">
 							<label class="col-md-3 col-xs-12 col-sm-3 control-label"><fmt:message key="mode" bundle="${msg}" /></label>
 							<div class="col-md-6 col-xs-12 col-sm-6">
@@ -74,7 +69,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="form-group" data-ng-show="stickiness.stickinessMethod == 'APPCOOKIE'">
+					<div class="form-group" data-ng-show="stickiness.stickinessMethod == 'AppCookie'">
 						<div class="row">
 							<label class="col-md-3 col-xs-12 col-sm-3 control-label"><fmt:message key="length" bundle="${msg}" /></label>
 							<div class="col-md-6 col-xs-12 col-sm-6">
@@ -82,7 +77,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="form-group" data-ng-show="stickiness.stickinessMethod == 'APPCOOKIE'">
+					<div class="form-group" data-ng-show="stickiness.stickinessMethod == 'AppCookie'">
 						<div class="row">
 							<label class="col-md-3 col-xs-12 col-sm-3 control-label"><fmt:message key="hold.time" bundle="${msg}" /></label>
 							<div class="col-md-6 col-xs-12 col-sm-6">
@@ -90,7 +85,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="form-group" data-ng-show="stickiness.stickinessMethod == 'APPCOOKIE'">
+					<div class="form-group" data-ng-show="stickiness.stickinessMethod == 'AppCookie'">
 						<div class="row">
 							<label class="col-md-3 col-xs-12 col-sm-3 control-label"><fmt:message key="request.learn" bundle="${msg}" /></label>
 							<div class="col-md-6 col-xs-12 col-sm-6">
@@ -98,7 +93,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="form-group" data-ng-show="stickiness.stickinessMethod == 'APPCOOKIE'">
+					<div class="form-group" data-ng-show="stickiness.stickinessMethod == 'AppCookie'">
 						<div class="row">
 							<label class="col-md-3 col-xs-12 col-sm-3 control-label"><fmt:message key="prefix" bundle="${msg}" /></label>
 							<div class="col-md-6 col-xs-12 col-sm-6">
@@ -106,7 +101,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="form-group" data-ng-show="stickiness.stickinessMethod == 'LBCOOKIE' ">
+					<div class="form-group" data-ng-show="stickiness.stickinessMethod == 'LbCookie' ">
 						<div class="row">
 							<label class="col-md-3 col-xs-12 col-sm-3 control-label"><fmt:message key="no.cache" bundle="${msg}" /></label>
 							<div class="col-md-6 col-xs-12 col-sm-6">
@@ -114,7 +109,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="form-group" data-ng-show="stickiness.stickinessMethod == 'LBCOOKIE' ">
+					<div class="form-group" data-ng-show="stickiness.stickinessMethod == 'LbCookie' ">
 						<div class="row">
 							<label class="col-md-3 col-xs-12 col-sm-3 control-label"><fmt:message key="indirect" bundle="${msg}" /></label>
 							<div class="col-md-6 col-xs-12 col-sm-6">
@@ -122,7 +117,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="form-group" data-ng-show="stickiness.stickinessMethod == 'LBCOOKIE' ">
+					<div class="form-group" data-ng-show="stickiness.stickinessMethod == 'LbCookie' ">
 						<div class="row">
 							<label class="col-md-3 col-xs-12 col-sm-3 control-label"><fmt:message key="post.only" bundle="${msg}" /></label>
 							<div class="col-md-6 col-xs-12 col-sm-6">
@@ -130,7 +125,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="form-group" data-ng-show="stickiness.stickinessMethod == 'LBCOOKIE' ">
+					<div class="form-group" data-ng-show="stickiness.stickinessMethod == 'LbCookie' ">
 						<div class="row">
 							<label class="col-md-3 col-xs-12 col-sm-3 control-label"><fmt:message key="common.domain" bundle="${msg}" /></label>
 							<div class="col-md-6 col-xs-12 col-sm-6">
@@ -144,8 +139,8 @@
 
         <div class="modal-footer">
             <button type="button" class="btn btn-default " ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.cancel" bundle="${msg}" /></button>
-            <button class="btn btn-info" data-ng-show="stickiness.stickinessMethod == 'NONE'" type="button" data-ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.add" bundle="${msg}" /></button>
-            <button class="btn btn-info" data-ng-hide="stickiness.stickinessMethod == 'NONE'" type="submit"><fmt:message key="common.add" bundle="${msg}" /></button>
+            <button class="btn btn-info" data-ng-show="stickiness.stickinessMethod == 'None'" type="button" data-ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.add" bundle="${msg}" /></button>
+            <button class="btn btn-info" data-ng-hide="stickiness.stickinessMethod == 'None'" type="submit"><fmt:message key="common.add" bundle="${msg}" /></button>
         </div>
         </div>
         </div>
