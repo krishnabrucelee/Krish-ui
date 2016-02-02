@@ -4,7 +4,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <div class="hpanel" >
-			<div  ng-controller="networkCtrl">
+			<div  ng-controller="secondaryIpCtrl">
 				<div class="hpanel">
 					<div class="panel-heading">
 						<div class="row">
@@ -16,8 +16,8 @@
 									<panda-quick-search></panda-quick-search>
 										<div class="clearfix"></div>
 									<span class="pull-right m-l-sm m-t-sm">
-									<a class="btn btn-info" ng-click="acquireNewIP('md')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span>
-									<fmt:message key="acquire.new.secondary.ip" bundle="${msg}" /></a> <a class="btn btn-info" ui-sref="cloud.list-instance.view-instance.view-ipaddress" title="<fmt:message key="common.refresh" bundle="${msg}" />" ui-sref-opts="{reload: true}">
+									<a class="btn btn-info" has-permission="ACQUIRE_SECONDARY_IP_ADDRESS" ng-click="acquireNewIP('md')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span>
+									<fmt:message key="acquire.new.secondary.ip" bundle="${msg}" /></a> <a class="btn btn-info" ui-sref="cloud.list-instance.view-instance.view-ipAddress" title="<fmt:message key="common.refresh" bundle="${msg}" />" ui-sref-opts="{reload: true}">
 									<span class="fa fa-refresh fa-lg"></span></a>
 									</span>
 								</div>
@@ -28,8 +28,7 @@
 					<div class="row">
 						<div class="col-md-12 col-sm-12 col-xs-12 ">
 							<div class="white-content">
-							<div data-ng-show = "showLoader" style="margin: 1%">
-    				  		<get-loader-image data-ng-show="showLoader"></get-loader-image>
+							<div data-ng-hide = "showLoader" style="margin: 1%">
       						</div>
 								<div data-ng-hide="showLoader" class="table-responsive">
 									<table cellspacing="1" cellpadding="1"
@@ -42,11 +41,11 @@
 											</tr>
 										</thead>
 										<tbody>
-											<tr data-ng-repeat=" nic in filteredCount = (nicIPLists| filter: quickSearch | orderBy:sort.column:sort.descending)">
+											<tr data-ng-show="nic.nicId==nicip" data-ng-repeat=" nic in filteredCount = (nicIPLists| filter: quickSearch | orderBy:sort.column:sort.descending)">
 												<td>{{ nic.vmInstance.name }}</td>
 												<td>{{ nic.guestIpAddress}}</td>
 
-												<td><a  class="icon-button" title="<fmt:message key="common.delete" bundle="${msg}" />" data-ng-click="deleteIP('sm', nic)"><span class="fa fa-trash"></span></a>
+												<td><a  class="icon-button" title="<fmt:message key="common.delete" bundle="${msg}" />"  data-ng-click="deleteIP('sm', nic)"><span class="fa fa-trash"></span></a>
 												</td>
 											</tr>
 										</tbody>
@@ -57,3 +56,4 @@
 					</div>
 				</div>
 			</div>
+		</div>
