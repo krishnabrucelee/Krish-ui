@@ -36,7 +36,7 @@ function secondaryIpCtrl($scope, $modal, $state, $window, $stateParams,appServic
         $scope.nic = {};
         var instanceId = $stateParams.id;
 	$scope.nicip=$stateParams.id1;
-       	var hasNicIP = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbyvminstances?instanceId="+instanceId +"&lang=" + appService.localStorageService.cookie.get('language')+"&sortBy=-id");
+       	var hasNicIP = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbyvminstances?instanceid="+instanceId +"&lang=" + appService.localStorageService.cookie.get('language')+"&sortBy=-id");
         hasNicIP.then(function (result) {
             $scope.nicIPLists = result;
             $scope.showLoader = false;

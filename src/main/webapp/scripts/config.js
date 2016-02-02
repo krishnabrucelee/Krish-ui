@@ -131,7 +131,7 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider,
 			})
 
 			.state('cloud.list-instance.view-instance.ipaddress', {
-				url : "/ip-address/:id1",
+				url : ":id/ip-address/:id1",
 				templateUrl : VIEW_URL + "views/cloud/instance/listIPAddress.jsp",
 				data : {
 					pageTitle : 'ip.address'
