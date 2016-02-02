@@ -16,6 +16,7 @@ function interceptorAPI($q, globalConfig, $injector) {
             return response;
         },
         responseError : function(response) {
+            console.log(response);
             if (response.data != null && response.status !== 401) {
                 if (!angular.isUndefined(response.data.globalError) && response.data.globalError[0] != null) {
                     var msg = response.data.globalError[0];
@@ -29,8 +30,8 @@ function interceptorAPI($q, globalConfig, $injector) {
 	                    });
                     }
                 }
-            } else if(response.data != null && response.status === 401) {
-            	if (!angular.isUndefined(response.data.message) && response.data.message != null) {
+            } else if (response.data != null && response.status === 401) {
+                if (!angular.isUndefined(response.data.message) && response.data.message != null) {
                     var msg = response.data.message;
                     var appService = $injector.get('appService');
                     appService.notify({
@@ -50,8 +51,6 @@ function interceptorAPI($q, globalConfig, $injector) {
     return promiseInterceptor;
 };
 
-angular.module('homer')
-.factory('interceptorAPI', interceptorAPI)
-.config([ '$httpProvider', function($httpProvider) {
+angular.module('homer').factory('interceptorAPI', interceptorAPI).config([ '$httpProvider', function($httpProvider) {
     $httpProvider.interceptors.push('interceptorAPI');
 } ]);

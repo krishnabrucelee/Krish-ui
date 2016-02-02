@@ -85,8 +85,9 @@
 											<img data-ng-show="templateObj.displayText.toLowerCase().indexOf('fedora') > -1" src="images/os/fedora_logo.png" alt="" height="25" width="25" class="m-r-5" >
 											<img data-ng-show="templateObj.displayText.toLowerCase().indexOf('redhat') > -1" src="images/os/redhat_logo.png" alt="" height="25" width="25" class="m-r-5" >
 											<img data-ng-show="templateObj.displayText.toLowerCase().indexOf('core') > -1" src="images/os/core_logo.png" alt="" height="25" width="25" class="m-r-5" >
-<!-- 											<img data-ng-show="templateObj.displayText.toLowerCase().indexOf('vynta') > -1" src="images/os/vynta_logo.png" alt="" height="25" width="25" class="m-r-5" >
- -->  											<img data-ng-show="templateObj.displayText.toLowerCase().indexOf('windows') > -1" src="images/os/windows_logo.png" alt="" height="25" width="25" class="m-r-5" >
+                                            <img data-ng-show="templateObj.displayText.toLowerCase().indexOf('windows') > -1" src="images/os/windows_logo.png" alt="" height="25" width="25" class="m-r-5" >
+                                            <div data-ng-if = "templateObj.passwordEnabled" class="p-xss fa-key fa"></div>
+											<div data-ng-if = "!templateObj.passwordEnabled" class="p-xss fa"></div>
 											<br>ver : <span class="text-success">{{templateObj.osVersion}}</span>
 											</div>
 											 <div class="col-md-8 col-sm-8"><label class="col-md-11 col-sm-11">{{templateObj.name}}</label><span class="col-md-11 col-sm-11">{{templateObj.displayText}}</span></div>

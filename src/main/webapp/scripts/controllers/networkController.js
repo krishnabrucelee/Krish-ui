@@ -80,7 +80,7 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
             $scope.paginationObject.totalItems = result.totalItems;
         });
     };
-    $scope.portRulesLists(1);
+    //$scope.portRulesLists(1);
 
     $scope.hostList = function () {
         var hashostList = appService.crudService.listAll("host/list");
@@ -116,10 +116,11 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
         $scope.vmList = result;
         });
     };
-    $scope.vmLists(1);
+   // $scope.vmLists(1);
 
 <<<<<<< Updated upstream
     $scope.nicIPList = function (instance) {
+    	  $scope.instances = instance;
 	var instanceId = instance.id;
        	var hasNicIP = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbyvminstances?instanceid="+instanceId +"&lang=" + appService.localStorageService.cookie.get('language')+"&sortBy=-id");
         hasNicIP.then(function (result) {
@@ -127,7 +128,7 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
             $scope.showLoader = false;
         });
     };
-    // $scope.nicIPList();
+
 
     $scope.showConsole = function (vm) {
         $scope.vm = vm;
@@ -243,7 +244,7 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
                     $scope.formSubmitted = true;
                     if (form.$valid) {
                         vms.hostUuid = $scope.instance.host.uuid;
-                        var hasVm = appService.crudService.updates("virtualmachine/vm", vms);
+                        var hasVm = appService.crudService.updates("virtualmachine/handleevent/vm", vms);
                         hasVm.then(function (result) {
                             $state.reload();
                             $scope.cancel();
@@ -267,7 +268,7 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
                 $scope.item = item;
                 $scope.vmStop = function (item) {
                     var event = "VM.STOP";
-                    var hasVm = appService.crudService.vmUpdate("virtualmachine/event", item.uuid, event);
+                    var hasVm = appService.crudService.vmUpdate("virtualmachine/handlevmevent", item.uuid, event);
                     hasVm.then(function (result) {
                         $state.reload();
                         $scope.cancel();
@@ -283,7 +284,7 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
                 $scope.item = item;
                 $scope.vmRestart = function (item) {
                     var event = "VM.REBOOT";
-                    var hasVm = appService.crudService.vmUpdate("virtualmachine/event", item.uuid, event);
+                    var hasVm = appService.crudService.vmUpdate("virtualmachine/handlevmevent", item.uuid, event);
                     hasVm.then(function (result) {
                         $state.reload();
                         $scope.cancel();
@@ -1341,6 +1342,7 @@ console.log($scope.stickiness);
 
             appService.dialogService.openDialog("app/views/cloud/network/vm-list-port.jsp", "lg", $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
                     $scope.portforwardSave = function (portForward) {
+
                         $scope.portForward = $scope.global.rulesPF[0];
                         $scope.formSubmitted = true;
                         $scope.showLoader = true;
@@ -1349,7 +1351,6 @@ console.log($scope.stickiness);
                         $scope.portForward.vmGuestIp = $scope.instances.ipAddress;
                         $scope.portForward.ipAddressId = $stateParams.id1;
                         $scope.portForward.protocolType = $scope.portForward.protocolType.name;
-
                         var hasPortForward = appService.crudService.add("portforwarding", $scope.portForward);
                         hasPortForward.then(function (result) { // this is only
 																// run after

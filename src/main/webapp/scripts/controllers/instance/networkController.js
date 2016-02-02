@@ -118,11 +118,7 @@ function networkCtrl($scope, $modal, $state, $window, $stateParams,appService) {
         	    	    $scope.instanceNicList();
                }).catch(function (result) {
                         if (!angular.isUndefined(result.data)) {
-                            if (result.data.globalError != '' && !angular.isUndefined(result.data.globalError)) {
-                                var msg = result.data.globalError[0];
-                                $scope.showLoader = false;
-                                appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
-                            } else if (result.data.fieldErrors != null) {
+                             if (result.data.fieldErrors != null) {
                                 angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
                                     $scope.attachvolumeForm[key].$invalid = true;
                                     $scope.attachvolumeForm[key].errorMessage = errorMessage;
