@@ -28,7 +28,6 @@ function networkCtrl($scope, $modal, $state, $window, $stateParams,appService) {
             $scope.networkList = result.network;
 
         });
-
     }
     $scope.networkList = {};
     $scope.paginationObject = {};
@@ -52,8 +51,6 @@ function networkCtrl($scope, $modal, $state, $window, $stateParams,appService) {
     };
     $scope.list(1);
 
-
-
   //Instance Nic List
 	    $scope.instanceNicList = function () {
        	var instanceId = $stateParams.id;
@@ -69,8 +66,6 @@ function networkCtrl($scope, $modal, $state, $window, $stateParams,appService) {
 	    if(!angular.isUndefined($stateParams.id)){
 	        $scope.instanceNicList();
 	    	}
-
-
 
     $scope.addNetworkToVM = function (instance) {
         appService.dialogService.openDialog("app/views/cloud/instance/add-network.jsp", 'md', $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
@@ -91,24 +86,19 @@ function networkCtrl($scope, $modal, $state, $window, $stateParams,appService) {
         					}
         				})
         				$scope.networkList = networkList;
-
         			});
 	        	};
 	    	    $scope.networkList(1);
 
-
-
-            $scope.addNicToVirtualMachine = function (form, network) {
+	    	    $scope.addNicToVirtualMachine = function (form, network) {
                 $scope.formSubmitted = true;
                 if (form.$valid) {
 
                 	$scope.nic = {};
                 	$scope.nic.vmInstance = $scope.instance;
                 	delete $scope.nic.vmInstance.network;
-
-                        $scope.nic.networkId = network.id;
-
-		        delete $scope.nic.network;
+                    $scope.nic.networkId = network.id;
+                    delete $scope.nic.network;
                         $scope.showLoader = true;
                         var hasServer = appService.crudService.add("nics", $scope.nic);
                         hasServer.then(function (result) {  // this is only run after $http completes
@@ -141,7 +131,6 @@ function networkCtrl($scope, $modal, $state, $window, $stateParams,appService) {
 		     $scope.showLoader = true;
 		     var hasNic = appService.crudService.softDelete("nics", nic);
              hasNic.then(function (result) {
-
 		       $scope.showLoader = false;
                appService.notify({message: 'NIC deleted successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                $modalInstance.close();
@@ -160,9 +149,7 @@ function networkCtrl($scope, $modal, $state, $window, $stateParams,appService) {
                      }
                  }
              });
-
              },
-
              $scope.cancel = function () {
                   $modalInstance.close();
              };
@@ -176,20 +163,15 @@ function networkCtrl($scope, $modal, $state, $window, $stateParams,appService) {
                 	$scope.showLoader = true;
                     var hasServer = appService.crudService.update("nics", nic);
                     hasServer.then(function (result) {
-
                        $scope.showLoader = false;
                        appService.notify({message: 'NIC updated successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                        $modalInstance.close();
-        	   $scope.instanceNicList();
+                       $scope.instanceNicList();
                     });
-
                 },
-
                 $scope.cancel = function () {
                 $modalInstance.close();
                 };
             }]);
        };
-
-
 }

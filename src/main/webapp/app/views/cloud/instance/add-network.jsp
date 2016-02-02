@@ -4,24 +4,19 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-
 <form name="networkForm" method="POST" data-ng-submit="addNicToVirtualMachine(networkForm, network)"  novalidate >
     <div class="inmodal" >
         <div class="modal-header">
             <panda-modal-header page-custom-icon="images/network-icon-2.png"  page-title="<fmt:message key="add.network.to.vm" bundle="${msg}" />"></panda-modal-header>
-
         </div>
         <div class="modal-body">
-
             <div class="row">
                 <div class="col-md-12">
                     <h6 class="text-left m-l-md ">
                         <fmt:message key="please.specify.the.network.that.you.would.like.to.add.this.VM.to" bundle="${msg}" />.<fmt:message key="a.new.nic.will.be.added.for.this.network" bundle="${msg}" />.
                     </h6>
                     <br/>
-                    <!--<div class="hr-line-dashed"></div>-->
                     <div class="form-group" ng-class="{ 'text-danger' : networkForm.networkOffers.$invalid && formSubmitted}">
-
                         <div class="row" >
                             <label class="col-md-offset-1 col-sm-offset-1  col-md-2 col-xs-3 col-sm-1 control-label "><fmt:message key="common.network" bundle="${msg}" /><span class="text-danger">*</span>
                             </label>

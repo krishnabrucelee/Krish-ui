@@ -15,21 +15,17 @@
 			</div>
 			<div class="form-group has-error col-md-9 col-sm-9  col-xs-9 m-t-md">
 				<p>
-					<fmt:message key="are.you.sure.do.you.want.to.delete"
-						bundle="${msg}" />
+					<fmt:message key="are.you.sure.do.you.want.to.delete" bundle="${msg}" />
 				</p>
 			</div>
 		</div>
 	</div>
 	<div class="modal-footer">
 		<get-loader-image data-ng-show="showLoader"></get-loader-image>
-		<button type="button" data-ng-if="!showLoader"
-			class="btn btn-default " ng-click="cancel()" data-dismiss="modal">
+		<button type="button" data-ng-if="!showLoader" class="btn btn-default " ng-click="cancel()" data-dismiss="modal">
 			<fmt:message key="common.cancel" bundle="${msg}" />
 		</button>
-		<button type="button" data-ng-if="!showLoader"
-			class="btn btn-default btn-danger2" ng-click="ok(deleteObject)"
-			data-dismiss="modal">
+		<button type="button" data-ng-if="!showLoader" class="btn btn-default btn-danger2" ng-click="ok(deleteObject)" data-dismiss="modal">
 			<fmt:message key="common.ok" bundle="${msg}" />
 		</button>
 	</div>
