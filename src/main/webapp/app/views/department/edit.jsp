@@ -17,6 +17,7 @@
                             <label class="col-md-4 col-xs-12 col-sm-4 control-label control-normal"><fmt:message key="common.domain" bundle="${msg}" /><span class="text-danger">*</span></label>
                             <div class="col-md-6  col-sm-6 col-xs-12">
                                 {{ department.domain.name }}
+                                <input type="hidden" name="domain"  data-ng-model="department.domain" data-ng-init="department.domainId=global.sessionValues.domainId" />
                             </div>
                         </div>
                     </div>
@@ -56,7 +57,7 @@
 
         <div class="modal-footer">
             <get-loader-image data-ng-show="showLoader"></get-loader-image>
-        
+
             <button type="button" data-ng-hide="showLoader" class="btn btn-default " ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.cancel" bundle="${msg}" /></button>
             <button class="btn btn-info" data-ng-hide="showLoader" type="submit"><fmt:message key="common.update" bundle="${msg}" /></button>
 

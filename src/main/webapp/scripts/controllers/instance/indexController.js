@@ -568,19 +568,14 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
 
         }).catch(function (result) {
             $scope.showLoader = false;
-            if (result.data.globalError[0] != '') {
-                var msg = result.data.globalError[0];
-                appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
-            } else if (result.data.fieldErrors != null) {
+            if (result.data.fieldErrors != null) {
                 var errorMessages = "";
                 angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
                     errorMessages += "," + key + ": " + "is incorrect ";
                 });
                 errorMessages = errorMessages.slice(1, errorMessages.legnth);
                 appService.notify({message: errorMessages, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
-            } else {
             }
-
             $scope.wizard.prev();
         });
     };
@@ -627,10 +622,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
             $modalInstance.close();
         }).catch(function (result) {
             if (!angular.isUndefined(result.data)) {
-                if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
-                    var msg = result.data.globalError[0];
-                    appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
-                } else if (result.data.fieldErrors != null) {
+                if (result.data.fieldErrors != null) {
                     angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
                         $scope.instanceForm[key].$invalid = true;
                         $scope.instanceForm[key].errorMessage = errorMessage;
@@ -881,16 +873,13 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
             }).catch(function (result) {
                 $scope.showLoaderOffer = false;
                 if (!angular.isUndefined(result) && result.data != null) {
-                    if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
-                        var msg = result.data.globalError[0];
-                        appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
-                    }
+                    if (result.data.fieldErrors != '' && !angular.isUndefined(result.data.fieldErrors)) {
                     angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
                         $scope.computeForm[key].$invalid = true;
                         $scope.computeForm[key].errorMessage = errorMessage;
                     });
                 }
-
+                }
             });
         }
     }
