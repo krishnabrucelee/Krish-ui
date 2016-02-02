@@ -14,7 +14,7 @@ pageEncoding="UTF-8"%>
                                 <span class="pull-right"><fmt:message key="total.volume" bundle="${msg}" /></span>
                                 <div class="clearfix"></div>
                                 <span class="pull-left m-t-xs"><img src="images/volume-icon.png"></span>
-                                <b class="pull-right">{{volumeList.Count}}</b>
+                                <b class="pull-right">{{attachedCount + detachedCount}}</b>
                                 <div class="clearfix"></div>
                             </div>
                             <div class="dashboard-box pull-left">

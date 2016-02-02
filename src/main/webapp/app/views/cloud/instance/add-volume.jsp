@@ -88,7 +88,7 @@ pageEncoding="UTF-8"%>
 							</div>
 						</div>
 					</div>
-					<div data-ng-show="volume.storageOffering.isCustomDisk">
+					<div data-ng-if="volume.storageOffering.isCustomDisk">
 						<div class="form-group"
 							data-ng-class="{ 'text-danger' : volumeForm.diskSize <= 0 && volumeForm.diskSize.$invalid && formSubmitted}">
 							<div class="row">
@@ -120,7 +120,7 @@ pageEncoding="UTF-8"%>
 						</div>
 						<div class="form-group"
 							data-ng-class="{ 'text-danger' :  volumeForm.diskMinIops.$invalid && formSubmitted}"
-							data-ng-show="volume.storageOffering.isCustomizedIops">
+							data-ng-if="volume.storageOffering.isCustomizedIops">
 							<div class="row">
 								<div class="col-md-6 col-sm-6">
 									<div class="form-group"

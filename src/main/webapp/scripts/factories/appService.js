@@ -23,10 +23,10 @@ function appService(crudService, localStorageService, globalConfig, promiseAjax,
     // Dialog Service call goes here
     object.dialogService = dialogService
 
-    // Model service calls goes here
+    // Model service call goes here
     object.modalService = modalService
 
-    // Volume service calls goes here
+    // Volume service call goes here
     object.volumeService = volumeService
 
     return object;

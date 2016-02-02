@@ -429,6 +429,7 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
 
                 // Create a new application
                 $scope.save = function (form, volume) {
+
                     $scope.formSubmitted = true;
 
                     if (form.$valid) {
