@@ -357,7 +357,7 @@ function storageCtrl($scope, $state, $stateParams, appService, $window, volumeSe
 
                 $scope.project = {};
                 $scope.projectList = function() {
-                    var hasProjects = appService.promiseAjax.httpTokenRequest(appService.crudService.globalConfig.HTTP_GET, appService.crudService.globalConfig.APP_URL + "projects/list");
+                    var hasProjects = appService.promiseAjax.httpTokenRequest(appService.crudService.globalConfig.HTTP_GET, appService.crudService.globalConfig.APP_URL + "projects");
                     hasProjects.then(function(result) { // this is only run after $http completes0
                         $scope.options = result;
                     });

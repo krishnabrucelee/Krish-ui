@@ -174,6 +174,7 @@ function accountListCtrl($scope,$state, $log,$timeout, appService) {
     $scope.addUser = function (size) {
         appService.dialogService.openDialog("app/views/account/add-user.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
         	$scope.save = function (form) {
+
                 $scope.formSubmitted = true;
                 if (form.$valid) {
 		    $scope.showLoader = true;
@@ -184,19 +185,18 @@ function accountListCtrl($scope,$state, $log,$timeout, appService) {
                     if (user.password == $scope.account.confirmPassword) {
                     	var hasServer = appService.crudService.add("users", user);
                     	hasServer.then(function (result) {  // this is only run after $http completes
-                    		$scope.list(1);
+                    		
 				$scope.showLoader = false;
                     		appService.notify({message: 'Added successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
-                    		$modalInstance.close();
-                    		$scope.user = {};
+				$modalInstance.close();
+				$scope.list(1);
+
                     	}).catch(function (result) {
                     		if(!angular.isUndefined(result) && result.data != null) {
 				   $scope.showLoader = false;
-                    		   angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
-				   $scope.userForm[key].$invalid = true;
-                            	   $scope.userForm[key].errorMessage = errorMessage;
-                    			});
+                    		   
                     		}
+				$modalInstance.close();
                     	});
                     }
                     else {  // Add tool tip message for confirmation password in add-user
@@ -205,11 +205,14 @@ function accountListCtrl($scope,$state, $log,$timeout, appService) {
                     	$scope.userForm[key].errorMessage = document.getElementById("passwordErrorMessage").value;
                     }
                 }
+
+
             },
             $scope.cancel = function () {
                 $modalInstance.close();
             };
 
+ }])};
 
             // Getting list of roles and projects by department
             $scope.getRolesAndProjectsByDepartment = function(department) {
@@ -223,9 +226,9 @@ function accountListCtrl($scope,$state, $log,$timeout, appService) {
             		$scope.options = result;
             	 });
            	};
-         }]);
+        
 
-    };
+   
 
     // Delete user data from database
     $scope.deleteUser = function (size) {
@@ -241,10 +244,9 @@ function accountListCtrl($scope,$state, $log,$timeout, appService) {
      hasServer.then(function (result) {
          $scope.list(1);
          appService.notify({message: 'Deleted successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
-         $modalInstance.close();
+
      });
 
-    appService.modalService.trigger('app/views/account/delete-user.jsp', size);
     };
 
     $scope.deleteUsers = function () {

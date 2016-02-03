@@ -57,11 +57,11 @@ function sshkeyListCtrl($scope,appService,$state) {
        }
    };
 
-   $scope.$watch('sshkey.domain', function (obj) {
+   $scope.select = function (obj) {
 	   if (!angular.isUndefined(obj) && obj != "") {
 		   $scope.departmentList(obj);
        }
-   });
+   };
 
    $scope.createSSHKey = function (size) {
        appService.dialogService.openDialog($scope.global.VIEW_URL + "cloud/sshkeys/add.jsp", size, $scope, ['$scope',
@@ -69,7 +69,7 @@ function sshkeyListCtrl($scope,appService,$state) {
        // Create a new sshkey
        $scope.save = function (form,sshkey) {
     	   $scope.formSubmitted = true;
-           if (form.$valid) {
+    	   if (form.$valid && !angular.isUndefined($scope.sshkey.department)) {
         	   $scope.showLoader = true;
 			   var domainObj = {};
 			   var departmentObj = {};
@@ -105,7 +105,7 @@ function sshkeyListCtrl($scope,appService,$state) {
 			       $scope.sshkeyss.domain = domainObj;
 				   $scope.sshkeyss.department = departmentObj;
 			       $scope.sshkeyList[$scope.sshkeyList.length] = $scope.sshkeyss;
-			       $scope.sshkey.privateKey = result.privatekey;
+			       $scope.sshkey.privateKey = result.privateKey;
 			       $scope.list = function (pageNumber) {
 			           var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT :
 			        	   $scope.paginationObject.limit;
@@ -129,7 +129,7 @@ function sshkeyListCtrl($scope,appService,$state) {
 			                $scope.list(1);
 			                $scope.sshkey.name = "";
 			                $scope.sshkey.publicKey = "";
-			                $scope.sshkey.privateKey = result.privatekey;
+			                $scope.sshkey.privateKey = result.privateKey;
 			                $scope.sshkey.domain = "";
 			                $scope.sshkey.department = "";
                         	}).catch(function (result) {
