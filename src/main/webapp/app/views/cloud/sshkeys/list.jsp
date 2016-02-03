@@ -60,7 +60,7 @@
                                             {{ sshkey.department.userName }}
                                         </td>
                                         <td>
-                                        	{{ sshkey.privatekey}}
+                                        	{{ sshkey.privateKey}}
                                         </td>
                                         <td><%-- <a class="icon-button" title="<fmt:message key="common.view.instance" bundle="${msg}" />"> <span class="fa fa-eye"></span></a> --%>
 											<a has-permission="DELETE_SSH_KEY" class="icon-button" title="<fmt:message key="common.delete" bundle="${msg}" />" data-ng-click="delete('sm', sshkey)"><span class="fa fa-trash"></span></a>

@@ -270,6 +270,15 @@ border-color: #e74c3c !important;}
 
 .quota-limit .tooltip{}
 
+.resizelink{
+ background-color: #fff;
+ padding: 0px;
+ border: none;
+}
+
+.resizelink.enable{color:#4c6986;}
+.resizelink.disable{color:#ccc; cursor:default;}
+
 @media (min-width: 768px) and (max-width: 1023px) {
 .shown-page{width:100% !important;}
 .shown-entry{width:100% !important;}

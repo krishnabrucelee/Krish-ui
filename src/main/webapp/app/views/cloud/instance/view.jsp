@@ -9,10 +9,13 @@ pageEncoding="UTF-8"%>
 
         <ul class="nav nav-tabs" data-ng-init="templateCategory = 'dashboard'">
             <li data-ng-class="{'active' : templateCategory == 'dashboard'}"><a href="javascript:void(0)" data-ng-click="templateCategory = 'dashboard'" data-toggle="tab">  <i class="fa fa-laptop"></i> <fmt:message key="dashboard" bundle="${msg}" /></a></li>
-            <li data-ng-if ="instance.status == 'STOPPED'" data-ng-class="{'active' : templateCategory == 'config'}"><a has-permission="UPGRADE_VM" data-ng-click="templateCategory = 'config'"  data-toggle="tab"> <i class="fa fa-cogs"></i> <fmt:message key="configuration" bundle="${msg}" /></a></li>
+            <li data-ng-if ="instance.status == 'STOPPED'" data-ng-class="{'active' : templateCategory == 'config'}"><a has-permission="UPGRADE_VM" data-ng-click="selectab()"  data-toggle="tab"> <i class="fa fa-cogs"></i> <fmt:message key="configuration" bundle="${msg}" /></a></li>
             <li class=""><a  data-ng-click="templateCategory = 'storage'" data-toggle="tab"><i class="fa fa-database"></i> <fmt:message key="storage" bundle="${msg}" /></a></li>
             <li class=""><a  data-ng-click="templateCategory = 'network'" data-toggle="tab"> <!--<i class="fa fa-sitemap"></i>--><i class="custom-icon custom-icon-network"></i> <fmt:message key="networking" bundle="${msg}" /></a></li>
             <li class=""><a has-permission="MONITOR_VM_PERFORMANCE" data-ng-click="templateCategory = 'monitor'" data-toggle="tab"> <i class="fa fa-desktop"></i> <fmt:message key="monitor" bundle="${msg}" /></a></li>
+            <div class="pull-right">
+            	<a title="<fmt:message key="common.refresh" bundle="${msg}" />"  class="btn btn-info" ui-sref="cloud.list-instance.view-instance"  ui-sref-opts="{reload: true}" ><span class="fa fa-refresh fa-lg "></span></a>
+            </div>
         </ul>
 
         <div class="tab-content">
@@ -23,9 +26,6 @@ pageEncoding="UTF-8"%>
                 <div  class="row" >
                     <div class="col-lg-9 col-md-8 col-sm-12">
                         <div class="hpanel">
-                            <div class="pull-right">
-                                <a title="<fmt:message key="common.refresh" bundle="${msg}" />"  class="btn btn-info" ui-sref="cloud.list-instance.view-instance"  ui-sref-opts="{reload: true}" ><span class="fa fa-refresh fa-lg "></span></a>
-                            </div>
                             <h4>
                                 <fmt:message key="common.statistics" bundle="${msg}" />
                             </h4>
@@ -165,6 +165,9 @@ pageEncoding="UTF-8"%>
                                         <li has-permission="HOST_INFORMATION" data-ng-if="instance.status == 'RUNNING'" class="list-group-item">
                                             <a href="javascript:void(0);" title="<fmt:message key="host.information" bundle="${msg}" />" data-ng-click="hostInformation(instance)" ><span class="fa-square fa font-bold m-xs"></span> <fmt:message key="host.information" bundle="${msg}" /></a>
                                         </li>
+                                         <li class="list-group-item">
+                                            <button data-ng-class = "(instance.passwordEnabled == true  && instance.vncPassword !== null) ? 'resizelink enable' : 'resizelink disable'" data-ng-disabled="instance.vncPassword == null || instance.passwordEnabled == false" href="javascript:void(0);" title="<fmt:message key="show.password" bundle="${msg}" />" data-ng-click="showPassword(instance)"><span class="fa-key fa font-bold m-xs"></span> <fmt:message key="show.password" bundle="${msg}" /></button>
+                                        </li>
                                     </div>
                                     <li class="list-group-item">
                                         <!--<a href="#" title="Edit Note">  <span class="fa-edit fa font-bold m-xs"></span> Edit Note</a>-->
@@ -189,12 +192,6 @@ pageEncoding="UTF-8"%>
                                         <li has-permission="REBOOT_VM" data-ng-if="instance.status == 'RUNNING'" class="list-group-item">
                                             <a href="javascript:void(0);" data-ng-if="instance.status == 'RUNNING'" title="<fmt:message key="restart" bundle="${msg}" />" data-ng-click="rebootVm('sm',instance)"><span class="fa-rotate-left fa font-bold m-xs"></span> <fmt:message key="reboot" bundle="${msg}" /></a>
                                         </li>
-                                        <li has-permission="RESET_PASSWORD" data-ng-if="instance.passwordEnabled == true && (instance.status == 'RUNNING' || instance.status == 'STOPPED') && instance.vncPassword !== null"  class="list-group-item">
-                                            <a href="javascript:void(0);" title="<fmt:message key="show.password" bundle="${msg}" />" data-ng-click="showPassword(instance)"><span class="fa-key fa font-bold m-xs"></span> <fmt:message key="show.password" bundle="${msg}" /></a>
-                                        </li>
-                                        <li has-permission="RESET_PASSWORD" data-ng-if="instance.passwordEnabled == true && (instance.status == 'RUNNING' || instance.status == 'STOPPED')"  class="list-group-item">
-                                            <a href="javascript:void(0);" title="<fmt:message key="reset.password" bundle="${msg}" />" data-ng-click="resetPassword(instance)"><span class="fa-key fa font-bold m-xs"></span> <fmt:message key="reset.password" bundle="${msg}" /></a>
-                                        </li>
                                         <li has-permission="REINSTALL_VM" class="list-group-item" data-ng-if="instance.status == 'RUNNING'">
                                             <a href="javascript:void(0);" title="<fmt:message key="reinstall.vm" bundle="${msg}" />" data-ng-click="reInstallVm('md',instance)"><span class="fa fa-history m-xs"></span> <fmt:message key="reinstall.vm" bundle="${msg}" /></a>
                                         </li>
@@ -211,9 +208,10 @@ pageEncoding="UTF-8"%>
                                             <a href="javascript:void(0);" title="<fmt:message key="detach.iso" bundle="${msg}" />" data-ng-click="detachISO(instance)"><span class="fa-compass fa font-bold m-xs"></span> <fmt:message key="detach.iso" bundle="${msg}" /></a>
                                         </li>
                                          <li  class="list-group-item " >
-                                            <a data-ng-if="instance.status == 'RUNNING'"  href="javascript:void(0);" data-ng-click="resize()" title="<fmt:message key="resize.vm" bundle="${msg}" />"><span class="fa fa-expand m-xs"></span> <fmt:message key="resize.vm" bundle="${msg}" /></a>
-                                            <a data-ng-if="instance.status == 'STOPPED'" href="javascript:void(0);"   data-ng-click="selectab()" title="<fmt:message key="resize.vm" bundle="${msg}" />"><span class="fa fa-expand m-xs"></span> <fmt:message key="resize.vm" bundle="${msg}" /></a>
-
+                                              <button ng-class = "(instance.status == 'RUNNING') ? 'resizelink disable' : 'resizelink enable'" data-ng-disabled="instance.status == 'RUNNING'" href="javascript:void(0);"   data-ng-click="selectab()" title="<fmt:message key="resize.vm" bundle="${msg}" />"><span class="fa fa-expand m-xs"></span> <fmt:message key="resize.vm" bundle="${msg}" /></button>
+                                        </li>
+                                         <li has-permission="RESET_PASSWORD" class="list-group-item">
+                                            <button ng-class = "(instance.passwordEnabled == true && instance.status == 'STOPPED') ? 'resizelink enable' : 'resizelink disable'" data-ng-disabled="instance.passwordEnabled == false || instance.status !== 'STOPPED'" href="javascript:void(0);" title="<fmt:message key="reset.password" bundle="${msg}" />" data-ng-click="resetPassword(instance)"><span class="fa-key fa font-bold m-xs"></span> <fmt:message key="reset.password" bundle="${msg}" /></button>
                                         </li>
                                     </div>
                                 </ul>
@@ -391,7 +389,7 @@ pageEncoding="UTF-8"%>
                                                 </td>
                                                 <td class="col-md-8 col-sm-8">
                                                     {{ instance.computeOffering.name}}
-                                                    <a data-ng-if = "instance.status == 'STOPPED'" data-ng-click="templateCategory = 'config'"  class="fa fa-edit m-l-lg">
+                                                    <a data-ng-if = "instance.status == 'STOPPED'" data-ng-click="selectab()"  class="fa fa-edit m-l-lg">
                                                         <fmt:message key="common.edit" bundle="${msg}" />
                                                     </a>
                                                 </td>
