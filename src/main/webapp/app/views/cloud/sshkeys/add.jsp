@@ -48,7 +48,7 @@
                         <div class="row">
 						    <label class="col-md-3 col-xs-12 col-sm-3 control-label"><fmt:message key="common.domain" bundle="${msg}" /> <span class="text-danger">*</span></label>
                             <div class="col-md-6  col-sm-6 col-xs-12">
-                                <select required="true" class="form-control input-group" name="domain" data-ng-model="sshkey.domain" ng-options="domain.name for domain in formElements.domainList" data-ng-class="{'error': !sshkey.domain && formSubmitted}" >
+                               <select required="true" class="form-control input-group" name="domain" data-ng-change = "select(sshkey.domain)" data-ng-model="sshkey.domain" ng-options="domain.name for domain in formElements.domainList" data-ng-class="{'error': !sshkey.domain && formSubmitted}" >
                                     <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
 
                                 </select>

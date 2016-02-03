@@ -14,7 +14,7 @@
                 <img src="images/warning.png" alt="">
             </div>
             <div class="form-group has-error col-md-9 col-sm-9  col-xs-9 m-t-md">
-                <p ><fmt:message key="common.are.you.sure.do.you.want.to.delete" bundle="${msg}" /></p>
+                <p ><fmt:message key="common.are.you.sure.do.you.want.to.delete" bundle="${msg}" />?</p>
             </div>
         </div>
     </div>

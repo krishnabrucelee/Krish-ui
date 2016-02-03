@@ -47,28 +47,28 @@ pageEncoding="UTF-8"%>
                                 <ul class="dropdown-menu pull-right">
                                      <img src="images/dropdown-arw2.png" border="0" class="vol-dropdown-arw">
 											<li has-permission="START_VM"
-														data-ng-show="instance.status != 'Error' || instance.status != 'Expunging' || instance.status != 'Starting' || instance.status != 'Stopping' || instance.status != 'Destroying'  ">
+														data-ng-if = "instance.status != 'ERROR' || instance.status != 'EXPUNGING' || instance.status != 'STARTING' || instance.status != 'STOPPING' || instance.status != 'DESTROYING'  ">
 														<a class="icon-button text-center"
 														title="<fmt:message key="start" bundle="${msg}" />"
 														data-ng-click="startVm('sm',instance)"
-														data-ng-hide="instance.status == 'Running'"> <span
+														data-ng-hide="instance.status == 'RUNNING'"> <span
 															class="fa fa-play m-xs"></span> <fmt:message key="start" bundle="${msg}" />
 													</a>
 													</li>
 													<li has-permission="STOP_VM"
-														data-ng-show="instance.status != 'Error' || instance.status != 'Expunging' || instance.status != 'Starting' || instance.status != 'Stopping' || instance.status != 'Destroying'  ">
+														data-ng-if = "instance.status != 'ERROR' || instance.status != 'EXPUNGING' || instance.status != 'STARTING' || instance.status != 'STOPPING' || instance.status != 'DESTROYING'  ">
 														<a class="icon-button text-center"
 														data-ng-click="stopVm('sm',instance)"
 														title="<fmt:message key="stop" bundle="${msg}" />"
-														data-ng-show="instance.status  == 'Running'"> <span
+														data-ng-if="instance.status  == 'RUNNING'"> <span
 															class="fa fa-ban m-xs"></span> <fmt:message key="stop" bundle="${msg}" />
 													</a>
 													</li>
 
 													<li has-permission="REBOOT_VM"
-														data-ng-show="instance.status != 'Error' || instance.status != 'Expunging' || instance.status != 'Starting' || instance.status != 'Stopping' || instance.status != 'Destroying'  ">
+														data-ng-if = "instance.status != 'ERROR' || instance.status != 'EXPUNGING' || instance.status != 'STARTING' || instance.status != 'STOPPING' || instance.status != 'DESTROYING'   ">
 														<a class="icon-button text-center"
-														data-ng-if="instance.status == 'Running'"
+														data-ng-if="instance.status == 'RUNNING'"
 														title="<fmt:message key="restart" bundle="${msg}" />"
 														data-ng-click="rebootVm('sm',instance)"><span
 															class="fa fa-rotate-left m-xs"></span>
@@ -76,7 +76,7 @@ pageEncoding="UTF-8"%>
 															</a>
 													</li>
 													<li has-permission="VIEW_CONSOLE"
-														data-ng-if="instance.status == 'Running'">
+														data-ng-if="instance.status == 'RUNNING'">
 														<a data-ng-click="showConsole(instance)"
 														class="icon-button text-center"
 														title="<fmt:message key="view.console" bundle="${msg}" />"><span
@@ -86,13 +86,13 @@ pageEncoding="UTF-8"%>
 													</li>
                                                 </ul>
 
-                                                <button class="btn btn-xs btn-success btn-circle" data-ng-if="instance.status == 'Running'" title="{{ instance.status}}"></button>
-	                                            <button class="btn btn-xs btn-danger btn-circle" data-ng-if="instance.status == 'Stopped'"  title="{{ instance.status}}"></button>
-	                                            <button class="btn btn-xs btn-warning btn-circle" data-ng-if="instance.status == 'Starting'"  title="{{ instance.status}}"></button>
-	                                            <button class="btn btn-xs btn-danger btn-circle" data-ng-if="instance.status == 'Error'"  title="{{ instance.status}}"></button>
-						    					<button class="btn btn-xs btn-warning btn-circle" data-ng-if="instance.status == 'Stopping'"  title="{{ instance.status}}">&nbsp</button>
-	                                            <button class="btn btn-xs btn-warning btn-circle" data-ng-if="instance.status == 'Expunging'"  title="{{ instance.status}}"></button>
-	                                            <button class="btn btn-xs btn-danger btn-circle" data-ng-if="instance.status == 'Destroyed'"  title="{{ instance.status}}"></button>
+                                                <button class="btn btn-xs btn-success btn-circle" data-ng-if="instance.status == 'RUNNING'" title="{{ instance.status}}"></button>
+	                                            <button class="btn btn-xs btn-danger btn-circle" data-ng-if="instance.status == 'STOPPED'"  title="{{ instance.status}}"></button>
+	                                            <button class="btn btn-xs btn-warning btn-circle" data-ng-if="instance.status == 'STARTING'"  title="{{ instance.status}}"></button>
+	                                            <button class="btn btn-xs btn-danger btn-circle" data-ng-if="instance.status == 'ERROR'"  title="{{ instance.status}}"></button>
+						    					<button class="btn btn-xs btn-warning btn-circle" data-ng-if="instance.status == 'STOPPING'"  title="{{ instance.status}}">&nbsp</button>
+	                                            <button class="btn btn-xs btn-danger btn-circle" data-ng-if="instance.status == 'EXPUNGING'"  title="{{ instance.status}}"></button>
+	                                            <button class="btn btn-xs btn-danger btn-circle" data-ng-if="instance.status == 'DESTROYED'"  title="{{ instance.status}}"></button>
 
                           </div>
                     </td>

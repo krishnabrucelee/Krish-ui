@@ -66,36 +66,34 @@
 							<table cellspacing="1" cellpadding="1" class="table dataTable table-bordered table-striped ">
 								<thead>
 									<tr>
-										<th ng-click="changeSorting('name')"
-											data-ng-class="sort.descending && sort.column =='name'? 'sorting_desc' : 'sorting_asc' "
-										><fmt:message key="instance.name" bundle="${msg}" /></th>
-										<th ng-click="changeSorting('instanceOwner.userName')"
-											data-ng-class="sort.descending && sort.column =='instanceOwner.userName'? 'sorting_desc' : 'sorting_asc' "
-										><fmt:message key="owner" bundle="${msg}" /></th>
+										<th ng-click="changeSorting('name')" data-ng-class="sort.descending && sort.column =='name'? 'sorting_desc' : 'sorting_asc' ">
+										<fmt:message key="instance.name" bundle="${msg}" /></th>
+										<th ng-click="changeSorting('instanceOwner.userName')" data-ng-class="sort.descending && sort.column =='instanceOwner.userName'? 'sorting_desc' : 'sorting_asc' ">
+										<fmt:message key="owner" bundle="${msg}" /></th>
 										<th class="custom-width-sm" ng-click="changeSorting('application')"
-											data-ng-class="sort.descending && sort.column =='application'? 'sorting_desc' : 'sorting_asc' "
-										><fmt:message key="common.application" bundle="${msg}" /></th>
+											data-ng-class="sort.descending && sort.column =='application'? 'sorting_desc' : 'sorting_asc' ">
+										<fmt:message key="common.application" bundle="${msg}" /></th>
 										<th class="custom-width-xs" ng-click="changeSorting('ostype')"
-											data-ng-class="sort.descending && sort.column =='ostype'? 'sorting_desc' : 'sorting_asc' "
-										><fmt:message key="common.osType" bundle="${msg}" /></th>
+											data-ng-class="sort.descending && sort.column =='ostype'? 'sorting_desc' : 'sorting_asc' ">
+										<fmt:message key="common.osType" bundle="${msg}" /></th>
 										<th class="custom-width-xs" ng-click="changeSorting('computeOffering.numberOfCores')"
-											data-ng-class="sort.descending && sort.column =='computeOffering.numberOfCores'? 'sorting_desc' : 'sorting_asc' "
-										><fmt:message key="vcpu" bundle="${msg}" /></th>
+											data-ng-class="sort.descending && sort.column =='computeOffering.numberOfCores'? 'sorting_desc' : 'sorting_asc' ">
+										<fmt:message key="vcpu" bundle="${msg}" /></th>
 										<th class="custom-width-md" ng-click="changeSorting('computeOffering.memory')"
-											data-ng-class="sort.descending && sort.column =='computeOffering.memory'? 'sorting_desc' : 'sorting_asc' "
-										><fmt:message key="memory" bundle="${msg}" /></th>
+											data-ng-class="sort.descending && sort.column =='computeOffering.memory'? 'sorting_desc' : 'sorting_asc' ">
+										<fmt:message key="memory" bundle="${msg}" /></th>
 										<th class="custom-width-xs" ng-click="changeSorting('volumeSize')"
-											data-ng-class="sort.descending && sort.column =='volumeSize'? 'sorting_desc' : 'sorting_asc' "
-										><fmt:message key="disk" bundle="${msg}" /></th>
+											data-ng-class="sort.descending && sort.column =='volumeSize'? 'sorting_desc' : 'sorting_asc' ">
+										<fmt:message key="disk" bundle="${msg}" /></th>
 										<th ng-click="changeSorting('ipAddress')"
-											data-ng-class="sort.descending && sort.column =='ipAddress'? 'sorting_desc' : 'sorting_asc' "
-										><fmt:message key="common.ip" bundle="${msg}" /></th>
+											data-ng-class="sort.descending && sort.column =='ipAddress'? 'sorting_desc' : 'sorting_asc' ">
+										<fmt:message key="common.ip" bundle="${msg}" /></th>
 										<th ng-click="changeSorting('network.name')"
-											data-ng-class="sort.descending && sort.column =='network.name'? 'sorting_desc' : 'sorting_asc' "
-										><fmt:message key="common.network" bundle="${msg}" /></th>
+											data-ng-class="sort.descending && sort.column =='network.name'? 'sorting_desc' : 'sorting_asc' ">
+										<fmt:message key="common.network" bundle="${msg}" /></th>
 										<th ng-click="changeSorting('host.name')"
-											data-ng-class="sort.descending && sort.column =='host.name'? 'sorting_desc' : 'sorting_asc' "
-										><fmt:message key="common.host" bundle="${msg}" /></th>
+											data-ng-class="sort.descending && sort.column =='host.name'? 'sorting_desc' : 'sorting_asc' ">
+										<fmt:message key="common.host" bundle="${msg}" /></th>
 										<th><fmt:message key="common.action" bundle="${msg}" /></th>
 									</tr>
 								</thead>
@@ -106,11 +104,11 @@
 								</tbody>
 								<tbody data-ng-show="instanceList.length > 0">
 									<tr
-										data-ng-repeat="instance in filteredCount = (instanceList | filter: quickSearch  |orderBy:sort.column:sort.descending)"
-									>
+										data-ng-repeat="instance in filteredCount = (instanceList | filter: quickSearch  |orderBy:sort.column:sort.descending)">
+
 										<td><a class="text-info" ui-sref="cloud.list-instance.view-instance({id: {{ instance.id}}})"
-											title="View Instance"
-										>{{ instance.name}}</a></td>
+											title="View Instance">
+										{{ instance.name}}</a></td>
 										<td>{{ instance.instanceOwner.userName}}</td>
 										<td class="custom-width-sm">{{ instance.application}}</td>
 										<!-- <td>{{ instance.project.name}}</td> -->
@@ -140,9 +138,9 @@
 											data-ng-show="instance.template.displayText.toLowerCase().indexOf('windows') > -1"
 											src="images/os/windows_logo.png" alt="" height="25" width="25" class="m-r-5"
 										></td>
-										<td class="custom-width-xs">{{ instance.computeOffering.numberOfCores}}</td>
-										<td class="custom-width-md">{{ instance.computeOffering.memory}}</td>
-										<td class="custom-width-xs">{{ instance.volumeSize / global.Math.pow(2, 30)}} GB</td>
+										<td class="custom-width-xs"><span data-ng-if="!instance.computeOffering.customized">{{ instance.computeOffering.numberOfCores}}</span><span data-ng-if="instance.computeOffering.customized">{{ instance.cpuCore}}</span></td>
+										<td class="custom-width-md"><span data-ng-if="!instance.computeOffering.customized">{{ instance.computeOffering.memory}}</span><span data-ng-if="instance.computeOffering.customized">{{ instance.memory}}</span></td>
+										<td class="custom-width-xs"><span data-ng-if="instance.volumeSize > 0">{{ instance.volumeSize / global.Math.pow(2, 30)}} GB</span><span data-ng-if="!(instance.volumeSize > 0)">-No Disk-</span></td>
 										<!--                                         <td>{{volume[0].diskSize / global.Math.pow(2, 30)}}</td> -->
 										<td>{{ instance.ipAddress}}</td>
 										<td>{{ instance.network.name}}</td>

@@ -28,7 +28,9 @@ pageEncoding="UTF-8"%>
                     <td data-ng-show="firewallRules.protocol == 'ICMP'"><input valid-number   name="icmpMessage" required="true" data-ng-model="firewallRules.icmpMessage" class="form-control " autofocus type="text"><span class="text-center text-danger" data-ng-show="!firewallRules.icmpMessage && formSubmitted"> *Required</span></td>
                     <td data-ng-show="firewallRules.protocol == 'ICMP'"><input valid-number  name="icmpCode" required="true" data-ng-model="firewallRules.icmpCode" class="form-control " autofocus type="text"><span class="text-center text-danger" data-ng-show="!firewallRules.icmpCode && formSubmitted"> *Required</span></td>
                     <td>
-                        <a  class="btn btn-info" data-ng-click="egressSave(firewallRules)"><span class="pe-7s-plus pe-lg font-bold m-r-xs" ></span>Add Rule</a>
+                        <get-loader-image data-ng-show="showLoader"></get-loader-image>
+                        <a  class="btn btn-info" data-ng-hide="showLoader"  data-ng-click="egressSave(firewallRules)"><span class="pe-7s-plus pe-lg font-bold m-r-xs" ></span>Add Rule</a>
+
                         <!-- <a data-ng-show="delete" class="btn btn-info" data-ng-click="openAddIsolatedNetwork('lg')"><span class="pe-7s-trash pe-lg font-bold m-r-xs"></span></a> -->
                     </td>
                 </tr>
