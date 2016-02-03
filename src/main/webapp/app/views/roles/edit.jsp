@@ -75,7 +75,7 @@
             </div>
         </div>
     </div>
-    <div class="row" has-permission="ASSIGN_ROLE_PERMISSION">
+    <div class="row">
         <div data-ng-show = "showLoader" style="margin: 1%">
     	</div>
         <div class="col-md-12 col-sm-12" data-ng-hide = "showLoader" ng-repeat="(key, module) in permissions | groupBy: 'module'">
