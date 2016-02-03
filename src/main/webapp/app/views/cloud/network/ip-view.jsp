@@ -4,13 +4,13 @@ pageEncoding="UTF-8"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <div class="hpanel" >
-<div class="row m-l-sm m-r-sm panel-body" data-ng-controller="networkViewCtrl" >
+<div class="row m-l-sm m-r-sm panel-body" data-ng-controller="networksCtrl" >
 
     <ul class="nav nav-tabs" data-ng-init="templateCategory = tabview">
         <li data-ng-class="{'active' : tabview == 'details'}"><a href="javascript:void(0)" data-ng-click="templateCategory = 'details'" data-toggle="tab">  <i class="fa fa-list"></i> Details</a></li>
-        <li data-ng-class="{'active' : tabview == 'firewall'}"><a  data-ng-click="templateCategory = 'firewall'" data-toggle="tab"><i class="custom-icon custom-firewall-ip"></i> Firewall</a></li>
-        <li data-ng-class="{'active' : tabview == 'port-forward'}"><a  data-ng-click="templateCategory = 'port-forward'" data-toggle="tab"> <i class="fa fa-mail-forward"></i> Port Forwarding</a></li>
-        <li data-ng-class="{'active' : tabview == 'load-balance'}"><a data-ng-click="templateCategory = 'load-balance'" data-toggle="tab"> <i class="custom-icon custom-load-ip"></i> Load Balancing</a></li>
+        <li data-ng-class="{'active' : tabview == 'firewall'}"><a  data-ng-click="firewallRule(1)" data-toggle="tab"><i class="custom-icon custom-firewall-ip"></i> Firewall</a></li>
+        <li data-ng-class="{'active' : tabview == 'port-forward'}"><a  data-ng-click="portRulesLists(1)" data-toggle="tab"> <i class="fa fa-mail-forward"></i> Port Forwarding</a></li>
+       <li data-ng-class="{'active' : tabview == 'load-balance'}"><a data-ng-click="templateCategory = 'load-balance'" data-toggle="tab"> <i class="custom-icon custom-load-ip"></i> Load Balancing</a></li>
     </ul>
 
     <div class="tab-content">

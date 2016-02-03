@@ -4,7 +4,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<div data-ng-controller="networkCtrl">
+<div ui-view data-ng-controller="networkCtrl">
 
 <div class="row" >
 
@@ -12,7 +12,7 @@
             <div class="row">
                 <div class="col-md-12 col-sm-12">
                       <span class="pull-right">
-                    
+
                             <a class="btn btn-info" has-permission="ADD_NETWORK_TO_VM" data-ng-click="addNetworkToVM(instance)"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="add.network.to.vm" bundle="${msg}" /></a>
                       </span>
                       <h4>
@@ -23,7 +23,7 @@
                 </div>
 
             <div class="network-manager-area">
-                <div class="clearfix"></div>            
+                <div class="clearfix"></div>
                 <div class="network pull-left">
                     <div class="panel panel-info">
                         <div class="panel-body  text-info text-center">
@@ -32,7 +32,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="network-manager pull-right">
                     <div class="hpanel">
                         <div class=" vertical-container" animate-panel child="vertical-timeline-block" delay="3">
@@ -77,6 +77,10 @@
                                                                     <div class="span12 field-box p-xxs"><label class="headerLabel m-r-xs"><fmt:message key="gateway" bundle="${msg}" />:</label><span>{{nic.gateway}}</span></div>
                                                                     <div class="span12 field-box p-xxs"><label class="headerLabel m-r-xs"><fmt:message key="netmask" bundle="${msg}" />:</label><span>{{nic.netMask}}</span></div>
                                                                     <div class="span12 field-box p-xxs"><label class="headerLabel m-r-xs"><fmt:message key="is.default" bundle="${msg}" />:</label><span data-ng-class="nic.isDefault== 'true' ? 'text-info' : 'text-default' ">{{nic.isDefault}}</span></div>
+                                                                    <div class="pull-right">
+										<span class="pull-right m-l-sm m-t-sm"> <a class="btn btn-info" ui-sref="cloud.list-instance.view-instance.ipaddress({id1:{{nic.id}}})"><fmt:message key="edit.secondary.ips" bundle="${msg}" /></a></span>
+								</div>
+
                                                                 </div>
                                                             </div>
                                                         </div>

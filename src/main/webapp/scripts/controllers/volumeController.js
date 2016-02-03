@@ -15,7 +15,7 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
     $scope.global = appService.globalConfig;
     $scope.sort = appService.globalConfig.sort;
     $scope.changeSorting = appService.utilService.changeSorting;
-    
+
 
     $scope.formSubmitted = false;
     // Form Field Decleration
@@ -39,13 +39,13 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
 
             $scope.volumeList.Count = result.totalItems;
 
-//      		 // Get the count of the listings
-//       		var hasVmCount =  appService.crudService.listAll("volumes/volumeCounts");
-//       		hasVmCount.then(function(result) {
-//       			$scope.attachedCount = result.attachedCount;
-//       			$scope.detachedCount = result.attachedCount;
-//       			$scope.totalCount = result.totalCount;
-//    		});
+      		 // Get the count of the listings
+       		var hasVmCount =  appService.crudService.listAll("volumes/volumeCounts");
+       		hasVmCount.then(function(result) {
+       			$scope.attachedCount = result.attachedCount;
+       			$scope.detachedCount = result.detachedCount;
+       			$scope.totalCount = result.totalCount;
+    		});
 
             // For pagination
             $scope.paginationObject.limit = limit;
@@ -401,7 +401,6 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
                 	$scope.volumeElements.departmentList = result;
                 });
 
-
                 // Getting list of projects by department
                 $scope.getProjectsByDepartment = function(department) {
            		 var hasProjects =  appService.promiseAjax.httpTokenRequest(appService.crudService.globalConfig.HTTP_GET, appService.crudService.globalConfig.APP_URL + "projects"  +"/department/"+department.id);
@@ -430,6 +429,7 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
 
                 // Create a new application
                 $scope.save = function (form, volume) {
+
                     $scope.formSubmitted = true;
 
                     if (form.$valid) {
@@ -459,19 +459,21 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
                             appService.notify({message: 'Added successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                             $modalInstance.close();
                         }).catch(function (result) {
- 				if (!angular.isUndefined(result) && result.data != null) {
-                                    if (result.data.globalError[0] != '') {
-                                        var msg = result.data.globalError[0];
-                                        $scope.showLoader = false;
-                                        appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
-                                    }
-                            angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
-                                $scope.volumeForm[key].$invalid = true;
-                                $scope.volumeForm[key].errorMessage = errorMessage;
-                            });
-
-				}
-                        });
+                        	$scope.showLoader = false;
+                		    if (!angular.isUndefined(result.data)) {
+                    		if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
+                      	   	 var msg = result.data.globalError[0];
+                      	   	 $scope.showLoader = false;
+                    	    	 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+                        	} else if (result.data.fieldErrors != null) {
+                           	$scope.showLoader = false;
+                            	angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
+                                	$scope.volumeForm[key].$invalid = true;
+                                	$scope.volumeForm[key].errorMessage = errorMessage;
+                            	});
+                    		}
+                    	}
+                	});
                     }
                 },
                         $scope.cancel = function () {
@@ -639,19 +641,21 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
                  $modalInstance.close();
                  $scope.list(1);
              }).catch(function (result) {
-  				if (!angular.isUndefined(result) && result.data != null) {
-                    if (result.data.globalError[0] != '') {
-                        var msg = result.data.globalError[0];
-                        $scope.showLoader = false;
-                        appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
-                    }
-            angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
-                $scope.volumeForm[key].$invalid = true;
-                $scope.volumeForm[key].errorMessage = errorMessage;
-            });
-
-				}
-                        });
+             	$scope.showLoader = false;
+    		    if (!angular.isUndefined(result.data)) {
+        		if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
+          	   	 var msg = result.data.globalError[0];
+          	   	 $scope.showLoader = false;
+        	    	 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+            	} else if (result.data.fieldErrors != null) {
+               	$scope.showLoader = false;
+                	angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
+                    	$scope.volumeForm[key].$invalid = true;
+                    	$scope.volumeForm[key].errorMessage = errorMessage;
+                	});
+        		}
+        	}
+    	});
                     }
                 },
                 $scope.cancel = function () {

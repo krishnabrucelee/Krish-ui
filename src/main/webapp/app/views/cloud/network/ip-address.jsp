@@ -15,16 +15,15 @@ pageEncoding="UTF-8"%>
                     </div>
                     <div class="col-md-9 col-sm-9 col-xs-9">
                         <span class="pull-right">
-                            <a class="btn btn-info" data-ng-click="openAddIP('md')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span>Acquire new IP</a>
+                            <a class="btn btn-info" data-ng-click="openAddIP('md', network)"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span>Acquire new IP</a>
                        </span>
                     </div>
                 </div>
                <div class="clearfix"></div>
 </div>
 <div class="white-content">
-<form >
-    
-     <table cellspacing="1" cellpadding="1" class="table table-bordered table-striped">
+<form>
+ <table cellspacing="1" cellpadding="1" class="table table-bordered table-striped">
                     <thead>
                     <tr>
                         <th>IPS</th>
@@ -33,22 +32,21 @@ pageEncoding="UTF-8"%>
                         <th>Action</th>
                     </tr>
                     </thead>
-                    <tbody>
-                    <tr>
-                        <td>
-                        
-                            <a class="text-info"  ui-sref="cloud.list-network.view-network.view-ipaddress({id1:1})"  title="View IP"> {{ network.gateway }}[Source NAT]</a>
-                        </td>
-                        <td>{{ network.zone.name }} </td>
-                        <td> <b class="text-success text-uppercase">{{network.state}}</b></td>
+          <tbody>
+              <tr ng-repeat="ipaddress in ipList">
                       <td>
-                            <a class="icon-button" title="Enable VPN">                    
-                                <i class="custom-link-icon custom-vpn-ip"></i> 
+                      	<a class="text-info"  ui-sref="cloud.list-network.view-network.view-ipaddress({id1:ipaddress.id})"  title="View IP"> {{ ipaddress.publicIpAddress }} <span ng-if="ipaddress.isSourcenat">[Source NAT]</span></a>
+                      </td>
+                      <td>{{ipaddress.zone.name}} </td>
+                      <td> <b class="text-success text-uppercase">{{ipaddress.state}}</b></td>
+                      <td>
+                            <a class="icon-button" title="Enable VPN">
+                                <i class="custom-link-icon custom-vpn-ip"></i>
                             </a>
                             <a class="icon-button" title="Release IP"  ><span class="fa fa-chain-broken"></span></a>
                       </td>
-                    </tr>
-                    </tbody>
-                </table>
+              </tr>
+          </tbody>
+</table>
 </form>
 </div>

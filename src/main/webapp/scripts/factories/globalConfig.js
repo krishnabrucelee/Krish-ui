@@ -29,6 +29,7 @@ function globalConfig($window) {
         		descending : false
         	},
         rulesLB:[{name:'Test','protocol':'tcp',publicPort:'90',privatePort:'90',publicEndPort:'120',privateEndPort:'120',algorithm:'Round-robin',vms:[{id:'',name: "NorthChina- Beijing",zone:"Beijing"}],state:'active'}],
+        rulesPF:[{publicStartPort:90,privateStartPort:90,publicEndPort:120,privateEndPort:120,protocolType:'TCP',state:true}],
         Vms:['1','2','3','4'],
         selectedVms:[],
         date: {
@@ -41,6 +42,15 @@ function globalConfig($window) {
         },
         Math: window.Math,
 
+ 	STICKINESS : {
+				NONE: "NONE",
+                SOURCEBASED: "SourceBased",
+        		APPCOOKIE: "AppCookie",
+        		LBCOOKIE: "LbCookie"
+
+        	     },
+
+
         HTTP_GET: 'GET',
         HTTP_POST: 'POST',
         HTTP_PUT: 'PUT',
@@ -49,6 +59,8 @@ function globalConfig($window) {
         CONTENT_LIMIT: 10,
         VIEW_URL : 'app/views/',
         NOTIFICATION_TEMPLATE: 'app/views/notification/notify.jsp',
+        TOKEN_SEPARATOR: "@@",
+        PAGE_ERROR_SEPARATOR: "PAGE_ERROR",
 
         paginationHeaders: function(pageNumber, limit) {
             var headers = {};

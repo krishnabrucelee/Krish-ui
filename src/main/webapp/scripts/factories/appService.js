@@ -11,7 +11,7 @@ function appService(crudService, localStorageService, globalConfig, promiseAjax,
 	// Global configuration to add configuration vlaues
     object.globalConfig = globalConfig;
 
-    // Application ajax calls goes here
+    // Promise ajax call goes here
     object.promiseAjax = promiseAjax
 
     // Application notification
@@ -20,8 +20,14 @@ function appService(crudService, localStorageService, globalConfig, promiseAjax,
     // Applicaiton Utilities
     object.utilService = utilService
 
- // Application ajax calls goes here
+    // Dialog Service call goes here
     object.dialogService = dialogService
+
+    // Model service call goes here
+    object.modalService = modalService
+
+    // Volume service call goes here
+    object.volumeService = volumeService
 
     return object;
 

@@ -34,6 +34,7 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams) {
     $scope.projectForm = [];
 
     $scope.list = function (pageNumber) {
+
     	$scope.showLoader = true;
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasProjects = appService.crudService.list("projects", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
@@ -83,7 +84,6 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams) {
     	if ($stateParams.id > 0) {
             $scope.edit($stateParams.id);
         }
-
     }
 
 
@@ -310,14 +310,13 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams) {
     	}]);
     };
     $scope.addUser = function(user) {
-
     	 var newUser = user;
          var oldUser;
          if(newUser){ //This will avoid empty data
          angular.forEach($scope.projectInfo.userList, function(eachuser){ //For loop
          if(newUser.userName.toLowerCase() == eachuser.userName.toLowerCase()){ // this line will check whether the data is existing or not
         	 oldUser = true;
-        	 appService.notify({message: 'User already added ', classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+        	 appService.notify({message: 'User already exist', classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
          }
          });
          if(!oldUser){
@@ -328,7 +327,6 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams) {
              });
          }
          }
-
     }
 
     $scope.removeUser = function(user) {
@@ -337,8 +335,8 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams) {
     			$scope.projectInfo.userList.splice(key, 1);
     		}
     	});
-    	var hasServer = appService.crudService.update("projects", $scope.projectInfo);
-        hasServer.then(function (result) {
+    	var hasUser = appService.crudService.updates("projects/remove/user", $scope.projectInfo);
+    	hasUser.then(function(result) {
             appService.notify({message: 'User removed successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
 
         });

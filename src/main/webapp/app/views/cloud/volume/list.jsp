@@ -14,21 +14,21 @@ pageEncoding="UTF-8"%>
                                 <span class="pull-right"><fmt:message key="total.volume" bundle="${msg}" /></span>
                                 <div class="clearfix"></div>
                                 <span class="pull-left m-t-xs"><img src="images/volume-icon.png"></span>
-                                <b class="pull-right">{{volumeList.Count}}</b>
+                                <b class="pull-right">{{attachedCount + detachedCount}}</b>
                                 <div class="clearfix"></div>
                             </div>
                             <div class="dashboard-box pull-left">
                                 <span class="pull-right"><fmt:message key="attached.volume" bundle="${msg}" /></span>
                                 <div class="clearfix"></div>
                                 <span class="pull-left m-t-xs"><img src="images/volume-icon.png"></span>
-                                <b class="pull-right">{{volumeList.Count}}</b>
+                                <b class="pull-right">{{attachedCount}}</b>
                                 <div class="clearfix"></div>
                             </div>
                             <div class="dashboard-box pull-left">
                                 <span class="pull-right"><fmt:message key="detached.volume" bundle="${msg}" /></span>
                                 <div class="clearfix"></div>
                                 <span class="pull-left m-t-xs"><img src="images/volume-icon.png"></span>
-                                <b class="pull-right">0</b>
+                                <b class="pull-right">{{detachedCount}}</b>
                                 <div class="clearfix"></div>
                             </div>
                         </div>
@@ -48,7 +48,6 @@ pageEncoding="UTF-8"%>
                 <div class="clearfix"></div>
             </div>
             <pagination-content></pagination-content>
-
             <div class="row">
                 <div class="col-md-12 col-sm-12 col-xs-12 ">
                     <div class="white-content">
@@ -65,9 +64,9 @@ pageEncoding="UTF-8"%>
                             	    <th  data-ng-click="changeSorting('volumeType')" data-ng-class="sort.descending && sort.column =='volumeType'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.type" bundle="${msg}" /></th>
                             	    <th  data-ng-click="changeSorting('storageOffering.name')" data-ng-class="sort.descending && sort.column =='storageOffering.name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.plan" bundle="${msg}" /></th>
                             		<th  data-ng-click="changeSorting('vmInstance.name')" data-ng-class="sort.descending && sort.column =='vmInstance.name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.attached.to" bundle="${msg}" /></th>
-                            	    <th  data-ng-click="changeSorting('diskSize')" data-ng-class="sort.descending && sort.column =='diskSize'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.size" bundle="${msg}" /></th>
+                            	    <th  data-ng-click="changeSorting('diskSize')" data-ng-class="sort.descending && sort.column =='diskSize'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.size" bundle="${msg}" /> GB</th>
                             	    <th  data-ng-click="changeSorting('createdDateTime')" data-ng-class="sort.descending && sort.column =='createdDateTime'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.created.date" bundle="${msg}" /></th>
-                            	    
+
                             		<th class="col-md-1 col-xs-1"><fmt:message key="common.action" bundle="${msg}" /></th>
                             	</tr>
                             </thead>
@@ -81,7 +80,10 @@ pageEncoding="UTF-8"%>
                                     <td>{{ volume.volumeType}}</td>
                                     <td>{{ volume.storageOffering.name || " - "}}</td>
                                     <td>{{ volume.vmInstance.name || " - " }}</td>
-                                    <td><span data-ng-if="volume.volumeType == 'ROOT'"> {{ volume.diskSize / global.Math.pow(2, 30)}}</span> <span data-ng-if="volume.volumeType == 'DATADISK' && volume.storageOffering.isCustomDisk">{{ volume.diskSize / global.Math.pow(2, 30)}} </span> <span data-ng-if="volume.volumeType == 'DATADISK' && !volume.storageOffering.isCustomDisk ">{{ volume.storageOffering.diskSize}}</span></td>
+                                    <td><span data-ng-if="volume.volumeType == 'ROOT'"> {{ volume.diskSize / global.Math.pow(2, 30)}}</span> <span data-ng-if="volume.volumeType == 'DATADISK' && volume.storageOffering.isCustomDisk && volume.status == 'ALLOCATED'">{{ volume.diskSize / global.Math.pow(2, 30)}}</span>
+                                    <span data-ng-if="volume.volumeType == 'DATADISK' && volume.storageOffering.isCustomDisk && volume.status == null">{{ volume.diskSize}}</span>
+                                    <span data-ng-if="volume.volumeType == 'DATADISK' && volume.storageOffering.isCustomDisk && volume.status == 'READY'">{{ volume.diskSize / global.Math.pow(2, 30)}}</span>
+                                     <span data-ng-if="volume.volumeType == 'DATADISK' && !volume.storageOffering.isCustomDisk ">{{ volume.storageOffering.diskSize}}</span></td>
                                     <td>{{ volume.createdDateTime*1000 | date:'yyyy-MM-dd HH:mm:ss'}}</td>
                                     <td>
                                         <div class="btn-group action-menu">

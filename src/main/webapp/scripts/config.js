@@ -5,8 +5,8 @@
 
 function configState($stateProvider, $httpProvider, $urlRouterProvider,
 		$compileProvider, localStorageServiceProvider, PANDA_CONFIG) {
-	
-	
+
+
 
 	var VIEW_URL = "app/";
 	// Optimize load start with remove binding information inside the DOM
@@ -49,6 +49,13 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider,
 				templateUrl : VIEW_URL + "views/profile.jsp",
 				data : {
 					pageTitle : 'Profile Settings',
+				}
+			})
+			.state('invoice', {
+				url : "/invoice",
+				templateUrl : VIEW_URL + "views/common/retail-invoice.html",
+				data : {
+					pageTitle : 'Invoice',
 				}
 			})
 
@@ -113,13 +120,21 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider,
 					pageTitle : 'view.instance'
 				}
 			})
-			
-			
+
+
 			.state('cloud.list-instance-host', {
 				url : "host/list/:id",
 				templateUrl : VIEW_URL + "views/cloud/instance/listhost.jsp",
 				data : {
 					pageTitle : 'common.host'
+				}
+			})
+
+			.state('cloud.list-instance.view-instance.ipaddress', {
+				url : ":id/ip-address/:id1",
+				templateUrl : VIEW_URL + "views/cloud/instance/listIPAddress.jsp",
+				data : {
+					pageTitle : 'ip.address'
 				}
 			})
 

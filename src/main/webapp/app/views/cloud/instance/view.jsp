@@ -9,17 +9,17 @@ pageEncoding="UTF-8"%>
 
         <ul class="nav nav-tabs" data-ng-init="templateCategory = 'dashboard'">
             <li data-ng-class="{'active' : templateCategory == 'dashboard'}"><a href="javascript:void(0)" data-ng-click="templateCategory = 'dashboard'" data-toggle="tab">  <i class="fa fa-laptop"></i> <fmt:message key="dashboard" bundle="${msg}" /></a></li>
-            <li data-ng-show ="instance.status == 'Stopped'" data-ng-class="{'active' : templateCategory == 'config'}"><a has-permission="UPGRADE_VM" data-ng-click="templateCategory = 'config'"  data-toggle="tab"> <i class="fa fa-cogs"></i> <fmt:message key="configuration" bundle="${msg}" /></a></li>
+            <li data-ng-if ="instance.status == 'STOPPED'" data-ng-class="{'active' : templateCategory == 'config'}"><a has-permission="UPGRADE_VM" data-ng-click="templateCategory = 'config'"  data-toggle="tab"> <i class="fa fa-cogs"></i> <fmt:message key="configuration" bundle="${msg}" /></a></li>
             <li class=""><a  data-ng-click="templateCategory = 'storage'" data-toggle="tab"><i class="fa fa-database"></i> <fmt:message key="storage" bundle="${msg}" /></a></li>
             <li class=""><a  data-ng-click="templateCategory = 'network'" data-toggle="tab"> <!--<i class="fa fa-sitemap"></i>--><i class="custom-icon custom-icon-network"></i> <fmt:message key="networking" bundle="${msg}" /></a></li>
             <li class=""><a has-permission="MONITOR_VM_PERFORMANCE" data-ng-click="templateCategory = 'monitor'" data-toggle="tab"> <i class="fa fa-desktop"></i> <fmt:message key="monitor" bundle="${msg}" /></a></li>
         </ul>
 
         <div class="tab-content">
-            <div data-ng-show = "showLoaderOffer" style="margin: 20%">
-                <get-loader-image data-ng-show="showLoaderOffer"></get-loader-image>
+            <div data-ng-if = "showLoaderOffer" style="margin: 20%">
+                <get-loader-image data-ng-if="showLoaderOffer"></get-loader-image>
             </div>
-            <div data-ng-hide="showLoaderOffer" class="tab-pane" data-ng-class="{'active' : templateCategory == 'dashboard'}" id="step1-dashboard">
+            <div data-ng-if="!showLoaderOffer" class="tab-pane" data-ng-class="{'active' : templateCategory == 'dashboard'}" id="step1-dashboard">
                 <div  class="row" >
                     <div class="col-lg-9 col-md-8 col-sm-12">
                         <div class="hpanel">
@@ -146,23 +146,23 @@ pageEncoding="UTF-8"%>
                             </div>
                             <div class="panel-body no-padding">
                                 <ul class="list-group">
-                                    <div data-ng-show="instance.status != 'Error' || instance.status != 'Expunging' || instance.status != 'Starting' || instance.status != 'Stopping' || instance.status != 'Destroying'">
+                                    <div data-ng-if="instance.status != 'ERROR' || instance.status != 'EXPUNGING' || instance.status != 'STARTING' || instance.status != 'STOPPING' || instance.status != 'DESTROYING'">
 
-                                        <li has-permission="VIEW_CONSOLE" class="list-group-item" data-ng-if="instance.status == 'Running'">
+                                        <li has-permission="VIEW_CONSOLE" class="list-group-item" data-ng-if="instance.status == 'RUNNING'">
                                             <a href="javascript:void(0);" title="<fmt:message key="view.console" bundle="${msg}" />" data-ng-click="showConsole(instance)"><span class="fa-desktop fa font-bold m-xs"></span> <fmt:message key="view.console" bundle="${msg}" /></a>
                                         </li>
 
-                                        <li has-permission="ATTACH_ISO" data-ng-show="instance.status == 'Running' || instance.status == 'Stopped'" data-ng-if="instance.isoName === null" class="list-group-item">
+                                        <li has-permission="ATTACH_ISO" data-ng-if="instance.status == 'RUNNING' || instance.status == 'STOPPED'" data-ng-if="instance.isoName === null" class="list-group-item">
                                             <a href="javascript:void(0);" title="<fmt:message key="attach.iso" bundle="${msg}" />" data-ng-click="attachISO(instance)"><span class="fa-dot-circle-o fa font-bold m-xs"></span> <fmt:message key="attach.iso" bundle="${msg}" /></a>
                                         </li>
 
-                                        <li has-permission="TAKE_VM_SNAPSHOT" data-ng-show="instance.status == 'Running' || instance.status == 'Stopped'" class="list-group-item">
+                                        <li has-permission="TAKE_VM_SNAPSHOT" data-ng-if="instance.status == 'RUNNING' || instance.status == 'STOPPED'" class="list-group-item">
                                             <a href="javascript:void(0);" title="<fmt:message key="vm.snapshot" bundle="${msg}" />" data-ng-click="takeSnapshot(instance)"><span class="fa-camera fa font-bold m-xs"></span> <fmt:message key="take.vm.snapshot" bundle="${msg}" /></a>
                                         </li>
-                                        <li has-permission="MIGRATE_HOST" data-ng-if="instance.status == 'Running'" class="list-group-item">
+                                        <li has-permission="MIGRATE_HOST" data-ng-if="instance.status == 'RUNNING' && global.sessionValues.type === 'ROOT_ADMIN'" class="list-group-item">
                                             <a href="javascript:void(0);" title="<fmt:message key="migrate.to.another.host" bundle="${msg}" />" data-ng-click="hostMigrate(instance)"><span class="fa-arrows fa font-bold m-xs pull-left"></span> <span class="pull-left m-l-xs width-md"><fmt:message key="migrate.to.another.host" bundle="${msg}" /></span><div class="clearfix"></div></a>
                                         </li>
-                                        <li has-permission="HOST_INFORMATION" data-ng-if="instance.status == 'Running'" class="list-group-item">
+                                        <li has-permission="HOST_INFORMATION" data-ng-if="instance.status == 'RUNNING'" class="list-group-item">
                                             <a href="javascript:void(0);" title="<fmt:message key="host.information" bundle="${msg}" />" data-ng-click="hostInformation(instance)" ><span class="fa-square fa font-bold m-xs"></span> <fmt:message key="host.information" bundle="${msg}" /></a>
                                         </li>
                                     </div>
@@ -181,36 +181,38 @@ pageEncoding="UTF-8"%>
                             </div>
                             <div class="panel-body no-padding">
                                 <ul class="list-group" >
-                                    <div data-ng-show="instance.status != 'Error' || instance.status != 'Expunging' || instance.status != 'Starting' || instance.status != 'Stopping' || instance.status != 'Destroying'">
+                                    <div data-ng-if="instance.status != 'ERROR' || instance.status != 'EXPUNGING' || instance.status != 'STARTING' || instance.status != 'STOPPING' || instance.status != 'DESTROYING'">
                                         <li  class="list-group-item">
-                                            <a has-permission="STOP_VM" href="javascript:void(0);" title="<fmt:message key="stop" bundle="${msg}" />" data-ng-click="stopVm('sm',instance)" data-ng-show="instance.status == 'Running'"><span class="fa-ban fa font-bold m-xs"></span> <fmt:message key="stop" bundle="${msg}" /></a>
-                                            <a has-permission="START_VM" href="javascript:void(0);" title="<fmt:message key="start" bundle="${msg}" />" data-ng-click="startVm('sm',instance)" data-ng-show="instance.status == 'Stopped'"><span class="fa-play fa font-bold m-xs"></span> <fmt:message key="start" bundle="${msg}" /></a>
+                                            <a has-permission="STOP_VM" href="javascript:void(0);" title="<fmt:message key="stop" bundle="${msg}" />" data-ng-click="stopVm('sm',instance)" data-ng-if="instance.status == 'RUNNING'"><span class="fa-ban fa font-bold m-xs"></span> <fmt:message key="stop" bundle="${msg}" /></a>
+                                            <a has-permission="START_VM" href="javascript:void(0);" title="<fmt:message key="start" bundle="${msg}" />" data-ng-click="startVm('sm',instance)" data-ng-if="instance.status == 'STOPPED'"><span class="fa-play fa font-bold m-xs"></span> <fmt:message key="start" bundle="${msg}" /></a>
                                         </li>
-                                        <li has-permission="REBOOT_VM" data-ng-if="instance.status == 'Running'" class="list-group-item">
-                                            <a href="javascript:void(0);" data-ng-if="instance.status == 'Running'" title="<fmt:message key="restart" bundle="${msg}" />" data-ng-click="rebootVm('sm',instance)"><span class="fa-rotate-left fa font-bold m-xs"></span> <fmt:message key="reboot" bundle="${msg}" /></a>
+                                        <li has-permission="REBOOT_VM" data-ng-if="instance.status == 'RUNNING'" class="list-group-item">
+                                            <a href="javascript:void(0);" data-ng-if="instance.status == 'RUNNING'" title="<fmt:message key="restart" bundle="${msg}" />" data-ng-click="rebootVm('sm',instance)"><span class="fa-rotate-left fa font-bold m-xs"></span> <fmt:message key="reboot" bundle="${msg}" /></a>
                                         </li>
-
-                                        <li has-permission="RESET_PASSWORD" data-ng-show="instance.passwordEnabled == true && (instance.status == 'Running' || instance.status == 'Stopped') && instance.vncPassword !== null"  class="list-group-item">
+                                        <li has-permission="RESET_PASSWORD" data-ng-if="instance.passwordEnabled == true && (instance.status == 'RUNNING' || instance.status == 'STOPPED') && instance.vncPassword !== null"  class="list-group-item">
                                             <a href="javascript:void(0);" title="<fmt:message key="show.password" bundle="${msg}" />" data-ng-click="showPassword(instance)"><span class="fa-key fa font-bold m-xs"></span> <fmt:message key="show.password" bundle="${msg}" /></a>
                                         </li>
-                                        <li has-permission="RESET_PASSWORD" data-ng-show="instance.passwordEnabled == true && instance.status == 'Stopped'"  class="list-group-item">
+                                        <li has-permission="RESET_PASSWORD" data-ng-if="instance.passwordEnabled == true && (instance.status == 'RUNNING' || instance.status == 'STOPPED')"  class="list-group-item">
                                             <a href="javascript:void(0);" title="<fmt:message key="reset.password" bundle="${msg}" />" data-ng-click="resetPassword(instance)"><span class="fa-key fa font-bold m-xs"></span> <fmt:message key="reset.password" bundle="${msg}" /></a>
                                         </li>
-                                        <li has-permission="REINSTALL_VM" class="list-group-item" data-ng-if="instance.status == 'Running'">
+                                        <li has-permission="REINSTALL_VM" class="list-group-item" data-ng-if="instance.status == 'RUNNING'">
                                             <a href="javascript:void(0);" title="<fmt:message key="reinstall.vm" bundle="${msg}" />" data-ng-click="reInstallVm('md',instance)"><span class="fa fa-history m-xs"></span> <fmt:message key="reinstall.vm" bundle="${msg}" /></a>
                                         </li>
-                                        <li has-permission="DESTROY_VM" class="list-group-item" data-ng-show="instance.status == 'Running' || instance.status == 'Stopped'">
+                                        <li has-permission="DESTROY_VM" class="list-group-item" data-ng-if="instance.status == 'RUNNING' || instance.status == 'STOPPED'">
                                             <a href="javascript:void(0);" data-ng-click="reDestroyVm('sm', instance)" title="<fmt:message key="destroy.vm" bundle="${msg}" />"><span class="fa-times-circle fa font-bold m-xs"></span> <fmt:message key="destroy.vm" bundle="${msg}" /></a>
                                         </li>
-                                        <li data-ng-if="instance.status == 'Destroyed'" class="list-group-item ">
-                                            <a href="javascript:void(0);" data-ng-if="instance.status == 'Destroyed'" data-ng-click="recoverVm('sm', instance)" title="<fmt:message key="recover.vm" bundle="${msg}" />"><span class="fa-history fa font-bold m-xs"></span> <fmt:message key="recover.vm" bundle="${msg}" /></a>
+                                        <li has-permission="DESTROY_VM" class="list-group-item" data-ng-if="instance.status == 'DESTROYED'">
+                                            <a href="javascript:void(0);" data-ng-click="reDestroyVm('sm', instance)" title="<fmt:message key="destroy.vm" bundle="${msg}" />"><span class="fa-times-circle fa font-bold m-xs"></span> <fmt:message key="destroy.vm" bundle="${msg}" /></a>
                                         </li>
-                                        <li data-ng-show="instance.status == 'Running' || instance.status == 'Stopped'"  data-ng-if="instance.isoName !== null" class="list-group-item">
+                                        <li data-ng-if="instance.status == 'DESTROYED'" class="list-group-item ">
+                                            <a href="javascript:void(0);" data-ng-if="instance.status == 'DESTROYED'" data-ng-click="recoverVm('sm', instance)" title="<fmt:message key="recover.vm" bundle="${msg}" />"><span class="fa-history fa font-bold m-xs"></span> <fmt:message key="recover.vm" bundle="${msg}" /></a>
+                                        </li>
+                                        <li data-ng-if="instance.status == 'RUNNING' || instance.status == 'STOPPED'"  data-ng-if="instance.isoName !== null" class="list-group-item">
                                             <a href="javascript:void(0);" title="<fmt:message key="detach.iso" bundle="${msg}" />" data-ng-click="detachISO(instance)"><span class="fa-compass fa font-bold m-xs"></span> <fmt:message key="detach.iso" bundle="${msg}" /></a>
                                         </li>
                                          <li  class="list-group-item " >
-                                            <a data-ng-show="instance.status == 'Running'"  href="javascript:void(0);" data-ng-click="resize()" title="<fmt:message key="resize.vm" bundle="${msg}" />"><span class="fa fa-expand m-xs"></span> <fmt:message key="resize.vm" bundle="${msg}" /></a>
-                                            <a data-ng-show="instance.status == 'Stopped'" href="javascript:void(0);"   data-ng-click="selectab()" title="<fmt:message key="resize.vm" bundle="${msg}" />"><span class="fa fa-expand m-xs"></span> <fmt:message key="resize.vm" bundle="${msg}" /></a>
+                                            <a data-ng-if="instance.status == 'RUNNING'"  href="javascript:void(0);" data-ng-click="resize()" title="<fmt:message key="resize.vm" bundle="${msg}" />"><span class="fa fa-expand m-xs"></span> <fmt:message key="resize.vm" bundle="${msg}" /></a>
+                                            <a data-ng-if="instance.status == 'STOPPED'" href="javascript:void(0);"   data-ng-click="selectab()" title="<fmt:message key="resize.vm" bundle="${msg}" />"><span class="fa fa-expand m-xs"></span> <fmt:message key="resize.vm" bundle="${msg}" /></a>
 
                                         </li>
                                     </div>
@@ -236,14 +238,14 @@ pageEncoding="UTF-8"%>
                                             </td>
                                             <td class="col-md-8 col-sm-8">
                                                 <span data-ng-if="!instnaceEdit">{{instance.displayName}}</span>
-                                                <div data-ng-if="instnaceEdit && instance.status == 'Stopped'" class="form-group"
+                                                <div data-ng-if="instnaceEdit && instance.status == 'STOPPED'" class="form-group"
                                                      ng-class="{'text-danger': instance.transDisplayName == '' && formSubmitted}">
                                                     <input type="text" name="transDisplayName"
                                                            data-ng-model="instance.displayName"
                                                            class="form-control editedinput "
                                                            data-ng-class="{'error': instance.displayName == '' && formSubmitted}">
                                                 </div>
-                                                <a data-ng-if="!instnaceEdit && instance.status == 'Stopped'" data-ng-click="editDisplayName(instance)"  class="fa fa-edit m-l-lg">
+                                                <a data-ng-if="!instnaceEdit && instance.status == 'STOPPED'" data-ng-click="editDisplayName(instance)"  class="fa fa-edit m-l-lg">
                                                     <fmt:message key="common.edit" bundle="${msg}" />
                                                 </a>
                                                 <a data-ng-if="instnaceEdit" data-ng-click="updateDisplayName(instance)"  class="btn btn-sm btn-info pull-right">
@@ -273,13 +275,14 @@ pageEncoding="UTF-8"%>
                                                         <fmt:message key="common.status" bundle="${msg}" />
                                                     </b>
                                                 </td>
-                                                <td class="col-md-8 col-sm-8"> <b class="text-uppercase text-success" data-ng-if="instance.status == 'Running'" title="{{ instance.status}}">{{ instance.status}}</b>
-                                                    <b class="text-uppercase text-warning" data-ng-if="instance.status == 'Starting'" title="{{ instance.status}}">{{ instance.status}}</b>
-                                                    <b class="text-uppercase text-danger" data-ng-if="instance.status == 'Error'" title="{{ instance.status}}">{{ instance.status}}</b>
-                                                    <b class=" text-uppercase text-danger" data-ng-if="instance.status == 'Stopping'" title="{{ instance.status}}">{{ instance.status}}</b>
-                                                    <b class=" text-uppercase text-danger" data-ng-if="instance.status == 'Stopped'" title="{{ instance.status}}">{{ instance.status}}</b>
-                                                    <b class=" text-uppercase text-danger" data-ng-if="instance.status == 'Expunging'" title="{{ instance.status}}">{{ instance.status}}</b>
-                                                    <b class=" text-uppercase text-danger" data-ng-if="instance.status == 'Destroyed'" title="{{ instance.status}}">{{ instance.status}}</b>
+                                                <td class="col-md-8 col-sm-8"> <b class="text-uppercase text-success" data-ng-if="instance.status == 'RUNNING'" title="{{ instance.status}}">{{ instance.status}}</b>
+                                                    <b class="text-uppercase text-warning" data-ng-if="instance.status == 'STARTING'" title="{{ instance.status}}">{{ instance.status}}</b>
+                                                    <b class="text-uppercase text-danger" data-ng-if="instance.status == 'ERROR'" title="{{ instance.status}}">{{ instance.status}}</b>
+                                                    <b class=" text-uppercase text-danger" data-ng-if="instance.status == 'STOPPING'" title="{{ instance.status}}">{{ instance.status}}</b>
+                                                    <b class=" text-uppercase text-danger" data-ng-if="instance.status == 'STOPPED'" title="{{ instance.status}}">{{ instance.status}}</b>
+                                                    <b class=" text-uppercase text-danger" data-ng-if="instance.status == 'EXPUNGING'" title="{{ instance.status}}">{{ instance.status}}</b>
+                                                    <b class=" text-uppercase text-danger" data-ng-if="instance.status == 'DESTROYED'" title="{{ instance.status}}">{{ instance.status}}</b>
+                                                    <b class=" text-uppercase text-warning" data-ng-if="instance.status == 'MIGRATING'" title="{{ instance.status}}">{{ instance.status}}</b>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -352,7 +355,7 @@ pageEncoding="UTF-8"%>
                                                     </b>
                                                 </td>
                                                 <td class="col-md-8 col-sm-8">
-                                                    <div data-ng-repeat="application in instance.applicationList"> <span data-ng-show="application.type !== ''">{{application.type}}</span> </div>
+                                                    <div data-ng-repeat="application in instance.applicationList"> <span data-ng-if="application.type !== ''">{{application.type}}</span> </div>
                                                 </td>
                                             </tr>
                                             </tbody>
@@ -388,7 +391,7 @@ pageEncoding="UTF-8"%>
                                                 </td>
                                                 <td class="col-md-8 col-sm-8">
                                                     {{ instance.computeOffering.name}}
-                                                    <a data-ng-show = "instance.status == 'Stopped'" data-ng-click="templateCategory = 'config'"  class="fa fa-edit m-l-lg">
+                                                    <a data-ng-if = "instance.status == 'STOPPED'" data-ng-click="templateCategory = 'config'"  class="fa fa-edit m-l-lg">
                                                         <fmt:message key="common.edit" bundle="${msg}" />
                                                     </a>
                                                 </td>
@@ -407,7 +410,7 @@ pageEncoding="UTF-8"%>
                                                         <fmt:message key="cpu.cores" bundle="${msg}" />
                                                     </b>
                                                 </td>
-                                                <td class="col-md-8 col-sm-8">{{ instance.computeOffering.numberOfCores}}</td>
+                                                 <td class="col-md-8 col-sm-8"><span data-ng-if="!instance.computeOffering.customized">{{ instance.computeOffering.numberOfCores}}</span><span data-ng-if="instance.computeOffering.customized">{{ instance.cpuCore}}</span></td>
                                             </tr>
                                             <tr>
                                                 <td class="col-md-4 col-sm-4">
@@ -415,7 +418,7 @@ pageEncoding="UTF-8"%>
                                                         <fmt:message key="memory" bundle="${msg}" />
                                                     </b>
                                                 </td>
-                                                <td class="col-md-8 col-sm-8">{{ instance.computeOffering.memory}}</td>
+                                                <td class="col-md-8 col-sm-8"><span data-ng-if="!instance.computeOffering.customized">{{ instance.computeOffering.memory}}</span><span data-ng-if="instance.computeOffering.customized">{{ instance.memory}}</span></td>
                                             </tr>
                                             <tr>
                                                 <td class="col-md-4 col-sm-4">
@@ -423,7 +426,7 @@ pageEncoding="UTF-8"%>
                                                         <fmt:message key="common.storage" bundle="${msg}" />
                                                     </b>
                                                 </td>
-                                                <td class="col-md-8 col-sm-8">{{volume[0].diskSize / global.Math.pow(2, 30) || "0"}} GB</td>
+                                                <td class="col-md-8 col-sm-8"><span data-ng-if="instance.volumeSize > 0">{{ instance.volumeSize / global.Math.pow(2, 30)}} GB</span><span data-ng-if="!(instance.volumeSize > 0)">-No Disk-</span></td>
                                             </tr>
                                             <tr>
                                                 <td class="col-md-4 col-sm-4">
