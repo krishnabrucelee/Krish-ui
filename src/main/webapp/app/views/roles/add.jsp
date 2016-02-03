@@ -82,7 +82,7 @@
    	 	<div data-ng-show = "showLoader" style="margin: 1%">
 
    	 	</div>
-       	<div has-permission="ASSIGN_ROLE_PERMISSION" class="col-md-12 col-sm-12" data-ng-hide = "showLoader" ng-repeat="(key, module) in permissions | groupBy: 'module'">
+       	<div  class="col-md-12 col-sm-12" data-ng-hide = "showLoader" ng-repeat="(key, module) in permissions | groupBy: 'module'">
             <div class="form-group">
                 <div class="white-content">
 
