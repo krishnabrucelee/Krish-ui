@@ -105,7 +105,8 @@ function networkCtrl($scope, $modal, $state, $window, $stateParams,appService) {
                         $scope.showLoader = false;
                     	appService.notify({message: 'Attached successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                         $modalInstance.close();
-        	    	    $scope.instanceNicList();
+                        $state.reload();
+                        $scope.instanceNicList();
                }).catch(function (result) {
                         if (!angular.isUndefined(result.data)) {
                              if (result.data.fieldErrors != null) {
@@ -166,6 +167,7 @@ function networkCtrl($scope, $modal, $state, $window, $stateParams,appService) {
                        $scope.showLoader = false;
                        appService.notify({message: 'NIC updated successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                        $modalInstance.close();
+                       $state.reload();
                        $scope.instanceNicList();
                     });
                 },

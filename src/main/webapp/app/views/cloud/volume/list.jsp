@@ -37,8 +37,8 @@ pageEncoding="UTF-8"%>
                             <div class="clearfix"></div>
                             <span class="pull-right m-l-sm m-t-sm">
 <%--                             	<a class="btn btn-info" data-ng-click="uploadVolumeFromLocalCtrl('md')"><span class="pe-7s-cloud-upload pe-lg font-bold m-r-xs"></span> <fmt:message key="upload.volume.from.local" bundle="${msg}" /></a> --%>
-								<a class="btn btn-info" ><span class="pe-7s-cloud-upload pe-lg font-bold m-r-xs"></span> <fmt:message key="upload.volume.from.local" bundle="${msg}" /></a>
-                                <a class="btn btn-info" has-permission="UPLOAD_VOLUME" data-ng-click="uploadVolumeCtrl('md')"><span class="pe-7s-cloud-upload pe-lg font-bold m-r-xs"></span> <fmt:message key="common.upload" bundle="${msg}" /></a>
+<%-- 								<a class="btn btn-info" ><span class="pe-7s-cloud-upload pe-lg font-bold m-r-xs"></span> <fmt:message key="upload.volume.from.local" bundle="${msg}" /></a>
+ --%>                                <a class="btn btn-info" has-permission="UPLOAD_VOLUME" data-ng-click="uploadVolumeCtrl('md')"><span class="pe-7s-cloud-upload pe-lg font-bold m-r-xs"></span> <fmt:message key="common.upload" bundle="${msg}" /></a>
                                 <a class="btn btn-info" has-permission="ADD_VOLUME" data-ng-click="addVolume('md')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span>  <fmt:message key="add.volume" bundle="${msg}" /></a>
                                 <a class="btn btn-info" ui-sref="cloud.list-volume" title="<fmt:message key="common.refresh" bundle="${msg}" />" ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
                             </span>
@@ -80,9 +80,8 @@ pageEncoding="UTF-8"%>
                                     <td>{{ volume.volumeType}}</td>
                                     <td>{{ volume.storageOffering.name || " - "}}</td>
                                     <td>{{ volume.vmInstance.name || " - " }}</td>
-                                    <td><span data-ng-if="volume.volumeType == 'ROOT'"> {{ volume.diskSize / global.Math.pow(2, 30)}}</span> <span data-ng-if="volume.volumeType == 'DATADISK' && volume.storageOffering.isCustomDisk && volume.status == 'ALLOCATED'">{{ volume.diskSize / global.Math.pow(2, 30)}}</span>
-                                    <span data-ng-if="volume.volumeType == 'DATADISK' && volume.storageOffering.isCustomDisk && volume.status == null">{{ volume.diskSize}}</span>
-                                    <span data-ng-if="volume.volumeType == 'DATADISK' && volume.storageOffering.isCustomDisk && volume.status == 'READY'">{{ volume.diskSize / global.Math.pow(2, 30)}}</span>
+                                    <td><span data-ng-if="volume.volumeType == 'ROOT'"> {{ volume.diskSize / global.Math.pow(2, 30)}}</span>
+                                    <span data-ng-if="volume.volumeType == 'DATADISK' && volume.storageOffering.isCustomDisk">{{ volume.diskSize / global.Math.pow(2, 30)}}</span>
                                      <span data-ng-if="volume.volumeType == 'DATADISK' && !volume.storageOffering.isCustomDisk ">{{ volume.storageOffering.diskSize}}</span></td>
                                     <td>{{ volume.createdDateTime*1000 | date:'yyyy-MM-dd HH:mm:ss'}}</td>
                                     <td>
