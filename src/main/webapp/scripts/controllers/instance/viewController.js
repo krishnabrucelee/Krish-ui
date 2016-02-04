@@ -242,12 +242,13 @@ $scope.list = function () {
 			  };
 
 			  $scope.showConsole = function(vm) {
-				  $scope.vm = vm;
-				  var hasVms = appService.crudService.updates("virtualmachine/console", vm);
-					hasVms.then(function(result) {
-						var consoleUrl = result.success;
-						window.open($sce.trustAsResourceUrl(consoleUrl), vm.name + vm.id,'width=750,height=460');			});
-			  }
+				   $scope.vm = vm;
+				   var hasVms = appService.crudService.updates("virtualmachine/console", vm);
+				   hasVms.then(function(result) {
+					   var consoleUrl = result.success;
+					   window.open($sce.trustAsResourceUrl(consoleUrl), vm.name + vm.id,'width=750,height=460');
+				   });
+			   }
 
 			  $scope.instnaceEdit = false;
 			  $scope.editDisplayName = function(vm) {

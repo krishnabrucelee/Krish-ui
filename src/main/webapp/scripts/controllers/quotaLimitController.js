@@ -77,6 +77,9 @@ function quotaLimitCtrl($scope, $state, $stateParams, appService, $window) {
 						object.available = Math.round(object.available / 1024);
 						object.usedLimit = Math.round( object.usedLimit / 1024);
 					}
+					if (object.available == -1 && object.resourceType == "PrimaryStorage" || object.available == -1 && object.resourceType == "SecondaryStorage") {
+					    object.usedLimit = Math.round( object.usedLimit / (1024 * 1024 * 1024));
+				    }
 					if (object.usedLimit == null) {
 						object.usedLimit = 0;
 					}

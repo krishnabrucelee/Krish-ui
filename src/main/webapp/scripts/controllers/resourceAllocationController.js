@@ -142,8 +142,9 @@ function resourceAllocationCtrl($scope, crudService, globalConfig, notify, $stat
 				$scope.showLoader = false;
 				$scope.isDisabledProject = false;
 				$scope.formSubmitted = false;
-	            notify({message: 'Created successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+	            notify({message: 'Updated successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
 	        }).catch(function (result) {
+	        	$scope.showLoader = false;
 	            if (!angular.isUndefined(result.data)) {
 	            	if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
 	              	    var msg = result.data.globalError[0];
@@ -186,9 +187,10 @@ function resourceAllocationCtrl($scope, crudService, globalConfig, notify, $stat
 			hasResource.then(function (result) {  // this is only run after $http completes
 				$scope.showLoader = false;
 				$scope.formSubmitted = false;
-	            notify({message: 'Created successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+	            notify({message: 'Updated successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
 
 	        }).catch(function (result) {
+	        	$scope.showLoader = false;
 	            if (!angular.isUndefined(result.data)) {
 	            	if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
 	              	    var msg = result.data.globalError[0];

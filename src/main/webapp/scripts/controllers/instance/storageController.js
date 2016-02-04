@@ -355,13 +355,13 @@ function storageCtrl($scope, $state, $stateParams, appService, $window, volumeSe
                     $scope.diskList(val);
                 });
 
-                $scope.project = {};
-                $scope.projectList = function() {
-                    var hasProjects = appService.promiseAjax.httpTokenRequest(appService.crudService.globalConfig.HTTP_GET, appService.crudService.globalConfig.APP_URL + "projects/list");
-                    hasProjects.then(function(result) { // this is only run after $http completes0
-                        $scope.options = result;
-                    });
-                };
+//                $scope.project = {};
+//                $scope.projectList = function() {
+//                    var hasProjects = appService.promiseAjax.httpTokenRequest(appService.crudService.globalConfig.HTTP_GET, appService.crudService.globalConfig.APP_URL + "projects");
+//                    hasProjects.then(function(result) { // this is only run after $http completes0
+//                        $scope.options = result;
+//                    });
+//                };
 
                 // Get current Department list from instnace id.
                 $scope.department = {};
@@ -372,10 +372,13 @@ function storageCtrl($scope, $state, $stateParams, appService, $window, volumeSe
 
                 // Getting list of projects by department
                 $scope.project = {};
-                var hasProjects = appService.crudService.read("projects", $scope.instance.projectId);
-                hasProjects.then(function(result) { // this is only run after $http completes0
+                if(angular.isUndefined($scope.instance.projectId) && $scope.instance.projectId != null) {
+                	var hasProjects = appService.crudService.read("projects", $scope.instance.projectId);
+                	hasProjects.then(function(result) { // this is only run after
+													// $http completes0
                     $scope.options = result;
                 });
+        }
 
                 // Create a new application
                 $scope.save = function(form, volume) {
@@ -388,6 +391,9 @@ function storageCtrl($scope, $state, $stateParams, appService, $window, volumeSe
                             var volume = angular.copy($scope.volume);
                             if (!angular.isUndefined($scope.volume.storageOffering) && volume.storageOffering != null) {
                                 volume.storageOfferingId = volume.storageOffering.id;
+                                if(!volume.storageOffering.isCustomDisk){
+                            		delete volume.diskSize;
+                            	}
                                 delete volume.storageOffering;
                             }
                             if (!angular.isUndefined($scope.volume.department) && volume.department != null) {

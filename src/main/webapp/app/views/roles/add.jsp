@@ -4,7 +4,6 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <form name="RoleForm" data-ng-submit="createRole(RoleForm)" method="post" novalidate="" data-ng-controller="rolesListCtrl">
-
     <div class="row">
         <div class="col-md-12 col-sm-12">
             <div class="hpanel">
@@ -17,10 +16,10 @@
                             <div class="row">
                                 <label class="col-md-3 col-sm-3 control-label"><fmt:message key="common.name" bundle="${msg}" /><span class="text-danger">*</span></label>
                                 <div class="col-md-7  col-sm-7 col-xs-7">
-                                  <input required="true" type="text" name="name" data-ng-model="role.name" ng-minlength="4" ng-maxlength= "30" class="form-control" data-ng-class="{'error': RoleForm.name.$invalid && formSubmitted}" >
-        								<span style="color:red" ng-show="RoleForm.name.$error.minlength "><fmt:message key="your.name.should.contain.atleast.4.characters" bundle="${msg}" /></span>
-         								<span style="color:red" ng-show="RoleForm.name.$error.maxlength "><fmt:message key="your.name.must.be.less.than.30.characters" bundle="${msg}" /> </span>
-                                <i  tooltip="<fmt:message key="role.name" bundle="${msg}" />" class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
+                                  	<input required="true" type="text" name="name" data-ng-model="role.name" ng-minlength="4" ng-maxlength= "30" class="form-control" data-ng-class="{'error': RoleForm.name.$invalid && formSubmitted}" >
+       								<span style="color:red" ng-show="RoleForm.name.$error.minlength "><fmt:message key="your.name.should.contain.atleast.4.characters" bundle="${msg}" /></span>
+       								<span style="color:red" ng-show="RoleForm.name.$error.maxlength "><fmt:message key="your.name.must.be.less.than.30.characters" bundle="${msg}" /> </span>
+                                	<i  tooltip="<fmt:message key="role.name" bundle="${msg}" />" class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
                                     <div class="error-area" data-ng-show="RoleForm.name.$invalid && formSubmitted" >
   									<i ng-attr-tooltip="{{ RoleForm.name.errorMessage || '<fmt:message key="role.name.is.required" bundle="${msg}" />' }}"
 												class="fa fa-warning error-icon"></i>
@@ -39,7 +38,7 @@
                                              data-ng-options="domain.name for domain in formElements.domainList" data-ng-class="{'error': RoleForm.domain.$invalid && formSubmitted}">
                                         <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
                                     </select>
-                                    <i  tooltip="<fmt:message key="choose.domain" bundle="${msg}" />" class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
+                                   	<i  tooltip="<fmt:message key="choose.domain" bundle="${msg}" />" class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
                                     <div class="error-area" data-ng-show="RoleForm.domain.$invalid && formSubmitted" ><i  tooltip="<fmt:message key="company.is.required" bundle="${msg}" />" class="fa fa-warning error-icon"></i></div>
                                 </div>
                             </div>
@@ -55,7 +54,7 @@
                                     </select>
                                     <i  tooltip="<fmt:message key="role.department" bundle="${msg}" />" class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
                                     <div class="error-area" data-ng-show="RoleForm.department.$invalid && formSubmitted" >
-                                    <i ng-attr-tooltip="{{ RoleForm.department.errorMessage || '<fmt:message key="role.department.is.required" bundle="${msg}" />' }}"
+                                    	<i ng-attr-tooltip="{{ RoleForm.department.errorMessage || '<fmt:message key="role.department.is.required" bundle="${msg}" />' }}"
 												class="fa fa-warning error-icon"></i>
                                     </div>
                                 </div>
@@ -68,9 +67,9 @@
                                     <input required="true" type="text" name="description" data-ng-model="role.description" class="form-control" data-ng-class="{'error': RoleForm.description.$invalid && formSubmitted}">
                                     <i  tooltip="<fmt:message key="role.description" bundle="${msg}" />" class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
                                     <div class="error-area" data-ng-show="RoleForm.description.$invalid && formSubmitted" >
-                                    <i ng-attr-tooltip="{{ RoleForm.description.errorMessage || '<fmt:message key="role.description.is.required" bundle="${msg}" />' }}"
+                                    	<i ng-attr-tooltip="{{ RoleForm.description.errorMessage || '<fmt:message key="role.description.is.required" bundle="${msg}" />' }}"
 												class="fa fa-warning error-icon"></i>
-												</div>
+									</div>
                                 </div>
                             </div>
                         </div>
@@ -80,10 +79,10 @@
         </div>
     </div>
      <div class="row">
-     <div data-ng-show = "showLoader" style="margin: 1%">
+   	 	<div data-ng-show = "showLoader" style="margin: 1%">
 
-      					</div>
-        <div class="col-md-12 col-sm-12" data-ng-hide = "showLoader" ng-repeat="(key, module) in permissions | groupBy: 'module'">
+   	 	</div>
+       	<div  class="col-md-12 col-sm-12" data-ng-hide = "showLoader" ng-repeat="(key, module) in permissions | groupBy: 'module'">
             <div class="form-group">
                 <div class="white-content">
 
@@ -110,7 +109,4 @@
             </span>
         </div>
     </div>
-
-
-
 </form>
