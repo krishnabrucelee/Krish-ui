@@ -196,6 +196,7 @@ $scope.list = function () {
 			  				var hasVm = appService.crudService.vmUpdate("virtualmachine/handlevmevent", item.uuid, event);
 			  				hasVm.then(function(result) {
 			  				        $scope.cancel();
+			  				        window.location.href = "index#/instance/list";
 			  				        $state.reload();
 			  				}).catch(function (result) {
 			  				  $state.reload();
@@ -206,6 +207,7 @@ $scope.list = function () {
 		  		        	var event = "VM.DESTROY";
 		  		        	var hasVm = appService.crudService.vmUpdate("virtualmachine/handlevmevent", item.uuid, event);
 		  		        	hasVm.then(function(result) {
+		  		        	window.location.href = "index#/instance/list";
 		  					$state.reload();
 		  					$scope.cancel();
 		  				}).catch(function (result) {
