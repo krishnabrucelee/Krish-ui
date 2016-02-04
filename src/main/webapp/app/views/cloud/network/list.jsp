@@ -113,7 +113,7 @@
 													title="<fmt:message key="common.edit" bundle="${msg}" />"
 													ui-sref="cloud.list-network.view-network({id: {{ network.id }}, view: 'edit'})">
 														<span class="fa fa-edit m-r"> </span>
-												</a> <a class="icon-button"
+												</a> <a class="icon-button" has-permission="RESTART_NETWORK"
 													title="<fmt:message key="common.restart" bundle="${msg}" /> "><span
 														class="fa fa-rotate-left m-r"></span></a> <a
 													class="icon-button" has-permission="DELETE_NETWORK"

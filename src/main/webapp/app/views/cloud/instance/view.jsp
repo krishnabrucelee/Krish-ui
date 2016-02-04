@@ -207,7 +207,7 @@ pageEncoding="UTF-8"%>
                                         <li data-ng-if="(instance.status == 'RUNNING' || instance.status == 'STOPPED') && instance.isoName"  class="list-group-item">
                                             <a href="javascript:void(0);" title="<fmt:message key="detach.iso" bundle="${msg}" />" data-ng-click="detachISO(instance)"><span class="fa-compass fa font-bold m-xs"></span> <fmt:message key="detach.iso" bundle="${msg}" /></a>
                                         </li>
-                                         <li  class="list-group-item " >
+                                         <li has-permission="RESIZE" class="list-group-item " >
                                               <button ng-class = "(instance.status == 'RUNNING') ? 'resizelink disable' : 'resizelink enable'" data-ng-disabled="instance.status == 'RUNNING'" href="javascript:void(0);"   data-ng-click="selectab()" title="<fmt:message key="resize.vm" bundle="${msg}" />"><span class="fa fa-expand m-xs"></span> <fmt:message key="resize.vm" bundle="${msg}" /></button>
                                         </li>
                                          <li has-permission="RESET_PASSWORD" class="list-group-item">

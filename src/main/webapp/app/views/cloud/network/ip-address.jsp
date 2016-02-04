@@ -15,7 +15,7 @@ pageEncoding="UTF-8"%>
                     </div>
                     <div class="col-md-9 col-sm-9 col-xs-9">
                         <span class="pull-right">
-                            <a class="btn btn-info" data-ng-click="openAddIP('md', network)"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span>Acquire new IP</a>
+                            <a has-permission="ACQUIRE_IP_ADDRESS" class="btn btn-info" data-ng-click="openAddIP('md', network)"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span>Acquire new IP</a>
                        </span>
                     </div>
                 </div>
