@@ -16,8 +16,10 @@ function interceptorAPI($q, globalConfig, $injector) {
             return response;
         },
         responseError : function(response) {
-            console.log(response);
-            if (response.data != null && response.status !== 401) {
+            if ((response.status === 500 || response.status === 0) && response.config.headers.Accept === 'text/html') {
+        		alert("The server could be temporarily unavailable or too busy. Try again in a few moments.");
+                window.location.href = "login";
+        	} else if (response.data != null && response.status !== 401) {
                 if (!angular.isUndefined(response.data.globalError) && response.data.globalError[0] != null) {
                     var msg = response.data.globalError[0];
                     var errorList = msg.split(global.TOKEN_SEPARATOR);
