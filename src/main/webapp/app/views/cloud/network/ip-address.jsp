@@ -40,10 +40,10 @@ pageEncoding="UTF-8"%>
                       <td>{{ipaddress.zone.name}} </td>
                       <td> <b class="text-success text-uppercase">{{ipaddress.state}}</b></td>
                       <td>
-                            <a class="icon-button" title="Enable VPN">
+                            <!-- <a class="icon-button" title="Enable VPN">
                                 <i class="custom-link-icon custom-vpn-ip"></i>
-                            </a>
-                            <a class="icon-button" title="Release IP"  ><span class="fa fa-chain-broken"></span></a>
+                            </a> -->
+                            <a data-ng-if="!ipaddress.isSourcenat" class="icon-button" title="Release IP" data-ng-click="releaseIP('sm',ipaddress)"><span class="fa fa-chain-broken"></span></a>
                       </td>
               </tr>
           </tbody>
