@@ -35,17 +35,17 @@ angular
 
 
     // Load permission
-    $scope.permissions = {};
-    var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
-    var hasPermissions = appService.promiseAjax.httpTokenRequest(appService.crudService.globalConfig.HTTP_GET, appService.crudService.globalConfig.APP_URL + "permissions/list");
 
-    hasPermissions.then(function (result) {  // this is only run after $http
-												// completes0
-    	  $scope.showLoader = true;
-    	$scope.permissions = result;
-        $scope.showLoader = false;
-
-    });
+    function listPermissions() {
+	    $scope.permissions = {};
+	    $scope.showLoader = {};
+	    var hasPermissions = appService.promiseAjax.httpTokenRequest(appService.crudService.globalConfig.HTTP_GET, appService.crudService.globalConfig.APP_URL + "permissions/list");
+	    hasPermissions.then(function (result) {  // this is only run after $http
+	    	$scope.permissions = result;
+	    	$scope.showLoader = false;
+	    });
+    }
+    listPermissions();
 
     // Load domain
     $scope.domain = {};
@@ -68,6 +68,7 @@ angular
     $scope.role = {};
     $scope.permissionList = [];
     $scope.createRole = function (form) {
+
         $scope.formSubmitted = true;
         if (form.$valid) {
         	$scope.showLoader = true;
@@ -112,11 +113,17 @@ angular
     };
 
     $scope.edit = function (roleId) {
+    	$scope.permissionGroupCount = [];
         var hasRole = appService.crudService.read("roles", roleId);
         hasRole.then(function (result) {
             $scope.role = result;
+            var permissionGroupCount = [];
             angular.forEach($scope.role.permissionList, function(permission, key) {
             	$scope.permissionList[permission.id] = true;
+            	if(isNaN($scope.permissionGroupCount[permission.module])) {
+            		$scope.permissionGroupCount[permission.module] = 0;
+            	}
+            	$scope.permissionGroupCount[permission.module]++;
             });
         	angular.forEach($scope.formElements.departmentList, function(obj, key) {
 	    		if(obj.id == $scope.role.department.id) {
@@ -222,6 +229,28 @@ angular
                 };
         }]);
     };
+
+    $scope.checkAllPermissions = function(permissions) {
+		var permissionModules = [];
+		var unchecked = false;
+		for(var i=0; i< permissions.length; i++) {
+			if (!$scope.permissionGroup[permissions[i].module] || angular.isUndefined($scope.permissionGroup[permissions[i].module])) {
+				unchecked = true;
+				break;
+			}
+		}
+
+
+		for(var i=0; i< permissions.length; i++) {
+			if (unchecked) {
+				$scope.permissionGroup[permissions[i].module]= true;
+				$scope.permissionList[permissions[i].id] = true;
+			} else {
+				$scope.permissionGroup[permissions[i].module]= false;
+				$scope.permissionList[permissions[i].id] = false;
+			}
+		}
+    }
 
     $scope.permissionGroup = {};
     $scope.checkAll = function (permissionModule, key) {

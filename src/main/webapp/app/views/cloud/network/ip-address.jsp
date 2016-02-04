@@ -15,7 +15,7 @@ pageEncoding="UTF-8"%>
                     </div>
                     <div class="col-md-9 col-sm-9 col-xs-9">
                         <span class="pull-right">
-                            <a class="btn btn-info" data-ng-click="openAddIP('md', network)"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span>Acquire new IP</a>
+                            <a has-permission="ACQUIRE_IP_ADDRESS" class="btn btn-info" data-ng-click="openAddIP('md', network)"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span>Acquire new IP</a>
                        </span>
                     </div>
                 </div>
@@ -40,10 +40,10 @@ pageEncoding="UTF-8"%>
                       <td>{{ipaddress.zone.name}} </td>
                       <td> <b class="text-success text-uppercase">{{ipaddress.state}}</b></td>
                       <td>
-                            <a class="icon-button" title="Enable VPN">
+                            <!-- <a class="icon-button" title="Enable VPN">
                                 <i class="custom-link-icon custom-vpn-ip"></i>
-                            </a>
-                            <a class="icon-button" title="Release IP"  ><span class="fa fa-chain-broken"></span></a>
+                            </a> -->
+                            <a data-ng-if="!ipaddress.isSourcenat" class="icon-button" title="Release IP" data-ng-click="releaseIP('sm',ipaddress)"><span class="fa fa-chain-broken"></span></a>
                       </td>
               </tr>
           </tbody>

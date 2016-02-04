@@ -406,11 +406,16 @@ $scope.list = function () {
 								       }]);
 								  };
 					  $scope.showPassword = function(vm) {
-						  appService.dialogService.openDialog("app/views/cloud/instance/show-reset-password.jsp", 'md',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
-							    $scope.cancel = function () {
-							        $modalInstance.close();
-								};
-							}]);
+						  var hasInstance = appService.promiseAjax.httpTokenRequest(appService.crudService.globalConfig.HTTP_GET, appService.crudService.globalConfig.APP_URL + "virtualmachine"+"/getvncpassword/"+vm.id);
+						  hasInstance.then(function (result) {
+		        				$scope.instance = result;
+		        				console.log($scope.instanceList);
+		        				appService.dialogService.openDialog("app/views/cloud/instance/show-reset-password.jsp", 'md',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
+								    $scope.cancel = function () {
+								        $modalInstance.close();
+									};
+								}]);
+		        			});
 						};
 
 						$scope.resetPassword= function(vm) {

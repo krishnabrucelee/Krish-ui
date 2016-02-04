@@ -1425,11 +1425,14 @@ $timeout(function(){$scope.showLoader = false; $scope.firewallRule(1);
                         $scope.acquiringIP = true;
                         var hasIP = appService.crudService.listByQuery("ipAddresses/acquireip?network=" + $stateParams.id);
                         hasIP.then(function (result) {
-                            $scope.acquiringIP = false;
-                            $scope.cancel();
-                            $scope.ipLists(1);
+			$timeout(function(){ $scope.ipLists(1);
+                                appService.notify({message: 'Public IP acquired successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                            $scope.acquiringIP = false;$scope.cancel(); }, 5000);
+                            
+                          
                         }).catch(function (result) {
                             $scope.acquiringIP = false;
+				$scope.showLoader = false;  
                             if (result.data.globalError[0] != null) {
                                 var msg = result.data.globalError[0];
                                 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
@@ -1438,6 +1441,26 @@ $timeout(function(){$scope.showLoader = false; $scope.firewallRule(1);
                         });
 
                     }
+                },
+                        $scope.cancel = function () {
+                            $modalInstance.close();
+                        };
+            }]);
+    };
+
+      $scope.releaseIP = function (size, ipAddress) {
+	$scope.ipAddress = angular.copy(ipAddress);
+        appService.dialogService.openDialog("app/views/cloud/network/release-ip.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
+                $scope.release = function (network) {
+			$scope.showLoader = true;
+                        var hasIP = appService.crudService.listByQuery("ipAddresses/dissociate?ipuuid=" + $scope.ipAddress.uuid);
+                        hasIP.then(function (result) {
+				$timeout(function(){  $scope.ipLists(1);
+                                appService.notify({message: 'Public IP released successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});$scope.showLoader = false;$scope.cancel();}, 5000);
+                            
+                        }).catch(function (result) {
+                        });
+                   
                 },
                         $scope.cancel = function () {
                             $modalInstance.close();

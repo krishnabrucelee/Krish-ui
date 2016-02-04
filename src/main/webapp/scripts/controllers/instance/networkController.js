@@ -104,6 +104,7 @@ function networkCtrl($scope, $modal, $state, $window, $stateParams,appService) {
                         hasServer.then(function (result) {  // this is only run after $http completes
                         $scope.showLoader = false;
                     	appService.notify({message: 'Attached successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+        			    $state.reload();
                         $modalInstance.close();
                         $state.reload();
                         $scope.instanceNicList();
@@ -118,7 +119,18 @@ function networkCtrl($scope, $modal, $state, $window, $stateParams,appService) {
                         }
                     });
                 }
-            };
+            },
+            $scope.instanceNicList = function () {
+             	var instanceId = $stateParams.id;
+             	var hasNic = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbyinstances?instanceid="+instanceId +"&lang=" + appService.localStorageService.cookie.get('language')+"&sortBy=-id");
+      	        hasNic.then(function (result) {
+      	            $scope.nicList = result;
+      	            $scope.nicArray = [];
+      	            angular.forEach($scope.nicList, function(nic, nicKey) {
+      	            	$scope.nicArray.push(nic.network.id);
+      	    		})
+      	        });
+      	    },
             $scope.cancel = function () {
                 $modalInstance.close();
             };
@@ -166,14 +178,25 @@ function networkCtrl($scope, $modal, $state, $window, $stateParams,appService) {
                     hasServer.then(function (result) {
                        $scope.showLoader = false;
                        appService.notify({message: 'NIC updated successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+              		 	$state.reload();
                        $modalInstance.close();
-                       $state.reload();
                        $scope.instanceNicList();
                     });
                 },
+                $scope.instanceNicList = function () {
+                 	var instanceId = $stateParams.id;
+                 	var hasNic = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbyinstances?instanceid="+instanceId +"&lang=" + appService.localStorageService.cookie.get('language')+"&sortBy=-id");
+          	        hasNic.then(function (result) {
+          	            $scope.nicList = result;
+          	            $scope.nicArray = [];
+          	            angular.forEach($scope.nicList, function(nic, nicKey) {
+          	            	$scope.nicArray.push(nic.network.id);
+          	    		})
+          	        });
+          	    },
                 $scope.cancel = function () {
                 $modalInstance.close();
                 };
             }]);
        };
-}
+     }
