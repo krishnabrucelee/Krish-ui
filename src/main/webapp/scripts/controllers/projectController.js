@@ -241,10 +241,9 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams) {
     };
 
 
-
+    $scope.projectForm = {};
     $scope.createProject = function (size) {
     	$scope.newProject = {};
-        $scope.projectForm = {};
     	appService.dialogService.openDialog("app/views/project/add.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
         // add project
 
@@ -291,15 +290,10 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams) {
     		              	$scope.list(1);
     		            }).catch(function (result) {
     		            	$scope.projectLoader = false;
-    		                if(result.data.globalError[0] != '' && result.data.globalError[0] != null ){
-    		               	 var msg = result.data.globalError[0];
+    		                if(result.data.fieldErrors != null ){
+    		               	 var msg = result.data.fieldErrors['name'];
     		               	 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
-    		                    }
-    		                angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
-    		                    $scope.projectForm[key].$invalid = true;
-    		                    $scope.projectForm[key].errorMessage = errorMessage;
-    		                });
-
+    		                 }
     		            });
     		        }
     		    },

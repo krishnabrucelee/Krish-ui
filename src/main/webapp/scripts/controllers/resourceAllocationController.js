@@ -144,6 +144,7 @@ function resourceAllocationCtrl($scope, crudService, globalConfig, notify, $stat
 				$scope.formSubmitted = false;
 	            notify({message: 'Updated successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
 	        }).catch(function (result) {
+	        	$scope.showLoader = false;
 	            if (!angular.isUndefined(result.data)) {
 	            	if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
 	              	    var msg = result.data.globalError[0];
@@ -189,6 +190,7 @@ function resourceAllocationCtrl($scope, crudService, globalConfig, notify, $stat
 	            notify({message: 'Updated successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
 
 	        }).catch(function (result) {
+	        	$scope.showLoader = false;
 	            if (!angular.isUndefined(result.data)) {
 	            	if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
 	              	    var msg = result.data.globalError[0];
