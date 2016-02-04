@@ -82,7 +82,11 @@
    	 	<div data-ng-show = "showLoader" style="margin: 1%">
 
    	 	</div>
-       	<div  class="col-md-12 col-sm-12" data-ng-hide = "showLoader" ng-repeat="(key, module) in permissions | groupBy: 'module'">
+   	 	<div class="row  p-sm" data-ng-hide = "showLoader">
+         	<div class="col-md-12 m-b-sm">
+         		<button type="button" class="btn btn-info pull-right" data-ng-click="checkAllPermissions(permissions)"> Check/UnCheck All</button>
+         	</div>
+       	<div  class="col-md-12 col-sm-12"  ng-repeat="(key, module) in permissions | groupBy: 'module'">
             <div class="form-group">
                 <div class="white-content">
 
@@ -102,7 +106,7 @@
         </div>
     </div>
     <div class="form-group">
-        <div class="row">
+        <div class="row p-sm">
             <span class="pull-right">
                 <a class="btn btn-default btn-outline" data-ng-hide="showLoader" ui-sref="roles"><fmt:message key="common.cancel" bundle="${msg}" /></a>
                 <button class="btn btn-info" has-permission="CREATE_ROLE" data-ng-hide="showLoader" type="submit" ng-disabled="form.RoleForm.$invalid" ><fmt:message key="common.add" bundle="${msg}" /></button>
