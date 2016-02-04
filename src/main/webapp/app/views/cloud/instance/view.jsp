@@ -152,21 +152,21 @@ pageEncoding="UTF-8"%>
                                             <a href="javascript:void(0);" title="<fmt:message key="view.console" bundle="${msg}" />" data-ng-click="showConsole(instance)"><span class="fa-desktop fa font-bold m-xs"></span> <fmt:message key="view.console" bundle="${msg}" /></a>
                                         </li>
 
-                                        <li has-permission="ATTACH_ISO" data-ng-if="(instance.status == 'RUNNING' || instance.status == 'STOPPED') && !instance.isoName"  class="list-group-item">
-                                            <a href="javascript:void(0);" title="<fmt:message key="attach.iso" bundle="${msg}" />" data-ng-click="attachISO(instance)"><span class="fa-dot-circle-o fa font-bold m-xs"></span> <fmt:message key="attach.iso" bundle="${msg}" /></a>
+                                        <li has-permission="ATTACH_ISO" class="list-group-item">
+                                            <button ng-class = "(instance.status == 'RUNNING' || instance.status == 'STOPPED') && !instance.isoName ? 'resizelink enable' : 'resizelink disable'" data-ng-disabled=" (instance.status == 'RUNNING' || instance.status == 'STOPPED') && instance.isoName " href="javascript:void(0);" title="<fmt:message key="attach.iso" bundle="${msg}" />" data-ng-click="attachISO(instance)"><span class="fa-dot-circle-o fa font-bold m-xs"></span> <fmt:message key="attach.iso" bundle="${msg}" /></button>
                                         </li>
 
                                         <li has-permission="TAKE_VM_SNAPSHOT" data-ng-if="instance.status == 'RUNNING' || instance.status == 'STOPPED'" class="list-group-item">
                                             <a href="javascript:void(0);" title="<fmt:message key="vm.snapshot" bundle="${msg}" />" data-ng-click="takeSnapshot(instance)"><span class="fa-camera fa font-bold m-xs"></span> <fmt:message key="take.vm.snapshot" bundle="${msg}" /></a>
                                         </li>
-                                        <li has-permission="MIGRATE_HOST" data-ng-if="instance.status == 'RUNNING' && global.sessionValues.type === 'ROOT_ADMIN'" class="list-group-item">
-                                            <a href="javascript:void(0);" title="<fmt:message key="migrate.to.another.host" bundle="${msg}" />" data-ng-click="hostMigrate(instance)"><span class="fa-arrows fa font-bold m-xs pull-left"></span> <span class="pull-left m-l-xs width-md"><fmt:message key="migrate.to.another.host" bundle="${msg}" /></span><div class="clearfix"></div></a>
+                                        <li has-permission="MIGRATE_HOST" class="list-group-item">
+                                            <button ng-class = "(instance.status == 'RUNNING' && global.sessionValues.type === 'ROOT_ADMIN') ? 'resizelink enable' : 'resizelink disable'" data-ng-disabled = "(instance.status !== 'RUNNING' || global.sessionValues.type !== 'ROOT_ADMIN')" href="javascript:void(0);" title="<fmt:message key="migrate.to.another.host" bundle="${msg}" />" data-ng-click="hostMigrate(instance)"><span class="fa-arrows fa font-bold m-xs pull-left"></span> <span class="pull-left m-l-xs"><fmt:message key="migrate.to.another.host" bundle="${msg}" /></span><div class="clearfix"></div></button>
                                         </li>
                                         <li has-permission="HOST_INFORMATION" data-ng-if="instance.status == 'RUNNING'" class="list-group-item">
                                             <a href="javascript:void(0);" title="<fmt:message key="host.information" bundle="${msg}" />" data-ng-click="hostInformation(instance)" ><span class="fa-square fa font-bold m-xs"></span> <fmt:message key="host.information" bundle="${msg}" /></a>
                                         </li>
                                          <li class="list-group-item">
-                                            <button data-ng-class = "(instance.passwordEnabled == true  && instance.vncPassword !== null) ? 'resizelink enable' : 'resizelink disable'" data-ng-disabled="instance.vncPassword == null || instance.passwordEnabled == false" href="javascript:void(0);" title="<fmt:message key="show.password" bundle="${msg}" />" data-ng-click="showPassword(instance)"><span class="fa-key fa font-bold m-xs"></span> <fmt:message key="show.password" bundle="${msg}" /></button>
+                                            <button data-ng-class = "(instance.passwordEnabled == true  && instance.vncPassword !== null) ? 'resizelink enable' : 'resizelink disable'" data-ng-disabled="(instance.vncPassword == null || !instance.passwordEnabled) && (instance.status == 'RUNNING' || instance.status == 'STOPPED')" href="javascript:void(0);" title="<fmt:message key="show.password" bundle="${msg}" />" data-ng-click="showPassword(instance)"><span class="fa-key fa font-bold m-xs"></span> <fmt:message key="show.password" bundle="${msg}" /></button>
                                         </li>
                                     </div>
                                     <li class="list-group-item">
@@ -195,20 +195,17 @@ pageEncoding="UTF-8"%>
                                         <li has-permission="REINSTALL_VM" class="list-group-item" data-ng-if="instance.status == 'RUNNING'">
                                             <a href="javascript:void(0);" title="<fmt:message key="reinstall.vm" bundle="${msg}" />" data-ng-click="reInstallVm('md',instance)"><span class="fa fa-history m-xs"></span> <fmt:message key="reinstall.vm" bundle="${msg}" /></a>
                                         </li>
-                                        <li has-permission="DESTROY_VM" class="list-group-item" data-ng-if="instance.status == 'RUNNING' || instance.status == 'STOPPED'">
-                                            <a href="javascript:void(0);" data-ng-click="reDestroyVm('sm', instance)" title="<fmt:message key="destroy.vm" bundle="${msg}" />"><span class="fa-times-circle fa font-bold m-xs"></span> <fmt:message key="destroy.vm" bundle="${msg}" /></a>
-                                        </li>
-                                        <li has-permission="DESTROY_VM" class="list-group-item" data-ng-if="instance.status == 'DESTROYED'">
+                                        <li has-permission="DESTROY_VM" class="list-group-item" data-ng-if="instance.status == 'RUNNING' || instance.status == 'STOPPED' || instance.status == 'ERROR' || instance.status == 'DESTROYED'">
                                             <a href="javascript:void(0);" data-ng-click="reDestroyVm('sm', instance)" title="<fmt:message key="destroy.vm" bundle="${msg}" />"><span class="fa-times-circle fa font-bold m-xs"></span> <fmt:message key="destroy.vm" bundle="${msg}" /></a>
                                         </li>
                                         <li data-ng-if="instance.status == 'DESTROYED'" class="list-group-item ">
                                             <a href="javascript:void(0);" data-ng-if="instance.status == 'DESTROYED'" data-ng-click="recoverVm('sm', instance)" title="<fmt:message key="recover.vm" bundle="${msg}" />"><span class="fa-history fa font-bold m-xs"></span> <fmt:message key="recover.vm" bundle="${msg}" /></a>
                                         </li>
-                                        <li data-ng-if="(instance.status == 'RUNNING' || instance.status == 'STOPPED') && instance.isoName"  class="list-group-item">
-                                            <a href="javascript:void(0);" title="<fmt:message key="detach.iso" bundle="${msg}" />" data-ng-click="detachISO(instance)"><span class="fa-compass fa font-bold m-xs"></span> <fmt:message key="detach.iso" bundle="${msg}" /></a>
+                                        <li has-permission="ATTACH_ISO" class="list-group-item">
+                                            <button ng-class = "(instance.status == 'RUNNING' || instance.status == 'STOPPED') && instance.isoName ? 'resizelink enable' : 'resizelink disable'" data-ng-disabled = "(instance.status !== 'RUNNING' || instance.status !== 'STOPPED') || instance.isoName" href="javascript:void(0);" title="<fmt:message key="detach.iso" bundle="${msg}" />" data-ng-click="detachISO(instance)"><span class="fa-compass fa font-bold m-xs"></span> <fmt:message key="detach.iso" bundle="${msg}" /></button>
                                         </li>
-                                         <li has-permission="RESIZE" class="list-group-item " >
-                                              <button ng-class = "(instance.status == 'RUNNING') ? 'resizelink disable' : 'resizelink enable'" data-ng-disabled="instance.status == 'RUNNING'" href="javascript:void(0);"   data-ng-click="selectab()" title="<fmt:message key="resize.vm" bundle="${msg}" />"><span class="fa fa-expand m-xs"></span> <fmt:message key="resize.vm" bundle="${msg}" /></button>
+                                         <li has-permission = "UPGRADE_VM" class="list-group-item " >
+                                              <button ng-class = "(instance.status == 'STOPPED') ? 'resizelink enable' : 'resizelink disable'" data-ng-disabled="instance.status !== 'STOPPED'" href="javascript:void(0);"   data-ng-click="selectab()" title="<fmt:message key="resize.vm" bundle="${msg}" />"><span class="fa fa-expand m-xs"></span> <fmt:message key="resize.vm" bundle="${msg}" /></button>
                                         </li>
                                          <li has-permission="RESET_PASSWORD" class="list-group-item">
                                             <button ng-class = "(instance.passwordEnabled == true && instance.status == 'STOPPED') ? 'resizelink enable' : 'resizelink disable'" data-ng-disabled="instance.passwordEnabled == false || instance.status !== 'STOPPED'" href="javascript:void(0);" title="<fmt:message key="reset.password" bundle="${msg}" />" data-ng-click="resetPassword(instance)"><span class="fa-key fa font-bold m-xs"></span> <fmt:message key="reset.password" bundle="${msg}" /></button>
@@ -389,7 +386,7 @@ pageEncoding="UTF-8"%>
                                                 </td>
                                                 <td class="col-md-8 col-sm-8">
                                                     {{ instance.computeOffering.name}}
-                                                    <a data-ng-if = "instance.status == 'STOPPED'" data-ng-click="selectab()"  class="fa fa-edit m-l-lg">
+                                                    <a has-permission="UPGRADE_VM" data-ng-if = "instance.status == 'STOPPED'" data-ng-click="selectab()"  class="fa fa-edit m-l-lg">
                                                         <fmt:message key="common.edit" bundle="${msg}" />
                                                     </a>
                                                 </td>
