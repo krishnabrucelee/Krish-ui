@@ -84,7 +84,7 @@
    	 	</div>
    	 	<div class="row  p-sm" data-ng-hide = "showLoader">
          	<div class="col-md-12 m-b-sm">
-         		<button type="button" class="btn btn-info pull-right" data-ng-click="checkAllPermissions(permissions)"> Check/UnCheck All</button>
+         		<button type="button" class="btn btn-info pull-right" data-ng-click="checkAllPermissions(permissions)"> <fmt:message key="common.check.uncheck.all" bundle="${msg}" /></button>
          	</div>
        	<div  class="col-md-12 col-sm-12"  ng-repeat="(key, module) in permissions | groupBy: 'module'">
             <div class="form-group">
