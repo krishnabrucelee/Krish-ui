@@ -24,9 +24,9 @@ function secondaryIpCtrl($scope, $modal, $state, $window, $stateParams,appServic
         var hasServer = appService.crudService.read("virtualmachine", $stateParams.id);
         hasServer.then(function (result) {  // this is only run after $http
             $scope.instance = result;
-            console.log( $scope.instance);
             $scope.networkList = result.network;
-
+            $state.current.data.pageName = result.name;
+            $state.current.data.id = result.id;
         });
     }
 

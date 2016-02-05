@@ -53,7 +53,11 @@
                                                                 <!--<i class="pe-7s-network pe-4x"></i>-->
                                                                 <img src="images/network-icon-2.png" alt="Storage" />
                                                             </div>
-                                                             <div class="pull-right">
+
+                                                            <div class="media-body">
+
+                                                                <div class="row-fluid">
+                                                                	<div class="pull-right">
                                                                     <div data-ng-if="!nic.isDefault" class="btn-group">
                                                                         <button class="btn btn-sm m-t-md dropdown-toggle" data-ng-class="$index == 0 ? 'btn-info' : 'btn-default'" data-toggle="dropdown"><i class="fa fa-cog"></i> <fmt:message key="configure" bundle="${msg}" /></button>
                                                                         <ul class="dropdown-menu pull-right">
@@ -64,12 +68,7 @@
                                                                         </ul>
                                                                         <div class="clearfix"></div>
                                                                     </div>
-
-                                                                </div>
-
-                                                            <div class="media-body">
-
-                                                                <div class="row-fluid">
+                                                                    </div>
                                                                     <div class="span12 field-box p-xxs"><label class="headerLabel m-r-xs"><fmt:message key="network.name" bundle="${msg}" />:</label><a href="#/user/network/view/2">{{nic.network.name}}</a></div>
                                                                     <div class="span12 field-box p-xxs"><label class="headerLabel m-r-xs"><fmt:message key="id" bundle="${msg}" />:</label><span id="nicId">{{nic.uuid}}</span></div>
                                                                     <div class="span12 field-box p-xxs"><label class="headerLabel m-r-xs"><fmt:message key="common.type" bundle="${msg}" />:</label><span>{{nic.network.networkType}}</span></div>
@@ -78,8 +77,8 @@
                                                                     <div class="span12 field-box p-xxs"><label class="headerLabel m-r-xs"><fmt:message key="netmask" bundle="${msg}" />:</label><span>{{nic.netMask}}</span></div>
                                                                     <div class="span12 field-box p-xxs"><label class="headerLabel m-r-xs"><fmt:message key="is.default" bundle="${msg}" />:</label><span data-ng-class="nic.isDefault== 'true' ? 'text-info' : 'text-default' ">{{nic.isDefault}}</span></div>
                                                                     <div class="pull-right">
-										<span class="pull-right m-l-sm m-t-sm"> <a class="btn btn-info" ui-sref="cloud.list-instance.view-instance.ipaddress({id1:{{nic.id}}})"><fmt:message key="edit.secondary.ips" bundle="${msg}" /></a></span>
-								</div>
+										                            <span class="pull-right m-l-sm m-t-sm"> <a class="btn btn-info" ui-sref="cloud.list-instance.view-instance.ipaddress({id1:{{nic.id}}})"><fmt:message key="edit.secondary.ips" bundle="${msg}" /></a></span>
+								                                    </div>
 
                                                                 </div>
                                                             </div>

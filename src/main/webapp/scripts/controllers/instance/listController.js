@@ -8,13 +8,23 @@ angular.module('homer').controller('instanceListCtrl', instanceListCtrl)
 		.controller('instanceDetailsCtrl', instanceDetailsCtrl)
 
 function instanceListCtrl($scope, $sce, $log, $filter, dialogService, promiseAjax, $state,
-		globalConfig, crudService,$modal, localStorageService, $window, notify, appService) {
+		globalConfig, crudService,$modal, localStorageService, $window, notify, appService, $stateParams) {
 	$scope.instanceList = [];
 	$scope.instancesList = [];
         $scope.global = crudService.globalConfig;
 	$scope.paginationObject = {};
     $scope.sort = appService.globalConfig.sort;
     $scope.changeSorting = appService.utilService.changeSorting;
+
+    if ($stateParams.id > 0) {
+        var hasServer = appService.crudService.read("virtualmachine", $stateParams.id);
+        hasServer.then(function (result) {  // this is only run after $http
+            $scope.instance = result;
+            $scope.networkList = result.network;
+            $state.current.data.pageName = result.name;
+            $state.current.data.id = result.id;
+        });
+    }
 
     $scope.hostList = function () {
 	      var hashostList = appService.crudService.listAll("host/list");
