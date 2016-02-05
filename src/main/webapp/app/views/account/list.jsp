@@ -61,7 +61,6 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12 col-sm-12 col-xs-12 ">
-                        <pagination-content></pagination-content>
                             <div class="white-content">
                                <div data-ng-show = "showLoader" style="margin: 1%">
     				  		<get-loader-image data-ng-show="showLoader"></get-loader-image>

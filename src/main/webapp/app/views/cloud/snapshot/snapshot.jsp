@@ -25,7 +25,6 @@
                     <div class="clearfix"></div>
                 </div>
             </div>
-			<pagination-content></pagination-content>
             <div class="white-content">
                 <div class="table-responsive">
                     <table cellspacing="1" cellpadding="1" class="table table-bordered table-striped">
