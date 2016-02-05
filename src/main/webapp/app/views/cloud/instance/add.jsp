@@ -18,13 +18,13 @@
                     <ul class="nav nav-tabs">
                         <li data-ng-class="{'active' : (templateCategory == 'template' || templateCategory == null) }">
                             <a href="javascript:void(0)"
-							data-ng-click="filterReload('template')" data-toggle="tab">
+							data-ng-click="templateTypeFilter('template')" data-toggle="tab">
                                 <fmt:message key="common.template" bundle="${msg}" />
                             </a>
                         </li>
                         <li data-ng-class="{'active' : templateCategory == 'iso'}">
                             <a href="javascript:void(0)"
-							data-ng-click="filterReload('iso')" data-toggle="tab">
+							data-ng-click="templateTypeFilter('iso')" data-toggle="tab">
                                 <fmt:message key="common.iso" bundle="${msg}" />
                             </a>
                         </li>
