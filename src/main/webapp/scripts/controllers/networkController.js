@@ -311,7 +311,7 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
                         $scope.formSubmitted = false;
 $timeout(function(){$scope.showLoader = false; $scope.firewallRule(1);
                                 appService.notify({message: 'Firewall rule added successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});}, 25000);// completes
-                        
+
                         $scope.firewallRule(1);
                         $scope.templateCategory = 'firewall';
                     }).catch(function (result) {
@@ -986,171 +986,205 @@ $timeout(function(){$scope.showLoader = false; $scope.firewallRule(1);
         }
     };
 
+
     $scope.LBlist = function (loadBalancer) {
-        var ipAddressId = $stateParams.id1;
-        var hasloadBalancer = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "loadBalancer/list?ipAddressId=" + $stateParams.id1 + "&lang=" + appService.localStorageService.cookie.get('language') + "&sortBy=-id");
-        hasloadBalancer.then(function (result) {
-            $scope.loadBalancerList = result;
+  var ipAddressId = $stateParams.id1;
+ 	var hasloadBalancer = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL +"loadBalancer/list?ipAddressId="+$stateParams.id1 +"&lang=" + appService.localStorageService.cookie.get('language')+"&sortBy=-id");
+  hasloadBalancer.then(function (result) {
+          $scope.rulesList = result;
 
-        });
-    };
+  });
+};
 
-    if (!angular.isUndefined($stateParams.id1)) {
-        $scope.LBlist(1);
-    }
+if(!angular.isUndefined($stateParams.id1)){
+$scope.LBlist(1);
+}
 
-    // $scope.LBlist = function (pageNumber) {
-    // var limit = (angular.isUndefined($scope.paginationObject.limit)) ?
-	// $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
-    // var hasLoadBalancer = appService.crudService.list("loadBalancer",
-	// $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
-    // hasLoadBalancer.then(function (result) {
-    // $scope.rulesList = result;
-    // For pagination
-    // $scope.paginationObject.limit = limit;
-    // $scope.paginationObject.currentPage = pageNumber;
-    // $scope.paginationObject.totalItems = result.totalItems;
-    // });
-    // };
-    // $scope.LBlist(1);
-    $scope.openAddVM = function (form) {
-        $scope.loadFormSubmitted = true;
-        if (form.$valid) {
-            $scope.global.rulesLB[0].name = $scope.loadBalancer.name;
-            $scope.global.rulesLB[0].publicPort = $scope.loadBalancer.publicPort;
-            $scope.global.rulesLB[0].privatePort = $scope.loadBalancer.privatePort;
-            $scope.global.rulesLB[0].algorithm = $scope.loadBalancer.algorithms.value;
-            modalService.trigger('app/views/cloud/network/vm-list.jsp', 'lg');
-        }
-    };
+$scope.openAddVM = function (form) {
+  $scope.loadFormSubmitted = true;
+  if (form.$valid) {
+      $scope.global.rulesLB[0].name = $scope.loadBalancer.name;
+      $scope.global.rulesLB[0].publicPort = $scope.loadBalancer.publicPort;
+      $scope.global.rulesLB[0].privatePort = $scope.loadBalancer.privatePort;
+      $scope.global.rulesLB[0].algorithm = $scope.loadBalancer.algorithms.value;
+  $scope.showLoader = true;
+      //modalService.trigger('app/views/cloud/network/vm-list.jsp', 'lg');
+appService.dialogService.openDialog("app/views/cloud/network/vm-list.jsp", 'lg' , $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+    $scope.loadbalancerSave = function(loadBalancer) {
+  $scope.loadBalancer = $scope.global.rulesLB[0];
+  $scope.formSubmitted = true;
+  $scope.loadBalancer.ipAddressId = $stateParams.id1;
+  // var loadBalancer = angular.copy($scope.loadBalancer);
+  $scope.loadBalancer.protocol = $scope.loadBalancer.protocol.toUpperCase();
+  $scope.loadBalancer.state = $scope.loadBalancer.state.toUpperCase();
+	$scope.loadBalancer.state = $scope.loadBalancer.state.toUpperCase();
 
-    $scope.openAddVMlist = function () {
-        appService.dialogService.openDialog("app/views/cloud/network/vm-list.jsp", 'lg', $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
-                $scope.ok = function () {
-// appService.notify({message: 'Deleted successfully', classes: 'alert-success',
-// templateUrl: $scope.homerTemplate});
-                },
-                        $scope.cancel = function () {
-                            $modalInstance.close();
-                        };
-            }]);
+	if (!angular.isUndefined($scope.stickiness.stickinessName) && $scope.stickiness.stickinessName != null) {
+		$scope.loadBalancer.stickinessName = $scope.stickiness.stickinessName;
+	}
+	if (!angular.isUndefined($scope.stickiness.stickinessMethod) && $scope.stickiness.stickinessMethod != null) {
+		$scope.loadBalancer.stickinessMethod = $scope.stickiness.stickinessMethod;
+	}
+	if (!angular.isUndefined($scope.stickiness.cookieName) && $scope.stickiness.cookieName != null) {
+		$scope.loadBalancer.cookieName = $scope.stickiness.cookieName;
+	}
+	if (!angular.isUndefined($scope.stickiness.stickyTableSize) && $scope.stickiness.stickyTableSize != null) {
+		$scope.loadBalancer.stickyTableSize = $scope.stickiness.stickyTableSize;
+	}
+	if (!angular.isUndefined($scope.stickiness.stickyExpires) && $scope.stickiness.stickyExpires != null) {
+		$scope.loadBalancer.stickyExpires = $scope.stickiness.stickyExpires;
+	}
+	if (!angular.isUndefined($scope.stickiness.stickyMode) && $scope.stickiness.stickyMode != null) {
+		$scope.loadBalancer.stickyMode = $scope.stickiness.stickyMode;
+	}
+	if (!angular.isUndefined($scope.stickiness.stickyLength) && $scope.stickiness.stickyLength != null) {
+			$scope.loadBalancer.stickyLength = $scope.stickiness.stickylength;
+	}
+	if (!angular.isUndefined($scope.stickiness.stickyRequestLearn) && $scope.stickiness.stickyRequestLearn != null) {
+		$scope.loadBalancer.stickyRequestLearn = $scope.stickiness.stickyRequestLearn;
+	}
+	if (!angular.isUndefined($scope.stickiness.stickyPrefix) && $scope.stickiness.stickyPrefix != null) {
+		$scope.loadBalancer.stickyPrefix = $scope.stickiness.stickyPrefix;
+	}
+	if (!angular.isUndefined($scope.stickiness.stickyNoCache) && $scope.stickiness.stickyNoCache != null) {
+		$scope.loadBalancer.stickyNoCache = $scope.stickiness.stickyNoCache;
+	}
+	if (!angular.isUndefined($scope.stickiness.stickyIndirect) && $scope.stickiness.stickyIndirect != null) {
+		$scope.loadBalancer.stickyIndirect = $scope.stickiness.stickyIndirect;
+	}
+	if (!angular.isUndefined($scope.stickiness.stickyPostOnly) && $scope.stickiness.stickyPostOnly != null) {
+		$scope.loadBalancer.stickyPostOnly = $scope.stickiness.stickyPostOnly;
+	}
+	if (!angular.isUndefined($scope.stickiness.stickyCompany) && $scope.stickiness.stickyCompany != null) {
+		$scope.loadBalancer.stickyCompany = $scope.stickiness.stickyCompany;
+	}
+  var hasLoadBalancer = appService.crudService.add("loadBalancer", $scope.loadBalancer);
+  hasLoadBalancer.then(function (result) { // this is only run after
+  $scope.showLoader = true;
+      $scope.formSubmitted = false;
+      $scope.showLoader = false;
+      appService.notify({
+  message: 'LoadBalancer rule added successfully ',
 
-        $scope.global.rulesLB[0].name = $scope.loadBalancer.name;
-        $scope.global.rulesLB[0].publicPort = $scope.loadBalancer.algorithmspublicPort;
-        $scope.global.rulesLB[0].privatePort = $scope.loadBalancer.algorithms.privatePort;
-        $scope.global.rulesLB[0].algorithm = $scope.loadBalancer.algorithms.value;
+          classes: 'alert-success',
+          templateUrl: $scope.global.NOTIFICATION_TEMPLATE
 
-    };
+      });
+      $modalInstance.close();
+      $scope.LBlist(1);
+  }).catch(function (result) {
 
-    $scope.loadbalancerSave = function (loadBalancer) {
-        $scope.loadBalancer = $scope.global.rulesLB[0];
-        $scope.formSubmitted = true;
-        $scope.loadBalancer.ipAddressId = $stateParams.id1;
-        // var loadBalancer = angular.copy($scope.loadBalancer);
-        $scope.showLoader = true;
-        console.log($scope.loadBalancer.protocol.toUpperCase());
-        $scope.loadBalancer = $scope.createStickiness;
-        $scope.loadBalancer.protocol = $scope.loadBalancer.protocol.toUpperCase();
-        $scope.loadBalancer.state = $scope.loadBalancer.state.toUpperCase();
-        var hasLoadBalancer = appService.crudService.add("loadBalancer", $scope.loadBalancer);
-        hasLoadBalancer.then(function (result) { // this is only run after
-													// $http completes
-            $scope.formSubmitted = false;
-            $modalInstance.close();
-            $scope.showLoader = false;
-            appService.notify({
-                message: 'IP Address acquired successfully ',
-                classes: 'alert-success',
-                templateUrl: $scope.global.NOTIFICATION_TEMPLATE
-            });
-            $scope.LBlist(1);
-        }).catch(function (result) {
-            $scope.showLoader = false;
-            if (!angular.isUndefined(result.data)) {
-                if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
-                    var msg = result.data.globalError[0];
-                    $scope.showLoader = false;
-                    appService.notify({
-                        message: msg,
-                        classes: 'alert-danger',
-                        templateUrl: $scope.global.NOTIFICATION_TEMPLATE
-                    });
-                } else if (result.data.fieldErrors != null) {
-                    $scope.showLoader = false;
-                    angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
-                        $scope.loadBalancerForm[key].$invalid = true;
-                        $scope.loadBalancerForm[key].errorMessage = errorMessage;
-                    });
-                }
-            }
-        });
+      $scope.showLoader = false;
+      if (!angular.isUndefined(result.data)) {
+          if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
+              var msg = result.data.globalError[0];
+              $scope.showLoader = false;
+              appService.notify({
+                  message: msg,
+                  classes: 'alert-danger',
+                  templateUrl: $scope.global.NOTIFICATION_TEMPLATE
+              });
+          $scope.showLoader = false;
+          } else if (result.data.fieldErrors != null) {
+              $scope.showLoader = false;
+              angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
+                  $scope.loadBalancerForm[key].$invalid = true;
+                  $scope.loadBalancerForm[key].errorMessage = errorMessage;
+           $scope.showLoader = false;
+              });
+          }
+      }
+}) },
+              $scope.cancel = function () {
+                  $modalInstance.close();
+              };
 
-        $scope.cancel = function () {
-            $modalInstance.close();
-        };
-    };
+  }]);
 
-    // Edit the load balancer
-    $scope.editrule = function (size, loadBalancer) {
-        appService.dialogService.openDialog("app/views/cloud/network/edit-rule.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
-                // Update department
-                $scope.loadBalancer = angular.copy(loadBalancer);
-                $scope.update = function (loadBalancer) {
+  }
+};
 
-                    var loadBalancer = $scope.loadBalancer;
-                    var hasServer = appService.crudService.update("loadBalancer", loadBalancer);
-                    hasServer.then(function (result) {
-                        $scope.LBlist(1);
-                        appService.notify({message: 'Updated successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
-                        $modalInstance.close();
-                        $scope.showLoader = false;
-                    }).catch(function (result) {
-                        if (!angular.isUndefined(result) && result.data != null) {
-                            angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
+$scope.openAddVMlist = function () {
+ appService.dialogService.openDialog("app/views/cloud/network/vm-list.jsp", 'lg' , $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+      $scope.ok = function () {
 
-                                $scope.loadBalancerForm[key].$invalid = true;
-                                $scope.loadBalancerForm[key].errorMessage = errorMessage;
-                            });
-                        }
+      },
+              $scope.cancel = function () {
+                  $modalInstance.close();
+              };
+  }]);
 
-                    });
+      $scope.global.rulesLB[0].name = $scope.loadBalancer.name;
+      $scope.global.rulesLB[0].publicPort = $scope.loadBalancer.algorithmspublicPort;
+      $scope.global.rulesLB[0].privatePort = $scope.loadBalancer.algorithms.privatePort;
+      $scope.global.rulesLB[0].algorithm = $scope.loadBalancer.algorithms.value;
 
-                },
-                        $scope.cancel = function () {
-                            $modalInstance.close();
-                        };
-            }]);
-    };
+};
 
-    $scope.deleteRules = function (size, loadBalancer) {
-        appService.dialogService.openDialog("app/views/cloud/network/delete-rule.jsp", 'sm', $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
-                $scope.deleteObject = loadBalancer;
-                $scope.delete = function (deleteObject) {
-                    var hasServer = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_DELETE, appService.globalConfig.APP_URL + "loadBalancer/delete/" + loadBalancer.id + "?lang=" + appService.localStorageService.cookie.get('language'), '', loadBalancer);
-                    hasServer.then(function (result) {
-                        $scope.LBlist(1);
-                        appService.notify({message: 'Deleted successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
-                    }).catch(function (result) {
+// Edit the load balancer
+$scope.editrule = function (size, loadBalancer) {
+  appService.dialogService.openDialog("app/views/cloud/network/edit-rule.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+          // Update department
 
-                        if (!angular.isUndefined(result) && result.data != null) {
-                            if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
-                                var msg = result.data.globalError[0];
-                                appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
-                            }
-                            angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
-                                $scope.domainForm[key].$invalid = true;
-                                $scope.domainForm[key].errorMessage = errorMessage;
-                            });
-                        }
+            $scope.loadBalancer = angular.copy(loadBalancer);
+            $scope.update = function (loadBalancer) {
+              var loadBalancer = $scope.loadBalancer;
+		// $scope.loadBalancer.protocol = $scope.loadBalancer.protocol.toUpperCase();
+               //$scope.loadBalancer.state = $scope.loadBalancer.state.toUpperCase();
+              var hasServer = appService.crudService.update("loadBalancer", loadBalancer);
+              hasServer.then(function (result) {
+                  $scope.LBlist(1);
+                  appService.notify({message: 'Updated successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                  $modalInstance.close();
+                  $scope.showLoader = false;
+              }).catch(function (result) {
+                  if (!angular.isUndefined(result) && result.data != null) {
+                      angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
 
-                    });
-                    $modalInstance.close();
-                },
-                        $scope.cancel = function () {
-                            $modalInstance.close();
-                        };
-            }]);
-    };
+                          $scope.loadBalancerForm[key].$invalid = true;
+                          $scope.loadBalancerForm[key].errorMessage = errorMessage;
+                      });
+                  }
+
+              });
+
+          },
+                  $scope.cancel = function () {
+                      $modalInstance.close();
+                  };
+      }]);
+};
+
+$scope.deleteRules = function (size, loadBalancer) {
+  appService.dialogService.openDialog("app/views/cloud/network/delete-rule.jsp", 'sm', $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+          $scope.deleteObject = loadBalancer;
+          $scope.delete = function (deleteObject) {
+              var hasServer = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_DELETE, appService.globalConfig.APP_URL + "loadBalancer/delete/" + loadBalancer.id + "?lang=" + appService.localStorageService.cookie.get('language'), '', loadBalancer);
+              hasServer.then(function (result) {
+                  $scope.LBlist(1);
+                  appService.notify({message: 'Deleted successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+              }).catch(function (result) {
+
+                  if (!angular.isUndefined(result) && result.data != null) {
+                      if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
+                          var msg = result.data.globalError[0];
+                          appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                      }
+                      angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
+                          $scope.domainForm[key].$invalid = true;
+                          $scope.domainForm[key].errorMessage = errorMessage;
+                      });
+                  }
+
+              });
+              $modalInstance.close();
+          },
+                  $scope.cancel = function () {
+                      $modalInstance.close();
+                  };
+      }]);
+};
+
 
     $scope.lbCheck = false;
     $scope.vmlerror = false;
@@ -1428,11 +1462,11 @@ $timeout(function(){$scope.showLoader = false; $scope.firewallRule(1);
 			$timeout(function(){ $scope.ipLists(1);
                                 appService.notify({message: 'Public IP acquired successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                             $scope.acquiringIP = false;$scope.cancel(); }, 5000);
-                            
-                          
+
+
                         }).catch(function (result) {
                             $scope.acquiringIP = false;
-				$scope.showLoader = false;  
+				$scope.showLoader = false;
                             if (result.data.globalError[0] != null) {
                                 var msg = result.data.globalError[0];
                                 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
@@ -1457,10 +1491,10 @@ $timeout(function(){$scope.showLoader = false; $scope.firewallRule(1);
                         hasIP.then(function (result) {
 				$timeout(function(){  $scope.ipLists(1);
                                 appService.notify({message: 'Public IP released successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});$scope.showLoader = false;$scope.cancel();}, 5000);
-                            
+
                         }).catch(function (result) {
                         });
-                   
+
                 },
                         $scope.cancel = function () {
                             $modalInstance.close();
@@ -1504,20 +1538,35 @@ $timeout(function(){$scope.showLoader = false; $scope.firewallRule(1);
         $state.reload();
     }
     $scope.tabview = appService.localStorageService.get('view');
-
 // Add the sticky policy
     $scope.createStickiness = function (size) {
         appService.dialogService.openDialog($scope.global.VIEW_URL + "cloud/network/stickiness.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
+	      $scope.edit = function (loadBalancerId) {
+          var hasLB = appService.crudService.read("loadBalancer", loadBalancerId);
+          hasLB.then(function (result) {
+             $scope.loadBalancer = result;
+         });
+      };
                 // Create a new sticky policy
-                $scope.addStickiness = function (form) {
+
+//Add the sticky policy
+$scope.createStickiness = function (size) {
+    appService.dialogService.openDialog($scope.global.VIEW_URL + "cloud/network/stickiness.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope',function ($scope, $modalInstance, $rootScope) {
+	    //Assign loadbalancer stickiness in object
+            $scope.addStickiness = function (form,stickiness) {
+ 		$scope.stickiness = stickiness;
+
+		console.log($scope.stickiness);
                     $scope.formSubmitted = true;
                     if (form.$valid) {
                         appService.notify({message: 'Configured sticky policy successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                         $modalInstance.close();
                     }
                 },
-                        $scope.cancel = function () {
-                            $modalInstance.close();
+
+                     $scope.cancel = function () {
+                 	$modalInstance.close(); $scope.formElements = {
+	    };
                         };
             }]);
     };
@@ -1530,6 +1579,90 @@ $timeout(function(){$scope.showLoader = false; $scope.firewallRule(1);
             {id: 4, name: 'LbCookie'},
         ]
     };
+
+  //Add the sticky policy
+$scope.editStickiness = function (size,loadBalancer) {
+	$scope.stickyLoadBalancer = loadBalancer;
+    appService.dialogService.openDialog($scope.global.VIEW_URL + "cloud/network/edit-stickiness.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope',function ($scope, $modalInstance, $rootScope) {
+	    //Assign loadbalancer stickiness in object
+		   angular.forEach($scope.formElements.stickinessList, function (obj, key) {
+                if (obj.id == $scope.stickiness.stickinessMethod) {
+                    $scope.stickiness.stickinessMethod = obj;
+
+              }
+            });
+		 angular.forEach($scope.formElements.stickinessList, function(value, key){
+    		if(value == loadBalancer.stickinessMethod){
+			$scope.stickiness.stickinessMethod = loadBalancer.stickinessMethod ;
+			}
+		    if (!angular.isUndefined(loadBalancer.stickinessName) && loadBalancer.stickinessName != null) {
+	 		 $scope.stickiness.stickinessName = loadBalancer.stickinessName;
+			}
+
+			if (!angular.isUndefined(loadBalancer.stickyTableSize) && loadBalancer.stickyTableSize != null) {
+			$scope.stickiness.stickyTableSize = loadBalancer.stickyTableSize;
+			}
+
+			if (!angular.isUndefined(loadBalancer.cookieName) && loadBalancer.cookieName != null) {
+			$scope.stickiness.cookieName = loadBalancer.cookieName;
+			}
+
+    		});
+
+                $scope.editStickinessPolicy = function (form, loadBalancer) {
+
+			    if (!angular.isUndefined(loadBalancer.stickinessName) && loadBalancer.stickinessName != null) {
+				$scope.stickyLoadBalancer.stickinessName = loadBalancer.stickinessName;
+				}
+
+				if (!angular.isUndefined(loadBalancer.stickinessMethod) && loadBalancer.stickinessMethod != null) {
+					$scope.stickyLoadBalancer.stickinessMethod = loadBalancer.stickinessMethod ;
+				}
+				if (!angular.isUndefined(loadBalancer.cookieName) && loadBalancer.cookieName != null) {
+					$scope.stickyLoadBalancer.cookieName = loadBalancer.cookieName;
+				}
+				if (!angular.isUndefined(loadBalancer.stickyTableSize) && loadBalancer.stickyTableSize != null) {
+					$scope.stickyLoadBalancer.stickyTableSize = loadBalancer.stickyTableSize;
+				}
+				if (!angular.isUndefined(loadBalancer.stickyExpires) && loadBalancer.stickyExpires != null) {
+        				$scope.stickyLoadBalancer.stickyExpires = loadBalancer.stickyExpires;
+				}
+
+		    delete $scope.stickyLoadBalancer.stickyTableSize;
+			delete $scope.stickyLoadBalancer.stickyExpires;
+			delete $scope.stickyLoadBalancer.cookieName;
+			  console.log($scope.stickyLoadBalancer);
+                        var hasServer = appService.crudService.update("loadBalancer", $scope.stickyLoadBalancer);
+                        hasServer.then(function (result) {
+    				$scope.LBlist(1);
+                            appService.notify({message: 'Updated successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                            $modalInstance.close();
+                         $scope.showLoader = false;
+                        }).catch(function (result) {
+                        	if(!angular.isUndefined(result) && result.data != null) {
+	                            angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
+
+	                            	$scope.loadBalancerForm[key].$invalid = true;
+	                                $scope.loadBalancerForm[key].errorMessage = errorMessage;
+	                            });
+                        	}
+
+                        });
+
+                },  $scope.cancel = function () {
+                            $modalInstance.close();
+                        };
+		 }]);
+	},
+
+	 $scope.formElements = {
+			 stickinessList : [
+	    		 $scope.global.STICKINESS.NONE,
+            	 $scope.global.STICKINESS.SOURCEBASED,
+           		 $scope.global.STICKINESS.APPCOOKIE,
+	    		 $scope.global.STICKINESS.LBCOOKIE
+	                  ],
+	    };
 
     $scope.healthCheck = function (form) {
         $scope.loadFormSubmitted = true;
@@ -1559,8 +1692,7 @@ $timeout(function(){$scope.showLoader = false; $scope.firewallRule(1);
 
     };
 
-}
-;
+}]);
 
 function networkViewCtrl($scope, $http, notify, globalConfig, localStorageService, modalService, $log, $state, $stateParams, promiseAjax) {
 
@@ -1614,7 +1746,10 @@ function networkViewCtrl($scope, $http, notify, globalConfig, localStorageServic
 
         $scope.tabview = localStorageService.get('view');
         $state.reload();
-    }
     $scope.tabview = localStorageService.get('view');
-}
-;
+
+};
+
+    }
+    }
+    };
