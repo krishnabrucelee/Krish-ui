@@ -7,7 +7,6 @@
     <div class="modal-header">
         <panda-modal-header hide-zone="false" page-icon="fa fa-warning" page-title="<fmt:message key="delete.confirmation" bundle="${msg}" />"></panda-modal-header>
     </div>
-
     <div class="modal-body">
         <div class=" row">
             <div class="form-group has-error col-md-3 col-sm-3  col-xs-3">
@@ -18,14 +17,9 @@
             </div>
         </div>
     </div>
-
     <div class="modal-footer">
         <get-loader-image data-ng-show="showLoader"></get-loader-image>
         <button type="button" data-ng-hide="showLoader" class="btn btn-default "  ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.cancel" bundle="${msg}" /></button>
         <button type="button" data-ng-hide="showLoader" class="btn btn-default btn-danger2"   ng-click="release(ipAddress)" data-dismiss="modal"><fmt:message key="common.delete" bundle="${msg}" /></button>
     </div>
 </div>
-
-
-
-
