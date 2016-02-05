@@ -10,7 +10,7 @@
 				<div class="row">
 					<div class="col-md-12 col-sm-12 col-xs-12 ">
 						<div class="pull-left">
-							<div class="dashboard-box pull-left">
+							<div class="dashboard-box pull-left dashboard-box-pad">
 								<span class="pull-right"><fmt:message key="total.network"
 										bundle="${msg}" /></span>
 								<div class="clearfix"></div>
@@ -18,7 +18,7 @@
 									src="images/network-icon.png"></span> <b class="pull-right">{{networkList.Count}}</b>
 								<div class="clearfix"></div>
 							</div>
-							<div class="dashboard-box pull-left">
+							<div class="dashboard-box pull-left dashboard-box-pad">
 								<span class="pull-right"><fmt:message
 										key="isolated.network" bundle="${msg}" /></span>
 								<div class="clearfix"></div>
@@ -26,7 +26,7 @@
 									src="images/network-icon.png"></span> <b class="pull-right">{{networkList.Count}}</b>
 								<div class="clearfix"></div>
 							</div>
-							<div class="dashboard-box pull-left">
+							<div class="dashboard-box pull-left dashboard-box-pad">
 								<span class="pull-right"><fmt:message
 										key="shared.network" bundle="${msg}" /></span>
 								<div class="clearfix"></div>
@@ -37,12 +37,16 @@
 						</div>
 						<div class="pull-right">
 							<panda-quick-search></panda-quick-search>
-							<span class="pull-right m-r-sm"> <select
-								class="form-control input-group col-xs-5" name="networkView"
-								data-ng-init="network.networkView = dropnetworkLists.views[0]"
-								data-ng-model="network.networkView"
-								data-ng-change="selectView(network.networkView.name)"
-								data-ng-options="networkView.name for networkView in dropnetworkLists.views"></select>
+							<span class="pull-right m-r-sm">
+								<div class="p-xxs">
+									<select
+										class="form-control input-group col-xs-5" name="networkView"
+										data-ng-init="network.networkView = dropnetworkLists.views[0]"
+										data-ng-model="network.networkView"
+										data-ng-change="selectView(network.networkView.name)"
+										data-ng-options="networkView.name for networkView in dropnetworkLists.views">
+									</select>
+								</div>
 							</span>
 							<div class="clearfix"></div>
 							<span class="pull-right m-l-sm m-t-sm"> <a
@@ -62,9 +66,7 @@
 			</div>
 			<div class="row">
 				<div class="col-md-12 col-sm-12 col-xs-12 ">
-					<pagination-content></pagination-content>
 					<div class="white-content">
-						<div class="table-responsive">
 							<div
 								data-ng-show="network.networkView.name == 'Guest Networks' || network.networkView.name == null">
 								<div data-ng-show="showLoader" style="margin: 1%">
@@ -135,10 +137,10 @@
 								data-ng-show="network.networkView.name == 'VPN Customer Gateway'"
 								data-ng-include src="'app/views/cloud/network/vpn.jsp'"></div>
 						</div>
+						<pagination-content></pagination-content>
 					</div>
-					<pagination-content></pagination-content>
+
 				</div>
 			</div>
 		</div>
 	</div>
-</div>

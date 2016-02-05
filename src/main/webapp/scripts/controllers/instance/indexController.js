@@ -316,6 +316,8 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
         $scope.instance.networks.networkList  = {};
 	if (!angular.isUndefined(obj)) {
             $scope.departmentList(obj);
+            $scope.formElements.instanceOwnerList = {};
+            $scope.formElements.projecttypeList = {};
         }
 
     }
@@ -328,6 +330,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
  	if (!angular.isUndefined(obj)) {
             $scope.userList(obj);
             $scope.listNetworks(obj.id, 'department');
+            $scope.formElements.projecttypeList = {};
 
         }
 

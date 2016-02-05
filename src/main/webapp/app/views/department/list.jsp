@@ -66,13 +66,13 @@
                             </div>
 
                         </div>
-                        <pagination-content></pagination-content>
-                        <div class="white-content m-b-sm m-t-xs">
+
 
                          <div data-ng-show = "showLoader" style="margin: 1%">
     				  		<get-loader-image data-ng-show="showLoader"></get-loader-image>
       						</div>
                             <div data-ng-hide="showLoader" class="table-responsive">
+                                  <div class="white-content m-b-sm m-t-xs">
                                 <table cellspacing="1" cellpadding="1" class="table dataTable table-bordered table-striped">
                                     <thead>
                                         <tr>
