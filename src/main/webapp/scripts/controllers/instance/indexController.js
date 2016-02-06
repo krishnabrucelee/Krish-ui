@@ -109,14 +109,24 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
     };
     $scope.osList();
 
-    //Os list by filter
+    //Template list by filter
     $scope.osListByFilter = function () {
-        var hasOsListByFilter = appService.crudService.listAll("oscategorys/os");
-        hasOsListByFilter.then(function (result) {  // this is only run after $http completes0
+    	var hasOsListByFilter = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL
+        		+ "oscategorys/os?type=template");
+        hasOsListByFilter.then(function (result) {
             $scope.formElements.osCategoryListByFilter = result;
         });
     };
     $scope.osListByFilter();
+
+    //ISO template list by filter
+    $scope.osListByFilterIso = function () {
+    	var hasOsListByFilterIso = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL
+        		+ "oscategorys/os?type=iso");
+        hasOsListByFilterIso.then(function (result) {
+            $scope.formElements.osCategoryListByFilter = result;
+        });
+    };
 
     $scope.templateList = function () {
         $scope.showLoader = true;
@@ -149,7 +159,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
       };
       $scope.hypervisorList();
 
-    $scope.getTemplatesByFilters = function () {
+      $scope.getTemplatesByFilters = function () {
         var templateList = [];
         $scope.showLoader = true;
         var template = {};
@@ -167,6 +177,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
         	  $scope.showLoader = false;
           });
       }
+      $scope.getTemplatesByFilters();
 
       $scope.getIsoByFilters = function() {
     	  var templateList = [];
@@ -185,6 +196,21 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
             $scope.formElements.templateList = result;
             $scope.showLoader = false;
         });
+    }
+
+    $scope.templateTypeFilter = function(format)
+    {
+        $scope.templateCategory =  format;
+        if (format == 'iso') {
+           $scope.instance.osCategory = null;
+           $scope.osListByFilterIso();
+           $scope.getIsoByFilters();
+        }
+        if (format == 'template') {
+           $scope.instance.osCategory = null;
+           $scope.osListByFilter();
+           $scope.getTemplatesByFilters();
+        }
     }
 
     function containsObject(obj, list) {

@@ -31,11 +31,11 @@
 							 <span class=" "><fmt:message key="common.architecture" bundle="${msg}" />: </span>
 						    </div>
 								  <label class=" "> <input icheck type="radio"
-									data-ng-model="instance.architecture" value="32" ng-change="getTemplatesByFilters()" name="architecture">
+									data-ng-model="instance.architecture" value="32" ng-change="getIsoByFilters()" name="architecture">
 									32Bit
 								 </label>
 								 <label class=" "> <input icheck type="radio"
-									data-ng-model="instance.architecture" value="64" ng-change="getTemplatesByFilters()" name="architecture">
+									data-ng-model="instance.architecture" value="64" ng-change="getIsoByFilters()" name="architecture">
 									64Bit
 								</label>
 						</div>
