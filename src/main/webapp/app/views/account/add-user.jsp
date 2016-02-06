@@ -21,7 +21,7 @@
 							<div class="col-md-6 col-sm-6">
 								<input required="true" type="text" name="username" data-ng-model="user.userName" class="form-control" data-ng-class="{'error': userForm.username.$invalid && formSubmitted}">
 								<i tooltip="<fmt:message key="user.name.of.the.user" bundle="${msg}" />" class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
-									<div class="error-area" data-ng-show="userForm.username.$invalid && formSubmitted" >
+									<div class="error-area" data-ng-show="userForm.username.errorMessage && formSubmitted" >
 										<i ng-attr-tooltip="{{ userForm.username.errorMessage || '<fmt:message key="user.name.is.required" bundle="${msg}" />' }}" class="fa fa-warning error-icon"></i>
 								</div>
 							</div>
@@ -142,7 +142,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group">    
+                        <div class="form-group">
                             <div class="row">
                                 <label class="col-md-3 col-sm-3 control-label"><fmt:message key="common.projects" bundle="${msg}" />
                                 </label>
@@ -157,9 +157,9 @@
             </div>
         </div>
         <div class="modal-footer">
-        
+
                        									<get-loader-image data-ng-show="showLoader"></get-loader-image>
-                   
+
 
             <a class="btn btn-default" data-ng-hide="showLoader" data-ng-click="cancel()"><fmt:message key="common.cancel" bundle="${msg}" /></a>
             <button class="btn btn-info"data-ng-hide="showLoader"  type="submit"><fmt:message key="common.add" bundle="${msg}" /></button>

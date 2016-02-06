@@ -74,7 +74,7 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams) {
             $scope.projectInfo = result;
             $state.current.data.pageName = result.name;
             if (!angular.isUndefined(result.department) && result.department != null) {
-            $scope.userLists(result.department);
+            $scope.userLists(result);
             }
         	$scope.showLoader = false;
         });
@@ -106,8 +106,8 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams) {
     	}
     };
 
-    $scope.userLists = function (department) {
-       var hasUsers = appService.crudService.listAllByFilter("users/search", department);
+    $scope.userLists = function (project) {
+       var hasUsers = appService.crudService.listAllByObject("users/project", project);
         hasUsers.then(function (result) {  // this is only run after $http completes0
         	$scope.projectElements.projectuserList = result;
 
@@ -225,7 +225,7 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams) {
     $scope.viewProjectDetails = function(project) {
     	$scope.projectInfo = angular.copy(project);
     	if(!angular.isUndefined($scope.projectInfo.department) && $scope.projectInfo.department != null ){
-    	$scope.userLists($scope.projectInfo.department);
+    		$scope.userLists($scope.projectInfo);
     	}
         $scope.isSelected =  true;
         $scope.checkOne(project);
@@ -235,7 +235,8 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams) {
     	$scope.editProjects = angular.copy(project);
     	$scope.projectInfo = angular.copy(project);
     	if(!angular.isUndefined($scope.projectInfo.department) && $scope.projectInfo.department != null ){
-    	$scope.userLists($scope.projectInfo.department);}
+    		$scope.userLists($scope.projectInfo);
+	}
    	 	$scope.project = $scope.editProjects;
     	$scope.oneChecked = true;
     };
@@ -308,16 +309,20 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams) {
          var oldUser;
          if(newUser){ //This will avoid empty data
          angular.forEach($scope.projectInfo.userList, function(eachuser){ //For loop
-         if(newUser.userName.toLowerCase() == eachuser.userName.toLowerCase()){ // this line will check whether the data is existing or not
+         if(angular.equals(newUser.userName.toLowerCase(),eachuser.userName.toLowerCase())){ // this line will check whether the data is existing or not
         	 oldUser = true;
         	 appService.notify({message: 'User already exist', classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+             $state.reload();
          }
          });
          if(!oldUser){
         	 $scope.projectInfo.userList.push(user);
         	 var hasServer = appService.crudService.update("projects", $scope.projectInfo);
              hasServer.then(function (result) {
+                 $scope.project.user = {};
+		         $scope.userLists($scope.projectInfo);
                  appService.notify({message: 'User updated successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                 $state.reload();
              });
          }
          }
@@ -325,14 +330,16 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams) {
 
     $scope.removeUser = function(user) {
     	angular.forEach($scope.projectInfo.userList, function(obj, key) {
-    		if(obj.id == user.id) {
+    		if(parseInt(obj.id) == parseInt(user.id)) {
     			$scope.projectInfo.userList.splice(key, 1);
     		}
     	});
     	var hasUser = appService.crudService.updates("projects/remove/user", $scope.projectInfo);
     	hasUser.then(function(result) {
+            $scope.project.user = {};
+            $scope.userLists($scope.projectInfo);
             appService.notify({message: 'User removed successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
-
+            $state.reload();
         });
     };
 
