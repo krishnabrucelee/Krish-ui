@@ -69,7 +69,9 @@ function instanceListCtrl($scope, $sce, $log, $filter, dialogService, promiseAja
 		  			vms.event = event;
 		  			$scope.formSubmitted = true;
 	                if (form.$valid) {
-	                	vms.hostUuid = $scope.instance.host.uuid;
+	                    if($scope.instance.host != null) {
+	                        vms.hostUuid = $scope.instance.host.uuid;
+	                    }
 			  				var hasVm = appService.crudService.updates("virtualmachine/handleevent/vm", vms);
 			  				hasVm.then(function(result) {
 			                    $state.reload();
@@ -204,10 +206,8 @@ function instanceListCtrl($scope, $sce, $log, $filter, dialogService, promiseAja
 				}
 			}
 		});
-
 		modalInstance.result.then(function(selectedItem) {
 			$scope.selected = selectedItem;
-
 		}, function() {
 			$log.info('Modal dismissed at: ' + new Date());
 		});

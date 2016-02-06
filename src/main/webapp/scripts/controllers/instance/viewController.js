@@ -86,7 +86,9 @@ $scope.list = function () {
 	  			vms.event = event;
 	  			$scope.formSubmitted = true;
                 if (form.$valid) {
+                    if($scope.instance.host != null) {
                 	vms.hostUuid = $scope.instance.host.uuid;
+                    }
 
 		  				var hasVm = appService.crudService.updates("virtualmachine/handleevent/vm", vms);
 		  				hasVm.then(function(result) {
