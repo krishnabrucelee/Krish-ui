@@ -485,7 +485,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
                 }
             }
 		 if (!angular.isUndefined($scope.instance.computeOffer.cpuSpeed.value)) {
-                    if ($scope.instance.computeOffer.cpuSpeed.value > 1000 && $scope.instance.computeOffer.memory.value > 512) {
+                    if ($scope.instance.computeOffer.cpuSpeed.value >= 1000 && $scope.instance.computeOffer.memory.value >= 512) {
 			submitError = false;
         	}
 
