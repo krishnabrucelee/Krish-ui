@@ -13,6 +13,7 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
     $scope.instanceList = [];
     $scope.testvar = "test";
     $scope.global = appService.globalConfig;
+
     if ($stateParams.id > 0) {
     	$scope.showLoader = true;
     	$scope.showLoaderOffer = true;
@@ -21,6 +22,7 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
             $scope.instance = result;
 		    $scope.instanceList = result;
 		    $state.current.data.pageName = result.name;
+		    $state.current.data.id = result.id;
             var str = $scope.instance.cpuUsage;
             if(str!=null){
             var newString = str.replace(/^_+|_+$/g,'');
@@ -51,12 +53,13 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
      };
 
     $scope.selectab = function() {
-
-	$scope.templateCategory = 'config';
-	$scope.active = true;
-
+        $scope.templateCategory = 'config';
+	    $scope.active = true;
 	}
 
+    $scope.networkTab = function() {
+    	$scope.templateCategory = 'network';
+    }
 
 
 

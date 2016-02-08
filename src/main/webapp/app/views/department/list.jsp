@@ -14,7 +14,7 @@
 <!-- Main Wrapper -->
 <div id="wrapper">
     <div small-header class="normalheader transition ng-scope small-header">
-        <div class="hpanel" tour-step order="1" title="Page header" content="Place your page title and breadcrumb. Select small or large header or give the user choice to change the size." placement="bottom">
+        <div class="hpanel" tour-step order="1" content="Place your page title and breadcrumb. Select small or large header or give the user choice to change the size." placement="bottom">
             <div class="panel-body">
                 <div id="hbreadcrumb" class="pull-right">
                     <ol class="hbreadcrumb breadcrumb">
@@ -31,7 +31,7 @@
                         </li>
                     </ol>
                 </div>
-                    <span data-ng-if="$state.current.data.pageTitle === 'common.departments'"><fmt:message key="common.departments" bundle="${msg}" /></span>
+                    <span id="departments_page_title" data-ng-if="$state.current.data.pageTitle === 'common.departments'"><fmt:message key="common.departments" bundle="${msg}" /></span>
                 </h2>
                 <small>{{ $state.current.data.pageDesc}}</small>
             </div>
@@ -57,8 +57,8 @@
                                         <div class="clearfix"></div>
 
                                         <span class="pull-right m-l-sm m-t-sm">
-                                            <a has-permission="ADD_DEPARTMENT" class="btn btn-info"  ng-click="createDepartment('md')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="common.add" bundle="${msg}" /> </a>
-                                            <a class="btn btn-info" ui-sref="department" title="<fmt:message key="common.refresh" bundle="${msg}" /> " ui-sref-opts="{reload: true}" ><span class="fa fa-refresh fa-lg"></span></a>
+                                            <a has-permission="ADD_DEPARTMENT" id="departments_add_button" class="btn btn-info"  ng-click="createDepartment('md')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="common.add" bundle="${msg}" /> </a>
+                                            <a class="btn btn-info" id="departments_refresh_button" ui-sref="department" title="<fmt:message key="common.refresh" bundle="${msg}" /> " ui-sref-opts="{reload: true}" ><span class="fa fa-refresh fa-lg"></span></a>
                                         </span>
                                     </div>
                                 </div>
@@ -100,13 +100,13 @@
                                             </td>
                                             <td>
 
-                                                <a has-permission="EDIT_DEPARTMENT" class="icon-button" title="<fmt:message key="common.edit" bundle="${msg}" />" data-ng-click="edit('md', department)">
+                                                <a has-permission="EDIT_DEPARTMENT" id="departments_edit_button_{{department.id}}" class="icon-button departments_edit_button" title="<fmt:message key="common.edit" bundle="${msg}" />" data-ng-click="edit('md', department)">
                                                     <span class="fa fa-edit"> </span>
                                                 </a>
-                                                 <a has-permission="DEPARTMENT_RESOURCE_QUOTA_MODIFICATION" class="icon-button" ui-sref="department.quotalimit({id: {{department.id}}, quotaType: 'department-quota'})" title="<fmt:message key="common.edit.quota" bundle="${msg}" />">
+                                                 <a has-permission="DEPARTMENT_RESOURCE_QUOTA_MODIFICATION" id="departments_edit_quota_button_{{department.id}}" class="icon-button departments_edit_quota_button" ui-sref="department.quotalimit({id: {{department.id}}, quotaType: 'department-quota'})" title="<fmt:message key="common.edit.quota" bundle="${msg}" />">
                                                     <span class="fa font-bold pe-7s-edit"> </span>
                                                 </a>
-                                                <a has-permission="DELETE_DEPARTMENT" class="icon-button" title="<fmt:message key="common.delete" bundle="${msg}" />" data-ng-click="delete('sm', department)" ><span class="fa fa-trash"></span></a>
+                                                <a has-permission="DELETE_DEPARTMENT" id="departments_delete_button_{{department.id}}" class="icon-button departments_delete_button" title="<fmt:message key="common.delete" bundle="${msg}" />" data-ng-click="delete('sm', department)" ><span class="fa fa-trash"></span></a>
 
                                             </td>
 

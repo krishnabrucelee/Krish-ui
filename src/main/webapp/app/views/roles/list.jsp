@@ -24,7 +24,14 @@
 	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.roles" bundle="${msg}" /></a>
 	                            <span ng-switch-when="true"><fmt:message key="common.roles" bundle="${msg}" /></span>
                             </span>
-
+                             <span data-ng-if="state.data.pageTitle === 'add.role'">
+	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="add.role" bundle="${msg}" /></a>
+	                            <span ng-switch-when="true"><fmt:message key="add.role" bundle="${msg}" /></span>
+                            </span>
+                            <span data-ng-if="state.data.pageTitle === 'edit.role'">
+	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="edit.role" bundle="${msg}" /></a>
+	                            <span ng-switch-when="true"><fmt:message key="edit.role" bundle="${msg}" /></span>
+                            </span>
                         </li>
                     </ol>
                 </div>

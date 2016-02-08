@@ -8,13 +8,15 @@ angular
     .module('homer')
     .controller('instanceMonitorCtrl', instanceMonitorCtrl)
 
-function instanceMonitorCtrl($scope, $http, $stateParams, promiseAjax) {
+function instanceMonitorCtrl($scope, $state, $http, $stateParams, promiseAjax) {
     $scope.instanceList = [];
     if ($stateParams.id > 0) {
         var hasServer = promiseAjax.httpRequest("GET", "api/instance.json");
         hasServer.then(function (result) {  // this is only run after $http completes
             var instanceId = $stateParams.id - 1;
             $scope.instance = result[instanceId];
+            $state.current.data.pageName = result.name;
+            $state.current.data.id = result.id;
         });
     }
 

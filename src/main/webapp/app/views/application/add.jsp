@@ -14,6 +14,18 @@
 		<div class="modal-body">
 			<div class="row">
 				<div class="col-md-12">
+				<div data-ng-if="global.sessionValues.type != 'ROOT_ADMIN'">
+					<div class="form-group">
+						<div class="row">
+                            <label class="col-md-3 col-xs-12 col-sm-3 control-label control-normal"><fmt:message key="common.domain" bundle="${msg}" /><span class="text-danger">*</span></label>
+                            <div class="col-md-6  col-sm-6 col-xs-12">
+                                {{ global.sessionValues.domainName }}
+                                <input type="hidden" name="domain"  data-ng-model="application.domain" data-ng-init="application.domainId=global.sessionValues.domainId" />
+                            </div>
+                        </div>
+                        </div>
+	                </div>
+                <div data-ng-if="global.sessionValues.type == 'ROOT_ADMIN'">
 				<div class="form-group" ng-class="{'text-danger':applicationForm.domain.$invalid && formSubmitted}">
                         <div class="row">
                             <label class="col-md-3 col-xs-12 col-sm-3 control-label control-normal"><fmt:message key="common.domain" bundle="${msg}" /><span class="text-danger">*</span></label>
@@ -26,6 +38,7 @@
                                 <div class="error-area" data-ng-show="applicationForm.domain.$invalid && formSubmitted" ><i  tooltip="<fmt:message key="domain.is.required" bundle="${msg}" />" class="fa fa-warning error-icon"></i></div>
                             </div>
                         </div>
+                    </div>
                     </div>
 					<div class="form-group" ng-class="{'text-danger': applicationForm.type.$invalid && formSubmitted}">
 						<div class="row">
