@@ -51,7 +51,7 @@
                                         <!-- <a data-ng-class="disabled && activate ? 'btn btn-info' : 'btn btn-default disabled'" data-ng-click="activating()"><span class="pe-7s-user pe-lg font-bold m-r-xs"></span>Activate User</a>
                                         <a data-ng-class="disabled && revoke ? 'btn btn-info' : 'btn btn-default disabled'" data-ng-click="revoking()" ><span class="pe-7s-delete-user pe-lg font-bold m-r-xs"></span>Revoke User</a> -->
                                         <a has-permission="DELETE_USER" data-ng-class="disabled && deletes ? 'btn btn-info' : 'btn btn-default disabled'" data-ng-click="deleteUser('sm')"><span class="pe-7s-trash pe-lg font-bold m-r-xs"></span><fmt:message key="delete.user" bundle="${msg}" /></a>
-                                        <a class="btn btn-info " ui-sref="project.home" title="Refresh"  ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
+                                        <a class="btn btn-info " ui-sref="accounts" title="Refresh"  ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
                                     </span>
                                 </div>
 
