@@ -114,6 +114,14 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams) {
         });
     };
 
+    $scope.userListByDepartment = function (department) {
+        var hasUsers = appService.crudService.listAllByObject("users/department", department);
+         hasUsers.then(function (result) {  // this is only run after $http completes0
+                 $scope.projectElements.projectuserList = result;
+
+         });
+     };
+
     $scope.read = function (project) {
         var hasProject = appService.crudService.read("projects", project);
         hasProject.then(function (result) {  // this is only run after $http completes0
@@ -130,7 +138,7 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams) {
    		    	hasDepartments.then(function (result) {
    		    		$scope.project.department = result;
    		    		if (!angular.isUndefined(result)) {
-   		    			$scope.userLists(result);
+   		    		    $scope.userListByDepartment(result);
    		    		}
 	    	    });
 		    } else {
