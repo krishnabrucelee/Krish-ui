@@ -151,7 +151,8 @@ function departmentCtrl($scope, $sce, appService) {
 	                  	 		"<li>Instance :"+ errorList[2] + "</li>" +
 	                  	 		"<li>Role :"+ errorList[3] + "</li>" +
 	                  	 		"<li>Volume :"+ errorList[4] + "</li>" +
-	                  	 		"<li>User :"+ errorList[5] + "</li>" +
+	                  	 		"<li>SSHkey :"+ errorList[5] + "</li>" +
+	                  	 		"<li>User :"+ errorList[6] + "</li>" +
 	                  	 		"</ul><br>Kindly delete associated resources and try again";
 	                      		appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
 	                       }

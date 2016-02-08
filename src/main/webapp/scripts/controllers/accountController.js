@@ -172,7 +172,9 @@ function accountListCtrl($scope,$state, $log,$timeout, appService) {
 
     // Opened user add window
     $scope.addUser = function (size) {
+			$scope.user = {};
         appService.dialogService.openDialog("app/views/account/add-user.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
+
         	$scope.save = function (form) {
 
                 $scope.formSubmitted = true;
@@ -185,7 +187,7 @@ function accountListCtrl($scope,$state, $log,$timeout, appService) {
                     if (user.password == $scope.account.confirmPassword) {
                     	var hasServer = appService.crudService.add("users", user);
                     	hasServer.then(function (result) {  // this is only run after $http completes
-                    		
+
 				$scope.showLoader = false;
                     		appService.notify({message: 'Added successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
 				$modalInstance.close();
@@ -194,9 +196,11 @@ function accountListCtrl($scope,$state, $log,$timeout, appService) {
                     	}).catch(function (result) {
                     		if(!angular.isUndefined(result) && result.data != null) {
 				   $scope.showLoader = false;
-                    		   
+				   angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
+              		 $scope.userForm[key].$invalid = true;
+              		 $scope.userForm[key].errorMessage = errorMessage;
+              	 });
                     		}
-				$modalInstance.close();
                     	});
                     }
                     else {  // Add tool tip message for confirmation password in add-user
@@ -212,7 +216,7 @@ function accountListCtrl($scope,$state, $log,$timeout, appService) {
                 $modalInstance.close();
             };
 
- }])};
+ 
 
             // Getting list of roles and projects by department
             $scope.getRolesAndProjectsByDepartment = function(department) {
@@ -226,9 +230,9 @@ function accountListCtrl($scope,$state, $log,$timeout, appService) {
             		$scope.options = result;
             	 });
            	};
-        
 
-   
+}])};
+
 
     // Delete user data from database
     $scope.deleteUser = function (size) {
