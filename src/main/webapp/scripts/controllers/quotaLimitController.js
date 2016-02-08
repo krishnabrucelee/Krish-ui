@@ -84,7 +84,7 @@ function quotaLimitCtrl($scope, $state, $stateParams, appService, $window) {
 						object.usedLimit = 0;
 					}
 					if (object.available == null || object.available == -1 || object.available == 0) {
-						object.available = 100;
+						object.available = 100 - object.usedLimit;
 					}
 					$scope.resourceListMap(object.resourceType,
 							object.usedLimit, object.available);
