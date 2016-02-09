@@ -9,7 +9,7 @@ pageEncoding="UTF-8"%>
 
         <ul class="nav nav-tabs" data-ng-init="templateCategory = 'dashboard'">
             <li data-ng-class="{'active' : templateCategory == 'dashboard'}"><a href="javascript:void(0)" data-ng-click="templateCategory = 'dashboard'" data-toggle="tab">  <i class="fa fa-laptop"></i> <fmt:message key="dashboard" bundle="${msg}" /></a></li>
-            <li data-ng-if ="instance.status == 'STOPPED'" data-ng-class="{'active' : templateCategory == 'config'}"><a has-permission="UPGRADE_VM" data-ng-click="selectab()"  data-toggle="tab"> <i class="fa fa-cogs"></i> <fmt:message key="configuration" bundle="${msg}" /></a></li>
+            <li data-ng-if ="instance.status == 'STOPPED'" data-ng-class="{'active' : templateCategory == 'config'}"><a has-permission="RESIZE" data-ng-click="selectab()"  data-toggle="tab"> <i class="fa fa-cogs"></i> <fmt:message key="configuration" bundle="${msg}" /></a></li>
             <li class=""><a  data-ng-click="templateCategory = 'storage'" data-toggle="tab"><i class="fa fa-database"></i> <fmt:message key="storage" bundle="${msg}" /></a></li>
             <li class=""><a  data-ng-click="networkTab()" data-toggle="tab"> <!--<i class="fa fa-sitemap"></i>--><i class="custom-icon custom-icon-network"></i> <fmt:message key="networking" bundle="${msg}" /></a></li>
             <li class=""><a has-permission="MONITOR_VM_PERFORMANCE" data-ng-click="templateCategory = 'monitor'" data-toggle="tab"> <i class="fa fa-desktop"></i> <fmt:message key="monitor" bundle="${msg}" /></a></li>
@@ -204,7 +204,7 @@ pageEncoding="UTF-8"%>
                                         <li has-permission="ATTACH_ISO" class="list-group-item">
                                             <button ng-class = "(instance.status == 'RUNNING' || instance.status == 'STOPPED') && instance.isoName ? 'resizelink enable' : 'resizelink disable'" data-ng-disabled = "(instance.status == 'RUNNING' || instance.status == 'STOPPED') && !instance.isoName" href="javascript:void(0);" title="<fmt:message key="detach.iso" bundle="${msg}" />" data-ng-click="detachISO(instance)"><span class="fa-compass fa font-bold m-xs"></span> <fmt:message key="detach.iso" bundle="${msg}" /></button>
                                         </li>
-                                         <li has-permission = "UPGRADE_VM" class="list-group-item " >
+                                         <li has-permission = "RESIZE" class="list-group-item " >
                                               <button ng-class = "(instance.status == 'STOPPED') ? 'resizelink enable' : 'resizelink disable'" data-ng-disabled="instance.status !== 'STOPPED'" href="javascript:void(0);"   data-ng-click="selectab()" title="<fmt:message key="resize.vm" bundle="${msg}" />"><span class="fa fa-expand m-xs"></span> <fmt:message key="resize.vm" bundle="${msg}" /></button>
                                         </li>
                                          <li has-permission="RESET_PASSWORD" class="list-group-item">
@@ -333,7 +333,7 @@ pageEncoding="UTF-8"%>
                                                         <fmt:message key="common.department" bundle="${msg}" />
                                                     </b>
                                                 </td>
-                                                <td class="col-md-8 col-sm-8">{{ instance.department.userName}}</td>
+                                                <td class="col-md-8 col-sm-8"><span data-ng-if="instance.project != null">{{instance.project.department.userName}} </span> <span data-ng-if="instance.project == null">{{ instance.department.userName}}</span></td>
                                             </tr>
                                             <tr>
                                                 <td class="col-md-4 col-sm-4">
@@ -386,7 +386,7 @@ pageEncoding="UTF-8"%>
                                                 </td>
                                                 <td class="col-md-8 col-sm-8">
                                                     {{ instance.computeOffering.name}}
-                                                    <a has-permission="UPGRADE_VM" data-ng-if = "instance.status == 'STOPPED'" data-ng-click="selectab()"  class="fa fa-edit m-l-lg">
+                                                    <a has-permission="RESIZE" data-ng-if = "instance.status == 'STOPPED'" data-ng-click="selectab()"  class="fa fa-edit m-l-lg">
                                                         <fmt:message key="common.edit" bundle="${msg}" />
                                                     </a>
                                                 </td>
