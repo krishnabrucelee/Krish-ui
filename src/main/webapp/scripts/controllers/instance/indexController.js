@@ -221,9 +221,18 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
     }
 
     $scope.setTemplate = function (item) {
-        $scope.instance.template = item;
-        $scope.instance.templateId = item.id;
+    	 var hasUsers = appService.crudService.read("templates", item);
+         hasUsers.then(function (result) {
+            $scope.instance.template = result;
+            $scope.instance.template.id = result.id;
+         });
     }
+
+    $scope.$watch('instance.template.id' ,function(obj){
+    	if(!angular.isUndefined(obj)){
+    		$scope.setTemplate(obj);
+    	}
+    });
 
     $scope.formElements = {
         departmentList: [
