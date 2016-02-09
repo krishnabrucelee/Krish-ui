@@ -27,6 +27,7 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
     $scope.ipList = {};
     $scope.loadBalancer = {};
     $scope.portForward = {};
+    $scope.stickiness = {};
     $scope.global = appService.globalConfig;
     $scope.sort = appService.globalConfig.sort;
     $scope.changeSorting = appService.utilService.changeSorting;
@@ -94,17 +95,23 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
         $scope.vmList = [];
         var hasVms = appService.crudService.listByQuery("virtualmachine/network?networkId=" + $stateParams.id);
         hasVms.then(function (result) {  // this is only run after $http
-											// completes0
+									// completes0
         $scope.vmList = result;
+
         });
     };
+ $scope.vmLists(1);
+
 
     $scope.nicIPList = function (instance) {
     	  $scope.instances = instance;
 	var instanceId = instance.id;
+alert("nic");
        	var hasNicIP = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbyvminstances?instanceid="+instanceId +"&lang=" + appService.localStorageService.cookie.get('language')+"&sortBy=-id");
         hasNicIP.then(function (result) {
             $scope.nicIPLists = result;
+console.log($scope.nicIPLists[0].vmInstance.ipAddress);
+  $scope.portForward.protocolType = $scope.nicIPLists[0].vmInstance.ipAddress;
             $scope.showLoader = false;
         });
     };
@@ -1058,6 +1065,7 @@ appService.dialogService.openDialog("app/views/cloud/network/vm-list.jsp", 'lg' 
 	if (!angular.isUndefined($scope.stickiness.stickyCompany) && $scope.stickiness.stickyCompany != null) {
 		$scope.loadBalancer.stickyCompany = $scope.stickiness.stickyCompany;
 	}
+	console.log($scope.loadBalancer);
   var hasLoadBalancer = appService.crudService.add("loadBalancer", $scope.loadBalancer);
   hasLoadBalancer.then(function (result) { // this is only run after
   $scope.showLoader = true;
@@ -1538,15 +1546,6 @@ $scope.deleteRules = function (size, loadBalancer) {
         $state.reload();
     }
     $scope.tabview = appService.localStorageService.get('view');
-// Add the sticky policy
-    $scope.createStickiness = function (size) {
-        appService.dialogService.openDialog($scope.global.VIEW_URL + "cloud/network/stickiness.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
-	      $scope.edit = function (loadBalancerId) {
-          var hasLB = appService.crudService.read("loadBalancer", loadBalancerId);
-          hasLB.then(function (result) {
-             $scope.loadBalancer = result;
-         });
-      };
                 // Create a new sticky policy
 
 //Add the sticky policy
@@ -1554,6 +1553,7 @@ $scope.createStickiness = function (size) {
     appService.dialogService.openDialog($scope.global.VIEW_URL + "cloud/network/stickiness.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope',function ($scope, $modalInstance, $rootScope) {
 	    //Assign loadbalancer stickiness in object
             $scope.addStickiness = function (form,stickiness) {
+		alert("hi");
  		$scope.stickiness = stickiness;
 
 		console.log($scope.stickiness);
@@ -1692,7 +1692,7 @@ $scope.editStickiness = function (size,loadBalancer) {
 
     };
 
-}]);
+
 
 function networkViewCtrl($scope, $http, notify, globalConfig, localStorageService, modalService, $log, $state, $stateParams, promiseAjax) {
 
@@ -1749,7 +1749,7 @@ function networkViewCtrl($scope, $http, notify, globalConfig, localStorageServic
     $scope.tabview = localStorageService.get('view');
 
 };
-
-    }
-    }
+	}
     };
+
+
