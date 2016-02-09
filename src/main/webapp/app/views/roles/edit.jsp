@@ -85,7 +85,7 @@
          	</div>
         <div class="col-md-12 col-sm-12"  ng-repeat="(key, module) in permissions | groupBy: 'module'">
 
-            <div class="form-group">
+            <div class="form-group" data-ng-if="module[0].description !== 'Quota Limit'">
                 <div class="white-content">
                 	<div class="panel-heading bg-info no-padding">
                        	<label class="font-control p-xxs m-l-sm m-b-none"><input data-ng-checked="permissionGroupCount[key]==module.length" data-ng-model="permissionGroup[key]"  type="checkbox" data-ng-click="checkAll(module, key)" ><span class="m-l-sm">{{module[0].description}}</span></label>

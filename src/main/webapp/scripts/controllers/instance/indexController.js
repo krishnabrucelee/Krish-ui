@@ -44,7 +44,6 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
                 value: 1,
                 floor: 1,
                 ceil: 32
-
             },
             cpuSpeed: {
                 value: 1000,
@@ -89,8 +88,6 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
     hasDomains.then(function (result) {  // this is only run after $http completes0
         $scope.formElements.domainList = result;
     });
-
-
 
     if ($scope.global.sessionValues.type !== 'ROOT_ADMIN') {
         if (!angular.isUndefined($scope.global.sessionValues.domainId)) {
@@ -282,7 +279,6 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
     }
 
     $scope.diskFunction = function (item) {
-
         if (item == 'Custom') {
             $scope.disk = true;
             $scope.compute = false;
@@ -324,18 +320,31 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
     };
     $scope.zoneList();
 
+    //Application list by filter
     $scope.applicationList = function () {
-        $scope.showLoaderDetail = true;
-        var hasApplication = appService.crudService.listAll("applications/list");
-        hasApplication.then(function (result) {  // this is only run after $http completes0
+    	var hasApplicationList = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL
+        		+ "applications/domain?domainId="+$scope.instance.domain.id);
+        hasApplicationList.then(function (result) {
             $scope.formElements.applicationsList = result;
-            $scope.showLoaderDetail = false;
         });
     };
-    $scope.applicationList();
+
+    $scope.applicationsList = {};
+    $scope.getApplicationList = function () {
+        var hasApplications = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL
+        		+ "applications/domain?domainId="+$scope.global.sessionValues.domainId);
+        hasApplications.then(function (result) {
+            $scope.applicationsList = result;
+        });
+    };
+
+    if ($scope.global.sessionValues.type != "ROOT_ADMIN") {
+        $scope.getApplicationList();
+    }
 
     $scope.changedomain=function (obj)
     {
+        $scope.applicationList();
 	$scope.instance.department =null;
     	$scope.instance.instanceOwner = null;
 	$scope.instance.project = null;
@@ -610,7 +619,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
 
         }).catch(function (result) {
             $scope.showLoader = false;
-            if (result.data.fieldErrors != null) {
+            if (result.data.fieldErrors !== null && !angular.isUndefined(result.data.fieldErrors[0])) {
                 var errorMessages = "";
                 angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
                     errorMessages += "," + key + ": " + "is incorrect ";

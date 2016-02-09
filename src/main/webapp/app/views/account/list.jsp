@@ -47,10 +47,10 @@
                                     <div class="clearfix"></div>
                                     <span class="pull-right m-l-sm m-t-sm">
                                         <a has-permission="CREATE_USER" class="btn btn-info" data-ng-click="addUser('lg')"><span class="pe-7s-add-user pe-lg font-bold m-r-xs"></span><fmt:message key="add.user" bundle="${msg}" /></a>
-                                        <a has-permission="EDIT_USER" data-ng-class="disabled && edit ? 'btn btn-info' : 'btn btn-default disabled'"  data-ng-click="editUser('md')"><span class="fa fa-edit font-bold m-r-xs"></span><fmt:message key="edit.user" bundle="${msg}" /></a>
+                                        <a has-permission="EDIT_USER" data-ng-class="oneChecked && edit ? 'btn btn-info' : 'btn btn-default disabled'" data-ng-disabled="!oneChecked"  data-ng-click="editUser('md')"><span class="fa fa-edit font-bold m-r-xs"></span><fmt:message key="edit.user" bundle="${msg}" /></a>
                                         <!-- <a data-ng-class="disabled && activate ? 'btn btn-info' : 'btn btn-default disabled'" data-ng-click="activating()"><span class="pe-7s-user pe-lg font-bold m-r-xs"></span>Activate User</a>
                                         <a data-ng-class="disabled && revoke ? 'btn btn-info' : 'btn btn-default disabled'" data-ng-click="revoking()" ><span class="pe-7s-delete-user pe-lg font-bold m-r-xs"></span>Revoke User</a> -->
-                                        <a has-permission="DELETE_USER" data-ng-class="disabled && deletes ? 'btn btn-info' : 'btn btn-default disabled'" data-ng-click="deleteUser('sm')"><span class="pe-7s-trash pe-lg font-bold m-r-xs"></span><fmt:message key="delete.user" bundle="${msg}" /></a>
+                                        <a has-permission="DELETE_USER" data-ng-class="oneChecked && deletes ? 'btn btn-info' : 'btn btn-default disabled'" data-ng-disabled="!oneChecked" data-ng-click="deleteUser('sm')"><span class="pe-7s-trash pe-lg font-bold m-r-xs"></span><fmt:message key="delete.user" bundle="${msg}" /></a>
                                         <a class="btn btn-info " ui-sref="accounts" title="Refresh"  ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
                                     </span>
                                 </div>
@@ -70,8 +70,7 @@
                                     <table cellspacing="1" cellpadding="1" class="table table-bordered dataTable table-striped ">
                                         <thead>
                                         <tr>
-                                                <th class="w-5"><div class="checkbox checkbox-single checkbox-info col-sm-1 col-md-1">
-                                            <input type="checkbox" data-ng-model="accounts.selectedAll.users" data-ng-click="checkAll();"><label></label></div></th>
+                                                <th class="w-5"></th>
 
                                      	<th  data-ng-click="changeSorting('userName')" data-ng-class="sort.descending && sort.column =='userName'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="user.name" bundle="${msg}" /></th>
                                      	<th  data-ng-click="changeSorting('firstName')" data-ng-class="sort.descending && sort.column =='firstName'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="first.name" bundle="${msg}" /></th>
@@ -82,15 +81,14 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                            <tr data-ng-class="{'bg-row text-white' : account.isSelected == true }"  data-ng-repeat="account in filteredCount = (accountList| filter: quickSearch | orderBy:sort.column:sort.descending)">
+                                            <tr data-ng-repeat="account in filteredCount = (accountList| filter: quickSearch | orderBy:sort.column:sort.descending)">
                                                 <td>
-                                                    <div class="checkbox checkbox-single checkbox-info ">
-                                                        <input type="checkbox" data-ng-value="account" data-ng-model="account.isSelected" data-ng-click="checkOne(account)" >
-                                                        <label></label>
-                                                    </div>
+													<div class="radio radio-single radio-info">
+														<input type="radio" value="{{account.id}}" data-ng-model="account.isSelected" id="acc_{{account.id}}" name = "accounts" data-ng-click="viewAccountd(account)"> <label></label>
+													</div>
                                                 </td>
                                                 <td>
-                                                    <a data-ng-class="account.isSelected == true ? 'text-white': 'text-info'"   data-ng-click="viewDetails(account)">{{ account.userName}}</a>
+                                                    <a class="text-info"  data-ng-click="viewAccountd(account)">{{ account.userName}}</a>
                                                </td>
                                                 <td>{{account.firstName}}</td>
                                                 <td>{{account.type}}</td>
