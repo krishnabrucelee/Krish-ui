@@ -95,6 +95,7 @@ function resourceAllocationCtrl($scope, crudService, globalConfig, notify, $stat
 
 
     $scope.projectquotalist = function (pageNumber) {
+
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasProjects = crudService.list("projects", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
         hasProjects.then(function (result) {  // this is only run after $http completes0
@@ -246,6 +247,7 @@ function resourceAllocationCtrl($scope, crudService, globalConfig, notify, $stat
 		if(angular.isUndefined($scope.resourceQuota.project)  || $scope.resourceQuota.project == null) {
 			$scope.resourceQuota.project = {id:0};
 		}
+		$scope.showLoader = true;
 		var hasResource = promiseAjax.httpTokenRequest( globalConfig.HTTP_GET , globalConfig.APP_URL + "resourceProjects/project/"+$stateParams.id);
 		hasResource.then(function (result) {
 			var i=0;
@@ -258,7 +260,9 @@ function resourceAllocationCtrl($scope, crudService, globalConfig, notify, $stat
 				}
 				$scope.resourceQuota[object.resourceType] = object.max;
 			});
+			$scope.showLoader = false;
         });
+
 	}
 
 	if($stateParams.quotaType == 'project-quota') {
