@@ -16,7 +16,7 @@
                             <tr> <td><label><fmt:message key="common.name" bundle="${msg}" /></label></td><td>{{ templateObj.name}}</td></tr>
                             <tr>  <td><label><fmt:message key="common.size" bundle="${msg}" /></label></td> <td>{{(templateObj.size / global.Math.pow(2, 30))}} GB</td></tr>
                             <tr> <td><label><fmt:message key="common.status" bundle="${msg}" /></label></td> <td>{{ templateObj.status}}</td></tr>
-                            <tr>  <td><label><fmt:message key="template.owner" bundle="${msg}" /></label></td> <td>{{templateObj.owner || " - " }}</td></tr>
+                            <tr>  <td><label><fmt:message key="template.owner" bundle="${msg}" /></label></td> <td>{{templateObj.templateOwner.userName || " - " }}</td></tr>
                             <tr> <td><label><fmt:message key="register.date" bundle="${msg}" /></label></td> <td>{{ templateObj.createdDateTime *1000 | date:'yyyy-MM-dd HH:mm:ss'}}</td></tr>
                             <tr> <td><label><fmt:message key="common.format" bundle="${msg}" /></label></td> <td>{{ templateObj.format}}</td></tr>
                             <tr> <td><label><fmt:message key="common.hvm" bundle="${msg}" /></label></td><td>{{ templateObj.hvm || " - " }}</td></tr>

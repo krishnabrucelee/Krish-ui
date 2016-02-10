@@ -64,6 +64,20 @@ angular
         });
     };
 
+    $scope.departmentList = {};
+    $scope.getDepartmentList = function (domain) {
+        var hasDepartments = appService.crudService.listAllByFilter("departments/search", domain);
+        hasDepartments.then(function (result) {
+            $scope.departmentList = result;
+        });
+    };
+
+    if ($scope.global.sessionValues.type != "ROOT_ADMIN") {
+        var domain = {};
+        domain.id = $scope.global.sessionValues.domainId;
+        $scope.getDepartmentList(domain);
+    }
+
     // Create a new role to our application
     $scope.role = {};
     $scope.permissionList = [];

@@ -15,6 +15,8 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
 	        hasServer.then(function (result) {  // this is only run after $http completes
 	            var instanceId = $stateParams.id - 1;
 	            $scope.instance = result[instanceId];
+            $state.current.data.pageName = result.name;
+            $state.current.data.id = result.id;
 	        });
 	    }*/
 

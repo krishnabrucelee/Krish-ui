@@ -20,11 +20,14 @@
             </div>
 			<div class="row">
 				<div class="col-md-12">
-					<div class="form-group">
+					<div class="form-group" ng-class="{'text-danger': nicForm.secondaryIpAddress.$invalid && formSubmitted}">
 						<div class="row">
-							<label class="col-md-3 col-xs-12 col-sm-3 control-label"><fmt:message key="ip.address" bundle="${msg}" /></label>
+							<label class="col-md-3 col-xs-12 col-sm-3 control-label"><fmt:message key="ip.address" bundle="${msg}" /><span class="text-danger">*</span></label>
 							<div class="col-md-6 col-xs-12 col-sm-6">
-								<input  type="text" name="secondaryIpAddress" data-ng-model="nic.secondaryIpAddress" class="form-control">
+								<input required="true" type="text" name="secondaryIpAddress" data-ng-model="nic.secondaryIpAddress" class="form-control" data-ng-class="{'error': nicForm.secondaryIpAddress.$invalid && formSubmitted}">
+							    <div class="error-area" data-ng-show="nicForm.secondaryIpAddress.$invalid && formSubmitted">
+							     <i ng-attr-tooltip="{{ nicForm.secondaryIpAddress.errorMessage || '<fmt:message key="ip.address.is.required" bundle="${msg}" />' }}" class="fa fa-warning error-icon"></i>
+								</div>
 							</div>
 						</div>
 					</div>

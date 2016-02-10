@@ -31,7 +31,11 @@ function accountListCtrl($scope,$state, $log,$timeout, appService) {
         totalcount: 0
     };
 
-    $scope.default_option = true
+    $scope.oneChecked = false;
+    $scope.default_option = true;
+    $scope.revokes = false;
+    $scope.edit = false;
+    $scope.deletes = false;
     $scope.revokes = false;
     $scope.accountList = {};
     $scope.paginationObject = {};
@@ -62,6 +66,20 @@ function accountListCtrl($scope,$state, $log,$timeout, appService) {
     });
     }
 
+    $scope.departmentList = {};
+    $scope.getDepartmentList = function (domain) {
+        var hasDepartments = appService.crudService.listAllByFilter("departments/search", domain);
+        hasDepartments.then(function (result) {
+            $scope.departmentList = result;
+        });
+    };
+
+    if ($scope.global.sessionValues.type != "ROOT_ADMIN") {
+        var domain = {};
+        domain.id = $scope.global.sessionValues.domainId;
+        $scope.getDepartmentList(domain);
+    }
+
     // Load domain
     $scope.domain = {};
     var hasDomains = appService.crudService.listAll("domains/list");
@@ -74,8 +92,6 @@ function accountListCtrl($scope,$state, $log,$timeout, appService) {
         item.isSelected = true;
         $scope.checkOne(item);
     }
-
-
 
     // User List
     $scope.list = function (pageNumber) {
@@ -119,7 +135,6 @@ function accountListCtrl($scope,$state, $log,$timeout, appService) {
                 $scope.disabled = false;
             }
         });
-
     };
 
     // To check one user
@@ -156,7 +171,6 @@ function accountListCtrl($scope,$state, $log,$timeout, appService) {
         else if ($scope.accounts.totalcount > 0) {
             $scope.disabled = false;
         }
-
     }
 
     $scope.viewDetails = function(item) {
@@ -167,36 +181,42 @@ function accountListCtrl($scope,$state, $log,$timeout, appService) {
     $scope.checkAccount = function (item) {
         item.isSelected = true;
         $scope.checkOne(item);
-
     }
 
     // Opened user add window
     $scope.addUser = function (size) {
+	    $scope.user = {};
         appService.dialogService.openDialog("app/views/account/add-user.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
-        	$scope.save = function (form) {
-
+            $scope.save = function (form) {
                 $scope.formSubmitted = true;
                 if (form.$valid) {
-		    $scope.showLoader = true;
+		            $scope.showLoader = true;
                     var user = angular.copy($scope.user);
-		    if(!angular.isUndefined($scope.user.department)) {
-                       user.departmentId = user.department.id;
+		            if(!angular.isUndefined($scope.user.department)) {
+                        user.departmentId = user.department.id;
                     }
+
+ 		         if ($scope.global.sessionValues.type != "ROOT_ADMIN") {
+ 		        	 domain.id = $scope.global.sessionValues.domainId;
+ 		        	 user.domainId = domain.id;
+    	               } else {
+				user.domainId = user.domain.id;
+			}
                     if (user.password == $scope.account.confirmPassword) {
                     	var hasServer = appService.crudService.add("users", user);
                     	hasServer.then(function (result) {  // this is only run after $http completes
-                    		
-				$scope.showLoader = false;
-                    		appService.notify({message: 'Added successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
-				$modalInstance.close();
-				$scope.list(1);
-
+				        $scope.showLoader = false;
+                    	appService.notify({message: 'Added successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+				        $modalInstance.close();
+				        $scope.list(1);
                     	}).catch(function (result) {
                     		if(!angular.isUndefined(result) && result.data != null) {
-				   $scope.showLoader = false;
-                    		   
+				            $scope.showLoader = false;
+				            angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
+              		        $scope.userForm[key].$invalid = true;
+              		        $scope.userForm[key].errorMessage = errorMessage;
+              	            });
                     		}
-				$modalInstance.close();
                     	});
                     }
                     else {  // Add tool tip message for confirmation password in add-user
@@ -205,14 +225,10 @@ function accountListCtrl($scope,$state, $log,$timeout, appService) {
                     	$scope.userForm[key].errorMessage = document.getElementById("passwordErrorMessage").value;
                     }
                 }
-
-
             },
             $scope.cancel = function () {
                 $modalInstance.close();
             };
-
- }])};
 
             // Getting list of roles and projects by department
             $scope.getRolesAndProjectsByDepartment = function(department) {
@@ -221,88 +237,109 @@ function accountListCtrl($scope,$state, $log,$timeout, appService) {
             		 $scope.accountElements.roleList = result;
             	 });
 
-		 var hasProjects =  appService.promiseAjax.httpTokenRequest( appService.crudService.globalConfig.HTTP_GET, appService.crudService.globalConfig.APP_URL + "projects"  +"/department/"+department.id);
-		 hasProjects.then(function (result) {  // this is only run after $http completes0
-            		$scope.options = result;
-            	 });
+		    var hasProjects =  appService.promiseAjax.httpTokenRequest( appService.crudService.globalConfig.HTTP_GET, appService.crudService.globalConfig.APP_URL + "projects"  +"/department/"+department.id);
+		    hasProjects.then(function (result) {  // this is only run after $http completes0
+                $scope.options = result;
+            });
            	};
-        
 
-   
+        }])};
 
-    // Delete user data from database
-    $scope.deleteUser = function (size) {
-     var user = {};
-   	 angular.forEach($scope.accountList, function (item, key) {
+        // Delete user data from database
+        $scope.deleteUser = function (size) {
 
-            if (item['isSelected']) {
-           	 user = item;
+         var user = {};
+       	 angular.forEach($scope.accountList, function (item, key) {
+                if (item['isSelected']) {
+               	 user = item;
+                }
+       	 });
+       	$scope.user = user;
+      appService.dialogService.openDialog("app/views/account/delete-user.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
+          $scope.deleteUsers = function(user) {
+              $scope.showLoader = true;
+               var hasServer = appService.crudService.softDelete("users", user);
+               hasServer.then(function (result) {
+               $scope.list(1);
+               appService.notify({message: 'Deleted successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+               $scope.showLoader = false;
+               $scope.cancel();
+               }).catch(function (result) {
+                   $scope.showLoader = false;
+                   $scope.cancel();
+               });
+          },
+          $scope.cancel = function(){
+              $modalInstance.close();
+          }
+      }]);
+
+        };
+
+        $scope.viewAccountd = function(account) {
+            $scope.oneChecked = false;
+            $scope.editAccounts = angular.copy(account);
+            $scope.accountInfo = angular.copy(account);
+            $scope.account = $scope.editAccounts;
+            if (account.isActive) {
+                console.log("ok");
+                $scope.oneChecked = true;
+                $scope.edit = true;
+                $scope.deletes = true;
+
+            } else {
+                $scope.oneChecked = false;
             }
-   	 });
 
-     var hasServer = appService.crudService.softDelete("users", user);
-     hasServer.then(function (result) {
-         $scope.list(1);
-         appService.notify({message: 'Deleted successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+        };
 
-     });
-
-    };
-
-    $scope.deleteUsers = function () {
-        $scope.cancel();
-    }
-
-    // Edit user dataq
+    // Edit user data
     $scope.editUser = function (size) {
     	var user = {};
     	 angular.forEach($scope.accountList, function (item, key) {
-
              if (item['isSelected']) {
             	 user = item;
              }
     	 });
 
     	appService.dialogService.openDialog("app/views/account/edit-user.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
-    		$scope.user = angular.copy(user);
-
-    		   $scope.saveUser = function (user) {
-                        $scope.formSubmitted = true;
-			$scope.showLoader = true;
-			var user = $scope.user;
-                        user.departmentId = user.department.id;
-    		        var hasServer = appService.crudService.update("users",user);
-    		        hasServer.then(function (result) {
-    		            $scope.list(1);
-    		            appService.notify({message: 'Updated successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
-    		            $scope.cancel();
-                                $scope.showLoader = false;
-    		        }).catch(function (result) {
-                    		if(!angular.isUndefined(result) && result.data != null) {
-                    			angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
-				   		$scope.userForm[key].$invalid = true;
-                            	   		$scope.userForm[key].errorMessage = errorMessage;
-				   		$scope.showLoader = false;
-                    			});
-                    		}
+    	    $scope.user = angular.copy(user);
+    		$scope.saveUser = function (user) {
+    			$scope.formSubmitted = true;
+    			$scope.showLoader = true;
+    			var user = $scope.user;
+                user.departmentId = user.department.id;
+    		    var hasServer = appService.crudService.update("users",user);
+    		    hasServer.then(function (result) {
+    		    	$scope.list(1);
+    		        appService.notify({message: 'Updated successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+    		        $scope.cancel();
+                    $scope.showLoader = false;
+    		    }).catch(function (result) {
+    		    	if(!angular.isUndefined(result) && result.data != null) {
+    		    		angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
+    		    			$scope.userForm[key].$invalid = true;
+                            $scope.userForm[key].errorMessage = errorMessage;
+				   		    $scope.showLoader = false;
                     	});
-    		    },
-             $scope.cancel = function () {
-                 $modalInstance.close();
-             };
-         }]);
+                    }
+                });
+    		},
+            $scope.cancel = function () {
+                $modalInstance.close();
+            };
+       }]);
     };
 
     $scope.ok = function () {
         $timeout($scope.generateLoad, 3000);
-
     };
+
     $scope.generateLoad = function () {
         $scope.activates = true;
         $scope.revokes=false;
         $scope.cancel();
         $state.reload();
-
     }
 
     $scope.generateRevoke = function () {
@@ -331,7 +368,6 @@ function editCtrl($scope, account, notify, $modalInstance) {
     $scope.account = account;
     $scope.cancel = function () {
         $modalInstance.dismiss('cancel');
-
     };
     $scope.saveUser = function (form) {
         $scope.formSubmitted = true;
@@ -340,9 +376,7 @@ function editCtrl($scope, account, notify, $modalInstance) {
             appService.notify({message: 'Account updated successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
             $scope.cancel();
         }
-
     }
-
 }
 
 

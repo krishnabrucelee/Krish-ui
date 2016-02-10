@@ -279,6 +279,17 @@ border-color: #e74c3c !important;}
 .resizelink.enable{color:#4c6986;}
 .resizelink.disable{color:#ccc; cursor:default;}
 
+table.dataTable thead .sorting::after, table.dataTable thead .sorting_asc::after, table.dataTable thead .sorting_desc::after{
+font-family: 'FontAwesome'; font-size: 16px; color: #000;
+}
+
+table.dataTable thead .sorting_asc::after {content: "\f0de";}
+table.dataTable thead .sorting_desc::after {content: "\f0dd";}
+
+.hpanel > .panel-heading{padding:10px 0px;}
+.quick-search .input-group { padding: 5px 0 4px;}
+.dashboard-box-pad{padding:16px 16px 17px 16px;}
+
 @media (min-width: 768px) and (max-width: 1023px) {
 .shown-page{width:100% !important;}
 .shown-entry{width:100% !important;}
