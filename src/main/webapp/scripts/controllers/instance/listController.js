@@ -77,22 +77,46 @@ function instanceListCtrl($scope, $sce, $log, $filter, dialogService, promiseAja
 		           };
 		       }]);
 	  };
-    $scope.stopVm = function(size,item) {
-    	 dialogService.openDialog("app/views/cloud/instance/stop.jsp", size, $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance, $rootScope) {
-    		 $scope.item =item;
-    		 $scope.vmStop = function(item) {
-    				var event = "VM.STOP";
-    				var hasVm = crudService.vmUpdate("virtualmachine/handlevmevent", item.uuid, event);
-    				hasVm.then(function(result) {
-    					$state.reload();
-    					 $scope.cancel();
-    				});
-    			},
-			  $scope.cancel = function () {
-                 $modalInstance.close();
-             };
-         }]);
-    };
+
+	       $scope.agree = {
+	               value1 : false,
+	               value2 : true
+	             };
+	  $scope.stopVm = function(size,item) {
+              $scope.item =item;
+             appService.dialogService.openDialog("app/views/cloud/instance/stop.jsp", size,  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
+                     $scope.item = item;
+                    $scope.vmStop = function(item) {
+                            var event = "VM.STOP";
+                            $scope.actionExpunge = true;
+                            if ($scope.agree.value1) {
+                                 item.transForcedStop = $scope.agree.value1;
+                                 item.event = event;
+                                 var hasVm = appService.crudService.updates("virtualmachine/handleevent/vm", item);
+                                 hasVm.then(function(result) {
+                                        $state.reload();
+                                        $scope.cancel();
+                                 }).catch(function (result) {
+                                        $state.reload();
+                                        $scope.cancel();
+                                 });
+                            } else {
+                              var event = "VM.STOP";
+                                    var hasVm = appService.crudService.vmUpdate("virtualmachine/handlevmevent", item.uuid, event);
+                                    hasVm.then(function(result) {
+                                            $state.reload();
+                                             $scope.cancel();
+                                    }).catch(function (result) {
+                                      $state.reload();
+                                      $scope.cancel();
+                                    });
+                              }
+                            },
+                              $scope.cancel = function () {
+                   $modalInstance.close();
+               };
+           }]);
+      };
     $scope.rebootVm = function(size,item) {
     	 dialogService.openDialog("app/views/cloud/instance/reboot.jsp", size,  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
     		 $scope.item =item;
@@ -182,28 +206,15 @@ function instanceListCtrl($scope, $sce, $log, $filter, dialogService, promiseAja
 
 	};
 
-	$scope.showDescription = function(instance) {
-		instance = $scope.instance;
-		console.log($scope.instance);
-		var modalInstance = $modal.open({
-			animation : $scope.animationsEnabled,
-			templateUrl : 'app/views/cloud/instance/displaynote.jsp',
-			controller : 'instanceDetailsCtrl',
-			size : 'sm',
-			backdrop : 'static',
-			windowClass : "hmodal-info",
-			resolve : {
-				instance : function() {
-					return angular.copy(instance);
-				}
-			}
-		});
-		modalInstance.result.then(function(selectedItem) {
-			$scope.selected = selectedItem;
-		}, function() {
-			$log.info('Modal dismissed at: ' + new Date());
-		});
-	};
+	$scope.showDescription = function(vm) {
+            $scope.instance = vm;
+            appService.dialogService.openDialog("app/views/cloud/instance/displaynote.jsp", 'sm',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
+
+                $scope.cancel = function () {
+                        $modalInstance.close();
+                };
+            }]);
+         };
 
 	$scope.addApplication = function(vm) {
         var hasapplicationList = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL

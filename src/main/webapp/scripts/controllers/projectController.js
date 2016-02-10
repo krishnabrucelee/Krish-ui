@@ -411,6 +411,8 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams) {
     		                });
 
     		            });
+                    } else {
+                        $scope.projectLoader = false;
                     }
                 },
                         $scope.cancel = function () {
