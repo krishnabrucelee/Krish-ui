@@ -31,7 +31,7 @@
 
                 </div>
                     <div class="row"><hr class="m-t-xs"></div>
-                    <div class="row" style="background-color:#CCC">
+                    <div class="row" >
                     <div class="chart" >
                      	<canvas class="hide"   responsive="true"></canvas>
                         <canvas linechart options="lineOptions" data="cpu" width="780" height="220" ></canvas>
@@ -92,17 +92,21 @@
                                 <td class="legendColorBox p-xs">
                                     <div style="border:1px solid #ccc;padding:1px"><div style="width:4px;height:0;border:5px solid #E56919;overflow:hidden"></div></div>
                                 </td>
-                                <td class="legendLabel"><fmt:message key="used.memory" bundle="${msg}" /></td>
+                                <td class="legendLabel">Total</td>
                                 <td class="legendColorBox p-xs"><div style="border:1px solid #ccc;padding:1px"><div style="width:4px;height:0;border:5px solid #16658D;overflow:hidden"></div></div>
                                 </td>
                                 <td class="legendLabel"><fmt:message key="unused.memory" bundle="${msg}" /></td><td class="legendColorBox p-xs">
+                                </td>
+                                <td class="legendColorBox p-xs"><div style="border:1px solid #ccc;padding:1px"><div style="width:4px;height:0;border:5px solid #7208A8;overflow:hidden"></div></div>
+                                </td>
+                                <td class="legendLabel"><fmt:message key="used.memory" bundle="${msg}" /></td><td class="legendColorBox p-xs">
                                 </td>
                                 </tr></tbody></table>
 
                 </div>
             </div>
         </div>
-        <div class="row" >
+        <%-- <div class="row" >
 
             <div class="col-lg-10 col-md-10 col-sm-12 col-md-offset-1 ">
 
@@ -148,7 +152,7 @@
 
                 </div>
             </div>
-        </div>
+        </div> --%>
         <div class="row " >
 
             <div class="col-lg-10 col-md-10 col-sm-12 col-md-offset-1 ">

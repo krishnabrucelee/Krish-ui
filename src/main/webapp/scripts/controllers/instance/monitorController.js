@@ -65,11 +65,18 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
 				        var date = getDateByTime(key);
 			    		var objIndex = $scope.cpu.labels.indexOf(date.getHours() + "." + date.getMinutes()+ "." + date.getSeconds());
 			    		if(objIndex < 0) {
-				    		$scope.cpu.labels.shift();
+			    			if(indexValue == 0) {
+			    				$scope.cpu.labels.shift();
+			    				$scope.cpu.labels.push(date.getHours() + "." + date.getMinutes()+ "." + date.getSeconds());
+			    			}
 					        $scope.cpu.datasets[indexValue].data.shift();
-					        $scope.cpu.labels.push(date.getHours() + "." + date.getMinutes()+ "." + date.getSeconds());
+					        $scope.cpu.datasets[1].data.shift();
+
 					        //var objValue = (obj) * 1/100;
 					        $scope.cpu.datasets[indexValue].data.push(obj);
+			    		}  else {
+			    			var objValue = parseInt(obj) / 1024;
+			    			$scope.cpu.datasets[indexValue].data[objIndex] = obj;
 			    		}
 
 			    	});
@@ -101,26 +108,47 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
 		                pointHighlightFill: "#fff",
 		                pointHighlightStroke: "rgba(26,179,148,1)",
 		                data: [37, 39, 29, 36, 32, 23, 52, 44, 37]
+		            },{
+		                label: "Total Memory",
+		                fillColor: "#7208A8",
+		                strokeColor: "#7208A8",
+		                pointColor: "#7208A8",
+		                pointStrokeColor: "#fff",
+		                pointHighlightFill: "#fff",
+		                pointHighlightStroke: "rgba(26,179,148,1)",
+		                data: [37, 39, 29, 36, 32, 23, 52, 44, 37]
 		            }
 
 		        ]
 		    };
+		var objIndex = [];
 
+		var currentUrl = "";
 	    function getMemoryPerformance(url, indexValue, instanceName) {
 		    var hasServer = appService.promiseAjax.httpRequest("GET", "http://192.168.1.137:4242/api/"+ url);
 		    hasServer.then(function (result) {
 		    	for(var i=0; i < result.length; i++ ) {
+		    		var j =0;
 			    	angular.forEach(result[i].dps, function(obj, key) {
 			    		j++;
 			    		var date = getDateByTime(key);
 				        var objIndex = $scope.memory.labels.indexOf(date.getHours() + "." + date.getMinutes()+ "." + date.getSeconds());
+
 			    		if(objIndex < 0) {
-				    		$scope.memory.labels.shift();
+			    			if(indexValue == 0) {
+			    				$scope.memory.labels.shift();
+			    				$scope.memory.labels.push(date.getHours() + "." + date.getMinutes()+ "." + date.getSeconds());
+			    			}
+					        var objValue = parseInt(obj) / 1024;
 					        $scope.memory.datasets[indexValue].data.shift();
-					        $scope.memory.labels.push(date.getHours() + "." + date.getMinutes()+ "." + date.getSeconds());
-					        //var objValue = (obj) * 1/100;
+					        $scope.memory.datasets[1].data.shift();
+					        $scope.memory.datasets[2].data.shift();
 					        $scope.memory.datasets[indexValue].data.push(obj);
+			    		} else {
+			    			var objValue = parseInt(obj) / 1024;
+			    			$scope.memory.datasets[indexValue].data[objIndex] = obj;
 			    		}
+
 			    	});
 		    	}
 		    });
@@ -136,18 +164,19 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
 	            for(var cpuCores=0; cpuCores < result.computeOffering.numberOfCores; cpuCores++) {
 	            	getCpuPerformance("query?start=1m-ago&m=sum:rate:linux.cpu.percpu{host="+ displayName +",cpu=" + cpuCores + "}", cpuCores, result.displayName.toLowerCase());
 	            }
-
-	            getMemoryPerformance("query?start=1m-ago&m=sum:rate:os.mem.used{host="+ displayName +"}", 0,  result.displayName.toLowerCase());
-	            getMemoryPerformance("query?start=1m-ago&m=sum:rate:os.mem.free{host="+ displayName +"}", 1,  result.displayName.toLowerCase());
+	            getMemoryPerformance("query?start=1m-ago&m=sum:os.mem.total{host="+ displayName +"}", 0,  result.displayName.toLowerCase());
+	            getMemoryPerformance("query?start=1m-ago&m=sum:os.mem.free{host="+ displayName +"}", 1,  result.displayName.toLowerCase());
+	            getMemoryPerformance("query?start=1m-ago&m=sum:os.mem.used{host="+ displayName +"}", 2,  result.displayName.toLowerCase());
 
 	            setInterval(function() {
 	    	    	//getCpuPerformance("query?start=1m-ago&m=sum:rate:linux.cpu{host="+ displayName +"}", 0, result.displayName.toLowerCase());
 	    	    	for(var cpuCores=0; cpuCores < result.computeOffering.numberOfCores; cpuCores++) {
 		            	getCpuPerformance("query?start=1m-ago&m=sum:rate:linux.cpu.percpu{host="+ displayName +",cpu=" + cpuCores + "}", cpuCores, result.displayName.toLowerCase());
 		            }
-		            getMemoryPerformance("query?start=1m-ago&m=sum:rate:os.mem.used{host="+ displayName +"}", 0,  result.displayName.toLowerCase());
-		            getMemoryPerformance("query?start=1m-ago&m=sum:rate:os.mem.free{host="+ displayName +"}", 1, result.displayName.toLowerCase());
-	    	    }, 15000);
+		            getMemoryPerformance("query?start=1m-ago&m=sum:os.mem.total{host="+ displayName +"}", 0,  result.displayName.toLowerCase());
+		            getMemoryPerformance("query?start=1m-ago&m=sum:os.mem.free{host="+ displayName +"}", 1, result.displayName.toLowerCase());
+	            	getMemoryPerformance("query?start=1m-ago&m=sum:os.mem.used{host="+ displayName +"}", 2, result.displayName.toLowerCase());
+	            }, 15000);
 
 	        });
 	    }
