@@ -44,7 +44,6 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
                 value: 1,
                 floor: 1,
                 ceil: 32
-
             },
             cpuSpeed: {
                 value: 1000,
@@ -90,8 +89,6 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
         $scope.formElements.domainList = result;
     });
 
-
-
     if ($scope.global.sessionValues.type !== 'ROOT_ADMIN') {
         if (!angular.isUndefined($scope.global.sessionValues.domainId)) {
             var hasDomain = appService.crudService.read("domains", $scope.global.sessionValues.domainId);
@@ -109,14 +106,24 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
     };
     $scope.osList();
 
-    //Os list by filter
+    //Template list by filter
     $scope.osListByFilter = function () {
-        var hasOsListByFilter = appService.crudService.listAll("oscategorys/os");
-        hasOsListByFilter.then(function (result) {  // this is only run after $http completes0
+    	var hasOsListByFilter = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL
+        		+ "oscategorys/os?type=template");
+        hasOsListByFilter.then(function (result) {
             $scope.formElements.osCategoryListByFilter = result;
         });
     };
     $scope.osListByFilter();
+
+    //ISO template list by filter
+    $scope.osListByFilterIso = function () {
+    	var hasOsListByFilterIso = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL
+        		+ "oscategorys/os?type=iso");
+        hasOsListByFilterIso.then(function (result) {
+            $scope.formElements.osCategoryListByFilter = result;
+        });
+    };
 
     $scope.templateList = function () {
         $scope.showLoader = true;
@@ -149,7 +156,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
       };
       $scope.hypervisorList();
 
-    $scope.getTemplatesByFilters = function () {
+      $scope.getTemplatesByFilters = function () {
         var templateList = [];
         $scope.showLoader = true;
         var template = {};
@@ -167,6 +174,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
         	  $scope.showLoader = false;
           });
       }
+      $scope.getTemplatesByFilters();
 
       $scope.getIsoByFilters = function() {
     	  var templateList = [];
@@ -187,6 +195,21 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
         });
     }
 
+    $scope.templateTypeFilter = function(format)
+    {
+        $scope.templateCategory =  format;
+        if (format == 'iso') {
+           $scope.instance.osCategory = null;
+           $scope.osListByFilterIso();
+           $scope.getIsoByFilters();
+        }
+        if (format == 'template') {
+           $scope.instance.osCategory = null;
+           $scope.osListByFilter();
+           $scope.getTemplatesByFilters();
+        }
+    }
+
     function containsObject(obj, list) {
         var i;
         for (i = 0; i < list.length; i++) {
@@ -198,9 +221,18 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
     }
 
     $scope.setTemplate = function (item) {
-        $scope.instance.template = item;
-        $scope.instance.templateId = item.id;
+    	 var hasUsers = appService.crudService.read("templates", item);
+         hasUsers.then(function (result) {
+            $scope.instance.template = result;
+            $scope.instance.template.id = result.id;
+         });
     }
+
+    $scope.$watch('instance.template.id' ,function(obj){
+    	if(!angular.isUndefined(obj)){
+    		$scope.setTemplate(obj);
+    	}
+    });
 
     $scope.formElements = {
         departmentList: [
@@ -256,7 +288,6 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
     }
 
     $scope.diskFunction = function (item) {
-
         if (item == 'Custom') {
             $scope.disk = true;
             $scope.compute = false;
@@ -298,24 +329,39 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
     };
     $scope.zoneList();
 
+    //Application list by filter
     $scope.applicationList = function () {
-        $scope.showLoaderDetail = true;
-        var hasApplication = appService.crudService.listAll("applications/list");
-        hasApplication.then(function (result) {  // this is only run after $http completes0
+    	var hasApplicationList = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL
+        		+ "applications/domain?domainId="+$scope.instance.domain.id);
+        hasApplicationList.then(function (result) {
             $scope.formElements.applicationsList = result;
-            $scope.showLoaderDetail = false;
         });
     };
-    $scope.applicationList();
+
+    $scope.applicationsList = {};
+    $scope.getApplicationList = function () {
+        var hasApplications = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL
+        		+ "applications/domain?domainId="+$scope.global.sessionValues.domainId);
+        hasApplications.then(function (result) {
+            $scope.applicationsList = result;
+        });
+    };
+
+    if ($scope.global.sessionValues.type != "ROOT_ADMIN") {
+        $scope.getApplicationList();
+    }
 
     $scope.changedomain=function (obj)
     {
+        $scope.applicationList();
 	$scope.instance.department =null;
     	$scope.instance.instanceOwner = null;
 	$scope.instance.project = null;
         $scope.instance.networks.networkList  = {};
 	if (!angular.isUndefined(obj)) {
             $scope.departmentList(obj);
+            $scope.formElements.instanceOwnerList = {};
+            $scope.formElements.projecttypeList = {};
         }
 
     }
@@ -328,6 +374,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
  	if (!angular.isUndefined(obj)) {
             $scope.userList(obj);
             $scope.listNetworks(obj.id, 'department');
+            $scope.formElements.projecttypeList = {};
 
         }
 
@@ -484,6 +531,18 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
                     }
                 }
             }
+		 if (!angular.isUndefined($scope.instance.computeOffer.cpuSpeed.value)) {
+                    if ($scope.instance.computeOffer.cpuSpeed.value >= 1000 && $scope.instance.computeOffer.memory.value >= 512) {
+			submitError = false;
+        	}
+
+		else {
+			  $scope.homerTemplate = 'app/views/notification/notify.jsp';
+                            appService.notify({message: 'Please choose valid range for memory or cpu speed', classes: 'alert-danger',
+                            	templateUrl: $scope.homerTemplate});
+                            submitError = true;
+			}
+		 }
             if (!submitError) {
                 $scope.submt();
             }
@@ -535,7 +594,8 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
         }
         if (!angular.isUndefined($scope.instance.computeOffer.cpuSpeed.value)) {
             instance.cpuSpeed = $scope.instance.computeOffer.cpuSpeed.value;
-        }
+        	}
+
         if (!angular.isUndefined($scope.instance.computeOffer.memory.value)) {
             instance.memory = $scope.instance.computeOffer.memory.value;
         }
@@ -568,7 +628,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
 
         }).catch(function (result) {
             $scope.showLoader = false;
-            if (result.data.fieldErrors != null) {
+            if (result.data.fieldErrors !== null && !angular.isUndefined(result.data.fieldErrors[0])) {
                 var errorMessages = "";
                 angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
                     errorMessages += "," + key + ": " + "is incorrect ";

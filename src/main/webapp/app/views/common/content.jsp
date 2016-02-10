@@ -33,6 +33,10 @@
 	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.snapshot" bundle="${msg}" /></a>
 	                            <span ng-switch-when="true"><fmt:message key="common.snapshot" bundle="${msg}" /></span>
                             </span>
+                            <span data-ng-if="state.data.pageTitle === 'common.quota.limit'">
+	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.quota.limit" bundle="${msg}" /></a>
+	                            <span ng-switch-when="true"><fmt:message key="common.quota.limit" bundle="${msg}" /></span>
+                            </span>
                             <span data-ng-if="state.data.pageTitle === 'common.monitor'">
 	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.monitor" bundle="${msg}" /></a>
 	                            <span ng-switch-when="true"><fmt:message key="common.monitor" bundle="${msg}" /></span>
@@ -45,17 +49,13 @@
 	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.network" bundle="${msg}" /></a>
 	                            <span ng-switch-when="true"><fmt:message key="common.network" bundle="${msg}" /></span>
                             </span>
-                            <span data-ng-if="state.data.pageTitle === 'view.instance'">
-	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="view.instance" bundle="${msg}" /></a>
+                            <span data-ng-if="(state.data.pageTitle === 'view.instance')">
+	                            <a ng-switch-when="false" ng-href="{{'#/instance/list/view/'+state.data.id}}">{{ state.data.pageName }}</a>
 	                            <span ng-switch-when="true">{{ state.data.pageName }}</span>
-	                    </span>
-	                         <span data-ng-if="state.data.pageTitle === 'view.instance'">
-	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="view.instance" bundle="${msg}" /></a>
-	                            <span ng-switch-when="true">{{ state.data.pageName }}</span>
-	                    </span>
+	                        </span>
 	                    <span data-ng-if="state.data.pageTitle === 'ip.address'">
 	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="ip.address" bundle="${msg}" /></a>
-	                            <span ng-switch-when="true">{{ state.data.pageName }}</span>
+	                            <span ng-switch-when="true"><fmt:message key="ip.address" bundle="${msg}" /></span>
 	                    </span>
 
                              <span data-ng-if="state.data.pageTitle === 'view.network'">

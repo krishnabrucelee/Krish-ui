@@ -24,7 +24,14 @@
 	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.roles" bundle="${msg}" /></a>
 	                            <span ng-switch-when="true"><fmt:message key="common.roles" bundle="${msg}" /></span>
                             </span>
-
+                             <span data-ng-if="state.data.pageTitle === 'add.role'">
+	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="add.role" bundle="${msg}" /></a>
+	                            <span ng-switch-when="true"><fmt:message key="add.role" bundle="${msg}" /></span>
+                            </span>
+                            <span data-ng-if="state.data.pageTitle === 'edit.role'">
+	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="edit.role" bundle="${msg}" /></a>
+	                            <span ng-switch-when="true"><fmt:message key="edit.role" bundle="${msg}" /></span>
+                            </span>
                         </li>
                     </ol>
                 </div>
@@ -58,12 +65,12 @@
                     </div>
                     <div class="row">
                             <div class="col-md-12 col-sm-12 col-xs-12 ">
-                            <pagination-content></pagination-content>
-                                <div class="white-content">
+
                                 <div data-ng-show = "showLoader" style="margin: 1%">
     				  		<get-loader-image data-ng-show="showLoader"></get-loader-image>
       						</div>
                                     <div data-ng-hide = "showLoader" class="table-responsive font-normal">
+                                        <div class="white-content">
                                         <table cellspacing="1" cellpadding="1" class="table dataTable table-bordered table-striped">
                                             <thead>
                                                 <tr>

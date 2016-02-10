@@ -53,7 +53,7 @@
 		</div>
 		<div data-ng-show="compute  && instance.computeOffering.customized">
 			<div class="row m-b-xl"
-				data-ng-class="{ 'text-danger' : instanceForm.memory.$modelValue <= 0 && OfferingSubmitted}">
+				data-ng-class="{ 'text-danger' : instanceForm.memory.$modelValue < 512 }">
 				<label class="col-md-3 col-sm-3 control-label"><fmt:message key="memory" bundle="${msg}" /> :</label>
 				<div class="col-md-5 col-sm-5">
 					<rzslider rz-slider-model="instance.computeOffer.memory.value"
@@ -71,7 +71,7 @@
 				</div>
 			</div>
 			<div class="row m-b-xl"
-				data-ng-class="{ 'text-danger' : instanceForm.cpuCore.$modelValue <= 0 && OfferingSubmitted}">
+				data-ng-class="{ 'text-danger' : instanceForm.cpuCore.$modelValue < 1 && OfferingSubmitted}">
 				<label class="col-md-3 col-sm-3 control-label"><fmt:message
 						key="cpu.cores" bundle="${msg}" /> :</label>
 				<div class="col-md-5 col-sm-5">
@@ -93,13 +93,14 @@
 				</div>
 			</div>
 			<div class="row m-b-xl"
-				data-ng-class="{ 'text-danger' : instanceForm.cpuSpeed.$modelValue <= 1000 && OfferingSubmitted}">
+				data-ng-class="{ 'text-danger' : instanceForm.cpuSpeed.$modelValue < 1000}">
 				<label class="col-md-3 col-sm-3 control-label"><fmt:message key="cpu.speed" bundle="${msg}" /> :</label>
 				<div class="col-md-5 col-sm-5">
 					<rzslider rz-slider-model="instance.computeOffer.cpuSpeed.value"
 						rz-slider-floor="instance.computeOffer.cpuSpeed.floor"
 						rz-slider-ceil="instance.computeOffer.cpuSpeed.ceil"
 						rz-slider-always-show-bar="true">
+
 					</rzslider>
 				</div>
 				<div class="col-md-3 col-sm-3 digit-2-width">
@@ -108,9 +109,10 @@
 							data-ng-min="{{ instance.computeOffer.cpuSpeed.floor}}"
 							data-ng-max="{{ instance.computeOffer.cpuSpeed.ceil}}"
 							type="text" class="form-control" name="cpuSpeed"
-							data-ng-model="instance.computeOffer.cpuSpeed.value">
-							<span class="input-group-addon">MHz</span>
+							data-ng-model="instance.computeOffer.cpuSpeed.value"  >
+													<span class="input-group-addon">MHz</span>
 					</div>
+
 				</div>
 			</div>
 			<div class="row m-b-xl"

@@ -460,9 +460,14 @@ function validNumber() {
                 }
                 var clean = val.replace(/[^0-9]/g, '');
 
-
+                if(parseInt(attrs.ngMin) == 1000 || parseInt(attrs.ngMin) == 512){
+                	if (clean < parseInt(attrs.ngMin)) {
+                        clean = clean.substring(0, clean.length);
+                   }
+                } else {
                 if (clean < parseInt(attrs.ngMin)) {
                      clean = clean.substring(1, clean.length);
+                }
                 }
 
                 if (clean > parseInt(attrs.ngMax)) {
@@ -495,7 +500,7 @@ function validCidr() {
 
             ngModelCtrl.$parsers.push(function (val) {
                 if (angular.isUndefined(val)) {
-                    var val = '';
+                    var val = 0;
                 }
                 var clean = val.replace(/[^0-9./\/]/g, '');
 
@@ -503,6 +508,7 @@ function validCidr() {
                 if (clean < parseInt(attrs.ngMin)) {
                      clean = clean.substring(1, clean.length);
                 }
+
 
                 if (clean > parseInt(attrs.ngMax)) {
                      clean = clean.substring(0, clean.length - 1);
