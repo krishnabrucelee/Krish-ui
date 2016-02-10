@@ -14,7 +14,10 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
     $scope.global = appService.globalConfig;
     $scope.rulesList = [];
     $scope.rules = [];
-    $scope.instancesList = [];
+    $scope.instanceLists = [];
+    $scope.instances ={};
+    $scope.portinstance ={};
+    $scope.instanceLists.ipAddress = {};
     $scope.portList = [];
     $scope.vmList = [];
     $scope.ipDetails = {};
@@ -66,20 +69,22 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
 
     // Port forward Rule List
     $scope.portRulesLists = function (pageNumber) {
+	$scope.showLoader = true;
         $scope.templateCategory = 'port-forward';
         $scope.firewallRules = {};
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasFirewallRuless = appService.crudService.listAllByQuery("portforwarding/list?ipaddress=" + $stateParams.id1, $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
         hasFirewallRuless.then(function (result) {  // this is only run after
-													// $http completes0
-            $scope.portList = result;
-
+	$scope.showLoader = true;
+        $scope.portList = result;
+	$scope.showLoader = false;
             // For pagination
             $scope.paginationObject.limit = limit;
             $scope.paginationObject.currentPage = pageNumber;
             $scope.paginationObject.totalItems = result.totalItems;
         });
     };
+
 
     $scope.hostList = function () {
         var hashostList = appService.crudService.listAll("host/list");
@@ -94,20 +99,34 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
         $scope.vmList = [];
         var hasVms = appService.crudService.listByQuery("virtualmachine/network?networkId=" + $stateParams.id);
         hasVms.then(function (result) {  // this is only run after $http
-											// completes0
+									// completes0
         $scope.vmList = result;
+
         });
     };
+ //$scope.vmLists(1);
+   
+$scope.selected = {};
+
 
     $scope.nicIPList = function (instance) {
-    	  $scope.instances = instance;
+console.log(instance);
 	var instanceId = instance.id;
+	$scope.selected = instanceId;
+	$scope.instances = instance;
+
+	alert(instance.id);
+
        	var hasNicIP = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbyvminstances?instanceid="+instanceId +"&lang=" + appService.localStorageService.cookie.get('language')+"&sortBy=-id");
         hasNicIP.then(function (result) {
             $scope.nicIPLists = result;
             $scope.showLoader = false;
+	
         });
+
     };
+
+
 
 
     $scope.showConsole = function (vm) {
@@ -1048,7 +1067,7 @@ $timeout(function(){$scope.showLoader = false; $scope.firewallRule(1);
         $scope.loadBalancer.ipAddressId = $stateParams.id1;
         // var loadBalancer = angular.copy($scope.loadBalancer);
         $scope.showLoader = true;
-        console.log($scope.loadBalancer.protocol.toUpperCase());
+       // console.log($scope.loadBalancer.protocol.toUpperCase());
         $scope.loadBalancer = $scope.createStickiness;
         $scope.loadBalancer.protocol = $scope.loadBalancer.protocol.toUpperCase();
         $scope.loadBalancer.state = $scope.loadBalancer.state.toUpperCase();
@@ -1175,10 +1194,14 @@ $timeout(function(){$scope.showLoader = false; $scope.firewallRule(1);
             $state.reload();
         }
     }
-    $scope.instances = {};
+
+
+
+
     $scope.addVM = function (form) {
         $scope.portFormSubmitted = true;
         if (form.$valid) {
+
             $scope.global.rulesPF[0].privateStartPort = $scope.portForward.privateStartPort;
             $scope.global.rulesPF[0].privateEndPort = $scope.portForward.privateEndPort;
             $scope.global.rulesPF[0].publicStartPort = $scope.portForward.publicStartPort;
@@ -1186,24 +1209,40 @@ $timeout(function(){$scope.showLoader = false; $scope.firewallRule(1);
             $scope.global.rulesPF[0].protocolType = $scope.portForward.protocolType;
 
             appService.dialogService.openDialog("app/views/cloud/network/vm-list-port.jsp", "lg", $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
-                    $scope.portforwardSave = function (portForward) {
+
+    $scope.portvmLists = function () {
+        $scope.templateCategory = 'instance';
+        $scope.portvmList = [];
+        var hasVms = appService.crudService.listByQuery("virtualmachine/network?networkId=" + $stateParams.id);
+        hasVms.then(function (result) {  // this is only run after $http
+									// completes0
+        $scope.portvmList = result;
+console.log($scope.portvmList);
+
+        });
+    };
+$scope.portvmLists ();
+
+ $scope.portforwardSave = function (portinstance) {
+			$scope.instances = portinstance;
 
                         $scope.portForward = $scope.global.rulesPF[0];
                         $scope.formSubmitted = true;
                         $scope.showLoader = true;
                         $scope.portForward.vmInstanceId = $scope.instances.id;
-                        $scope.portForward.networkId = $stateParams.id;
+                        $scope.portForward.networkId = 	$stateParams.id;
+if(angular.isUndefined($scope.instanceLists.ipAddress.guestIpAddress)){
                         $scope.portForward.vmGuestIp = $scope.instances.ipAddress;
+} else
+{
+console.log($scope.instanceLists.ipAddress.guestIpAddress);
+$scope.portForward.vmGuestIp = $scope.instanceLists.ipAddress.guestIpAddress;
+}
                         $scope.portForward.ipAddressId = $stateParams.id1;
                         $scope.portForward.protocolType = $scope.portForward.protocolType.name;
-                        console.log("PoRT"+$scope.portForward.ipAddressId);
-			console.log("PoRT"+$scope.portForward.vmInstanceId);
-			console.log("PoRT"+$scope.portForward.vmGuestIp);
+ 
                         var hasPortForward = appService.crudService.add("portforwarding", $scope.portForward);
-                        hasPortForward.then(function (result) { // this is only
-																// run after
-																// $http
-																// completes
+                        hasPortForward.then(function (result) { 
                             $scope.formSubmitted = false;
                             $modalInstance.close();
                             $scope.showLoader = false;
@@ -1212,7 +1251,8 @@ $timeout(function(){$scope.showLoader = false; $scope.firewallRule(1);
                                 classes: 'alert-success',
                                 templateUrl: $scope.global.NOTIFICATION_TEMPLATE
                             });
-                            $scope.portRulesLists(1);
+			$scope.portRulesLists(1);
+			                           
                         }).catch(function (result) {
                             $scope.showLoader = false;
                             if (!angular.isUndefined(result.data)) {
@@ -1226,25 +1266,34 @@ $timeout(function(){$scope.showLoader = false; $scope.firewallRule(1);
                                         $scope.portRulesLists(1);
                                     } else {
                                         appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                                        $modalInstance.close();
                                     }
                                 } else if (result.data.fieldErrors != null) {
                                     $scope.showLoader = false;
                                     angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
                                         $scope.portForwardForm[key].$invalid = true;
                                         $scope.portForwardForm[key].errorMessage = errorMessage;
+                                        $modalInstance.close();
                                     });
                                 }
                             }
                         });
-                    },
-                            $scope.setVM = function (VM) {
-                                $scope.instances = VM;
-                            },
+
+  };
+
+$scope.portForward.privateStartPort = '';
+$scope.portForward.privateEndPort = '';
+$scope.portForward.publicStartPort = '';
+$scope.portForward.publicEndPort = '';
+$scope.portForward.protocolType = ''; 
+
                             $scope.cancel = function () {
+
                                 $modalInstance.close();
                             };
                 }]);
-        }
+             }
+
     }
 
     $scope.deletePortRules = function (size, portForward) {
