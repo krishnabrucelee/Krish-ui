@@ -11,7 +11,7 @@
             </div>
                 <div class="white-content">
                     <div class="table-responsive">
-                        <table cellspacing="1" cellpadding="1" class="table table-bordered dataTable table-striped table-hover table-mailbox">
+                        <table cellspacing="1" cellpadding="1" class="table table-bordered dataTable table-striped">
                             <thead>
                                 <tr>
                             <th class="col-md-2 col-sm-2"  data-ng-click="changeSorting('name')" data-ng-class="sort.descending && sort.column =='name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.name" bundle="${msg}" /></th>
