@@ -12,6 +12,39 @@
 		</div>
 		<div class="modal-body">
 			<div class="row">
+
+				<div class="col-md-12">
+					<div class="col-md-6">
+					<div data-ng-if="global.sessionValues.type != 'ROOT_ADMIN'">
+					<div class="form-group">
+						<div class="row">
+                            <label class="col-md-3 col-sm-3 control-label control-normal"><fmt:message key="common.domain" bundle="${msg}" /><span class="text-danger">*</span></label>
+                            <div class="col-md-5 col-sm-5">
+                                {{ global.sessionValues.domainName }}
+                                <input type="hidden" id = "add_department_domain" name="domain"  data-ng-model="department.domain" data-ng-init="department.domainId=global.sessionValues.domainId" />
+                            </div>
+                        </div>
+                        </div>
+	                </div>
+                	<div data-ng-if="global.sessionValues.type == 'ROOT_ADMIN'">
+						<div class="form-group" ng-class="{'text-danger':departmentForm.domain.$invalid && formSubmitted}">
+	                        <div class="row">
+	                            <label class="col-md-3 col-sm-3 control-label"><fmt:message key="common.domain" bundle="${msg}" /><span class="text-danger">*</span></label>
+	                            <div class="col-md-5 col-sm-5">
+	                                <select required="true" class="form-control input-group" id = "add_department_domain" name="domain" data-ng-model="role.domain" ng-options="domain.name for domain in formElements.domainList" data-ng-class="{'error': departmentForm.domain.$invalid && formSubmitted}" >
+	                                    <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
+
+	                                </select>
+	                                <i  tooltip="<fmt:message key="choose.domain" bundle="${msg}" /> " class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
+	                                <div class="error-area" data-ng-show="departmentForm.domain.$invalid && formSubmitted" ><i  tooltip="<fmt:message key="domain.is.required" bundle="${msg}" />" class="fa fa-warning error-icon"></i></div>
+	                            </div>
+	                        </div>
+	                    </div>
+                    </div>
+				</div>
+				</div>
+
+
 				<div class="col-md-12">
 					<div class="col-md-6 col-sm-6">
 						<div class="form-group"
@@ -24,7 +57,7 @@
 									<select class="form-control form-group-lg" name="department"
 										data-ng-model="role.department"
 										ng-change="getUsersByDepartment(role.department)"
-										data-ng-options="department.userName for department in formElements.departmentList"
+										data-ng-options="department.userName for department in role.domain.department"
 										data-ng-class="{'error': RoleForm.department.$invalid && formSubmitted}">
 										<option value=""><fmt:message key="common.select"
 												bundle="${msg}" /></option>
