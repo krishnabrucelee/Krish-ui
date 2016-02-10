@@ -40,7 +40,7 @@ pageEncoding="UTF-8"%>
                             <div class="small  m-b-sm  "  data-ng-hide="templateObj.openDescription">
                                 {{ templateObj.description}}.
                             </div>
-                            <div class="small text-justify "    data-ng-show="templateObj.openDescription"> 
+                            <div class="small text-justify "    data-ng-show="templateObj.openDescription">
                                 <div  class="animate-panel slimScroll"  data-child="hpanel" data-effect="fadeInUp">
                                     <div class="animated-panel fadeInUp">
                                         {{ templateObj.detailedDescription}}.
@@ -53,7 +53,7 @@ pageEncoding="UTF-8"%>
                     <div class="col-md-3 col-sm-3">
                         <div class="row m-t-md">
                             <div class="col-md-12 col-sm-12 ">
-                                <span data-ng-show="templateObj.templateCost[0].cost > 0" class="font-bold text-danger pricing-text pull-right">{{ templateObj.templateCost[0].cost | currency: global.settings.currency }} / <fmt:message key="common.month" bundle="${msg}" /></span>
+                                <span data-ng-show="templateObj.templateCost[0].cost > 0" class="font-bold text-danger pricing-text pull-right">{{ templateObj.templateCost[0].cost | currency: global.settings.currency }} / <fmt:message key="common.day" bundle="${msg}" /></span>
                                 <span data-ng-hide="templateObj.templateCost[0].cost > 0" class="font-bold text-success pricing-text pull-right"><fmt:message key="free" bundle="${msg}" /></span>
                             </div>
                         </div>

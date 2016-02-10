@@ -44,7 +44,7 @@
                                     </td>
                                     <td>{{ template.size / global.Math.pow(2, 30)}}</td>
                                     <td>{{ template.status }}</td>
-                                    <td>{{ template.owner|| " - " }}</td>
+                                    <td>{{ template.templateOwner.userName || " - " }}</td>
                                     <td>{{ template.createdDateTime *1000 | date:'yyyy-MM-dd HH:mm:ss'}}</td>
                                     <td>{{ template.format }}</td>
                                     <td>{{ template.hvm || " - "}}</td>

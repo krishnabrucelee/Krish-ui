@@ -86,13 +86,12 @@
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12 m-t-xs">
 													{{ instance.template.name}}
-
-                                                    <span class="pull-right text-danger price-text m-l-lg">
-                                                        <app-currency></app-currency>{{ instance.template.templateCost[0].cost / 720 | number : 2}}
-
-                                                        <span> /
-                                                            <fmt:message key="common.hour" bundle="${msg}" />
-                                                        </span>
+                                                    <span data-ng-show="instance.template.templateCost[0].cost > 0" class="pull-right text-danger price-text m-l-lg">
+                                                        <app-currency></app-currency>{{ instance.template.templateCost[0].cost | number : 2}}
+                                                        <span> / <fmt:message key="common.day" bundle="${msg}" /></span>
+                                                    </span>
+                                                    <span data-ng-hide="instance.template.templateCost[0].cost > 0" class="font-bold text-success pricing-text pull-right">
+                                                        <fmt:message key="free" bundle="${msg}" />
                                                     </span>
                                                 </div>
                                             </div>
@@ -157,12 +156,12 @@
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12 m-t-xs">
 														{{ instance.template.name}}
-
-                                                        <span class="pull-right text-danger price-text m-l-lg">
-                                                            <app-currency></app-currency> {{ instance.template.templateCost[0].cost/720 | number:2}}
-                                                            <span> /
-                                                                <fmt:message key="common.hour" bundle="${msg}" />
-                                                            </span>
+                                                        <span data-ng-show="instance.template.templateCost[0].cost > 0" class="pull-right text-danger price-text m-l-lg">
+                                                            <app-currency></app-currency> {{ instance.template.templateCost[0].cost | number:2}}
+                                                            <span> / <fmt:message key="common.day" bundle="${msg}" /></span>
+                                                        </span>
+                                                        <span data-ng-hide="instance.template.templateCost[0].cost > 0" class="font-bold text-success pricing-text pull-right">
+                                                            <fmt:message key="free" bundle="${msg}" />
                                                         </span>
                                                     </div>
                                                 </div>
