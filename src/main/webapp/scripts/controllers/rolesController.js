@@ -306,14 +306,9 @@ angular
             $scope.userRoleList= [];
     	    // Department list from server
     	    $scope.role.department = {};
-    	    var hasDepartment = appService.crudService.listAll("departments/list");
-    	    hasDepartment.then(function (result) {  // this is only run after
-													// $http completes0
-    	    	$scope.formElements.departmentList = result;
-    	    });
 
-    		// Getting list of users and roles by department
-        $scope.getUsersByDepartment = function(department) {
+    	 // Getting list of users and roles by department
+    	    $scope.getUsersByDepartment = function(department) {
         	var hasUsers =  appService.promiseAjax.httpTokenRequest(appService.crudService.globalConfig.HTTP_GET, appService.crudService.globalConfig.APP_URL + "users"  +"/department/"+department.id);
         	hasUsers.then(function (result) {  // this is only run after $http
 												// completes0
@@ -339,6 +334,22 @@ angular
             	});
         	});
         };
+
+    	    var sessionValues = appService.globalConfig.sessionValues;
+    	    $scope.userType = sessionValues.type;
+    	    if(sessionValues.type != "USER") {
+	    	    var hasDepartment = appService.crudService.listAll("departments/list");
+	    	    hasDepartment.then(function (result) {  // this is only run after
+														// $http completes0
+	    	    	$scope.formElements.departmentList = result;
+	    	    });
+    	    } else {
+    	    	var hasDepartment = appService.crudService.read("departments", sessionValues.departmentId);
+	    	    hasDepartment.then(function (result) {  // this is only run after
+	    	    	$scope.department = result;
+	    	    	$scope.getUsersByDepartment(result);
+	    	    });
+    	    }
 
        // Assign a new role to our user
         $scope.role.department = "";

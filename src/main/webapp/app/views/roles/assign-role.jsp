@@ -20,7 +20,7 @@
 								<label class="col-md-3 col-sm-3 control-label"><fmt:message
 										key="common.department" bundle="${msg}" /><span
 									class="text-danger">*</span> </label>
-								<div class="col-md-5 col-sm-5">
+								<div class="col-md-5 col-sm-5" data-ng-if="userType != 'USER'">
 									<select class="form-control form-group-lg" name="department"
 										data-ng-model="role.department"
 										ng-change="getUsersByDepartment(role.department)"
@@ -37,6 +37,9 @@
 											tooltip="<fmt:message key="department.is.required" bundle="${msg}" />"
 											class="fa fa-warning error-icon"></i>
 									</div>
+								</div>
+								<div class="col-md-5 col-sm-5" data-ng-if="userType == 'USER'">
+									{{ department.userName }}
 								</div>
 							</div>
 						</div>
