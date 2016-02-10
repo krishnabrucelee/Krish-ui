@@ -362,7 +362,7 @@ angular
 	    	    var hasDepartment = appService.crudService.listAll("departments/list");
 	    	    hasDepartment.then(function (result) {  // this is only run after
 														// $http completes0
-	    	    	$scope.formElements.departmentList = result;
+	    	    	$scope.formElements.departments = result;
 	    	    });
     	    } else {
     	    	var hasDepartment = appService.crudService.read("departments", sessionValues.departmentId);
