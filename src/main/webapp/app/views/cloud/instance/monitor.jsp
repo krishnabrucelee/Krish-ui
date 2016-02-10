@@ -33,7 +33,7 @@
                     <div class="row"><hr class="m-t-xs"></div>
                     <div class="row" >
                     <div class="chart" >
-                     	<canvas class="hide"   responsive="true"></canvas>
+                     	<%-- <canvas class="hide"   responsive="true"></canvas> --%>
                         <canvas linechart options="lineOptions" data="cpu" width="780" height="220" ></canvas>
                     </div></div>
                     <table>
@@ -57,6 +57,10 @@
 
 
         </div>
+        <div class="row"  >
+	        <flot dataset="dataset" options="options" height="280px"></flot>
+			<div id="legend" style="width: 200px; height: 200px;"></div>
+		</div>
         <div class="row" >
 
             <div class="col-lg-10 col-md-10 col-sm-12 col-md-offset-1 ">
@@ -64,7 +68,7 @@
                 <div class="hpanel">
                     <div class="row">
                     <div class="pull-left">
-                        <h4 class="m-b-sm ng-binding pull-left"><fmt:message key="memory.performance" bundle="${msg}" /></h4>
+                        <h4 class="m-b-sm ng-binding pull-left"><fmt:message key="memory.performance" bundle="${msg}" /> (MB)</h4>
 
 
                     </div>
@@ -153,14 +157,14 @@
                 </div>
             </div>
         </div> --%>
-        <div class="row " >
+        <%-- <div class="row " >
 
             <div class="col-lg-10 col-md-10 col-sm-12 col-md-offset-1 ">
 
                 <div class="hpanel">
                     <div class="row">
                     <div class="pull-left">
-                        <h4 class="m-b-sm ng-binding pull-left"><fmt:message key="disk.performance" bundle="${msg}" /></h4>
+                        <h4 class="m-b-sm ng-binding pull-left"><fmt:message key="disk.performance" bundle="${msg}" /> (KBps)</h4>
 
 
                     </div>
@@ -188,13 +192,18 @@
                                 <td class="legendColorBox p-xs">
                                     <div style="border:1px solid #ccc;padding:1px"><div style="width:4px;height:0;border:5px solid #E56919;overflow:hidden"></div></div>
                                 </td>
-                                <td class="legendLabel"><fmt:message key="disk.iops" bundle="${msg}" /></td>
+                                <td class="legendLabel">Disk Write IOPS</td>
+								<td class="legendColorBox p-xs">
+                                    <div style="border:1px solid #ccc;padding:1px"><div style="width:4px;height:0;border:5px solid #16658D;overflow:hidden"></div></div>
+                                </td>
+                                <td class="legendLabel">Disk Read IOPS</td>
 
                                 </tr></tbody></table>
 
                 </div>
             </div>
-        </div>
+        </div> --%>
       </div>
 
+      <!-- <flot dataset="myData" options="myChartOptions"></flot> -->
 

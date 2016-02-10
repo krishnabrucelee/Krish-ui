@@ -9,16 +9,44 @@ angular
     .controller('instanceMonitorCtrl', instanceMonitorCtrl)
 
 function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService) {
-	   /* $scope.instanceList = [];
-	    if ($stateParams.id > 0) {
-	        var hasServer = promiseAjax.httpRequest("GET", "api/instance.json");
-	        hasServer.then(function (result) {  // this is only run after $http completes
-	            var instanceId = $stateParams.id - 1;
-	            $scope.instance = result[instanceId];
-            $state.current.data.pageName = result.name;
-            $state.current.data.id = result.id;
-	        });
-	    }*/
+
+	$scope.dataset = [{ data: [], yaxis: 100, label: "sin" }, { data: [], yaxis: 100, label: "cos" }];
+    $scope.options = {
+      legend: {
+        show: true,
+        position:"nw"
+      }
+    };
+    $scope.dataset[0].data.push([0,200]);
+    $scope.dataset[0].data.push([1,300]);
+    $scope.dataset[1].data.push([0,300]);
+    $scope.dataset[1].data.push([1,300]);
+
+
+    var dataset = [{data: []}, {data: []}];
+
+    function getData(i) {
+    	 var data = $scope.dataset[0].data;
+
+		  data.push([i, Math.floor((Math.random() * 100) + 1)]);
+
+
+		  data.shift();
+		  //$scope.dataset[0].data.shift();
+	      $scope.dataset[0].data = data;
+	      $scope.dataset[1].data = data;
+
+	      //console.log($scope.dataset);
+    }
+
+
+    var i =2;
+    setInterval(function() {
+    	getData(i);
+    	i++;
+    }, 800);
+
+
 
 		/**
 	     * Data for Line chart
@@ -34,7 +62,7 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
 	                pointStrokeColor: "#fff",
 	                pointHighlightFill: "#fff",
 	                pointHighlightStroke: "rgba(220,220,220,1)",
-	                data: [100,99,98,96,94,97,92,95,99,93]
+	                data: [99,97,98,95,98,99,96,94,98,100]
 	            },
 	            {
 	                label: "CPU 1",
@@ -44,7 +72,7 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
 	                pointStrokeColor: "#fff",
 	                pointHighlightFill: "#fff",
 	                pointHighlightStroke: "rgba(26,179,148,1)",
-	                data: [99,97,95,97,96,95,99,91,98,94]
+	                data: [98,99,96,94,98,100,98,97,98,99]
 	            }
 	        ]
 	    };
@@ -87,7 +115,6 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
 	    }
 
 
-
 	    $scope.memory = {
 		        labels: ["10.00", "10.05","10.10", "10.15","10.20", "10.25", "10.30","10.35", "10.40"],
 		        datasets: [
@@ -99,7 +126,7 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
 		                pointStrokeColor: "#fff",
 		                pointHighlightFill: "#fff",
 		                pointHighlightStroke: "rgba(220,220,220,1)",
-		                data: [52, 44, 37, 43, 46, 45, 48, 56, 48]
+		                data: [0, 0, 0, 0, 0, 0, 0, 0, 0]
 		            },
 		            {
 		                label: "Unused Memory",
@@ -109,7 +136,7 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
 		                pointStrokeColor: "#fff",
 		                pointHighlightFill: "#fff",
 		                pointHighlightStroke: "rgba(26,179,148,1)",
-		                data: [37, 39, 29, 36, 32, 23, 52, 44, 37]
+		                data: [0, 0, 0, 0, 0, 0, 0, 0, 0]
 		            },{
 		                label: "Total Memory",
 		                fillColor: "#7208A8",
@@ -118,11 +145,14 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
 		                pointStrokeColor: "#fff",
 		                pointHighlightFill: "#fff",
 		                pointHighlightStroke: "rgba(26,179,148,1)",
-		                data: [37, 39, 29, 36, 32, 23, 52, 44, 37]
+		                data: [0, 0, 0, 0, 0, 0, 0, 0, 0]
 		            }
 
 		        ]
 		    };
+
+
+
 		var objIndex = [];
 
 		var currentUrl = "";
@@ -141,14 +171,14 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
 			    				$scope.memory.labels.shift();
 			    				$scope.memory.labels.push(date.getHours() + "." + date.getMinutes()+ "." + date.getSeconds());
 			    			}
-					        var objValue = parseInt(obj) / 1024;
+			    			var objValue = parseFloat(parseInt(obj) / (1024 * 1024));
 					        $scope.memory.datasets[indexValue].data.shift();
 					        $scope.memory.datasets[1].data.shift();
 					        $scope.memory.datasets[2].data.shift();
-					        $scope.memory.datasets[indexValue].data.push(obj);
+					        $scope.memory.datasets[indexValue].data.push(objValue);
 			    		} else {
-			    			var objValue = parseInt(obj) / 1024;
-			    			$scope.memory.datasets[indexValue].data[objIndex] = obj;
+			    			var objValue = parseFloat(parseInt(obj) / (1024 * 1024));
+			    			$scope.memory.datasets[indexValue].data[objIndex] = objValue;
 			    		}
 
 			    	});
@@ -156,6 +186,63 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
 		    });
 	    }
 
+	    $scope.disk = {
+		        labels: ["10.00", "10.05", "10.10", "10.15", "10.20", "10.25", "10.30"],
+		        datasets: [
+		            {
+		                label: "Write",
+		                fillColor: "#E56919",
+		                strokeColor: "#E56919",
+		                pointColor: "#E56919",
+		                pointStrokeColor: "#fff",
+		                pointHighlightFill: "#fff",
+		                pointHighlightStroke: "rgba(220,220,220,1)",
+		                data: [0, 0, 0, 0, 0, 0, 0]
+		            },
+		            {
+		                label: "Read",
+		                fillColor: "#16658D",
+		                strokeColor: "#16658D",
+		                pointColor: "#16658D",
+		                pointStrokeColor: "#fff",
+		                pointHighlightFill: "#fff",
+		                pointHighlightStroke: "rgba(220,220,220,1)",
+		                data: [0, 0, 0, 0, 0, 0, 0]
+		            }
+		        ]
+		    };
+
+
+	    var objIndex = [];
+
+		var currentUrl = "";
+	    function getStorageIO(url, indexValue, instanceName) {
+		    var hasServer = appService.promiseAjax.httpRequest("GET", "http://192.168.1.137:4242/api/"+ url);
+		    hasServer.then(function (result) {
+		    	for(var i=0; i < result.length; i++ ) {
+		    		var j =0;
+			    	angular.forEach(result[i].dps, function(obj, key) {
+			    		j++;
+			    		var date = getDateByTime(key);
+				        var objIndex = $scope.disk.labels.indexOf(date.getHours() + "." + date.getMinutes()+ "." + date.getSeconds());
+			    		if(objIndex < 0) {
+			    			if(indexValue == 0) {
+			    				$scope.disk.labels.shift();
+			    				$scope.disk.labels.push(date.getHours() + "." + date.getMinutes()+ "." + date.getSeconds());
+			    			}
+					        $scope.disk.datasets[indexValue].data.shift();
+					        $scope.disk.datasets[1].data.shift();
+					        var objValue = parseFloat(parseInt(obj) / (1024));
+					        $scope.disk.datasets[indexValue].data.push(parseFloat(objValue));
+			    		}else {
+			    			var objValue = parseFloat(parseInt(obj) / (1024));
+			    			$scope.disk.datasets[indexValue].data[objIndex] = parseFloat(objValue);
+			    		}
+
+			    	});
+		    	}
+		    });
+	    }
 
 	    if ($stateParams.id > 0) {
 	        var hasServer = appService.crudService.read("virtualmachine", $stateParams.id);
@@ -170,6 +257,9 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
 	            getMemoryPerformance("query?start=1m-ago&m=sum:os.mem.free{host="+ displayName +"}", 1,  result.displayName.toLowerCase());
 	            getMemoryPerformance("query?start=1m-ago&m=sum:os.mem.used{host="+ displayName +"}", 2,  result.displayName.toLowerCase());
 
+	            //getStorageIO("query?start=1m-ago&m=sum:linux.disk.write_requests{host="+ displayName +"}", 0,  result.displayName.toLowerCase());
+	            //getStorageIO("query?start=1m-ago&m=sum:linux.disk.read_requests{host="+ displayName +"}", 1,  result.displayName.toLowerCase());
+
 	            setInterval(function() {
 	    	    	//getCpuPerformance("query?start=1m-ago&m=sum:rate:linux.cpu{host="+ displayName +"}", 0, result.displayName.toLowerCase());
 	    	    	for(var cpuCores=0; cpuCores < result.computeOffering.numberOfCores; cpuCores++) {
@@ -178,7 +268,10 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
 		            getMemoryPerformance("query?start=1m-ago&m=sum:os.mem.total{host="+ displayName +"}", 0,  result.displayName.toLowerCase());
 		            getMemoryPerformance("query?start=1m-ago&m=sum:os.mem.free{host="+ displayName +"}", 1, result.displayName.toLowerCase());
 	            	getMemoryPerformance("query?start=1m-ago&m=sum:os.mem.used{host="+ displayName +"}", 2, result.displayName.toLowerCase());
-	            }, 15000);
+
+	            	//getStorageIO("query?start=1m-ago&m=sum:linux.disk.write_requests{host="+ displayName +"}", 0,  result.displayName.toLowerCase());
+		           // getStorageIO("query?start=1m-ago&m=sum:linux.disk.read_requests{host="+ displayName +"}", 1,  result.displayName.toLowerCase());
+	            }, 1500000);
 
 	        });
 	    }
@@ -259,23 +352,14 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
 
 	        ]
 	    };
-	     $scope.disk = {
-	        labels: ["10.00", "10.05", "10.10", "10.15", "10.20", "10.25", "10.30"],
-	        datasets: [
 
-	            {
-	                label: "IOPS",
-	                fillColor: "#E56919",
-	                strokeColor: "#E56919",
-	                pointColor: "#E56919",
-	                pointStrokeColor: "#fff",
-	                pointHighlightFill: "#fff",
-	                pointHighlightStroke: "rgba(220,220,220,1)",
-	                data: [12, 22, 18, 16, 20, 19, 9]
-	            }
 
-	        ]
-	    };
+
+
+
+
+
+
 //
 //
 //
@@ -329,4 +413,7 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
 	//        responsive: true,
 	//        maintainAspectRatio: true
 	    };
+
+
+
 }
