@@ -4,7 +4,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<form name="noteForm" data-ng-submit="update(noteForm)" ng-controller="instanceListCtrl">
+<form name="noteForm" data-ng-submit="update(noteForm)">
     <div class="inmodal" >
 
         <div class="modal-header">
