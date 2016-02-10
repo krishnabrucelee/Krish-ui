@@ -31,7 +31,7 @@
 	                        <div class="row">
 	                            <label class="col-md-3 col-sm-3 control-label"><fmt:message key="common.domain" bundle="${msg}" /><span class="text-danger">*</span></label>
 	                            <div class="col-md-5 col-sm-5">
-	                                <select required="true" class="form-control input-group" id = "add_department_domain" name="domain" data-ng-model="role.domain" ng-options="domain.name for domain in formElements.domainList" data-ng-class="{'error': departmentForm.domain.$invalid && formSubmitted}" >
+	                                <select required="true" class="form-control input-group" id = "add_department_domain" name="domain" data-ng-model="role.domain" ng-options="domain.name for domain in formElements.domainList" data-ng-change="getDepartmentsByDomain(role.domain)" data-ng-class="{'error': departmentForm.domain.$invalid && formSubmitted}" >
 	                                    <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
 
 	                                </select>
@@ -57,7 +57,7 @@
 									<select class="form-control form-group-lg" name="department"
 										data-ng-model="role.department"
 										ng-change="getUsersByDepartment(role.department)"
-										data-ng-options="department.userName for department in role.domain.department"
+										data-ng-options="department.userName for department in formElements.departments"
 										data-ng-class="{'error': RoleForm.department.$invalid && formSubmitted}">
 										<option value=""><fmt:message key="common.select"
 												bundle="${msg}" /></option>
