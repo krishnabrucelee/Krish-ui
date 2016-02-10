@@ -8,7 +8,7 @@
 
         <div class="row " >
 
-            <div class="col-lg-10 col-md-10 col-sm-12 col-md-offset-1 ">
+            <div class="col-lg-10 col-md-10 col-sm-12 col-md-offset-1 animated-panel">
 
                 <div class="hpanel">
                     <div class="row">
@@ -31,9 +31,10 @@
 
                 </div>
                     <div class="row"><hr class="m-t-xs"></div>
-                    <div class="row">
-                    <div class="chart">
-                        <canvas linechart options="lineOptions" data="cpu" width="780" height="220"></canvas>
+                    <div class="row" style="background-color:#CCC">
+                    <div class="chart" >
+                     	<canvas class="hide"   responsive="true"></canvas>
+                        <canvas linechart options="lineOptions" data="cpu" width="780" height="220" ></canvas>
                     </div></div>
                     <table>
                         <tbody>
@@ -44,11 +45,11 @@
                                 <td class="legendLabel">CPU 0</td>
                                 <td class="legendColorBox p-xs"><div style="border:1px solid #ccc;padding:1px"><div style="width:4px;height:0;border:5px solid #16658D;overflow:hidden"></div></div>
                                 </td>
-                                <td class="legendLabel">CPU 1</td><td class="legendColorBox p-xs"><div style="border:1px solid #ccc;padding:1px"><div style="width:4px;height:0;border:5px solid #7208A8;overflow:hidden"></div></div>
+                                <td class="legendLabel">CPU 1</td>
+                                <!-- <td class="legendLabel">CPU 2</td><td class="legendColorBox p-xs"><div style="border:1px solid #ccc;padding:1px"><div style="width:4px;height:0;border:5px solid rgba(98,203,49,0.5);overflow:hidden"></div></div>
                                 </td>
-                                <td class="legendLabel">CPU 2</td><td class="legendColorBox p-xs"><div style="border:1px solid #ccc;padding:1px"><div style="width:4px;height:0;border:5px solid rgba(98,203,49,0.5);overflow:hidden"></div></div>
-                                </td>
-                                <td class="legendLabel">CPU 3</td></tr></tbody></table>
+                                <td class="legendLabel">CPU 3</td> -->
+                                </tr></tbody></table>
 
                 </div>
             </div>
