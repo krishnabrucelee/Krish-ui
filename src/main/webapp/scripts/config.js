@@ -117,7 +117,8 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider,
 				url : "/view/:id",
 				templateUrl : VIEW_URL + "views/cloud/instance/view.jsp",
 				data : {
-					pageTitle : 'view.instance'
+					pageTitle : 'view.instance',
+					id:""
 				}
 			})
 
@@ -131,7 +132,7 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider,
 			})
 
 			.state('cloud.list-instance.view-instance.ipaddress', {
-				url : ":id/ip-address/:id1",
+				url : "/ip-address/:id1",
 				templateUrl : VIEW_URL + "views/cloud/instance/listIPAddress.jsp",
 				data : {
 					pageTitle : 'ip.address'
@@ -176,7 +177,7 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider,
 				url : "quota-limit",
 				templateUrl : VIEW_URL + "views/cloud/quota/quota-limit.jsp",
 				data : {
-					pageTitle : 'Quota Limit'
+					pageTitle : 'common.quota.limit'
 				}
 			})
 

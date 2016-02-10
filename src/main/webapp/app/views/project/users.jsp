@@ -44,7 +44,7 @@
 				<tr ng-repeat="user in projectInfo.userList" class="font-bold text-center">
 					<td>{{user.userName}}</td>
 					<td>{{user.department.userName}}</td>
-					<td><a has-permission="RELEASE_USERS_TO_PROJECTS" data-ng-click="removeUser(user)"><span
+					<td><a  data-ng-if="projectInfo.projectOwner.id !== user.id " has-permission="RELEASE_USERS_TO_PROJECTS" data-ng-click="removeUser(user)"><span
 							class="fa fa-trash"></span></a></td>
 				</tr>
 				<!--            deleteRules(rule.id,'Egress')-->

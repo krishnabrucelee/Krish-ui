@@ -56,7 +56,6 @@
 				<div class="clearfix"></div>
 			</div>
 			<div class="row">
-				<pagination-content></pagination-content>
 				<div class="col-md-12 col-sm-12 col-xs-12 ">
 					<div class="white-content">
 						<div data-ng-show="showLoader" style="margin: 1%">
@@ -73,7 +72,7 @@
 										<th class="custom-width-sm" ng-click="changeSorting('application')"
 											data-ng-class="sort.descending && sort.column =='application'? 'sorting_desc' : 'sorting_asc' ">
 										<fmt:message key="common.application" bundle="${msg}" /></th>
-										<th class="custom-width-xs" ng-click="changeSorting('ostype')"
+										<th class="custom-width-sm" ng-click="changeSorting('ostype')"
 											data-ng-class="sort.descending && sort.column =='ostype'? 'sorting_desc' : 'sorting_asc' ">
 										<fmt:message key="common.osType" bundle="${msg}" /></th>
 										<th class="custom-width-xs" ng-click="changeSorting('computeOffering.numberOfCores')"
@@ -88,12 +87,6 @@
 										<th ng-click="changeSorting('ipAddress')"
 											data-ng-class="sort.descending && sort.column =='ipAddress'? 'sorting_desc' : 'sorting_asc' ">
 										<fmt:message key="common.ip" bundle="${msg}" /></th>
-										<th ng-click="changeSorting('network.name')"
-											data-ng-class="sort.descending && sort.column =='network.name'? 'sorting_desc' : 'sorting_asc' ">
-										<fmt:message key="common.network" bundle="${msg}" /></th>
-										<th ng-click="changeSorting('host.name')"
-											data-ng-class="sort.descending && sort.column =='host.name'? 'sorting_desc' : 'sorting_asc' ">
-										<fmt:message key="common.host" bundle="${msg}" /></th>
 										<th><fmt:message key="common.action" bundle="${msg}" /></th>
 									</tr>
 								</thead>
@@ -111,10 +104,6 @@
 										{{ instance.name}}</a></td>
 										<td>{{ instance.instanceOwner.userName}}</td>
 										<td class="custom-width-sm">{{ instance.application}}</td>
-										<!-- <td>{{ instance.project.name}}</td> -->
-										<!--                                         <td>{{ instance.department.userName}}</td>
- -->
-										<!--                                         <td>{{ instance.template.displayText}}</td> -->
 										<td class="custom-width-xs"><img title="{{ instance.template.osType.description}}"
 											data-ng-show="instance.template.displayText.toLowerCase().indexOf('cent') > -1"
 											src="images/os/centos_logo.png" alt="" height="25" width="25" class="m-r-5"
@@ -133,8 +122,7 @@
 										> <img title="{{ instance.template.osType.description}}"
 											data-ng-show="instance.template.displayText.toLowerCase().indexOf('core') > -1" src="images/os/core_logo.png"
 											alt="" height="25" width="25" class="m-r-5"
-										> <!-- 											<img title="{{ instance.template.osType.description}}" data-ng-show="instance.template.displayText.toLowerCase().indexOf('vynta') > -1" src="images/os/vynta_logo.png" alt="" height="25" width="25" class="m-r-5" >
- --> <img title="{{ instance.template.osType.description}}"
+										> <img title="{{ instance.template.osType.description}}"
 											data-ng-show="instance.template.displayText.toLowerCase().indexOf('windows') > -1"
 											src="images/os/windows_logo.png" alt="" height="25" width="25" class="m-r-5"
 										></td>
@@ -143,43 +131,8 @@
 										<td class="custom-width-xs"><span data-ng-if="instance.volumeSize > 0">{{ instance.volumeSize / global.Math.pow(2, 30)}} GB</span><span data-ng-if="!(instance.volumeSize > 0)">-No Disk-</span></td>
 										<!--                                         <td>{{volume[0].diskSize / global.Math.pow(2, 30)}}</td> -->
 										<td>{{ instance.ipAddress}}</td>
-										<td>{{ instance.network.name}}</td>
-										<td>{{ instance.host.name}}</td>
 										<td>
-											<div class="btn-group action-menu">
-												<a class="fa fa-cogs dropdown-toggle" data-toggle="dropdown"></a>
-												<ul class="dropdown-menu pull-right">
-													<img src="images/dropdown-arw2.png" border="0" class="vol-dropdown-arw">
-													<li has-permission="START_VM"
-														data-ng-if="instance.status != 'ERROR' || instance.status != 'EXPUNGING' || instance.status != 'STARTING' || instance.status != 'STOPPING' || instance.status != 'DESTROYING'  "
-													><a class="icon-button text-center" title="<fmt:message key="start" bundle="${msg}" />"
-														data-ng-click="startVm('sm',instance)" data-ng-if="instance.status == 'STOPPED'"
-													> <span class="fa fa-play m-xs"></span> <fmt:message key="start" bundle="${msg}" />
-													</a></li>
-													<li has-permission="STOP_VM"
-														data-ng-if="instance.status != 'ERROR' || instance.status != 'EXPUNGING' || instance.status != 'STARTING' || instance.status != 'STOPPING' || instance.status != 'DESTROYING'  "
-													><a class="icon-button text-center" data-ng-click="stopVm('sm',instance)"
-														title="<fmt:message key="stop" bundle="${msg}" />" data-ng-if="instance.status  == 'RUNNING'"
-													> <span class="fa fa-ban m-xs"></span> <fmt:message key="stop" bundle="${msg}" />
-													</a></li>
-													<li has-permission="REBOOT_VM"
-														data-ng-if="instance.status != 'ERROR' || instance.status != 'EXPUNGING' || instance.status != 'STARTING' || instance.status != 'STOPPING' || instance.status != 'DESTROYING'  "
-													><a class="icon-button text-center" data-ng-if="instance.status == 'RUNNING'"
-														title="<fmt:message key="restart" bundle="${msg}" />" data-ng-click="rebootVm('sm',instance)"
-													><span class="fa fa-rotate-left m-xs"></span> <fmt:message key="restart" bundle="${msg}" /> </a></li>
-													<li has-permission="VIEW_CONSOLE" data-ng-if="instance.status == 'RUNNING'"><a
-														data-ng-click="showConsole(instance)" class="icon-button text-center"
-														title="<fmt:message key="view.console" bundle="${msg}" />"
-													><span class="fa-desktop fa m-xs"></span> <fmt:message key="view.console" bundle="${msg}" /> </a></li>
-													<li><a class="icon-button text-center" title="<fmt:message key="display.note" bundle="${msg}" />"
-														data-ng-click="showDescription(instance)"
-													><span class="fa-file-text fa m-xs"></span> <fmt:message key="display.note" bundle="${msg}" /> </a></li>
-													<li data-ng-if="instance.application == null"><a class="icon-button text-center"
-														title="<fmt:message key="instance.application.assign" bundle="${msg}" />"
-														data-ng-click="addApplication(instance)"
-													><span class="fa-plus fa m-xs"></span> <fmt:message key="instance.application.assign" bundle="${msg}" />
-													</a></li>
-												</ul>
+										<div class="pull-left ">
 												<button class="btn btn-xs btn-success btn-circle" data-ng-if="instance.status == 'RUNNING'"
 													title="{{ instance.status}}"
 												></button>
@@ -204,15 +157,47 @@
 												<button class="btn btn-xs btn-warning btn-circle" data-ng-if="instance.status == 'MIGRATING'"
 													title="{{ instance.status}}"
 												></button>
-											</div>
+		   							    </div>
+										<div class="">
+													<div has-permission="START_VM"
+														data-ng-if="instance.status != 'ERROR' || instance.status != 'EXPUNGING' || instance.status != 'STARTING' || instance.status != 'STOPPING' || instance.status != 'DESTROYING'  ">
+													<a class="icon-button text-center" title="<fmt:message key="start" bundle="${msg}" />"
+														data-ng-click="startVm('sm',instance)" data-ng-if="instance.status == 'STOPPED'"
+													> <span class="fa fa-play m-xs"></span>
+													</a></div>
+													<div has-permission="STOP_VM"
+														data-ng-if="instance.status != 'ERROR' || instance.status != 'EXPUNGING' || instance.status != 'STARTING' || instance.status != 'STOPPING' || instance.status != 'DESTROYING'  "
+													><a class="icon-button text-center" data-ng-click="stopVm('sm',instance)"
+														title="<fmt:message key="stop" bundle="${msg}" />" data-ng-if="instance.status  == 'RUNNING'"
+													> <span class="fa fa-ban m-xs"></span>
+													</a></div>
+													<div has-permission="REBOOT_VM"
+														data-ng-if="instance.status != 'ERROR' || instance.status != 'EXPUNGING' || instance.status != 'STARTING' || instance.status != 'STOPPING' || instance.status != 'DESTROYING'  "
+													><a class="icon-button text-center" data-ng-if="instance.status == 'RUNNING'"
+														title="<fmt:message key="restart" bundle="${msg}" />" data-ng-click="rebootVm('sm',instance)"
+													><span class="fa fa-rotate-left m-xs"></span>  </a></div>
+													<div has-permission="VIEW_CONSOLE" data-ng-if="instance.status == 'RUNNING'"><a
+														data-ng-click="showConsole(instance)" class="icon-button text-center"
+														title="<fmt:message key="view.console" bundle="${msg}" />"
+													><span class="fa-desktop fa m-xs"></span>  </a></div>
+													<div><a class="icon-button text-center" title="<fmt:message key="display.note" bundle="${msg}" />"
+														data-ng-click="showDescription(instance)"
+													><span class="fa-file-text fa m-xs"></span>  </a></div>
+													<div data-ng-if="instance.application == null"><a class="icon-button text-center"
+														title="<fmt:message key="instance.application.assign" bundle="${msg}" />"
+														data-ng-click="addApplication(instance)"
+													><span class="fa-plus fa m-xs"></span>
+													</a></div>
+										</div>
 										</td>
 									</tr>
 								</tbody>
 							</table>
 						</div>
 					</div>
+					<pagination-content></pagination-content>
 				</div>
-				<pagination-content></pagination-content>
+
 			</div>
 		</div>
 	</div>

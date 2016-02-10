@@ -248,6 +248,8 @@ function throttle(func, wait, options) {
       this.calcViewDimensions();
       this.setMinAndMax();
 
+      console.log(this.calcViewDimensions);
+
       this.precision = this.scope.rzSliderPrecision === undefined ? 0 : +this.scope.rzSliderPrecision;
       this.step = this.scope.rzSliderStep === undefined ? 1 : +this.scope.rzSliderStep;
 
@@ -273,7 +275,9 @@ function throttle(func, wait, options) {
       thrLow = throttle(function()
       {
         self.setMinAndMax();
+       if(parseInt(self.scope.rzSliderModel) >= self.scope.rzSliderFloor){
         self.updateLowHandle(self.valueToOffset(self.scope.rzSliderModel));
+        }
         self.updateSelectionBar();
 
         if(self.range)

@@ -38,7 +38,6 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12 col-sm-12 col-xs-12 ">
-                        <pagination-content></pagination-content>
                             <div class="white-content">
                                 <div class="table-responsive">
                                     <table cellspacing="1" cellpadding="1" class="table table-bordered table-striped ">

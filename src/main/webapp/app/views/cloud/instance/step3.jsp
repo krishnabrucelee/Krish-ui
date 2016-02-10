@@ -148,6 +148,7 @@
 				</div>
 			</div>
 		</div>
+		<div data-ng-if="global.sessionValues.type == 'ROOT_ADMIN'">
 		<div class="row  form-group required"
 			ng-class="{ 'text-danger' : !instance.applicationList && templateFormSubmitted}">
 			<div class="col-md-12 col-xs-12 col-sm-12">
@@ -161,6 +162,23 @@
                 </select>
 				</div>
 			</div>
+		</div>
+		</div>
+		<div data-ng-if="global.sessionValues.type != 'ROOT_ADMIN'">
+		<div class="row  form-group required"
+			ng-class="{ 'text-danger' : !instance.applicationList && templateFormSubmitted}">
+			<div class="col-md-12 col-xs-12 col-sm-12">
+				<span class="control-label"><fmt:message key="application.type" bundle="${msg}" /><span
+					title="<fmt:message key="common.required" bundle="${msg}" />" class="text-danger font-bold">*</span></span> <i
+					class="pe-7s-help1 pe-lg m-r-xs pull-right"
+					tooltip="<fmt:message key="type.of.the.application" bundle="${msg}" />"></i>
+				<div class="m-t-sm">
+				<select required="true" multiple="multiple" class="form-control input-group" name="applicationList" data-ng-model="instance.applicationList" ng-options="applicationList.type for applicationList in applicationsList" data-ng-class="{'error': instanceTemplateForm.applicationList.$invalid && templateFormSubmitted}" >
+                <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
+                </select>
+				</div>
+			</div>
+		</div>
 		</div>
 		<div class="row  form-group">
 			<div class="col-md-5 col-xs-5 col-sm-5">
