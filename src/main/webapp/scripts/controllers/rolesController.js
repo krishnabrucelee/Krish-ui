@@ -242,6 +242,26 @@ angular
         }]);
     };
 
+
+    $scope.getDepartmentsByDomain = function (domain) {
+
+        $scope.showLoaderDetail = true;
+
+        if ($scope.global.sessionValues.type === 'USER') {
+            var departments = [];
+            var hasDepartments = appService.crudService.read("departments", $scope.global.sessionValues.departmentId);
+            hasDepartments.then(function (result) {
+                $scope.formElements.departments = result;
+            });
+        } else {
+            var hasDepartments = appService.crudService.listAllByFilter("departments/search", domain);
+            hasDepartments.then(function (result) {  // this is only run after $http completes0
+                $scope.formElements.departments = result;
+            });
+        }
+    };
+
+
     $scope.checkAllPermissions = function(permissions) {
 		var permissionModules = [];
 		var unchecked = false;
@@ -306,14 +326,10 @@ angular
             $scope.userRoleList= [];
     	    // Department list from server
     	    $scope.role.department = {};
-    	    var hasDepartment = appService.crudService.listAll("departments/list");
-    	    hasDepartment.then(function (result) {  // this is only run after
-													// $http completes0
-    	    	$scope.formElements.departmentList = result;
-    	    });
+    	    $scope.role.domain = {};
 
-    		// Getting list of users and roles by department
-        $scope.getUsersByDepartment = function(department) {
+    	 // Getting list of users and roles by department
+    	    $scope.getUsersByDepartment = function(department) {
         	var hasUsers =  appService.promiseAjax.httpTokenRequest(appService.crudService.globalConfig.HTTP_GET, appService.crudService.globalConfig.APP_URL + "users"  +"/department/"+department.id);
         	hasUsers.then(function (result) {  // this is only run after $http
 												// completes0
@@ -340,6 +356,22 @@ angular
         	});
         };
 
+    	    var sessionValues = appService.globalConfig.sessionValues;
+    	    $scope.userType = sessionValues.type;
+    	    if(sessionValues.type != "USER") {
+	    	    var hasDepartment = appService.crudService.listAll("departments/list");
+	    	    hasDepartment.then(function (result) {  // this is only run after
+														// $http completes0
+	    	    	$scope.formElements.departments = result;
+	    	    });
+    	    } else {
+    	    	var hasDepartment = appService.crudService.read("departments", sessionValues.departmentId);
+	    	    hasDepartment.then(function (result) {  // this is only run after
+	    	    	$scope.department = result;
+	    	    	$scope.getUsersByDepartment(result);
+	    	    });
+    	    }
+
        // Assign a new role to our user
         $scope.role.department = "";
         $scope.assignRoleSave = function (form) {
@@ -354,14 +386,25 @@ angular
 				} else {
 					userObject.roleId = userRoleId;
 				}
+				delete userObject.role;
+				delete userObject.department;
+				delete userObject.domain;
 				assignedUsers.push(userObject);
         	});
+        	if(appService.globalConfig.sessionValues.type != "USER" && ($scope.role.department == "" || angular.isUndefined($scope.role.department))) {
+        		appService.notify({message: "Please choose the department", classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+        	}
+        	else if(assignedUsers.length == 0) {
+        		appService.notify({message: "No users are there to assign role", classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+        	}
         	if (form.$valid && assignedUsers.length > 0) {
         		var hasServer = appService.crudService.add("users/assignRole", assignedUsers);
         		hasServer.then(function (result) {  // this is only run after
 													// $http completes
         			$scope.list(1);
         			appService.notify({message: 'Assigned successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+        			$scope.role.department = "";
+            		$scope.role.domain = "";
         			$modalInstance.close();
         		}).catch(function (result) {
         			if(!angular.isUndefined(result) && result.data != null) {
@@ -375,6 +418,7 @@ angular
         	},
         	   $scope.cancel = function () {
         		$scope.role.department = "";
+        		$scope.role.domain = "";
                 $modalInstance.close();
             };
         }]);

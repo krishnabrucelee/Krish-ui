@@ -6,10 +6,10 @@
 
 <div class="hpanel">
     <div class="row m-l-sm m-r-sm panel-body" ng-controller="projectCtrl">
-      <div data-ng-show = "showLoader" style="margin: 30%">
-      <get-loader-image data-ng-show="showLoader"></get-loader-image>
+      <div data-ng-if= "showLoader" style="margin: 30%">
+      <get-loader-image data-ng-if="showLoader"></get-loader-image>
       </div>
-        <div class="tab-content" data-ng-hide="showLoader" >
+        <div class="tab-content" data-ng-if="!showLoader" >
                <div class="row" >
 
                     <div class="col-lg-9 col-md-8 col-sm-12">
@@ -44,7 +44,7 @@
 												class="pull-right"><fmt:message key="project.status" bundle="${msg}" /></span></label>
 											<div class="col-md-6 col-sm-6 col-xs-6"><label class="badge badge-success p-xs" data-ng-if="projectInfo.isActive"
 													class="text-success">Active</label> <label class="badge badge-danger p-xs"
-													data-ng-if="!projectInfo.isActive"
+													data-ng-hide="projectInfo.isActive"
 													class="text-danger">In Active</label></div>
 										</div>
 									</div>
