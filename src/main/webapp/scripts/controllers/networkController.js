@@ -179,22 +179,46 @@ console.log(instance);
                         };
             }]);
     };
-    $scope.stopVm = function (size, item) {
-        appService.dialogService.openDialog("app/views/cloud/instance/stop.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
-                $scope.item = item;
-                $scope.vmStop = function (item) {
-                    var event = "VM.STOP";
-                    var hasVm = appService.crudService.vmUpdate("virtualmachine/handlevmevent", item.uuid, event);
-                    hasVm.then(function (result) {
-                        $state.reload();
-                        $scope.cancel();
-                    });
-                },
-                        $scope.cancel = function () {
-                            $modalInstance.close();
-                        };
-            }]);
+    $scope.agree = {
+            value1 : false,
+            value2 : true
+          };
+
+$scope.stopVm = function(size,item) {
+   $scope.item =item;
+  appService.dialogService.openDialog("app/views/cloud/instance/stop.jsp", size,  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
+          $scope.item = item;
+         $scope.vmStop = function(item) {
+                 var event = "VM.STOP";
+                 $scope.actionExpunge = true;
+                 if ($scope.agree.value1) {
+                      item.transForcedStop = $scope.agree.value1;
+                      item.event = event;
+                      var hasVm = appService.crudService.updates("virtualmachine/handleevent/vm", item);
+                      hasVm.then(function(result) {
+                             $state.reload();
+                             $scope.cancel();
+                      }).catch(function (result) {
+                             $state.reload();
+                             $scope.cancel();
+                      });
+                 } else {
+                   var event = "VM.STOP";
+                         var hasVm = appService.crudService.vmUpdate("virtualmachine/handlevmevent", item.uuid, event);
+                         hasVm.then(function(result) {
+                                 $state.reload();
+                                  $scope.cancel();
+                         }).catch(function (result) {
+                           $state.reload();
+                           $scope.cancel();
+                         });
+                   }
+                 },
+                   $scope.cancel = function () {
+        $modalInstance.close();
     };
+}]);
+};
     $scope.rebootVm = function (size, item) {
         appService.dialogService.openDialog("app/views/cloud/instance/reboot.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
                 $scope.item = item;
@@ -330,7 +354,7 @@ console.log(instance);
                         $scope.formSubmitted = false;
 $timeout(function(){$scope.showLoader = false; $scope.firewallRule(1);
                                 appService.notify({message: 'Firewall rule added successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});}, 25000);// completes
-                        
+
                         $scope.firewallRule(1);
                         $scope.templateCategory = 'firewall';
                     }).catch(function (result) {
@@ -1477,11 +1501,11 @@ $scope.portForward.protocolType = '';
 			$timeout(function(){ $scope.ipLists(1);
                                 appService.notify({message: 'Public IP acquired successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                             $scope.acquiringIP = false;$scope.cancel(); }, 5000);
-                            
-                          
+
+
                         }).catch(function (result) {
                             $scope.acquiringIP = false;
-				$scope.showLoader = false;  
+				$scope.showLoader = false;
                             if (result.data.globalError[0] != null) {
                                 var msg = result.data.globalError[0];
                                 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
@@ -1506,10 +1530,10 @@ $scope.portForward.protocolType = '';
                         hasIP.then(function (result) {
 				$timeout(function(){  $scope.ipLists(1);
                                 appService.notify({message: 'Public IP released successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});$scope.showLoader = false;$scope.cancel();}, 5000);
-                            
+
                         }).catch(function (result) {
                         });
-                   
+
                 },
                         $scope.cancel = function () {
                             $modalInstance.close();
