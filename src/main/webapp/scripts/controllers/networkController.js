@@ -167,22 +167,46 @@ console.log($scope.nicIPLists[0].vmInstance.ipAddress);
                         };
             }]);
     };
-    $scope.stopVm = function (size, item) {
-        appService.dialogService.openDialog("app/views/cloud/instance/stop.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
-                $scope.item = item;
-                $scope.vmStop = function (item) {
-                    var event = "VM.STOP";
-                    var hasVm = appService.crudService.vmUpdate("virtualmachine/handlevmevent", item.uuid, event);
-                    hasVm.then(function (result) {
-                        $state.reload();
-                        $scope.cancel();
-                    });
-                },
-                        $scope.cancel = function () {
-                            $modalInstance.close();
-                        };
-            }]);
+    $scope.agree = {
+            value1 : false,
+            value2 : true
+          };
+
+$scope.stopVm = function(size,item) {
+   $scope.item =item;
+  appService.dialogService.openDialog("app/views/cloud/instance/stop.jsp", size,  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
+          $scope.item = item;
+         $scope.vmStop = function(item) {
+                 var event = "VM.STOP";
+                 $scope.actionExpunge = true;
+                 if ($scope.agree.value1) {
+                      item.transForcedStop = $scope.agree.value1;
+                      item.event = event;
+                      var hasVm = appService.crudService.updates("virtualmachine/handleevent/vm", item);
+                      hasVm.then(function(result) {
+                             $state.reload();
+                             $scope.cancel();
+                      }).catch(function (result) {
+                             $state.reload();
+                             $scope.cancel();
+                      });
+                 } else {
+                   var event = "VM.STOP";
+                         var hasVm = appService.crudService.vmUpdate("virtualmachine/handlevmevent", item.uuid, event);
+                         hasVm.then(function(result) {
+                                 $state.reload();
+                                  $scope.cancel();
+                         }).catch(function (result) {
+                           $state.reload();
+                           $scope.cancel();
+                         });
+                   }
+                 },
+                   $scope.cancel = function () {
+        $modalInstance.close();
     };
+}]);
+};
     $scope.rebootVm = function (size, item) {
         appService.dialogService.openDialog("app/views/cloud/instance/reboot.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
                 $scope.item = item;
