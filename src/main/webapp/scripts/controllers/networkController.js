@@ -31,6 +31,16 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
     $scope.sort = appService.globalConfig.sort;
     $scope.changeSorting = appService.utilService.changeSorting;
 
+    if ($stateParams.id > 0) {
+ 	    var hasServer = appService.crudService.read("guestnetwork", $stateParams.id);
+        hasServer.then(function (result) {
+            $scope.networkBreadCrumb = result;
+		    $scope.networkBreadCrumbList = result;
+		    $state.current.data.pageName = result.name;
+		    $state.current.data.id = result.id;
+        });
+    }
+
     // Egress Rule List
     $scope.firewallRulesLists = function (pageNumber) {
         $scope.templateCategory = 'egress';
@@ -311,7 +321,7 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
                         $scope.formSubmitted = false;
 $timeout(function(){$scope.showLoader = false; $scope.firewallRule(1);
                                 appService.notify({message: 'Firewall rule added successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});}, 25000);// completes
-                        
+
                         $scope.firewallRule(1);
                         $scope.templateCategory = 'firewall';
                     }).catch(function (result) {
@@ -1428,11 +1438,11 @@ $timeout(function(){$scope.showLoader = false; $scope.firewallRule(1);
 			$timeout(function(){ $scope.ipLists(1);
                                 appService.notify({message: 'Public IP acquired successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                             $scope.acquiringIP = false;$scope.cancel(); }, 5000);
-                            
-                          
+
+
                         }).catch(function (result) {
                             $scope.acquiringIP = false;
-				$scope.showLoader = false;  
+				$scope.showLoader = false;
                             if (result.data.globalError[0] != null) {
                                 var msg = result.data.globalError[0];
                                 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
@@ -1457,10 +1467,10 @@ $timeout(function(){$scope.showLoader = false; $scope.firewallRule(1);
                         hasIP.then(function (result) {
 				$timeout(function(){  $scope.ipLists(1);
                                 appService.notify({message: 'Public IP released successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});$scope.showLoader = false;$scope.cancel();}, 5000);
-                            
+
                         }).catch(function (result) {
                         });
-                   
+
                 },
                         $scope.cancel = function () {
                             $modalInstance.close();

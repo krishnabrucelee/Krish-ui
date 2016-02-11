@@ -76,8 +76,8 @@
         <div class="modal-footer">
          <get-loader-image data-ng-show="showLoader"></get-loader-image>
 
-            <button type="button" id = "add_department_cancel" class="btn btn-default "  data-ng-hide="showLoader" ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.cancel" bundle="${msg}" /></button>
-            <button   data-ng-hide="showLoader" id = "add_department_add" class="btn btn-info" type="submit"><fmt:message key="common.add" bundle="${msg}" /></button>
+            <button type="button" id = "add_department_cancel_button" class="btn btn-default "  data-ng-hide="showLoader" ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.cancel" bundle="${msg}" /></button>
+            <button   data-ng-hide="showLoader" id = "add_department_add_button" class="btn btn-info" type="submit"><fmt:message key="common.add" bundle="${msg}" /></button>
 
         </div></div>
 </form>

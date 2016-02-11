@@ -21,7 +21,7 @@
 										key="common.department" bundle="${msg}" /><span
 									class="text-danger">*</span> </label>
 								<div class="col-md-5 col-sm-5">
-									<select class="form-control form-group-lg" name="department"
+									<select class="form-control form-group-lg" id="assign_role_department" name="department"
 										data-ng-model="role.department"
 										ng-change="getUsersByDepartment(role.department)"
 										data-ng-options="department.userName for department in formElements.departmentList"
@@ -80,9 +80,9 @@
 		</div>
 	</div>
 	<div class="modal-footer">
-		<a class="btn btn-default" data-ng-click="cancel()"><fmt:message
+		<a class="btn btn-default" id="assign_role_cancel_button" data-ng-click="cancel()"><fmt:message
 				key="common.cancel" bundle="${msg}" /></a>
-		<button class="btn btn-info" type="submit">
+		<button class="btn btn-info" id="assign_role_add_button" type="submit">
 			<fmt:message key="common.add" bundle="${msg}" />
 		</button>
 	</div>
