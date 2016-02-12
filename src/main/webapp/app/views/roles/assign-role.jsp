@@ -7,7 +7,7 @@
 	method="post" novalidate="">
 	<div class="inmodal">
 		<div class="modal-header">
-			<panda-modal-header page-icon="fa fa-user-plus" hide-zone="false"
+			<panda-modal-header id="assign_role_page_title" page-icon="fa fa-user-plus" hide-zone="false"
 				page-title="Assign Role"></panda-modal-header>
 		</div>
 		<div class="modal-body">
@@ -97,7 +97,7 @@
 							<tbody>
 								<tr data-ng-repeat="user in userList">
 									<td>{{user.userName}}</td>
-									<td><select class="form-control input-group" name="role"
+									<td><select class="form-control input-group assign_role_user" id="assign_role_user_{{user.id}}" name="role"
 										data-ng-model="userRolePermissionList[user.id]"
 										data-ng-class="{'error': RoleForm.role.$invalid && formSubmitted}">
 											<option value=""><fmt:message key="common.select"

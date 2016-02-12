@@ -38,6 +38,12 @@
                 <h2 class="font-light m-b-xs">
                     <span id="roles_page_title" data-ng-if="$state.current.data.pageTitle === 'common.roles'"><fmt:message key="common.roles" bundle="${msg}" /></span>
                 </h2>
+                 <h2 class="font-light m-b-xs">
+                    <span id="edit_role_page_title" data-ng-if="$state.current.data.pageTitle === 'edit.role'"><fmt:message key="edit.role" bundle="${msg}" /></span>
+                </h2>
+                <h2 class="font-light m-b-xs">
+                    <span id="add_role_page_title" data-ng-if="$state.current.data.pageTitle === 'add.role'"><fmt:message key="add.role" bundle="${msg}" /></span>
+                </h2>
                 <small>{{ $state.current.data.pageDesc}}</small>
             </div>
         </div>
@@ -98,8 +104,8 @@
                                                         {{ role.description}}
                                                     </td>
                                                     <td>
-                                                        <a has-permission="EDIT_ROLE" id="role_edit_button_{{role.id}}" class="icon-button" title="<fmt:message key="common.edit" bundle="${msg}" />" ui-sref="roles.list-edit({id: {{ role.id}}})" ><span class="fa fa-edit m-r"></span></a>
-                                                        <a has-permission="DELETE_ROLE" id="role_delete_button_{{role.id}}" class="icon-button" title="<fmt:message key="common.delete" bundle="${msg}" />"  data-ng-click="delete('sm',role)"  ><span class="fa fa-trash"></span></a>
+                                                        <a has-permission="EDIT_ROLE" id="role_edit_button_{{role.id}}" data-unique-field="edit-{{ role.domain.name}}-{{ role.department.userName }}-{{ role.name}}" class="icon-button role_edit_button" title="<fmt:message key="common.edit" bundle="${msg}" />" ui-sref="roles.list-edit({id: {{ role.id}}})" ><span class="fa fa-edit m-r"></span></a>
+                                                        <a has-permission="DELETE_ROLE" id="role_delete_button_{{role.id}}" data-unique-field="delete-{{ role.domain.name}}-{{ role.department.userName }}-{{ role.name}}" class="icon-button role_delete_button" title="<fmt:message key="common.delete" bundle="${msg}" />"  data-ng-click="delete('sm',role)"  ><span class="fa fa-trash"></span></a>
                                                     </td>
                                                 </tr>
                                             </tbody>

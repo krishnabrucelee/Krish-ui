@@ -88,12 +88,12 @@
             <div class="form-group" data-ng-if="module[0].description !== 'Quota Limit'">
                 <div class="white-content">
                 	<div class="panel-heading bg-info no-padding">
-                       	<label class="font-control p-xxs m-l-sm m-b-none"><input id="edit_role_permission_group" data-ng-checked="permissionGroupCount[key]==module.length" data-ng-model="permissionGroup[key]"  type="checkbox" data-ng-click="checkAll(module, key)" ><span class="m-l-sm">{{module[0].description}}</span></label>
+                       	<label class="font-control p-xxs m-l-sm m-b-none"><input id="edit_role_permission_group_{{permission.id}}" data-ng-checked="permissionGroupCount[key]==module.length" data-ng-model="permissionGroup[key]"  type="checkbox" data-ng-click="checkAll(module, key)" ><span class="m-l-sm">{{module[0].description}}</span></label>
 					</div>
                     <div class="panel-body">
 	                	<div class="col-md-4 col-sm-4 col-lg-4" ng-repeat="permission in module">
 	                    	<div class="row">
-	                        	<label> <input id="edit_role_permission_list" type="checkbox" ng-model="permissionList[permission.id]" data-ng-click="checkOne(permission, module)">  <span class="m-l-sm font-normal">{{permission.action}}</span></label>
+	                        	<label> <input id="edit_role_permission_{{permission.id}}" class="edit_role_permission" type="checkbox" ng-model="permissionList[permission.id]" data-ng-click="checkOne(permission, module)">  <span class="m-l-sm font-normal">{{permission.action}}</span></label>
 	                        </div>
                         </div>
                     </div>

@@ -6,7 +6,7 @@
 <form name="departmentForm" data-ng-submit="save(departmentForm, department)" method="post" novalidate=""  >
     <div class="inmodal" >
         <div class="modal-header">
-            <panda-modal-header page-icon="fa fa-plus-circle" page-title="<fmt:message key="add.department" bundle="${msg}" />"></panda-modal-header>
+            <panda-modal-header id="add_department_page_title" page-icon="fa fa-plus-circle" page-title="<fmt:message key="add.department" bundle="${msg}" />"></panda-modal-header>
         </div>
 
         <div class="modal-body">

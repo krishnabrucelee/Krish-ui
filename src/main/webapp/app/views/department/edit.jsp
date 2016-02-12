@@ -6,7 +6,7 @@
 <form name="departmentForm" data-ng-submit="update(departmentForm)" method="post" novalidate=""  >
     <div class="inmodal" >
         <div class="modal-header">
-            <panda-modal-header hide-zone="false" page-icon="fa fa-edit" page-title="<fmt:message key="edit.department" bundle="${msg}" />"></panda-modal-header>
+            <panda-modal-header id="edit_department_page_title" hide-zone="false" page-icon="fa fa-edit" page-title="<fmt:message key="edit.department" bundle="${msg}" />"></panda-modal-header>
 
         </div>
         <div class="modal-body">

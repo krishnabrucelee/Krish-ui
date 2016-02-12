@@ -243,7 +243,7 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider,
 				url : "/:quotaType/:id",
 				templateUrl : VIEW_URL + "views/project/projectquota.jsp",
 				data : {
-					pageTitle : 'view.quota.limit'
+					pageTitle : 'quota.limit'
 				}
 			})
 
@@ -488,7 +488,7 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider,
 						templateUrl : VIEW_URL
 								+ "views/department/departmentquota.jsp",
 						data : {
-							pageTitle : 'view.quota.limit'
+							pageTitle : 'quota.limit'
 						}
 					})
 
