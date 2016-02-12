@@ -100,7 +100,7 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
 
         });
     };
- $scope.vmLists(1);
+ 
 
 
     $scope.nicIPList = function (instance) {
@@ -1041,6 +1041,17 @@ $scope.openAddVM = function (form) {
   $scope.showLoader = true;
       //modalService.trigger('app/views/cloud/network/vm-list.jsp', 'lg');
 appService.dialogService.openDialog("app/views/cloud/network/vm-list.jsp", 'lg' , $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+    $scope.lbvmLists = function () {
+
+        $scope.lbvmList = [];
+        var hasVms = appService.crudService.listByQuery("virtualmachine/network?networkId=" + $stateParams.id);
+        hasVms.then(function (result) {  // this is only run after $http
+									// completes0
+        $scope.lbvmList = result;
+
+        });
+    };
+	$scope.lbvmLists();
     $scope.loadbalancerSave = function(loadBalancer) {
   $scope.loadBalancer = $scope.global.rulesLB[0];
   $scope.formSubmitted = true;
@@ -1579,7 +1590,6 @@ $scope.createStickiness = function (size) {
             $scope.addStickiness = function (form,stickiness) {
 		alert("hi");
  		$scope.stickiness = stickiness;
-
 		console.log($scope.stickiness);
                     $scope.formSubmitted = true;
                     if (form.$valid) {
@@ -1587,6 +1597,50 @@ $scope.createStickiness = function (size) {
                         $modalInstance.close();
                     }
                 },
+                     $scope.cancel = function () {
+                 	$modalInstance.close(); $scope.formElements = {
+	    };
+                        };
+            }]);
+    };
+
+$scope.configureStickiness = function (size, loadBalancer) {
+    appService.dialogService.openDialog($scope.global.VIEW_URL + "cloud/network/stickiness.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope',function ($scope, $modalInstance, $rootScope) {
+	$scope.stickyLoadBalancer = loadBalancer;
+	    //Assign loadbalancer stickiness in object
+          $scope.addStickiness = function(form, stickiness) {
+		if (!angular.isUndefined($scope.stickyLoadBalancer.id) && $scope.stickyLoadBalancer.id != null) {
+		var loadBalancerParams = ["stickinessMethod", "stickinessName", "stickyTableSize","cookieName","stickyExpires","stickyMode","stickyLength","stickyRequestLearn",
+"stickyPrefix","stickyNoCache","stickyIndirect","stickyPostOnly","stickyCompany"];
+		 for(var i=0; i < loadBalancerParams.length; i++) {
+				if(!angular.isUndefined(loadBalancer[loadBalancerParams[i]]) && stickiness[loadBalancerParams[i]] != null){
+					$scope.stickyLoadBalancer[loadBalancerParams[i]] = stickiness[loadBalancerParams[i]];
+				}
+			}
+		 delete $scope.stickyLoadBalancer.stickyTableSize;
+			delete $scope.stickyLoadBalancer.stickyExpires;
+			delete $scope.stickyLoadBalancer.cookieName;
+			delete $scope.stickyLoadBalancer.domain;
+			  console.log($scope.stickyLoadBalancer);
+                        var hasServer = appService.crudService.update("loadBalancer", $scope.stickyLoadBalancer);
+			 hasServer.then(function (result) {
+    				$scope.LBlist(1);
+                            appService.notify({message: 'Updated successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                            $modalInstance.close();
+                         $scope.showLoader = false;
+                        }).catch(function (result) {
+                        	if(!angular.isUndefined(result) && result.data != null) {
+	                            angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
+
+	                            	$scope.loadBalancerForm[key].$invalid = true;
+	                                $scope.loadBalancerForm[key].errorMessage = errorMessage;
+	                            });
+                        	}
+
+                        });
+
+		}
+		},
 
                      $scope.cancel = function () {
                  	$modalInstance.close(); $scope.formElements = {
@@ -1608,50 +1662,23 @@ $scope.createStickiness = function (size) {
 $scope.editStickiness = function (size,loadBalancer) {
 	$scope.stickyLoadBalancer = loadBalancer;
     appService.dialogService.openDialog($scope.global.VIEW_URL + "cloud/network/edit-stickiness.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope',function ($scope, $modalInstance, $rootScope) {
-	    //Assign loadbalancer stickiness in object
-		   angular.forEach($scope.formElements.stickinessList, function (obj, key) {
-                if (obj.id == $scope.stickiness.stickinessMethod) {
-                    $scope.stickiness.stickinessMethod = obj;
-
-              }
-            });
+	   		var loadBalancerParams = ["stickinessMethod", "stickinessName", "stickyTableSize","cookieName","stickyExpires","stickyMode","stickyLength","stickyRequestLearn",
+"stickyPrefix","stickyNoCache","stickyIndirect","stickyPostOnly","stickyCompany"];
 		 angular.forEach($scope.formElements.stickinessList, function(value, key){
-    		if(value == loadBalancer.stickinessMethod){
-			$scope.stickiness.stickinessMethod = loadBalancer.stickinessMethod ;
+			for(var i=0; i < loadBalancerParams.length; i++) {
+				if(!angular.isUndefined(loadBalancer[loadBalancerParams[i]]) && loadBalancer[loadBalancerParams[i]] != null){
+					$scope.stickiness[loadBalancerParams[i]] = loadBalancer[loadBalancerParams[i]];
+				}
 			}
-		    if (!angular.isUndefined(loadBalancer.stickinessName) && loadBalancer.stickinessName != null) {
-	 		 $scope.stickiness.stickinessName = loadBalancer.stickinessName;
-			}
-
-			if (!angular.isUndefined(loadBalancer.stickyTableSize) && loadBalancer.stickyTableSize != null) {
-			$scope.stickiness.stickyTableSize = loadBalancer.stickyTableSize;
-			}
-
-			if (!angular.isUndefined(loadBalancer.cookieName) && loadBalancer.cookieName != null) {
-			$scope.stickiness.cookieName = loadBalancer.cookieName;
-			}
-
     		});
 
                 $scope.editStickinessPolicy = function (form, loadBalancer) {
+			for(var i=0; i < loadBalancerParams.length; i++) {
+				if(!angular.isUndefined(loadBalancer[loadBalancerParams[i]]) && loadBalancer[loadBalancerParams[i]] != null){
+					$scope.stickyLoadBalancer[loadBalancerParams[i]] = loadBalancer[loadBalancerParams[i]];
 
-			    if (!angular.isUndefined(loadBalancer.stickinessName) && loadBalancer.stickinessName != null) {
-				$scope.stickyLoadBalancer.stickinessName = loadBalancer.stickinessName;
 				}
-
-				if (!angular.isUndefined(loadBalancer.stickinessMethod) && loadBalancer.stickinessMethod != null) {
-					$scope.stickyLoadBalancer.stickinessMethod = loadBalancer.stickinessMethod ;
-				}
-				if (!angular.isUndefined(loadBalancer.cookieName) && loadBalancer.cookieName != null) {
-					$scope.stickyLoadBalancer.cookieName = loadBalancer.cookieName;
-				}
-				if (!angular.isUndefined(loadBalancer.stickyTableSize) && loadBalancer.stickyTableSize != null) {
-					$scope.stickyLoadBalancer.stickyTableSize = loadBalancer.stickyTableSize;
-				}
-				if (!angular.isUndefined(loadBalancer.stickyExpires) && loadBalancer.stickyExpires != null) {
-        				$scope.stickyLoadBalancer.stickyExpires = loadBalancer.stickyExpires;
-				}
-
+			}
 		    delete $scope.stickyLoadBalancer.stickyTableSize;
 			delete $scope.stickyLoadBalancer.stickyExpires;
 			delete $scope.stickyLoadBalancer.cookieName;

@@ -42,7 +42,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr data-ng-repeat="instance in vmList | filter: instanceSearch">
+							<tr data-ng-repeat="instance in lbvmList | filter: instanceSearch">
 								<td><a class="text-info">{{ instance.name }}</a>
 									<div data-ng-show="instance.selected">{{
 										instance.ipAddress}}</div> <%--  <div data-ng-show="instance.selected" class="m-t-sm">
