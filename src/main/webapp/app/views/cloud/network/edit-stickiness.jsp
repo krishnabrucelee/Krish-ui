@@ -3,7 +3,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
-<form name="stickinessForm" data-ng-submit="addStickiness(stickinessForm, stickiness)" method="post" novalidate=""  >
+<form name="stickinessForm" data-ng-submit="editStickinessPolicy(stickinessForm, stickiness)" method="post" novalidate=""  >
     <div class="inmodal" >
         <div class="modal-header">
             <panda-modal-header hide-zone="false" page-icon="fa fa-plus-circle" page-title="<fmt:message key="configure.sticky.policy" bundle="${msg}" />"></panda-modal-header>
@@ -141,13 +141,8 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-default " ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.cancel" bundle="${msg}" /></button>
-            <button class="btn btn-info" data-ng-show="stickiness.stickinessMethod == 'None'" type="button" data-ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.add" bundle="${msg}" /></button>
-            <button class="btn btn-info" data-ng-hide="stickiness.stickinessMethod == 'None'" type="submit"><fmt:message key="common.add" bundle="${msg}" /></button>
+            <button class="btn btn-info" data-ng-show="stickiness.stickinessMethod == 'None'" type="button" data-ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.update" bundle="${msg}" /></button>
+            <button class="btn btn-info" data-ng-hide="stickiness.stickinessMethod == 'None'" type="submit"><fmt:message key="common.update" bundle="${msg}" /></button>
         </div>
         </div>
 </form>
-
-
-
-
-
