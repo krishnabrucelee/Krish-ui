@@ -119,8 +119,6 @@ $scope.selected = {};
        	var hasNicIP = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbyvminstances?instanceid="+instanceId +"&lang=" + appService.localStorageService.cookie.get('language')+"&sortBy=-id");
         hasNicIP.then(function (result) {
             $scope.nicIPLists = result;
-console.log($scope.nicIPLists[0].vmInstance.ipAddress);
-  $scope.portForward.protocolType = $scope.nicIPLists[0].vmInstance.ipAddress;
             $scope.showLoader = false;
 
         });
