@@ -271,7 +271,7 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
 
 	            	//getStorageIO("query?start=1m-ago&m=sum:linux.disk.write_requests{host="+ displayName +"}", 0,  result.displayName.toLowerCase());
 		           // getStorageIO("query?start=1m-ago&m=sum:linux.disk.read_requests{host="+ displayName +"}", 1,  result.displayName.toLowerCase());
-	            }, 1500000);
+	            }, 1000000);
 
 	        });
 	    }
