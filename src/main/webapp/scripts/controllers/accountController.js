@@ -326,6 +326,7 @@ function accountListCtrl($scope,$state, $log,$timeout, appService) {
                 });
     		},
             $scope.cancel = function () {
+		$scope.list(1);
                 $modalInstance.close();
             };
        }]);

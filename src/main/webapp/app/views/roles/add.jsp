@@ -61,7 +61,7 @@
                         <div data-ng-if="global.sessionValues.type == 'ROOT_ADMIN'">
                         <div class="form-group"ng-class="{'text-danger': RoleForm.department.$invalid && formSubmitted}">
                             <div class="row">
-                                <label class="col-md-3 col-sm-3 control-label control-normal"><fmt:message key="common.department" bundle="${msg}" /><span class="text-danger">*</span></label>
+                                <label class="col-md-3 col-sm-3 control-label control-normal">R<fmt:message key="common.department" bundle="${msg}" /><span class="text-danger">*</span></label>
                                 <div class="col-md-7  col-sm-7 col-xs-7">
                                     <select required="true" id="add_role_department" class="form-control input-group" name="department" data-ng-model="role.department" ng-options="department.userName for department in formElements.departmentList" data-ng-class="{'error': RoleForm.department.$invalid && formSubmitted}" >
                                         <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
@@ -77,10 +77,10 @@
                         </div>
                         </div>
 
-                       <div data-ng-if="global.sessionValues.type != 'ROOT_ADMIN'">
+                       <div data-ng-if="global.sessionValues.type == 'DOMAIN_ADMIN'">
                         <div class="form-group"ng-class="{'text-danger': RoleForm.department.$invalid && formSubmitted}">
                             <div class="row">
-                                <label class="col-md-3 col-sm-3 control-label control-normal"><fmt:message key="common.department" bundle="${msg}" /><span class="text-danger">*</span></label>
+                                <label class="col-md-3 col-sm-3 control-label control-normal">D<fmt:message key="common.department" bundle="${msg}" /><span class="text-danger">*</span></label>
                                 <div class="col-md-7  col-sm-7 col-xs-7">
                                     <select required="true" class="form-control input-group" id="add_role_department" name="department" data-ng-model="role.department" ng-options="department.userName for department in departmentList" data-ng-class="{'error': RoleForm.department.$invalid && formSubmitted}" >
                                         <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
@@ -95,6 +95,14 @@
                             </div>
                         </div>
                         </div>
+                        <div class=" form-group row" data-ng-if="global.sessionValues.type == 'USER'">
+							<label
+								class="col-md-3 col-xs-12 col-sm-3 control-label control-normal"><fmt:message
+									key="common.department" bundle="${msg}" /> </label>
+							<div class="col-md-6 col-xs-12 col-sm-6">
+								{{global.sessionValues.userName}}
+							</div>
+						</div>
 
                         <div class="form-group" ng-class="{'text-danger': RoleForm.description.$invalid && formSubmitted}">
                             <div class="row">
