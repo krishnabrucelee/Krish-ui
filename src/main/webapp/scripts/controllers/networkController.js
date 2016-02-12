@@ -105,23 +105,19 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
         });
     };
  //$scope.vmLists(1);
-   
+
 $scope.selected = {};
 
 
     $scope.nicIPList = function (instance) {
-console.log(instance);
 	var instanceId = instance.id;
 	$scope.selected = instanceId;
 	$scope.instances = instance;
-
-	alert(instance.id);
-
        	var hasNicIP = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbyvminstances?instanceid="+instanceId +"&lang=" + appService.localStorageService.cookie.get('language')+"&sortBy=-id");
         hasNicIP.then(function (result) {
             $scope.nicIPLists = result;
             $scope.showLoader = false;
-	
+
         });
 
     };
@@ -339,7 +335,7 @@ $scope.stopVm = function(size,item) {
     $scope.actionRules = false;
     $scope.cidrValidates = false;
     $scope.firewallRuleIngress.networkId = $stateParams.id;
-    $scope.ingressSave = function (firewallRuleIngress) {
+$scope.ingressSave = function (firewallRuleIngress) {
 	 $scope.showLoader = true;
         $scope.firewallRuleIngress.ipAddressId = $stateParams.id1;
         $scope.formSubmitted = true;
@@ -577,9 +573,43 @@ $timeout(function(){$scope.showLoader = false; $scope.firewallRule(1);
                         };
             }]);
     };
+$scope.networkRestart ={};
+    // Restart the Network
+    $scope.restart = function (size, network) {
+        appService.dialogService.openDialog("app/views/cloud/network/restart-network.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+                $scope.ok = function (restart) {
+		$scope.networkRestart = restart;
+                $scope.showLoader = true;
+			var hasServer = appService.crudService.add("guestnetwork/restart/" + network.id, network);
+                        hasServer.then(function (result) {  // this is only run after $http completes
+                        	$scope.showLoader = false;
+                        	appService.notify({message: 'Restarted successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                            $modalInstance.close();
+                            $scope.list(1);
+                        }).catch(function (result) {
+                            if (!angular.isUndefined(result.data)) {
+                                if (result.data.globalError != '' && !angular.isUndefined(result.data.globalError)) {
+                                    var msg = result.data.globalError[0];
+                                    $scope.showLoader = false;
+                                    appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                                } else if (result.data.fieldErrors != null) {
+                                    angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
+                                        $scope.addnetworkForm[key].$invalid = true;
+                                        $scope.addnetworkForm[key].errorMessage = errorMessage;
+                                    });
+                                }
+                            }
+                        });
+                },
+                        $scope.cancel = function () {
+                            $modalInstance.close();
+                        };
+            }]);
+    };
 
     // Edit Network
     $scope.edit = function (networkId) {
+
         var hasnetwork = appService.crudService.read("guestnetwork", networkId);
         hasnetwork.then(function (result) {
             $scope.network = result;
@@ -1241,7 +1271,7 @@ $timeout(function(){$scope.showLoader = false; $scope.firewallRule(1);
         hasVms.then(function (result) {  // this is only run after $http
 									// completes0
         $scope.portvmList = result;
-console.log($scope.portvmList);
+
 
         });
     };
@@ -1259,14 +1289,13 @@ if(angular.isUndefined($scope.instanceLists.ipAddress.guestIpAddress)){
                         $scope.portForward.vmGuestIp = $scope.instances.ipAddress;
 } else
 {
-console.log($scope.instanceLists.ipAddress.guestIpAddress);
 $scope.portForward.vmGuestIp = $scope.instanceLists.ipAddress.guestIpAddress;
 }
                         $scope.portForward.ipAddressId = $stateParams.id1;
                         $scope.portForward.protocolType = $scope.portForward.protocolType.name;
- 
+
                         var hasPortForward = appService.crudService.add("portforwarding", $scope.portForward);
-                        hasPortForward.then(function (result) { 
+                        hasPortForward.then(function (result) {
                             $scope.formSubmitted = false;
                             $modalInstance.close();
                             $scope.showLoader = false;
@@ -1276,7 +1305,7 @@ $scope.portForward.vmGuestIp = $scope.instanceLists.ipAddress.guestIpAddress;
                                 templateUrl: $scope.global.NOTIFICATION_TEMPLATE
                             });
 			$scope.portRulesLists(1);
-			                           
+
                         }).catch(function (result) {
                             $scope.showLoader = false;
                             if (!angular.isUndefined(result.data)) {
@@ -1305,11 +1334,11 @@ $scope.portForward.vmGuestIp = $scope.instanceLists.ipAddress.guestIpAddress;
 
   };
 
-$scope.portForward.privateStartPort = '';
-$scope.portForward.privateEndPort = '';
-$scope.portForward.publicStartPort = '';
-$scope.portForward.publicEndPort = '';
-$scope.portForward.protocolType = ''; 
+//$scope.portForward.privateStartPort = '';
+//$scope.portForward.privateEndPort = '';
+//$scope.portForward.publicStartPort = '';
+//$scope.portForward.publicEndPort = '';
+//$scope.portForward.protocolType = '';
 
                             $scope.cancel = function () {
 

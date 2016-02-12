@@ -50,7 +50,6 @@ pageEncoding="UTF-8"%>
 
                              </div>
 
-                           <!-- <input type="hidden" data-ng-model="instances.name" value="{{ instance.name }}"/> -->
                         </td>
                   		 <td>{{ instancesList.instanceInternalName}}</td>
                         <td>{{ instancesList.displayName }}</td>
@@ -59,7 +58,6 @@ pageEncoding="UTF-8"%>
                         <td>
                             <label class="label label-success" data-ng-if="instancesList.status == 'RUNNING'">{{instancesList.status}}</label>
                             <label class="label label-danger" data-ng-if="instancesList.status == 'STOPPED'">{{instancesList.status}}</label>
-                           <!-- <input type="hidden" data-ng-model="instance.state" value="{{ instance.state }}"/> -->
                         </td>
                          <td>
                             <label class="">
