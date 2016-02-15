@@ -11,7 +11,7 @@
             </div>
                 <div class="white-content">
                     <div class="table-responsive">
-                        <table cellspacing="1" cellpadding="1" class="table dataTable table-bordered table-striped table-hover table-mailbox">
+                        <table cellspacing="1" cellpadding="1" class="table dataTable table-bordered table-striped">
                             <thead>
                                 <tr>
                             <th class="col-md-2 col-sm-2"  data-ng-click="changeSorting('name')" data-ng-class="sort.descending && sort.column =='name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.name" bundle="${msg}" /></th>
@@ -46,7 +46,7 @@
                                     </td>
                                     <td>{{ template.size / global.Math.pow(2, 30)}}</td>
                                     <td>{{ template.status }}</td>
-                                    <td>{{ template.owner|| " - " }}</td>
+                                    <td>{{ template.templateOwner.userName || " - " }}</td>
                                     <td>{{ template.createdDateTime *1000 | date:'yyyy-MM-dd HH:mm:ss'}}</td>
                                     <td>{{ template.format }}</td>
                                     <td>{{ template.hvm || " - "}}</td>
