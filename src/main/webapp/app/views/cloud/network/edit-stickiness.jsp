@@ -136,13 +136,11 @@
                 </div>
             </div>
         </div>
-
-
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-default " ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.cancel" bundle="${msg}" /></button>
-            <button class="btn btn-info" data-ng-show="stickiness.stickinessMethod == 'None'" type="button" data-ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.update" bundle="${msg}" /></button>
-            <button class="btn btn-info" data-ng-hide="stickiness.stickinessMethod == 'None'" type="submit"><fmt:message key="common.update" bundle="${msg}" /></button>
+            <get-loader-image data-ng-show="showLoader"></get-loader-image>
+            <button type="button" class="btn btn-default " data-ng-hide="showLoader" ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.cancel" bundle="${msg}" /></button>
+            <button class="btn btn-info" data-ng-hide="showLoader" type="submit"><fmt:message key="common.update" bundle="${msg}" /></button>
         </div>
         </div>
 </form>

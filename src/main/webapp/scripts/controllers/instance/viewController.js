@@ -21,8 +21,11 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
         hasServer.then(function (result) {
             $scope.instance = result;
 		    $scope.instanceList = result;
-		    $state.current.data.pageName = result.name;
-		    $state.current.data.id = result.id;
+		    setTimeout(function() {
+			$state.current.data.pageName = result.name;  
+		    	$state.current.data.id = result.id;
+		    }, 1000)
+		    
             var str = $scope.instance.cpuUsage;
             if(str!=null){
             var newString = str.replace(/^_+|_+$/g,'');
