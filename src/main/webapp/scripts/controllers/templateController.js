@@ -4,7 +4,6 @@
  *
  */
 
-
 angular
         .module('homer')
         .controller('templatesCtrl', templatesCtrl)
@@ -16,7 +15,6 @@ function templatesCtrl($scope, $stateParams, appService, $timeout, promiseAjax, 
     $scope.global = globalConfig;
     $scope.sort = appService.globalConfig.sort;
     $scope.changeSorting = appService.utilService.changeSorting;
-
     $scope.template = {
         templateList: {}
     };
@@ -28,15 +26,67 @@ function templatesCtrl($scope, $stateParams, appService, $timeout, promiseAjax, 
             $scope.template.templateList = result;
             $scope.showLoader = false;
         });
+
     };
     $scope.templateList();
 
-    $scope.showTemplateContent = function () {
+    $scope.communitylist = function () {
+    $scope.formElements.category = 'community';
+    //community List
+    $scope.list = function (pageNumber) {
+    	$scope.showLoader = true;
+    	var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
+        var hasCommunity = promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL
+        		+ "templates/listall?sortBy=ASC&type=community&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+        hasCommunity.then(function (result) {  // this is only run after $http completes0
+            $scope.communityList = result;
+            // For pagination
+            $scope.paginationObject.limit = limit;
+            $scope.paginationObject.currentPage = pageNumber;
+            $scope.paginationObject.totalItems = result.totalItems;
+            $scope.showLoader = false;
+        });
+    };
+    $scope.list (1);
+
+    }
+
+   $scope.featuredlist = function () {
+   $scope.formElements.category = 'featured';
+    //featured List
+    $scope.list = function (pageNumber) {
+    	$scope.showLoader = true;
+    	var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
+        var hasFeatured = promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL
+        		+ "templates/listall?sortBy=ASC&type=featured&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+        hasFeatured.then(function (result) {  // this is only run after $http completes0
+            $scope.featuredList = result;
+            // For pagination
+            $scope.paginationObject.limit = limit;
+            $scope.paginationObject.currentPage = pageNumber;
+            $scope.paginationObject.totalItems = result.totalItems;
+            $scope.showLoader = false;
+        });
+    };
+    $scope.list (1);
+   }
+
+    $scope.showCommunityTemplateContent = function () {
         $scope.showLoader = true;
         $timeout(function () {
             $scope.showLoader = false;
             $scope.listView = !$scope.listView;
         }, 800);
+	$scope.communitylist();
+    };
+
+    $scope.showFeaturedTemplateContent = function () {
+        $scope.showLoader = true;
+        $timeout(function () {
+            $scope.showLoader = false;
+            $scope.listView = !$scope.listView;
+        }, 800);
+    $scope.featuredlist();
     };
 
     $scope.uploadTemplateContainer = function () {
@@ -71,9 +121,7 @@ function templatesCtrl($scope, $stateParams, appService, $timeout, promiseAjax, 
     }
 
     // INFO PAGE
-
     $scope.templateInfo = $scope.template.templateList[$stateParams.id - 1];
-
     $scope.showDescription = function (templateObj) {
         var modalInstance = $modal.open({
             animation: $scope.animationsEnabled,
@@ -138,11 +186,8 @@ function templateDetailsCtrl($scope, templateObj, globalConfig, $modalInstance) 
 }
 ;
 
-
 function uploadTemplateCtrl($scope, globalConfig, $modalInstance, notify) {
-
     $scope.global = globalConfig;
-
     $scope.formElements = {
         hypervisorList: [
             {
@@ -215,7 +260,7 @@ function uploadTemplateCtrl($scope, globalConfig, $modalInstance, notify) {
                 ]
             },
         ],
-        osTypeList: [
+        osTypeList:[
             {id: 1, name: 'Apple Mac OS X 10.6 (32-bit)'},
             {id: 2, name: 'Apple Mac OS X 10.6 (64-bit)'},
             {id: 3, name: 'CentOS 6.5 (32-bit)'},
@@ -230,13 +275,11 @@ function uploadTemplateCtrl($scope, globalConfig, $modalInstance, notify) {
             $scope.homerTemplate = 'app/views/notification/notify.jsp';
             notify({message: 'Uploaded successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
             $scope.cancel();
-
         }
     };
     $scope.ok = function () {
         $modalInstance.close();
     };
-
     $scope.cancel = function () {
         $modalInstance.dismiss('cancel');
     };

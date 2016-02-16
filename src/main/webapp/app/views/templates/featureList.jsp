@@ -27,7 +27,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                                <tr data-ng-if="template.share && template.featured" data-ng-repeat="template in filteredCount = (template.templateList| filter:quickSearch | orderBy:sort.column:sort.descending)">
+                                <tr data-ng-if="template.share && template.featured" data-ng-repeat="template in filteredCount = (featuredList| filter:quickSearch | orderBy:sort.column:sort.descending)">
                                     <td>
                                         <a data-ng-click="showDescription(template)">
                                           <img data-ng-show="template.osCategory.name.indexOf('Windows') > -1" src="images/os/windows_logo.png" alt="" height="35" width="35" class="m-r-5" >
@@ -58,6 +58,7 @@
                         </table>
                     </div>
                 </div>
+              <pagination-content></pagination-content>
             </div>
         </div>
     </div>
