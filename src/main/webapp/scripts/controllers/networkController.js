@@ -1,3 +1,5 @@
+
+
 /**
  *
  * networksCtrl
@@ -1910,5 +1912,4 @@ function networkViewCtrl($scope, $http, notify, globalConfig, localStorageServic
 };
 	}
     };
-
 

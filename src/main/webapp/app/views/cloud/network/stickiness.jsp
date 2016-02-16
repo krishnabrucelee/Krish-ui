@@ -189,6 +189,7 @@
 			</div>
 
 
+        </div>
 		</div>
 		<div class="modal-footer">
 			<get-loader-image data-ng-show="showLoader"></get-loader-image>
