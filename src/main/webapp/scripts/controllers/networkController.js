@@ -98,7 +98,8 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
     $scope.vmLists = function (pageNumber) {
         $scope.templateCategory = 'instance';
         $scope.vmList = [];
-        var hasVms = appService.crudService.listByQuery("virtualmachine/network?networkId=" + $stateParams.id);
+	 var networkId = $stateParams.id;
+        var hasVms = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbynetwork?networkid="+networkId +"&lang=" + appService.localStorageService.cookie.get('language')+"&sortBy=-id");
         hasVms.then(function (result) {  // this is only run after $http
 									// completes0
         $scope.vmList = result;
@@ -1203,9 +1204,9 @@ $scope.openAddVMlist = function () {
   }]);
 
       $scope.global.rulesLB[0].name = $scope.loadBalancer.name;
-      $scope.global.rulesLB[0].publicPort = $scope.loadBalancer.algorithmspublicPort;
-      $scope.global.rulesLB[0].privatePort = $scope.loadBalancer.algorithms.privatePort;
-      $scope.global.rulesLB[0].algorithm = $scope.loadBalancer.algorithms.value;
+      $scope.global.rulesLB[0].publicPort = $scope.loadBalancer.publicPort;
+      $scope.global.rulesLB[0].privatePort = $scope.loadBalancer.privatePort;
+     // $scope.global.rulesLB[0].algorithm = $scope.loadBalancer.algorithms.value;
 
 };
 
