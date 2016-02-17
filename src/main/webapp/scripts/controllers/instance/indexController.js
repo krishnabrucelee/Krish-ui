@@ -25,7 +25,6 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
     };
     $scope.templateCategories = appService.localStorageService.get("view");
     $scope.templateVM = appService.localStorageService.get("selectedTemplate");
-    console.log($scope.templateVM);
     if (!angular.isUndefined($scope.templateVM) && $scope.templateVM.$valid) {
         $scope.instance.template = $scope.templateVM;
     }
@@ -727,8 +726,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
 
     $scope.computeList = function () {
         $scope.showLoaderOffer = true;
-	console.log($scope.instance);
-	  if (!angular.isUndefined($scope.instance.domain) && $scope.global.sessionValues.type == 'ROOT_ADMIN') {
+	    if (!angular.isUndefined($scope.instance.domain) && $scope.global.sessionValues.type == 'ROOT_ADMIN') {
 	    var hasCompute = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL
         		+ "computes/listbydomain?domainId="+$scope.instance.domain.id);
 		hasCompute.then(function (result) {  // this is only run after $http completes0
