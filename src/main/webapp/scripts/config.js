@@ -243,7 +243,7 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider,
 				url : "/:quotaType/:id",
 				templateUrl : VIEW_URL + "views/project/projectquota.jsp",
 				data : {
-					pageTitle : 'View Quota Limit'
+					pageTitle : 'quota.limit'
 				}
 			})
 
@@ -261,7 +261,7 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider,
 				url : "/accounts",
 				templateUrl : VIEW_URL + "views/account/list.jsp",
 				data : {
-					pageTitle : 'Accounts'
+					pageTitle : 'common.accounts'
 				}
 			})
 
@@ -365,19 +365,18 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider,
 			})
 
 			.state('cloud.list-network.view-network', {
-				url : "/:view/:id",
+				url : "/view/:id",
 				templateUrl : VIEW_URL + "views/cloud/network/view.jsp",
 				data : {
 					pageTitle : 'view.network'
 				}
-
 			})
 
 			.state('cloud.list-network.view-network.view-ipaddress', {
 				url : "/ip-address/:id1",
 				templateUrl : VIEW_URL + "views/cloud/network/ip-view.jsp",
 				data : {
-					pageTitle : 'View IP'
+					pageTitle : 'ip.address'
 				}
 			})
 
@@ -489,7 +488,7 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider,
 						templateUrl : VIEW_URL
 								+ "views/department/departmentquota.jsp",
 						data : {
-							pageTitle : 'View Quota Limit'
+							pageTitle : 'quota.limit'
 						}
 					})
 

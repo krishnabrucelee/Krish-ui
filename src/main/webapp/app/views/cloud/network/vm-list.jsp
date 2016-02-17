@@ -82,8 +82,19 @@
 		</div>
 	</div>
 </div>
+
 <div class="modal-footer">
-	<a class="btn btn-default" data-ng-click="cancel()">Cancel</a>
-	<a class="btn btn-info" data-ng-click="loadbalancerSave(instance)">Apply</a>
+			<get-loader-image data-ng-if="showLoader"></get-loader-image>
+			<button type="button" data-ng-if="!showLoader" class="btn btn-default " ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.cancel" bundle="${msg}" /></button>
+			<button class="btn btn-info"  data-ng-if="!showLoader" data-ng-click="loadbalancerSave(instance)"><fmt:message key="common.apply" bundle="${msg}" /></button>
+		</div>
+
 </div>
-</div>
+
+
+
+
+
+
+
+

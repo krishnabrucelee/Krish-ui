@@ -25,8 +25,10 @@ function secondaryIpCtrl($scope, $modal, $state, $window, $stateParams,appServic
         hasServer.then(function (result) {  // this is only run after $http
             $scope.instance = result;
             $scope.networkList = result.network;
-            $state.current.data.pageName = result.name;
-            $state.current.data.id = result.id;
+            setTimeout(function() {
+	        $state.current.data.pageName = result.name;
+		$state.current.data.id = result.id;
+	    }, 1000)
         });
     }
 
