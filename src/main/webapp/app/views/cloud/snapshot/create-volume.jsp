@@ -3,7 +3,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
-<form name="createVolumeForm" data-ng-submit="validateCreateVolume(createVolumeForm)" method="post" novalidate="" data-ng-controller="addVMSnapshotCtrl" >
+<form name="createVolumeForm" data-ng-submit="save(createVolumeForm, deleteObject)" method="post" novalidate="" data-ng-controller="snapshotListCtrl" >
 
     <div class="inmodal" >
         <div class="modal-header">
@@ -20,7 +20,7 @@
                                 <span class="text-danger">*</span>
                             </label>
                             <div class="col-md-5 col-sm-5">
-                                <input required="true" type="text" name="disk" data-ng-model="createVolume.disk" class="form-control" data-ng-class="{'error': createVolumeForm.disk.$invalid && formSubmitted}">
+                                <input required="true" type="text" name="disk" data-ng-model="deleteObject.transVolumeName" class="form-control" data-ng-class="{'error': createVolumeForm.disk.$invalid && formSubmitted}">
                                <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="Name of the volume" ></i>
                               <div class="error-area" data-ng-show="createVolumeForm.disk.$invalid && formSubmitted" ><i  tooltip="Disk is required." class="fa fa-warning error-icon"></i></div>
 

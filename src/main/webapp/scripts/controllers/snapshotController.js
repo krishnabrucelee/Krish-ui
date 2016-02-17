@@ -55,7 +55,7 @@ function addVMSnapshotCtrl($scope, globalConfig, $window, notify) {
 
         }
     };
-    $scope.validateCreateVolume = function(form) {
+/*    $scope.validateCreateVolume = function(form) {
         $scope.formSubmitted = true;
         if (form.$valid) {
             $scope.cancel();
@@ -63,7 +63,7 @@ function addVMSnapshotCtrl($scope, globalConfig, $window, notify) {
             notify({message: 'Created successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
 
         }
-    };
+    };*/
     $scope.validateDeleteSnapshot = function(form) {
         $scope.formSubmitted = true;
         if (form.$valid) {
@@ -76,7 +76,7 @@ function addVMSnapshotCtrl($scope, globalConfig, $window, notify) {
 
 };
 function snapshotListCtrl($scope, crudService,$state, $timeout, promiseAjax, globalConfig,
-localStorageService, $window, dialogService, notify) {
+localStorageService, $window, dialogService,$stateParams, notify, appService) {
 	$scope.confirmsnapshot = {};
 	$scope.global = globalConfig;
 	$scope.global = crudService.globalConfig;
@@ -166,9 +166,7 @@ localStorageService, $window, dialogService, notify) {
 // };
 // }]);
 // };
-    $scope.createVolume = function(size) {
-        modalService.trigger('app/views/cloud/snapshot/create-volume.jsp', size);
-    };
+
     $scope.deleteSnapshots = function(size, snapshot) {
     	 dialogService.openDialog("app/views/snapshot/delete-snapshot.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
              $scope.deleteObject = snapshot;
@@ -300,7 +298,63 @@ localStorageService, $window, dialogService, notify) {
          }]);
     };
 
-    $scope.createVolume = function(size) {
-        modalService.trigger('app/views/cloud/snapshot/create-volume.jsp', size);
+    $scope.createVolume = function(size,snapshot) {
+console.log("1a",snapshot);
+    	appService.dialogService.openDialog("app/views/cloud/snapshot/create-volume.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope',
+    	                                                                                                    function ($scope, $modalInstance, $rootScope) {
+$scope.deleteObject = snapshot;
+        $scope.save = function (form, deleteObject) {
+alert("2a"+deleteObject.transVolumeName);
+
+if (!angular.isUndefined($scope.deleteObject.domain)) {
+                deleteObject.domainId = $scope.deleteObject.domain.id;
+                delete deleteObject.domain;
+            }
+
+            if (!angular.isUndefined($scope.deleteObject.department) && $scope.deleteObject.department != null) {
+                deleteObject.departmentId = $scope.deleteObject.department.id;
+                delete deleteObject.department;
+            }
+	   if (!angular.isUndefined($scope.deleteObject.volume) && $scope.deleteObject.volume != null) {
+            deleteObject.volumeId = $scope.deleteObject.volume.id;
+		delete deleteObject.volume;
+            }
+ if (!angular.isUndefined($scope.deleteObject.zone) && $scope.deleteObject.zone != null) {
+                deleteObject.zoneId = $scope.deleteObject.zone.id;
+                delete deleteObject.zone;
+            }
+ if (!angular.isUndefined($scope.deleteObject.snapshot) && $scope.deleteObject.snapshot != null) {
+                deleteObject.snapshot = $scope.deleteObject.snapshot.id;
+                delete deleteObject.snapshot;
+            }
+
+console.log("!!!!!!!!!!*******",deleteObject);
+             $scope.formSubmitted = true;
+
+            if (form.$valid) {
+            	$scope.showLoader = true;	
+                var hasVolume = appService.crudService.add("snapshots/volumesnap",  deleteObject);
+                hasVolume.then(function (result) {
+                	$scope.showLoader = false;
+                    $scope.list(1);
+                    appService.notify({message: 'Added successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                    $modalInstance.close();
+                }).catch(function (result) {
+                	$scope.showLoader = false;
+        		    if (!angular.isUndefined(result.data)) {
+            		if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
+              	   	 var msg = result.data.globalError[0];
+              	   	 $scope.showLoader = false;
+            	    	 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+                	}
+            	}
+        	});
+            }
+        },
+        $scope.cancel = function () {
+            $modalInstance.close();
+        };
+}]);
+
     };
 }
