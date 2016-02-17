@@ -354,6 +354,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
     $scope.changedomain=function (obj)
     {
         $scope.applicationList();
+	$scope.computeList();
 	$scope.instance.department =null;
     	$scope.instance.instanceOwner = null;
 	$scope.instance.project = null;
@@ -773,11 +774,23 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
 
     $scope.computeList = function () {
         $scope.showLoaderOffer = true;
-        var hasCompute = appService.crudService.listAll("computes/list");
-        hasCompute.then(function (result) {  // this is only run after $http completes0
+	console.log($scope.instance);
+	  if (!angular.isUndefined($scope.instance.domain) && $scope.global.sessionValues.type == 'ROOT_ADMIN') {
+	    var hasCompute = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL
+        		+ "computes/listbydomain?domainId="+$scope.instance.domain.id);
+		hasCompute.then(function (result) {  // this is only run after $http completes0
             $scope.instanceElements.computeOfferingList = result;
             $scope.showLoaderOffer = false;
         });
+       		 //var hasCompute = appService.crudService.listAll("computes/listbydomain");
+	}
+	else {
+	var hasCompute = appService.crudService.listAll("computes/list");
+        hasCompute.then(function (result) {  // this is only run after $http completes0
+            $scope.instanceElements.computeOfferingsList = result;
+            $scope.showLoaderOffer = false;
+        });
+	}
     };
     $scope.computeList();
 
