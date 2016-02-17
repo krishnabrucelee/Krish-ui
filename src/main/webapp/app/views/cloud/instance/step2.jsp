@@ -167,7 +167,7 @@
 		</div>
 		<div data-ng-show="instance.storageOffering.isCustomDisk">
 			<div class="form-group"
-				data-ng-class="{ 'text-danger' : instanceForm.diskSize <= 0 && instanceForm.diskSize.$invalid && formSubmitted}">
+				data-ng-class="{ 'text-danger' : instanceForm.diskSize < 0}">
 				<div class="row">
 					<label class="col-md-3 col-xs-12 col-sm-2 control-label"><fmt:message key="common.size" bundle="${msg}" /> <fmt:message key="common.gb" bundle="${msg}" /> <span class="text-danger">*</span>
 					</label>

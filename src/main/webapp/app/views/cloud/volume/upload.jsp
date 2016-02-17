@@ -152,10 +152,6 @@ pageEncoding="UTF-8"%>
                             </div>
                         </div>
                     </div>
-
-
-
-
                     <div class="form-group">
                         <div class="row">
                             <label class="col-md-3 col-sm-3 control-label"><fmt:message key="volume.md5checksum" bundle="${msg}" /></label>
@@ -168,21 +164,30 @@ pageEncoding="UTF-8"%>
 
                         </div>
                     </div>
-
-
-
-
-
                 </div>
             </div>
         </div>
         <div class="modal-footer">
-            <!-- <span class="pull-left">
-                <h4 class="text-danger price-text m-l-lg">
-                    <app-currency></app-currency>0.10 <span>/ hour</span>   <small class="text-right text-muted m-l-sm">(<app-currency></app-currency>7.2 / month)</small>
-                </h4>
-            </span> -->
-             <get-loader-image data-ng-show="showLoader"></get-loader-image>
+            <span class="pull-left" data-ng-if="volume.storageOffering.name">
+				<input type="hidden" readonly="readonly" data-ng-model= "storageOfferVolumeCostSum" data-ng-bind= "storageOfferVolumeCostSum =
+				    (volume.storageOffering.storagePrice[0].costPerMonth
+				    + volume.storageOffering.storagePrice[0].costPerIops + volume.storageOffering.storagePrice[0].costIopsPerMonth
+				    + (volume.storageOffering.storagePrice[0].costGbPerMonth > 0 ? volume.storageOffering.storagePrice[0].costGbPerMonth : 0))" />
+
+				  <span data-ng-show="storageOfferVolumeCostSum > 0" class="text-danger price-text">
+                       <app-currency></app-currency>{{storageOfferVolumeCostSum/30 | number:2 }}
+                       <span> /
+                           <fmt:message key="common.day" bundle="${msg}" />
+                       </span>
+                       <small class="text-muted">
+                           (<app-currency></app-currency>{{storageOfferVolumeCostSum | number:2 }} / <fmt:message key="common.month" bundle="${msg}" />)
+                       </small>
+                  </span>
+                  <span data-ng-hide="storageOfferVolumeCostSum > 0" class="font-bold text-success pricing-text">
+                      <fmt:message key="free" bundle="${msg}" />
+                  </span>
+            </span>
+            <get-loader-image data-ng-show="showLoader"></get-loader-image>
  			<a class="btn btn-default"  data-ng-hide="showLoader" data-ng-click="cancel()"><fmt:message key="common.cancel" bundle="${msg}" /></a>
             <button class="btn btn-info" data-ng-hide="showLoader" type="submit"><fmt:message key="common.update" bundle="${msg}" /></button>
         </div>

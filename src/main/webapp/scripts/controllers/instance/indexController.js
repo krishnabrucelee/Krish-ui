@@ -25,62 +25,15 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
     };
     $scope.templateCategories = appService.localStorageService.get("view");
     $scope.templateVM = appService.localStorageService.get("selectedTemplate");
-    if (!angular.isUndefined($scope.templateVM) && $scope.templateVM != null)
-    {
+    console.log($scope.templateVM);
+    if (!angular.isUndefined($scope.templateVM) && $scope.templateVM.$valid) {
         $scope.instance.template = $scope.templateVM;
     }
 
-
     // Form Field Declaration
-    $scope.instance = {
-        computeOffer: {
-            category: 'static',
-            memory: {
-                value: 512,
-                floor: 512,
-                ceil: 4096
-            },
-            cpuCore: {
-                value: 1,
-                floor: 1,
-                ceil: 32
-            },
-            cpuSpeed: {
-                value: 1000,
-                floor: 1000,
-                ceil: 3500
-            },
-            minIops: {
-            	value: 0,
-                floor: 0,
-                ceil: 500
-            },
-            maxIops: {
-            	value: 0,
-                floor: 0,
-                ceil: 500
-            },
-            isOpen: true
-        },
-        diskOffer: {
-            category: 'static',
-            diskSize: {
-                value: 0,
-                floor: 0,
-                ceil: 1024
-            },
-            iops: {
-                value: 0,
-                floor: 0,
-                ceil: 500
-            },
-            isOpen: false
-        },
-        networks: {
-            category: 'all',
-            isOpen: false
-        }
-    };
+    $scope.instance.computeOffer = $scope.global.instanceCustomPlan.computeOffer;
+    $scope.instance.diskOffer = $scope.global.instanceCustomPlan.diskOffer;
+    $scope.instance.networks = $scope.global.instanceCustomPlan.networks;
 
     $scope.instance.bit64 = true;
 
