@@ -299,13 +299,10 @@ localStorageService, $window, dialogService,$stateParams, notify, appService) {
     };
 
     $scope.createVolume = function(size,snapshot) {
-console.log("1a",snapshot);
     	appService.dialogService.openDialog("app/views/cloud/snapshot/create-volume.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope',
-    	                                                                                                    function ($scope, $modalInstance, $rootScope) {
+	                                                                                                    function ($scope, $modalInstance, $rootScope) {
 $scope.deleteObject = snapshot;
         $scope.save = function (form, deleteObject) {
-alert("2a"+deleteObject.transVolumeName);
-
 if (!angular.isUndefined($scope.deleteObject.domain)) {
                 deleteObject.domainId = $scope.deleteObject.domain.id;
                 delete deleteObject.domain;
@@ -319,16 +316,14 @@ if (!angular.isUndefined($scope.deleteObject.domain)) {
             deleteObject.volumeId = $scope.deleteObject.volume.id;
 		delete deleteObject.volume;
             }
- if (!angular.isUndefined($scope.deleteObject.zone) && $scope.deleteObject.zone != null) {
+ 	if (!angular.isUndefined($scope.deleteObject.zone) && $scope.deleteObject.zone != null) {
                 deleteObject.zoneId = $scope.deleteObject.zone.id;
                 delete deleteObject.zone;
             }
- if (!angular.isUndefined($scope.deleteObject.snapshot) && $scope.deleteObject.snapshot != null) {
+	 if (!angular.isUndefined($scope.deleteObject.snapshot) && $scope.deleteObject.snapshot != null) {
                 deleteObject.snapshot = $scope.deleteObject.snapshot.id;
                 delete deleteObject.snapshot;
             }
-
-console.log("!!!!!!!!!!*******",deleteObject);
              $scope.formSubmitted = true;
 
             if (form.$valid) {
@@ -338,6 +333,61 @@ console.log("!!!!!!!!!!*******",deleteObject);
                 	$scope.showLoader = false;
                     $scope.list(1);
                     appService.notify({message: 'Added successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                    $modalInstance.close();
+                }).catch(function (result) {
+                	$scope.showLoader = false;
+        		    if (!angular.isUndefined(result.data)) {
+            		if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
+              	   	 var msg = result.data.globalError[0];
+              	   	 $scope.showLoader = false;
+            	    	 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+                	}
+            	}
+        	});
+            }
+        },
+        $scope.cancel = function () {
+            $modalInstance.close();
+        };
+}]);
+
+    };
+
+     $scope.revertSnapshot = function(size,snapshot) {
+    	appService.dialogService.openDialog("app/views/cloud/snapshot/revert-snapshot.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope',
+	                                                                                                    function ($scope, $modalInstance, $rootScope) {
+	$scope.revertsnap = snapshot;
+        $scope.save = function (form, revertsnap) {
+	if (!angular.isUndefined($scope.revertsnap.domain)) {
+                revertsnap.domainId = $scope.revertsnap.domain.id;
+                delete revertsnap.domain;
+            }
+
+            if (!angular.isUndefined($scope.revertsnap.department) && $scope.revertsnap.department != null) {
+                revertsnap.departmentId = $scope.revertsnap.department.id;
+                delete revertsnap.department;
+            }
+	   if (!angular.isUndefined($scope.revertsnap.volume) && $scope.revertsnap.volume != null) {
+            revertsnap.volumeId = $scope.revertsnap.volume.id;
+		delete v.volume;
+            }
+ 	if (!angular.isUndefined($scope.revertsnap.zone) && $scope.revertsnap.zone != null) {
+                revertsnap.zoneId = $scope.revertsnap.zone.id;
+                delete deleteObject.zone;
+            }
+	 if (!angular.isUndefined($scope.deleteObject.snapshot) && $scope.deleteObject.snapshot != null) {
+                deleteObject.snapshot = $scope.deleteObject.snapshot.id;
+                delete revertsnap.snapshot;
+            }
+             $scope.formSubmitted = true;
+
+            if (form.$valid) {
+            	$scope.showLoader = true;	
+                var hasVolume = appService.crudService.add("snapshots/volumesnap",  revertsnap);
+                hasVolume.then(function (result) {
+                	$scope.showLoader = false;
+                    $scope.list(1);
+                    appService.notify({message: 'Reverted successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                     $modalInstance.close();
                 }).catch(function (result) {
                 	$scope.showLoader = false;
