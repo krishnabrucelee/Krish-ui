@@ -533,13 +533,13 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
                 }
             }
 		 if (!angular.isUndefined($scope.instance.computeOffer.cpuSpeed.value)) {
-                    if ($scope.instance.computeOffer.cpuSpeed.value >= 1000 && $scope.instance.computeOffer.memory.value >= 512) {
+                    if ($scope.instance.computeOffer.cpuSpeed.value >= 1000 && $scope.instance.computeOffer.memory.value >= 512 && $scope.instance.computeOffer.cpuCore.value >= 1) {
 			submitError = false;
         	}
 
 		else {
 			  $scope.homerTemplate = 'app/views/notification/notify.jsp';
-                            appService.notify({message: 'Please choose valid range for memory or cpu speed', classes: 'alert-danger',
+                            appService.notify({message: 'Please choose valid range for memory or cpu speed or cpu cores', classes: 'alert-danger',
                             	templateUrl: $scope.homerTemplate});
                             submitError = true;
 			}
