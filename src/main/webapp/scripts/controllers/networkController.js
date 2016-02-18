@@ -63,7 +63,7 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
             $scope.paginationObject.totalItems = result.totalItems;
         });
     };
-
+$scope.firewallRulesLists(1);
     // Egress Rule List
     $scope.firewallRule = function (pageNumber) {
         $scope.templateCategory = 'firewall';
@@ -80,7 +80,6 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
             $scope.paginationObject.totalItems = result.totalItems;
         });
     };
-
     // Port forward Rule List
     $scope.portRulesLists = function (pageNumber) {
 	$scope.showLoader = true;
@@ -275,8 +274,9 @@ $scope.stopVm = function(size,item) {
                         if ($scope.firewallRules.startPort && $scope.firewallRules.endPort) {
                             var hasServer = appService.crudService.add("egress", firewallRules);
                             hasServer.then(function (result) {  // this is only
-				$timeout(function(){$scope.showLoader = false;$scope.firewallRulesLists(1);
-                                appService.notify({message: 'Egress rule added successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});}, 25000);// completes
+				$timeout(function(){$scope.showLoader = false; $scope.firewallRulesLists(1);
+                                appService.notify({message: 'Egress rule added successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});}, 25000);
+				
                                 $scope.formSubmitted = false;
                                 $scope.templateCategory = 'egress';
                             }).catch(function (result) {
@@ -284,10 +284,12 @@ $scope.stopVm = function(size,item) {
                                 if (!angular.isUndefined(result.data)) {
                                     if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
                                         var msg = result.data.globalError[0];
+					$scope.showLoader = false;
                                         appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                                     } else if (result.data.fieldErrors != null) {
                                         angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
                                             $scope.egressForm[key].$invalid = true;
+					    $scope.showLoader = false;
                                             $scope.egressForm[key].errorMessage = errorMessage;
                                         });
                                     }
@@ -297,23 +299,22 @@ $scope.stopVm = function(size,item) {
                     } else {
                         if ($scope.firewallRules.icmpMessage && $scope.firewallRules.icmpCode) {
                             var hasServer = appService.crudService.add("egress", firewallRules);
-                            hasServer.then(function (result) {  // this is only
-																// run after
-																// $http
-																// completes
+                            hasServer.then(function (result) { 
                                 $scope.formSubmitted = false;
                                 appService.notify({message: 'Egress rule added successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
-                                $scope.firewallRulesLists(1);
+				$scope.firewallRulesLists(1);
                                 $scope.templateCategory = 'egress';
                             }).catch(function (result) {
 					$scope.showLoader = false;
                                 if (!angular.isUndefined(result.data)) {
                                     if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
                                         var msg = result.data.globalError[0];
+					$scope.showLoader = false;
                                         appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                                     } else if (result.data.fieldErrors != null) {
                                         angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
                                             $scope.egressForm[key].$invalid = true;
+					    $scope.showLoader = false;
                                             $scope.egressForm[key].errorMessage = errorMessage;
                                         });
                                     }
@@ -357,7 +358,7 @@ $scope.ingressSave = function (firewallRuleIngress) {
                     hasServer.then(function (result) {  // this is only run
 														// after $http completes
                         $scope.formSubmitted = false;
-$timeout(function(){$scope.showLoader = false; $scope.firewallRule(1);
+                        $timeout(function(){$scope.showLoader = false; $scope.firewallRule(1);
                                 appService.notify({message: 'Firewall rule added successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});}, 25000);// completes
 
                         $scope.firewallRule(1);
@@ -880,21 +881,32 @@ $scope.networkRestart ={};
     $scope.udp = true;
 
     $scope.selectProtocol = function (selectedItem) {
+
         if (selectedItem == 'TCP' || selectedItem == 'UDP') {
+
             $scope.tcp = true;
             $scope.udp = true;
             $scope.icmp = false;
+	    delete $scope.firewallRules.icmpMessage;
+	    delete  $scope.firewallRules.icmpCode;
 
         }
         if (selectedItem == 'ICMP') {
+
             $scope.icmp = true;
             $scope.tcp = false;
             $scope.udp = false;
+	    delete  $scope.firewallRules.startPort;
+            delete  $scope.firewallRules.endPort;
         }
         if (selectedItem == 'All') {
             $scope.tcp = false;
             $scope.udp = false;
             $scope.icmp = false;
+            delete $scope.firewallRules.icmpMessage;
+            delete  $scope.firewallRules.icmpCode;
+            delete  $scope.firewallRules.startPort;
+            delete  $scope.firewallRules.endPort;
         }
     };
     if (appService.localStorageService.get("firewall") == null) {
@@ -1093,14 +1105,14 @@ $scope.openAddVM = function (form) {
       $scope.global.rulesLB[0].algorithm = $scope.loadBalancer.algorithms.value;
       //modalService.trigger('app/views/cloud/network/vm-list.jsp', 'lg');
 appService.dialogService.openDialog("app/views/cloud/network/vm-list.jsp", 'lg' , $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
-    $scope.lbvmLists = function () {
+   
+ $scope.lbvmLists = function () {
 
         $scope.lbvmList = [];
-        var hasVms = appService.crudService.listByQuery("virtualmachine/network?networkId=" + $stateParams.id);
+	 var networkId = $stateParams.id;
+        var hasVms = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "virtualmachine/network?networkId="+networkId +"&lang=" + appService.localStorageService.cookie.get('language')+"&sortBy=-id");
         hasVms.then(function (result) {  // this is only run after $http
-									// completes0
         $scope.lbvmList = result;
-
         });
     };
 	$scope.lbvmLists();
@@ -1326,12 +1338,10 @@ $scope.deleteRules = function (size, loadBalancer) {
     $scope.portvmLists = function () {
         $scope.templateCategory = 'instance';
         $scope.portvmList = [];
-        var hasVms = appService.crudService.listByQuery("virtualmachine/network?networkId=" + $stateParams.id);
+     	 var networkId = $stateParams.id;
+        var hasVms = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "virtualmachine/network?networkId="+networkId +"&lang=" + 	appService.localStorageService.cookie.get('language')+"&sortBy=-id");
         hasVms.then(function (result) {  // this is only run after $http
-									// completes0
         $scope.portvmList = result;
-
-
         });
     };
 $scope.portvmLists ();
