@@ -460,7 +460,7 @@ function validNumber() {
                 }
                 var clean = val.replace(/[^0-9]/g, '');
 
-                if(parseInt(attrs.ngMin) == 1000 || parseInt(attrs.ngMin) == 512){
+                if(parseInt(attrs.ngMin) == 500 || parseInt(attrs.ngMin) == 512){
                 	if (clean < parseInt(attrs.ngMin)) {
                         clean = clean.substring(0, clean.length);
                    }

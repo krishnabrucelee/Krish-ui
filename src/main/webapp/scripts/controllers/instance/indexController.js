@@ -25,7 +25,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
     };
     $scope.templateCategories = appService.localStorageService.get("view");
     $scope.templateVM = appService.localStorageService.get("selectedTemplate");
-    if (!angular.isUndefined($scope.templateVM) && $scope.templateVM.$valid) {
+    if (!angular.isUndefined($scope.templateVM) && $scope.templateVM != null && $scope.templateVM.$valid) {
         $scope.instance.template = $scope.templateVM;
     }
 
@@ -485,20 +485,16 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
                 }
             }
 		 if (!angular.isUndefined($scope.instance.computeOffer.cpuSpeed.value)) {
-                    if ($scope.instance.computeOffer.cpuSpeed.value >= 1000 && $scope.instance.computeOffer.memory.value >= 512) {
-			submitError = false;
-        	}
-
-		else {
-			  $scope.homerTemplate = 'app/views/notification/notify.jsp';
-                            appService.notify({message: 'Please choose valid range for memory or cpu speed', classes: 'alert-danger',
-                            	templateUrl: $scope.homerTemplate});
-                            submitError = true;
-			}
+                if ($scope.instance.computeOffer.cpuSpeed.value < 500 && $scope.instance.computeOffer.memory.value < 512) {
+				  $scope.homerTemplate = 'app/views/notification/notify.jsp';
+	                            appService.notify({message: 'Please choose valid range for memory or cpu speed', classes: 'alert-danger',
+	                            	templateUrl: $scope.homerTemplate});
+	              submitError = true;
+		        }
 		 }
-            if (!submitError) {
-                $scope.submt();
-            }
+         if (!submitError) {
+             $scope.submt();
+         }
         }
     };
 
