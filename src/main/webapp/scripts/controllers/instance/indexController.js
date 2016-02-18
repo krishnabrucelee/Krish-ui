@@ -734,7 +734,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
 	else {
 	var hasCompute = appService.crudService.listAll("computes/list");
         hasCompute.then(function (result) {  // this is only run after $http completes0
-            $scope.instanceElements.computeOfferingsList = result;
+            $scope.instanceElements.computeOfferingList = result;
             $scope.showLoaderOffer = false;
         });
 	}
