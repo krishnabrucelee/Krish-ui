@@ -315,6 +315,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
             $scope.departmentList(obj);
             $scope.formElements.instanceOwnerList = {};
             $scope.formElements.projecttypeList = {};
+            $scope.diskOfferingList(obj);
         }
 
     }
@@ -380,6 +381,16 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
                 $scope.showLoaderDetail = false;
             });
         }
+    };
+
+    $scope.diskOfferingList = function (domain) {
+        $scope.showLoaderDetail = true;
+        var hasDisks = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL
+        		+ "storages/listbydomain?domainId="+domain.id);
+        hasDisks.then(function (result) {  // this is only run after $http completes0
+        	$scope.instanceElements.diskOfferingList = result;
+            $scope.showLoaderDetail = false;
+        });
     };
 
     $scope.projectList = function (user) {
@@ -741,15 +752,16 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
     };
     $scope.computeList();
 
-    $scope.diskList = function () {
-        $scope.showLoaderOffer = true;
-        var hasDisks = appService.crudService.listAll("storages/list");
-        hasDisks.then(function (result) {  // this is only run after $http completes0
-            $scope.instanceElements.diskOfferingList = result;
-            $scope.showLoaderOffer = false;
-        });
-    };
-    $scope.diskList();
+    if ($scope.global.sessionValues.type !== 'ROOT_ADMIN') {
+        if (!angular.isUndefined($scope.global.sessionValues.domainId)) {
+        	var hasDisks = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL
+            		+ "storages/listbydomain?domainId="+$scope.global.sessionValues.domainId);
+            hasDisks.then(function (result) {  // this is only run after $http completes0
+                $scope.instanceElements.diskOfferingList = result;
+                $scope.showLoaderOffer = false;
+            });
+        }
+    }
 
     $scope.instanceElements = {
         zoneList: [{id: 1, name: 'Beijing'}, {id: 2, name: 'Liaoning'}, {id: 3, name: 'Shanghai'}, {id: 4, name: 'Henan'}],
