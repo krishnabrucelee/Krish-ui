@@ -63,7 +63,7 @@
                                     <a class="icon-button" title="Create Volume" data-ng-click="createVolume('md', snapshot)">
                                         <span class="fa fa-plus-square"> </span>
                                     </a>
-                                     <a class="icon-button" title="Create Volume" data-ng-click="revertSnapshot('md', snapshot)">
+                                     <a class="icon-button" title="Revert Snapshot" data-ng-click="revertSnapshot('md', snapshot)">
                                         <span class="fa fa-plus-square"> </span>
                                     </a>
                                     <a class="icon-button" title="Delete Snapshot" data-ng-click="deleteSnapshot('sm', snapshot)" ><span class="fa fa-trash"></span></a>

@@ -327,7 +327,7 @@ if (!angular.isUndefined($scope.deleteObject.domain)) {
              $scope.formSubmitted = true;
 
             if (form.$valid) {
-            	$scope.showLoader = true;	
+            	$scope.showLoader = true;
                 var hasVolume = appService.crudService.add("snapshots/volumesnap",  deleteObject);
                 hasVolume.then(function (result) {
                 	$scope.showLoader = false;
@@ -356,34 +356,36 @@ if (!angular.isUndefined($scope.deleteObject.domain)) {
      $scope.revertSnapshot = function(size,snapshot) {
     	appService.dialogService.openDialog("app/views/cloud/snapshot/revert-snapshot.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope',
 	                                                                                                    function ($scope, $modalInstance, $rootScope) {
-	$scope.revertsnap = snapshot;
-        $scope.save = function (form, revertsnap) {
-	if (!angular.isUndefined($scope.revertsnap.domain)) {
-                revertsnap.domainId = $scope.revertsnap.domain.id;
-                delete revertsnap.domain;
+	$scope.revertSnapshot = snapshot;
+        $scope.okrevert = function (form, revertSnapshot) {
+		if (!angular.isUndefined($scope.revertSnapshot.domain)) {
+                revertSnapshot.domainId = $scope.revertSnapshot.domain.id;
+                delete revertSnapshot.domain;
             }
 
-            if (!angular.isUndefined($scope.revertsnap.department) && $scope.revertsnap.department != null) {
-                revertsnap.departmentId = $scope.revertsnap.department.id;
-                delete revertsnap.department;
+            if (!angular.isUndefined($scope.revertSnapshot.department) && $scope.revertSnapshot.department != null) {
+                revertSnapshot.departmentId = $scope.revertSnapshot.department.id;
+                delete revertSnapshot.department;
             }
-	   if (!angular.isUndefined($scope.revertsnap.volume) && $scope.revertsnap.volume != null) {
-            revertsnap.volumeId = $scope.revertsnap.volume.id;
-		delete v.volume;
+	   if (!angular.isUndefined($scope.revertSnapshot.volume) && $scope.revertSnapshot.volume != null) {
+            revertSnapshot.volumeId = $scope.revertSnapshot.volume.id;
+		delete revertSnapshot.volume;
             }
- 	if (!angular.isUndefined($scope.revertsnap.zone) && $scope.revertsnap.zone != null) {
-                revertsnap.zoneId = $scope.revertsnap.zone.id;
-                delete deleteObject.zone;
+ 	if (!angular.isUndefined($scope.revertSnapshot.zone) && $scope.revertSnapshot.zone != null) {
+                revertSnapshot.zoneId = $scope.revertSnapshot.zone.id;
+                delete revertSnapshot.zone;
             }
-	 if (!angular.isUndefined($scope.deleteObject.snapshot) && $scope.deleteObject.snapshot != null) {
-                deleteObject.snapshot = $scope.deleteObject.snapshot.id;
-                delete revertsnap.snapshot;
+	 if (!angular.isUndefined($scope.revertSnapshot.snapshot) && $scope.revertSnapshot.snapshot != null) {
+                revertSnapshot.snapshot = $scope.revertSnapshot.snapshot.id;
+                delete revertSnapshot.snapshot;
             }
              $scope.formSubmitted = true;
 
             if (form.$valid) {
-            	$scope.showLoader = true;	
-                var hasVolume = appService.crudService.add("snapshots/volumesnap",  revertsnap);
+		alert("hi");
+            	$scope.showLoader = true;
+		console.log($scope.revertSnapshot);
+                var hasVolume = appService.crudService.add("snapshots/revertsnap",  revertSnapshot);
                 hasVolume.then(function (result) {
                 	$scope.showLoader = false;
                     $scope.list(1);

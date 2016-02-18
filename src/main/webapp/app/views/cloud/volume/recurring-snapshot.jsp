@@ -1,4 +1,4 @@
-<form name="recurringSnapshotForm" method="POST" data-ng-submit="save(recurringSnapshotForm)" novalidate data-ng-controller="recurringSnapshotCtrl">
+<form name="recurringSnapshotForm" method="POST" data-ng-submit="recurringsave(recurringSnapshotForm)" novalidate data-ng-controller="recurringSnapshotCtrl">
     <div class="inmodal" >
         <div class="modal-header">
             <panda-modal-header page-icon="fa fa-repeat"  page-title="Recurring Snapshot"></panda-modal-header>
@@ -27,7 +27,7 @@
                                             <div class="col-md-2 col-sm-2 col-xs-12" >
                                                 <select required="true" class="form-control input-group" name="minutes" data-ng-model="recurringSnapshot.minutes" data-ng-init="recurringSnapshot.minutes = 1" >
                                                     <option ng-repeat="i in formElements.minuteCount track by $index" value="{{$index + 1}}">{{$index + 1}}</option>
-                                                </select>   
+                                                </select>
                                                 <span class="help-block m-b-none" ng-show="recurringSnapshotForm.name.$invalid && formSubmitted" >Name is required.</span>
                                             </div>
                                         </div>
@@ -38,20 +38,20 @@
                                             <div class="col-md-2 col-sm-2  col-xs-4" >
                                                 <select required="true" class="form-control input-group" name="hours" data-ng-model="recurringSnapshot.hours" data-ng-init="recurringSnapshot.hours = 1" >
                                                     <option ng-repeat="i in formElements.hourCount track by $index" value="{{$index + 1}}">{{$index + 1}}</option>
-                                                </select>   
+                                                </select>
                                             </div>
 
                                             <div class="col-md-2 m-l-n-sm col-sm-2  col-xs-4" >
                                                 <select required="true" class="form-control input-group" name="minutes" data-ng-model="recurringSnapshot.minutes" data-ng-init="recurringSnapshot.minutes = 1" >
                                                     <option ng-repeat="i in formElements.minuteCount track by $index" value="{{$index + 1}}">{{$index + 1}}</option>
-                                                </select>   
+                                                </select>
                                             </div>
 
                                             <div class="col-md-3 m-l-n-sm col-sm-3 col-xs-4" >
                                                 <select required="true" class="form-control input-group" name="meridiam" data-ng-model="recurringSnapshot.meridiam" data-ng-init="recurringSnapshot.meridiam = 'AM'" >
                                                     <option value="AM">AM</option>
                                                     <option value="PM">PM</option>
-                                                </select>   
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
@@ -65,28 +65,28 @@
                                             <div class="col-md-6 col-sm-4 col-xs-12">
                                                 <select required="true" class="form-control input-group" data-ng-init="recurringSnapshot.timeZone = formElements.timeZoneList[0]" name="timeZone" data-ng-model="recurringSnapshot.timeZone"
                                                         ng-options="timeZone.name for timeZone in formElements.timeZoneList">
-                                                </select>    
+                                                </select>
                                                 <span class="help-block m-b-none" ng-show="recurringSnapshotForm.timeZone.$invalid && formSubmitted" >Name is required.</span>
                                             </div>
                                         </div>
                                     </div>
 
 
-                                    <div class="form-group" > 
+                                    <div class="form-group" >
                                         <div class="row">
                                             <div ng-class="{ 'text-danger' : recurringSnapshotForm.noOfSnapshot.$invalid && formSubmitted}">
                                                 <label class="col-md-3 col-sm-3 col-xs-12 control-label pull-left">No.of.snapshot<span class="text-danger">*</span></label>
                                                 <div class="col-md-2 col-sm-2 col-xs-12">
                                                     <input required="true" data-ng-min="1" valid-number type="text" name="noOfSnapshot" data-ng-model="recurringSnapshot.noOfSnapshot" class="form-control" data-ng-class="{'error': recurringSnapshotForm.noOfSnapshot.$invalid && formSubmitted}"  >
                                                     <div class="error-area" data-ng-show="recurringSnapshotForm.noOfSnapshot.$invalid && formSubmitted" ><i  tooltip="Required" class="fa fa-warning error-icon"></i></div>
-                                                </div>  
+                                                </div>
                                             </div>
                                             <div data-ng-show="formElements.category == 'monthly'"  ng-class="{ 'text-danger' : recurringSnapshotForm.dayOfMonth.$invalid && formSubmitted}">
                                                 <label class="col-md-2 col-sm-2 col-xs-12  control-label pull-left">Day of month<span class="text-danger">*</span></label>
                                                 <div class="col-md-2 col-sm-2 col-xs-12">
                                                     <select required="true" class="form-control input-group" name="dayOfMonth" data-ng-model="recurringSnapshot.dayOfMonth" data-ng-class="{'error':  recurringSnapshotForm.dayOfMonth.$invalid && formSubmitted}" data-ng-init="recurringSnapshot.dayOfMonth = 1">
                                                         <option ng-repeat="i in formElements.dayOfMonth track by $index" value="{{$index + 1}}">{{$index + 1}}</option>
-                                                    </select> 
+                                                    </select>
                                                    <div class="error-area" data-ng-show="recurringSnapshotForm.dayOfMonth.$invalid && formSubmitted" ><i  tooltip="Required" class="fa fa-warning error-icon"></i></div>
                                                 </div>
 

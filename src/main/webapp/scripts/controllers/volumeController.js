@@ -285,7 +285,56 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
     };
 
     $scope.openReccuringSnapshot = function (volume) {
-    	appService.modalService.trigger('app/views/cloud/volume/recurring-snapshot.jsp', 'lg');
+    	//appService.modalService.trigger('app/views/cloud/volume/recurring-snapshot.jsp', 'lg');
+ 	appService.dialogService.openDialog('app/views/cloud/volume/recurring-snapshot.jsp', 'lg', $scope, ['$scope', '$modalInstance', '$rootScope', function($scope, $modalInstance, $rootScope) {
+
+	$scope.recurringSnapshot = volume;
+        $scope.okrevert = function (form, recurringSnapshot) {
+		if (!angular.isUndefined($scope.recurringSnapshot.domain)) {
+                recurringSnapshot.domainId = $scope.recurringSnapshot.domain.id;
+                delete recurringSnapshot.domain;
+            }
+
+            if (!angular.isUndefined($scope.recurringSnapshot.department) && $scope.recurringSnapshot.department != null) {
+                recurringSnapshot.departmentId = $scope.recurringSnapshot.department.id;
+                delete recurringSnapshot.department;
+            }
+	   if (!angular.isUndefined($scope.recurringSnapshot.volume) && $scope.recurringSnapshot.volume != null) {
+            recurringSnapshot.volumeId = $scope.recurringSnapshot.volume.id;
+		delete recurringSnapshot.volume;
+            }
+ 	if (!angular.isUndefined($scope.recurringSnapshot.zone) && $scope.recurringSnapshot.zone != null) {
+                recurringSnapshot.zoneId = $scope.recurringSnapshot.zone.id;
+                delete recurringSnapshot.zone;
+            }
+             $scope.formSubmitted = true;
+
+            if (form.$valid) {
+		alert("hi");
+            	$scope.showLoader = true;
+		console.log($scope.recurringSnapshot);
+                var hasVolume = appService.crudService.add("snapshots/revertsnap",  recurringSnapshot);
+                hasVolume.then(function (result) {
+                	$scope.showLoader = false;
+                    $scope.list(1);
+                    appService.notify({message: 'Reverted successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                    $modalInstance.close();
+                }).catch(function (result) {
+                	$scope.showLoader = false;
+        		    if (!angular.isUndefined(result.data)) {
+            		if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
+              	   	 var msg = result.data.globalError[0];
+              	   	 $scope.showLoader = false;
+            	    	 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+                	}
+            	}
+        	});
+            }
+        },
+        $scope.cancel = function () {
+            $modalInstance.close();
+        };
+}]);
     };
 
     //Resize Volume

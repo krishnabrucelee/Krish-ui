@@ -98,13 +98,13 @@ pageEncoding="UTF-8"%>
  --%>                                                    <li has-permission="DELETE_VOLUME"><a href="javascript:void(0);" data-ng-hide="volume.vmInstanceId > 0" data-ng-click="delete('sm', volume)" title="Delete Volume"><span class="fa fa-trash m-xs"></span><fmt:message key="delete.volume" bundle="${msg}" /> </a></li>
                                                 </ul>
                                             </span>
-                                            <span data-ng-if="volume.volumeType == 'ROOT'"> -
-                                                <!-- <a class="fa fa-cogs dropdown-toggle" data-toggle="dropdown" ></a> -->
-                                               <%--  <ul class="dropdown-menu pull-right">
+                                            <span data-ng-if="volume.volumeType == 'ROOT' || 'DATADISK'"> -
+                                                <a class="fa fa-cogs dropdown-toggle" data-toggle="dropdown" ></a>
+                                                <ul class="dropdown-menu pull-right">
                                                     <img src="images/dropdown-arw2.png" border="0" class="vol-dropdown-arw">
                                                     <li><a href="javascript:void(0);" data-ng-click="createSnapshot(md, volume)" title="Snapshot"><span class="fa fa-camera m-xs"></span> <fmt:message key="common.snapshot" bundle="${msg}" /></a></li>
                                                     <li><a href="javascript:void(0);" data-ng-click="openReccuringSnapshot(volume)"  title="Recurring Snapshot"><span class="fa fa-repeat m-xs"></span> <fmt:message key="recurring.snapshot" bundle="${msg}" /></a></li>
-                                                </ul> --%>
+                                                </ul>
                                             </span>
                                         </div>
                                     </td>
