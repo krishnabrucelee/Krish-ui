@@ -63,7 +63,7 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
             $scope.paginationObject.totalItems = result.totalItems;
         });
     };
-$scope.firewallRulesLists(1);
+
     // Egress Rule List
     $scope.firewallRule = function (pageNumber) {
         $scope.templateCategory = 'firewall';
