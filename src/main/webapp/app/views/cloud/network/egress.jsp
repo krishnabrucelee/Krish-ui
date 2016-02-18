@@ -11,22 +11,22 @@ pageEncoding="UTF-8"%>
                 <tr>
                     <th class="col-md-3 col-xs-3">Source CIDR</th>
                     <th class="col-md-2 col-xs-2">Protocol</th>
-                    <th class="col-md-2 col-xs-2" data-ng-show="(firewallRules.protocol == 'TCP') || (firewallRules.protocol == 'UDP')">Start Port</th>
-                    <th class="col-md-2 col-xs-2"data-ng-show="(firewallRules.protocol == 'TCP') || (firewallRules.protocol == 'UDP')">End Port</th>
-                    <th class="col-md-2 col-xs-2" data-ng-show="firewallRules.protocol == 'ICMP'">ICMP Type</th>
-                    <th class="col-md-2 col-xs-2" data-ng-show="firewallRules.protocol == 'ICMP'">ICMP Code</th>
+                    <th class="col-md-2 col-xs-2" data-ng-if="(firewallRules.protocol == 'TCP') || (firewallRules.protocol == 'UDP')">Start Port</th>
+                    <th class="col-md-2 col-xs-2"data-ng-if="(firewallRules.protocol == 'TCP') || (firewallRules.protocol == 'UDP')">End Port</th>
+                    <th class="col-md-2 col-xs-2" data-ng-if="firewallRules.protocol == 'ICMP'">ICMP Type</th>
+                    <th class="col-md-2 col-xs-2" data-ng-if="firewallRules.protocol == 'ICMP'">ICMP Code</th>
                     <th class="col-md-3 col-xs-3">Action</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                       <td><input required="true" type="text" name="sourceCIDR"  valid-cidr placeholder="0.0.0.0/24"  data-ng-model="firewallRules.sourceCIDR" class="form-control input-group " ><span class="text-center" data-ng-show="cidrValidate && actionRule" data-ng-class="cidrValidate && actionRule ? 'text-danger' : ''"> Invalid format</span></td>
-                    <td><select required="true" class="form-control input-group" name="protocol" data-ng-model="firewallRules.protocol"  data-ng-change="selectProtocol(protocol)" ng-options="protocol for (id, protocol) in protocolList"><option value=""><fmt:message key="common.select"
-													bundle="${msg}" /></option></select> <span class="text-center text-danger" data-ng-show="firewallRules.protocol == null && formSubmitted"> *Required</span></td>
-                    <td data-ng-show="(firewallRules.protocol == 'TCP') || (firewallRules.protocol == 'UDP')"><input required="true" valid-number  placeholder="1-65535" data-ng-min="1" data-ng-max="65535"   type="text" name="startPort" data-ng-model="firewallRules.startPort" class="form-control " autofocus ><span class="text-center text-danger" data-ng-show="!firewallRules.startPort && formSubmitted"> *Required</span> </td>
-                    <td data-ng-show="(firewallRules.protocol == 'TCP') || (firewallRules.protocol == 'UDP')"><input required="true" valid-number placeholder="1-65535" data-ng-min="1" data-ng-max="65535"   type="text" name="endPort" data-ng-model="firewallRules.endPort" class="form-control " autofocus ><span class="text-center text-danger" data-ng-show="!firewallRules.endPort && formSubmitted"> *Required</span> </td>
-                    <td data-ng-show="firewallRules.protocol == 'ICMP'"><input valid-number   name="icmpMessage" required="true" data-ng-model="firewallRules.icmpMessage" class="form-control " autofocus type="text"><span class="text-center text-danger" data-ng-show="!firewallRules.icmpMessage && formSubmitted"> *Required</span></td>
-                    <td data-ng-show="firewallRules.protocol == 'ICMP'"><input valid-number  name="icmpCode" required="true" data-ng-model="firewallRules.icmpCode" class="form-control " autofocus type="text"><span class="text-center text-danger" data-ng-show="!firewallRules.icmpCode && formSubmitted"> *Required</span></td>
+                       <td><input required="true" type="text" name="sourceCIDR"  valid-cidr placeholder="0.0.0.0/24"  data-ng-model="firewallRules.sourceCIDR" class="form-control input-group " ><span class="text-center" data-ng-if="cidrValidate && actionRule" data-ng-class="cidrValidate && actionRule ? 'text-danger' : ''"> Invalid format</span></td>
+                    <td><select required="true" class="form-control input-group" name="protocol" data-ng-model="firewallRules.protocol"  data-ng-change="selectProtocol(firewallRules.protocol)" ng-options="protocol for (id, protocol) in protocolList"><option value=""><fmt:message key="common.select"
+													bundle="${msg}" /></option></select> <span class="text-center text-danger" data-ng-if="firewallRules.protocol == null && formSubmitted"> *Required</span></td>
+                    <td data-ng-if="(firewallRules.protocol == 'TCP') || (firewallRules.protocol == 'UDP')"><input required="true" valid-number  placeholder="1-65535" data-ng-min="1" data-ng-max="65535"   type="text" name="startPort" data-ng-model="firewallRules.startPort" class="form-control " autofocus ><span class="text-center text-danger" data-ng-if="!firewallRules.startPort && formSubmitted"> *Required</span> </td>
+                    <td data-ng-if="(firewallRules.protocol == 'TCP') || (firewallRules.protocol == 'UDP')"><input required="true" valid-number placeholder="1-65535" data-ng-min="1" data-ng-max="65535"   type="text" name="endPort" data-ng-model="firewallRules.endPort" class="form-control " autofocus ><span class="text-center text-danger" data-ng-if="!firewallRules.endPort && formSubmitted"> *Required</span> </td>
+                    <td data-ng-if="firewallRules.protocol == 'ICMP'"><input valid-number   name="icmpMessage" required="true" data-ng-model="firewallRules.icmpMessage" class="form-control " autofocus type="text"><span class="text-center text-danger" data-ng-if="!firewallRules.icmpMessage && formSubmitted"> *Required</span></td>
+                    <td data-ng-if="firewallRules.protocol == 'ICMP'"><input valid-number  name="icmpCode" required="true" data-ng-model="firewallRules.icmpCode" class="form-control " autofocus type="text"><span class="text-center text-danger" data-ng-if="!firewallRules.icmpCode && formSubmitted"> *Required</span></td>
                     <td>
                         <get-loader-image data-ng-show="showLoader"></get-loader-image>
                         <a  class="btn btn-info" data-ng-hide="showLoader"  data-ng-click="egressSave(firewallRules)"><span class="pe-7s-plus pe-lg font-bold m-r-xs" ></span>Add Rule</a>
@@ -51,8 +51,8 @@ pageEncoding="UTF-8"%>
                <tr ng-repeat="firewallRules in egressRuleList" class="font-bold text-center">
              	<td>{{firewallRules.sourceCIDR}}</td>
 		        <td>{{firewallRules.protocol}}</td>
-                <td><div  data-ng-show=" (firewallRules.startPort == '' || firewallRules.startPort!='') ">{{firewallRules.startPort}}</div> <div  data-ng-show=" (firewallRules.icmpMessage=='' || firewallRules.icmpMessage!='') ">{{firewallRules.icmpMessage}}</div></td>
-                <td><div data-ng-show=" (firewallRules.endPort =='' || firewallRules.endPort!='')">{{firewallRules.endPort}} </div> <div data-ng-show="(firewallRules.icmpCode=='' || firewallRules.icmpCode!='')" >{{firewallRules.icmpCode}}</div></td>
+                <td><div  data-ng-if=" (firewallRules.startPort == '' || firewallRules.startPort!='') ">{{firewallRules.startPort}}</div> <div  data-ng-if=" (firewallRules.icmpMessage=='' || firewallRules.icmpMessage!='') ">{{firewallRules.icmpMessage}}</div></td>
+                <td><div data-ng-if=" (firewallRules.endPort =='' || firewallRules.endPort!='')">{{firewallRules.endPort}} </div> <div data-ng-if="(firewallRules.icmpCode=='' || firewallRules.icmpCode!='')" >{{firewallRules.icmpCode}}</div></td>
                 <td>
                 <a data-ng-click="deleteEgress('sm', firewallRules)"><span class="fa fa-trash"></span></a>
 
