@@ -74,6 +74,55 @@ function globalConfig($window) {
         getViewPageUrl: function(url) {
         	return appGlobalConfig.VIEW_URL + url;
         },
+        instanceCustomPlan : {
+            computeOffer: {
+                category: 'static',
+                memory: {
+                    value: 512,
+                    floor: 512,
+                    ceil: 4096
+                },
+                cpuCore: {
+                    value: 1,
+                    floor: 1,
+                    ceil: 32
+                },
+                cpuSpeed: {
+                    value: 500,
+                    floor: 500,
+                    ceil: 3500
+                },
+                minIops: {
+                	value: 0,
+                    floor: 0,
+                    ceil: 500
+                },
+                maxIops: {
+                	value: 0,
+                    floor: 0,
+                    ceil: 500
+                },
+                isOpen: true
+            },
+            diskOffer: {
+                category: 'static',
+                diskSize: {
+                    value: 1,
+                    floor: 1,
+                    ceil: 1024
+                },
+                iops: {
+                    value: 0,
+                    floor: 0,
+                    ceil: 500
+                },
+                isOpen: false
+            },
+            networks: {
+                category: 'all',
+                isOpen: false
+            }
+            },
         sessionValues:  JSON.parse($window.sessionStorage.getItem("loginSession"))
     };
 

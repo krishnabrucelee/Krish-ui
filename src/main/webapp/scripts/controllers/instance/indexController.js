@@ -25,62 +25,14 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
     };
     $scope.templateCategories = appService.localStorageService.get("view");
     $scope.templateVM = appService.localStorageService.get("selectedTemplate");
-    if (!angular.isUndefined($scope.templateVM) && $scope.templateVM != null)
-    {
+    if (!angular.isUndefined($scope.templateVM) && $scope.templateVM != null && $scope.templateVM.$valid) {
         $scope.instance.template = $scope.templateVM;
     }
 
-
     // Form Field Declaration
-    $scope.instance = {
-        computeOffer: {
-            category: 'static',
-            memory: {
-                value: 512,
-                floor: 512,
-                ceil: 4096
-            },
-            cpuCore: {
-                value: 1,
-                floor: 1,
-                ceil: 32
-            },
-            cpuSpeed: {
-                value: 1000,
-                floor: 1000,
-                ceil: 3500
-            },
-            minIops: {
-            	value: 0,
-                floor: 0,
-                ceil: 500
-            },
-            maxIops: {
-            	value: 0,
-                floor: 0,
-                ceil: 500
-            },
-            isOpen: true
-        },
-        diskOffer: {
-            category: 'static',
-            diskSize: {
-                value: 0,
-                floor: 0,
-                ceil: 1024
-            },
-            iops: {
-                value: 0,
-                floor: 0,
-                ceil: 500
-            },
-            isOpen: false
-        },
-        networks: {
-            category: 'all',
-            isOpen: false
-        }
-    };
+    $scope.instance.computeOffer = $scope.global.instanceCustomPlan.computeOffer;
+    $scope.instance.diskOffer = $scope.global.instanceCustomPlan.diskOffer;
+    $scope.instance.networks = $scope.global.instanceCustomPlan.networks;
 
     $scope.instance.bit64 = true;
 
@@ -363,6 +315,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
             $scope.departmentList(obj);
             $scope.formElements.instanceOwnerList = {};
             $scope.formElements.projecttypeList = {};
+            $scope.diskOfferingList(obj);
         }
 
     }
@@ -428,6 +381,16 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
                 $scope.showLoaderDetail = false;
             });
         }
+    };
+
+    $scope.diskOfferingList = function (domain) {
+        $scope.showLoaderDetail = true;
+        var hasDisks = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL
+        		+ "storages/listbydomain?domainId="+domain.id);
+        hasDisks.then(function (result) {  // this is only run after $http completes0
+        	$scope.instanceElements.diskOfferingList = result;
+            $scope.showLoaderDetail = false;
+        });
     };
 
     $scope.projectList = function (user) {
@@ -533,20 +496,16 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
                 }
             }
 		 if (!angular.isUndefined($scope.instance.computeOffer.cpuSpeed.value)) {
-                    if ($scope.instance.computeOffer.cpuSpeed.value >= 1000 && $scope.instance.computeOffer.memory.value >= 512 && $scope.instance.computeOffer.cpuCore.value >= 1) {
-			submitError = false;
-        	}
-
-		else {
-			  $scope.homerTemplate = 'app/views/notification/notify.jsp';
-                            appService.notify({message: 'Please choose valid range for memory or cpu speed or cpu cores', classes: 'alert-danger',
-                            	templateUrl: $scope.homerTemplate});
-                            submitError = true;
-			}
+                if ($scope.instance.computeOffer.cpuSpeed.value < 500 && $scope.instance.computeOffer.memory.value < 512) {
+				  $scope.homerTemplate = 'app/views/notification/notify.jsp';
+	                            appService.notify({message: 'Please choose valid range for memory or cpu speed', classes: 'alert-danger',
+	                            	templateUrl: $scope.homerTemplate});
+	              submitError = true;
+		        }
 		 }
-            if (!submitError) {
-                $scope.submt();
-            }
+         if (!submitError) {
+             $scope.submt();
+         }
         }
     };
 
@@ -774,8 +733,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
 
     $scope.computeList = function () {
         $scope.showLoaderOffer = true;
-	console.log($scope.instance);
-	  if (!angular.isUndefined($scope.instance.domain) && $scope.global.sessionValues.type == 'ROOT_ADMIN') {
+	    if (!angular.isUndefined($scope.instance.domain) && $scope.global.sessionValues.type == 'ROOT_ADMIN') {
 	    var hasCompute = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL
         		+ "computes/listbydomain?domainId="+$scope.instance.domain.id);
 		hasCompute.then(function (result) {  // this is only run after $http completes0
@@ -787,22 +745,23 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
 	else {
 	var hasCompute = appService.crudService.listAll("computes/list");
         hasCompute.then(function (result) {  // this is only run after $http completes0
-            $scope.instanceElements.computeOfferingsList = result;
+            $scope.instanceElements.computeOfferingList = result;
             $scope.showLoaderOffer = false;
         });
 	}
     };
     $scope.computeList();
 
-    $scope.diskList = function () {
-        $scope.showLoaderOffer = true;
-        var hasDisks = appService.crudService.listAll("storages/list");
-        hasDisks.then(function (result) {  // this is only run after $http completes0
-            $scope.instanceElements.diskOfferingList = result;
-            $scope.showLoaderOffer = false;
-        });
-    };
-    $scope.diskList();
+    if ($scope.global.sessionValues.type !== 'ROOT_ADMIN') {
+        if (!angular.isUndefined($scope.global.sessionValues.domainId)) {
+        	var hasDisks = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL
+            		+ "storages/listbydomain?domainId="+$scope.global.sessionValues.domainId);
+            hasDisks.then(function (result) {  // this is only run after $http completes0
+                $scope.instanceElements.diskOfferingList = result;
+                $scope.showLoaderOffer = false;
+            });
+        }
+    }
 
     $scope.instanceElements = {
         zoneList: [{id: 1, name: 'Beijing'}, {id: 2, name: 'Liaoning'}, {id: 3, name: 'Shanghai'}, {id: 4, name: 'Henan'}],

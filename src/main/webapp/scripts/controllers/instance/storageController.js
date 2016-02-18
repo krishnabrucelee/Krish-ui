@@ -17,6 +17,24 @@ function storageCtrl($scope, $state, $stateParams, appService, $window, volumeSe
 
     $scope.paginationObject = {};
     $scope.storageForm = {};
+    $scope.volumeElement = {};
+
+    // Load domain
+    $scope.domain = {};
+    var hasDomains = appService.crudService.listAll("domains/list");
+    hasDomains.then(function (result) {
+    	$scope.volumeElement.domainList = result;
+    });
+
+    // Department list load based on the domain
+    $scope.domainChange = function() {
+       var hasDisks = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL
+        		+ "storages/listbydomain?domainId="+$scope.volume.domain.id);
+        hasDisks.then(function (result) {  // this is only run after $http completes0
+            $scope.volumeElements.diskOfferingList = result;
+        });
+
+    };
 
     // Volume List
     $scope.list = function(volume) {
@@ -334,11 +352,25 @@ function storageCtrl($scope, $state, $stateParams, appService, $window, volumeSe
                     if (tag === null) {
                         tag = "";
                     }
-                    var hasDisks = appService.crudService.listAllByTag("storages/storagesort", tag);
-                    hasDisks.then(function(result) { // this is only run after
-                        // $http completes0
-                        $scope.volumeElements.diskOfferingList = result;
-                    });
+
+                    $scope.volumeElements.diskOfferingList = {};
+                    if ($scope.global.sessionValues.type !== 'ROOT_ADMIN') {
+    	            	if (!angular.isUndefined($scope.global.sessionValues.domainId)) {
+    	            		var hasDisks = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL
+    	                    		+ "storages/storagesort?tags="+tag+"&domainId="+$scope.global.sessionValues.domainId);
+    	                    hasDisks.then(function(result) { // this is only run after
+    	                        // $http completes0
+    	                        $scope.volumeElements.diskOfferingList = result;
+    	                    });
+    	            	}
+    	            } else {
+	                    var hasDisks = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL
+	                    		+ "storages/storagesort?tags="+tag+"&domainId="+$scope.volume.domain.id);
+	                    hasDisks.then(function(result) { // this is only run after
+	                        // $http completes0
+	                        $scope.volumeElements.diskOfferingList = result;
+	                    });
+    	            }
                 };
 
                 $scope.diskTag = function() {
@@ -510,15 +542,25 @@ function storageCtrl($scope, $state, $stateParams, appService, $window, volumeSe
                     });
                 };
                 $scope.zoneList();
-                $scope.diskList = {};
-                $scope.diskList = function() {
-                    var hasDisks = appService.crudService.listAll("storages/list");
-                    hasDisks.then(function(result) { // this is only run after
-                        // $http completes0
-                        $scope.volumeElements.diskOfferingList = result;
-                    });
-                };
-                $scope.diskList();
+//                $scope.diskList = {};
+//                $scope.diskList = function() {
+//                    var hasDisks = appService.crudService.listAll("storages/list");
+//                    hasDisks.then(function(result) { // this is only run after
+//                        // $http completes0
+//                        $scope.volumeElements.diskOfferingList = result;
+//                    });
+//                };
+//                $scope.diskList();
+                if ($scope.global.sessionValues.type !== 'ROOT_ADMIN') {
+	            	if (!angular.isUndefined($scope.global.sessionValues.domainId)) {
+	            		var hasDisks = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL
+	            	    		+ "storages/listbydomain?domainId="+$scope.global.sessionValues.domainId);
+	            	    hasDisks.then(function (result) {  // this is only run after $http completes0
+	            		$scope.volumeElements.diskOfferingList = result;
+	            	    });
+	            	}
+	            }
+
                 $scope.uploadVolume = function(form, volume) {
                         $scope.formSubmitted = true;
                         if (form.$valid) {

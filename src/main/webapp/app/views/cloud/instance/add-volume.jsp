@@ -61,6 +61,43 @@ pageEncoding="UTF-8"%>
 							</div>
 						</div>
 					</div>
+
+
+
+
+					<div data-ng-if="global.sessionValues.type != 'ROOT_ADMIN'">
+						<div class="form-group">
+							<div class="row">
+                            	<label class="col-md-3 col-xs-12 col-sm-2 control-label"><fmt:message key="common.domain" bundle="${msg}" /><span class="text-danger">*</span></label>
+                            	<div class="col-md-5 col-xs-12 col-sm-5">
+                                {{ global.sessionValues.domainName }}
+                                <input type="hidden" name="domain"  data-ng-model="volume.domain" data-ng-init="volume.domainId=global.sessionValues.domainId" />
+                            	</div>
+                        	</div>
+                        </div>
+	                	</div>
+
+	                	<div data-ng-if="global.sessionValues.type == 'ROOT_ADMIN'">
+                        <div class="form-group" ng-class="{'text-danger':volumeForm.domain.$invalid && formSubmitted}">
+                            <div class="row">
+                                <label class="col-md-3 col-xs-12 col-sm-2 control-label"><fmt:message key="common.company" bundle="${msg}" /><span class="text-danger">*</span>
+                                </label>
+                                <div class="col-md-5 col-xs-12 col-sm-5">
+                                    <select  required="true" class="form-control form-group-lg" name="domain" data-ng-change="domainChange()"
+                                             data-ng-model="volume.domain"
+                                             data-ng-options="domain.name for domain in volumeElement.domainList" data-ng-class="{'error': volumeForm.domain.$invalid && formSubmitted}">
+                                        <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
+                                    </select>
+                                   	<i  tooltip="<fmt:message key="choose.domain" bundle="${msg}" />" class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
+                                    <div class="error-area" data-ng-show="volumeForm.domain.$invalid && formSubmitted" ><i  tooltip="<fmt:message key="company.is.required" bundle="${msg}" />" class="fa fa-warning error-icon"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+
+
+
+
 					<div class="form-group"
 						data-ng-class="{ 'text-danger' : volumeForm.diskOfferings.$invalid && formSubmitted}">
 						<div class="row">
