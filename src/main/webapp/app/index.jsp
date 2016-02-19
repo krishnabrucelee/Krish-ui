@@ -6,6 +6,15 @@
 <!DOCTYPE html>
 <html ng-app="homer">
 <head>
+<!-- Redirect to login when passing the wrong URL -->
+<script>
+    var pageUrl = window.location.href;
+    if(pageUrl.indexOf("index#/login") > -1 || pageUrl.endsWith("index#/")) {
+    	var splitPageUrl = pageUrl.split( '/' );
+        var baseUrl = window.location.protocol + "//" + window.location.host + '/' + splitPageUrl[3] + '/login';
+        window.location = baseUrl;
+    }
+</script>
 
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
