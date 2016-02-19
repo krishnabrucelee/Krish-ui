@@ -742,11 +742,23 @@ $scope.networkRestart ={};
 
     $scope.projectList = {};
     $scope.getProjectList = function (department) {
+
+	if ($scope.global.sessionValues.type != "USER") {
         var hasProjects = appService.crudService.listAllByObject("projects/department", department);
         hasProjects.then(function (result) {  // this is only run after $http
 												// completes0
             $scope.projectList = result;
         });
+	}
+	if ($scope.global.sessionValues.type == "USER") {
+	var hasProjects = appService.crudService.listAllByObject("projects/user", $scope.global.sessionValues);
+        hasProjects.then(function (result) {  // this is only run after $http
+												// completes0
+            $scope.projectList = result;
+        });
+	}
+
+
     };
 
     if ($scope.global.sessionValues.type != "ROOT_ADMIN") {
