@@ -338,7 +338,7 @@
 									<tr data-ng-repeat="networks in instance.networks.networkList">
 										<td>
 											<label>
-												<input data-ng-model="instance.networks[$index]" type="checkbox"
+												<input data-ng-model="instance.networks[$index]" type="checkbox" data-ng-checked="false"
 													required="true" name="network" value="{{networks}}">
 													{{ networks.name}}
 											</label>
