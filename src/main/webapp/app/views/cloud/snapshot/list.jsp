@@ -17,7 +17,7 @@
             <div class="row m-t-n-md">
                 <ul class="nav nav-tabs" data-ng-init="formElements.category = 'snapshot'">
                     <li class="active"><a href="javascript:void(0)" data-ng-click="formElements.category = 'snapshot'" data-toggle="tab"><fmt:message key="common.snapshot" bundle="${msg}" /></a></li>
-                    <li class=""><a href="javascript:void(0)" data-ng-click="formElements.category = 'VM Snapshot'" data-toggle="tab"><fmt:message key="vm.snapshot" bundle="${msg}" /></a></li>
+                    <li class=""><a href="javascript:void(0)" data-ng-click="vmSnapshot(1);formElements.category = 'VM Snapshot'" data-toggle="tab"><fmt:message key="vm.snapshot" bundle="${msg}" /></a></li>
 
                 </ul>
             </div>

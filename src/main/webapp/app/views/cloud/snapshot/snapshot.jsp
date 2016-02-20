@@ -54,17 +54,17 @@
                                     {{snapshot.volume.volumeType}}
                                 </td>
                                 <td>
-                                    {{ snapshot.createdDate}}
+                                    {{ snapshot.createdDateTime*1000 | date:'yyyy-MM-dd HH:mm:ss'}}
                                 </td>
                                 <td>
                                     {{ snapshot.status}}
                                 </td>
                                 <td>
-                                   <!--  <a class="icon-button" title="Create Volume" data-ng-click="createVolume('md', snapshot)">
+                                   <a class="icon-button" title="Create Volume" data-ng-click="createVolume('md', snapshot)">
                                         <span class="fa fa-plus-square"> </span>
-                                    </a> -->
+                                    </a>
                                      <a class="icon-button" title="Revert Snapshot" data-ng-click="revertSnapshot('md', snapshot)">
-                                        <span class="fa fa-plus-square"> </span>
+                                        <span class="fa fa-rotate-left"> </span>
                                     </a>
                                     <a class="icon-button" title="Delete Snapshot" data-ng-click="deleteVolumeSnapshot('sm', snapshot)" ><span class="fa fa-trash"></span></a>
                                 </td>

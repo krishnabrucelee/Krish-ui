@@ -97,12 +97,13 @@ localStorageService, $window, dialogService,$stateParams, notify, appService) {
 	    });
     }
     $scope.list(1);
-
 	$scope.vmSnapshot = function(pageNumber){
+		  $scope.showLoaderOffer = true;
 		  var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
 	        var hasSnapshots = crudService.list("vmsnapshot", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
 	        hasSnapshots.then(function (result) {  // this is only run after
 													// $http completes0
+	        	$scope.showLoaderOffer = false;
 	            $scope.vmSnapshotList = result;
 	            // For pagination
 	            $scope.paginationObject.limit  = limit;
@@ -110,10 +111,7 @@ localStorageService, $window, dialogService,$stateParams, notify, appService) {
 	            $scope.paginationObject.totalItems = result.totalItems;
 	        });
 		};
-		$scope.vmSnapshot(1);
 		$scope.instanceList = {};
-
-
     $scope.instanceId = function(pageNumber) {
 		var hasUsers = crudService.listAll("virtualmachine/list");
 		hasUsers.then(function(result) { // this is only run after $http
@@ -168,7 +166,7 @@ localStorageService, $window, dialogService,$stateParams, notify, appService) {
 // };
 
     $scope.deleteSnapshots = function(size, snapshot) {
-    	 dialogService.openDialog("app/views/snapshot/delete-snapshot.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+    	 dialogService.openDialog("app/views/cloud/snapshot/delete-snapshot.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
              $scope.deleteObject = snapshot;
              $scope.ok = function () {
             	 var event = "VMSNAPSHOT.DELETE";
