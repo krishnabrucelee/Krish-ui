@@ -42,7 +42,7 @@ pageEncoding="UTF-8"%>
                                   data-ng-show="loadform.privatePort.$invalid && loadFormSubmitted">
                                 *Required</span></td>
                         <td><select required="true" class="form-control"
-                                    name="protocol" data-ng-model="loadBalancer.algorithms"
+                                    name="algorithm" data-ng-model="loadBalancer.algorithms"
                                     data-ng-init="loadBalancer.algorithms = networkLists.algorithms[0]"
                                     data-ng-change="selectAlgorithm(algorithms.name)"
                                     data-ng-options="algorithms.name for algorithms in dropnetworkLists.algorithms"><option
@@ -51,7 +51,7 @@ pageEncoding="UTF-8"%>
                                                                        data-ng-show="loadform.algorithm.$invalid && loadFormSubmitted">
                                 *Required</span></td>
                         <td><a class="btn btn-info" ng-click="createStickiness('md')">Configure</a></td>
-                        <td><a class="btn btn-info" ng-click="healthCheck(loadform)">Configure</a></td>
+                        <td><a class="btn btn-info">Configure</a></td>
                         <td><input class="btn btn-info" type="submit" value="Add VM"></td>
                         <td></td>
                         <td></td>
@@ -89,7 +89,7 @@ pageEncoding="UTF-8"%>
                         <td><a class= "btn btn-info" data-ng-if = "loadBalancer.stickinessMethod!=null"  data-ng-click="editStickiness('md',loadBalancer)"> {{loadBalancer.stickinessMethod}}</a>
                         <a class="btn btn-info" data-ng-if = "loadBalancer.stickinessMethod ==null"
                                data-ng-click="configureStickiness('md',loadBalancer)">{{'Configure'}}</a></td>
-                        <td><a class="btn btn-info" data-ng-click="healthChecklist()">Configure</a></td>
+                        <td><a class="btn btn-info">Configure</a></td>
                         <td><a class="btn btn-info" data-ng-click="openAddVMlist()">Add
                                 VM</a></td>
                         <td>Active</td>

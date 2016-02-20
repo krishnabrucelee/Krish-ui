@@ -3,16 +3,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<!-- This is content container for nested view in UI-Router-->
-<!-- You can put here any constant element in app content for example: Page title or breadcrum -->
 
-<!-- Header -->
 <div id="header" ng-include="'app/views/common/header.jsp'"></div>
-
-<!-- Navigation -->
 <aside id="menu" ng-include="'app/views/common/navigation.jsp'"></aside>
-
-<!-- Main Wrapper -->
 <div id="wrapper">
     <div small-header class="normalheader transition ng-scope small-header">
         <div class="hpanel" tour-step order="1" title="Page header" content="Place your page title and breadcrumb. Select small or large header or give the user choice to change the size." placement="bottom">
@@ -40,8 +33,8 @@
                     <div class="tab-content">
                         <div class="row m-t-n-md">
                             <ul class="nav nav-tabs" data-ng-init="formElements.category = 'community'">
-                                <li class="active"><a href="javascript:void(0)" data-ng-click="formElements.category = 'community'" data-toggle="tab"> <fmt:message key="common.community" bundle="${msg}" /></a></li>
-                                <li class=""><a href="javascript:void(0)" data-ng-click="formElements.category = 'featured'" data-toggle="tab"><fmt:message key="common.featured" bundle="${msg}" /></a></li>
+                                <li class="active"><a href="javascript:void(0)" data-ng-click="communitylist()" data-toggle="tab"> <fmt:message key="common.community" bundle="${msg}" /></a></li>
+                                <li class=""><a href="javascript:void(0)" data-ng-click="featuredlist()" data-toggle="tab"><fmt:message key="common.featured" bundle="${msg}" /></a></li>
                                 <!-- <li class=""><a href="javascript:void(0)" data-ng-click="formElements.category = 'mytemplates'" data-toggle="tab">My Templates</a></li>
                                 <li class=""><a href="javascript:void(0)" data-ng-click="formElements.category = 'snapshot'" data-toggle="tab">Snapshot</a></li> -->
                             </ul>
@@ -51,24 +44,21 @@
                                 <div class="col-md-12 col-sm-12 col-xs-12 ">
                                     <div class="pull-left">
                                         <div class="pull-left">
-                                            <a title="Grid View" class="btn btn-info" data-ng-click="showTemplateContent()"  data-ng-class="!listView ? 'disabled' : ''" > <i class="fa fa-th-large" /></a>
-                                            <a title="List View"  class="btn btn-info" data-ng-click="showTemplateContent()" data-ng-class="listView ? 'disabled' : ''" > <i class="fa fa-list" /></a>
+                                            <a title="Grid View" class="btn btn-info" data-ng-click="showCommunityTemplateContent()"  data-ng-class="!listView ? 'disabled' : ''" > <i class="fa fa-th-large" /></a>
+                                            <a title="List View"  class="btn btn-info" data-ng-click="showCommunityTemplateContent()" data-ng-class="listView ? 'disabled' : ''" > <i class="fa fa-list" /></a>
                                         </div>
                                     </div>
                                     <div class="pull-right">
                                         <panda-quick-search></panda-quick-search>
                                         <div class="clearfix"></div>
-
                                        <!--  <span class="pull-right m-l-sm m-t-sm">
                                             <a  class="btn btn-info" data-ng-click="uploadTemplateContainer()"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span> Register Template</a>
-
                                             <a  class="btn btn-info" title="Refresh"><span class="fa fa-refresh fa-lg "></span></a>
                                         </span> -->
                                     </div>
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
-
                             <div class="text-center m-t-xxxl" data-ng-show="showLoader">
                                 <img src="images/loading-bars.svg" />
                             </div>
@@ -79,9 +69,7 @@
                                 <div data-ng-hide="listView">
 									<div class="row" data-ng-include
 										src="'app/views/templates/community.jsp'">
-										
-										</div>
-										
+									</div>
 								</div>
                             </div>
                         </div>
@@ -90,17 +78,15 @@
                                 <div class="col-md-12 col-sm-12 col-xs-12 ">
                                     <div class="pull-left">
                                         <div class="pull-left">
-                                            <a title="Grid View" class="btn btn-info" data-ng-click="showTemplateContent()"  data-ng-class="!listView ? 'disabled' : ''" > <i class="fa fa-th-large" /></a>
-                                            <a title="List View"  class="btn btn-info" data-ng-click="showTemplateContent()"  data-ng-class="listView ? 'disabled' : ''" > <i class="fa fa-list" /></a>
+                                            <a title="Grid View" class="btn btn-info" data-ng-click="showFeaturedTemplateContent()"  data-ng-class="!listView ? 'disabled' : ''" > <i class="fa fa-th-large" /></a>
+                                            <a title="List View"  class="btn btn-info" data-ng-click="showFeaturedTemplateContent()"  data-ng-class="listView ? 'disabled' : ''" > <i class="fa fa-list" /></a>
                                         </div>
                                     </div>
                                     <div class="pull-right">
                                         <panda-quick-search></panda-quick-search>
                                         <div class="clearfix"></div>
-
                                         <!-- <span class="pull-right m-l-sm m-t-sm">
                                             <a  class="btn btn-info" data-ng-click="uploadTemplateContainer()"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span> Register Template</a>
-
                                             <a  class="btn btn-info" title="Refresh"><span class="fa fa-refresh fa-lg "></span></a>
                                         </span> -->
                                     </div>
@@ -131,10 +117,8 @@
                                     <div class="pull-right">
                                         <panda-quick-search></panda-quick-search>
                                         <div class="clearfix"></div>
-
                                         <span class="pull-right m-l-sm m-t-sm">
                                             <a  class="btn btn-info" data-ng-click="uploadTemplateContainer()"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span> Register Template</a>
-
                                             <a  class="btn btn-info" title="Refresh"><span class="fa fa-refresh fa-lg "></span></a>
                                         </span>
                                     </div>
@@ -165,10 +149,8 @@
                                     <div class="pull-right">
                                         <panda-quick-search></panda-quick-search>
                                         <div class="clearfix"></div>
-
                                         <span class="pull-right m-l-sm m-t-sm">
                                             <a  class="btn btn-info" data-ng-click="uploadTemplateContainer()"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span> Register Template</a>
-
                                             <a  class="btn btn-info" title="Refresh"><span class="fa fa-refresh fa-lg "></span></a>
                                         </span>
                                     </div>
@@ -192,6 +174,5 @@
             </div>
         </div>
     </div>
-<!--     <app-scroll></app-scroll>
- --><div id="footer" ng-include="'app/views/common/footer.jsp'"></div>
+<div id="footer" ng-include="'app/views/common/footer.jsp'"></div>
 </div>

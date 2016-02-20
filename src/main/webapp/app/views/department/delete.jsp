@@ -5,7 +5,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <div class="inmodal" >
     <div class="modal-header">
-        <panda-modal-header hide-zone="false" page-icon="fa fa-warning" page-title="Delete Confirmation"></panda-modal-header>                
+        <panda-modal-header id="delete_department_page_title" hide-zone="false" page-icon="fa fa-warning" page-title="Delete Confirmation"></panda-modal-header>
         <!--<h2 class="modal-title" id="myModalLabel">Confirm Detach Volume</h2>-->
     </div>
 
@@ -25,8 +25,8 @@
     </div>
     <div class="modal-footer">
     <get-loader-image data-ng-show="showLoader"></get-loader-image>
-        <button type="button" data-ng-hide="showLoader" class="btn btn-default " ng-click="cancel()" data-dismiss="modal">Cancel</button>
-        <button type="button" data-ng-hide="showLoader" class="btn btn-default btn-danger2" ng-click="ok()" data-dismiss="modal">Ok</button>
+        <button type="button" id="delete_department_cancel_button" data-ng-hide="showLoader" class="btn btn-default " ng-click="cancel()" data-dismiss="modal">Cancel</button>
+        <button type="button" id="delete_department_ok_button" data-ng-hide="showLoader" class="btn btn-default btn-danger2" ng-click="ok()" data-dismiss="modal">Ok</button>
 
     </div>
 </div>

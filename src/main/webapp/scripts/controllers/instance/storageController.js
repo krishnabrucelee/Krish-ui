@@ -17,6 +17,24 @@ function storageCtrl($scope, $state, $stateParams, appService, $window, volumeSe
 
     $scope.paginationObject = {};
     $scope.storageForm = {};
+    $scope.volumeElement = {};
+
+    // Load domain
+    $scope.domain = {};
+    var hasDomains = appService.crudService.listAll("domains/list");
+    hasDomains.then(function (result) {
+    	$scope.volumeElement.domainList = result;
+    });
+
+    // Department list load based on the domain
+    $scope.domainChange = function() {
+       var hasDisks = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL
+        		+ "storages/listbydomain?domainId="+$scope.volume.domain.id);
+        hasDisks.then(function (result) {  // this is only run after $http completes0
+            $scope.volumeElements.diskOfferingList = result;
+        });
+
+    };
 
     // Volume List
     $scope.list = function(volume) {
@@ -310,6 +328,16 @@ function storageCtrl($scope, $state, $stateParams, appService, $window, volumeSe
         }]);
     };
 
+    $scope.getDiskList = {};
+    $scope.getDiskList = function (domainId, tag) {
+    	var hasDisks = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL
+        		+ "storages/storagesort?tags="+tag+"&domainId="+domainId);
+        hasDisks.then(function(result) { // this is only run after
+            // $http completes0
+            $scope.volumeElements.diskOfferingList = result;
+        });
+    };
+
     //Create volume
     $scope.volume = {};
     $scope.volumeForm = {};
@@ -334,11 +362,15 @@ function storageCtrl($scope, $state, $stateParams, appService, $window, volumeSe
                     if (tag === null) {
                         tag = "";
                     }
-                    var hasDisks = appService.crudService.listAllByTag("storages/storagesort", tag);
-                    hasDisks.then(function(result) { // this is only run after
-                        // $http completes0
-                        $scope.volumeElements.diskOfferingList = result;
-                    });
+
+                    $scope.volumeElements.diskOfferingList = {};
+                    if ($scope.global.sessionValues.type !== 'ROOT_ADMIN'
+                		&& !angular.isUndefined($scope.global.sessionValues.domainId)) {
+    	            	$scope.getDiskList($scope.global.sessionValues.domainId, tag);
+    	            } else if (!angular.isUndefined($scope.volume.domain)) {
+    	            	$scope.getDiskList($scope.volume.domain.id, tag);
+    	            }
+
                 };
 
                 $scope.diskTag = function() {
@@ -365,7 +397,7 @@ function storageCtrl($scope, $state, $stateParams, appService, $window, volumeSe
 
                 // Get current Department list from instnace id.
                 $scope.department = {};
-                var hasDepartment = appService.crudService.read("departments", $scope.instance.departmentId);
+                var hasDepartment = appService.crudService.read("departments", $scope.instance.instanceOwner.departmentId);
                 hasDepartment.then(function(result) { // this is only run after $http completes0
                     $scope.volumeElements.departmentList = result;
                 });
@@ -510,15 +542,25 @@ function storageCtrl($scope, $state, $stateParams, appService, $window, volumeSe
                     });
                 };
                 $scope.zoneList();
-                $scope.diskList = {};
-                $scope.diskList = function() {
-                    var hasDisks = appService.crudService.listAll("storages/list");
-                    hasDisks.then(function(result) { // this is only run after
-                        // $http completes0
-                        $scope.volumeElements.diskOfferingList = result;
-                    });
-                };
-                $scope.diskList();
+//                $scope.diskList = {};
+//                $scope.diskList = function() {
+//                    var hasDisks = appService.crudService.listAll("storages/list");
+//                    hasDisks.then(function(result) { // this is only run after
+//                        // $http completes0
+//                        $scope.volumeElements.diskOfferingList = result;
+//                    });
+//                };
+//                $scope.diskList();
+                if ($scope.global.sessionValues.type !== 'ROOT_ADMIN') {
+	            	if (!angular.isUndefined($scope.global.sessionValues.domainId)) {
+	            		var hasDisks = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL
+	            	    		+ "storages/listbydomain?domainId="+$scope.global.sessionValues.domainId);
+	            	    hasDisks.then(function (result) {  // this is only run after $http completes0
+	            		$scope.volumeElements.diskOfferingList = result;
+	            	    });
+	            	}
+	            }
+
                 $scope.uploadVolume = function(form, volume) {
                         $scope.formSubmitted = true;
                         if (form.$valid) {

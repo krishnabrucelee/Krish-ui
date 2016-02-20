@@ -49,20 +49,19 @@
 	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.network" bundle="${msg}" /></a>
 	                            <span ng-switch-when="true"><fmt:message key="common.network" bundle="${msg}" /></span>
                             </span>
+                             <span data-ng-if="(state.data.pageTitle === 'view.network')">
+	                            <a ng-switch-when="false" ng-href="{{'#/network/list/view/'+state.data.id}}">{{ state.data.pageName }}</a>
+	                            <span ng-switch-when="true">{{ state.data.pageName }}</span>
+	                        </span>
                             <span data-ng-if="(state.data.pageTitle === 'view.instance')">
 	                            <a ng-switch-when="false" ng-href="{{'#/instance/list/view/'+state.data.id}}">{{ state.data.pageName }}</a>
 	                            <span ng-switch-when="true">{{ state.data.pageName }}</span>
 	                        </span>
-	                    <span data-ng-if="state.data.pageTitle === 'ip.address'">
+	                    	<span data-ng-if="state.data.pageTitle === 'ip.address'">
 	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="ip.address" bundle="${msg}" /></a>
 	                            <span ng-switch-when="true"><fmt:message key="ip.address" bundle="${msg}" /></span>
-	                    </span>
-
-                             <span data-ng-if="state.data.pageTitle === 'view.network'">
-	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="view.network" bundle="${msg}" /></a>
-	                            <span ng-switch-when="true">{{ $stateParams.pageTitle}}</span>
-	                    </span>
-                             <span data-ng-if="state.data.pageTitle === 'common.ssh.keys'">
+	                   		</span>
+                            <span data-ng-if="state.data.pageTitle === 'common.ssh.keys'">
 	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.ssh.keys" bundle="${msg}" /></a>
 	                            <span ng-switch-when="true"><fmt:message key="common.ssh.keys" bundle="${msg}" /></span>
                             </span>
@@ -92,6 +91,24 @@
                 </h2>
                 <h2 class="font-light m-b-xs">
                     <span data-ng-if="$state.current.data.pageTitle === 'common.network'"><fmt:message key="common.network" bundle="${msg}" /></span>
+                </h2>
+                <h2 class="font-light m-b-xs">
+                    <span data-ng-if="$state.current.data.pageTitle === 'common.snapshot'"><fmt:message key="common.snapshot" bundle="${msg}" /></span>
+                </h2>
+                <h2 class="font-light m-b-xs">
+                    <span data-ng-if="$state.current.data.pageTitle === 'common.ssh.keys'"><fmt:message key="common.ssh.keys" bundle="${msg}" /></span>
+                </h2>
+                <h2 class="font-light m-b-xs">
+                    <span data-ng-if="$state.current.data.pageTitle === 'common.quota.limit'"><fmt:message key="common.quota.limit" bundle="${msg}" /></span>
+                </h2>
+                <h2 class="font-light m-b-xs">
+                    <span data-ng-if="$state.current.data.pageTitle === 'view.instance'">{{ $state.current.data.pageName }}</span>
+                </h2>
+                <h2 class="font-light m-b-xs">
+                    <span data-ng-if="$state.current.data.pageTitle === 'ip.address'"><fmt:message key="ip.address" bundle="${msg}" /></span>
+                </h2>
+                <h2 class="font-light m-b-xs">
+                    <span data-ng-if="$state.current.data.pageTitle === 'view.network'">{{ $state.current.data.pageName }}</span>
                 </h2>
                 <small>{{ $state.current.data.pageDesc}}</small>
             </div>
