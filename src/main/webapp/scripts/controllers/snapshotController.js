@@ -192,7 +192,7 @@ localStorageService, $window, dialogService,$stateParams, notify, appService) {
          }]);
     };
 
-    $scope.deleteSnapshot = function(size, snapshot) {
+    $scope.deleteVolumeSnapshot = function(size, snapshot) {
    	 dialogService.openDialog("app/views/common/confirm-delete.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
             $scope.deleteObject = snapshot;
             $scope.ok = function (deleteObject) {
@@ -301,9 +301,9 @@ localStorageService, $window, dialogService,$stateParams, notify, appService) {
     $scope.createVolume = function(size,snapshot) {
     	appService.dialogService.openDialog("app/views/cloud/snapshot/create-volume.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope',
 	                                                                                                    function ($scope, $modalInstance, $rootScope) {
-$scope.deleteObject = snapshot;
+	$scope.deleteObject = snapshot;
         $scope.save = function (form, deleteObject) {
-if (!angular.isUndefined($scope.deleteObject.domain)) {
+	  if (!angular.isUndefined($scope.deleteObject.domain)) {
                 deleteObject.domainId = $scope.deleteObject.domain.id;
                 delete deleteObject.domain;
             }
@@ -382,7 +382,6 @@ if (!angular.isUndefined($scope.deleteObject.domain)) {
              $scope.formSubmitted = true;
 
             if (form.$valid) {
-		alert("hi");
             	$scope.showLoader = true;
 		console.log($scope.revertSnapshot);
                 var hasVolume = appService.crudService.add("snapshots/revertsnap",  revertSnapshot);

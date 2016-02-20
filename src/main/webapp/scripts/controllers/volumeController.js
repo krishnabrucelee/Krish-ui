@@ -7,7 +7,7 @@
 angular
         .module('homer')
         .controller('volumeCtrl', volumeCtrl)
-        .controller('recurringSnapshotCtrl', recurringSnapshotController)
+        .controller('recurringSnapshotCtrl', recurringSnapshotCtrl)
         //.controller('uploadVolumeCtrl', uploadVolumeCtrl)
 
 function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeService, $window) {
@@ -282,59 +282,6 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
 
     $scope.openUploadVolumeContainer = function (size) {
     	appService.modalService.trigger('app/views/cloud/volume/upload.jsp', size);
-    };
-
-    $scope.openReccuringSnapshot = function (volume) {
-    	//appService.modalService.trigger('app/views/cloud/volume/recurring-snapshot.jsp', 'lg');
- 	appService.dialogService.openDialog('app/views/cloud/volume/recurring-snapshot.jsp', 'lg', $scope, ['$scope', '$modalInstance', '$rootScope', function($scope, $modalInstance, $rootScope) {
-
-	$scope.recurringSnapshot = volume;
-        $scope.okrevert = function (form, recurringSnapshot) {
-		if (!angular.isUndefined($scope.recurringSnapshot.domain)) {
-                recurringSnapshot.domainId = $scope.recurringSnapshot.domain.id;
-                delete recurringSnapshot.domain;
-            }
-
-            if (!angular.isUndefined($scope.recurringSnapshot.department) && $scope.recurringSnapshot.department != null) {
-                recurringSnapshot.departmentId = $scope.recurringSnapshot.department.id;
-                delete recurringSnapshot.department;
-            }
-	   if (!angular.isUndefined($scope.recurringSnapshot.volume) && $scope.recurringSnapshot.volume != null) {
-            recurringSnapshot.volumeId = $scope.recurringSnapshot.volume.id;
-		delete recurringSnapshot.volume;
-            }
- 	if (!angular.isUndefined($scope.recurringSnapshot.zone) && $scope.recurringSnapshot.zone != null) {
-                recurringSnapshot.zoneId = $scope.recurringSnapshot.zone.id;
-                delete recurringSnapshot.zone;
-            }
-             $scope.formSubmitted = true;
-
-            if (form.$valid) {
-		alert("hi");
-            	$scope.showLoader = true;
-		console.log($scope.recurringSnapshot);
-                var hasVolume = appService.crudService.add("snapshots/revertsnap",  recurringSnapshot);
-                hasVolume.then(function (result) {
-                	$scope.showLoader = false;
-                    $scope.list(1);
-                    appService.notify({message: 'Reverted successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
-                    $modalInstance.close();
-                }).catch(function (result) {
-                	$scope.showLoader = false;
-        		    if (!angular.isUndefined(result.data)) {
-            		if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
-              	   	 var msg = result.data.globalError[0];
-              	   	 $scope.showLoader = false;
-            	    	 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
-                	}
-            	}
-        	});
-            }
-        },
-        $scope.cancel = function () {
-            $modalInstance.close();
-        };
-}]);
     };
 
     //Resize Volume
@@ -775,6 +722,94 @@ $scope.validateVolume = function (form, volume) {
 }]);
 };
 
+   $scope.openReccuringSnapshot = function (volume) {
+
+ 	appService.dialogService.openDialog('app/views/cloud/volume/recurring-snapshot.jsp', 'lg', $scope, ['$scope', '$modalInstance', '$rootScope', function($scope, $modalInstance, $rootScope) {
+	$scope.recurringSnapshot = volume;
+        $scope.volumeId = volume.id;
+	$scope.snapshotTab = {};
+$scope.snapshotList = function () {
+                    var hasDisks = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "snapshotpolicies/listbyvolume?volumeid="+$scope.volumeId  +"&lang=" + appService.localStorageService.cookie.get('language')+"&sortBy=-id");
+                    hasDisks.then(function (result) {  // this is only run after
+                        // $http completes0
+
+                        $scope.snapshotList = result;
+			angular.forEach($scope.snapshotList , function(obj, key) {
+				$scope.snapshotTab[obj.intervalType] = true;
+			});
+			console.log($scope.snapshotList);
+                    });
+                };
+   $scope.snapshotList();      
+
+
+      $scope.deleteSnapshotPolicy = function(size, snapshot) {
+    appService.dialogService.openDialog("app/views/common/confirm-delete.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+	    $scope.deleteObject = snapshot;
+            $scope.ok = function (deleteObject) {
+                var hasServer = appService.crudService.delete("snapshotpolicies", deleteObject);
+                hasServer.then(function (result) {  
+                    appService.notify({message: 'Deleted successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});		 
+                });
+                $modalInstance.close();
+            },
+            $scope.cancel = function () {
+                $modalInstance.close();
+            };
+        }]);
+   };
+		
+    
+
+        $scope.recurringsave = function (form, recurringSnapshot) {
+	console.log(recurringSnapshot);
+		if (!angular.isUndefined($scope.recurringSnapshot.domain)) {
+                recurringSnapshot.domainId = $scope.recurringSnapshot.domain.id;
+                delete recurringSnapshot.domain;
+            }
+            if (!angular.isUndefined($scope.recurringSnapshot.department) && $scope.recurringSnapshot.department != null) {
+                recurringSnapshot.departmentId = $scope.recurringSnapshot.department.id;
+                delete recurringSnapshot.department;
+            }
+	   if (!angular.isUndefined(recurringSnapshot.id) && recurringSnapshot.id != null) {
+             recurringSnapshot.volumeId = recurringSnapshot.id;
+		delete recurringSnapshot.volume;
+            }
+ 	   if (!angular.isUndefined($scope.recurringSnapshot.zone) && $scope.recurringSnapshot.zone != null) {
+                recurringSnapshot.zoneId = $scope.recurringSnapshot.zone.id;
+                delete recurringSnapshot.zone;
+            }
+             $scope.formSubmitted = true;
+
+            if (form.$valid) {
+            	$scope.showLoader = true;
+		recurringSnapshot.timeZone = recurringSnapshot.timeZone.name;
+		recurringSnapshot.dayOfWeek = recurringSnapshot.dayOfWeek.name;
+			recurringSnapshot.intervalType = recurringSnapshot.intervalType.toUpperCase();
+                var hasVolume = appService.crudService.add("snapshotpolicies",  recurringSnapshot);
+                hasVolume.then(function (result) {
+                	$scope.showLoader = false;
+                    $scope.list(1);
+                    appService.notify({message: 'Snapshot policy Created successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                    $modalInstance.close();
+                }).catch(function (result) {
+                	$scope.showLoader = false;
+        		    if (!angular.isUndefined(result.data)) {
+            		if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
+              	   	 var msg = result.data.globalError[0];
+              	   	 $scope.showLoader = false;
+            	    	 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+                	}
+            	}
+        	});
+            }
+        },
+        $scope.cancel = function () {
+            $modalInstance.close();
+        };
+}]);
+    };
+
 
 // Delete the Volume
 $scope.delete = function (size, volume) {
@@ -834,11 +869,135 @@ $scope.delete = function (size, volume) {
         }]);
 };
 
+    // Form Field Decleration
+    $scope.recurringSnapshot = {
+        minutes: 60,
+        hour: 12
+    };
+
+    $scope.getNumber = {};
+
+    $scope.formElements = {
+        timeZoneList: [
+            {
+                "id": 1,
+                "name": "Etc/GMT+12"
+            },
+            {
+                "id": 2,
+                "name": "Pacific/Midwa"
+            },
+            {
+                "id": 3,
+                "name": "Pacific/Niue"
+            },
+            {
+                "id": 4,
+                "name": "Pacific/Pago_Pago"
+            },
+            {
+                "id": 5,
+                "name": "Pacific/Samoa"
+            },
+            {
+                "id": 6,
+                "name": "US/Samoa"
+            },
+            {
+                "id": 7,
+                "name": "America/Adak"
+            }
+        ],
+      dayOfWeekList: [
+            {
+                "id": 0,
+                "name": "SUNDAY"
+            },
+  	     {
+                "id": 1,
+                "name": "MONDAY"
+            },
+	   {
+                "id": 2,
+                "name": "TUESDAY"
+            },
+{
+                "id": 3,
+                "name": "WEDNESDAY"
+            },
+{
+                "id": 4,
+                "name": "THURSDAY"
+            },
+{
+                "id": 5,
+                "name": "FRIDAY"
+            },
+{
+                "id": 6,
+                "name": "SATURDAY"
+            }
+	],
+         hourCount: new Array(12),
+        minuteCount: new Array(60),
+        dayOfMonth: new Array(28)
+    };
+
+   /* $scope.snapshotList = [
+        {
+            time: 1,
+            dayOfWeek: "Every Sunday",
+            timeZone: {
+                "id": 4,
+                "name": "Pacific/Pago_Pago"
+            },
+            noOfSnapshots: 1
+        },
+        {
+            time: 1,
+            dayOfWeek: "Day 1 of month",
+            timeZone: {
+                "id": 4,
+                "name": "Pacific/Midwa"
+            },
+            noOfSnapshots: 1
+        },
+    ];*/
+
+    $scope.number = 5;
+    $scope.getNumber = function (num) {
+        return new Array(num);
+    }
+
+    $scope.mytime = new Date();
+
+    $scope.hstep = 1;
+    $scope.mstep = 15;
+
+    $scope.options = {
+        hstep: [1, 2, 3],
+        mstep: [1, 5, 10, 15, 25, 30]
+    };
+
+    $scope.ismeridian = true;
+    $scope.toggleMode = function () {
+        $scope.ismeridian = !$scope.ismeridian;
+    };
+
+    $scope.save = function (form) {
+        $scope.formSubmitted = true;
+        if (form.$valid) {
+            $scope.snapshotList.push($scope.recurringSnapshot);
+        }
+    };
+
+
+
 };
 
 
 
-function recurringSnapshotController($scope, globalConfig, localStorageService, $window, notify) {
+function recurringSnapshotCtrl($scope,appService, globalConfig, localStorageService, $window, notify) {
 
     $scope.global = globalConfig;
     $scope.formSubmitted = false;
@@ -885,27 +1044,6 @@ function recurringSnapshotController($scope, globalConfig, localStorageService, 
         minuteCount: new Array(60),
         dayOfMonth: new Array(28)
     };
-
-    $scope.snapshotList = [
-        {
-            time: 1,
-            dayOfWeek: "Every Sunday",
-            timeZone: {
-                "id": 4,
-                "name": "Pacific/Pago_Pago"
-            },
-            noOfSnapshots: 1
-        },
-        {
-            time: 1,
-            dayOfWeek: "Day 1 of month",
-            timeZone: {
-                "id": 4,
-                "name": "Pacific/Midwa"
-            },
-            noOfSnapshots: 1
-        },
-    ];
 
     $scope.number = 5;
     $scope.getNumber = function (num) {

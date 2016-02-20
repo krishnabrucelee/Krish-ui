@@ -32,11 +32,12 @@
                 </div>
             </div>
         </div>
+                       									<get-loader-image data-ng-show="showLoader"></get-loader-image>
 
 
         <div class="modal-footer">
-            <button type="button" class="btn btn-default " ng-click="cancel()" data-dismiss="modal">Cancel</button>
-            <button class="btn btn-info" type="submit">Create</button>
+            <button type="button" data-ng-hide="showLoader" class="btn btn-default " ng-click="cancel()" data-dismiss="modal">Cancel</button>
+            <button class="btn btn-info" data-ng-hide="showLoader" type="submit">Create</button>
 
         </div></div>
 </form>
