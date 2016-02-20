@@ -549,6 +549,26 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
         instance.instanceOwnerId = instance.instanceOwner.id;
         delete instance.instanceOwner;
 
+        if (!angular.isUndefined($scope.instance.storageOffering) && $scope.instance.storageOffering != null) {
+        	if (instance.storageOffering.isCustomDisk) {
+        	if (!angular.isUndefined($scope.instance.diskSize)) {
+                instance.diskSize = $scope.instance.diskSize;
+            }
+    	    if (!angular.isUndefined($scope.instance.diskMaxIops)) {
+                instance.diskMaxIops = $scope.instance.diskMaxIops;
+            }
+
+     	    if (!angular.isUndefined($scope.instance.diskMinIops)) {
+                instance.diskMinIops = $scope.diskMinIops;
+            }
+        }
+        } else {
+        	delete instance.diskSize;
+        	delete instance.diskMaxIops;
+        	delete instance.diskMinIops;
+        }
+
+
         if (!angular.isUndefined($scope.instance.computeOffer.cpuCore.value)) {
             instance.cpuCore = $scope.instance.computeOffer.cpuCore.value;
         }
@@ -593,7 +613,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
                 angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
                     errorMessages += "," + key + ": " + "is incorrect ";
                 });
-                errorMessages = errorMessages.slice(1, errorMessages.legnth);
+                errorMessages = errorMessages.slice(1, errorMessages.length);
                 appService.notify({message: errorMessages, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
             }
             $scope.wizard.prev();

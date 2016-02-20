@@ -119,15 +119,7 @@ function storageCtrl($scope, $state, $stateParams, appService, $window, volumeSe
                         $modalInstance.close();
                     }).catch(function(result) {
                         if (!angular.isUndefined(result.data)) {
-                            if (result.data.globalError != '' && !angular.isUndefined(result.data.globalError)) {
-                                var msg = result.data.globalError[0];
-                                $scope.showLoader = false;
-                                appService.notify({
-                                    message: msg,
-                                    classes: 'alert-danger',
-                                    templateUrl: $scope.global.NOTIFICATION_TEMPLATE
-                                });
-                            } else if (result.data.fieldErrors != null) {
+                             if (result.data.fieldErrors != null) {
                                 angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
                                     $scope.attachvolumeForm[key].$invalid = true;
                                     $scope.attachvolumeForm[key].errorMessage = errorMessage;
@@ -189,15 +181,7 @@ function storageCtrl($scope, $state, $stateParams, appService, $window, volumeSe
                     $modalInstance.close();
                 }).catch(function(result) {
                     if (!angular.isUndefined(result.data)) {
-                        if (result.data.globalError != '' && !angular.isUndefined(result.data.globalError)) {
-                            var msg = result.data.globalError[0];
-                            $scope.showLoader = false;
-                            appService.notify({
-                                message: msg,
-                                classes: 'alert-danger',
-                                templateUrl: $scope.global.NOTIFICATION_TEMPLATE
-                            });
-                        } else if (result.data.fieldErrors != null) {
+                         if (result.data.fieldErrors != null) {
                             angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
                                 $scope.attachvolumeForm[key].$invalid = true;
                                 $scope.attachvolumeForm[key].errorMessage = errorMessage;
@@ -304,15 +288,7 @@ function storageCtrl($scope, $state, $stateParams, appService, $window, volumeSe
                             $modalInstance.close();
                         }).catch(function(result) {
                             if (!angular.isUndefined(result.data)) {
-                                if (result.data.globalError != '' && !angular.isUndefined(result.data.globalError)) {
-                                    var msg = result.data.globalError[0];
-                                    $scope.showLoader = false;
-                                    appService.notify({
-                                        message: msg,
-                                        classes: 'alert-danger',
-                                        templateUrl: $scope.global.NOTIFICATION_TEMPLATE
-                                    });
-                                } else if (result.data.fieldErrors != null) {
+                                if (result.data.fieldErrors != null) {
                                     angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
                                         $scope.attachvolumeForm[key].$invalid = true;
                                         $scope.attachvolumeForm[key].errorMessage = errorMessage;
@@ -453,15 +429,7 @@ function storageCtrl($scope, $state, $stateParams, appService, $window, volumeSe
                             }).catch(function(result) {
                                 $scope.showLoader = false;
                                 if (!angular.isUndefined(result.data)) {
-                                    if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
-                                        var msg = result.data.globalError[0];
-                                        $scope.showLoader = false;
-                                        appService.notify({
-                                            message: msg,
-                                            classes: 'alert-danger',
-                                            templateUrl: $scope.global.NOTIFICATION_TEMPLATE
-                                        });
-                                    } else if (result.data.fieldErrors != null) {
+                                    if (result.data.fieldErrors != null) {
                                         $scope.showLoader = false;
                                         angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
                                             $scope.volumeForm[key].$invalid = true;
@@ -595,15 +563,7 @@ function storageCtrl($scope, $state, $stateParams, appService, $window, volumeSe
                                 $scope.list(1);
                             }).catch(function(result) {
                                 if (!angular.isUndefined(result) && result.data != null) {
-                                    if (result.data.globalError[0] != '') {
-                                        var msg = result.data.globalError[0];
-                                        $scope.showLoader = false;
-                                        appService.notify({
-                                            message: msg,
-                                            classes: 'alert-danger',
-                                            templateUrl: $scope.global.NOTIFICATION_TEMPLATE
-                                        });
-                                    }
+
                                     angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
                                         $scope.volumeForm[key].$invalid = true;
                                         $scope.volumeForm[key].errorMessage = errorMessage;
