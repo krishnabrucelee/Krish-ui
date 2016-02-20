@@ -20,7 +20,7 @@
         </div> -->
     </div>
 
-    <div ng-show="$messageTemplate" class="cg-notify-message-template">
+    <div ng-show="$messageTemplate" class="cg-notify-message-template test-success-notify">
 
     </div>
 
