@@ -97,7 +97,7 @@
 							<tbody>
 								<tr data-ng-repeat="user in userList">
 									<td>{{user.userName}}</td>
-									<td><select class="form-control input-group assign_role_user" id="assign_role_user_{{user.id}}" name="role"
+									<td><select class="form-control input-group test_assign_role_user" id="assign_role_user_{{user.id}}" name="role"
 										data-ng-model="userRolePermissionList[user.id]"
 										data-ng-class="{'error': RoleForm.role.$invalid && formSubmitted}">
 											<option value=""><fmt:message key="common.select"

@@ -69,7 +69,7 @@
                         </div>
                         <div class="clearfix"></div>
                     </div>
-                    <div class="row">
+                    <div class="row" id="roles_pagination_container">
                             <div class="col-md-12 col-sm-12 col-xs-12 ">
 
                                 <div data-ng-show = "showLoader" style="margin: 1%">
@@ -77,7 +77,7 @@
       						</div>
                                     <div data-ng-hide = "showLoader" class="table-responsive font-normal">
                                         <div class="white-content">
-                                        <table cellspacing="1" cellpadding="1" class="table dataTable table-bordered table-striped">
+                                        <table cellspacing="1" cellpadding="1" id="roles_table" class="table dataTable table-bordered table-striped">
                                             <thead>
                                                 <tr>
                                                 <th   data-ng-click="changeSorting('name')" data-ng-class="sort.descending && sort.column =='name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.name" bundle="${msg}" />${messages.getString("locale.profile")}</th>
@@ -104,8 +104,8 @@
                                                         {{ role.description}}
                                                     </td>
                                                     <td>
-                                                        <a has-permission="EDIT_ROLE" id="role_edit_button_{{role.id}}" data-unique-field="edit-{{ role.domain.name}}-{{ role.department.userName }}-{{ role.name}}" class="icon-button role_edit_button" title="<fmt:message key="common.edit" bundle="${msg}" />" ui-sref="roles.list-edit({id: {{ role.id}}})" ><span class="fa fa-edit m-r"></span></a>
-                                                        <a has-permission="DELETE_ROLE" id="role_delete_button_{{role.id}}" data-unique-field="delete-{{ role.domain.name}}-{{ role.department.userName }}-{{ role.name}}" class="icon-button role_delete_button" title="<fmt:message key="common.delete" bundle="${msg}" />"  data-ng-click="delete('sm',role)"  ><span class="fa fa-trash"></span></a>
+                                                        <a has-permission="EDIT_ROLE" id="role_edit_button_{{role.id}}" data-unique-field="edit-{{ role.domain.name}}-{{ role.department.userName }}-{{ role.name}}" class="icon-button test_role_edit_button" title="<fmt:message key="common.edit" bundle="${msg}" />" ui-sref="roles.list-edit({id: {{ role.id}}})" ><span class="fa fa-edit m-r"></span></a>
+                                                        <a has-permission="DELETE_ROLE" id="role_delete_button_{{role.id}}" data-unique-field="delete-{{ role.domain.name}}-{{ role.department.userName }}-{{ role.name}}" class="icon-button test_role_delete_button" title="<fmt:message key="common.delete" bundle="${msg}" />"  data-ng-click="delete('sm',role)"  ><span class="fa fa-trash"></span></a>
                                                     </td>
                                                 </tr>
                                             </tbody>
