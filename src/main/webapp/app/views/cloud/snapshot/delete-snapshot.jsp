@@ -27,8 +27,8 @@
         </div>
 
         <div class="modal-footer">
-            <button type="button" class="btn btn-default " ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.no" bundle="${msg}" /></button>
-            <button class="btn btn-info" type="button" ng-click="ok()"><fmt:message key="common.yes" bundle="${msg}" /></button>
+            <button type="button"  data-ng-hide="showLoader" class="btn btn-default " ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.no" bundle="${msg}" /></button>
+            <button class="btn btn-info" data-ng-hide="showLoader"  type="button" ng-click="ok()"><fmt:message key="common.yes" bundle="${msg}" /></button>
 
 
 
