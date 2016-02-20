@@ -46,8 +46,9 @@
 
             <div class="white-content">
 
-
-                <div class="table-responsive">
+				<get-loader-image-offer data-ng-show="showLoaderOffer"></get-loader-image-offer>
+                <div data-ng-hide="showLoaderOffer" class="table-responsive">
+                    <div class="white-content">
                     <table cellspacing="1" cellpadding="1" class="table table-bordered table-striped">
                         <thead>
                             <tr>
@@ -58,7 +59,7 @@
 
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody data-ng-show="vmSnapshotList.length > 0">
                             <tr data-ng-repeat="snapshot in vmSnapshotList | filter:quickSearch">
                                 <td>
                                     {{ snapshot.name}}
@@ -78,7 +79,9 @@
                                 </td>
                             </tr>
                         </tbody>
+                        <tr data-ng-hide="vmSnapshotList.length > 0"><td colspan="4">No record found</td></tr>
                     </table>
+                    </div>
                 </div>
             </div>
         </div>
