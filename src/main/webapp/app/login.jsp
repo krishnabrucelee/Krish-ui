@@ -47,32 +47,26 @@
             <div class="hpanel hbgblue">
                 <div class="panel-body" >
                     <form name="test" method="post" id="loginForm" data-ng-submit="loginForm()">
-
-                            <h6 class="alert alert-danger" style="display: none" id="errorMsg"></h6>
-
-                            <div class="form-group">
-                                <label class="control-label" for="username">Username</label>
-                                <input type="text" placeholder="username" title="Please enter you username" required="" value="" data-ng-model="login.username" name="username" id="username" class="form-control">
-                                <!--<span class="help-block small">Your unique username to app</span>-->
-
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label" for="password">Password</label>
-                                <input type="password" title="Please enter your password" placeholder="******" required="" value="" name="password" id="password" class="form-control">
-                                <!--<span class="help-block small">Your strong password</span>-->
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label" for="domain">Domain</label>
-                                <input type="text" placeholder="domain" title="Please enter you domain" required="" value="" name="domain" id="domain" class="form-control">
-                            </div>
-                            <div class="checkboxs">
-                                    <input type="checkbox" id="remeber_login" >
-                                    <label for="remeber_login">Remember login</label>
-                                <p class="small">(if this is a private computer)</p>
-                            </div>
-                        <button type="submit" class="btn btn-default"   >Login</button>
-                            <!--<a class="btn btn-default btn-block" href="register.html">Register</a>-->
-                        </form>
+                        <h6 class="alert alert-danger" style="display: none" id="errorMsg"></h6>
+                        <div class="form-group">
+                            <label class="control-label" for="username">Username</label>
+                            <input type="text" placeholder="username" title="Please enter you username" required="" data-ng-model="user_name" name="user_name" id="user_name" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="password">Password</label>
+                            <input type="password" title="Please enter your password" placeholder="******" required="" data-ng-model="user_password" name="user_password" id="user_password" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="domain">Domain</label>
+                            <input type="text" placeholder="domain" title="Please enter you domain" required="" data-ng-model="user_domain" name="user_domain" id="user_domain" class="form-control">
+                        </div>
+                        <div class="checkboxs">
+                            <input data-ng-click="rememberMe()" id="user_remember" data-ng-model="user_remember" name="user_remember" type="checkbox">
+                            <label for="remeber_login">Remember login</label>
+                            <p class="small">(if this is a private computer)</p>
+                        </div>
+                        <button type="submit" class="btn btn-default">Login</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -89,8 +83,8 @@
 
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
 <script src="bower_components/angular/angular.min.js"></script>
-
 <script src="scripts/controllers/loginController.js"></script>
+<script src="scripts/factories/rememberMeService.js"></script>
 <script src="scripts/factories/globalConfig.js"></script>
 <script type="text/javascript">
     function loginForm() {

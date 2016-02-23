@@ -70,10 +70,8 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
         $scope.firewallRules = {};
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasFirewallRuless = appService.crudService.listAllByQuery("egress/firewallrules?network=" + $stateParams.id1 + "&type=ingress", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
-        hasFirewallRuless.then(function (result) {  // this is only run after
-													// $http completes0
+        hasFirewallRuless.then(function (result) {
             $scope.firewallRulesList = result;
-
             // For pagination
             $scope.paginationObject.limit = limit;
             $scope.paginationObject.currentPage = pageNumber;
@@ -262,10 +260,11 @@ $scope.stopVm = function(size,item) {
     $scope.cidrValidate = false;
     $scope.firewallRules.networkId = $stateParams.id;
 
-    $scope.egressSave = function (firewallRules) {
-    	$scope.showLoader = true;
+    $scope.egressSave = function (form,firewallRules) {
         $scope.formSubmitted = true;
-        var CheckIP = /^([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\/([1-9]|[12][0-9]|3[012])$/;
+        if (form.$valid) {
+        $scope.showLoader = true;
+        var CheckIP = /^([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\/([0-9]|[12][0-9]|3[012])$/;
         if ($scope.firewallRules.sourceCIDR && $scope.firewallRules.protocol) {
 
             if (CheckIP.test($scope.firewallRules.sourceCIDR)) {
@@ -274,8 +273,14 @@ $scope.stopVm = function(size,item) {
                         if ($scope.firewallRules.startPort && $scope.firewallRules.endPort) {
                             var hasServer = appService.crudService.add("egress", firewallRules);
                             hasServer.then(function (result) {  // this is only
-				$timeout(function(){$scope.showLoader = false; $scope.firewallRulesLists(1);
-                                appService.notify({message: 'Egress rule added successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});}, 25000);
+			      	        $timeout(function(){
+                                                $scope.showLoader = true;
+                                                $scope.formSubmitted = false;
+					        $scope.showLoader = false;
+                            appService.notify({message: 'Egress rule added successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                            $scope.firewallRules = {}; 
+                            $scope.firewallRulesLists(1);
+                            }, 25000);
 
                                 $scope.formSubmitted = false;
                                 $scope.templateCategory = 'egress';
@@ -301,7 +306,9 @@ $scope.stopVm = function(size,item) {
                             var hasServer = appService.crudService.add("egress", firewallRules);
                             hasServer.then(function (result) {
                                 $scope.formSubmitted = false;
+                                $scope.showLoader = false;
                                 appService.notify({message: 'Egress rule added successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                                $scope.firewallRules = {};
 				$scope.firewallRulesLists(1);
                                 $scope.templateCategory = 'egress';
                             }).catch(function (result) {
@@ -337,7 +344,7 @@ $scope.stopVm = function(size,item) {
             $scope.actionRule = true;
             $scope.cidrValidate = true;
         }
-
+}
     };
     $scope.firewallRuleIngress = {};
 
@@ -345,26 +352,31 @@ $scope.stopVm = function(size,item) {
     $scope.actionRules = false;
     $scope.cidrValidates = false;
     $scope.firewallRuleIngress.networkId = $stateParams.id;
-$scope.ingressSave = function (firewallRuleIngress) {
-	 $scope.showLoader = true;
+    $scope.ingressSave = function (form,firewallRuleIngress) {
         $scope.firewallRuleIngress.ipAddressId = $stateParams.id1;
         $scope.formSubmitted = true;
-        var CheckIP = /^([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\/([1-9]|[12][0-9]|3[012])$/;
+        if (form.$valid) {
+        $scope.showLoader = true;
+        var CheckIP = /^([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\/([0-9]|[12][0-9]|3[012])$/;
         if ($scope.firewallRuleIngress.sourceCIDR && $scope.firewallRuleIngress.protocol && $scope.firewallRuleIngress.startPort && $scope.firewallRuleIngress.endPort) {
 
             if (CheckIP.test($scope.firewallRuleIngress.sourceCIDR)) {
                 if ($scope.firewallRuleIngress.sourceCIDR && $scope.firewallRuleIngress.protocol && $scope.firewallRuleIngress.startPort && $scope.firewallRuleIngress.endPort) {
                     var hasServer = appService.crudService.add("egress/ingress", $scope.firewallRuleIngress);
-                    hasServer.then(function (result) {  // this is only run
-														// after $http completes
+                    hasServer.then(function (result) {
                         $scope.formSubmitted = false;
-                        $timeout(function(){$scope.showLoader = false; $scope.firewallRule(1);
-                                appService.notify({message: 'Firewall rule added successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});}, 25000);// completes
-
+                        $timeout(function(){
+                           $scope.showLoader = false;
+                           $scope.formSubmitted = false;
+                           appService.notify({message: 'Firewall rule added successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                           $scope.firewallRuleIngress ={};                           
+                           $scope.firewallRule(1);                       
+                            }, 25000);
                         $scope.firewallRule(1);
                         $scope.templateCategory = 'firewall';
                     }).catch(function (result) {
-					$scope.showLoader = false;
+                        $scope.formSubmitted = false;
+			$scope.showLoader = false;
                         if (!angular.isUndefined(result.data)) {
                             if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
                                 var msg = result.data.globalError[0];
@@ -391,6 +403,7 @@ $scope.ingressSave = function (firewallRuleIngress) {
             $scope.cidrValidates = true;
         }
     }
+};
     $scope.cancel = function () {
         $modalInstance.close();
     };
@@ -961,7 +974,8 @@ $scope.networkRestart ={};
         $scope.rules = appService.localStorageService.get("firewall");
 // var CheckIP = /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\/\d{1,2}$/;
         var CheckIP = /^([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\/([1-9]|[12][0-9]|3[012])$/;
-        if ($scope.cidr != null && $scope.cidr != '') {
+
+         if ($scope.cidr != null && $scope.cidr != '') {
 
             if (CheckIP.test($scope.cidr)) {
                 $scope.rules.push({'id': $scope.rules.length + 1, 'algorithm': 'roundrobin', 'name': '', 'cidr': $scope.cidr, 'protocol': $scope.protocolName.name, 'startPort': $scope.startPort, 'endPort': $scope.endPort, 'icmpType': $scope.icmpType, 'icmpCode': $scope.icmpCode, 'privateStart': '90', 'privateEnd': '120', 'vms': []});
