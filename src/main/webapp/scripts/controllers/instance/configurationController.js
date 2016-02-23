@@ -8,7 +8,11 @@ angular
     .module('homer')
     .controller('configurationCtrl', configurationCtrl)
 
-function configurationCtrl($scope, $stateParams, localStorageService, promiseAjax, $modal, $window, globalConfig, crudService, notify, $state) {
+function configurationCtrl($scope, $stateParams, appService, localStorageService, promiseAjax, $modal, $window, globalConfig, crudService, notify, $state) {
+
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.vmresize, function() {
+        $scope.instances = appService.webSocket;
+    });
 
     $scope.formSubmitted = false;
     $scope.instanceList = [];
@@ -120,7 +124,9 @@ function configurationCtrl($scope, $stateParams, localStorageService, promiseAja
           			$scope.instances.computeOffering = $scope.instance.computeOffering;
           			var hasServer =crudService.updates("virtualmachine/resize", $scope.instances);
           			hasServer.then(function (result) {
+			   	appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.vmresize,result.id);
           				$scope.showLoader= false;
+
           				notify({message: 'Updated successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
           				$state.reload();
           			}).catch(function (result) {

@@ -1,4 +1,4 @@
-function appService(crudService, localStorageService, globalConfig, promiseAjax, notify, utilService,  dialogService) {
+function appService(crudService, localStorageService, globalConfig, promiseAjax, notify, utilService,  dialogService, webSocket) {
 
 	var object = {};
 
@@ -28,6 +28,9 @@ function appService(crudService, localStorageService, globalConfig, promiseAjax,
 
     // Volume service call goes here
     object.volumeService = volumeService
+
+    // WebSocket service call goes here
+    object.webSocket = webSocket
 
     return object;
 

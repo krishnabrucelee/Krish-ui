@@ -276,7 +276,7 @@ $scope.stopVm = function(size,item) {
                             hasServer.then(function (result) {  // this is only
 				$timeout(function(){$scope.showLoader = false; $scope.firewallRulesLists(1);
                                 appService.notify({message: 'Egress rule added successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});}, 25000);
-				
+
                                 $scope.formSubmitted = false;
                                 $scope.templateCategory = 'egress';
                             }).catch(function (result) {
@@ -299,7 +299,7 @@ $scope.stopVm = function(size,item) {
                     } else {
                         if ($scope.firewallRules.icmpMessage && $scope.firewallRules.icmpCode) {
                             var hasServer = appService.crudService.add("egress", firewallRules);
-                            hasServer.then(function (result) { 
+                            hasServer.then(function (result) {
                                 $scope.formSubmitted = false;
                                 appService.notify({message: 'Egress rule added successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
 				$scope.firewallRulesLists(1);
@@ -1117,7 +1117,7 @@ $scope.openAddVM = function (form) {
       $scope.global.rulesLB[0].algorithm = $scope.loadBalancer.algorithms.value;
       //modalService.trigger('app/views/cloud/network/vm-list.jsp', 'lg');
 appService.dialogService.openDialog("app/views/cloud/network/vm-list.jsp", 'lg' , $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
-   
+
  $scope.lbvmLists = function () {
 
         $scope.lbvmList = [];

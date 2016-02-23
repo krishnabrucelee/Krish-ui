@@ -10,6 +10,67 @@ angular
 
 function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $window) {
 
+  $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.startVm, function() {
+        $scope.instance = appService.webSocket;
+    });
+
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.stopVm, function() {
+        $scope.instance = appService.webSocket;
+    });
+
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.rebootVm, function() {
+        $scope.instance = appService.webSocket;
+    });
+
+      $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.reInstallVm, function() {
+        $scope.instance = appService.webSocket;
+    });
+
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.stopVm, function() {
+        $scope.instance = appService.webSocket;
+    });
+
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.rebootVm, function() {
+        $scope.instance = appService.webSocket;
+    });
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.reDestroyVm, function() {
+        $scope.instance = appService.webSocket;
+    });
+
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.recoverVm, function() {
+        $scope.instance = appService.webSocket;
+    });
+
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.updateDisplayName, function() {
+        $scope.instance = appService.webSocket;
+    });
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.showDescription, function() {
+        $scope.instance = appService.webSocket;
+    });
+
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.attachISO, function() {
+        $scope.instance = appService.webSocket;
+    });
+
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.detachISO, function() {
+        $scope.instance = appService.webSocket;
+    });
+  
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.takeSnapshot, function() {
+        $scope.instance = appService.webSocket;
+    });
+
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.hostMigrate, function() {
+        $scope.instance = appService.webSocket;
+    });
+
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.showPassword, function() {
+        $scope.instance = appService.webSocket;
+    });
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.resetPassword, function() {
+        $scope.instance = appService.webSocket;
+    });
+
     $scope.instanceList = [];
     $scope.testvar = "test";
     $scope.global = appService.globalConfig;
@@ -98,6 +159,7 @@ $scope.list = function () {
 
 		  				var hasVm = appService.crudService.updates("virtualmachine/handleevent/vm", vms);
 		  				hasVm.then(function(result) {
+			  		    	 appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.startVm,result.id);
 		                    $state.reload();
 		  					$scope.cancel();
 		  				}).catch(function (result) {
@@ -136,6 +198,7 @@ $scope.list = function () {
   				var event = "VM.REBOOT";
   				var hasVm = appService.crudService.vmUpdate("virtualmachine/handlevmevent", item.uuid, event);
   				hasVm.then(function(result) {
+    	    				appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.rebootVm,result.id);
   					$state.reload();
   					 $scope.cancel();
   				}).catch(function (result) {
@@ -158,6 +221,7 @@ $scope.list = function () {
 	  				var event = "VM.RESTORE";
 	  				var hasVm = appService.crudService.vmUpdate("virtualmachine/handlevmevent", item.uuid, event);
 	  				hasVm.then(function(result) {
+    	    				appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.reInstallVm,result.id);
 	  					$state.reload();
 	  					 $scope.cancel();
 	  				}).catch(function (result) {
@@ -184,6 +248,7 @@ $scope.list = function () {
                                              var event = "VM.EXPUNGE";
                                              var hasVm = appService.crudService.vmUpdate("virtualmachine/handlevmevent", item.uuid, event);
                                              hasVm.then(function(result) {
+    	    				appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.reDestroyVm,result.id);
                                                      $scope.cancel();
                                                      window.location.href = "index#/instance/list";
                                                      $state.reload();
@@ -196,6 +261,7 @@ $scope.list = function () {
                                      var event = "VM.DESTROY";
                                      var hasVm = appService.crudService.vmUpdate("virtualmachine/handlevmevent", item.uuid, event);
                                      hasVm.then(function(result) {
+    	    				appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.reDestroyVm,result.id);
                                      window.location.href = "index#/instance/list";
                                              $state.reload();
                                              $scope.cancel();
@@ -223,6 +289,7 @@ $scope.list = function () {
 		  			     item.event = event;
 		  			     var hasVm = appService.crudService.updates("virtualmachine/handleevent/vm", item);
                                              hasVm.then(function(result) {
+                                             appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.stopVm,result.id);
                                                     $state.reload();
                                                     $scope.cancel();
                                              }).catch(function (result) {
@@ -233,6 +300,7 @@ $scope.list = function () {
 		  		          var event = "VM.STOP";
 		                                var hasVm = appService.crudService.vmUpdate("virtualmachine/handlevmevent", item.uuid, event);
 		                                hasVm.then(function(result) {
+                                             appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.stopVm,result.id);
 		                                        $state.reload();
 		                                         $scope.cancel();
 		                                }).catch(function (result) {
@@ -254,6 +322,7 @@ $scope.list = function () {
 		  					var event = "VM.CREATE";
 			  				var hasVm = appService.crudService.vmUpdate("virtualmachine/handlevmevent", item.uuid, event);
 			  				hasVm.then(function(result) {
+                                             appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.recoverVm,result.id);
 			  					$state.reload();
 			  					 $scope.cancel();
 			  				}).catch(function (result) {
@@ -290,6 +359,7 @@ $scope.list = function () {
 	  			 		$scope.vm.transDisplayName=$scope.vm.transDisplayName;
 	  			 		var hasVm = appService.crudService.update("virtualmachine", $scope.vm);
 		  				hasVm.then(function(result) {
+                                             appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.updateDisplayName,result.id);
 		  					appService.notify({message: "Updated successfully", classes: 'alert-success', "timeOut": "5000", templateUrl: $scope.homerTemplate});
 		  					$state.reload();
 		  					 $scope.cancel();
@@ -305,6 +375,7 @@ $scope.list = function () {
 				  		                        $scope.vm = $scope.instance;
 					  				var hasVm = appService.crudService.update("virtualmachine", $scope.vm);
 					  				hasVm.then(function(result) {
+                                             appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.showDescription,result.id);
 					  					$state.reload();
 					  					 $scope.cancel();
 					  				});
@@ -327,6 +398,7 @@ $scope.list = function () {
 
 						  				var hasVm = appService.crudService.updates("virtualmachine/handleevent/vm", tempVm);
 						  				hasVm.then(function(result) {
+                                             appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.attachISO,result.id);
 						  					$scope.homerTemplate = 'app/views/notification/notify.jsp';
 						                     appService.notify({message: $scope.isos.name+" is attaching to this VM", classes: 'alert-success', "timeOut": "5000", templateUrl: $scope.homerTemplate});
 						  					$state.reload();
@@ -351,6 +423,7 @@ $scope.list = function () {
 						  			console.log($scope.vm);
 							  				var hasVm = appService.crudService.updates("virtualmachine/handleevent/vm", $scope.vm);
 							  				hasVm.then(function(result) {
+                                             appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.detachISO,result.id);
 							  					$scope.homerTemplate = 'app/views/notification/notify.jsp';
 							                     appService.notify({message: $scope.vm.isoName+" is detaching from this VM", classes: 'alert-success', "timeOut": "5000", templateUrl: $scope.homerTemplate});
 							  					$state.reload();
@@ -380,6 +453,7 @@ $scope.list = function () {
 						                    	}
 								  				var hasVm = appService.crudService.add("vmsnapshot",$scope.vmsnapshot);
 								  				hasVm.then(function(result) {
+                                             appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.takeSnapshot,result.id);
 								  					$scope.homerTemplate = 'app/views/notification/notify.jsp';
 								                     appService.notify({message: $scope.vmsnapshot.name+" is creating for "+$scope.instance.name, classes: 'alert-success', "timeOut": "5000", templateUrl: $scope.homerTemplate});
 								  					 $state.reload();
@@ -407,6 +481,7 @@ $scope.list = function () {
 						                    	vms.hostUuid = $scope.host.uuid;
 									  				var hasVm = appService.crudService.updates("virtualmachine/handleevent/vm", vms);
 									  				hasVm.then(function(result) {
+                                             appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.hostMigrate,result.id);
 									  					$scope.homerTemplate = 'app/views/notification/notify.jsp';
 									                    appService.notify({message: $scope.host.name+" is migrating", classes: 'alert-success', "timeOut": "5000", templateUrl: $scope.homerTemplate});
 									  					$state.reload();
@@ -437,6 +512,7 @@ $scope.list = function () {
 					  $scope.showPassword = function(vm) {
 						  var hasInstance = appService.promiseAjax.httpTokenRequest(appService.crudService.globalConfig.HTTP_GET, appService.crudService.globalConfig.APP_URL + "virtualmachine"+"/getvncpassword/"+vm.id);
 						  hasInstance.then(function (result) {
+                                             appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.showPassword,result.id);
 		        				$scope.instance = result;
 		        				console.log($scope.instanceList);
 		        				appService.dialogService.openDialog("app/views/cloud/instance/show-reset-password.jsp", 'md',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
@@ -456,6 +532,7 @@ $scope.list = function () {
 
 			  				var hasVm = appService.crudService.updates("virtualmachine/handleevent/vm", $scope.vm);
 			  				hasVm.then(function(result) {
+                                             appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.resetPassword,result.id);
 			  					appService.notify({message: "VM password updated successfully. Please refresh and click show password", classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
 			  					$state.reload();
 			  					$scope.cancel();
