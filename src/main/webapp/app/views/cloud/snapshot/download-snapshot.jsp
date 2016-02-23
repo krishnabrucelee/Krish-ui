@@ -39,13 +39,14 @@
             </div>
         </div>
         <div class="modal-footer">
-            <span class="pull-left">
+            <!-- <span class="pull-left">
                 <h4 class="text-danger price-text m-l-lg">
                     <app-currency></app-currency>0.10 <span>/ hour</span> <span>/GB</span>
                 </h4>
-            </span>
-            <button type="button" class="btn btn-default " ng-click="cancel()" data-dismiss="modal2">Cancel</button>
-            <button class="btn btn-info" type="submit">Create</button>
+            </span> -->
+                                   									<get-loader-image data-ng-show="showLoader"></get-loader-image>
+            <button type="button" data-ng-hide="showLoader"  class="btn btn-default " ng-click="cancel()" data-dismiss="modal2">Cancel</button>
+            <button class="btn btn-info" data-ng-hide="showLoader"  type="submit">Create</button>
         </div>
     </div>
 </form>

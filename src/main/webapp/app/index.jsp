@@ -6,6 +6,15 @@
 <!DOCTYPE html>
 <html ng-app="homer">
 <head>
+<!-- Redirect to login when passing the wrong URL -->
+<script>
+    var pageUrl = window.location.href;
+    if(pageUrl.indexOf("index#/login") > -1 || pageUrl.endsWith("index#/")) {
+        var contextPath = '<%= request.getContextPath() %>';
+        var baseUrl = window.location.protocol + "//" + window.location.host + contextPath + '/login';
+        window.location = baseUrl;
+    }
+</script>
 
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -103,6 +112,9 @@
 
 	<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 	<script src="bower_components/jquery-flot/jquery.flot.js"></script>
+	<script src="bower_components/jquery-flot/jquery.flot.time.js"></script>
+		<script src="bower_components/jquery-flot/jquery.flot.tooltip.js"></script>
+	<script src="bower_components/jquery-flot/jquery.flot.stack.js"></script>
 	<script src="bower_components/jquery-flot/jquery.flot.resize.js"></script>
 	<script src="bower_components/jquery-flot/jquery.flot.pie.js"></script>
 	<script src="bower_components/flot.curvedlines/curvedLines.js"></script>
@@ -213,6 +225,7 @@
 	<script src="scripts/factories/volumeService.js"></script>
 	<script src="scripts/factories/crudService.js"></script>
 	<script src="scripts/factories/modalService.js"></script>
+	<script src="scripts/factories/monitorService.js"></script>
 	<script src="scripts/factories/Search.js"></script>
 	<script>
 	<!-- endbuild -->

@@ -14,7 +14,7 @@
 <!-- Main Wrapper -->
 <div id="wrapper">
     <div small-header class="normalheader transition ng-scope small-header">
-        <div class="hpanel" tour-step order="1" title="Page header" content="Place your page title and breadcrumb. Select small or large header or give the user choice to change the size." placement="bottom">
+        <div class="hpanel" tour-step order="1" content="Place your page title and breadcrumb. Select small or large header or give the user choice to change the size." placement="bottom">
             <div class="panel-body">
                 <div id="hbreadcrumb" class="pull-right">
                     <ol class="hbreadcrumb breadcrumb">
@@ -36,7 +36,13 @@
                     </ol>
                 </div>
                 <h2 class="font-light m-b-xs">
-                    <span data-ng-if="$state.current.data.pageTitle === 'common.roles'"><fmt:message key="common.roles" bundle="${msg}" /></span>
+                    <span id="roles_page_title" data-ng-if="$state.current.data.pageTitle === 'common.roles'"><fmt:message key="common.roles" bundle="${msg}" /></span>
+                </h2>
+                 <h2 class="font-light m-b-xs">
+                    <span id="edit_role_page_title" data-ng-if="$state.current.data.pageTitle === 'edit.role'"><fmt:message key="edit.role" bundle="${msg}" /></span>
+                </h2>
+                <h2 class="font-light m-b-xs">
+                    <span id="add_role_page_title" data-ng-if="$state.current.data.pageTitle === 'add.role'"><fmt:message key="add.role" bundle="${msg}" /></span>
                 </h2>
                 <small>{{ $state.current.data.pageDesc}}</small>
             </div>
@@ -55,15 +61,15 @@
                                 <panda-quick-search></panda-quick-search>
                                 <div class="clearfix"></div>
                                 <span class="pull-right m-l-sm m-t-sm m-b-sm">
-                                	<a class="btn btn-info" has-permission="ASSIGN_ROLE" data-ng-click="assignRole('lg')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="assign.user.role" bundle="${msg}" /></a>
-                                    <a class="btn btn-info" has-permission="CREATE_ROLE"  ui-sref="roles.list-add"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="add.role" bundle="${msg}" /></a>
-                                    <a class="btn btn-info" ui-sref="roles" title="<fmt:message key="common.refresh" bundle="${msg}" />"  ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
+                                	<a class="btn btn-info" id="roles_assign_user_role_button" has-permission="ASSIGN_ROLE" data-ng-click="assignRole('lg')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="assign.user.role" bundle="${msg}" /></a>
+                                    <a class="btn btn-info" id="roles_add_role_button" has-permission="CREATE_ROLE"  ui-sref="roles.list-add"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="add.role" bundle="${msg}" /></a>
+                                    <a class="btn btn-info" id="roles_refresh_button" ui-sref="roles" title="<fmt:message key="common.refresh" bundle="${msg}" />"  ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
                                 </span>
                             </div>
                         </div>
                         <div class="clearfix"></div>
                     </div>
-                    <div class="row">
+                    <div class="row" id="roles_pagination_container">
                             <div class="col-md-12 col-sm-12 col-xs-12 ">
 
                                 <div data-ng-show = "showLoader" style="margin: 1%">
@@ -71,7 +77,7 @@
       						</div>
                                     <div data-ng-hide = "showLoader" class="table-responsive font-normal">
                                         <div class="white-content">
-                                        <table cellspacing="1" cellpadding="1" class="table dataTable table-bordered table-striped">
+                                        <table cellspacing="1" cellpadding="1" id="roles_table" class="table dataTable table-bordered table-striped">
                                             <thead>
                                                 <tr>
                                                 <th   data-ng-click="changeSorting('name')" data-ng-class="sort.descending && sort.column =='name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.name" bundle="${msg}" />${messages.getString("locale.profile")}</th>
@@ -98,8 +104,8 @@
                                                         {{ role.description}}
                                                     </td>
                                                     <td>
-                                                        <a has-permission="EDIT_ROLE" class="icon-button" title="<fmt:message key="common.edit" bundle="${msg}" />" ui-sref="roles.list-edit({id: {{ role.id}}})" ><span class="fa fa-edit m-r"></span></a>
-                                                        <a has-permission="DELETE_ROLE" class="icon-button" title="<fmt:message key="common.delete" bundle="${msg}" />"  data-ng-click="delete('sm',role)"  ><span class="fa fa-trash"></span></a>
+                                                        <a has-permission="EDIT_ROLE" id="role_edit_button_{{role.id}}" data-unique-field="edit-{{ role.domain.name}}-{{ role.department.userName }}-{{ role.name}}" class="icon-button test_role_edit_button" title="<fmt:message key="common.edit" bundle="${msg}" />" ui-sref="roles.list-edit({id: {{ role.id}}})" ><span class="fa fa-edit m-r"></span></a>
+                                                        <a has-permission="DELETE_ROLE" id="role_delete_button_{{role.id}}" data-unique-field="delete-{{ role.domain.name}}-{{ role.department.userName }}-{{ role.name}}" class="icon-button test_role_delete_button" title="<fmt:message key="common.delete" bundle="${msg}" />"  data-ng-click="delete('sm',role)"  ><span class="fa fa-trash"></span></a>
                                                     </td>
                                                 </tr>
                                             </tbody>

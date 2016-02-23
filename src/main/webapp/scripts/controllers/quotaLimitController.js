@@ -76,15 +76,17 @@ function quotaLimitCtrl($scope, $state, $stateParams, appService, $window) {
 					if (object.resourceType == "Memory") {
 						object.available = Math.round(object.available / 1024);
 						object.usedLimit = Math.round( object.usedLimit / 1024);
+						object.resourceType = object.resourceType + " " + "(GB)";
 					}
 					if (object.available == -1 && object.resourceType == "PrimaryStorage" || object.available == -1 && object.resourceType == "SecondaryStorage") {
 					    object.usedLimit = Math.round( object.usedLimit / (1024 * 1024 * 1024));
+					    object.resourceType = object.resourceType + " " + "(GiB)";
 				    }
 					if (object.usedLimit == null) {
 						object.usedLimit = 0;
 					}
 					if (object.available == null || object.available == -1 || object.available == 0) {
-						object.available = 100 - object.usedLimit;
+						object.available = 100;
 					}
 					$scope.resourceListMap(object.resourceType,
 							object.usedLimit, object.available);
@@ -120,6 +122,7 @@ function quotaLimitCtrl($scope, $state, $stateParams, appService, $window) {
 	$scope.quotaLimitData = [];
 	$scope.resource = {};
 	$scope.resourceListMap = function(resourceName, available, used) {
+		console.log(resourceName);
 		$scope.resource[resourceName + "Limit"] = {
 			"title" : resourceName,
 			"options" : [ {

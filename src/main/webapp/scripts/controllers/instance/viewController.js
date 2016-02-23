@@ -10,6 +10,8 @@ angular
 
 function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $window) {
 
+
+
     $scope.instanceList = [];
     $scope.testvar = "test";
     $scope.global = appService.globalConfig;
@@ -21,8 +23,11 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
         hasServer.then(function (result) {
             $scope.instance = result;
 		    $scope.instanceList = result;
-		    $state.current.data.pageName = result.name;
-		    $state.current.data.id = result.id;
+		    setTimeout(function() {
+			$state.current.data.pageName = result.name;  
+		    	$state.current.data.id = result.id;
+		    }, 1000)
+		    
             var str = $scope.instance.cpuUsage;
             if(str!=null){
             var newString = str.replace(/^_+|_+$/g,'');
@@ -110,26 +115,6 @@ $scope.list = function () {
 	       }]);
   };
 
-  $scope.stopVm = function(size,item) {
-  	 appService.dialogService.openDialog("app/views/cloud/instance/stop.jsp", size, $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance, $rootScope) {
-  		 $scope.item =item;
-  		 $scope.vmStop = function(item) {
-  				var event = "VM.STOP";
-  				var hasVm = appService.crudService.vmUpdate("virtualmachine/handlevmevent", item.uuid, event);
-  				hasVm.then(function(result) {
-  					$state.reload();
-  					 $scope.cancel();
-  				}).catch(function (result) {
-  				  $state.reload();
-                                  $scope.cancel();
-                       });
-  			},
-			  $scope.cancel = function () {
-               $modalInstance.close();
-           };
-       }]);
-  };
-
   $scope.isoList = function () {
       var hasisoList = appService.crudService.listAll("iso/list");
       hasisoList.then(function (result) {
@@ -191,35 +176,72 @@ $scope.list = function () {
 	          value1 : false,
 	          value2 : true
 	        };
-	  $scope.reDestroyVm = function(size,item) {
-		  	 appService.dialogService.openDialog("app/views/cloud/instance/vmdestroy.jsp", size,  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
-		  		 $scope.item =item;
-		  		 $scope.vmDestroy = function(item) {
-		  			$scope.actionExpunge = true;
-		  				if ($scope.agree.value1) {
-		  					var event = "VM.EXPUNGE";
-			  				var hasVm = appService.crudService.vmUpdate("virtualmachine/handlevmevent", item.uuid, event);
-			  				hasVm.then(function(result) {
-			  				        $scope.cancel();
-			  				        window.location.href = "index#/instance/list";
-			  				        $state.reload();
-			  				}).catch(function (result) {
-			  				  $state.reload();
-                                                          $scope.cancel();
 
-		                            });
+	  $scope.reDestroyVm = function(size,item) {
+              appService.dialogService.openDialog("app/views/cloud/instance/vmdestroy.jsp", size,  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
+                      $scope.item =item;
+                      $scope.vmDestroy = function(item) {
+                             $scope.actionExpunge = true;
+                                     if ($scope.agree.value1) {
+                                             var event = "VM.EXPUNGE";
+                                             var hasVm = appService.crudService.vmUpdate("virtualmachine/handlevmevent", item.uuid, event);
+                                             hasVm.then(function(result) {
+                                                     $scope.cancel();
+                                                     window.location.href = "index#/instance/list";
+                                                     $state.reload();
+                                             }).catch(function (result) {
+                                               $state.reload();
+                                               $scope.cancel();
+
+                                 });
+                             } else {
+                                     var event = "VM.DESTROY";
+                                     var hasVm = appService.crudService.vmUpdate("virtualmachine/handlevmevent", item.uuid, event);
+                                     hasVm.then(function(result) {
+                                     window.location.href = "index#/instance/list";
+                                             $state.reload();
+                                             $scope.cancel();
+                                     }).catch(function (result) {
+                                       $state.reload();
+                                       $scope.cancel();
+                         });
+                             }
+                             },
+                               $scope.cancel = function () {
+                    $modalInstance.close();
+                };
+            }]);
+       };
+
+	  $scope.stopVm = function(size,item) {
+	                  $scope.item =item;
+		  	 appService.dialogService.openDialog("app/views/cloud/instance/stop.jsp", size,  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
+		  		 $scope.item = item;
+		  		$scope.vmStop = function(item) {
+	                                var event = "VM.STOP";
+		  			$scope.actionExpunge = true;
+		  			if ($scope.agree.value1) {
+		  			     item.transForcedStop = $scope.agree.value1;
+		  			     item.event = event;
+		  			     var hasVm = appService.crudService.updates("virtualmachine/handleevent/vm", item);
+                                             hasVm.then(function(result) {
+                                                    $state.reload();
+                                                    $scope.cancel();
+                                             }).catch(function (result) {
+                                                    $state.reload();
+                                                    $scope.cancel();
+                                             });
 		  		        } else {
-		  		        	var event = "VM.DESTROY";
-		  		        	var hasVm = appService.crudService.vmUpdate("virtualmachine/handlevmevent", item.uuid, event);
-		  		        	hasVm.then(function(result) {
-		  		        	window.location.href = "index#/instance/list";
-		  					$state.reload();
-		  					$scope.cancel();
-		  				}).catch(function (result) {
-		  				  $state.reload();
-                                                  $scope.cancel();
-	                            });
-		  		        }
+		  		          var event = "VM.STOP";
+		                                var hasVm = appService.crudService.vmUpdate("virtualmachine/handlevmevent", item.uuid, event);
+		                                hasVm.then(function(result) {
+		                                        $state.reload();
+		                                         $scope.cancel();
+		                                }).catch(function (result) {
+		                                  $state.reload();
+		                                  $scope.cancel();
+		                                });
+		  		          }
 		  			},
 					  $scope.cancel = function () {
 		               $modalInstance.close();
@@ -278,9 +300,11 @@ $scope.list = function () {
 	  		 };
 
 			  $scope.showDescription = function(vm) {
+			                 $scope.instance = vm;
 				  	 appService.dialogService.openDialog("app/views/cloud/instance/editnote.jsp", 'sm',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
-				  		 $scope.vm = vm;
+
 				  		 $scope.update= function(form) {
+				  		                        $scope.vm = $scope.instance;
 					  				var hasVm = appService.crudService.update("virtualmachine", $scope.vm);
 					  				hasVm.then(function(result) {
 					  					$state.reload();

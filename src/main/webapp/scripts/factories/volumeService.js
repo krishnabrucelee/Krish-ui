@@ -19,9 +19,9 @@ function volumeService($window, $rootScope, localStorageService, $stateParams, n
         diskOffer: {
             category : 'static',
             diskSize: {
-                floor: 0,
+                floor: 1,
                 ceil: 1024,
-                value: 0
+                value: 1
             },
             iops: {
                 floor: 0,

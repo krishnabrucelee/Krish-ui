@@ -39,7 +39,12 @@
                                 <th class="col-md-1 col-sm-1"><fmt:message key="common.action" bundle="${msg}" /></th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody data-ng-hide="snapshotList.length > 0">
+						<tr>
+						<td class="col-md-11 col-sm-11" colspan="11"><fmt:message key="common.no.records.found" bundle="${msg}" />!!</td>
+						</tr>
+						</tbody>
+                        <tbody data-ng-show="snapshotList.length > 0">
                             <tr data-ng-repeat="snapshot in snapshotList| filter:quickSearch">
                                 <td>
                                     {{ snapshot.name}}
@@ -54,23 +59,26 @@
                                     {{snapshot.volume.volumeType}}
                                 </td>
                                 <td>
-                                    {{ snapshot.createdDate}}
+                                    {{ snapshot.createdDateTime*1000 | date:'yyyy-MM-dd HH:mm:ss'}}
                                 </td>
                                 <td>
                                     {{ snapshot.status}}
                                 </td>
                                 <td>
-                                    <a class="icon-button" title="Create Volume" data-ng-click="createVolume()">
+                                   <a class="icon-button" title="Create Volume" data-ng-click="createVolume('md', snapshot)">
                                         <span class="fa fa-plus-square"> </span>
                                     </a>
-                                    <a class="icon-button" title="Delete Snapshot" data-ng-click="deleteSnapshot('sm', snapshot)" ><span class="fa fa-trash"></span></a>
+                                     <a class="icon-button" title="Revert Snapshot" data-ng-click="revertSnapshot('md', snapshot)">
+                                        <span class="fa fa-rotate-left"> </span>
+                                    </a>
+                                    <a class="icon-button" title="Delete Snapshot" data-ng-click="deleteVolumeSnapshot('sm', snapshot)" ><span class="fa fa-trash"></span></a>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
-            <pagination-content></pagination-content>
+           <pagination-content></pagination-content>
         </div>
     </div>
 </div>

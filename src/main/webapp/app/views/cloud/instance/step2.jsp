@@ -56,7 +56,7 @@
 				data-ng-class="{ 'text-danger' : instanceForm.memory.$modelValue < 512 }">
 				<label class="col-md-3 col-sm-3 control-label"><fmt:message key="memory" bundle="${msg}" /> :</label>
 				<div class="col-md-5 col-sm-5">
-					<rzslider rz-slider-model="instance.computeOffer.memory.value"
+					<rzslider rz-slider-model="instance.computeOffer.memory.value" data-ng-init="instance.computeOffer.memory.value = 512"
 						rz-slider-floor="instance.computeOffer.memory.floor"
 						rz-slider-ceil="instance.computeOffer.memory.ceil"
 						rz-slider-always-show-bar="true"></rzslider>
@@ -93,10 +93,10 @@
 				</div>
 			</div>
 			<div class="row m-b-xl"
-				data-ng-class="{ 'text-danger' : instanceForm.cpuSpeed.$modelValue < 1000}">
+				data-ng-class="{ 'text-danger' : instanceForm.cpuSpeed.$modelValue < 500 && OfferingSubmitted}">
 				<label class="col-md-3 col-sm-3 control-label"><fmt:message key="cpu.speed" bundle="${msg}" /> :</label>
 				<div class="col-md-5 col-sm-5">
-					<rzslider rz-slider-model="instance.computeOffer.cpuSpeed.value"
+					<rzslider rz-slider-model="instance.computeOffer.cpuSpeed.value" data-ng-init="instance.computeOffer.cpuSpeed.value = 500"
 						rz-slider-floor="instance.computeOffer.cpuSpeed.floor"
 						rz-slider-ceil="instance.computeOffer.cpuSpeed.ceil"
 						rz-slider-always-show-bar="true">
@@ -119,7 +119,7 @@
 				data-ng-show="instance.computeOffering.customizedIops">
 				<div class="col-md-5 col-sm-6">
 					<div class="form-group"
-						data-ng-class="{ 'text-danger' : instanceForm.minIops.$modelValue <= 0 && OfferingSubmitted}">
+						data-ng-class="{ 'text-danger' : instanceForm.minIops.$modelValue < 0 && OfferingSubmitted}">
 						<label class="col-md-7 col-sm-7 control-label"><fmt:message key="min.iops" bundle="${msg}" /> :</label>
 						<div class="col-md-5 col-sm-5">
 							<input class="form-control ng-pristine ng-valid ng-touched"
@@ -130,7 +130,7 @@
 				</div>
 				<div class="col-md-5 col-sm-6">
 					<div class="form-group"
-						data-ng-class="{ 'text-danger' : instanceForm.maxIops.$modelValue <= 0 && OfferingSubmitted}">
+						data-ng-class="{ 'text-danger' : instanceForm.maxIops.$modelValue < 0 && OfferingSubmitted}">
 						<label class="col-md-7 col-sm-7 control-label"><fmt:message key="max.iops" bundle="${msg}" /> :</label>
 						<div class="col-md-5 col-sm-5">
 							<input class="form-control ng-pristine ng-valid ng-touched"
@@ -167,7 +167,7 @@
 		</div>
 		<div data-ng-show="instance.storageOffering.isCustomDisk">
 			<div class="form-group"
-				data-ng-class="{ 'text-danger' : instanceForm.diskSize <= 0 && instanceForm.diskSize.$invalid && formSubmitted}">
+				data-ng-class="{ 'text-danger' : instanceForm.diskSize < 0}">
 				<div class="row">
 					<label class="col-md-3 col-xs-12 col-sm-2 control-label"><fmt:message key="common.size" bundle="${msg}" /> <fmt:message key="common.gb" bundle="${msg}" /> <span class="text-danger">*</span>
 					</label>
@@ -338,7 +338,7 @@
 									<tr data-ng-repeat="networks in instance.networks.networkList">
 										<td>
 											<label>
-												<input data-ng-model="instance.networks[$index]" type="checkbox"
+												<input data-ng-model="instance.networks[$index]" type="checkbox" data-ng-checked="false"
 													required="true" name="network" value="{{networks}}">
 													{{ networks.name}}
 											</label>

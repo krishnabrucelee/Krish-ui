@@ -5,7 +5,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <div class="inmodal" >
     <div class="modal-header">
-        <panda-modal-header hide-zone="false" page-icon="fa fa-warning" page-title="<fmt:message key="delete.confirmation" bundle="${msg}" />"></panda-modal-header>
+        <panda-modal-header id="delete_department_page_title" hide-zone="false" page-icon="fa fa-warning" page-title="<fmt:message key="delete.confirmation" bundle="${msg}" />"></panda-modal-header>
         <!--<h2 class="modal-title" id="myModalLabel">Confirm Detach Volume</h2>-->
     </div>
 
@@ -24,8 +24,8 @@
 
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-default " ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.cancel" bundle="${msg}" /></button>
-        <button type="button" class="btn btn-default btn-danger2" ng-click="ok(deleteObject)" data-dismiss="modal"><fmt:message key="common.ok" bundle="${msg}" /></button>
+        <button type="button" id="delete_department_cancel_button" class="btn btn-default " ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.cancel" bundle="${msg}" /></button>
+        <button type="button" id="delete_department_ok_button" class="btn btn-default btn-danger2" ng-click="ok(deleteObject)" data-dismiss="modal"><fmt:message key="common.ok" bundle="${msg}" /></button>
 
     </div>
 </div>
