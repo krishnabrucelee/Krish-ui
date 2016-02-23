@@ -10,6 +10,8 @@ angular
 
 function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $window) {
 
+
+
     $scope.instanceList = [];
     $scope.testvar = "test";
     $scope.global = appService.globalConfig;
