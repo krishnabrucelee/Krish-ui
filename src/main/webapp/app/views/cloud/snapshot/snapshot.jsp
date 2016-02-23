@@ -17,7 +17,7 @@
                             <panda-quick-search></panda-quick-search>
                             <div class="clearfix"></div>
                             <span class="pull-right m-l-sm m-t-sm">
-                                <a class="btn btn-info"  ng-click="openAddSnapshotContainer()"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span>Create Snapshot</a>
+                                <a class="btn btn-info"  has-permission= "DISK_SNAPSHOT" ng-click="openAddSnapshotContainer()"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span>Create Snapshot</a>
                                 <a class="btn btn-info" title="Refresh" ><span class="fa fa-refresh fa-lg"></span></a>
                             </span>
                         </div>
