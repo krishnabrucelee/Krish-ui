@@ -3,22 +3,23 @@ function webSocket($rootScope,$timeout) {
 
     webSocket.message = '';
 
-    webSocket.prepForBroadcast = function(msg,id) {
+    webSocket.prepForBroadcast = function(msg,id,userId) {
         this.message = msg;
         this.id = id;
-   //     this.broadcastItem(msg,id);
+        this.userId = userId;
+       // this.broadcastItem(msg,id,userId);
     };
 
-//    webSocket.broadcastItem = function(msg,id) {
+//    webSocket.broadcastItem = function(msg,id,userId) {
 //
 //    	$timeout(function(){
 //
-//    		$rootScope.$broadcast(msg);
+//    		$rootScope.$broadcast(msg,id,userId);
 //    		},
 //
-//    3000);
-
-  //  };
+//    1000);
+//
+//    };
 
     return webSocket;
 };

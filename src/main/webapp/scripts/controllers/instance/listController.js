@@ -12,15 +12,16 @@ function instanceListCtrl($scope, $sce, $log, $filter, dialogService, promiseAja
 
 
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.startVm, function() {
-    //    $scope.instanceList = appService.webSocket;
+
+     $scope.instanceList = appService.webSocket;
     });
 
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.stopVm, function() {
-   //     $scope.instanceList = appService.webSocket;
+        $scope.instanceList = appService.webSocket;
     });
 
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.rebootVm, function() {
-     //   $scope.instanceList = appService.webSocket;
+        $scope.instanceList = appService.webSocket;
     });
 
 	$scope.instanceList = [];
@@ -55,7 +56,7 @@ function instanceListCtrl($scope, $sce, $log, $filter, dialogService, promiseAja
 		   hasVms.then(function(result) {
 			   var consoleUrl = result.success;
 			   window.open($sce.trustAsResourceUrl(consoleUrl), vm.name + vm.id,'width=750,height=460');
-			   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.showConsole,result.id);
+			   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.showConsole,result.id,$scope.global.sessionValues.id);
 		   });
 
 	   }
@@ -81,7 +82,7 @@ function instanceListCtrl($scope, $sce, $log, $filter, dialogService, promiseAja
 			  		   var hasVm = appService.crudService.updates("virtualmachine/handleevent/vm", vms);
 
 			  		       hasVm.then(function(result) {
-			  		    	 appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.startVm,result.id);
+			  		    	 appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.startVm,result.id,$scope.global.sessionValues.id);
 			                   $state.reload();
 			  				   $scope.cancel();
 			  			   }).catch(function (result) {
@@ -116,7 +117,7 @@ function instanceListCtrl($scope, $sce, $log, $filter, dialogService, promiseAja
                                  hasVm.then(function(result) {
                                         $state.reload();
                                         $scope.cancel();
-                                        appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.stopVm,result.id);
+                                        appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.stopVm,result.id,$scope.global.sessionValues.id);
                                  }).catch(function (result) {
                                         $state.reload();
                                         $scope.cancel();
@@ -128,7 +129,7 @@ function instanceListCtrl($scope, $sce, $log, $filter, dialogService, promiseAja
                                     hasVm.then(function(result) {
                                             $state.reload();
                                              $scope.cancel();
-                                             appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.stopVm,result.id);
+                                             appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.stopVm,result.id,$scope.global.sessionValues.id);
                                     }).catch(function (result) {
                                       $state.reload();
                                       $scope.cancel();
@@ -150,7 +151,7 @@ function instanceListCtrl($scope, $sce, $log, $filter, dialogService, promiseAja
     				hasVm.then(function(result) {
     					$state.reload();
     					 $scope.cancel();
-    	    				appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.rebootVm,result.id);
+    	    				appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.rebootVm,result.id,$scope.global.sessionValues.id);
     				});
     			},
 			  $scope.cancel = function () {
