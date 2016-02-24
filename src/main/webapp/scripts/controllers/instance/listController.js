@@ -13,15 +13,15 @@ function instanceListCtrl($scope, $sce, $log, $filter, dialogService, promiseAja
 
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.startVm, function() {
 
-     $scope.instanceList = appService.webSocket;
+  //   $scope.instanceList = appService.webSocket;
     });
 
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.stopVm, function() {
-        $scope.instanceList = appService.webSocket;
+    //    $scope.instanceList = appService.webSocket;
     });
 
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.rebootVm, function() {
-        $scope.instanceList = appService.webSocket;
+   //     $scope.instanceList = appService.webSocket;
     });
 
 	$scope.instanceList = [];
