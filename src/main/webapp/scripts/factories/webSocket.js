@@ -18,7 +18,7 @@ function webSocket($rootScope,$timeout) {
 //
 //    3000);
 
-    };
+  //  };
 
     return webSocket;
 };
