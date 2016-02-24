@@ -11,7 +11,7 @@ angular
 function configurationCtrl($scope, $stateParams, appService, localStorageService, promiseAjax, $modal, $window, globalConfig, crudService, notify, $state) {
 
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.vmresize, function() {
-        $scope.instances = appService.webSocket;
+      //  $scope.instances = appService.webSocket;
     });
 
     $scope.formSubmitted = false;

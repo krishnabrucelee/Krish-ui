@@ -11,10 +11,10 @@ angular
 function secondaryIpCtrl($scope, $modal, $state, $window, $stateParams,appService) {
 
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.acquireNewIP, function() {
-        $scope.nicIPLists = appService.webSocket;
+  //      $scope.nicIPLists = appService.webSocket;
     });
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.deleteIP, function() {
-        $scope.nicIPLists = appService.webSocket;
+    //    $scope.nicIPLists = appService.webSocket;
     });
 
     $scope.nicIPLists = {};

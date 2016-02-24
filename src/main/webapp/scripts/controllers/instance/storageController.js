@@ -10,31 +10,31 @@ angular
 function storageCtrl($scope, $state, $stateParams, appService, $window, volumeService) {
 
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.attachVolume, function() {
-        $scope.volumeList  = appService.webSocket;
+      //  $scope.volumeList  = appService.webSocket;
     });
 
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.detachVolume, function() {
-       $scope.volumeList  = appService.webSocket;
+      // $scope.volumeList  = appService.webSocket;
     });
 
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.createSnapshot, function() {
-        $scope.volume = appService.webSocket;
+      //  $scope.volume = appService.webSocket;
     });
-    
+
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.volumeresize, function() {
-        $scope.volume = appService.webSocket;
+      //  $scope.volume = appService.webSocket;
     });
 
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.volumesave, function() {
-        $scope.volumeListt = appService.webSocket;
+      //  $scope.volumeListt = appService.webSocket;
     });
 
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.uploadVolume, function() {
-        $scope.volume = appService.webSocket;
+      //  $scope.volume = appService.webSocket;
     });
 
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.volumedelete, function() {
-        $scope.volumeList = appService.webSocket;
+      //  $scope.volumeList = appService.webSocket;
     });
 
     $scope.global = appService.globalConfig;

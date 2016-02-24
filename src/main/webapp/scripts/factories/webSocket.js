@@ -6,7 +6,7 @@ function webSocket($rootScope,$timeout) {
     webSocket.prepForBroadcast = function(msg,id) {
         this.message = msg;
         this.id = id;
-        this.broadcastItem(msg,id);
+   //     this.broadcastItem(msg,id);
     };
 
 //    webSocket.broadcastItem = function(msg,id) {

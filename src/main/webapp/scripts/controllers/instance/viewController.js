@@ -11,64 +11,64 @@ angular
 function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $window) {
 
   $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.startVm, function() {
-        $scope.instance = appService.webSocket;
+      //  $scope.instance = appService.webSocket;
     });
 
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.stopVm, function() {
-        $scope.instance = appService.webSocket;
+     //   $scope.instance = appService.webSocket;
     });
 
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.rebootVm, function() {
-        $scope.instance = appService.webSocket;
+      //  $scope.instance = appService.webSocket;
     });
 
       $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.reInstallVm, function() {
-        $scope.instance = appService.webSocket;
+       // $scope.instance = appService.webSocket;
     });
 
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.stopVm, function() {
-        $scope.instance = appService.webSocket;
+       // $scope.instance = appService.webSocket;
     });
 
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.rebootVm, function() {
-        $scope.instance = appService.webSocket;
+      //  $scope.instance = appService.webSocket;
     });
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.reDestroyVm, function() {
-        $scope.instance = appService.webSocket;
+      //  $scope.instance = appService.webSocket;
     });
 
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.recoverVm, function() {
-        $scope.instance = appService.webSocket;
+      //  $scope.instance = appService.webSocket;
     });
 
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.updateDisplayName, function() {
-        $scope.instance = appService.webSocket;
+       // $scope.instance = appService.webSocket;
     });
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.showDescription, function() {
-        $scope.instance = appService.webSocket;
+       // $scope.instance = appService.webSocket;
     });
 
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.attachISO, function() {
-        $scope.instance = appService.webSocket;
+       // $scope.instance = appService.webSocket;
     });
 
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.detachISO, function() {
-        $scope.instance = appService.webSocket;
+       // $scope.instance = appService.webSocket;
     });
-  
+
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.takeSnapshot, function() {
-        $scope.instance = appService.webSocket;
+       // $scope.instance = appService.webSocket;
     });
 
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.hostMigrate, function() {
-        $scope.instance = appService.webSocket;
+        //$scope.instance = appService.webSocket;
     });
 
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.showPassword, function() {
-        $scope.instance = appService.webSocket;
+      //  $scope.instance = appService.webSocket;
     });
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.resetPassword, function() {
-        $scope.instance = appService.webSocket;
+       // $scope.instance = appService.webSocket;
     });
 
     $scope.instanceList = [];
@@ -83,10 +83,10 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
             $scope.instance = result;
 		    $scope.instanceList = result;
 		    setTimeout(function() {
-			$state.current.data.pageName = result.name;  
+			$state.current.data.pageName = result.name;
 		    	$state.current.data.id = result.id;
 		    }, 1000)
-		    
+
             var str = $scope.instance.cpuUsage;
             if(str!=null){
             var newString = str.replace(/^_+|_+$/g,'');

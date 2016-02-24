@@ -11,13 +11,13 @@ angular
 function networkCtrl($scope, $modal, $state, $window, $stateParams,appService) {
 
    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.addNicToVm, function() {
-        $scope.nicList = appService.webSocket;
+  //      $scope.nicList = appService.webSocket;
     });
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.removeNicToVM, function() {
-        $scope.nicList = appService.webSocket;
+   //     $scope.nicList = appService.webSocket;
     });
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.updateNicToVM, function() {
-        $scope.nicList = appService.webSocket;
+    //    $scope.nicList = appService.webSocket;
     });
 
     $scope.nicIPLists = {};

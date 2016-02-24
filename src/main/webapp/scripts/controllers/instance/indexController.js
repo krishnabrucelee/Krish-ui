@@ -12,11 +12,11 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
 
 
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.vmCreate, function() {
-        $scope.instanceList = appService.webSocket;
+       // $scope.instanceList = appService.webSocket;
     });
 
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.vmnetworksave, function() {
-        $scope.instance.networks.networkOfferList  = appService.webSocket;
+       // $scope.instance.networks.networkOfferList  = appService.webSocket;
     });
 
     $scope.global = appService.globalConfig;
