@@ -10,6 +10,15 @@ angular
 
 function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter, appService, $window, sweetAlert) {
 
+
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.vmCreate, function() {
+       // $scope.instanceList = appService.webSocket;
+    });
+
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.vmnetworksave, function() {
+       // $scope.instance.networks.networkOfferList  = appService.webSocket;
+    });
+
     $scope.global = appService.globalConfig;
     $scope.instanceList = [];
     $scope.formElements = [];
@@ -602,6 +611,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
         var hasServer = appService.crudService.add("virtualmachine", instance);
         hasServer.then(function (result) {  // this is only run after $http completes
             $scope.showLoader = false;
+   	    appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.vmCreate,result.id);
             appService.notify({message: "Instance creation started", classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
             $modalInstance.close();
             $state.reload();
@@ -689,7 +699,6 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
 
                         $scope.instanceNetwork = {
                         };
-                        // appService.localStorageService.remove('instanceNetworkList');
 
                         $scope.networks.plan = $scope.networks.networkOffers.name;
 
@@ -911,6 +920,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
 
             var hasguestNetworks = appService.crudService.add("guestnetwork", guestnetwork);
             hasguestNetworks.then(function (result) {
+   	    appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.vmnetworksave,result.id);
                 if ($scope.instance.project == null) {
                     $scope.listNetworks($scope.instance.department.id, 'department');
                 } else {

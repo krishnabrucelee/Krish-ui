@@ -50,6 +50,16 @@ function globalConfig($window) {
 
         	     },
 
+        webSocketEvents:{
+                    vmEvents:{showConsole:'SHOWCONSOLE',stopVm:'STOPVM',rebootVm:'REBOOTVM',startVm:'STARTVM',vmresize:'SAVE',
+                    addNicToVm:'ADDNICTOVIRTUALMACHINE',updateNicToVM:'UPDATENICTOVM',removeNicToVM:'REMOVENICTOVM',deleteIP:'DELETEIP',
+                    acquireNewIP:'ACQUIRENEWIP',vmCreate:'SUBMT',vmnetworksave:'SAVENETWORK',reInstallVm:'REINSTALLVM',reDestroyVm:'REDESTROYVM',
+                    recoverVm:'RECOVERVM',updateDisplayName:'UPDATEDISPLAYNAME',showDescription:'SHOWDESCRIPTION',attachISO:'ATTACHISO',
+                    detachISO:'DETACHISO',takeSnapshot:'TAKESNAPSHOT',hostMigrate:'HOSTMIGRATE',resetPassword:'RESETPASSWORD',showPassword:'SHOWPASSWORD',
+                    attachVolume:'ATTACH',detachVolume:'DETACHVOLUME',createSnapshot:'CREATESNAPSHOT',volumeresize:'UPDATE',volumesave:'SAVE',
+                    uploadVolume:'UPLOADVOLUME',volumedelete:'DELETE'},
+        },
+
 
         HTTP_GET: 'GET',
         HTTP_POST: 'POST',

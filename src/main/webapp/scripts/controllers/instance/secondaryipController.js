@@ -10,6 +10,13 @@ angular
 
 function secondaryIpCtrl($scope, $modal, $state, $window, $stateParams,appService) {
 
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.acquireNewIP, function() {
+  //      $scope.nicIPLists = appService.webSocket;
+    });
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.deleteIP, function() {
+    //    $scope.nicIPLists = appService.webSocket;
+    });
+
     $scope.nicIPLists = {};
     $scope.nicForm = {};
     $scope.global = appService.globalConfig;
@@ -58,6 +65,7 @@ function secondaryIpCtrl($scope, $modal, $state, $window, $stateParams,appServic
                     	$scope.showLoader = true;
                         var hasServer = appService.crudService.add("nics/acquire/" + $scope.nic.id,nic);
                         hasServer.then(function (result) {
+			   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.acquireNewIP,result.id);
                             $scope.formSubmitted = false;
                             $modalInstance.close();
                             $scope.showLoader = false;
@@ -99,6 +107,7 @@ function secondaryIpCtrl($scope, $modal, $state, $window, $stateParams,appServic
                     	nic.isActive = false;
  			var hasServer =  appService.crudService.add("nics/release/" + nic.id,nic);
                         hasServer.then(function (result) {
+			   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.deleteIP,result.id);
                             $scope.showLoader = false;
                             appService.notify({message: 'IP deleted successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
 			    $scope.nicIPList();
