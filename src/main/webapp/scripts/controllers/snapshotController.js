@@ -7,7 +7,7 @@ angular
     .controller('addConfirmSnapshotCtrl', addConfirmSnapshotCtrl)
     .controller('snapshotListCtrl', snapshotListCtrl)
 
-    function addConfirmSnapshotCtrl($scope, globalConfig, $window, notify) {
+    function addConfirmSnapshotCtrl($scope, globalConfig, $window, appService,notify) {
 
     $scope.global = globalConfig;
 
@@ -18,7 +18,7 @@ angular
     $scope.formSubmitted = false;
 
 }
-    function addSnapshotCtrl($scope, crudService, dialogService, globalConfig, $window, notify) {
+    function addSnapshotCtrl($scope, appService, crudService, dialogService, globalConfig, $window, notify) {
 
     $scope.global = globalConfig;
 
@@ -28,7 +28,7 @@ angular
     };
     $scope.formSubmitted = false}
 
-function addVMSnapshotCtrl($scope, globalConfig, $window, notify) {
+function addVMSnapshotCtrl($scope, globalConfig, $window,appService, notify) {
 
     $scope.global = globalConfig;
 
@@ -77,6 +77,29 @@ function addVMSnapshotCtrl($scope, globalConfig, $window, notify) {
 };
 function snapshotListCtrl($scope, crudService,$state, $timeout, promiseAjax, globalConfig,
 localStorageService, $window, dialogService,$stateParams, notify, appService) {
+
+ $scope.$on(appService.globalConfig.webSocketEvents.snapshotEvents.createvmsnapshot, function() {
+    //    $scope.vmSnapshotList = appService.webSocket;
+    });
+ $scope.$on(appService.globalConfig.webSocketEvents.snapshotEvents.deleteSnapshots, function() {
+    //    $scope.snapshotList = appService.webSocket;
+    });
+ $scope.$on(appService.globalConfig.webSocketEvents.snapshotEvents.deleteVolumeSnapshot, function() {
+    //    $scope.vmSnapshotList = appService.webSocket;
+    });
+ $scope.$on(appService.globalConfig.webSocketEvents.snapshotEvents.restoresnapshot, function() {
+    //    $scope.snapshot = appService.webSocket;
+    });
+ $scope.$on(appService.globalConfig.webSocketEvents.snapshotEvents.createsnapshot, function() {
+    //    $scope.snapshotList = appService.webSocket;
+    });
+ $scope.$on(appService.globalConfig.webSocketEvents.snapshotEvents.createsnapshotvolume, function() {
+    //    $scope.snapshot = appService.webSocket;
+    });
+ $scope.$on(appService.globalConfig.webSocketEvents.snapshotEvents.revertSnapshot, function() {
+    //    $scope.snapshot = appService.webSocket;
+    });
+
 	$scope.confirmsnapshot = {};
 	$scope.global = globalConfig;
 	$scope.global = crudService.globalConfig;
@@ -130,9 +153,10 @@ localStorageService, $window, dialogService,$stateParams, notify, appService) {
                    	$scope.vmsnapshot.vmId = $scope.vmsnapshot.vm.id;
 		  				var hasVm = crudService.add("vmsnapshot",$scope.vmsnapshot);
 		  				hasVm.then(function(result) {
+			   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.snapshotEvents.createvmsnapshot,result.id,$scope.global.sessionValues.id);
 		  					$state.reload();
 		  					 $scope.cancel();
-		  				}).catch(function (result) {
+		  				}).catch(function (result) { 
 		  				  $scope.homerTemplate = 'app/views/notification/notify.jsp';
 		                     notify({message: result.data.globalError[0], classes: 'alert-danger', "timeOut": "5000", templateUrl: $scope.homerTemplate});
 
@@ -172,6 +196,7 @@ localStorageService, $window, dialogService,$stateParams, notify, appService) {
             	 var event = "VMSNAPSHOT.DELETE";
 				 var hasServer = crudService.vmUpdate("vmsnapshot/event", snapshot.uuid, event);
                  hasServer.then(function (result) {
+			   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.snapshotEvents.deleteSnapshots,result.id,$scope.global.sessionValues.id);
                 	 $scope.cancel();
                 	 $scope.list(1);
                      notify({message: 'Deleting '+snapshot.name, classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
@@ -196,6 +221,7 @@ localStorageService, $window, dialogService,$stateParams, notify, appService) {
             $scope.ok = function (deleteObject) {
                 var hasServer = crudService.softDelete("snapshots", deleteObject);
                 hasServer.then(function (result) {
+			   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.snapshotEvents.deleteVolumeSnapshot,result.id,$scope.global.sessionValues.id);
                     $scope.list(1);
 
                     notify({message: 'Deleted successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
@@ -214,6 +240,7 @@ localStorageService, $window, dialogService,$stateParams, notify, appService) {
    	    	    var event = "VMSNAPSHOT.REVERTTO";
 				var hasVm = crudService.vmUpdate("vmsnapshot/event", vmsnapshot.uuid, event);
 				hasVm.then(function(result) {
+			   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.snapshotEvents.restoresnapshot,result.id,$scope.global.sessionValues.id);
 				  $state.reload();
 				  $scope.cancel();
 				  notify({message: 'Reverting snapshot in VM '+vmsnapshot.vm.name, classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
@@ -262,6 +289,7 @@ localStorageService, $window, dialogService,$stateParams, notify, appService) {
     		       	 	snapshot.zone = crudService.globalConfig.zone ;
 		       	 		var hasServer = crudService.add("snapshots", snapshot);
                         hasServer.then(function (result) {
+			   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.snapshotEvents.createsnapshot,result.id,$scope.global.sessionValues.id);
                         	 $scope.list(1);
                         	notify({message: 'Added successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
                             $modalInstance.close();
@@ -328,6 +356,7 @@ localStorageService, $window, dialogService,$stateParams, notify, appService) {
             	$scope.showLoader = true;
                 var hasVolume = appService.crudService.add("snapshots/volumesnap",  deleteObject);
                 hasVolume.then(function (result) {
+			   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.snapshotEvents.createsnapshotvolume,result.id,$scope.global.sessionValues.id);
                 	$scope.showLoader = false;
                     $scope.list(1);
                     appService.notify({message: 'Added successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
@@ -384,6 +413,7 @@ localStorageService, $window, dialogService,$stateParams, notify, appService) {
 		console.log($scope.revertSnapshot);
                 var hasVolume = appService.crudService.add("snapshots/revertsnap",  revertSnapshot);
                 hasVolume.then(function (result) {
+			   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.snapshotEvents.revertSnapshot,result.id,$scope.global.sessionValues.id);
                 	$scope.showLoader = false;
                     $scope.list(1);
                     appService.notify({message: 'Reverted successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});

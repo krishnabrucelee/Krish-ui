@@ -7,7 +7,7 @@ function webSocket($rootScope,$timeout) {
         this.message = msg;
         this.id = id;
         this.userId = userId;
-       // this.broadcastItem(msg,id,userId);
+//      this.broadcastItem(msg,id,userId);
     };
 
 //    webSocket.broadcastItem = function(msg,id,userId) {
@@ -17,7 +17,7 @@ function webSocket($rootScope,$timeout) {
 //    		$rootScope.$broadcast(msg,id,userId);
 //    		},
 //
-//    1000);
+//    3000);
 //
 //    };
 

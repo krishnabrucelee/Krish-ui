@@ -611,7 +611,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
         var hasServer = appService.crudService.add("virtualmachine", instance);
         hasServer.then(function (result) {  // this is only run after $http completes
             $scope.showLoader = false;
-   	    appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.vmCreate,result.id);
+   	    appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.vmCreate,result.id,$scope.global.sessionValues.id);
             appService.notify({message: "Instance creation started", classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
             $modalInstance.close();
             $state.reload();
@@ -920,7 +920,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
 
             var hasguestNetworks = appService.crudService.add("guestnetwork", guestnetwork);
             hasguestNetworks.then(function (result) {
-   	    appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.vmnetworksave,result.id);
+   	    appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.vmnetworksave,result.id,$scope.global.sessionValues.id);
                 if ($scope.instance.project == null) {
                     $scope.listNetworks($scope.instance.department.id, 'department');
                 } else {

@@ -124,7 +124,7 @@ function configurationCtrl($scope, $stateParams, appService, localStorageService
           			$scope.instances.computeOffering = $scope.instance.computeOffering;
           			var hasServer =crudService.updates("virtualmachine/resize", $scope.instances);
           			hasServer.then(function (result) {
-			   	appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.vmresize,result.id);
+			   	appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.vmresize,result.id,$scope.global.sessionValues.id);
           				$scope.showLoader= false;
 
           				notify({message: 'Updated successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
