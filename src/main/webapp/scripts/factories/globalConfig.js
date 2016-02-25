@@ -133,7 +133,8 @@ function globalConfig($window) {
                 isOpen: false
             }
             },
-        sessionValues:  JSON.parse($window.sessionStorage.getItem("loginSession"))
+        sessionValues:  JSON.parse($window.sessionStorage.getItem("loginSession")),
+        loginRemeberMeTimeout: 30 * 24 * 60 * 60 * 1000
     };
 
     return appGlobalConfig;
