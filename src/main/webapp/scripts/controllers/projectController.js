@@ -9,6 +9,28 @@ angular
     .controller('projectCtrl', projectCtrl)
 
 function projectCtrl($scope, appService, $filter, $state,$stateParams) {
+
+   $scope.$on(appService.globalConfig.webSocketEvents.projectEvents.createProject, function() {
+
+  //   $scope.instanceList = appService.webSocket;
+    });
+  $scope.$on(appService.globalConfig.webSocketEvents.projectEvents.addUser, function() {
+
+  //   $scope.instanceList = appService.webSocket;
+    });
+  $scope.$on(appService.globalConfig.webSocketEvents.projectEvents.removeUser, function() {
+
+  //   $scope.instanceList = appService.webSocket;
+    });
+  $scope.$on(appService.globalConfig.webSocketEvents.projectEvents.editProject, function() {
+
+  //   $scope.instanceList = appService.webSocket;
+    });
+  $scope.$on(appService.globalConfig.webSocketEvents.projectEvents.deleteProject, function() {
+
+  //   $scope.instanceList = appService.webSocket;
+    });
+
 	$scope.global = appService.globalConfig;
     $scope.projectList = {};
     $scope.paginationObject = {};
@@ -290,6 +312,7 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams) {
     		            $scope.formSubmitted = false;
     		            var hasProject = appService.crudService.add("projects", project);
     		            hasProject.then(function (result) {  // this is only run after $http completes
+			   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.projectEvents.createProject,result.id,$scope.global.sessionValues.id);
     		            	$scope.formSubmitted = false;
     		            	$scope.projectLoader = false;
     		           	    $scope.cancel();
@@ -327,6 +350,7 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams) {
         	 $scope.projectInfo.userList.push(user);
         	 var hasServer = appService.crudService.update("projects", $scope.projectInfo);
              hasServer.then(function (result) {
+			   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.projectEvents.addUser,result.id,$scope.global.sessionValues.id);
                  $scope.project.user = {};
 		         $scope.userLists($scope.projectInfo);
                  appService.notify({message: 'User updated successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
@@ -344,6 +368,7 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams) {
     	});
     	var hasUser = appService.crudService.updates("projects/remove/user", $scope.projectInfo);
     	hasUser.then(function(result) {
+	   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.projectEvents.removeUser,result.id,$scope.global.sessionValues.id);
             $scope.project.user = {};
             $scope.userLists($scope.projectInfo);
             appService.notify({message: 'User removed successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
@@ -393,6 +418,7 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams) {
     		            delete project.projectOwner;
                         var hasServer = appService.crudService.update("projects", project);
                         hasServer.then(function (result) {
+	   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.projectEvents.editProject,result.id,$scope.global.sessionValues.id);
                        	 $scope.projectLoader = false;
                         	$scope.oneChecked = false;
                         	$scope.formSubmitted = false;
@@ -429,6 +455,7 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams) {
                 $scope.deleteProject = function () {
                     var hasServer = appService.crudService.softDelete("projects", deleteObject);
                     hasServer.then(function (result) {
+	   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.projectEvents.deleteProject,result.id,$scope.global.sessionValues.id);
                     	$scope.oneChecked = false;
                         $scope.list(1);
                         appService.notify({message: 'Project deleted successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});

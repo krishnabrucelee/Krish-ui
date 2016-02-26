@@ -9,6 +9,20 @@ angular
         .controller('applicationListCtrl', applicationListCtrl)
 
 function applicationListCtrl($scope, appService) {
+
+    $scope.$on(appService.globalConfig.webSocketEvents.applicationEvents.createApplication, function() {
+
+  //   $scope.applicationList = appService.webSocket;
+    });
+   $scope.$on(appService.globalConfig.webSocketEvents.applicationEvents.deleteApplication, function() {
+
+  //   $scope.applicationList = appService.webSocket;
+    });
+   $scope.$on(appService.globalConfig.webSocketEvents.applicationEvents.editApplication, function() {
+
+  //   $scope.applicationList = appService.webSocket;
+    });
+
     $scope.applicationList = {};
     $scope.paginationObject = {};
     $scope.applicationForm = {};
@@ -59,6 +73,7 @@ function applicationListCtrl($scope, appService) {
                         }
                         var hasServer = appService.crudService.add("applications", application);
                         hasServer.then(function (result) {  // this is only run after $http completes
+			   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.applicationEvents.createApplication,result.id,$scope.global.sessionValues.id);
                             $scope.formSubmitted = false;
                             $modalInstance.close();
                             $scope.showLoader = false;
@@ -103,6 +118,7 @@ function applicationListCtrl($scope, appService) {
                     	delete application.domain;
                         var hasServer = appService.crudService.update("applications", application);
                         hasServer.then(function (result) {
+			   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.applicationEvents.editApplication,result.id,$scope.global.sessionValues.id);
                             $scope.list(1);
                             $scope.showLoader = false;
                             appService.notify({message: 'Application updated successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
@@ -143,6 +159,7 @@ function applicationListCtrl($scope, appService) {
                     application.isActive = false;
                     var hasServer = appService.crudService.softDelete("applications", deleteObject);
                     hasServer.then(function (result) {
+			   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.applicationEvents.deleteApplication,result.id,$scope.global.sessionValues.id);
                         $scope.list(1);
                         $scope.showLoader = false;
                         appService.notify({message: 'Application deleted successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});

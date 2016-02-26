@@ -112,7 +112,7 @@ function networkCtrl($scope, $modal, $state, $window, $stateParams,appService) {
                         $scope.showLoader = true;
                         var hasServer = appService.crudService.add("nics", $scope.nic);
                         hasServer.then(function (result) {  // this is only run after $http completes
-			appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.addNicToVm,result.id);
+			appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.addNicToVm,result.id,$scope.global.sessionValues.id);
                         $scope.showLoader = false;
                     	appService.notify({message: 'Attached successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
         			    $state.reload();
@@ -155,7 +155,7 @@ function networkCtrl($scope, $modal, $state, $window, $stateParams,appService) {
 		     $scope.showLoader = true;
 		     var hasNic = appService.crudService.softDelete("nics", nic);
              hasNic.then(function (result) {
-			appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.removeNicToVM,result.id);
+			appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.removeNicToVM,result.id,$scope.global.sessionValues.id);
 		       $scope.showLoader = false;
                appService.notify({message: 'NIC deleted successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                $modalInstance.close();
@@ -188,7 +188,7 @@ function networkCtrl($scope, $modal, $state, $window, $stateParams,appService) {
                 	$scope.showLoader = true;
                     var hasServer = appService.crudService.update("nics", nic);
                     hasServer.then(function (result) {
-			appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.updateNicToVM,result.id);
+			appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.updateNicToVM,result.id,$scope.global.sessionValues.id);
                        $scope.showLoader = false;
                        appService.notify({message: 'NIC updated successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
               		 	$state.reload();
