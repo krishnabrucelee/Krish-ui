@@ -11,7 +11,7 @@ angular
         .controller('networksCtrl', networksCtrl)
         .controller('networkViewCtrl', networkViewCtrl)
 
-function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $stateParams, $timeout, $window, appService) {
+function networksCtrl($scope, $sce, $rootScope,filterFilter, $state, $stateParams, $timeout, $window, appService) {
 
      $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.startVm, function() {
     //    $scope.instanceList = appService.webSocket;
@@ -68,6 +68,8 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
     $scope.instanceLists = [];
     $scope.instances ={};
     $scope.portinstance ={};
+    $scope.natInstance = {};
+    $scope.cancelNat = {};
     $scope.instanceLists.ipAddress = {};
     $scope.portList = [];
     $scope.vmList = [];
@@ -333,7 +335,7 @@ $scope.stopVm = function(size,item) {
                                                 $scope.formSubmitted = false;
 					        $scope.showLoader = false;
                             appService.notify({message: 'Egress rule added successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
-                            $scope.firewallRules = {}; 
+                            $scope.firewallRules = {};
                             $scope.firewallRulesLists(1);
                             }, 25000);
 
@@ -426,8 +428,8 @@ $scope.stopVm = function(size,item) {
                            $scope.showLoader = false;
                            $scope.formSubmitted = false;
                            appService.notify({message: 'Firewall rule added successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
-                           $scope.firewallRuleIngress ={};                           
-                           $scope.firewallRule(1);                       
+                           $scope.firewallRuleIngress ={};
+                           $scope.firewallRule(1);
                             }, 25000);
                         $scope.firewallRule(1);
                         $scope.templateCategory = 'firewall';
@@ -1705,6 +1707,159 @@ $scope.portForward.vmGuestIp = $scope.instanceLists.ipAddress.guestIpAddress;
                         };
             }]);
     };
+
+    $scope.staticNat = function (size, network) {
+        appService.dialogService.openDialog("app/views/cloud/network/enable-static-nat.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
+
+        	$scope.enableStaticNat = function (network) {
+                $scope.actionEnable = true;
+
+                    appService.dialogService.openDialog("app/views/cloud/network/vm-list-enable-nat.jsp", "lg", $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
+                        $scope.portvmLists = function () {
+                            $scope.templateCategory = 'instance';
+                            $scope.portvmList = [];
+                         	 var networkId = network.id;
+                            var hasVms = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "virtualmachine/network?networkId="+networkId +"&lang=" + 	appService.localStorageService.cookie.get('language')+"&sortBy=-id");
+                            hasVms.then(function (result) {  // this is only run after $http
+                            $scope.portvmList = result;
+
+                            });
+                        };
+                    $scope.portvmLists ();
+                     $scope.enableStaticNatSave = function (natInstance) {
+                    			$scope.instances = natInstance;
+
+                                            $scope.staticNat = $scope.global.rulesPF[0];
+                                            $scope.formSubmitted = true;
+                                            $scope.showLoader = true;
+                                            $scope.staticNat.vmInstanceId = $scope.natInstance.id;
+                                            $scope.staticNat.networkId = 	$stateParams.id;
+
+                    if(angular.isUndefined($scope.instanceLists.ipAddress.guestIpAddress)){
+                    	$scope.staticNat.vmGuestIp = $scope.instances.ipAddress;
+                    } else {
+                    	$scope.staticNat.vmGuestIp = $scope.instanceLists.ipAddress.guestIpAddress;
+                    }
+                                            $scope.staticNat.ipAddressId = $stateParams.id1;
+
+                                            var hasStaticNat = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET,
+                                            		appService.globalConfig.APP_URL + "ipAddresses/nat?ipaddress="+$scope.staticNat.ipAddressId +
+                                            		"&vm="+ natInstance.id + "&guestip="+ $scope.staticNat.vmGuestIp + "&type="+"enable" + "&lang=" +
+                                            		appService.localStorageService.cookie.get('language')+"&sortBy=-id");
+
+                                            hasStaticNat.then(function (result) {
+                                                $scope.formSubmitted = false;
+                                                $modalInstance.close();
+                                                $state.reload();
+                                                $scope.showLoader = false;
+                                                appService.notify({
+                                                    message: 'Static Nat Enabled successfully',
+                                                    classes: 'alert-success',
+                                                    templateUrl: $scope.global.NOTIFICATION_TEMPLATE
+                                                });
+                                                $modalInstance.close();
+
+                                                $scope.cancel();
+                                                $scope.ipLists(1);
+                                                $state.reload();
+
+                                            }).catch(function (result) {
+                                                $scope.showLoader = false;
+                                                if (!angular.isUndefined(result.data)) {
+                                                    if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
+                                                        var msg = result.data.globalError[0];
+                                                        $scope.showLoader = false;
+                                                       } else if (result.data.fieldErrors != null) {
+                                                        $scope.showLoader = false;
+                                                        angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
+                                                            $scope.staticNatForm[key].$invalid = true;
+                                                            $scope.staticNatForm[key].errorMessage = errorMessage;
+                                                            $modalInstance.close();
+                                                        });
+                                                    }
+                                                }
+                                            });
+
+                      };
+                 }]);
+                    $scope.cancel = function () {
+                        $modalInstance.close();
+
+
+                    };
+            }
+            $scope.cancel = function () {
+                $modalInstance.close();
+            };
+
+            }]);
+
+
+    };
+    $scope.disableNat = function (size, natInstance) {
+        appService.dialogService.openDialog("app/views/cloud/network/disable-static-nat.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
+                $scope.disableStaticNat = function (natInstance) {
+                    			$scope.instances = natInstance;
+
+                                            $scope.staticNat = $scope.global.rulesPF[0];
+                                            $scope.formSubmitted = true;
+                                            $scope.showLoader = true;
+                                            $scope.staticNat.vmInstanceId = $scope.natInstance.id;
+                                            $scope.staticNat.networkId = 	$stateParams.id;
+
+                    if(angular.isUndefined($scope.instanceLists.ipAddress.guestIpAddress)){
+                    	$scope.staticNat.vmGuestIp = $scope.instances.ipAddress;
+                    } else {
+                    	$scope.staticNat.vmGuestIp = $scope.instanceLists.ipAddress.guestIpAddress;
+                    }
+                                            $scope.staticNat.ipAddressId = $stateParams.id1;
+
+                                            var hasStaticNat = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET,
+                                            		appService.globalConfig.APP_URL + "ipAddresses/nat?ipaddress="+$scope.staticNat.ipAddressId +
+                                            		"&vm="+ natInstance.id + "&guestip="+ $scope.staticNat.vmGuestIp + "&type="+"disable" + "&lang=" +
+                                            		appService.localStorageService.cookie.get('language')+"&sortBy=-id");
+                                            hasStaticNat.then(function (result) {
+                                                $scope.formSubmitted = false;
+                                                $modalInstance.close();
+                                                $scope.showLoader = false;
+                                                appService.notify({
+                                                    message: 'Static Nat Disabled successfully',
+                                                    classes: 'alert-success',
+                                                    templateUrl: $scope.global.NOTIFICATION_TEMPLATE
+                                                });
+                                                $state.reload();
+                                                $scope.ipLists(1);
+                                                $state.reload();
+                                                $window.location.href = '#/network/list/view/' + $stateParams.id +'/ip-address/' + $scope.staticNat.ipAddressId;
+
+                                            }).catch(function (result) {
+                                                $scope.showLoader = false;
+                                                if (!angular.isUndefined(result.data)) {
+                                                    if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
+                                                        var msg = result.data.globalError[0];
+                                                    } else if (result.data.fieldErrors != null) {
+                                                        $scope.showLoader = false;
+                                                        angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
+                                                            $scope.staticNatForm[key].$invalid = true;
+                                                            $scope.staticNatForm[key].errorMessage = errorMessage;
+                                                        });
+                                                    }
+                                                }
+                                            });
+                                            $state.reload();
+                                                $scope.cancel = function () {
+
+                                                    $modalInstance.close();
+                                                };
+
+            },
+                        $scope.cancel = function () {
+                            $modalInstance.close();
+                        };
+            }]);
+    };
+
+
 
       $scope.releaseIP = function (size, ipAddress) {
 	$scope.ipAddress = angular.copy(ipAddress);

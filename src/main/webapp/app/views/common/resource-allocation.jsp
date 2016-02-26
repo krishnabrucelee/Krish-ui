@@ -49,8 +49,8 @@
                         </div>
 
                     </div>
-
-					<div class="col-md-7 col-sm-7" >
+				<get-loader-image data-ng-show="showLoader"></get-loader-image>
+					<div class="col-md-7 col-sm-7" data-ng-hide="showLoader">
 						<div class="form-group"
 							ng-class="{
                                             'text-danger'

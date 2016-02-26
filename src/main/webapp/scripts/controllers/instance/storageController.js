@@ -56,12 +56,13 @@ function storageCtrl($scope, $state, $stateParams, appService, $window, volumeSe
 
     // Department list load based on the domain
     $scope.domainChange = function() {
-       var hasDisks = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL
+    	if (!angular.isUndefined($scope.volume.domain)) {
+    		var hasDisks = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL
         		+ "storages/listbydomain?domainId="+$scope.volume.domain.id);
-        hasDisks.then(function (result) {  // this is only run after $http completes0
-            $scope.volumeElements.diskOfferingList = result;
-        });
-
+    		hasDisks.then(function (result) {  // this is only run after $http completes0
+    			$scope.volumeElements.diskOfferingList = result;
+    		});
+    	}
     };
 
     // Volume List
