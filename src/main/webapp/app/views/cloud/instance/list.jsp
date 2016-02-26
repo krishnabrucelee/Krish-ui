@@ -5,7 +5,7 @@
 <div ui-view>
 	<div data-ng-hide="viewContent" ng-controller="instanceListCtrl">
 		<div class="hpanel">
-			<div class="panel-heading">
+			<div class="panel-heading no-padding">
 				<div class="row">
 					<div class="col-md-12 col-sm-12 col-xs-12 ">
 						<div class="pull-left">
@@ -13,9 +13,9 @@
 								<div class="instance-border-content-normal"
 									data-ng-class="{'instance-border-content' : borderContent=='Expunging'}"
 								>
-									<span class="pull-right"><fmt:message key="total.instance" bundle="${msg}" /></span>
-									<div class="clearfix"></div>
-									<span class="pull-left m-t-xs"><img src="images/instance-icon.png"></span> <b class="pull-right">{{totalCount}}</b>
+									 <span class="pull-left"><img src="images/instance-icon.png"></span>
+									<span class="pull-left m-t-xs m-l-xs m-r-xs"><fmt:message key="total.instance" bundle="${msg}" /></span>
+									 <b class="pull-left">{{totalCount}}</b>
 									<div class="clearfix"></div>
 								</div>
 							</div>
@@ -23,9 +23,9 @@
 								<div class="instance-border-content-normal"
 									data-ng-class="{'instance-border-content' : borderContent=='Running'}"
 								>
-									<span class="pull-right"><fmt:message key="running.instance" bundle="${msg}" /></span>
-									<div class="clearfix"></div>
-									<span class="pull-left m-t-xs"><img src="images/instance-icon.png"></span> <b class="pull-right">{{runningVmCount}}</b>
+									<span class="pull-left"><img src="images/instance-icon.png"></span>
+									<span class="pull-left m-t-xs m-l-xs m-r-xs"><fmt:message key="running.instance" bundle="${msg}" /></span>
+									<b class="pull-left">{{runningVmCount}}</b>
 									<div class="clearfix"></div>
 								</div>
 							</div>
@@ -33,22 +33,23 @@
 								<div class="instance-border-content-normal"
 									data-ng-class="{'instance-border-content' : borderContent=='Stopped'}"
 								>
-									<span class="pull-right"><fmt:message key="stopped.instance" bundle="${msg}" /></span>
-									<div class="clearfix"></div>
-									<span class="pull-left m-t-xs"><img src="images/instance-icon.png"></span> <b class="pull-right">{{stoppedVmCount}}</b>
+									<span class="pull-left"><img src="images/instance-icon.png"></span>
+									<span class="pull-left m-t-xs m-l-xs m-r-xs"><fmt:message key="stopped.instance" bundle="${msg}" /></span>
+									<b class="pull-left">{{stoppedVmCount}}</b>
 									<div class="clearfix"></div>
 								</div>
 							</div>
-						</div>
-						<div class="pull-right">
-							<panda-quick-search></panda-quick-search>
-							<div class="clearfix"></div>
-							<span class="pull-right m-l-sm m-t-sm"> <a has-permission="CREATE_VM" class="btn btn-info"
+							<a has-permission="CREATE_VM" class="btn btn-info"
 								data-ng-click="openAddInstance('lg')"
 							><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span>
 								<fmt:message key="create.vm" bundle="${msg}" /></a> <a class="btn btn-info" data-ng-click="list(1, borderContent)"
 								title="<fmt:message key="common.refresh" bundle="${msg}" />" ui-sref-opts="{reload: true}"
 							><span class="fa fa-refresh fa-lg "></span></a>
+						</div>
+						<div class="pull-right">
+							<panda-quick-search></panda-quick-search>
+							<div class="clearfix"></div>
+							<span class="pull-right m-l-sm m-t-sm">
 							</span>
 						</div>
 					</div>
@@ -97,7 +98,7 @@
 								</tbody>
 								<tbody data-ng-show="instanceList.length > 0">
 									<tr
-										data-ng-repeat="instance in filteredCount = (instanceList | filter: quickSearch  |orderBy:sort.column:sort.descending) track by $index">
+										data-ng-repeat="instance in filteredCount = (instanceList | filter: quickSearch  |orderBy:sort.column:sort.descending)">
 
 										<td><a class="text-info" ui-sref="cloud.list-instance.view-instance({id: {{ instance.id}}})"
 											title="View Instance">
