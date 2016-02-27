@@ -342,6 +342,7 @@ $scope.list = function () {
 				   var hasVms = appService.crudService.updates("virtualmachine/console", vm);
 				   hasVms.then(function(result) {
 					   var consoleUrl = result.success;
+					   var consoleUrl = result.success + "&displayname="+vm.displayName;
 					   window.open($sce.trustAsResourceUrl(consoleUrl), vm.name + vm.id,'width=750,height=460');
 				   });
 			   }

@@ -100,7 +100,7 @@
 								class="col-md-3 col-xs-12 col-sm-3 control-label control-normal"><fmt:message
 									key="common.department" bundle="${msg}" /> </label>
 							<div class="col-md-6 col-xs-12 col-sm-6">
-								{{global.sessionValues.userName}}
+								{{ userElement.department.userName }}
 							</div>
 						</div>
 
