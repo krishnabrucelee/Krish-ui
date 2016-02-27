@@ -7,11 +7,11 @@ pageEncoding="UTF-8"%>
     <div class="col-lg-6 col-md-6 col-sm-12">
         <div class="row ">
             <div class="p-sm pull-right">
-               <!--  <a href="#" data-ng-if="!ipDetails.isActive && !ipDetails.isSourcenat" class="btn btn-info" title="Enable VPN"><span class="custom-icon custom-vpn font-bold m-xs"></span> Enable VPN</a>
-                <a data-ng-click="staticNat(ipDetails)" data-ng-if="!ipDetails.isActive && !ipDetails.isStaticnat && !ipDetails.isSourcenat" class="btn btn-info" title="Enable Static NAT"><span class="custom-icon custom-nat font-bold m-xs"></span> Enable Static NAT</a>
-				<a data-ng-click="disableNat(ipDetails)" data-ng-if="!ipDetails.isActive && ipDetails.isStaticnat && !ipDetails.isSourcenat" class="btn btn-info" title="Disable Static NAT"><span class="custom-icon custom-nat font-bold m-xs"></span> Enable Static NAT</a>
-                <a data-ng-click="deleteIP(ipDetails)" class="btn btn-info" data-ng-if="!ipDetails.isActive && !ipDetails.isSourcenat" title="Delete IP"><span class="fa-trash fa font-bold m-xs"></span> Delete IP </a> -->
-            </div>
+<!--                 <a href="#" data-ng-if="!ipDetails.isActive && !ipDetails.isSourcenat" class="btn btn-info" title="Enable VPN"><span class="custom-icon custom-vpn font-bold m-xs"></span> Enable VPN</a>
+ -->            <a data-ng-click="staticNat('md',ipDetails)"  data-ng-if="!ipDetails.isStaticnat && !ipDetails.isSourcenat" class="btn btn-info" title="Enable Static NAT"><span class="custom-icon custom-nat font-bold m-xs"></span> Enable Static NAT</a>
+				<a data-ng-click="disableNat('md',ipDetails)" data-ng-if="ipDetails.isStaticnat && !ipDetails.isSourcenat" class="btn btn-info" title="Disable Static NAT"><span class="custom-icon custom-nat font-bold m-xs"></span> Disable Static NAT</a>
+<!--                 <a data-ng-click="releaseIP('sm', ipDetails)" class="btn btn-info" title="Delete IP"><span class="fa-trash fa font-bold m-xs"></span> Delete IP </a>
+ -->            </div>
 
         </div>
 

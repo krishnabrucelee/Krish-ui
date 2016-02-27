@@ -9,6 +9,15 @@ angular
         .controller('sshkeyListCtrl', sshkeyListCtrl)
 
 function sshkeyListCtrl($scope,appService,$state) {
+
+    $scope.$on(appService.globalConfig.webSocketEvents.sshKeyEvents.createSSHKey, function() {
+
+  //   $scope.sshkeyList = appService.webSocket;
+    });
+    $scope.$on(appService.globalConfig.webSocketEvents.sshKeyEvents.deleteSSHKey, function() {
+
+  //   $scope.sshkeyList = appService.webSocket;
+    });
     $scope.sshkeyList = {};
     $scope.paginationObject = {};
     $scope.sshkeyForm = {};
@@ -90,6 +99,7 @@ function sshkeyListCtrl($scope,appService,$state) {
                    }
     			   var hasServer = appService.crudService.add("sshkeys", sshkey);
                    hasServer.then(function (result) {
+			   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.sshKeyEvents.createSSHKey,result.id,$scope.global.sessionValues.id);
                 	   $scope.sshkeyss = $scope.sshkeyList[$scope.sshkeyList.length];
     			       $scope.sshkeyss = result;
     			           var departments = [];
@@ -164,6 +174,7 @@ function sshkeyListCtrl($scope,appService,$state) {
                }
                var hasServer = appService.crudService.add("sshkeys", sshkey);
                hasServer.then(function (result) {
+		   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.sshKeyEvents.createSSHKey,result.id,$scope.global.sessionValues.id);
             	   $scope.sshkeyss = $scope.sshkeyList[$scope.sshkeyList.length];
 			       $scope.sshkeyss = result;
 			       if ($scope.global.sessionValues.type === 'USER') {
@@ -246,6 +257,7 @@ function sshkeyListCtrl($scope,appService,$state) {
                 sshkey.isActive = false;
                 var hasServer = appService.crudService.softDelete("sshkeys", sshkey);
                 hasServer.then(function (result) {
+			   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.sshKeyEvents.deleteSSHKey,result.id,$scope.global.sessionValues.id);
                     $scope.list(1);
                     $scope.showLoader = false;
                     appService.notify({message: 'SSH key deleted successfully', classes: 'alert-success',

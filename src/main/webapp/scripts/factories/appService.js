@@ -1,6 +1,6 @@
-function appService(crudService, localStorageService, globalConfig, promiseAjax, notify, utilService,  dialogService) {
+function appService(crudService, localStorageService, globalConfig, promiseAjax, notify, utilService,  dialogService, webSocket,monitorService) {
 
-	var object = {};
+		var object = {};
 
 	// Crud related functionalities goes here
 	object.crudService = crudService;
@@ -28,6 +28,12 @@ function appService(crudService, localStorageService, globalConfig, promiseAjax,
 
     // Volume service call goes here
     object.volumeService = volumeService
+
+    // WebSocket service call goes here
+    object.webSocket = webSocket
+    
+    // Instance monitoring chart calls goes here
+    object.monitorService = monitorService
 
     return object;
 

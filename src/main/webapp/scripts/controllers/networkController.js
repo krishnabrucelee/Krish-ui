@@ -11,7 +11,56 @@ angular
         .controller('networksCtrl', networksCtrl)
         .controller('networkViewCtrl', networkViewCtrl)
 
-function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $stateParams, $timeout, $window, appService) {
+function networksCtrl($scope, $sce, $rootScope,filterFilter, $state, $stateParams, $timeout, $window, appService) {
+
+     $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.startVm, function() {
+    //    $scope.instanceList = appService.webSocket;
+    });
+     $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.stopVm, function() {
+    //    $scope.instanceList = appService.webSocket;
+    });
+     $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.rebootVm, function() {
+    //    $scope.instanceList = appService.webSocket;
+    });
+     $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.egressSave, function() {
+    //    $scope.instanceList = appService.webSocket;
+    });
+     $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.ingressSave, function() {
+    //    $scope.instanceList = appService.webSocket;
+    });
+     $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.deleteIngress, function() {
+    //    $scope.instanceList = appService.webSocket;
+    });
+     $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.createnetwork, function() {
+    //    $scope.instanceList = appService.webSocket;
+    });
+     $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.deletenetwork, function() {
+    //    $scope.instanceList = appService.webSocket;
+    });
+     $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.updatenetwork, function() {
+    //    $scope.instanceList = appService.webSocket;
+    });
+     $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.restartnetwork, function() {
+    //    $scope.instanceList = appService.webSocket;
+    });
+     $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.loadbalancerSave, function() {
+    //    $scope.instanceList = appService.webSocket;
+    });
+     $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.editrule, function() {
+    //    $scope.instanceList = appService.webSocket;
+    });
+     $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.configureStickiness, function() {
+    //    $scope.instanceList = appService.webSocket;
+    });
+     $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.editStickiness, function() {
+    //    $scope.instanceList = appService.webSocket;
+    });
+     $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.deletePortRules, function() {
+    //    $scope.instanceList = appService.webSocket;
+    });
+     $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.portforwardSave, function() {
+    //    $scope.instanceList = appService.webSocket;
+    });
 
     $scope.global = appService.globalConfig;
     $scope.rulesList = [];
@@ -19,6 +68,8 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
     $scope.instanceLists = [];
     $scope.instances ={};
     $scope.portinstance ={};
+    $scope.natInstance = {};
+    $scope.cancelNat = {};
     $scope.instanceLists.ipAddress = {};
     $scope.portList = [];
     $scope.vmList = [];
@@ -70,10 +121,8 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
         $scope.firewallRules = {};
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasFirewallRuless = appService.crudService.listAllByQuery("egress/firewallrules?network=" + $stateParams.id1 + "&type=ingress", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
-        hasFirewallRuless.then(function (result) {  // this is only run after
-													// $http completes0
+        hasFirewallRuless.then(function (result) {
             $scope.firewallRulesList = result;
-
             // For pagination
             $scope.paginationObject.limit = limit;
             $scope.paginationObject.currentPage = pageNumber;
@@ -166,6 +215,7 @@ $scope.selected = {};
                         vms.hostUuid = $scope.instance.host.uuid;
                         var hasVm = appService.crudService.updates("virtualmachine/handleevent/vm", vms);
                         hasVm.then(function (result) {
+			    appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.startVm,result.id,$scope.global.sessionValues.id);
                             $state.reload();
                             $scope.cancel();
                         }).catch(function (result) {
@@ -200,6 +250,7 @@ $scope.stopVm = function(size,item) {
                       item.event = event;
                       var hasVm = appService.crudService.updates("virtualmachine/handleevent/vm", item);
                       hasVm.then(function(result) {
+			    appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.stopVm,result.id,$scope.global.sessionValues.id);
                              $state.reload();
                              $scope.cancel();
                       }).catch(function (result) {
@@ -210,6 +261,7 @@ $scope.stopVm = function(size,item) {
                    var event = "VM.STOP";
                          var hasVm = appService.crudService.vmUpdate("virtualmachine/handlevmevent", item.uuid, event);
                          hasVm.then(function(result) {
+			    appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.stopVm,result.id,$scope.global.sessionValues.id);
                                  $state.reload();
                                   $scope.cancel();
                          }).catch(function (result) {
@@ -230,6 +282,7 @@ $scope.stopVm = function(size,item) {
                     var event = "VM.REBOOT";
                     var hasVm = appService.crudService.vmUpdate("virtualmachine/handlevmevent", item.uuid, event);
                     hasVm.then(function (result) {
+			    appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.rebootVm,result.id,$scope.global.sessionValues.id);
                         $state.reload();
                         $scope.cancel();
                     });
@@ -260,23 +313,30 @@ $scope.stopVm = function(size,item) {
     // Create a new egress rule
     $scope.actionRule = false;
     $scope.cidrValidate = false;
-    $scope.firewallRules.networkId = $stateParams.id;
-
-    $scope.egressSave = function (firewallRules) {
-    	$scope.showLoader = true;
+    $scope.egressSave = function (form,firewallRules) {
+    	$scope.firewallRules.networkId = $stateParams.id;
         $scope.formSubmitted = true;
-        var CheckIP = /^([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\/([1-9]|[12][0-9]|3[012])$/;
+        if (form.$valid) {
+        $scope.showLoader = true;
+        var CheckIP = /^([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\/([0-9]|[12][0-9]|3[012])$/;
         if ($scope.firewallRules.sourceCIDR && $scope.firewallRules.protocol) {
-
             if (CheckIP.test($scope.firewallRules.sourceCIDR)) {
                 if ($scope.firewallRules.sourceCIDR && $scope.firewallRules.protocol) {
                     if ($scope.firewallRules.protocol == 'TCP' || $scope.firewallRules.protocol == 'UDP') {
                         if ($scope.firewallRules.startPort && $scope.firewallRules.endPort) {
                             var hasServer = appService.crudService.add("egress", firewallRules);
                             hasServer.then(function (result) {  // this is only
-				$timeout(function(){$scope.showLoader = false; $scope.firewallRulesLists(1);
-                                appService.notify({message: 'Egress rule added successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});}, 25000);
-				
+			    appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.egressSave,result.id,$scope.global.sessionValues.id);
+			      	        $timeout(function(){
+
+                                                $scope.showLoader = true;
+                                                $scope.formSubmitted = false;
+					        $scope.showLoader = false;
+                            appService.notify({message: 'Egress rule added successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                            $scope.firewallRules = {};
+                            $scope.firewallRulesLists(1);
+                            }, 25000);
+
                                 $scope.formSubmitted = false;
                                 $scope.templateCategory = 'egress';
                             }).catch(function (result) {
@@ -299,10 +359,17 @@ $scope.stopVm = function(size,item) {
                     } else {
                         if ($scope.firewallRules.icmpMessage && $scope.firewallRules.icmpCode) {
                             var hasServer = appService.crudService.add("egress", firewallRules);
-                            hasServer.then(function (result) { 
-                                $scope.formSubmitted = false;
-                                appService.notify({message: 'Egress rule added successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
-				$scope.firewallRulesLists(1);
+                            hasServer.then(function (result) {
+			    appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.egressSave,result.id,$scope.global.sessionValues.id);
+			     $timeout(function(){
+
+                     $scope.showLoader = true;
+                     $scope.formSubmitted = false;
+                     $scope.showLoader = false;
+                     appService.notify({message: 'Egress rule added successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                     $scope.firewallRules = {};
+                     $scope.firewallRulesLists(1);
+			     }, 25000);
                                 $scope.templateCategory = 'egress';
                             }).catch(function (result) {
 					$scope.showLoader = false;
@@ -328,6 +395,7 @@ $scope.stopVm = function(size,item) {
             }
             else {
 		$scope.showLoader = false;
+		appService.notify({message: 'Invalid cidr format ' + $scope.firewallRules.sourceCIDR, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                 $scope.actionRule = true;
                 $scope.cidrValidate = true;
             }
@@ -337,34 +405,40 @@ $scope.stopVm = function(size,item) {
             $scope.actionRule = true;
             $scope.cidrValidate = true;
         }
-
+}
     };
     $scope.firewallRuleIngress = {};
 
     // Create a new egress rule
     $scope.actionRules = false;
     $scope.cidrValidates = false;
-    $scope.firewallRuleIngress.networkId = $stateParams.id;
-$scope.ingressSave = function (firewallRuleIngress) {
-	 $scope.showLoader = true;
+    $scope.ingressSave = function (form,firewallRuleIngress) {
+    	$scope.firewallRuleIngress.networkId = $stateParams.id;
         $scope.firewallRuleIngress.ipAddressId = $stateParams.id1;
         $scope.formSubmitted = true;
-        var CheckIP = /^([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\/([1-9]|[12][0-9]|3[012])$/;
+        if (form.$valid) {
+        $scope.showLoader = true;
+        var CheckIP = /^([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\/([0-9]|[12][0-9]|3[012])$/;
         if ($scope.firewallRuleIngress.sourceCIDR && $scope.firewallRuleIngress.protocol && $scope.firewallRuleIngress.startPort && $scope.firewallRuleIngress.endPort) {
 
             if (CheckIP.test($scope.firewallRuleIngress.sourceCIDR)) {
                 if ($scope.firewallRuleIngress.sourceCIDR && $scope.firewallRuleIngress.protocol && $scope.firewallRuleIngress.startPort && $scope.firewallRuleIngress.endPort) {
                     var hasServer = appService.crudService.add("egress/ingress", $scope.firewallRuleIngress);
-                    hasServer.then(function (result) {  // this is only run
-														// after $http completes
+                    hasServer.then(function (result) {
+			    appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.ingressSave,result.id,$scope.global.sessionValues.id);
                         $scope.formSubmitted = false;
-                        $timeout(function(){$scope.showLoader = false; $scope.firewallRule(1);
-                                appService.notify({message: 'Firewall rule added successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});}, 25000);// completes
-
+                        $timeout(function(){
+                           $scope.showLoader = false;
+                           $scope.formSubmitted = false;
+                           appService.notify({message: 'Firewall rule added successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                           $scope.firewallRuleIngress ={};
+                           $scope.firewallRule(1);
+                            }, 25000);
                         $scope.firewallRule(1);
                         $scope.templateCategory = 'firewall';
                     }).catch(function (result) {
-					$scope.showLoader = false;
+                        $scope.formSubmitted = false;
+			$scope.showLoader = false;
                         if (!angular.isUndefined(result.data)) {
                             if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
                                 var msg = result.data.globalError[0];
@@ -382,6 +456,7 @@ $scope.ingressSave = function (firewallRuleIngress) {
             }
             else {
 		$scope.showLoader = false;
+		appService.notify({message: 'Invalid cidr format ' + $scope.firewallRuleIngress.sourceCIDR, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                 $scope.actionRules = true;
                 $scope.cidrValidates = true;
             }
@@ -391,6 +466,7 @@ $scope.ingressSave = function (firewallRuleIngress) {
             $scope.cidrValidates = true;
         }
     }
+};
     $scope.cancel = function () {
         $modalInstance.close();
     };
@@ -404,9 +480,10 @@ $scope.ingressSave = function (firewallRuleIngress) {
                     firewallRules.isActive = false;
                     var hasServer = appService.crudService.softDelete("egress/ingress", deleteObject);
                     hasServer.then(function (result) {
+			    appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.deleteIngress,result.id,$scope.global.sessionValues.id);
                         $scope.templateCategory = 'firewall';
                         $scope.firewallRule(1);
-                        appService.notify({message: 'Ingress rule deleted successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                        appService.notify({message: 'Ingress rule deleted successfully', classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                     }).catch(function (result) {
                         if (!angular.isUndefined(result.data)) {
                             if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
@@ -414,6 +491,7 @@ $scope.ingressSave = function (firewallRuleIngress) {
                                 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                             }
                         }
+                        $modalInstance.close();
                     });
                     $modalInstance.close();
                 },
@@ -432,8 +510,9 @@ $scope.ingressSave = function (firewallRuleIngress) {
                     firewallRules.isActive = false;
                     var hasServer = appService.crudService.softDelete("egress", deleteObject);
                     hasServer.then(function (result) {
+			    appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.deleteEgress,result.id,$scope.global.sessionValues.id);
                         $scope.firewallRulesLists(1);
-                        appService.notify({message: 'Egress rule deleted successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                        appService.notify({message: 'Egress rule deleted successfully', classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                     }).catch(function (result) {
                         if (!angular.isUndefined(result.data)) {
                             if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
@@ -441,6 +520,7 @@ $scope.ingressSave = function (firewallRuleIngress) {
                                 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                             }
                         }
+                        $modalInstance.close();
                     });
                     $modalInstance.close();
                 },
@@ -483,6 +563,7 @@ $scope.ingressSave = function (firewallRuleIngress) {
                         $scope.showLoader = true;
                         var hasguestNetworks = appService.crudService.add("guestnetwork", network);
                         hasguestNetworks.then(function (result) {
+			    appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.createnetwork,result.id,$scope.global.sessionValues.id);
                             $scope.list(1);
                             $scope.showLoader = false;
                             appService.notify({message: 'Added successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
@@ -499,6 +580,7 @@ $scope.ingressSave = function (firewallRuleIngress) {
                                     $scope.addnetworkForm[key].errorMessage = errorMessage;
                                 });
                             }
+                            $modalInstance.close();
                         });
                         $scope.cancel = function () {
                             $modalInstance.close();
@@ -556,6 +638,7 @@ $scope.ingressSave = function (firewallRuleIngress) {
                     $scope.showLoader = true;
                     var hasNetworks = appService.crudService.softDelete("guestnetwork", network);
                     hasNetworks.then(function (result) {
+			    appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.deletenetwork,result.id,$scope.global.sessionValues.id);
                         $scope.homerTemplate = 'app/views/notification/notify.jsp';
                         appService.notify({message: 'Deleted successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
                         $scope.showLoader = false;
@@ -576,6 +659,7 @@ $scope.ingressSave = function (firewallRuleIngress) {
                                 $scope.addnetworkForm[key].errorMessage = errorMessage;
                             });
                         }
+                        $modalInstance.close();
                     });
                 },
                         $scope.cancel = function () {
@@ -592,6 +676,7 @@ $scope.networkRestart ={};
                 $scope.showLoader = true;
 			var hasServer = appService.crudService.add("guestnetwork/restart/" + network.id, network);
                         hasServer.then(function (result) {  // this is only run after $http completes
+			    appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.restartnetwork,result.id,$scope.global.sessionValues.id);
                         	$scope.showLoader = false;
                         	appService.notify({message: 'Restarted successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                             $modalInstance.close();
@@ -609,6 +694,7 @@ $scope.networkRestart ={};
                                     });
                                 }
                             }
+                            $modalInstance.close();
                         });
                 },
                         $scope.cancel = function () {
@@ -677,6 +763,7 @@ $scope.networkRestart ={};
 
             var hasNetwork = appService.crudService.update("guestnetwork", network);
             hasNetwork.then(function (result) {
+   		appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.updatenetwork,result.id,$scope.global.sessionValues.id);
                 $scope.showLoader = false;
                 $scope.homerTemplate = 'app/views/notification/notify.jsp';
                 appService.notify({message: 'Updated successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
@@ -693,6 +780,7 @@ $scope.networkRestart ={};
                         $scope.addnetworkForm[key].errorMessage = errorMessage;
                     });
                 }
+                $modalInstance.close();
             });
         }
     };
@@ -961,7 +1049,8 @@ $scope.networkRestart ={};
         $scope.rules = appService.localStorageService.get("firewall");
 // var CheckIP = /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\/\d{1,2}$/;
         var CheckIP = /^([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\/([1-9]|[12][0-9]|3[012])$/;
-        if ($scope.cidr != null && $scope.cidr != '') {
+
+         if ($scope.cidr != null && $scope.cidr != '') {
 
             if (CheckIP.test($scope.cidr)) {
                 $scope.rules.push({'id': $scope.rules.length + 1, 'algorithm': 'roundrobin', 'name': '', 'cidr': $scope.cidr, 'protocol': $scope.protocolName.name, 'startPort': $scope.startPort, 'endPort': $scope.endPort, 'icmpType': $scope.icmpType, 'icmpCode': $scope.icmpCode, 'privateStart': '90', 'privateEnd': '120', 'vms': []});
@@ -1117,7 +1206,7 @@ $scope.openAddVM = function (form) {
       $scope.global.rulesLB[0].algorithm = $scope.loadBalancer.algorithms.value;
       //modalService.trigger('app/views/cloud/network/vm-list.jsp', 'lg');
 appService.dialogService.openDialog("app/views/cloud/network/vm-list.jsp", 'lg' , $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
-   
+
  $scope.lbvmLists = function () {
 
         $scope.lbvmList = [];
@@ -1180,6 +1269,7 @@ appService.dialogService.openDialog("app/views/cloud/network/vm-list.jsp", 'lg' 
 	console.log($scope.loadBalancer);
   var hasLoadBalancer = appService.crudService.add("loadBalancer", $scope.loadBalancer);
   hasLoadBalancer.then(function (result) { // this is only run after
+  appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.loadbalancerSave,result.id,$scope.global.sessionValues.id);
   $scope.showLoader = true;
       $scope.formSubmitted = false;
       $scope.showLoader = false;
@@ -1255,7 +1345,9 @@ $scope.editrule = function (size, loadBalancer) {
 		// $scope.loadBalancer.protocol = $scope.loadBalancer.protocol.toUpperCase();
                //$scope.loadBalancer.state = $scope.loadBalancer.state.toUpperCase();
               var hasServer = appService.crudService.update("loadBalancer", loadBalancer);
+
               hasServer.then(function (result) {
+  appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.editrule,result.id,$scope.global.sessionValues.id);
                   $scope.LBlist(1);
                   appService.notify({message: 'Updated successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                   $modalInstance.close();
@@ -1267,7 +1359,7 @@ $scope.editrule = function (size, loadBalancer) {
                           $scope.loadBalancerForm[key].errorMessage = errorMessage;
                       });
                   }
-
+                  $modalInstance.close();
               });
 
           },
@@ -1283,6 +1375,7 @@ $scope.deleteRules = function (size, loadBalancer) {
           $scope.delete = function (deleteObject) {
               var hasServer = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_DELETE, appService.globalConfig.APP_URL + "loadBalancer/delete/" + loadBalancer.id + "?lang=" + appService.localStorageService.cookie.get('language'), '', loadBalancer);
               hasServer.then(function (result) {
+  appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.deleteRules,result.id,$scope.global.sessionValues.id);
                   $scope.LBlist(1);
                   appService.notify({message: 'Deleted successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
               }).catch(function (result) {
@@ -1297,7 +1390,7 @@ $scope.deleteRules = function (size, loadBalancer) {
                           $scope.domainForm[key].errorMessage = errorMessage;
                       });
                   }
-
+                  $modalInstance.close();
               });
               $modalInstance.close();
           },
@@ -1377,6 +1470,7 @@ $scope.portForward.vmGuestIp = $scope.instanceLists.ipAddress.guestIpAddress;
 
                         var hasPortForward = appService.crudService.add("portforwarding", $scope.portForward);
                         hasPortForward.then(function (result) {
+  appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.portforwardSave,result.id,$scope.global.sessionValues.id);
                             $scope.formSubmitted = false;
                             $modalInstance.close();
                             $scope.showLoader = false;
@@ -1411,6 +1505,7 @@ $scope.portForward.vmGuestIp = $scope.instanceLists.ipAddress.guestIpAddress;
                                     });
                                 }
                             }
+                            $modalInstance.close();
                         });
 
   };
@@ -1437,6 +1532,7 @@ $scope.portForward.vmGuestIp = $scope.instanceLists.ipAddress.guestIpAddress;
                     $scope.showLoader = true;
                     var hasStorage = appService.crudService.delete("portforwarding", portForward.id);
                     hasStorage.then(function (result) {
+  appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.deletePortRules,result.id,$scope.global.sessionValues.id);
                         $scope.showLoader = false;
                         appService.notify({message: 'Deleted successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                         $scope.portRulesLists(1);
@@ -1515,14 +1611,6 @@ $scope.portForward.vmGuestIp = $scope.instanceLists.ipAddress.guestIpAddress;
         return filterFilter($scope.instanceList, {selected: true});
     };
 
-    // watch fruits for changes
-    $scope.$watch('instanceList|filter:{selected:true}', function (nv) {
-        $scope.vmList = nv.map(function (vm) {
-            return vm;
-        });
-        appService.localStorageService.set("vms", $scope.vmList);
-        appService.localStorageService.set("vmsPort", $scope.vmList);
-    }, true);
 //
 // if (!$scope.instanceList[id].isChecked) {
 // $scope.vmList.push($scope.instanceList[id]);
@@ -1621,6 +1709,7 @@ $scope.portForward.vmGuestIp = $scope.instanceLists.ipAddress.guestIpAddress;
                                 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                                 $scope.cancel();
                             }
+                            $modalInstance.close();
                         });
 
                     }
@@ -1630,6 +1719,161 @@ $scope.portForward.vmGuestIp = $scope.instanceLists.ipAddress.guestIpAddress;
                         };
             }]);
     };
+
+    $scope.staticNat = function (size, network) {
+        appService.dialogService.openDialog("app/views/cloud/network/enable-static-nat.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
+
+        	$scope.enableStaticNat = function (network) {
+                $scope.actionEnable = true;
+
+                    appService.dialogService.openDialog("app/views/cloud/network/vm-list-enable-nat.jsp", "lg", $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
+                        $scope.portvmLists = function () {
+                            $scope.templateCategory = 'instance';
+                            $scope.portvmList = [];
+                         	 var networkId = network.id;
+                            var hasVms = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "virtualmachine/network?networkId="+networkId +"&lang=" + 	appService.localStorageService.cookie.get('language')+"&sortBy=-id");
+                            hasVms.then(function (result) {  // this is only run after $http
+                            $scope.portvmList = result;
+
+                            });
+                        };
+                    $scope.portvmLists ();
+                     $scope.enableStaticNatSave = function (natInstance) {
+                    			$scope.instances = natInstance;
+
+                                            $scope.staticNat = $scope.global.rulesPF[0];
+                                            $scope.formSubmitted = true;
+                                            $scope.showLoader = true;
+                                            $scope.staticNat.vmInstanceId = $scope.natInstance.id;
+                                            $scope.staticNat.networkId = 	$stateParams.id;
+
+                    if(angular.isUndefined($scope.instanceLists.ipAddress.guestIpAddress)){
+                    	$scope.staticNat.vmGuestIp = $scope.instances.ipAddress;
+                    } else {
+                    	$scope.staticNat.vmGuestIp = $scope.instanceLists.ipAddress.guestIpAddress;
+                    }
+                                            $scope.staticNat.ipAddressId = $stateParams.id1;
+
+                                            var hasStaticNat = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET,
+                                            		appService.globalConfig.APP_URL + "ipAddresses/nat?ipaddress="+$scope.staticNat.ipAddressId +
+                                            		"&vm="+ natInstance.id + "&guestip="+ $scope.staticNat.vmGuestIp + "&type="+"enable" + "&lang=" +
+                                            		appService.localStorageService.cookie.get('language')+"&sortBy=-id");
+
+                                            hasStaticNat.then(function (result) {
+                                                $scope.formSubmitted = false;
+                                                $modalInstance.close();
+                                                $state.reload();
+                                                $scope.showLoader = false;
+                                                appService.notify({
+                                                    message: 'Static Nat Enabled successfully',
+                                                    classes: 'alert-success',
+                                                    templateUrl: $scope.global.NOTIFICATION_TEMPLATE
+                                                });
+                                                $modalInstance.close();
+
+                                                $scope.cancel();
+                                                $scope.ipLists(1);
+                                                $state.reload();
+
+                                            }).catch(function (result) {
+                                                $scope.showLoader = false;
+                                                if (!angular.isUndefined(result.data)) {
+                                                    if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
+                                                        var msg = result.data.globalError[0];
+                                                        $scope.showLoader = false;
+                                                       } else if (result.data.fieldErrors != null) {
+                                                        $scope.showLoader = false;
+                                                        angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
+                                                            $scope.staticNatForm[key].$invalid = true;
+                                                            $scope.staticNatForm[key].errorMessage = errorMessage;
+                                                            $modalInstance.close();
+                                                        });
+                                                    }
+                                                }
+                                                $modalInstance.close();
+                                            });
+
+                      };
+                 }]);
+                    $scope.cancel = function () {
+                        $modalInstance.close();
+
+
+                    };
+            }
+            $scope.cancel = function () {
+                $modalInstance.close();
+            };
+
+            }]);
+
+
+    };
+    $scope.disableNat = function (size, natInstance) {
+        appService.dialogService.openDialog("app/views/cloud/network/disable-static-nat.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
+                $scope.disableStaticNat = function (natInstance) {
+                    			$scope.instances = natInstance;
+
+                                            $scope.staticNat = $scope.global.rulesPF[0];
+                                            $scope.formSubmitted = true;
+                                            $scope.showLoader = true;
+                                            $scope.staticNat.vmInstanceId = $scope.natInstance.id;
+                                            $scope.staticNat.networkId = 	$stateParams.id;
+
+                    if(angular.isUndefined($scope.instanceLists.ipAddress.guestIpAddress)){
+                    	$scope.staticNat.vmGuestIp = $scope.instances.ipAddress;
+                    } else {
+                    	$scope.staticNat.vmGuestIp = $scope.instanceLists.ipAddress.guestIpAddress;
+                    }
+                                            $scope.staticNat.ipAddressId = $stateParams.id1;
+
+                                            var hasStaticNat = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET,
+                                            		appService.globalConfig.APP_URL + "ipAddresses/nat?ipaddress="+$scope.staticNat.ipAddressId +
+                                            		"&vm="+ natInstance.id + "&guestip="+ $scope.staticNat.vmGuestIp + "&type="+"disable" + "&lang=" +
+                                            		appService.localStorageService.cookie.get('language')+"&sortBy=-id");
+                                            hasStaticNat.then(function (result) {
+                                                $scope.formSubmitted = false;
+                                                $modalInstance.close();
+                                                $scope.showLoader = false;
+                                                appService.notify({
+                                                    message: 'Static Nat Disabled successfully',
+                                                    classes: 'alert-success',
+                                                    templateUrl: $scope.global.NOTIFICATION_TEMPLATE
+                                                });
+                                                $state.reload();
+                                                $scope.ipLists(1);
+                                                $state.reload();
+                                                $window.location.href = '#/network/list/view/' + $stateParams.id +'/ip-address/' + $scope.staticNat.ipAddressId;
+
+                                            }).catch(function (result) {
+                                                $scope.showLoader = false;
+                                                if (!angular.isUndefined(result.data)) {
+                                                    if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
+                                                        var msg = result.data.globalError[0];
+                                                    } else if (result.data.fieldErrors != null) {
+                                                        $scope.showLoader = false;
+                                                        angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
+                                                            $scope.staticNatForm[key].$invalid = true;
+                                                            $scope.staticNatForm[key].errorMessage = errorMessage;
+                                                        });
+                                                    }
+                                                }
+                                                $modalInstance.close();
+                                            });
+                                            $state.reload();
+                                                $scope.cancel = function () {
+
+                                                    $modalInstance.close();
+                                                };
+
+            },
+                        $scope.cancel = function () {
+                            $modalInstance.close();
+                        };
+            }]);
+    };
+
+
 
       $scope.releaseIP = function (size, ipAddress) {
 	$scope.ipAddress = angular.copy(ipAddress);
@@ -1742,6 +1986,7 @@ $scope.configureStickiness = function (size, loadBalancer) {
 			   $scope.showLoader = true;
                         var hasServer = appService.crudService.update("loadBalancer", $scope.stickyLoadBalancer);
 			  hasServer.then(function (result) {
+  appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.configureStickiness,result.id,$scope.global.sessionValues.id);
                             $scope.formSubmitted = false;
 			    $modalInstance.close();
 			    $scope.showLoader = false;
@@ -1817,6 +2062,7 @@ $scope.editStickiness = function (size,loadBalancer) {
                         $scope.showLoader = true;
                         var hasServer = appService.crudService.update("loadBalancer", $scope.stickyLoadBalancer);
                         hasServer.then(function (result) {
+  appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.editStickiness,result.id,$scope.global.sessionValues.id);
     			        $scope.LBlist(1);
                             appService.notify({message: 'Updated successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                             $modalInstance.close();

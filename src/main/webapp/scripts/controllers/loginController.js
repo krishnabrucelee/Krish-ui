@@ -3,17 +3,20 @@
  * loginCtrl
  *
  */
-angular.module('homer', []).controller("loginCtrl", function ($scope, $http, globalConfig, $window) {
+angular.module('homer', []).controller("loginCtrl", function ($scope, $http, globalConfig, $window, $remember) {
 
     $scope.loginForm = function () {
-        var username = document.getElementById("username").value;
-        var password = document.getElementById("password").value;
-        var domain = document.getElementById("domain").value;
+
+    	if ($scope.user_remember) {
+            $remember('user_name', $scope.user_name);
+            $remember('user_password', $scope.user_password);
+            $remember('user_domain', $scope.user_domain);
+        }
 
         var headers = {
-            "x-requested-with": domain,
-            "x-auth-username": username,
-            "x-auth-password": password,
+            "x-requested-with": $scope.user_domain,
+            "x-auth-username": $scope.user_name,
+            "x-auth-password": $scope.user_password,
             'Content-Type': 'application/json'
         };
 
@@ -33,4 +36,27 @@ angular.module('homer', []).controller("loginCtrl", function ($scope, $http, glo
            });
 
     }
+
+    //Set remember me option
+    $scope.rememberMe = function() {
+        if ($scope.user_remember) {
+            $remember('user_name', $scope.user_name);
+            $remember('user_password', $scope.user_password);
+            $remember('user_domain', $scope.user_domain);
+        } else {
+            $remember('user_name', '');
+            $remember('user_password', '');
+            $remember('user_domain', '');
+        }
+    };
+
+    //Load cookie user name and password
+    $scope.user_remember = false;
+    if ($remember('user_name') && $remember('user_password') ) {
+    	$scope.user_remember = true;
+        $scope.user_name = $remember('user_name');
+        $scope.user_password = $remember('user_password');
+        $scope.user_domain = $remember('user_domain');
+    }
+
 });
