@@ -19,7 +19,7 @@
 						</div>
                         <span class="pull-right m-l-sm m-t-sm m-b-sm">
                             <a has-permission="CREATE_SSH_KEY" class="btn btn-info"  ng-click="createSSHKey('md')"  data-backdrop="static" data-keyboard="false"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="create.ssh.key.pair" bundle="${msg}" /></a>
-                            <a class="btn btn-info" ui-sref="cloud.list-ssh"  title="<fmt:message key="common.refresh" bundle="${msg}" />"  ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
+                            <a class="btn btn-info" data-ng-click="list(1)"  title="<fmt:message key="common.refresh" bundle="${msg}"/>"><span class="fa fa-refresh fa-lg "></span></a>
                         </span>
                     </div>
                 </div>
@@ -70,9 +70,9 @@
                             </table>
                         </div>
                     </div>
-                    <pagination-content></pagination-content>
                 </div>
             </div>
         </div>
+        <pagination-content></pagination-content>
     </div>
 </div>
