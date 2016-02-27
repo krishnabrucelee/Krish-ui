@@ -97,6 +97,15 @@ angular
         $scope.getDepartmentList(domain);
     }
 
+    if($scope.global.sessionValues.type === 'USER') {
+		var hasUsers = appService.crudService.read("users", $scope.global.sessionValues.id);
+        hasUsers.then(function (result) {
+            if (!angular.isUndefined(result)) {
+            	$scope.userElement = result;
+            }
+        });
+	}
+
     // Create a new role to our application
     $scope.role = {};
     $scope.permissionList = [];
