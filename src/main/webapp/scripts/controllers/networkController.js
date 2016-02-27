@@ -313,15 +313,13 @@ $scope.stopVm = function(size,item) {
     // Create a new egress rule
     $scope.actionRule = false;
     $scope.cidrValidate = false;
-    $scope.firewallRules.networkId = $stateParams.id;
-
     $scope.egressSave = function (form,firewallRules) {
+    	$scope.firewallRules.networkId = $stateParams.id;
         $scope.formSubmitted = true;
         if (form.$valid) {
         $scope.showLoader = true;
         var CheckIP = /^([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\/([0-9]|[12][0-9]|3[012])$/;
         if ($scope.firewallRules.sourceCIDR && $scope.firewallRules.protocol) {
-
             if (CheckIP.test($scope.firewallRules.sourceCIDR)) {
                 if ($scope.firewallRules.sourceCIDR && $scope.firewallRules.protocol) {
                     if ($scope.firewallRules.protocol == 'TCP' || $scope.firewallRules.protocol == 'UDP') {
@@ -363,11 +361,15 @@ $scope.stopVm = function(size,item) {
                             var hasServer = appService.crudService.add("egress", firewallRules);
                             hasServer.then(function (result) {
 			    appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.egressSave,result.id,$scope.global.sessionValues.id);
-                                $scope.formSubmitted = false;
-                                $scope.showLoader = false;
-                                appService.notify({message: 'Egress rule added successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
-                                $scope.firewallRules = {};
-				$scope.firewallRulesLists(1);
+			     $timeout(function(){
+
+                     $scope.showLoader = true;
+                     $scope.formSubmitted = false;
+                     $scope.showLoader = false;
+                     appService.notify({message: 'Egress rule added successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                     $scope.firewallRules = {};
+                     $scope.firewallRulesLists(1);
+			     }, 25000);
                                 $scope.templateCategory = 'egress';
                             }).catch(function (result) {
 					$scope.showLoader = false;
@@ -393,6 +395,7 @@ $scope.stopVm = function(size,item) {
             }
             else {
 		$scope.showLoader = false;
+		appService.notify({message: 'Invalid cidr format ' + $scope.firewallRules.sourceCIDR, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                 $scope.actionRule = true;
                 $scope.cidrValidate = true;
             }
@@ -409,8 +412,8 @@ $scope.stopVm = function(size,item) {
     // Create a new egress rule
     $scope.actionRules = false;
     $scope.cidrValidates = false;
-    $scope.firewallRuleIngress.networkId = $stateParams.id;
     $scope.ingressSave = function (form,firewallRuleIngress) {
+    	$scope.firewallRuleIngress.networkId = $stateParams.id;
         $scope.firewallRuleIngress.ipAddressId = $stateParams.id1;
         $scope.formSubmitted = true;
         if (form.$valid) {
@@ -453,6 +456,7 @@ $scope.stopVm = function(size,item) {
             }
             else {
 		$scope.showLoader = false;
+		appService.notify({message: 'Invalid cidr format ' + $scope.firewallRuleIngress.sourceCIDR, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                 $scope.actionRules = true;
                 $scope.cidrValidates = true;
             }
@@ -479,7 +483,7 @@ $scope.stopVm = function(size,item) {
 			    appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.deleteIngress,result.id,$scope.global.sessionValues.id);
                         $scope.templateCategory = 'firewall';
                         $scope.firewallRule(1);
-                        appService.notify({message: 'Ingress rule deleted successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                        appService.notify({message: 'Ingress rule deleted successfully', classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                     }).catch(function (result) {
                         if (!angular.isUndefined(result.data)) {
                             if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
@@ -487,6 +491,7 @@ $scope.stopVm = function(size,item) {
                                 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                             }
                         }
+                        $modalInstance.close();
                     });
                     $modalInstance.close();
                 },
@@ -507,7 +512,7 @@ $scope.stopVm = function(size,item) {
                     hasServer.then(function (result) {
 			    appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.deleteEgress,result.id,$scope.global.sessionValues.id);
                         $scope.firewallRulesLists(1);
-                        appService.notify({message: 'Egress rule deleted successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                        appService.notify({message: 'Egress rule deleted successfully', classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                     }).catch(function (result) {
                         if (!angular.isUndefined(result.data)) {
                             if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
@@ -515,6 +520,7 @@ $scope.stopVm = function(size,item) {
                                 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                             }
                         }
+                        $modalInstance.close();
                     });
                     $modalInstance.close();
                 },
@@ -574,6 +580,7 @@ $scope.stopVm = function(size,item) {
                                     $scope.addnetworkForm[key].errorMessage = errorMessage;
                                 });
                             }
+                            $modalInstance.close();
                         });
                         $scope.cancel = function () {
                             $modalInstance.close();
@@ -652,6 +659,7 @@ $scope.stopVm = function(size,item) {
                                 $scope.addnetworkForm[key].errorMessage = errorMessage;
                             });
                         }
+                        $modalInstance.close();
                     });
                 },
                         $scope.cancel = function () {
@@ -686,6 +694,7 @@ $scope.networkRestart ={};
                                     });
                                 }
                             }
+                            $modalInstance.close();
                         });
                 },
                         $scope.cancel = function () {
@@ -771,6 +780,7 @@ $scope.networkRestart ={};
                         $scope.addnetworkForm[key].errorMessage = errorMessage;
                     });
                 }
+                $modalInstance.close();
             });
         }
     };
@@ -1349,7 +1359,7 @@ $scope.editrule = function (size, loadBalancer) {
                           $scope.loadBalancerForm[key].errorMessage = errorMessage;
                       });
                   }
-
+                  $modalInstance.close();
               });
 
           },
@@ -1380,7 +1390,7 @@ $scope.deleteRules = function (size, loadBalancer) {
                           $scope.domainForm[key].errorMessage = errorMessage;
                       });
                   }
-
+                  $modalInstance.close();
               });
               $modalInstance.close();
           },
@@ -1495,6 +1505,7 @@ $scope.portForward.vmGuestIp = $scope.instanceLists.ipAddress.guestIpAddress;
                                     });
                                 }
                             }
+                            $modalInstance.close();
                         });
 
   };
@@ -1698,6 +1709,7 @@ $scope.portForward.vmGuestIp = $scope.instanceLists.ipAddress.guestIpAddress;
                                 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                                 $scope.cancel();
                             }
+                            $modalInstance.close();
                         });
 
                     }
@@ -1778,6 +1790,7 @@ $scope.portForward.vmGuestIp = $scope.instanceLists.ipAddress.guestIpAddress;
                                                         });
                                                     }
                                                 }
+                                                $modalInstance.close();
                                             });
 
                       };
@@ -1845,6 +1858,7 @@ $scope.portForward.vmGuestIp = $scope.instanceLists.ipAddress.guestIpAddress;
                                                         });
                                                     }
                                                 }
+                                                $modalInstance.close();
                                             });
                                             $state.reload();
                                                 $scope.cancel = function () {
