@@ -1096,6 +1096,7 @@ $scope.networkRestart ={};
     $scope.LBlist = function (loadBalancer) {
 $scope.rulesvmList ={};
     $scope.stickiness = {};
+    $scope.loadBalancer = {};
     $scope.loadFormSubmitted = false;
   var ipAddressId = $stateParams.id1;
  	var hasloadBalancer = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL +"loadBalancer/list?ipAddressId="+$stateParams.id1 +"&lang=" + appService.localStorageService.cookie.get('language')+"&sortBy=-id");
@@ -1174,9 +1175,7 @@ $scope.loadBalancer.lbPolicy = {};
           templateUrl: $scope.global.NOTIFICATION_TEMPLATE
 
       });
-
       $scope.LBlist(1);
-      $scope.loadBalancer = {};
   }).catch(function (result) {
 
       $scope.showLoader = false;

@@ -92,7 +92,7 @@ pageEncoding="UTF-8"%>
                         <td><a class="btn btn-info" data-ng-if = "loadBalancer.id!=null"  data-ng-click="applyNewRule('lg',loadBalancer)">Add
                                 VM</a></td>
 
-                        <td>Active</td>
+                        <td>{{loadBalancer.state}}</td>
                         <td><a class="icon-button"
                                data-ng-click="editrule('md', loadBalancer)"
                                title="<fmt:message key="common.edit" bundle="${msg}" />">
