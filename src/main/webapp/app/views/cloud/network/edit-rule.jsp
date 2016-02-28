@@ -17,7 +17,8 @@
 											key="common.name" bundle="${msg}" /><span class="text-danger">*</span></label>
 		 	</div>
             <div class="form-group row">
-           		<label class="control-label ">Algorithm</label>
+           		<label class="control-label "><fmt:message
+											key="common.algorithm" bundle="${msg}" /><span class="text-danger">*</span></label></label>
 		   </div>
            </div>
             <div class=" col-md-6 col-sm-6  col-xs-6 ">
@@ -30,7 +31,13 @@
 											</i>
 										</div>             </div>
              <div class="form-group row">
-             	<select  class="form-control" name="protocol" data-ng-model="loadBalancer.algorithms" data-ng-init="algorithms = networkLists.algorithms[0]" data-ng-change="selectProtocol(algorithms.name)" data-ng-options="algorithms.name for algorithms in dropnetworkLists.algorithms"><option value=""><fmt:message key="common.select" bundle="${msg}" /></option></select>
+             	<select  class="form-control" name="protocol" data-ng-model="loadBalancer.algorithms" data-ng-init="algorithms = networkLists.algorithms[0]" data-ng-change="selectProtocol(algorithms.name)" data-ng-options="algorithms.name for algorithms in dropnetworkLists.algorithms"  data-ng-class="{'error': editRuleForm.protocol.$invalid && formSubmitted}"><option value=""><fmt:message key="common.select" bundle="${msg}" /></option></select>
+                <div class="error-area"
+											data-ng-show="editRuleForm.protocol.$invalid && formSubmitted">
+											<i ng-attr-tooltip="{{ editRuleForm.protocol.errorMessage || '<fmt:message key="algorithm.is.required" bundle="${msg}" />' }}"
+												class="fa fa-warning error-icon">
+											</i>
+										</div>
              </div>
             </div>
 		</div>

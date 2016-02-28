@@ -1166,13 +1166,20 @@ $scope.applyNewRule = function (size, loadBalancer) {
 	$scope.lbvmLists();
 
             
-$scope.loadBalancer = angular.copy(loadBalancer);
-            $scope.loadbalancerSave = function (instance) {
-
-            $scope.loadBalancer.vmIpAddress = $scope.instance.ipAddress;
-console.log("--priya**", $scope.loadBalancer.vmIpAddress );
-              var loadBalancer = $scope.loadBalancer;
-console.log("--test**",loadBalancer);
+	    $scope.loadBalancer = angular.copy(loadBalancer);
+            $scope.loadbalancerSave = function (loadBalancerVmList) {
+		var loadBalancer = {};
+		loadBalancer.id  = $scope.loadBalancer.id;
+		loadBalancer.name = $scope.loadBalancer.name;
+		loadBalancer.algorithm = $scope.loadBalancer.algorithm;
+		loadBalancer.vmIpAddress = [];
+		angular.forEach(loadBalancerVmList, function(obj, key) {
+		   angular.forEach(obj.ipAddress, function(vmIpAddress, vmIpAddressKey) {
+		   	loadBalancer.vmIpAddress.push(vmIpAddress);
+                   })
+                   
+		})
+                console.log(loadBalancer);
               var hasServer = appService.crudService.update("loadBalancer", loadBalancer);
               hasServer.then(function (result) {
                   $scope.LBlist(1);

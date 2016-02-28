@@ -46,7 +46,7 @@
 							<td><a class="text-info">{{ instance.vmInstance.name }}</a>
 
 									<div data-ng-show="lbvm">
-									<select required="true" data-ng-show="lbvm" multiple class="form-control input-group" name="ipAddress" data-ng-model="ipAddress"  data-ng-options="ipAddress.guestIpAddress for ipAddress in instance.vmIpAddress"  >
+									<select required="true" data-ng-show="lbvm" multiple class="form-control input-group" name="ipAddress" data-ng-model="instance.ipAddress"  data-ng-options="ipAddress.guestIpAddress for ipAddress in instance.vmIpAddress"  >
 									</select>
 									</div>
 										</td>
@@ -82,7 +82,7 @@
 <div class="modal-footer">
 			<get-loader-image data-ng-if="showLoader"></get-loader-image>
 			<button type="button" data-ng-if="!showLoader" class="btn btn-default " ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.cancel" bundle="${msg}" /></button>
-			<button class="btn btn-info"  data-ng-if="!showLoader" data-ng-click="loadbalancerSave(instance)"><fmt:message key="common.apply" bundle="${msg}" /></button>
+			<button class="btn btn-info"  data-ng-if="!showLoader" data-ng-click="loadbalancerSave(lbvmList)"><fmt:message key="common.apply" bundle="${msg}" /></button>
 		</div>
 </div>
 
