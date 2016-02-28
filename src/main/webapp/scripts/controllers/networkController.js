@@ -88,6 +88,8 @@ function networksCtrl($scope, $sce, $rootScope,filterFilter, $state, $stateParam
     $scope.sort = appService.globalConfig.sort;
     $scope.changeSorting = appService.utilService.changeSorting;
     $scope.showLoader = false;
+    $scope.vpnKey = {};
+    $scope.vpnUsersList = {};
 
     if ($stateParams.id > 0) {
  	    var hasServer = appService.crudService.read("guestnetwork", $stateParams.id);
@@ -723,16 +725,102 @@ $scope.networkRestart ={};
         var hasIpaddress = appService.crudService.read("ipAddresses", ipaddressId);
         hasIpaddress.then(function (result) {
             $scope.ipDetails = result;
+            $scope.vpnUserList($scope.ipDetails);
             appService.localStorageService.set('view', 'details');
         });
 
     };
+
+    $scope.vpnUserList = function (ipDetatils) {
+    	var domainId = ipDetatils.domainId;
+    	var departmentId = ipDetatils.network.departmentId;
+    	$scope.showLoader = true;
+       	var hasVpnUser = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL +
+       			"vpnUser/listbyvpnuser?domainId="+domainId+"&departmentId="+departmentId +"&lang=" +
+       			appService.localStorageService.cookie.get('language')+"&sortBy=-id");
+       	hasVpnUser.then(function (result) {
+       		$scope.vpnUsersList = result;
+            $scope.showLoader = false;
+
+        });
+    };
+
     if (!angular.isUndefined($stateParams.id) && $stateParams.id != '') {
         $scope.edit($stateParams.id);
     }
     if (!angular.isUndefined($stateParams.id1) && $stateParams.id1 != '') {
         $scope.editIpaddress($stateParams.id1);
     }
+
+    $scope.addVpnUser = function(form, user) {
+      $scope.vpnFormSubmitted = true;
+      if (form.$valid) {
+    	  var newUser = user;
+          var oldUser;
+          if(newUser) { //This will avoid empty data
+	          angular.forEach($scope.vpnUsersList, function(eachuser){ //For loop
+		          if(angular.equals(newUser.userName.toLowerCase(),eachuser.userName.toLowerCase())){ // this line will check whether the data is existing or not
+		         	  oldUser = true;
+		         	  appService.notify({message: 'User already exist', classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+		          }
+	          });
+	          if(!oldUser){
+	        	  $scope.showLoader = true;
+	        	  user.domainId = $scope.ipDetails.domainId;
+	        	  user.departmentId = $scope.ipDetails.network.departmentId;
+
+	            	 var hasServer = appService.crudService.add("vpnUser", user);
+	                 hasServer.then(function (result) {
+	                 	$scope.vpnUsersList = result;
+	                     appService.notify({message: 'VPN User Added Successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+	                     $scope.showLoader = false;
+	                     $state.reload();
+	                     appService.localStorageService.set('view', 'vpn-details');
+	                 }).catch(function (result) {
+	                     if (!angular.isUndefined(result.data)) {
+	                         if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
+	                             var msg = result.data.globalError[0];
+	                             $scope.showLoader = false;
+	                             appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+	                         }
+	                     }
+	                 });
+	          }
+          }
+       }
+   }
+
+    $scope.deleteVpnUser = function (size, user) {
+        appService.dialogService.openDialog("app/views/cloud/network/confirm-delete.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+
+                $scope.ok = function (deleteVpnUser) {
+                	var deleteId = user.id;
+                    $scope.showLoader = true;
+                	var hasUser = appService.crudService.delete("vpnUser", user.id);
+                	hasUser.then(function(result) {
+                		$scope.vpnUsersList = result;
+                        appService.notify({message: 'VPN User Removed Successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                        $scope.showLoader = false;
+                        $modalInstance.close();
+                        $state.reload();
+                        appService.localStorageService.set('view', 'vpn-details');
+                    }).catch(function (result) {
+                        if (!angular.isUndefined(result.data)) {
+                            if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
+                                var msg = result.data.globalError[0];
+                                $scope.showLoader = false;
+                                $modalInstance.close();
+                                appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                            }
+                        }
+                    });
+
+                },
+                $scope.cancel = function () {
+                    $modalInstance.close();
+                };
+            }]);
+    };
 
     // Update the Network
     $scope.update = function (form) {
@@ -1402,7 +1490,7 @@ $scope.deleteRules = function (size, loadBalancer) {
         $scope.templateCategory = 'instance';
         $scope.portvmList = [];
      	 var networkId = $stateParams.id;
-         var hasVms = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbynetwork?networkid="+networkId +"&lang=" + appService.localStorageService.cookie.get('language')+"&sortBy=-id");
+        var hasVms = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "virtualmachine/network?networkId="+networkId +"&lang=" + 	appService.localStorageService.cookie.get('language')+"&sortBy=-id");
         hasVms.then(function (result) {  // this is only run after $http
         $scope.portvmList = result;
         });
@@ -1490,10 +1578,12 @@ $scope.portForward.vmGuestIp = $scope.instanceLists.ipAddress.guestIpAddress;
                     $scope.showLoader = true;
                     var hasStorage = appService.crudService.delete("portforwarding", portForward.id);
                     hasStorage.then(function (result) {
-  appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.deletePortRules,result.id,$scope.global.sessionValues.id);
-                        $scope.showLoader = false;
-                        appService.notify({message: 'Deleted successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
-                        $scope.portRulesLists(1);
+                    	$timeout(function(){
+                    		appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.deletePortRules,result.id,$scope.global.sessionValues.id);
+                            $scope.showLoader = false;
+                            appService.notify({message: 'Deleted successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                            $scope.portRulesLists(1);
+                        }, 5000);
                     }).catch(function (result) {
                         if (!angular.isUndefined(result.data)) {
                             if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
@@ -1801,25 +1891,103 @@ $scope.portForward.vmGuestIp = $scope.instanceLists.ipAddress.guestIpAddress;
 
 
 
-      $scope.releaseIP = function (size, ipAddress) {
-	$scope.ipAddress = angular.copy(ipAddress);
+    $scope.releaseIP = function (size, ipAddress) {
+	    $scope.ipAddress = angular.copy(ipAddress);
         appService.dialogService.openDialog("app/views/cloud/network/release-ip.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
-                $scope.release = function (network) {
-			$scope.showLoader = true;
-                        var hasIP = appService.crudService.listByQuery("ipAddresses/dissociate?ipuuid=" + $scope.ipAddress.uuid);
-                        hasIP.then(function (result) {
-				$timeout(function(){  $scope.ipLists(1);
-                                appService.notify({message: 'Public IP released successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});$scope.showLoader = false;$scope.cancel();}, 5000);
+            $scope.release = function (network) {
+			    $scope.showLoader = true;
+                var hasIP = appService.crudService.listByQuery("ipAddresses/dissociate?ipuuid=" + $scope.ipAddress.uuid);
+                hasIP.then(function (result) {
+				    $timeout(function(){
+				        $scope.ipLists(1);
+                        appService.notify({message: 'Public IP released successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                        $scope.showLoader = false;
+                        $scope.cancel();
+                    }, 5000);
+                }).catch(function (result) {
+                });
 
-                        }).catch(function (result) {
-                        });
-
-                },
-                        $scope.cancel = function () {
-                            $modalInstance.close();
-                        };
-            }]);
+            },
+            $scope.cancel = function () {
+                $modalInstance.close();
+            };
+        }]);
     };
+
+    $scope.enableVpn = function (size, ipAddress) {
+	    $scope.ipAddress = angular.copy(ipAddress);
+        appService.dialogService.openDialog("app/views/cloud/network/enable-vpn.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
+            $scope.enableVpnAccess = function (network) {
+			    $scope.showLoader = true;
+                var hasVpn = appService.crudService.listByQuery("ipAddresses/enablevpn?uuid=" + $scope.ipAddress.uuid);
+                hasVpn.then(function (result) {
+			    	$scope.ipDetails = result;
+                    appService.notify({message: 'Your Remote Access VPN is currently enabled', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                    $scope.showLoader = false;
+                    $scope.cancel();
+                    $window.location.href = '#network/list/view/' + $stateParams.id + '/ip-address/' + $scope.ipDetails.id;
+                    appService.localStorageService.set('view', 'vpn-details');
+                }).catch(function (result) {
+                    if (!angular.isUndefined(result.data)) {
+                        if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
+                            var msg = result.data.globalError[0];
+                            $scope.showLoader = false;
+                            appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                        }
+                    }
+                });
+
+            },
+            $scope.cancel = function () {
+                $modalInstance.close();
+            };
+        }]);
+    };
+
+    $scope.disableVpn = function (size, ipAddress) {
+	    $scope.ipAddress = angular.copy(ipAddress);
+        appService.dialogService.openDialog("app/views/cloud/network/disable-vpn.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
+            $scope.enableVpnAccess = function (network) {
+			    $scope.showLoader = true;
+                var hasVpn = appService.crudService.listByQuery("ipAddresses/disablevpn?uuid=" + $scope.ipAddress.uuid);
+                hasVpn.then(function (result) {
+			    	$scope.ipDetails = result;
+                    appService.notify({message: 'Your Remote Access VPN Successfully Disabled', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                    $scope.showLoader = false;
+                    $scope.cancel();
+                    $window.location.href = '#network/list/view/' + $stateParams.id + '/ip-address/' + $scope.ipDetails.id;
+                    appService.localStorageService.set('view', 'details');
+                }).catch(function (result) {
+                    if (!angular.isUndefined(result.data)) {
+                        if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
+                            var msg = result.data.globalError[0];
+                            $scope.showLoader = false;
+                            appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                        }
+                    }
+                });
+
+            },
+            $scope.cancel = function () {
+                $modalInstance.close();
+            };
+        }]);
+    };
+
+    $scope.showVpnKey = function(ipDetails) {
+    	  var ipAddressId = ipDetails.id;
+		  var hasVpn = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET,
+				  appService.globalConfig.APP_URL + "ipAddresses/getvpnkey?id="+ipAddressId +"&lang=" +
+				  appService.localStorageService.cookie.get('language')+"&sortBy=-id");
+		  hasVpn.then(function (result) {
+			    $scope.vpnKey = result;
+				appService.dialogService.openDialog("app/views/cloud/network/show-vpn-key.jsp", 'md',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
+			    $scope.cancel = function () {
+			        $modalInstance.close();
+				};
+				}]);
+			});
+		};
 
     /**
 	 * Options for Line chart

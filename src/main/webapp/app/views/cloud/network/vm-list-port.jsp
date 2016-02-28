@@ -42,27 +42,27 @@ pageEncoding="UTF-8"%>
                     <tbody>
                     <tr data-ng-repeat="instancesList in portvmList | filter: instanceSearch">
                         <td>
-                            <a class="text-info" >{{ instancesList.vmInstance.name }}</a>
+                            <a class="text-info" >{{ instancesList.name }}</a>
                              <div  data-ng-if="selected === instancesList.id" >
                              <select  data-ng-show="selected == instancesList.id" required="true" class="form-control input-group" name="ipAddress" data-ng-model="ipAddress" data-ng-change = "instanceLists.ipAddress.guestIpAddress = ipAddress.guestIpAddress"   data-ng-options="ipAddress.guestIpAddress for ipAddress in nicIPLists">
-                             <option value="">{{instancesList.vmIpAddress.guestIpAddress}} (Primary)</option>
+                             <option value="">{{instancesList.ipAddress}} (Primary)</option>
                              </select>
 
                              </div>
 
                         </td>
-                  		 <td>{{ instancesList.vmInstance.instanceInternalName}}</td>
-                        <td>{{ instancesList.vmInstance.displayName }}</td>
-                        <td>{{ instancesList.vmInstance.zone.name }}
+                  		 <td>{{ instancesList.instanceInternalName}}</td>
+                        <td>{{ instancesList.displayName }}</td>
+                        <td>{{ instancesList.zone.name }}
                          <input type="hidden" data-ng-model="instances.zoneName" value="{{ instancesList.zone.name }}"/></td>
                         <td>
-                            <label class="label label-success" data-ng-if="instancesList.status == 'RUNNING'">{{instancesList.vmInstance.status}}</label>
-                            <label class="label label-danger" data-ng-if="instancesList.status == 'STOPPED'">{{instancesList.vmInstance.status}}</label>
+                            <label class="label label-success" data-ng-if="instancesList.status == 'RUNNING'">{{instancesList.status}}</label>
+                            <label class="label label-danger" data-ng-if="instancesList.status == 'STOPPED'">{{instancesList.status}}</label>
                         </td>
                          <td>
                             <label class="">
                                  <div  style="position: relative;" >
-                                     <input type="radio" icheck data-ng-model="port" name="name" data-ng-value="{{instancesList.id}}" data-ng-change="nicIPList(instancesList.vmInstance.id)"  >
+                                     <input type="radio" icheck data-ng-model="port" name="name" data-ng-value="{{instancesList.id}}" data-ng-change="nicIPList(instancesList)"  >
                                  </div>
                             </label>
 
