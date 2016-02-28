@@ -1232,12 +1232,12 @@ appService.dialogService.openDialog("app/views/cloud/network/vm-list.jsp", 'lg' 
 loadBalancer.vmIpAddress = [];
 if (!angular.isUndefined(loadBalancer.vmIpAddress) && loadBalancer.vmIpAddress != null) {
 		angular.forEach(loadBalancer, function(obj, key) {
-		   if(obj.lbvm && angular.isArray(obj.ipAddress)) { 
+		   if(obj.lbvm && angular.isArray(obj.ipAddress)) {
 			   angular.forEach(obj.ipAddress, function(vmIpAddress, vmIpAddressKey) {
 			   	loadBalancer.vmIpAddress.push(vmIpAddress);
 			   })
 			}
-                   
+
 		})
 }
  $scope.loadBalancer.vmIpAddress = loadBalancer.vmIpAddress;
@@ -1330,7 +1330,7 @@ $scope.applyNewRule = function (size, loadBalancer) {
     };
 	$scope.lbvmLists();
 
-            
+
 	    $scope.loadBalancer = angular.copy(loadBalancer);
             $scope.loadbalancerSave = function (loadBalancerVmList) {
 		var loadBalancer = {};
@@ -1339,12 +1339,12 @@ $scope.applyNewRule = function (size, loadBalancer) {
 		loadBalancer.algorithm = $scope.loadBalancer.algorithm;
 		loadBalancer.vmIpAddress = [];
 		angular.forEach(loadBalancerVmList, function(obj, key) {
-		   if(obj.lbvm && angular.isArray(obj.ipAddress)) { 
+		   if(obj.lbvm && angular.isArray(obj.ipAddress)) {
 			   angular.forEach(obj.ipAddress, function(vmIpAddress, vmIpAddressKey) {
 			   	loadBalancer.vmIpAddress.push(vmIpAddress);
 			   })
 			}
-                   
+
 		})
                   $scope.showLoader = true;
               var hasServer = appService.crudService.update("loadBalancer", loadBalancer);
@@ -1375,7 +1375,7 @@ $scope.applyNewRule = function (size, loadBalancer) {
 // Edit the load balancer
 $scope.editrule = function (size, loadBalancer) {
   appService.dialogService.openDialog("app/views/cloud/network/edit-rule.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
-	            $scope.loadBalancer = angular.copy(loadBalancer);		 
+	            $scope.loadBalancer = angular.copy(loadBalancer);
  angular.forEach($scope.dropnetworkLists.algorithms, function (obj, key) {
                if (obj.value == $scope.loadBalancer.algorithm) {
                     $scope.loadBalancer.algorithm = obj;
