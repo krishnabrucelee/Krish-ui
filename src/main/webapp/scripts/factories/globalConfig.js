@@ -50,6 +50,39 @@ function globalConfig($window) {
 
         	     },
 
+        webSocketEvents:{
+                    vmEvents:{showConsole:'SHOWCONSOLE',stopVm:'STOPVM',rebootVm:'REBOOTVM',startVm:'STARTVM',vmresize:'SAVE',
+                    addNicToVm:'ADDNICTOVIRTUALMACHINE',updateNicToVM:'UPDATENICTOVM',removeNicToVM:'REMOVENICTOVM',deleteIP:'DELETEIP',
+                    acquireNewIP:'ACQUIRENEWIP',vmCreate:'SUBMT',vmnetworksave:'SAVENETWORK',reInstallVm:'REINSTALLVM',reDestroyVm:'REDESTROYVM',
+                    recoverVm:'RECOVERVM',updateDisplayName:'UPDATEDISPLAYNAME',showDescription:'SHOWDESCRIPTION',attachISO:'ATTACHISO',
+                    detachISO:'DETACHISO',takeSnapshot:'TAKESNAPSHOT',hostMigrate:'HOSTMIGRATE',resetPassword:'RESETPASSWORD',showPassword:'SHOWPASSWORD',
+                    attachVolume:'ATTACH',detachVolume:'DETACHVOLUME',createSnapshot:'CREATESNAPSHOT',volumeresize:'UPDATE',volumesave:'SAVE',
+                    uploadVolume:'UPLOADVOLUME',volumedelete:'DELETE'},
+
+                    volumeEvents:{attachVolume:'ATTACH',detachVolume:'DETACHVOLUME',createSnapshot:'CREATESNAPSHOT',volumeresize:'UPDATE',volumesave:'SAVE',
+                    uploadVolume:'UPLOADVOLUME',validateVolume:'VALIDATEVOLUME',deleteSnapshot:'DELETESNAPSHOTPOLICY',volumedelete:'DELETE',recurringSnapshot:'RECURRINGSAVE'},
+
+                    snapshotEvents:{createvmsnapshot:'VALIDATEVMSNAPSHOT',deleteSnapshots:'DELETESNAPSHOTS',deleteVolumeSnapshot:'DELETEVOLUMESNAPSHOT',
+                    restoresnapshot:'RESTORESNAPSHOT',createsnapshot:'VALIDATECONFIRMSNAPSHOT',createsnapshotvolume:'CREATEVOLUME',revertSnapshot:'REVERTSNAPSHOT'},
+
+                    networkEvents:{startVm:'STARTVM',stopVm:'STOPVM',rebootVm:'REBOOTVM',egressSave:'EGRESSSAVE',ingressSave:'INGRESSSAVE',
+                    deleteIngress:'DELETEINGRESS',deleteEgress:'DELETEEGRESS',createnetwork:'SAVE',deletenetwork:'DELETE',restartnetwork:'RESTART',
+                    updatenetwork:'UPDATE',loadbalancerSave:'LOADBALANCERSAVE',editrule:'EDITRULE',deleteRules:'DELETERULES',portforwardSave:'PORTFORWARDSAVE',
+                    deletePortRules:'DELETEPORTRULES',configureStickiness:'CONFIGURESTICKINESS',editStickiness:'EDITSTICKINESS'},
+
+                    sshKeyEvents:{createSSHKey:'CREATESSHKEY',deleteSSHKey:'DELETE' },
+
+                    projectEvents:{createProject:'CREATEPROJECT',addUser:'ADDUSER',removeUser:'REMOVEUSER',editProject:'EDITPROJECT',deleteProject:'PROJECTDELETECONFIRMATION'},
+
+                    applicationEvents:{createApplication:'CREATEAPPLICATION',editApplication:'EDIT',deleteApplication:'DELETE'},
+
+                    accountEvents:{addUser:'ADDUSER',editUser:'EDITUSER',deleteUser:'DELETEUSER'},
+
+                    roleEvents:{createRole:'CREATEROLE',updateRole:'UPDATE',deleteRole:'DELETE',assignRole:'ASSIGNROLESAVE'},
+
+                    departmentEvents:{createDepartment:'CREATEDEPARTMENT',editDepartment:'EDIT',deleteDepartment:'DELETE'}
+        },
+
 
         HTTP_GET: 'GET',
         HTTP_POST: 'POST',
@@ -123,7 +156,8 @@ function globalConfig($window) {
                 isOpen: false
             }
             },
-        sessionValues:  JSON.parse($window.sessionStorage.getItem("loginSession"))
+        sessionValues:  JSON.parse($window.sessionStorage.getItem("loginSession")),
+        loginRemeberMeTimeout: 30 * 24 * 60 * 60 * 1000
     };
 
     return appGlobalConfig;

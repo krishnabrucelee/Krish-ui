@@ -65,8 +65,7 @@ pageEncoding="UTF-8"%>
                 <td><div data-ng-show= " (firewallRules.endPort =='' || firewallRules.endPort!='')">{{firewallRules.endPort}} </div> <div data-ng-show="(firewallRules.icmpCode=='' || firewallRules.icmpCode!='')" >{{firewallRules.icmpCode}}</div></td>
                 <td> <div  data-ng-show=" (firewallRules.icmpType=='' || firewallRules.icmpType!='') ">{{firewallRules.icmpType}}</div></td>
                 <td> <div data-ng-show="(firewallRules.icmpCode=='' || firewallRules.icmpCode!='')" >{{firewallRules.icmpCode}}</div></td>
-       			<td>
-                </td>
+       			<td><div style="width:107px;"></div></td>
                 <td><span ng-if = "firewallRules.isActive">Active</span></td>
                 <td><a data-ng-click="deleteIngress('sm', firewallRules)"><span class="fa fa-trash"></span></a>
                 </td>

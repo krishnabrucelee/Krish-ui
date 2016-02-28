@@ -14,7 +14,7 @@
 				<div class="col-md-5 col-xs-5 col-sm-5">
 					<div class="pull-left m-r-xs m-t-xxs"
 						data-ng-show="computes && instance.computeOffering.customized">
-						<a ng-click="computeSlide(); diskSlide();">
+						<a id="create_instance_compute" ng-click="computeSlide(); diskSlide();">
 							<span data-ng-hide="compute" class="pe pe-lg pe-7s-plus"></span>
 							<span data-ng-show="compute" class="pe pe-lg pe-7s-less"></span>
 						</a>
@@ -26,7 +26,7 @@
 				</div>
 				<div class="col-md-6 col-xs-6 col-sm-6">
 					<select required="true" class="form-control form-group-lg"
-						name="computeOffering"
+						name="computeOffering" id="create_instance_compute_offering"
 						ng-change='computeFunction(instance.computeOffering.customized)'
 						data-ng-model="instance.computeOffering"
 						data-ng-class="{'error': instanceForm.computeOffering.$invalid && OfferingSubmitted}"
@@ -44,7 +44,7 @@
 							class="fa fa-warning error-icon">
 						</i>
 					</div>
-					<input required="true" type="hidden" name="computeoffer"
+					<input required="true" type="hidden" name="computeoffer" id="create_instance_compute_offering_custom"
 						data-ng-model="instance.computeOffering.customized"
 						class="form-control"
 						data-ng-class="{'error': instanceForm.computeoffer.$invalid && OfferingSubmitted}">
@@ -63,7 +63,7 @@
 				</div>
 				<div class="col-md-3 col-sm-3 digit-2-width">
 					<div class="input-group">
-						<input class="form-control" name="memory" valid-number
+						<input class="form-control" name="memory" valid-number id="create_instance_compute_offering_memory"
 							data-ng-min="{{ instance.computeOffer.memory.floor}}"
 							data-ng-max="{{ instance.computeOffer.memory.ceil}}" type="text"
 							data-ng-model="instance.computeOffer.memory.value"> <span class="input-group-addon" id="basic-addon2">MB</span>
@@ -84,7 +84,7 @@
 				<div class="col-md-3 col-sm-3 digit-2-width">
 					<div class="input-group">
 						<input valid-number
-							data-ng-min="{{ instance.computeOffer.cpuCore.floor}}"
+							data-ng-min="{{ instance.computeOffer.cpuCore.floor}}" id="create_instance_compute_offering_cpu_core"
 							data-ng-max="{{ instance.computeOffer.cpuCore.ceil}}" type="text"
 							class="form-control" name="cpuCore"
 							data-ng-model="instance.computeOffer.cpuCore.value">
@@ -105,7 +105,7 @@
 				</div>
 				<div class="col-md-3 col-sm-3 digit-2-width">
 					<div class="input-group">
-						<input valid-number
+						<input valid-number id="create_instance_compute_offering_cpu_speed"
 							data-ng-min="{{ instance.computeOffer.cpuSpeed.floor}}"
 							data-ng-max="{{ instance.computeOffer.cpuSpeed.ceil}}"
 							type="text" class="form-control" name="cpuSpeed"
@@ -122,7 +122,7 @@
 						data-ng-class="{ 'text-danger' : instanceForm.minIops.$modelValue < 0 && OfferingSubmitted}">
 						<label class="col-md-7 col-sm-7 control-label"><fmt:message key="min.iops" bundle="${msg}" /> :</label>
 						<div class="col-md-5 col-sm-5">
-							<input class="form-control ng-pristine ng-valid ng-touched"
+							<input class="form-control ng-pristine ng-valid ng-touched" id="create_instance_compute_offering_min_iops"
 								type="text" data-ng-model="instance.computeOffer.minIops.value"
 								valid-number="" name="minIops">
 						</div>
@@ -133,7 +133,7 @@
 						data-ng-class="{ 'text-danger' : instanceForm.maxIops.$modelValue < 0 && OfferingSubmitted}">
 						<label class="col-md-7 col-sm-7 control-label"><fmt:message key="max.iops" bundle="${msg}" /> :</label>
 						<div class="col-md-5 col-sm-5">
-							<input class="form-control ng-pristine ng-valid ng-touched"
+							<input class="form-control ng-pristine ng-valid ng-touched" id="create_instance_compute_offering_max_iops"
 								type="text" data-ng-model="instance.computeOffer.maxIops.value"
 								valid-number="" name="maxIops">
 						</div>
@@ -149,7 +149,7 @@
 					<label class="section-title"> <fmt:message key="common.disk.offering" bundle="${msg}" /></label>
 				</div>
 				<div class="col-md-6 col-xs-6 col-sm-6">
-					<select class="form-control input-group" name="storageOffering"
+					<select class="form-control input-group" name="storageOffering" id="create_instance_disk_offering"
 						data-ng-model="instance.storageOffering"
 						ng-change='diskFunction(instance.storageOffering.name)'
 						ng-options="storageOffering.name for storageOffering in instanceElements.diskOfferingList">
@@ -160,7 +160,7 @@
 					<i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"
 						tooltip="<fmt:message key="secondary.disk.and.iops" bundle="${msg}" />">
 					</i>
-					<input type="hidden" name="storageOffering"
+					<input type="hidden" name="storageOffering" id="create_instance_storage_offering_name"
 						data-ng-model="instance.storageOffering.name" class="form-control">
 				</div>
 			</div>
@@ -180,7 +180,7 @@
 						</rzslider>
 					</div>
 					<div class="col-md-2 col-xs-12 col-sm-3">
-						<input type="text" required="true"
+						<input type="text" required="true" id="create_instance_disk_size"
 							data-ng-min="{{ instance.diskOffer.diskSize.floor }}"
 							data-ng-max="{{ instance.diskOffer.diskSize.ceil}}"
 							class="form-control input-mini" name="diskSize"
@@ -198,7 +198,7 @@
 							<label class="col-md-6 col-xs-12 col-sm-6 control-label"><fmt:message key="min.iops" bundle="${msg}" /> <span class="text-danger">*</span>
 							</label>
 							<div class="col-md-6 col-sm-6">
-								<input required="true" class="form-control ng-pristine ng-valid ng-touched"
+								<input required="true" class="form-control ng-pristine ng-valid ng-touched" id="create_instance_disk_min_iops"
 									type="text" data-ng-model="instance.diskMinIops"
 									valid-number="" name="diskMinIops">
 								<div class="error-area"
@@ -216,7 +216,7 @@
 							<label class="col-md-6 col-xs-12 col-sm-6 control-label"><fmt:message key="max.iops" bundle="${msg}" /><span class="text-danger">*</span>
 							</label>
 							<div class="col-md-6 col-sm-6">
-								<input required="true" class="form-control ng-pristine ng-valid ng-touched"
+								<input required="true" class="form-control ng-pristine ng-valid ng-touched" id="create_instance_disk_max_iops"
 									type="text" data-ng-model="instance.diskMaxIops"
 									valid-number="" name="diskMaxIops">
 								<div class="error-area"
@@ -239,7 +239,7 @@
 				<div class="col-md-5 col-xs-5 col-sm-5">
 					<div class="pull-left m-r-xs m-t-xxs"
 						data-ng-show="instanceForm.networkOfferinglist.$valid">
-						<a ng-click="computeSlide(); diskSlide(); networkSlide();">
+						<a id="create_instance_networks" ng-click="computeSlide(); diskSlide(); networkSlide();">
 							<span data-ng-hide="networks" class="pe pe-lg pe-7s-plus"></span>
 							<span data-ng-show="networks" class="pe pe-lg pe-7s-less"></span>
 						</a>
@@ -250,7 +250,7 @@
 				</div>
 				<div class="col-md-6 col-xs-6 col-sm-6">
 					<select required="true" class="form-control input-group"
-						name="networkOfferinglist"
+						name="networkOfferinglist" id="create_instance_network"
 						data-ng-class="{'error': instanceForm.networkOfferinglist.$invalid && OfferingSubmitted}"
 						data-ng-model="instance.networkOfferinglist"
 						ng-change='networkFunction(instance.networkOfferinglist.value)'
@@ -268,7 +268,7 @@
 							class="fa fa-warning error-icon">
 						</i>
 					</div>
-					<input required="true" type="hidden" name="networkoffer"
+					<input required="true" type="hidden" name="networkoffer" id="create_instance_network_offering"
 						data-ng-model="instance.networkOfferinglist.name"
 						class="form-control"
 						data-ng-class="{'error': instanceForm.networkoffer.$invalid && OfferingSubmitted}">
@@ -277,7 +277,7 @@
 					data-ng-show="instance.networkOfferinglist.value == 'new' && networks">
 					<div class="col-md-12 col-sm-12">
 						<div class="table-responsive m-t-md">
-							<table cellspacing="1" cellpadding="1"
+							<table cellspacing="1" cellpadding="1" id="create_instance_network_table"
 								class="table table-bordered table-striped">
 								<tbody>
 									<tr>
@@ -287,7 +287,7 @@
 											</b>
 										</td>
 										<td>
-											<input type="text" class="input-small "
+											<input type="text" class="input-small " id="create_instance_network_name"
 												data-ng-model="guestnetwork.name" />
 										</td>
 									</tr>
@@ -301,7 +301,7 @@
 										</td>
 										<td width="65%">
 											<select required="true"
-											class="form-control" name="networkOffering"
+											class="form-control" name="networkOffering" id="create_instance_guest_network"
 											data-ng-model="guestnetwork.networkOffering"
 											ng-options="networkOffering.displayText for networkOffering in instance.networks.networkOfferList">
 												<option value="">
@@ -313,7 +313,7 @@
 									</tr>
 								</tbody>
 							</table>
-							<button class="btn btn-info btn-sm pull-right" type="button"
+							<button class="btn btn-info btn-sm pull-right" type="button" id="create_instance_add_network_button"
 								data-ng-click=addnetwork()>
 								<fmt:message key="common.add" bundle="${msg}" />
 							</button>
@@ -325,7 +325,7 @@
 					<div class="col-md-12 col-sm-12">
 						<div class="table-responsive m-t-md"
 							style="height: 206px; overflow-y: auto; overflow-x: hidden;">
-							<table cellspacing="1" cellpadding="1"
+							<table cellspacing="1" cellpadding="1" id="create_instance_networks_table"
 								class="table table-bordered table-striped">
 								<thead>
 									<tr>
@@ -338,7 +338,7 @@
 									<tr data-ng-repeat="networks in instance.networks.networkList">
 										<td>
 											<label>
-												<input data-ng-model="instance.networks[$index]" type="checkbox" data-ng-checked="false"
+												<input id="create_instance_network_checkbox" data-ng-model="instance.networks[$index]" type="checkbox" data-ng-checked="false"
 													required="true" name="network" value="{{networks}}">
 													{{ networks.name}}
 											</label>
@@ -346,12 +346,12 @@
 										<td>{{ networks.networkType}}</td>
 										<td>
 											<a title="<fmt:message key="ip.address" bundle="${msg}" />"></a>
-											<input type="text" valid-cidr required="true"
+											<input type="text" valid-cidr required="true" id="create_instance_network_ip_addess"
 												placeholder="<fmt:message key="ip.address" bundle="${msg}" />"
 												class="input-small" data-ng-model="networks.ipaddress" />
 											<span>
 												<label>
-													<input type="radio" name="instance.networks.default" data-ng-model="instance.networkc" value="{{networks}}">
+													<input type="radio" id="create_instance_network_default_radio_button" name="instance.networks.default" data-ng-model="instance.networkc" value="{{networks}}">
 														<fmt:message key="common.default" bundle="${msg}" />
 												</label>
 											</span>
@@ -366,7 +366,7 @@
 					data-ng-show=" instance.networkOfferinglist.value == 'vpc' && networks">
 					<div class="col-md-12 col-sm-12">
 						<div class="table-responsive m-t-md">
-							<table cellspacing="1" cellpadding="1"
+							<table cellspacing="1" cellpadding="1" id="create_instance_networks_table"
 								class="table table-bordered table-striped">
 								<thead>
 									<tr>
@@ -380,7 +380,7 @@
 										data-ng-repeat="networks in instance.networks.networkList| filter:{ vpc : true }">
 										<td>
 											<label>
-												<input data-ng-model="networks.selected" type="checkbox"
+												<input data-ng-model="networks.selected" type="checkbox" id="create_instance_network_checkbox"
 													required="true" name="instance.networks" value="networks">
 													{{ networks.name}}
 											</label>
@@ -388,12 +388,12 @@
 										<td>{{ networks.type}}</td>
 										<td>
 											<a title="<fmt:message key="ip.address" bundle="${msg}" />"></a>
-											<input type="text" required="true" valid-cidr
+											<input type="text" required="true" valid-cidr id="create_instance_network_ip_address"
 												placeholder="<fmt:message key="ip.address" bundle="${msg}" />"
 												class="input-small" data-ng-model="networks.ipaddress" />
 											<span>
 												<label>
-													<input type="radio" name="instance.networks.default" data-ng-model="instance.networks[$index]"
+													<input type="radio" id="create_instance_network_default_radio" name="instance.networks.default" data-ng-model="instance.networks[$index]"
 														value="{{networks}}"> <fmt:message key="common.default" bundle="${msg}" />
 												</label>
 											</span>

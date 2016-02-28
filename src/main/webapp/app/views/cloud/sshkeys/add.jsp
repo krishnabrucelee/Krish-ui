@@ -43,12 +43,24 @@
 							</div>
 						</div>
 					</div>
-					 <div data-ng-if=" global.sessionValues.type == 'ROOT_ADMIN' || global.sessionValues.type == 'DOMAIN_ADMIN'">
+					 <div data-ng-if="global.sessionValues.type == 'DOMAIN_ADMIN'">
+						<div class="form-group">
+							<div class="row">
+                            	<label class="col-md-3 col-xs-12 col-sm-3 control-label"><fmt:message key="common.domain" bundle="${msg}" /><span class="text-danger">*</span></label>
+                            	<div class="col-md-6  col-sm-6 col-xs-12">
+                                {{ global.sessionValues.domainName }}
+                                <input type="hidden" name="domain"  data-ng-model="sshkey.domain" data-ng-init="sshkey.domainId=global.sessionValues.domainId" />
+                            	</div>
+                        	</div>
+                        </div>
+	                	</div>
+
+					<div data-ng-if=" global.sessionValues.type == 'ROOT_ADMIN'">
                     <div class="form-group" ng-class="{'text-danger':!sshkey.domain && formSubmitted}">
                         <div class="row">
 						    <label class="col-md-3 col-xs-12 col-sm-3 control-label"><fmt:message key="common.domain" bundle="${msg}" /> <span class="text-danger">*</span></label>
                             <div class="col-md-6  col-sm-6 col-xs-12">
-                               <select required="true" class="form-control input-group" name="domain" data-ng-change = "select(sshkey.domain)" data-ng-model="sshkey.domain" ng-options="domain.name for domain in formElements.domainList" data-ng-class="{'error': !sshkey.domain && formSubmitted}" >
+                               <select required="true" class="form-control input-group" name="domain" data-ng-change="domainChange()" data-ng-model="sshkey.domain" ng-options="domain.name for domain in formElements.domainList" data-ng-class="{'error': !sshkey.domain && formSubmitted}" >
                                     <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
 
                                 </select>
@@ -58,32 +70,98 @@
                         </div>
                     </div>
                     </div>
-                    <div data-ng-if=" global.sessionValues.type == 'ROOT_ADMIN' || global.sessionValues.type == 'DOMAIN_ADMIN'">
-						<div class="row  form-group required" ng-class="{ 'text-danger' : !sshkey.department && formSubmitted}">
-							<div class="col-md-3 col-xs-3 col-sm-3">
-								<label class="control-label"><fmt:message
-										key="department.name" bundle="${msg}" /><span
-									title="<fmt:message key="common.required" bundle="${msg}" />"
-									class="text-danger font-bold">*</span></label>
-							</div>
-							<div class="col-md-6 col-xs-12 col-sm-6  department-selectbox">
-								<div data-ng-class="{'error': !sshkey.department && formSubmitted}" custom-select="t as t.userName for t in formElements.departmenttypeList | filter: { name: $searchTerm }"
-									name="department" data-ng-model="sshkey.department">
-									<div class="pull-left">
-										<strong>{{ t.userName }}</strong><br />
-									</div>
-									<div class="clearfix"></div>
-								</div>
-								<i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"
-									tooltip="<fmt:message key="department.name" bundle="${msg}" />"></i>
-								<div class="error-area"
-									data-ng-show="!sshkey.department && formSubmitted">
-									<i tooltip="<fmt:message key="department.name.is.required" bundle="${msg}" />"
-										class="fa fa-warning error-icon"></i>
+
+                    <div data-ng-if="global.sessionValues.type == 'ROOT_ADMIN'">
+                        <div class="form-group"ng-class="{'text-danger': !sshkey.department && formSubmitted}">
+                            <div class="row">
+                                <label class="col-md-3 col-xs-12 col-sm-3 control-label"><fmt:message key="common.department" bundle="${msg}" /><span class="text-danger">*</span></label>
+                                <div class="col-md-6 col-xs-12 col-sm-6">
+                                    <select required="true" class="form-control input-group" ng-change="getProjectsByDepartment(sshkey.department)"
+                                     name="department" data-ng-model="sshkey.department" ng-options="department.userName for department in formElements.departmentList" data-ng-class="{'error': !sshkey.department && formSubmitted}">
+                                        <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
+                                    </select>
+                                    <i  tooltip="<fmt:message key="department.name" bundle="${msg}" />" class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
+                                    <div class="error-area" data-ng-show="!sshkey.department && formSubmitted" >
+                                    	<i tooltip="<fmt:message key="department.is.required" bundle="${msg}" />"
+												class="fa fa-warning error-icon"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                        <div data-ng-if="global.sessionValues.type == 'DOMAIN_ADMIN'">
+                        <div class="form-group"ng-class="{'text-danger': !sshkey.department && formSubmitted}">
+                            <div class="row">
+                                <label class="col-md-3 col-xs-12 col-sm-3 control-label"><fmt:message key="common.department" bundle="${msg}" /><span class="text-danger">*</span></label>
+                                <div class="col-md-6 col-xs-12 col-sm-6">
+                                    <select required="true" class="form-control input-group" ng-change="getProjectsByDepartment(sshkey.department)"
+                                     name="department" data-ng-model="sshkey.department" ng-options="department.userName for department in departmentList" data-ng-class="{'error': !sshkey.department && formSubmitted}" >
+                                        <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
+
+                                    </select>
+                                    <i  tooltip="<fmt:message key="department.name" bundle="${msg}" />" class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
+                                    <div class="error-area" data-ng-show="!sshkey.department && formSubmitted" >
+                                    	<i tooltip="<fmt:message key="department.is.required" bundle="${msg}" />"
+												class="fa fa-warning error-icon"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                        <div data-ng-if="global.sessionValues.type == 'USER'">
+                        <div class="form-group">
+                            <div class="row">
+                                <label class="col-md-3 col-xs-12 col-sm-3 control-label"><fmt:message key="common.department" bundle="${msg}" /><span class="text-danger">*</span></label>
+                                <div class="col-md-6 col-xs-12 col-sm-6">
+                                {{ userElement.department.userName }}
+                                <input type="hidden" name="department"  data-ng-model="sshkey.department" data-ng-init="sshkey.departmentId=global.sessionValues.departmentId" />
+                            	</div>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="form-group">
+						<div class="row">
+							<div data-ng-if="global.sessionValues.type != 'USER'">
+								<label class="col-md-3 col-xs-12 col-sm-3 control-label">
+									<fmt:message key="common.project" bundle="${msg}" /> <span class="m-l-xs"></span>
+								</label>
+								<div class="col-md-6 col-xs-12 col-sm-6">
+									<select class="form-control input-group" name="project"
+										data-ng-model="sshkey.project"
+										data-ng-options="options.name for options in options">
+										<option value="">
+											<fmt:message key="common.select" bundle="${msg}" />
+										</option>
+									</select>
+									<i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"
+										tooltip="<fmt:message key="common.project" bundle="${msg}" />">
+									</i>
 								</div>
 							</div>
 						</div>
 					</div>
+					<div class="form-group">
+						<div class="row">
+							<div data-ng-if="global.sessionValues.type == 'USER'">
+								<label class="col-md-3 col-xs-12 col-sm-3 control-label">
+									<fmt:message key="common.project" bundle="${msg}" /> <span class="m-l-xs"></span>
+								</label>
+								<div class="col-md-6 col-xs-12 col-sm-6">
+									<select class="form-control input-group" name="project"
+										data-ng-model="sshkey.project"
+										data-ng-options="options.name for options in options">
+										<option value="">
+											<fmt:message key="common.select" bundle="${msg}" />
+										</option>
+									</select>
+									<i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"
+										tooltip="<fmt:message key="common.project" bundle="${msg}" />">
+									</i>
+								</div>
+							</div>
+						</div>
+					</div>
+
 			</div>
 				</div>
 		</div>
