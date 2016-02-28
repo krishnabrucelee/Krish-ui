@@ -107,14 +107,14 @@
                                                 {{ department.description}}
                                             </td>
                                             <td>
-
-                                                <a has-permission="EDIT_DEPARTMENT" id="departments_edit_button_{{department.id}}" data-unique-field="edit-{{ department.domain.name }}-{{ department.userName}}" class="icon-button test_departments_edit_button" title="<fmt:message key="common.edit" bundle="${msg}" />" data-ng-click="edit('md', department)">
+	                                           <input type="hidden" id="departments_unique_{{department.id}}"  data-unique-field="{{ department.domain.name }}-{{ department.userName}}" class="test_departments_unique">
+                                                <a has-permission="EDIT_DEPARTMENT" id="departments_edit_button_{{department.id}}" class="icon-button test_departments_edit_button" title="<fmt:message key="common.edit" bundle="${msg}" />" data-ng-click="edit('md', department)">
                                                     <span class="fa fa-edit"> </span>
                                                 </a>
-                                                 <a has-permission="DEPARTMENT_RESOURCE_QUOTA_MODIFICATION" id="departments_edit_quota_button_{{department.id}}" data-unique-field="quota-{{ department.domain.name }}-{{ department.userName}}" class="icon-button test_departments_edit_quota_button" ui-sref="department.quotalimit({id: {{department.id}}, quotaType: 'department-quota'})" title="<fmt:message key="common.edit.quota" bundle="${msg}" />">
+                                                 <a has-permission="DEPARTMENT_RESOURCE_QUOTA_MODIFICATION" id="departments_edit_quota_button_{{department.id}}" class="icon-button test_departments_edit_quota_button" ui-sref="department.quotalimit({id: {{department.id}}, quotaType: 'department-quota'})" title="<fmt:message key="common.edit.quota" bundle="${msg}" />">
                                                     <span class="fa font-bold pe-7s-edit"> </span>
                                                 </a>
-                                                <a has-permission="DELETE_DEPARTMENT" id="departments_delete_button_{{department.id}}" data-unique-field="delete-{{ department.domain.name }}-{{ department.userName}}" class="icon-button test_departments_delete_button" title="<fmt:message key="common.delete" bundle="${msg}" />" data-ng-click="delete('sm', department)" ><span class="fa fa-trash"></span></a>
+                                                <a has-permission="DELETE_DEPARTMENT" id="departments_delete_button_{{department.id}}" class="icon-button test_departments_delete_button" title="<fmt:message key="common.delete" bundle="${msg}" />" data-ng-click="delete('sm', department)" ><span class="fa fa-trash"></span></a>
 
                                             </td>
 

@@ -332,3 +332,7 @@ table.dataTable thead .sorting_desc::after {content: "\f0dd";}
 .template-panel-area{width:50% !important; min-height:auto !important; margin-bottom:0px;}
 .template-panel-area .hpanel{margin-bottom:0px;}
 }
+
+.custom-icon-ip-disabled {
+	background: rgba(0, 0, 0, 0) url("../images/ip-icon.png") no-repeat scroll center top !important;
+}

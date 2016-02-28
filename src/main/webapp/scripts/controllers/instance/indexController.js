@@ -10,6 +10,15 @@ angular
 
 function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter, appService, $window, sweetAlert) {
 
+
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.vmCreate, function() {
+       // $scope.instanceList = appService.webSocket;
+    });
+
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.vmnetworksave, function() {
+       // $scope.instance.networks.networkOfferList  = appService.webSocket;
+    });
+
     $scope.global = appService.globalConfig;
     $scope.instanceList = [];
     $scope.formElements = [];
@@ -41,7 +50,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
         $scope.formElements.domainList = result;
     });
 
-    if ($scope.global.sessionValues.type !== 'ROOT_ADMIN') {
+    if ($scope.global.sessionValues.type === 'DOMAIN_ADMIN' ) {
         if (!angular.isUndefined($scope.global.sessionValues.domainId)) {
             var hasDomain = appService.crudService.read("domains", $scope.global.sessionValues.domainId);
             hasDomain.then(function (result) {
@@ -317,22 +326,29 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
             $scope.formElements.projecttypeList = {};
             $scope.diskOfferingList(obj);
         }
-
     }
 
-    $scope.changedepartment=function (obj)
-    {
-	$scope.instance.instanceOwner =null;
-	$scope.instance.project = null;
+    $scope.changedepartment = function(obj) {
+        $scope.formElements.sshKeyList = {};
+        $scope.instance.sshkey = null;
+        $scope.instance.instanceOwner =null;
+    	$scope.instance.project = null;
         $scope.instance.networks.networkList  = null;
- 	if (!angular.isUndefined(obj)) {
-            $scope.userList(obj);
-            $scope.listNetworks(obj.id, 'department');
-            $scope.formElements.projecttypeList = {};
+     	if (!angular.isUndefined(obj)) {
+                $scope.userList(obj);
+                $scope.listNetworks(obj.id, 'department');
+                $scope.formElements.projecttypeList = {};
 
         }
+        if (!angular.isUndefined($scope.instance.department) && $scope.global.sessionValues.type != "USER") {
+	        var hasSSHKeyList = appService.crudService.listAllByFilter("sshkeys/search/department", $scope.instance.department);
+	        hasSSHKeyList.then(function (result) {
+	    	    $scope.formElements.sshKeyList = result;
+	        });
+        }
+    };
 
-    }
+
 
     $scope.changeinstanceowner=function (obj)
     {
@@ -344,13 +360,22 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
         }
     }
 
-	$scope.changeproject=function (obj)
-   	 {
+	$scope.changeproject=function (obj) {
+        $scope.formElements.sshKeyList = {};
+        $scope.instance.sshkey = null;
         $scope.instance.networks.networkList  = null;
   	  if (!angular.isUndefined(obj)) {
             $scope.listNetworks(obj.id, 'project');
         }
-  	  }
+        if (!angular.isUndefined($scope.instance.project)) {
+	        var hasSSHKeyList = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL
+        		+ "sshkeys/search/project?project="+$scope.instance.project.id);
+	        hasSSHKeyList.then(function (result) {
+	    	    $scope.formElements.sshKeyList = result;
+	        });
+        }
+
+  	  };
 
 
     $scope.departmentList = function (domain) {
@@ -362,17 +387,6 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
             var hasDepartments = appService.crudService.read("departments", $scope.global.sessionValues.departmentId);
             hasDepartments.then(function (result) {
                 $scope.instance.department = result;
-                if (!angular.isUndefined(result)) {
-                    $scope.listNetworks(result.id, 'department');
-
-                }
-            });
-            var hasUsers = appService.crudService.read("users", $scope.global.sessionValues.id);
-            hasUsers.then(function (result) {
-                $scope.instance.instanceOwner = result;
-                if (!angular.isUndefined(result)) {
-                    $scope.projectList(result);
-                }
             });
         } else {
             var hasDepartments = appService.crudService.listAllByFilter("departments/search", domain);
@@ -602,6 +616,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
         var hasServer = appService.crudService.add("virtualmachine", instance);
         hasServer.then(function (result) {  // this is only run after $http completes
             $scope.showLoader = false;
+   	    appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.vmCreate,result.id,$scope.global.sessionValues.id);
             appService.notify({message: "Instance creation started", classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
             $modalInstance.close();
             $state.reload();
@@ -689,7 +704,6 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
 
                         $scope.instanceNetwork = {
                         };
-                        // appService.localStorageService.remove('instanceNetworkList');
 
                         $scope.networks.plan = $scope.networks.networkOffers.name;
 
@@ -862,6 +876,33 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
 
     };
 
+
+    if (!angular.isUndefined($scope.global.sessionValues.departmentId) && $scope.global.sessionValues.type == "USER") {
+        var hasDept = appService.crudService.read("departments", $scope.global.sessionValues.departmentId);
+        hasDept.then(function (result) {
+            $scope.instance.department = result;
+            if (!angular.isUndefined(result)) {
+                    $scope.listNetworks(result.id, 'department');
+
+                }
+
+      var hasSSHKeyList = appService.crudService.listAllByFilter("sshkeys/search/department", $scope.instance.department);
+        hasSSHKeyList.then(function (result) {
+            $scope.formElements.sshKeyList = result;
+        });
+        });
+
+
+     var hasUsers = appService.crudService.read("users", $scope.global.sessionValues.id);
+            hasUsers.then(function (result) {
+                $scope.instance.instanceOwner = result;
+                if (!angular.isUndefined(result)) {
+                    $scope.projectList(result);
+                }
+            });
+        }
+
+
     $scope.networkOfferList = {};
     $scope.networkOfferForm = {};
     $scope.global = appService.crudService.globalConfig;
@@ -911,6 +952,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
 
             var hasguestNetworks = appService.crudService.add("guestnetwork", guestnetwork);
             hasguestNetworks.then(function (result) {
+   	    appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.vmnetworksave,result.id,$scope.global.sessionValues.id);
                 if ($scope.instance.project == null) {
                     $scope.listNetworks($scope.instance.department.id, 'department');
                 } else {

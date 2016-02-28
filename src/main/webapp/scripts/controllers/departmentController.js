@@ -7,6 +7,20 @@ angular
         .controller('departmentCtrl', departmentCtrl)
 
 function departmentCtrl($scope, $sce, appService) {
+
+  $scope.$on(appService.globalConfig.webSocketEvents.departmentEvents.createDepartment, function() {
+
+  //   $scope.departmentList = appService.webSocket;
+    });
+  $scope.$on(appService.globalConfig.webSocketEvents.departmentEvents.deleteDepartment, function() {
+
+  //   $scope.departmentList = appService.webSocket;
+    });
+  $scope.$on(appService.globalConfig.webSocketEvents.departmentEvents.editDepartment, function() {
+
+  //   $scope.departmentList = appService.webSocket;
+    });
+
     $scope.departmentList = {};
     $scope.paginationObject = {};
     $scope.departmentForm = {};
@@ -64,6 +78,7 @@ function departmentCtrl($scope, $sce, appService) {
                         var hasServer = appService.crudService.add("departments", department);
                         hasServer.then(function (result) {  // this is only run after $http completes
                         	//$rootScope.department={};
+			   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.departmentEvents.createDepartment,result.id,$scope.global.sessionValues.id);
                         	$scope.formSubmitted = false;
                             $modalInstance.close();
                             $scope.showLoader = false;
@@ -102,6 +117,7 @@ function departmentCtrl($scope, $sce, appService) {
                     	delete department.domain;
                         var hasServer = appService.crudService.update("departments", department);
                         hasServer.then(function (result) {
+			   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.departmentEvents.editDepartment,result.id,$scope.global.sessionValues.id);
                             $scope.list(1);
                             $scope.showLoader = false;
                             appService.notify({message: 'Department updated successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
@@ -125,7 +141,7 @@ function departmentCtrl($scope, $sce, appService) {
     };
 
 
-    // Delete the department
+
  // Delete the department
     $scope.delete = function (size, department) {
         appService.dialogService.openDialog("app/views/department/confirm-delete.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
@@ -136,6 +152,7 @@ function departmentCtrl($scope, $sce, appService) {
                 	delete deleteObject.domain;
                     var hasServer = appService.crudService.softDelete("departments", deleteObject);
                     hasServer.then(function (result) {
+			   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.departmentEvents.deleteDepartment,result.id,$scope.global.sessionValues.id);
                         $scope.list(1);
                         appService.notify({message: 'Department deleted successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                     }).catch(function (result) {

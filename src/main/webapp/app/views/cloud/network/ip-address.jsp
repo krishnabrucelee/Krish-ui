@@ -28,6 +28,7 @@ pageEncoding="UTF-8"%>
                     <tr>
                         <th>IPS</th>
                         <th>Zone</th>
+                        <th>Vm Name</th>
                         <th>State</th>
                         <th>Action</th>
                     </tr>
@@ -38,12 +39,12 @@ pageEncoding="UTF-8"%>
                       	<a class="text-info"  ui-sref="cloud.list-network.view-network.view-ipaddress({id1:ipaddress.id})"  title="View IP"> {{ ipaddress.publicIpAddress }} <span ng-if="ipaddress.isSourcenat">[Source NAT]</span></a>
                       </td>
                       <td>{{ipaddress.zone.name}} </td>
+                      <td>{{ipaddress.vmInstance.name}}</td>
                       <td> <b class="text-success text-uppercase">{{ipaddress.state}}</b></td>
                       <td>
-                            <!-- <a class="icon-button" title="Enable VPN">
-                                <i class="custom-link-icon custom-vpn-ip"></i>
-                            </a> -->
-                            <a data-ng-if="!ipaddress.isSourcenat" class="icon-button" title="Release IP" data-ng-click="releaseIP('sm',ipaddress)"><span class="fa fa-chain-broken"></span></a>
+                          <a data-ng-if="ipaddress.isSourcenat && ipaddress.vpnState != 'RUNNING'" class="icon-button" title="Enable VPN" data-ng-click="enableVpn('sm',ipaddress)"><i class="custom-link-icon custom-icon-ip-disabled"></i></a>
+                          <a data-ng-if="ipaddress.isSourcenat && ipaddress.vpnState == 'RUNNING'" class="icon-button" title="Disable VPN" data-ng-click="disableVpn('sm',ipaddress)"><i class="custom-link-icon custom-icon-ip"></i></a>
+                          <a data-ng-if="!ipaddress.isSourcenat" class="icon-button" title="Release IP" data-ng-click="releaseIP('sm',ipaddress)"><span class="fa fa-chain-broken"></span></a>
                       </td>
               </tr>
           </tbody>

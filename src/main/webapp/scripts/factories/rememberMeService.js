@@ -5,7 +5,7 @@ var loginApp = angular.module("homer");
     * This service is called to remember user's credentials
     *
     */
-   loginApp.factory('$remember', function () {
+   loginApp.factory('$remember', function (globalConfig) {
        function fetchValue(name) {
            var gCookieVal = document.cookie.split("; ");
            for (var i = 0; i < gCookieVal.length; i++) {
@@ -31,7 +31,7 @@ var loginApp = angular.module("homer");
                cookie += (typeof values.value === 'object') ? angular.toJson(values.value) + ';' : values.value + ';';
                if (values.expires) {
                    var date = new Date();
-                   date.setTime(date.getTime() + (values.expires * 30 * 24 * 60 * 60 * 1000));
+                   date.setTime(date.getTime() + (values.expires * globalConfig.loginRemeberMeTimeout));
                    expires = date.toGMTString();
                }
                cookie += (!values.session) ? 'expires=' + expires + ';' : '';

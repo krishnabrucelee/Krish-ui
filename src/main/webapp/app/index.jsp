@@ -227,6 +227,7 @@
     <script src="scripts/factories/modalService.js"></script>
     <script src="scripts/factories/monitorService.js"></script>
     <script src="scripts/factories/Search.js"></script>
+    <script src="scripts/factories/webSocket.js"></script>
     <script>
     <!-- endbuild -->
         $('html').addClass("page-scroll");
