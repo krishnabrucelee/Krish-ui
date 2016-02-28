@@ -1447,7 +1447,7 @@ $scope.portForward.vmGuestIp = $scope.instanceLists.ipAddress.guestIpAddress;
                                     if (msg === "0") {
                                         $scope.formSubmitted = false;
                                         $modalInstance.close();
-                                        appService.notify({message: 'Rule added successfully. Please refresh the page', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                                        appService.notify({message: 'Rule added successfully.', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                                         $scope.portRulesLists(1);
                                     } else {
                                         appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
@@ -1912,8 +1912,9 @@ $scope.configureStickiness = function (size, loadBalancer) {
                             $scope.formSubmitted = false;
 			    $modalInstance.close();
 			    $scope.showLoader = false;
-                         appService.notify({message: 'Policy added successfully. Please refresh the page', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
-                            $scope.LBlist(1);
+                         appService.notify({message: 'Policy added successfully.', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+                             $state.reload();
+			    $scope.LBlist(1);
                             $scope.stickiness.stickinessMethod = "";
     			    $scope.stickiness.stickinessName = "";
     			    $scope.stickiness.stickyTableSize = "";
@@ -1985,7 +1986,7 @@ $scope.editStickiness = function (size,loadBalancer) {
                         var hasServer = appService.crudService.update("loadBalancer", $scope.stickyLoadBalancer);
                         hasServer.then(function (result) {
   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.editStickiness,result.id,$scope.global.sessionValues.id);
-                            appService.notify({message: 'Policy updated successfully. Please refresh the page', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                            appService.notify({message: 'Policy updated successfully.', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                             $modalInstance.close();
                             $scope.showLoader = false;
                         }).catch(function (result) {
