@@ -2047,69 +2047,71 @@ $scope.createStickiness = function (size) {
             }]);
     };
 
-$scope.configureStickiness = function (size, loadBalancer) {
-    appService.dialogService.openDialog($scope.global.VIEW_URL + "cloud/network/stickiness.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope',function ($scope, $modalInstance, $rootScope) {
-	$scope.stickyLoadBalancer = loadBalancer;
-	    //Assign loadbalancer stickiness in object
-          $scope.addStickiness = function(form, stickiness) {
-              $scope.formSubmitted = true;
-              if (!angular.isUndefined($scope.stickyLoadBalancer.id) && $scope.stickyLoadBalancer.id != null) {
-	      var loadBalancerParams = ["stickinessMethod", "stickinessName", "stickyTableSize","cookieName","stickyExpires","stickyMode","stickyLength","stickyRequestLearn",
-              "stickyPrefix","stickyNoCache","stickyIndirect","stickyPostOnly","stickyCompany"];
-                 if (angular.isUndefined($scope.stickiness.stickinessName) || $scope.stickiness.stickinessName == null) {
-                     $scope.showLoader = false;
-                 }
-                 if ($scope.stickiness.stickinessMethod == $scope.global.STICKINESS.NONE) {
-                     $modalInstance.close();
-                 }
-                 else {
-                 if(form.$valid){
-		 for(var i=0; i < loadBalancerParams.length; i++) {
-		     if(!angular.isUndefined(stickiness[loadBalancerParams[i]]) && stickiness[loadBalancerParams[i]] != null){
-		         $scope.stickyLoadBalancer.lbPolicy[loadBalancerParams[i]] = stickiness[loadBalancerParams[i]];
-		     }
-		 }
-		    delete $scope.stickyLoadBalancer.stickyTableSize;
-			delete $scope.stickyLoadBalancer.stickyExpires;
-			delete $scope.stickyLoadBalancer.cookieName;
-			delete $scope.stickyLoadBalancer.domain;
-			   $scope.showLoader = true;
-                        var hasServer = appService.crudService.update("loadBalancer", $scope.stickyLoadBalancer);
-			  hasServer.then(function (result) {
-  appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.configureStickiness,result.id,$scope.global.sessionValues.id);
-                            $scope.formSubmitted = false;
-			    $modalInstance.close();
-			    $scope.showLoader = false;
-                         appService.notify({message: 'Policy added successfully.', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
-                             $state.reload();
-			    $scope.LBlist(1);
-                            $scope.stickiness.stickinessMethod = "";
-    			    $scope.stickiness.stickinessName = "";
-    			    $scope.stickiness.stickyTableSize = "";
-    			    $scope.stickiness.stickyExpires = "";
-                            $scope.stickiness.cookieName = "";
-                            $scope.stickiness.stickyMode = "";
-                            $scope.stickiness.stickyLength = "";
-                            $scope.stickiness.stickyHoldTime = "";
-                            $modalInstance.close();
-                        }).catch(function (result) {
-                    		if(result.data.globalError[0] != ''){
-                    			var msg = result.data.globalError[0];
-                    			appService.notify({message: msg, classes: 'alert-danger',
-                    				templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
-                    			$modalInstance.close();
-                            	}
-                    	});
-              }}
-		}
-		},
+$scope.stickyLoadBalancer = {};
 
-                     $scope.cancel = function () {
-                 	$modalInstance.close(); $scope.formElements = {
-	    };
-                        };
-            }]);
-    };
+    $scope.configureStickiness = function (size, loadBalancer) {
+        appService.dialogService.openDialog($scope.global.VIEW_URL + "cloud/network/stickiness.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope',function ($scope, $modalInstance, $rootScope) {
+    	$scope.stickyLoadBalancer = loadBalancer;
+    	    //Assign loadbalancer stickiness in object
+              $scope.addStickiness = function(form, stickiness) {
+$scope.stickyLoadBalancer.lbPolicy = {};
+    		console.log(stickiness);
+                  $scope.formSubmitted = true;
+                  if (!angular.isUndefined($scope.stickyLoadBalancer.id) && $scope.stickyLoadBalancer.id != null) {
+    	      var loadBalancerParams = ["stickinessMethod", "stickinessName", "stickyTableSize","cookieName","stickyExpires","stickyMode","stickyLength","stickyRequestLearn",
+                  "stickyPrefix","stickyNoCache","stickyIndirect","stickyPostOnly","stickyCompany"];
+                     if (angular.isUndefined($scope.stickiness.stickinessName) || $scope.stickiness.stickinessName == null) {
+                         $scope.showLoader = false;
+                     }
+                     if ($scope.stickiness.stickinessMethod == $scope.global.STICKINESS.NONE) {
+                         $modalInstance.close();
+                     }
+                     else {
+                     if(form.$valid){
+    		 for(var i=0; i < loadBalancerParams.length; i++) {
+    		     if(!angular.isUndefined(stickiness[loadBalancerParams[i]]) && stickiness[loadBalancerParams[i]] != null){
+    		         $scope.stickyLoadBalancer.lbPolicy[loadBalancerParams[i]] = $scope.stickiness[loadBalancerParams[i]];
+    		     }
+    		 }
+    		    delete $scope.stickyLoadBalancer.stickyTableSize;
+    			delete $scope.stickyLoadBalancer.stickyExpires;
+    			delete $scope.stickyLoadBalancer.cookieName;
+    			delete $scope.stickyLoadBalancer.domain;
+    			   $scope.showLoader = true;
+                            var hasServer = appService.crudService.update("loadBalancer", $scope.stickyLoadBalancer);
+    			  hasServer.then(function (result) {
+                                $scope.formSubmitted = false;
+    			    $modalInstance.close();
+    			    $scope.showLoader = false;
+                             appService.notify({message: 'Added successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+                                $scope.stickiness.stickinessMethod = "";
+        			    $scope.stickiness.stickinessName = "";
+        			    $scope.stickiness.stickyTableSize = "";
+        			    $scope.stickiness.stickyExpires = "";
+                                $scope.stickiness.cookieName = "";
+                                $scope.stickiness.stickyMode = "";
+                                $scope.stickiness.stickyLength = "";
+                                $scope.stickiness.stickyHoldTime = "";
+                                $modalInstance.close();
+                            }).catch(function (result) {
+                        		if(result.data.globalError[0] != ''){
+                        			var msg = result.data.globalError[0];
+                        			appService.notify({message: msg, classes: 'alert-danger',
+                        				templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+                        			$modalInstance.close();
+                                	}
+                        	});
+                  }}
+    		}
+    		},
+
+                         $scope.cancel = function () {
+                     	$modalInstance.close(); $scope.formElements = {
+    	    };
+                            };
+                }]);
+        };
+
 
     $scope.formElements = {
         stickinessList: [
