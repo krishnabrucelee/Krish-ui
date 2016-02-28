@@ -163,13 +163,14 @@ $scope.formElements.sshKeyList = [];
           		if (form.$valid) {
           			$scope.showLoader= true;
                                 resetSSH.keypairId = resetSSH.keypairName.id;
-                                console.log(resetSSH);
-          			$scope.resetSSH.keypairName = $scope.resetSSH.keypair.name
           			var hasServer = appService.crudService.updates("virtualmachine/reset", $scope.resetSSH);
           			hasServer.then(function (result) {
                                 $scope.formSubmitted = false;
                                 $modalInstance.close();
                                 $scope.showLoader = false;
+                                if (resetSSH.passwordEnabled == true) {
+                                    $scope.resetPassword(resetSSH);
+                                }                                
                                 appService.notify({message: 'Keypair reset successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
                                  $scope.vmList();                                
           			}).catch(function (result) {
@@ -484,7 +485,6 @@ $scope.list = function () {
 						  		 var event = "ISO.DETACH";
 						  		 $scope.update = function() {
 						  			$scope.vm.event = event;
-						  			console.log($scope.vm);
 							  				var hasVm = appService.crudService.updates("virtualmachine/handleevent/vm", $scope.vm);
 							  				hasVm.then(function(result) {
                                              appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.detachISO,result.id,$scope.global.sessionValues.id);
