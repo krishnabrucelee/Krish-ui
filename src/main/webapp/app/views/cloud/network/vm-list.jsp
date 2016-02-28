@@ -54,11 +54,11 @@
 								<td>{{instance.vmInstance.displayName}}</td>
 								<td>{{instance.vmInstance.zone.name}}</td>
 								<td><label class="label label-success"
-									data-ng-if="instance.vmInstance.status == 'Running'">{{
+									data-ng-if="instance.vmInstance.status == 'RUNNING'">{{
 										instance.vmInstance.status }}</label> <label class="label label-danger"
-									data-ng-if="instance.vmInstance.status == 'Stopped'">{{
+									data-ng-if="instance.vmInstance.status == 'STOPPED'">{{
 										instance.vmInstance.status }}</label> <input type="hidden"
-									data-ng-model="instance.vmInstance.status" value="{{ instance.status }}" />
+									data-ng-model="instance.vmInstance.status" value="{{ instance.vmInstance.status }}" />
 								</td>
 								<td>
 
