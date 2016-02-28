@@ -52,7 +52,7 @@ pageEncoding="UTF-8"%>
                                             </div>
 
                                             <div class="col-md-3 m-l-n-sm col-sm-3 col-xs-4" >
-                                                <select required="true" class="form-control input-group" name="meridiam" data-ng-model="recurringSnapshot.meridiam" data-ng-init="recurringSnapshot.meridiam = 'AM'" >
+                                                <select required="true" class="form-control input-group" name="meridian" data-ng-model="recurringSnapshot.meridian" data-ng-init="recurringSnapshot.meridian = 'AM'" >
                                                     <option value="AM">AM</option>
                                                     <option value="PM">PM</option>
                                                 </select>
@@ -150,10 +150,14 @@ pageEncoding="UTF-8"%>
                                         <tbody>
                                             <tr  data-ng-repeat="snapshot in snapshotList">
                                                 <td>
-                                                    {{ snapshot.intervalType}}
+                                                     <div data-ng-if = "snapshot.intervalType == 'HOURLY'" >{{snapshot.scheduleTime}}</div>
+                                                      <div data-ng-if = "snapshot.intervalType == 'DAILY'" >{{snapshot.scheduleTime}}</div>
+													 <div data-ng-if = "snapshot.intervalType == 'WEEKLY'" >{{snapshot.scheduleTest}}</div>
+													 <div data-ng-if = "snapshot.intervalType == 'MONTHLY'" >{{snapshot.scheduleTest}}</div>
                                                 </td>
                                                 <td>
-                                                    {{ snapshot.id}}
+                                                  <div data-ng-if = "snapshot.intervalType == 'WEEKLY'" >Every {{snapshot.day}}</div>
+                                                   <div data-ng-if = "snapshot.intervalType == 'MONTHLY'">Day {{snapshot.scheduleType}} of month</div>
                                                 </td>
                                                 <td>
 

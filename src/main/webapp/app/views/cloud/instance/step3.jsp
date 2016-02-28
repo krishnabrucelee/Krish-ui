@@ -16,7 +16,7 @@
 					class="text-danger font-bold">*</span></span>
 			</div>
 			<div class="col-md-6 col-xs-6 col-sm-6">
-				<input required="true" type="text" name="name"
+				<input required="true" type="text" name="name" id="create_instance_name"
 					data-ng-model="instance.name" class="form-control col-md-4"
 					autofocus
 					data-ng-class="{'error': instanceTemplateForm.name.$invalid && templateFormSubmitted}">
@@ -37,7 +37,7 @@
 					class="text-danger font-bold">*</span></span>
 			</div>
 			<div class="col-md-6 col-xs-6 col-sm-6">
-					<div  data-ng-class="{'error': !instance.domain && templateFormSubmitted}" custom-select="t as t.name for t in formElements.domainList | filter: { name: $searchTerm }" data-ng-model="instance.domain" data-ng-change="changedomain(instance.domain)">
+					<div  data-ng-class="{'error': !instance.domain && templateFormSubmitted}" custom-select="t as t.name for t in formElements.domainList | filter: { name: $searchTerm }" id="create_instance_domain" data-ng-model="instance.domain" data-ng-change="changedomain(instance.domain)">
 						<div class="pull-left">
 						<strong>{{ t.name }}</strong><br />
 						</div>
@@ -71,7 +71,7 @@
 					class="text-danger font-bold">*</span></span>
 			</div>
 			<div class="col-md-6 col-xs-6 col-sm-6">
-						<div  data-ng-class="{'error': !instance.department && instance.department==null && templateFormSubmitted}" custom-select="t as t.userName for t in formElements.departmenttypeList | filter: { name: $searchTerm }" ng-model="instance.department" data-ng-change="changedepartment(instance.department)">
+						<div  data-ng-class="{'error': !instance.department && instance.department==null && templateFormSubmitted}" custom-select="t as t.userName for t in formElements.departmenttypeList | filter: { name: $searchTerm }" id="create_instance_department" ng-model="instance.department" data-ng-change="changedepartment(instance.department)">
 						<div class="pull-left">
 						<strong>{{ t.userName }}</strong><br />
 						</div>
@@ -107,7 +107,7 @@
 					class="text-danger font-bold">*</span></span>
 			</div>
 			<div class="col-md-6 col-xs-6 col-sm-6">
-					<div  data-ng-class="{'error': !instance.instanceOwner && templateFormSubmitted}" custom-select="t as t.userName for t in formElements.instanceOwnerList | filter: { userName: $searchTerm }" ng-model="instance.instanceOwner" data-ng-change="changeinstanceowner(instance.instanceOwner)" >
+					<div  data-ng-class="{'error': !instance.instanceOwner && templateFormSubmitted}" custom-select="t as t.userName for t in formElements.instanceOwnerList | filter: { userName: $searchTerm }" id="create_instance_instance_owner" ng-model="instance.instanceOwner" data-ng-change="changeinstanceowner(instance.instanceOwner)" >
 						<div class="pull-left">
 						<strong>{{ t.userName }}</strong><br />
 						</div>
@@ -134,7 +134,7 @@
 					class="text-danger font-bold">*</span></span>
 			</div>
 			<div class="col-md-6 col-xs-6 col-sm-6">
-				<input required="true" type="text" name="application"
+				<input required="true" type="text" name="application" id="create_instance_application"
 					data-ng-model="instance.application" class="form-control col-md-4"
 					autofocus
 					data-ng-class="{'error': instanceTemplateForm.application.$invalid && templateFormSubmitted}">
@@ -157,7 +157,7 @@
 					class="pe-7s-help1 pe-lg m-r-xs pull-right"
 					tooltip="<fmt:message key="type.of.the.application" bundle="${msg}" />"></i>
 				<div class="m-t-sm">
-				<select required="true" multiple="multiple" class="form-control input-group" name="applicationList" data-ng-model="instance.applicationList" ng-options="applicationList.type for applicationList in formElements.applicationsList" data-ng-class="{'error': instanceTemplateForm.applicationList.$invalid && templateFormSubmitted}" >
+				<select required="true" multiple="multiple" id="create_instance_application_type" class="form-control input-group" name="applicationList" data-ng-model="instance.applicationList" ng-options="applicationList.type for applicationList in formElements.applicationsList" data-ng-class="{'error': instanceTemplateForm.applicationList.$invalid && templateFormSubmitted}" >
                 <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
                 </select>
 				</div>
@@ -173,7 +173,7 @@
 					class="pe-7s-help1 pe-lg m-r-xs pull-right"
 					tooltip="<fmt:message key="type.of.the.application" bundle="${msg}" />"></i>
 				<div class="m-t-sm">
-				<select required="true" multiple="multiple" class="form-control input-group" name="applicationList" data-ng-model="instance.applicationList" ng-options="applicationList.type for applicationList in applicationsList" data-ng-class="{'error': instanceTemplateForm.applicationList.$invalid && templateFormSubmitted}" >
+				<select required="true" multiple="multiple" class="form-control input-group" id="create_instance_application_type" name="applicationList" data-ng-model="instance.applicationList" ng-options="applicationList.type for applicationList in applicationsList" data-ng-class="{'error': instanceTemplateForm.applicationList.$invalid && templateFormSubmitted}" >
                 <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
                 </select>
 				</div>
@@ -188,7 +188,7 @@
 			<div class="col-md-6 col-xs-6 col-sm-6"><!--
 				<input type="text" name="project" data-ng-model="instance.projct"
 					class="form-control col-md-4" autofocus autocomplete="off"> -->
-						<div  custom-select="t as t.name for t in formElements.projecttypeList | filter: { name: $searchTerm }"   data-ng-model="instance.project" data-ng-change="changeproject(instance.project)">
+						<div  custom-select="t as t.name for t in formElements.projecttypeList | filter: { name: $searchTerm }" id="create_instance_project" data-ng-model="instance.project" data-ng-change="changeproject(instance.project)">
 
 						<div class="pull-left">
 						<strong>{{t.name }}</strong>
@@ -203,9 +203,26 @@
 				<i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="<fmt:message key="name.of.the.project" bundle="${msg}" />"></i>
 			</div>
 		</div>
+		<div class="row  form-group">
+			<div class="col-md-5 col-xs-5 col-sm-5">
+
+				<span class="control-label"><fmt:message key="ssh.key.pair" bundle="${msg}" /></span>
+			</div>
+			<div class="col-md-6 col-xs-6 col-sm-6">
+						<div  custom-select="t as t.name for t in formElements.sshKeyList | filter: { name: $searchTerm }" id="create_instance_ssh_key" data-ng-model="instance.sshkey">
+
+						<div class="pull-left">
+						<strong>{{t.name }}</strong>
+						<br />
+						</div>
+						<div class="clearfix"></div>
+						</div>
+				<i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="<fmt:message key="ssh.key.pair" bundle="${msg}" />"></i>
+			</div>
+		</div>
 		<div class="h-90"></div>
 		<div class="pull-right">
-			<a class="btn btn-default" ng-click="cancel()"> <fmt:message key="common.cancel" bundle="${msg}" /> </a>
-			<button type="submit" class="btn btn-info"><fmt:message key="common.next" bundle="${msg}" /></button>
+			<a class="btn btn-default" id="create_instance_cancel_button" ng-click="cancel()"> <fmt:message key="common.cancel" bundle="${msg}" /> </a>
+			<button type="submit" id="create_instance_next_button" class="btn btn-info"><fmt:message key="common.next" bundle="${msg}" /></button>
 		</div>
 	</div>

@@ -54,7 +54,7 @@ function instanceListCtrl($scope, $sce, $log, $filter, dialogService, promiseAja
 		   $scope.vm = vm;
 		   var hasVms = crudService.updates("virtualmachine/console", vm);
 		   hasVms.then(function(result) {
-			   var consoleUrl = result.success;
+			   var consoleUrl = result.success + "&displayname="+vm.displayName;
 			   window.open($sce.trustAsResourceUrl(consoleUrl), vm.name + vm.id,'width=750,height=460');
 			   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.showConsole,result.id,$scope.global.sessionValues.id);
 		   });
