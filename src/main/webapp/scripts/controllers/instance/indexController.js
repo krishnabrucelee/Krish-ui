@@ -613,6 +613,9 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
         	 delete instance.hypervisor;
          }
         instance.zoneId = $scope.global.zone.id;
+        if (!angular.isUndefined(instance.sshkey) && instance.sshkey !== null) {
+        	 instance.keypairId = instance.sshkey.id;
+        }
         var hasServer = appService.crudService.add("virtualmachine", instance);
         hasServer.then(function (result) {  // this is only run after $http completes
             $scope.showLoader = false;
@@ -670,7 +673,9 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
 
     $scope.save = function () {
         var instance = $scope.instance;
-
+        if (!angular.isUndefined(instance.sshkey) && instance.sshkey !== null) {
+        	 instance.keypairId = instance.sshkey.id;
+        }
         var hasServer = appService.crudService.add("virtualmachine", instance);
         hasServer.then(function (result) {  // this is only run after $http completes
             appService.notify({message: 'instance created successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
