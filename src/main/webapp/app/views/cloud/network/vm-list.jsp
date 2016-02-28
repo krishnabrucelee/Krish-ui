@@ -45,8 +45,8 @@
 							<tr data-ng-repeat="instance in lbvmList | filter: instanceSearch">
 							<td><a class="text-info">{{ instance.vmInstance.name }}</a>
 
-									<div data-ng-show="lbvm">
-									<select required="true" data-ng-show="lbvm" multiple class="form-control input-group" name="ipAddress" data-ng-model="instance.ipAddress"  data-ng-options="ipAddress.guestIpAddress for ipAddress in instance.vmIpAddress"  >
+									<div data-ng-show="instance.lbvm">
+									<select required="true" data-ng-show="instance.lbvm" multiple class="form-control input-group" name="ipAddress" data-ng-model="instance.ipAddress"  data-ng-options="ipAddress.guestIpAddress for ipAddress in instance.vmIpAddress"  >
 									</select>
 									</div>
 										</td>
@@ -65,7 +65,7 @@
 										<div class="">
 
 											<input type="checkbox" icheck
-												data-ng-model="lbvm"
+												data-ng-model="instance.lbvm"
 												data-ng-value="{{instance.vmInstance.id}}" name="selectVM"
 												data-ng-change="nicIPList(instance.vmInstance.id)">
 										</div>

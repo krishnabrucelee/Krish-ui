@@ -76,13 +76,12 @@ pageEncoding="UTF-8"%>
                 </thead>
                 <tbody  ng-repeat="loadBalancer in rulesList">
                     <tr
-                        class="font-bold text-center">
+                        class="font-bold">
                         <td>
-                        <span data-ng-if="loadBalancer.expanded"  data-ng-click="loadBalancer.expanded = false" class="pe-lg font-bold m-r-xs pe-7s-angle-up-circle"></span>
-                        <span data-ng-if="!loadBalancer.expanded"  data-ng-click="loadBalancer.expanded = true" class="pe-7s-angle-down-circle pe-lg font-bold m-r-xs"></span>
-
-
-                        {{loadBalancer.name}}</td>
+                        	{{loadBalancer.name}}
+	                        <a data-ng-if="loadBalancer.expanded && loadBalancer.vmIpAddress.length > 0"  data-ng-click="loadBalancer.expanded = false" class="pull-right pe-lg font-bold m-r-xs pe-7s-angle-up-circle"></a>
+	                        <a data-ng-if="!loadBalancer.expanded && loadBalancer.vmIpAddress.length > 0"  data-ng-click="loadBalancer.expanded = true" class="pull-right pe-7s-angle-down-circle pe-lg font-bold m-r-xs"></a>
+                        </td>
                         <td>{{loadBalancer.publicPort}}</td>
                         <td>{{loadBalancer.privatePort}}</td>
                         <td>{{loadBalancer.algorithm}}</td>

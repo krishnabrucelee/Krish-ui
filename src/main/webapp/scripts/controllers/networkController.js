@@ -74,7 +74,6 @@ function networksCtrl($scope, $sce, $rootScope,filterFilter, $state, $stateParam
     $scope.vmList = [];
     $scope.ipDetails = {};
     $scope.formElements = {};
-$scope.test ={};
     $scope.allItemsSelected = false;
     $scope.sort = appService.globalConfig.sort;
     $scope.changeSorting = appService.utilService.changeSorting;
@@ -1142,18 +1141,17 @@ appService.dialogService.openDialog("app/views/cloud/network/vm-list.jsp", 'lg' 
   $scope.loadBalancer.state = $scope.loadBalancer.state.toUpperCase();
 	$scope.loadBalancer.state = $scope.loadBalancer.state.toUpperCase();
 loadBalancer.vmIpAddress = [];
-console.log(loadBalancer.vmIpAddress);
-console.log(loadBalancer);
 if (!angular.isUndefined(loadBalancer.vmIpAddress) && loadBalancer.vmIpAddress != null) {
 		angular.forEach(loadBalancer, function(obj, key) {
-		   angular.forEach(obj.ipAddress, function(vmIpAddress, vmIpAddressKey) {
-		  	loadBalancer.vmIpAddress.push(vmIpAddress);
-                  })
+		   if(obj.lbvm && angular.isArray(obj.ipAddress)) { 
+			   angular.forEach(obj.ipAddress, function(vmIpAddress, vmIpAddressKey) {
+			   	loadBalancer.vmIpAddress.push(vmIpAddress);
+			   })
+			}
                    
 		})
 }
- $scope.loadBalancer.vmIpAddress = loadBalancer;
-			console.log($scope.loadBalancer);
+ $scope.loadBalancer.vmIpAddress = loadBalancer.vmIpAddress;
 $scope.loadBalancer.lbPolicy = {};
 	  var loadBalancerParams = ["stickinessMethod", "stickinessName", "stickyTableSize","cookieName","stickyExpires","stickyMode","stickyLength","stickyRequestLearn",
               "stickyPrefix","stickyNoCache","stickyIndirect","stickyPostOnly","stickyCompany"];
@@ -1254,9 +1252,11 @@ $scope.applyNewRule = function (size, loadBalancer) {
 		loadBalancer.algorithm = $scope.loadBalancer.algorithm;
 		loadBalancer.vmIpAddress = [];
 		angular.forEach(loadBalancerVmList, function(obj, key) {
-		   angular.forEach(obj.ipAddress, function(vmIpAddress, vmIpAddressKey) {
-		   	loadBalancer.vmIpAddress.push(vmIpAddress);
-                   })
+		   if(obj.lbvm && angular.isArray(obj.ipAddress)) { 
+			   angular.forEach(obj.ipAddress, function(vmIpAddress, vmIpAddressKey) {
+			   	loadBalancer.vmIpAddress.push(vmIpAddress);
+			   })
+			}
                    
 		})
                   $scope.showLoader = true;
