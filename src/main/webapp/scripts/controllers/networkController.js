@@ -1619,10 +1619,12 @@ $scope.portForward.vmGuestIp = $scope.instanceLists.ipAddress.guestIpAddress;
                     $scope.showLoader = true;
                     var hasStorage = appService.crudService.delete("portforwarding", portForward.id);
                     hasStorage.then(function (result) {
-  appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.deletePortRules,result.id,$scope.global.sessionValues.id);
-                        $scope.showLoader = false;
-                        appService.notify({message: 'Deleted successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
-                        $scope.portRulesLists(1);
+                    	$timeout(function(){
+                    		appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.deletePortRules,result.id,$scope.global.sessionValues.id);
+                            $scope.showLoader = false;
+                            appService.notify({message: 'Deleted successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                            $scope.portRulesLists(1);
+                        }, 5000);
                     }).catch(function (result) {
                         if (!angular.isUndefined(result.data)) {
                             if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
