@@ -1102,8 +1102,6 @@ $scope.rulesvmList ={};
  	var hasloadBalancer = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL +"loadBalancer/list?ipAddressId="+$stateParams.id1 +"&lang=" + appService.localStorageService.cookie.get('language')+"&sortBy=-id");
   hasloadBalancer.then(function (result) {
           $scope.rulesList = result;
-	  $scope.test =  $scope.rulesList;
-
   });
 };
 
@@ -1135,7 +1133,6 @@ appService.dialogService.openDialog("app/views/cloud/network/vm-list.jsp", 'lg' 
 	$scope.lbvmLists();
 
   $scope.loadbalancerSave = function(loadBalancer) {
-
   $scope.loadBalancer = $scope.global.rulesLB[0];
   $scope.formSubmitted = true;
   $scope.showLoader = true;
@@ -1144,11 +1141,19 @@ appService.dialogService.openDialog("app/views/cloud/network/vm-list.jsp", 'lg' 
   $scope.loadBalancer.protocol = $scope.loadBalancer.protocol.toUpperCase();
   $scope.loadBalancer.state = $scope.loadBalancer.state.toUpperCase();
 	$scope.loadBalancer.state = $scope.loadBalancer.state.toUpperCase();
-
-if (!angular.isUndefined($scope.instances.ipAddress) && $scope.instances.ipAddress != null) {
-	        $scope.loadBalancer.vmIpAddress = $scope.instances.ipAddress;
+loadBalancer.vmIpAddress = [];
+console.log(loadBalancer.vmIpAddress);
+console.log(loadBalancer);
+if (!angular.isUndefined(loadBalancer.vmIpAddress) && loadBalancer.vmIpAddress != null) {
+		angular.forEach(loadBalancer, function(obj, key) {
+		   angular.forEach(obj.ipAddress, function(vmIpAddress, vmIpAddressKey) {
+		  	loadBalancer.vmIpAddress.push(vmIpAddress);
+                  })
+                   
+		})
 }
-
+ $scope.loadBalancer.vmIpAddress = loadBalancer;
+			console.log($scope.loadBalancer);
 $scope.loadBalancer.lbPolicy = {};
 	  var loadBalancerParams = ["stickinessMethod", "stickinessName", "stickyTableSize","cookieName","stickyExpires","stickyMode","stickyLength","stickyRequestLearn",
               "stickyPrefix","stickyNoCache","stickyIndirect","stickyPostOnly","stickyCompany"];
@@ -1157,7 +1162,6 @@ $scope.loadBalancer.lbPolicy = {};
 					$scope.loadBalancer.lbPolicy[loadBalancerParams[i]] = $scope.stickiness[loadBalancerParams[i]];
 				}
 			}
-		console.log($scope.loadBalancer.lbPolicy.stickinessMethod);
   var hasLoadBalancer = appService.crudService.add("loadBalancer", $scope.loadBalancer);
   hasLoadBalancer.then(function (result) { // this is only run after
   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.loadbalancerSave,result.id,$scope.global.sessionValues.id);
@@ -1255,16 +1259,17 @@ $scope.applyNewRule = function (size, loadBalancer) {
                    })
                    
 		})
-                console.log(loadBalancer);
+                  $scope.showLoader = true;
               var hasServer = appService.crudService.update("loadBalancer", loadBalancer);
               hasServer.then(function (result) {
                   $scope.LBlist(1);
-                  appService.notify({message: 'Updated successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                  appService.notify({message: 'Rules assigned to IP successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                   $modalInstance.close();
                   $scope.showLoader = false;
               }).catch(function (result) {
                   if (!angular.isUndefined(result) && result.data != null) {
                       angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
+                  		$scope.showLoader = false;
                           $scope.loadBalancerForm[key].$invalid = true;
                           $scope.loadBalancerForm[key].errorMessage = errorMessage;
                       });
@@ -1279,20 +1284,23 @@ $scope.applyNewRule = function (size, loadBalancer) {
       }]);
 };
 
-
+ $scope.loadBalancer.algorithm = {};
 // Edit the load balancer
 $scope.editrule = function (size, loadBalancer) {
   appService.dialogService.openDialog("app/views/cloud/network/edit-rule.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
-          // Update department
-
-            $scope.loadBalancer = angular.copy(loadBalancer);
+	            $scope.loadBalancer = angular.copy(loadBalancer);		 
+ angular.forEach($scope.dropnetworkLists.algorithms, function (obj, key) {
+               if (obj.value == $scope.loadBalancer.algorithm) {
+                    $scope.loadBalancer.algorithm = obj;
+                }
+            });
             $scope.updateRule = function (form,loadBalancer) {
+	            $scope.loadBalancer = angular.copy(loadBalancer);
+		     		$scope.loadBalancer.algorithm = loadBalancer.algorithm.value;
               var loadBalancer = $scope.loadBalancer;
 	$scope.formSubmitted = true;
 		 if (form.$valid) {
                     	$scope.showLoader = true;
-		// $scope.loadBalancer.protocol = $scope.loadBalancer.protocol.toUpperCase();
-               //$scope.loadBalancer.state = $scope.loadBalancer.state.toUpperCase();
               var hasServer = appService.crudService.update("loadBalancer", loadBalancer);
 
               hasServer.then(function (result) {
@@ -1303,6 +1311,7 @@ $scope.editrule = function (size, loadBalancer) {
                   $scope.showLoader = false;
               }).catch(function (result) {
                   if (!angular.isUndefined(result) && result.data != null) {
+			                        	 $scope.showLoader = false;
                       angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
                           $scope.loadBalancerForm[key].$invalid = true;
                           $scope.loadBalancerForm[key].errorMessage = errorMessage;
@@ -1856,7 +1865,6 @@ $scope.createStickiness = function (size) {
 	    //Assign loadbalancer stickiness in object
             $scope.addStickiness = function (form,stickiness) {
  		$scope.stickiness = stickiness;
-		console.log($scope.stickiness );
                     $scope.formSubmitted = true;
                     if ($scope.stickiness.stickinessMethod == $scope.global.STICKINESS.NONE) {
                      $modalInstance.close();
@@ -1877,7 +1885,6 @@ $scope.configureStickiness = function (size, loadBalancer) {
 	$scope.stickyLoadBalancer = loadBalancer;
 	    //Assign loadbalancer stickiness in object
           $scope.addStickiness = function(form, stickiness) {
-		console.log(stickiness);
               $scope.formSubmitted = true;
               if (!angular.isUndefined($scope.stickyLoadBalancer.id) && $scope.stickyLoadBalancer.id != null) {
 	      var loadBalancerParams = ["stickinessMethod", "stickinessName", "stickyTableSize","cookieName","stickyExpires","stickyMode","stickyLength","stickyRequestLearn",
@@ -1906,7 +1913,7 @@ $scope.configureStickiness = function (size, loadBalancer) {
                             $scope.formSubmitted = false;
 			    $modalInstance.close();
 			    $scope.showLoader = false;
-                         appService.notify({message: 'Added successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+                         appService.notify({message: 'Policy added successfully. Please refresh the page', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
                             $scope.LBlist(1);
                             $scope.stickiness.stickinessMethod = "";
     			    $scope.stickiness.stickinessName = "";
@@ -1960,7 +1967,6 @@ $scope.editStickiness = function (size,loadBalancer) {
     		});
 
                 $scope.editStickinessPolicy = function (form, loadBalancer) {
-			console.log(loadBalancer);
                         $scope.showLoader = true;
                         $scope.formSubmitted = true;
                      if ($scope.stickiness.stickinessMethod == $scope.global.STICKINESS.NONE) {
@@ -1980,7 +1986,7 @@ $scope.editStickiness = function (size,loadBalancer) {
                         var hasServer = appService.crudService.update("loadBalancer", $scope.stickyLoadBalancer);
                         hasServer.then(function (result) {
   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.editStickiness,result.id,$scope.global.sessionValues.id);
-                            appService.notify({message: 'Updated successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                            appService.notify({message: 'Policy updated successfully. Please refresh the page', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                             $modalInstance.close();
                             $scope.showLoader = false;
                         }).catch(function (result) {
@@ -2017,21 +2023,7 @@ $scope.editStickiness = function (size,loadBalancer) {
             modalService.trigger('app/views/cloud/network/healthCheck.jsp', 'sm');
         }
     };
-/* $scope.removeUser = function(user) {
-    	angular.forEach($scope.projectInfo.userList, function(obj, key) {
-    		if(parseInt(obj.id) == parseInt(user.id)) {
-    			$scope.projectInfo.userList.splice(key, 1);
-    		}
-    	});
-    	var hasUser = appService.crudService.updates("projects/remove/user", $scope.projectInfo);
-    	hasUser.then(function(result) {
-            $scope.project.user = {};
-            $scope.userLists($scope.projectInfo);
-            appService.notify({message: 'User removed successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
-            $state.reload();
-        });
-    };
-*/
+
     $scope.removeRule= function(size,vmIpAddress, loadBalancer) {
       	 appService.dialogService.openDialog("app/views/cloud/instance/confirm-delete.jsp", 'md', $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
 $scope.ok = function(deleteObject) {
@@ -2039,9 +2031,6 @@ $scope.ok = function(deleteObject) {
 		loadBalancer.vmIpAddress.push(vmIpAddress);
 
 		$scope.deleteObject = loadBalancer;
-                //console.log(vmIpAddress);
-
-	//console.log($scope.test);
       	     $scope.showLoader = true;
 		var hasNic = appService.crudService.updates("loadBalancer/removerule/",$scope.deleteObject);
              hasNic.then(function (result) {

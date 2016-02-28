@@ -1,10 +1,9 @@
-
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<form name="editRuleForm" data-ng-submit="updateRule(editRuleForm,loadBalancer)">
+<form name="editRuleForm" data-ng-submit="updateRule(editRuleForm,loadBalancer)" novalidate>
     <div class="modal-header">
         <panda-modal-header hide-zone="false" page-icon="fa fa-warning" page-title="Edit Rule<%-- <fmt:message key="delete.confirmation" bundle="${msg}" /> --%>"></panda-modal-header>
     </div>
@@ -18,12 +17,12 @@
 		 	</div>
             <div class="form-group row">
            		<label class="control-label "><fmt:message
-											key="common.algorithm" bundle="${msg}" /><span class="text-danger">*</span></label></label>
+											key="common.algorithm" bundle="${msg}" /></label>
 		   </div>
            </div>
             <div class=" col-md-6 col-sm-6  col-xs-6 ">
              	<div class="form-group row ">
-             	<input type="text" name="name" data-ng-model="loadBalancer.name"  class="form-control" ng-class="{'text-danger': editRuleForm.name.$invalid && formSubmitted}"  >
+             	<input required ="true" type="text" name="name" data-ng-model="loadBalancer.name"  class="form-control" data-ng-class="{'error': editRuleForm.name.$invalid && formSubmitted}"  >
 				<div class="error-area"
 											data-ng-show="editRuleForm.name.$invalid && formSubmitted">
 											<i ng-attr-tooltip="{{ editRuleForm.name.errorMessage || '<fmt:message key="name.is.required" bundle="${msg}" />' }}"
@@ -31,19 +30,14 @@
 											</i>
 										</div>             </div>
              <div class="form-group row">
-             	<select  class="form-control" name="protocol" data-ng-model="loadBalancer.algorithms" data-ng-init="algorithms = networkLists.algorithms[0]" data-ng-change="selectProtocol(algorithms.name)" data-ng-options="algorithms.name for algorithms in dropnetworkLists.algorithms"  data-ng-class="{'error': editRuleForm.protocol.$invalid && formSubmitted}"><option value=""><fmt:message key="common.select" bundle="${msg}" /></option></select>
-                <div class="error-area"
-											data-ng-show="editRuleForm.protocol.$invalid && formSubmitted">
-											<i ng-attr-tooltip="{{ editRuleForm.protocol.errorMessage || '<fmt:message key="algorithm.is.required" bundle="${msg}" />' }}"
-												class="fa fa-warning error-icon">
-											</i>
-										</div>
+             	<select required ="true" class="form-control" name="protocol" data-ng-model="loadBalancer.algorithm" data-ng-init="algorithms = networkLists.algorithms[0]" data-ng-change="selectProtocol(algorithms.name)" data-ng-options="algorithms.name for algorithms in dropnetworkLists.algorithms" > <option value=""><fmt:message key="common.select" bundle="${msg}" /></option></select>
              </div>
             </div>
 		</div>
         </div>
     <div class="modal-footer">
-        <button type="button" data-ng-hide="showLoader" class="btn btn-default "  ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.cancel" bundle="${msg}" /></button>
+    			<get-loader-image data-ng-if="showLoader"></get-loader-image>
+            <button type="button" data-ng-hide="showLoader" class="btn btn-default "  ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.cancel" bundle="${msg}" /></button>
        <button class="btn btn-info" data-ng-hide="showLoader" type="submit" ><fmt:message key="common.update" bundle="${msg}" /></button>
     </div>
 </form>

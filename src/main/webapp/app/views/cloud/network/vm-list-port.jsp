@@ -62,7 +62,7 @@ pageEncoding="UTF-8"%>
                          <td>
                             <label class="">
                                  <div  style="position: relative;" >
-                                     <input type="radio" icheck data-ng-model="port" name="name" data-ng-value="{{instancesList.id}}" data-ng-change="nicIPList(instancesList)"  >
+                                     <input type="radio" icheck data-ng-model="port" name="name" data-ng-value="{{instancesList.id}}" data-ng-change="nicIPList(instancesList.vmInstance.id)"  >
                                  </div>
                             </label>
 
