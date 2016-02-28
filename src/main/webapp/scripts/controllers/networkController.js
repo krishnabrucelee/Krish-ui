@@ -781,6 +781,7 @@ $scope.networkRestart ={};
 	                         if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
 	                             var msg = result.data.globalError[0];
 	                             $scope.showLoader = false;
+	                             $modalInstance.close();
 	                             appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
 	                         }
 	                     }
@@ -1930,7 +1931,12 @@ $scope.portForward.vmGuestIp = $scope.instanceLists.ipAddress.guestIpAddress;
                         if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
                             var msg = result.data.globalError[0];
                             $scope.showLoader = false;
-                            appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                            $modalInstance.close();
+                            if(msg.indexOf('configuration in progress') !== -1) {
+                            	appService.notify({message: msg, classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                            } else {
+                            	appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                            }
                         }
                     }
                 });
@@ -1960,7 +1966,12 @@ $scope.portForward.vmGuestIp = $scope.instanceLists.ipAddress.guestIpAddress;
                         if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
                             var msg = result.data.globalError[0];
                             $scope.showLoader = false;
-                            appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                            $modalInstance.close();
+                            if(msg.indexOf('reset in progress') !== -1) {
+                            	appService.notify({message: msg, classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                            } else {
+                            	appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                            }
                         }
                     }
                 });
