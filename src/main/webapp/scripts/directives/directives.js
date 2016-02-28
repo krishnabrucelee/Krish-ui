@@ -33,6 +33,30 @@ angular
     .directive('passwordVerify', passwordVerify)
     .directive('validInteger', validInteger)
     .directive('hasPermission', hasPermission)
+    .directive('chart', function(){
+    return{
+        restrict: 'E',
+        link: function(scope, elem, attrs){
+
+            var chart = null,
+                opts  = { };
+
+            var data = scope[attrs.ngModel];
+
+            scope.$watch('data', function(v){
+                if(!chart){
+                    chart = $.plot(elem, v , opts);
+                    elem.show();
+                }else{
+                    chart.setData(v);
+                    chart.setupGrid();
+                    chart.draw();
+                }
+            });
+        }
+    };
+})
+
     .directive('multiselect', function () {
     return {
         restrict: 'E',
@@ -460,7 +484,7 @@ function validNumber() {
                 }
                 var clean = val.replace(/[^0-9]/g, '');
 
-                if(parseInt(attrs.ngMin) == 1000 || parseInt(attrs.ngMin) == 512){
+                if(parseInt(attrs.ngMin) == 500 || parseInt(attrs.ngMin) == 512){
                 	if (clean < parseInt(attrs.ngMin)) {
                         clean = clean.substring(0, clean.length);
                    }

@@ -27,6 +27,36 @@ pageEncoding="UTF-8"%>
                             </div>
                         </div>
                     </div>
+                     <div data-ng-if="global.sessionValues.type != 'ROOT_ADMIN'">
+						<div class="form-group">
+							<div class="row">
+                            	<label class="col-md-3 col-xs-12 col-sm-2 control-label"><fmt:message key="common.domain" bundle="${msg}" /><span class="text-danger">*</span></label>
+                            	<div class="col-md-5 col-xs-12 col-sm-5">
+                                {{ global.sessionValues.domainName }}
+                                <input type="hidden" name="domain"  data-ng-model="volume.domain" data-ng-init="volume.domainId=global.sessionValues.domainId" />
+                            	</div>
+                        	</div>
+                        </div>
+	                	</div>
+
+	                	<div data-ng-if="global.sessionValues.type == 'ROOT_ADMIN'">
+                        <div class="form-group" ng-class="{'text-danger':volumeForm.domain.$invalid && formSubmitted}">
+                            <div class="row">
+                                <label class="col-md-3 col-xs-12 col-sm-2 control-label"><fmt:message key="common.company" bundle="${msg}" /><span class="text-danger">*</span>
+                                </label>
+                                <div class="col-md-5 col-xs-12 col-sm-5">
+                                    <select  required="true" class="form-control form-group-lg" name="domain" data-ng-change="domainChange()"
+                                             data-ng-model="volume.domain"
+                                             data-ng-options="domain.name for domain in volumeElement.domainList" data-ng-class="{'error': volumeForm.domain.$invalid && formSubmitted}">
+                                        <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
+                                    </select>
+                                   	<i  tooltip="<fmt:message key="choose.domain" bundle="${msg}" />" class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
+                                    <div class="error-area" data-ng-show="volumeForm.domain.$invalid && formSubmitted" ><i  tooltip="<fmt:message key="company.is.required" bundle="${msg}" />" class="fa fa-warning error-icon"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+
                     <div class="form-group" >
                         <div class="row">
                             <label class="col-md-3 col-xs-12 col-sm-2 control-label"><fmt:message key="common.type" bundle="${msg}" /> <span class="m-l-xs"></span></label>
@@ -71,7 +101,7 @@ pageEncoding="UTF-8"%>
                     </div>
 					<div data-ng-if="volume.storageOffering.isCustomDisk">
 						<div class="form-group"
-							data-ng-class="{ 'text-danger' : volumeForm.diskSize <= 0 && volumeForm.diskSize.$invalid && formSubmitted}">
+							data-ng-class="{ 'text-danger' : volumeForm.diskSize < 0 && volumeForm.diskSize.$invalid && formSubmitted}">
 							<div class="row">
 								<label class="col-md-3 col-xs-12 col-sm-2 control-label"><fmt:message key="common.size" bundle="${msg}" />
 									<fmt:message key="common.gb" bundle="${msg}" /> <span class="text-danger">*</span>
@@ -145,44 +175,54 @@ pageEncoding="UTF-8"%>
 							</div>
 						</div>
 					</div>
-					<div class="form-group"
-						data-ng-class="{ 'text-danger' : volumeForm.department.$invalid && formSubmitted}">
-						<div class="row">
-							<div data-ng-show="global.sessionValues.type != 'USER'">
-								<label class="col-md-3 col-xs-12 col-sm-2 control-label control-normal">
-									<fmt:message key="common.department" bundle="${msg}" /> <span class="text-danger">*</span>
-								</label>
-								<div class="col-md-5 col-xs-12 col-sm-5">
-									<select required="true" class="form-control input-group"
-										name="department" data-ng-model="volume.department"
-										ng-change="getProjectsByDepartment(volume.department)"
-										ng-options="department.userName for department in volumeElements.departmentList"
-										data-ng-class="{'error': volumeForm.department.$invalid && formSubmitted}">
-										<option value="">
-											<fmt:message key="common.select" bundle="${msg}" />
-										</option>
-									</select>
-									<i tooltip="<fmt:message key="common.department" bundle="${msg}" />"
-										class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon">
-									</i>
-									<div class="error-area"
-										data-ng-show="volumeForm.department.$invalid && formSubmitted">
-										<i ng-attr-tooltip="{{ volumeForm.department.errorMessage || '<fmt:message key="department.is.required" bundle="${msg}" />' }}"
-											class="fa fa-warning error-icon">
-										</i>
-									</div>
-								</div>
-							</div>
-							<div data-ng-show="global.sessionValues.type == 'USER'">
-								<label class="col-md-3 col-xs-12 col-sm-2 control-label control-normal">
-									<fmt:message key="common.department" bundle="${msg}" />
-								</label>
-								<div class="col-md-5 col-xs-12 col-sm-5">
-									<label>{{volume.department.userName}}</label>
-								</div>
-							</div>
-						</div>
-					</div>
+					<div data-ng-if="global.sessionValues.type == 'ROOT_ADMIN'">
+                        <div class="form-group"ng-class="{'text-danger': volumeForm.department.$invalid && formSubmitted}">
+                            <div class="row">
+                                <label class="col-md-3 col-xs-12 col-sm-2 control-label control-normal"><fmt:message key="common.department" bundle="${msg}" /><span class="text-danger">*</span></label>
+                                <div class="col-md-5 col-xs-12 col-sm-5">
+                                    <select required="true" class="form-control input-group" ng-change="getProjectsByDepartment(volume.department)"
+                                     name="department" data-ng-model="volume.department" ng-options="department.userName for department in volumeElement.departmentList" data-ng-class="{'error': volumeForm.department.$invalid && formSubmitted}" >
+                                        <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
+                                    </select>
+                                    <i  tooltip="<fmt:message key="volume.department" bundle="${msg}" />" class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
+                                    <div class="error-area" data-ng-show="volumeForm.department.$invalid && formSubmitted" >
+                                    	<i ng-attr-tooltip="{{ volumeForm.department.errorMessage || '<fmt:message key="department.is.required" bundle="${msg}" />' }}"
+												class="fa fa-warning error-icon"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                        <div data-ng-if="global.sessionValues.type == 'DOMAIN_ADMIN'">
+                        <div class="form-group"ng-class="{'text-danger': volumeForm.department.$invalid && formSubmitted}">
+                            <div class="row">
+                                <label class="col-md-3 col-xs-12 col-sm-2 control-label control-normal"><fmt:message key="common.department" bundle="${msg}" /><span class="text-danger">*</span></label>
+                                <div class="col-md-5 col-xs-12 col-sm-5">
+                                    <select required="true" class="form-control input-group" ng-change="getProjectsByDepartment(volume.department)"
+                                     name="department" data-ng-model="volume.department" ng-options="department.userName for department in departmentList" data-ng-class="{'error': volumeForm.department.$invalid && formSubmitted}" >
+                                        <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
+
+                                    </select>
+                                    <i  tooltip="<fmt:message key="volume.department" bundle="${msg}" />" class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
+                                    <div class="error-area" data-ng-show="volumeForm.department.$invalid && formSubmitted" >
+                                    	<i ng-attr-tooltip="{{ volumeForm.department.errorMessage || '<fmt:message key="department.is.required" bundle="${msg}" />' }}"
+												class="fa fa-warning error-icon"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                        <div data-ng-if="global.sessionValues.type == 'USER'">
+                        <div class="form-group">
+                            <div class="row">
+                                <label class="col-md-3 col-xs-12 col-sm-2 control-label control-normal"><fmt:message key="common.department" bundle="${msg}" /><span class="text-danger">*</span></label>
+                                <div class="col-md-5 col-xs-12 col-sm-5">
+                                {{ userElement.department.userName }}
+                                <input type="hidden" name="department"  data-ng-model="volume.department" data-ng-init="volume.departmentId=global.sessionValues.departmentId" />
+                            	</div>
+                            </div>
+                        </div>
+                        </div>
 					<div class="form-group">
 						<div class="row">
 							<div data-ng-if="global.sessionValues.type != 'USER'">
@@ -244,13 +284,25 @@ pageEncoding="UTF-8"%>
            	</div>
        	</div>
         <div class="modal-footer">
-<!--         <span class="pull-left" data-ng-show="volume.storageOffering.isCustomDisk">
-                <h4 class="text-danger price-text m-l-lg">
-                    <app-currency></app-currency> <span data-ng-if="volume.diskSize">{{ (volume.storageOffering.storagePrice[0].costGbPerMonth * volume.diskSize)}}</span>
-                    <span data-ng-if="volume.diskSize">{{ (volume.storageOffering.storagePrice[0].costGbPerMonth * 0)}}</span><span data-ng-if="!volume.diskSize">0</span> <span>/ hour</span>
-                     <small class="text-right text-muted m-l-sm">(<app-currency></app-currency><span data-ng-if="volume.diskSize">{{ volume.storageOffering.storagePrice[0].costGbPerMonth * volume.diskSize * 720}} / month)</span><span data-ng-if="!volume.diskSize">0 / month)</span></small>
-                </h4>
-            </span> -->
+             <span class="pull-left" data-ng-if="volume.storageOffering.name">
+				<input type="hidden" readonly="readonly" data-ng-model= "storageOfferCostSum" data-ng-bind= "storageOfferCostSum =
+				    (volume.storageOffering.storagePrice[0].costPerMonth
+				    + volume.storageOffering.storagePrice[0].costPerIops + volume.storageOffering.storagePrice[0].costIopsPerMonth
+				    + (volume.storageOffering.storagePrice[0].costGbPerMonth > 0 ? (volume.diskSize * volume.storageOffering.storagePrice[0].costGbPerMonth) : 0))" />
+
+				  <span data-ng-show="storageOfferCostSum > 0" class="text-danger price-text">
+                       <app-currency></app-currency>{{storageOfferCostSum/30 | number:2 }}
+                       <span> /
+                           <fmt:message key="common.day" bundle="${msg}" />
+                       </span>
+                       <small class="text-muted">
+                           (<app-currency></app-currency>{{storageOfferCostSum | number:2 }} / <fmt:message key="common.month" bundle="${msg}" />)
+                       </small>
+                  </span>
+                  <span data-ng-hide="storageOfferCostSum > 0" class="font-bold text-success pricing-text">
+                      <fmt:message key="free" bundle="${msg}" />
+                  </span>
+            </span>
             <get-loader-image data-ng-show="showLoader"></get-loader-image>
             <a class="btn btn-default"  data-ng-hide="showLoader" data-ng-click="cancel()"><fmt:message key="common.cancel" bundle="${msg}" /></a>
             <button class="btn btn-info" data-ng-hide="showLoader" type="submit"><fmt:message key="common.add" bundle="${msg}" /></button>

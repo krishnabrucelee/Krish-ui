@@ -36,7 +36,7 @@
                 <div class="network-manager pull-right">
                     <div class="hpanel">
                         <div class=" vertical-container" animate-panel child="vertical-timeline-block" delay="3">
-                            <div class="v-timeline  vertical-timeline-block" data-ng-class="{'timeline-primary' : network.isDefault == 'YES'}"  data-ng-repeat="nic in nicList" >
+                            <div class="v-timeline  vertical-timeline-block" data-ng-class="{'timeline-primary' : network.isDefault == 'YES'}"  data-ng-repeat="nic in nicList " >
                                 <div class="h-timeline">
                                     <div class="vertical-timeline-content">
 
@@ -73,6 +73,7 @@
                                                                     <div class="span12 field-box p-xxs"><label class="headerLabel m-r-xs"><fmt:message key="id" bundle="${msg}" />:</label><span id="nicId">{{nic.uuid}}</span></div>
                                                                     <div class="span12 field-box p-xxs"><label class="headerLabel m-r-xs"><fmt:message key="common.type" bundle="${msg}" />:</label><span>{{nic.network.networkType}}</span></div>
                                                                     <div class="span12 field-box p-xxs"><label class="headerLabel m-r-xs"><fmt:message key="ip.address" bundle="${msg}" />:</label><span>{{nic.ipAddress}}</span></div>
+                                                                    <div class="span12 field-box p-xxs"><label class="headerLabel m-r-xs"><fmt:message key="secondary.ips" bundle="${msg}" />:</label><span data-ng-model="ipaddress" data-ng-repeat="ipaddress in nic.vmIpAddress" >{{ipaddress.guestIpAddress}}<font data-ng-show="!$last">, </font></span></div>
                                                                     <div class="span12 field-box p-xxs"><label class="headerLabel m-r-xs"><fmt:message key="gateway" bundle="${msg}" />:</label><span>{{nic.gateway}}</span></div>
                                                                     <div class="span12 field-box p-xxs"><label class="headerLabel m-r-xs"><fmt:message key="netmask" bundle="${msg}" />:</label><span>{{nic.netMask}}</span></div>
                                                                     <div class="span12 field-box p-xxs"><label class="headerLabel m-r-xs"><fmt:message key="is.default" bundle="${msg}" />:</label><span data-ng-class="nic.isDefault== 'true' ? 'text-info' : 'text-default' ">{{nic.isDefault}}</span></div>

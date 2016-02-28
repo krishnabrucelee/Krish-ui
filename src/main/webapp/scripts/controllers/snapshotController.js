@@ -7,7 +7,7 @@ angular
     .controller('addConfirmSnapshotCtrl', addConfirmSnapshotCtrl)
     .controller('snapshotListCtrl', snapshotListCtrl)
 
-    function addConfirmSnapshotCtrl($scope, globalConfig, $window, notify) {
+    function addConfirmSnapshotCtrl($scope, globalConfig, $window, appService,notify) {
 
     $scope.global = globalConfig;
 
@@ -18,7 +18,7 @@ angular
     $scope.formSubmitted = false;
 
 }
-    function addSnapshotCtrl($scope, crudService, dialogService, globalConfig, $window, notify) {
+    function addSnapshotCtrl($scope, appService, crudService, dialogService, globalConfig, $window, notify) {
 
     $scope.global = globalConfig;
 
@@ -28,7 +28,7 @@ angular
     };
     $scope.formSubmitted = false}
 
-function addVMSnapshotCtrl($scope, globalConfig, $window, notify) {
+function addVMSnapshotCtrl($scope, globalConfig, $window,appService, notify) {
 
     $scope.global = globalConfig;
 
@@ -55,7 +55,7 @@ function addVMSnapshotCtrl($scope, globalConfig, $window, notify) {
 
         }
     };
-    $scope.validateCreateVolume = function(form) {
+/*    $scope.validateCreateVolume = function(form) {
         $scope.formSubmitted = true;
         if (form.$valid) {
             $scope.cancel();
@@ -63,7 +63,7 @@ function addVMSnapshotCtrl($scope, globalConfig, $window, notify) {
             notify({message: 'Created successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
 
         }
-    };
+    };*/
     $scope.validateDeleteSnapshot = function(form) {
         $scope.formSubmitted = true;
         if (form.$valid) {
@@ -76,7 +76,30 @@ function addVMSnapshotCtrl($scope, globalConfig, $window, notify) {
 
 };
 function snapshotListCtrl($scope, crudService,$state, $timeout, promiseAjax, globalConfig,
-localStorageService, $window, dialogService, notify) {
+localStorageService, $window, dialogService,$stateParams, notify, appService) {
+
+ $scope.$on(appService.globalConfig.webSocketEvents.snapshotEvents.createvmsnapshot, function() {
+    //    $scope.vmSnapshotList = appService.webSocket;
+    });
+ $scope.$on(appService.globalConfig.webSocketEvents.snapshotEvents.deleteSnapshots, function() {
+    //    $scope.snapshotList = appService.webSocket;
+    });
+ $scope.$on(appService.globalConfig.webSocketEvents.snapshotEvents.deleteVolumeSnapshot, function() {
+    //    $scope.vmSnapshotList = appService.webSocket;
+    });
+ $scope.$on(appService.globalConfig.webSocketEvents.snapshotEvents.restoresnapshot, function() {
+    //    $scope.snapshot = appService.webSocket;
+    });
+ $scope.$on(appService.globalConfig.webSocketEvents.snapshotEvents.createsnapshot, function() {
+    //    $scope.snapshotList = appService.webSocket;
+    });
+ $scope.$on(appService.globalConfig.webSocketEvents.snapshotEvents.createsnapshotvolume, function() {
+    //    $scope.snapshot = appService.webSocket;
+    });
+ $scope.$on(appService.globalConfig.webSocketEvents.snapshotEvents.revertSnapshot, function() {
+    //    $scope.snapshot = appService.webSocket;
+    });
+
 	$scope.confirmsnapshot = {};
 	$scope.global = globalConfig;
 	$scope.global = crudService.globalConfig;
@@ -97,12 +120,13 @@ localStorageService, $window, dialogService, notify) {
 	    });
     }
     $scope.list(1);
-
 	$scope.vmSnapshot = function(pageNumber){
+		  $scope.showLoaderOffer = true;
 		  var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
 	        var hasSnapshots = crudService.list("vmsnapshot", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
 	        hasSnapshots.then(function (result) {  // this is only run after
 													// $http completes0
+	        	$scope.showLoaderOffer = false;
 	            $scope.vmSnapshotList = result;
 	            // For pagination
 	            $scope.paginationObject.limit  = limit;
@@ -110,10 +134,7 @@ localStorageService, $window, dialogService, notify) {
 	            $scope.paginationObject.totalItems = result.totalItems;
 	        });
 		};
-		$scope.vmSnapshot(1);
 		$scope.instanceList = {};
-
-
     $scope.instanceId = function(pageNumber) {
 		var hasUsers = crudService.listAll("virtualmachine/list");
 		hasUsers.then(function(result) { // this is only run after $http
@@ -132,9 +153,10 @@ localStorageService, $window, dialogService, notify) {
                    	$scope.vmsnapshot.vmId = $scope.vmsnapshot.vm.id;
 		  				var hasVm = crudService.add("vmsnapshot",$scope.vmsnapshot);
 		  				hasVm.then(function(result) {
+			   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.snapshotEvents.createvmsnapshot,result.id,$scope.global.sessionValues.id);
 		  					$state.reload();
 		  					 $scope.cancel();
-		  				}).catch(function (result) {
+		  				}).catch(function (result) { 
 		  				  $scope.homerTemplate = 'app/views/notification/notify.jsp';
 		                     notify({message: result.data.globalError[0], classes: 'alert-danger', "timeOut": "5000", templateUrl: $scope.homerTemplate});
 
@@ -166,16 +188,15 @@ localStorageService, $window, dialogService, notify) {
 // };
 // }]);
 // };
-    $scope.createVolume = function(size) {
-        modalService.trigger('app/views/cloud/snapshot/create-volume.jsp', size);
-    };
+
     $scope.deleteSnapshots = function(size, snapshot) {
-    	 dialogService.openDialog("app/views/snapshot/delete-snapshot.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+    	 dialogService.openDialog("app/views/cloud/snapshot/delete-snapshot.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
              $scope.deleteObject = snapshot;
              $scope.ok = function () {
             	 var event = "VMSNAPSHOT.DELETE";
 				 var hasServer = crudService.vmUpdate("vmsnapshot/event", snapshot.uuid, event);
                  hasServer.then(function (result) {
+			   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.snapshotEvents.deleteSnapshots,result.id,$scope.global.sessionValues.id);
                 	 $scope.cancel();
                 	 $scope.list(1);
                      notify({message: 'Deleting '+snapshot.name, classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
@@ -194,12 +215,13 @@ localStorageService, $window, dialogService, notify) {
          }]);
     };
 
-    $scope.deleteSnapshot = function(size, snapshot) {
+    $scope.deleteVolumeSnapshot = function(size, snapshot) {
    	 dialogService.openDialog("app/views/common/confirm-delete.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
             $scope.deleteObject = snapshot;
             $scope.ok = function (deleteObject) {
                 var hasServer = crudService.softDelete("snapshots", deleteObject);
                 hasServer.then(function (result) {
+			   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.snapshotEvents.deleteVolumeSnapshot,result.id,$scope.global.sessionValues.id);
                     $scope.list(1);
 
                     notify({message: 'Deleted successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
@@ -218,6 +240,7 @@ localStorageService, $window, dialogService, notify) {
    	    	    var event = "VMSNAPSHOT.REVERTTO";
 				var hasVm = crudService.vmUpdate("vmsnapshot/event", vmsnapshot.uuid, event);
 				hasVm.then(function(result) {
+			   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.snapshotEvents.restoresnapshot,result.id,$scope.global.sessionValues.id);
 				  $state.reload();
 				  $scope.cancel();
 				  notify({message: 'Reverting snapshot in VM '+vmsnapshot.vm.name, classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
@@ -266,6 +289,7 @@ localStorageService, $window, dialogService, notify) {
     		       	 	snapshot.zone = crudService.globalConfig.zone ;
 		       	 		var hasServer = crudService.add("snapshots", snapshot);
                         hasServer.then(function (result) {
+			   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.snapshotEvents.createsnapshot,result.id,$scope.global.sessionValues.id);
                         	 $scope.list(1);
                         	notify({message: 'Added successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
                             $modalInstance.close();
@@ -300,7 +324,116 @@ localStorageService, $window, dialogService, notify) {
          }]);
     };
 
-    $scope.createVolume = function(size) {
-        modalService.trigger('app/views/cloud/snapshot/create-volume.jsp', size);
+    $scope.createVolume = function(size,snapshot) {
+    	appService.dialogService.openDialog("app/views/cloud/snapshot/create-volume.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope',
+	                                                                                                    function ($scope, $modalInstance, $rootScope) {
+	$scope.deleteObject = snapshot;
+        $scope.save = function (form, deleteObject) {
+	  if (!angular.isUndefined($scope.deleteObject.domain)) {
+                deleteObject.domainId = $scope.deleteObject.domain.id;
+                delete deleteObject.domain;
+            }
+
+            if (!angular.isUndefined($scope.deleteObject.department) && $scope.deleteObject.department != null) {
+                deleteObject.departmentId = $scope.deleteObject.department.id;
+                delete deleteObject.department;
+            }
+	   if (!angular.isUndefined($scope.deleteObject.volume) && $scope.deleteObject.volume != null) {
+            deleteObject.volumeId = $scope.deleteObject.volume.id;
+		delete deleteObject.volume;
+            }
+ 	if (!angular.isUndefined($scope.deleteObject.zone) && $scope.deleteObject.zone != null) {
+                deleteObject.zoneId = $scope.deleteObject.zone.id;
+                delete deleteObject.zone;
+            }
+	 if (!angular.isUndefined($scope.deleteObject.snapshot) && $scope.deleteObject.snapshot != null) {
+                deleteObject.snapshot = $scope.deleteObject.snapshot.id;
+                delete deleteObject.snapshot;
+            }
+             $scope.formSubmitted = true;
+
+            if (form.$valid) {
+            	$scope.showLoader = true;
+                var hasVolume = appService.crudService.add("snapshots/volumesnap",  deleteObject);
+                hasVolume.then(function (result) {
+			   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.snapshotEvents.createsnapshotvolume,result.id,$scope.global.sessionValues.id);
+                	$scope.showLoader = false;
+                    $scope.list(1);
+                    appService.notify({message: 'Added successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                    $modalInstance.close();
+                }).catch(function (result) {
+                	$scope.showLoader = false;
+        		    if (!angular.isUndefined(result.data)) {
+            		if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
+              	   	 var msg = result.data.globalError[0];
+              	   	 $scope.showLoader = false;
+            	    	 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+                	}
+            	}
+        	});
+            }
+        },
+        $scope.cancel = function () {
+            $modalInstance.close();
+        };
+}]);
+
+    };
+
+     $scope.revertSnapshot = function(size,snapshot) {
+    	appService.dialogService.openDialog("app/views/cloud/snapshot/revert-snapshot.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope',
+	                                                                                                    function ($scope, $modalInstance, $rootScope) {
+	$scope.revertSnapshot = snapshot;
+        $scope.okrevert = function (form, revertSnapshot) {
+		if (!angular.isUndefined($scope.revertSnapshot.domain)) {
+                revertSnapshot.domainId = $scope.revertSnapshot.domain.id;
+                delete revertSnapshot.domain;
+            }
+
+            if (!angular.isUndefined($scope.revertSnapshot.department) && $scope.revertSnapshot.department != null) {
+                revertSnapshot.departmentId = $scope.revertSnapshot.department.id;
+                delete revertSnapshot.department;
+            }
+	   if (!angular.isUndefined($scope.revertSnapshot.volume) && $scope.revertSnapshot.volume != null) {
+            revertSnapshot.volumeId = $scope.revertSnapshot.volume.id;
+		delete revertSnapshot.volume;
+            }
+ 	if (!angular.isUndefined($scope.revertSnapshot.zone) && $scope.revertSnapshot.zone != null) {
+                revertSnapshot.zoneId = $scope.revertSnapshot.zone.id;
+                delete revertSnapshot.zone;
+            }
+	 if (!angular.isUndefined($scope.revertSnapshot.snapshot) && $scope.revertSnapshot.snapshot != null) {
+                revertSnapshot.snapshot = $scope.revertSnapshot.snapshot.id;
+                delete revertSnapshot.snapshot;
+            }
+             $scope.formSubmitted = true;
+
+            if (form.$valid) {
+            	$scope.showLoader = true;
+		console.log($scope.revertSnapshot);
+                var hasVolume = appService.crudService.add("snapshots/revertsnap",  revertSnapshot);
+                hasVolume.then(function (result) {
+			   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.snapshotEvents.revertSnapshot,result.id,$scope.global.sessionValues.id);
+                	$scope.showLoader = false;
+                    $scope.list(1);
+                    appService.notify({message: 'Reverted successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                    $modalInstance.close();
+                }).catch(function (result) {
+                	$scope.showLoader = false;
+        		    if (!angular.isUndefined(result.data)) {
+            		if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
+              	   	 var msg = result.data.globalError[0];
+              	   	 $scope.showLoader = false;
+            	    	 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+                	}
+            	}
+        	});
+            }
+        },
+        $scope.cancel = function () {
+            $modalInstance.close();
+        };
+}]);
+
     };
 }

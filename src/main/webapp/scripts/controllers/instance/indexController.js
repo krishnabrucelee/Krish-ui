@@ -10,6 +10,15 @@ angular
 
 function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter, appService, $window, sweetAlert) {
 
+
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.vmCreate, function() {
+       // $scope.instanceList = appService.webSocket;
+    });
+
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.vmnetworksave, function() {
+       // $scope.instance.networks.networkOfferList  = appService.webSocket;
+    });
+
     $scope.global = appService.globalConfig;
     $scope.instanceList = [];
     $scope.formElements = [];
@@ -25,62 +34,14 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
     };
     $scope.templateCategories = appService.localStorageService.get("view");
     $scope.templateVM = appService.localStorageService.get("selectedTemplate");
-    if (!angular.isUndefined($scope.templateVM) && $scope.templateVM != null)
-    {
+    if (!angular.isUndefined($scope.templateVM) && $scope.templateVM != null && $scope.templateVM.$valid) {
         $scope.instance.template = $scope.templateVM;
     }
 
-
     // Form Field Declaration
-    $scope.instance = {
-        computeOffer: {
-            category: 'static',
-            memory: {
-                value: 512,
-                floor: 512,
-                ceil: 4096
-            },
-            cpuCore: {
-                value: 1,
-                floor: 1,
-                ceil: 32
-            },
-            cpuSpeed: {
-                value: 1000,
-                floor: 1000,
-                ceil: 3500
-            },
-            minIops: {
-            	value: 0,
-                floor: 0,
-                ceil: 500
-            },
-            maxIops: {
-            	value: 0,
-                floor: 0,
-                ceil: 500
-            },
-            isOpen: true
-        },
-        diskOffer: {
-            category: 'static',
-            diskSize: {
-                value: 0,
-                floor: 0,
-                ceil: 1024
-            },
-            iops: {
-                value: 0,
-                floor: 0,
-                ceil: 500
-            },
-            isOpen: false
-        },
-        networks: {
-            category: 'all',
-            isOpen: false
-        }
-    };
+    $scope.instance.computeOffer = $scope.global.instanceCustomPlan.computeOffer;
+    $scope.instance.diskOffer = $scope.global.instanceCustomPlan.diskOffer;
+    $scope.instance.networks = $scope.global.instanceCustomPlan.networks;
 
     $scope.instance.bit64 = true;
 
@@ -89,7 +50,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
         $scope.formElements.domainList = result;
     });
 
-    if ($scope.global.sessionValues.type !== 'ROOT_ADMIN') {
+    if ($scope.global.sessionValues.type === 'DOMAIN_ADMIN' ) {
         if (!angular.isUndefined($scope.global.sessionValues.domainId)) {
             var hasDomain = appService.crudService.read("domains", $scope.global.sessionValues.domainId);
             hasDomain.then(function (result) {
@@ -354,6 +315,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
     $scope.changedomain=function (obj)
     {
         $scope.applicationList();
+	$scope.computeList();
 	$scope.instance.department =null;
     	$scope.instance.instanceOwner = null;
 	$scope.instance.project = null;
@@ -362,23 +324,31 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
             $scope.departmentList(obj);
             $scope.formElements.instanceOwnerList = {};
             $scope.formElements.projecttypeList = {};
+            $scope.diskOfferingList(obj);
         }
-
     }
 
-    $scope.changedepartment=function (obj)
-    {
-	$scope.instance.instanceOwner =null;
-	$scope.instance.project = null;
+    $scope.changedepartment = function(obj) {
+        $scope.formElements.sshKeyList = {};
+        $scope.instance.sshkey = null;
+        $scope.instance.instanceOwner =null;
+    	$scope.instance.project = null;
         $scope.instance.networks.networkList  = null;
- 	if (!angular.isUndefined(obj)) {
-            $scope.userList(obj);
-            $scope.listNetworks(obj.id, 'department');
-            $scope.formElements.projecttypeList = {};
+     	if (!angular.isUndefined(obj)) {
+                $scope.userList(obj);
+                $scope.listNetworks(obj.id, 'department');
+                $scope.formElements.projecttypeList = {};
 
         }
+        if (!angular.isUndefined($scope.instance.department) && $scope.global.sessionValues.type != "USER") {
+	        var hasSSHKeyList = appService.crudService.listAllByFilter("sshkeys/search/department", $scope.instance.department);
+	        hasSSHKeyList.then(function (result) {
+	    	    $scope.formElements.sshKeyList = result;
+	        });
+        }
+    };
 
-    }
+
 
     $scope.changeinstanceowner=function (obj)
     {
@@ -390,13 +360,22 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
         }
     }
 
-	$scope.changeproject=function (obj)
-   	 {
+	$scope.changeproject=function (obj) {
+        $scope.formElements.sshKeyList = {};
+        $scope.instance.sshkey = null;
         $scope.instance.networks.networkList  = null;
   	  if (!angular.isUndefined(obj)) {
             $scope.listNetworks(obj.id, 'project');
         }
-  	  }
+        if (!angular.isUndefined($scope.instance.project)) {
+	        var hasSSHKeyList = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL
+        		+ "sshkeys/search/project?project="+$scope.instance.project.id);
+	        hasSSHKeyList.then(function (result) {
+	    	    $scope.formElements.sshKeyList = result;
+	        });
+        }
+
+  	  };
 
 
     $scope.departmentList = function (domain) {
@@ -408,17 +387,6 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
             var hasDepartments = appService.crudService.read("departments", $scope.global.sessionValues.departmentId);
             hasDepartments.then(function (result) {
                 $scope.instance.department = result;
-                if (!angular.isUndefined(result)) {
-                    $scope.listNetworks(result.id, 'department');
-
-                }
-            });
-            var hasUsers = appService.crudService.read("users", $scope.global.sessionValues.id);
-            hasUsers.then(function (result) {
-                $scope.instance.instanceOwner = result;
-                if (!angular.isUndefined(result)) {
-                    $scope.projectList(result);
-                }
             });
         } else {
             var hasDepartments = appService.crudService.listAllByFilter("departments/search", domain);
@@ -427,6 +395,16 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
                 $scope.showLoaderDetail = false;
             });
         }
+    };
+
+    $scope.diskOfferingList = function (domain) {
+        $scope.showLoaderDetail = true;
+        var hasDisks = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL
+        		+ "storages/listbydomain?domainId="+domain.id);
+        hasDisks.then(function (result) {  // this is only run after $http completes0
+        	$scope.instanceElements.diskOfferingList = result;
+            $scope.showLoaderDetail = false;
+        });
     };
 
     $scope.projectList = function (user) {
@@ -532,20 +510,16 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
                 }
             }
 		 if (!angular.isUndefined($scope.instance.computeOffer.cpuSpeed.value)) {
-                    if ($scope.instance.computeOffer.cpuSpeed.value >= 1000 && $scope.instance.computeOffer.memory.value >= 512) {
-			submitError = false;
-        	}
-
-		else {
-			  $scope.homerTemplate = 'app/views/notification/notify.jsp';
-                            appService.notify({message: 'Please choose valid range for memory or cpu speed', classes: 'alert-danger',
-                            	templateUrl: $scope.homerTemplate});
-                            submitError = true;
-			}
+                if ($scope.instance.computeOffer.cpuSpeed.value < 500 && $scope.instance.computeOffer.memory.value < 512) {
+				  $scope.homerTemplate = 'app/views/notification/notify.jsp';
+	                            appService.notify({message: 'Please choose valid range for memory or cpu speed', classes: 'alert-danger',
+	                            	templateUrl: $scope.homerTemplate});
+	              submitError = true;
+		        }
 		 }
-            if (!submitError) {
-                $scope.submt();
-            }
+         if (!submitError) {
+             $scope.submt();
+         }
         }
     };
 
@@ -589,6 +563,26 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
         instance.instanceOwnerId = instance.instanceOwner.id;
         delete instance.instanceOwner;
 
+        if (!angular.isUndefined($scope.instance.storageOffering) && $scope.instance.storageOffering != null) {
+        	if (instance.storageOffering.isCustomDisk) {
+        	if (!angular.isUndefined($scope.instance.diskSize)) {
+                instance.diskSize = $scope.instance.diskSize;
+            }
+    	    if (!angular.isUndefined($scope.instance.diskMaxIops)) {
+                instance.diskMaxIops = $scope.instance.diskMaxIops;
+            }
+
+     	    if (!angular.isUndefined($scope.instance.diskMinIops)) {
+                instance.diskMinIops = $scope.diskMinIops;
+            }
+        }
+        } else {
+        	delete instance.diskSize;
+        	delete instance.diskMaxIops;
+        	delete instance.diskMinIops;
+        }
+
+
         if (!angular.isUndefined($scope.instance.computeOffer.cpuCore.value)) {
             instance.cpuCore = $scope.instance.computeOffer.cpuCore.value;
         }
@@ -622,7 +616,8 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
         var hasServer = appService.crudService.add("virtualmachine", instance);
         hasServer.then(function (result) {  // this is only run after $http completes
             $scope.showLoader = false;
-            appService.notify({message: result.eventMessage, classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+   	    appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.vmCreate,result.id,$scope.global.sessionValues.id);
+            appService.notify({message: "Instance creation started", classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
             $modalInstance.close();
             $state.reload();
 
@@ -633,7 +628,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
                 angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
                     errorMessages += "," + key + ": " + "is incorrect ";
                 });
-                errorMessages = errorMessages.slice(1, errorMessages.legnth);
+                errorMessages = errorMessages.slice(1, errorMessages.length);
                 appService.notify({message: errorMessages, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
             }
             $scope.wizard.prev();
@@ -709,7 +704,6 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
 
                         $scope.instanceNetwork = {
                         };
-                        // appService.localStorageService.remove('instanceNetworkList');
 
                         $scope.networks.plan = $scope.networks.networkOffers.name;
 
@@ -773,23 +767,35 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
 
     $scope.computeList = function () {
         $scope.showLoaderOffer = true;
-        var hasCompute = appService.crudService.listAll("computes/list");
+	    if (!angular.isUndefined($scope.instance.domain) && $scope.global.sessionValues.type == 'ROOT_ADMIN') {
+	    var hasCompute = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL
+        		+ "computes/listbydomain?domainId="+$scope.instance.domain.id);
+		hasCompute.then(function (result) {  // this is only run after $http completes0
+            $scope.instanceElements.computeOfferingList = result;
+            $scope.showLoaderOffer = false;
+        });
+       		 //var hasCompute = appService.crudService.listAll("computes/listbydomain");
+	}
+	else {
+	var hasCompute = appService.crudService.listAll("computes/list");
         hasCompute.then(function (result) {  // this is only run after $http completes0
             $scope.instanceElements.computeOfferingList = result;
             $scope.showLoaderOffer = false;
         });
+	}
     };
     $scope.computeList();
 
-    $scope.diskList = function () {
-        $scope.showLoaderOffer = true;
-        var hasDisks = appService.crudService.listAll("storages/list");
-        hasDisks.then(function (result) {  // this is only run after $http completes0
-            $scope.instanceElements.diskOfferingList = result;
-            $scope.showLoaderOffer = false;
-        });
-    };
-    $scope.diskList();
+    if ($scope.global.sessionValues.type !== 'ROOT_ADMIN') {
+        if (!angular.isUndefined($scope.global.sessionValues.domainId)) {
+        	var hasDisks = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL
+            		+ "storages/listbydomain?domainId="+$scope.global.sessionValues.domainId);
+            hasDisks.then(function (result) {  // this is only run after $http completes0
+                $scope.instanceElements.diskOfferingList = result;
+                $scope.showLoaderOffer = false;
+            });
+        }
+    }
 
     $scope.instanceElements = {
         zoneList: [{id: 1, name: 'Beijing'}, {id: 2, name: 'Liaoning'}, {id: 3, name: 'Shanghai'}, {id: 4, name: 'Henan'}],
@@ -870,6 +876,33 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
 
     };
 
+
+    if (!angular.isUndefined($scope.global.sessionValues.departmentId) && $scope.global.sessionValues.type == "USER") {
+        var hasDept = appService.crudService.read("departments", $scope.global.sessionValues.departmentId);
+        hasDept.then(function (result) {
+            $scope.instance.department = result;
+            if (!angular.isUndefined(result)) {
+                    $scope.listNetworks(result.id, 'department');
+
+                }
+
+      var hasSSHKeyList = appService.crudService.listAllByFilter("sshkeys/search/department", $scope.instance.department);
+        hasSSHKeyList.then(function (result) {
+            $scope.formElements.sshKeyList = result;
+        });
+        });
+
+
+     var hasUsers = appService.crudService.read("users", $scope.global.sessionValues.id);
+            hasUsers.then(function (result) {
+                $scope.instance.instanceOwner = result;
+                if (!angular.isUndefined(result)) {
+                    $scope.projectList(result);
+                }
+            });
+        }
+
+
     $scope.networkOfferList = {};
     $scope.networkOfferForm = {};
     $scope.global = appService.crudService.globalConfig;
@@ -919,6 +952,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
 
             var hasguestNetworks = appService.crudService.add("guestnetwork", guestnetwork);
             hasguestNetworks.then(function (result) {
+   	    appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.vmnetworksave,result.id,$scope.global.sessionValues.id);
                 if ($scope.instance.project == null) {
                     $scope.listNetworks($scope.instance.department.id, 'department');
                 } else {

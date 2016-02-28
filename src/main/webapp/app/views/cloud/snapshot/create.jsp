@@ -53,12 +53,12 @@
 
 			<div class="modal-footer">
 				<div>
-					<span class="pull-right">
+					<!-- <span class="pull-right">
 						<h4 class="text-danger price-text m-l-lg">
 							<app-currency></app-currency>
 							0.10 <span>/ hour</span> <span>/GB</span>
 						</h4>
-					</span>
+					</span> -->
 				</div>
 			</div>
 		</div>

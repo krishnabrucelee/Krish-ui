@@ -134,12 +134,16 @@ function resourceAllocationCtrl($scope, crudService, globalConfig, notify, $stat
 					resourceObject.department = $scope.resourceQuota.department;
 					resourceObject.resourceType = $scope.resourceTypeList[i];
 					resourceObject.max = $scope.resourceQuota[$scope.resourceTypeList[i]];
+					resourceObject.id = $scope.resourceQuota[$scope.resourceTypeList[i]+"id"];
 					quotaList.push(resourceObject);
 				}
 			}
 
 			var hasResource = promiseAjax.httpTokenRequest( globalConfig.HTTP_POST , globalConfig.APP_URL + "resourceDepartments/create" , '', quotaList);
 			hasResource.then(function (result) {  // this is only run after $http completes
+				angular.forEach(result, function(obj, key) {
+					$scope.resourceQuota[$scope.resourceTypeList[i]+"id"] = obj.id;
+				});
 				$scope.showLoader = false;
 				$scope.isDisabledProject = false;
 				$scope.formSubmitted = false;
@@ -147,11 +151,7 @@ function resourceAllocationCtrl($scope, crudService, globalConfig, notify, $stat
 	        }).catch(function (result) {
 	        	$scope.showLoader = false;
 	            if (!angular.isUndefined(result.data)) {
-	            	if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
-	              	    var msg = result.data.globalError[0];
-	              	  $scope.showLoader = false;
-	            	    notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
-	                } else if (result.data.fieldErrors != null) {
+	            	 if (result.data.fieldErrors != null) {
 	                    angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
 	                        $scope.resourceAllocationForm[key].$invalid = true;
 	                        $scope.resourceAllocationForm[key].errorMessage = errorMessage;
@@ -180,12 +180,16 @@ function resourceAllocationCtrl($scope, crudService, globalConfig, notify, $stat
 					resourceObject.project = $scope.resourceQuota.project;
 					resourceObject.resourceType = $scope.resourceTypeList[i];
 					resourceObject.max = $scope.resourceQuota[$scope.resourceTypeList[i]];
+					resourceObject.id = $scope.resourceQuota[$scope.resourceTypeList[i]+"id"];
 					quotaList.push(resourceObject);
 				}
 			}
 
 			var hasResource = promiseAjax.httpTokenRequest( globalConfig.HTTP_POST , globalConfig.APP_URL + "resourceProjects/create" , '', quotaList);
 			hasResource.then(function (result) {  // this is only run after $http completes
+				angular.forEach(result, function(obj, key) {
+					$scope.resourceQuota[$scope.resourceTypeList[i]+"id"] = obj.id;
+				});
 				$scope.showLoader = false;
 				$scope.formSubmitted = false;
 	            notify({message: 'Updated successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
@@ -193,11 +197,7 @@ function resourceAllocationCtrl($scope, crudService, globalConfig, notify, $stat
 	        }).catch(function (result) {
 	        	$scope.showLoader = false;
 	            if (!angular.isUndefined(result.data)) {
-	            	if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
-	              	    var msg = result.data.globalError[0];
-	              	  $scope.showLoader = false;
-	            	    notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
-	                } else if (result.data.fieldErrors != null) {
+	            	if (result.data.fieldErrors != null) {
 	                    angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
 	                        $scope.resourceAllocationForm[key].$invalid = true;
 	                        $scope.resourceAllocationForm[key].errorMessage = errorMessage;
@@ -238,6 +238,7 @@ function resourceAllocationCtrl($scope, crudService, globalConfig, notify, $stat
 					$scope.loadEditOption($scope.departmentList, $scope.resourceQuota.department, object.department);
 				}
 				$scope.resourceQuota[object.resourceType] = object.max;
+				$scope.resourceQuota[object.resourceType+"id"] = object.id;
 
 			});
         });
@@ -250,6 +251,8 @@ function resourceAllocationCtrl($scope, crudService, globalConfig, notify, $stat
 		$scope.showLoader = true;
 		var hasResource = promiseAjax.httpTokenRequest( globalConfig.HTTP_GET , globalConfig.APP_URL + "resourceProjects/project/"+$stateParams.id);
 		hasResource.then(function (result) {
+			$scope.resourceQuota.project = result[0].project;
+			console.log(result);
 			var i=0;
 			angular.forEach(result, function(object, key) {
 				i++;
@@ -259,6 +262,7 @@ function resourceAllocationCtrl($scope, crudService, globalConfig, notify, $stat
 					$scope.loadEditOption($scope.projectList, $scope.resourceQuota.project, object.project);
 				}
 				$scope.resourceQuota[object.resourceType] = object.max;
+				$scope.resourceQuota[object.resourceType+"id"] = object.id;
 			});
 			$scope.showLoader = false;
         });

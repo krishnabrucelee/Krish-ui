@@ -20,8 +20,10 @@
                     <ol class="hbreadcrumb breadcrumb">
                         <li><a ui-sref="dashboard"><fmt:message key="common.home" bundle="${msg}" /></a></li>
                         <li ng-repeat="state in $state.$current.path" ng-switch="$last || !!state.abstract" ng-class="{active: $last}">
-                            <a ng-switch-when="false" href="{{'#' +state.url.format($stateParams)}}"><fmt:message key="common.accounts" bundle="${msg}" /></a>
-                            <span ng-switch-when="true"><fmt:message key="common.accounts" bundle="${msg}" /></span>
+                             <span data-ng-if="state.data.pageTitle === 'common.accounts'">
+	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.accounts" bundle="${msg}" /></a>
+	                            <span ng-switch-when="true"><fmt:message key="common.accounts" bundle="${msg}" /></span>
+                            </span>
                         </li>
                     </ol>
                 </div>

@@ -78,6 +78,6 @@ pageEncoding="UTF-8"%>
       <div class="modal-footer">
 			<get-loader-image data-ng-show="showLoader"></get-loader-image>
             <a class="btn btn-default" data-ng-hide="showLoader" data-ng-click="cancel()"><fmt:message key="common.cancel" bundle="${msg}" /></a>
-            <a class="btn btn-info" data-ng-hide="showLoader" type="submit" data-ng-click="portforwardSave(instances)"><fmt:message key="common.add" bundle="${msg}" /></a>
+            <a class="btn btn-info" data-ng-hide="showLoader" type="submit" data-ng-click="enableStaticNatSave(instances)"><fmt:message key="common.add" bundle="${msg}" /></a>
       </div>
   </div>

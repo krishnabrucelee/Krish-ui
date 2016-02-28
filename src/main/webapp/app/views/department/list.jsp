@@ -24,6 +24,10 @@
 	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.departments" bundle="${msg}" /></a>
 	                            <span ng-switch-when="true"><fmt:message key="common.departments" bundle="${msg}" /></span>
                             </span>
+                            <span data-ng-if="state.data.pageTitle === 'quota.limit'">
+	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="quota.limit" bundle="${msg}" /></a>
+	                            <span ng-switch-when="true"><fmt:message key="quota.limit" bundle="${msg}" /></span>
+                            </span>
                             <span data-ng-if="state.data.pageTitle !== 'common.departments'">
 	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.departments" bundle="${msg}" /></a>
 	                            <span ng-switch-when="true">{{ state.data.pageName }}</span>
@@ -31,7 +35,11 @@
                         </li>
                     </ol>
                 </div>
+                <h2 class="font-light m-b-xs">
                     <span id="departments_page_title" data-ng-if="$state.current.data.pageTitle === 'common.departments'"><fmt:message key="common.departments" bundle="${msg}" /></span>
+                </h2>
+                <h2 class="font-light m-b-xs">
+                    <span id="quota_limit_page_title" data-ng-if="$state.current.data.pageTitle === 'quota.limit'"><fmt:message key="quota.limit" bundle="${msg}" /></span>
                 </h2>
                 <small>{{ $state.current.data.pageDesc}}</small>
             </div>
@@ -39,7 +47,7 @@
     </div>
     <div class="content">
         <div ui-view>
-            <div class="row" data-ng-controller="departmentCtrl">
+            <div class="row" data-ng-controller="departmentCtrl" id="departments_pagination_container">
 
                 <div class="col-md-12 col-sm-12">
                     <div class="hpanel">
@@ -73,7 +81,7 @@
       						</div>
                             <div data-ng-hide="showLoader" class="table-responsive">
                                   <div class="white-content m-b-sm m-t-xs">
-                                <table cellspacing="1" cellpadding="1" class="table dataTable table-bordered table-striped">
+                                <table cellspacing="1" cellpadding="1" id="departments_table" class="table dataTable table-bordered table-striped">
                                     <thead>
                                         <tr>
                                             <th class="col-md-2 col-sm-2"  data-ng-click="changeSorting('userName')" data-ng-class="sort.descending && sort.column =='userName'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.name" bundle="${msg}" /></th>
@@ -99,14 +107,14 @@
                                                 {{ department.description}}
                                             </td>
                                             <td>
-
-                                                <a has-permission="EDIT_DEPARTMENT" id="departments_edit_button_{{department.id}}" class="icon-button departments_edit_button" title="<fmt:message key="common.edit" bundle="${msg}" />" data-ng-click="edit('md', department)">
+	                                           <input type="hidden" id="departments_unique_{{department.id}}"  data-unique-field="{{ department.domain.name }}-{{ department.userName}}" class="test_departments_unique">
+                                                <a has-permission="EDIT_DEPARTMENT" id="departments_edit_button_{{department.id}}" class="icon-button test_departments_edit_button" title="<fmt:message key="common.edit" bundle="${msg}" />" data-ng-click="edit('md', department)">
                                                     <span class="fa fa-edit"> </span>
                                                 </a>
-                                                 <a has-permission="DEPARTMENT_RESOURCE_QUOTA_MODIFICATION" id="departments_edit_quota_button_{{department.id}}" class="icon-button departments_edit_quota_button" ui-sref="department.quotalimit({id: {{department.id}}, quotaType: 'department-quota'})" title="<fmt:message key="common.edit.quota" bundle="${msg}" />">
+                                                 <a has-permission="DEPARTMENT_RESOURCE_QUOTA_MODIFICATION" id="departments_edit_quota_button_{{department.id}}" class="icon-button test_departments_edit_quota_button" ui-sref="department.quotalimit({id: {{department.id}}, quotaType: 'department-quota'})" title="<fmt:message key="common.edit.quota" bundle="${msg}" />">
                                                     <span class="fa font-bold pe-7s-edit"> </span>
                                                 </a>
-                                                <a has-permission="DELETE_DEPARTMENT" id="departments_delete_button_{{department.id}}" class="icon-button departments_delete_button" title="<fmt:message key="common.delete" bundle="${msg}" />" data-ng-click="delete('sm', department)" ><span class="fa fa-trash"></span></a>
+                                                <a has-permission="DELETE_DEPARTMENT" id="departments_delete_button_{{department.id}}" class="icon-button test_departments_delete_button" title="<fmt:message key="common.delete" bundle="${msg}" />" data-ng-click="delete('sm', department)" ><span class="fa fa-trash"></span></a>
 
                                             </td>
 

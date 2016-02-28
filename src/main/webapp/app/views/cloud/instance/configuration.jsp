@@ -149,23 +149,16 @@
             </div>
         </div>
         <div class="col-lg-3 col-md-4 col-sm-5 pull-right">
-
             <div class="panel panel-info">
-
                 <div class="panel-heading">
                     <h3 class="panel-title"><i class="fa fa-list m-r-sm"></i><fmt:message key="common.summary" bundle="${msg}" /></h3>
                 </div>
                 <div class="panel-body no-padding">
-
                     <table class="table table-condensed" cellspacing="1" cellpadding="1">
                         <tbody>
                         	<tr>
                                 <td class="p-xs col-md-4 col-sm-4"><b><fmt:message key="instance.name" bundle="${msg}" /></b></td>
                                 <td class="p-xs col-md-8 col-sm-8">{{instances.name}}</td>
-                            </tr>
-                            <tr>
-                                <td class="p-xs col-md-4 col-sm-4"><b><fmt:message key="common.compute.offer" bundle="${msg}" /></b></td>
-                                <td class="p-xs col-md-8 col-sm-8">{{instances.computeOffering.name}}</td>
                             </tr>
                             <tr>
                                 <td class="p-xs col-md-4 col-sm-4"><b><fmt:message key="cpu" bundle="${msg}" /></b></td>
@@ -179,29 +172,57 @@
                                 <td class="p-xs col-md-4 col-sm-4"><b><fmt:message key="disk.size" bundle="${msg}" /></b></td>
                                 <td class="p-xs col-md-8 col-sm-8">{{volume[0].diskSize / global.Math.pow(2, 30) || "0"}} GB</td>
                             </tr>
-                           <%--  <tr>
+                           <%-- <tr>
                                 <td class="p-xs col-md-4 col-sm-4"><b><fmt:message key="common.network" bundle="${msg}" /></b></td>
                                 <td class="p-xs col-md-8 col-sm-8">1000GB</td>
                             </tr>
                             <tr>
                                 <td class="p-xs col-md-4 col-sm-4"><b><fmt:message key="bandwidth" bundle="${msg}" /></b></td>
                                 <td class="p-xs col-md-8 col-sm-8">10 MB/s</td>
-                            </tr> --%>
-                            <%--  <tr>
+                            </tr>
+                            <tr>
                                 <td class="p-xs col-md-4 col-sm-4"><b><fmt:message key="disk.io" bundle="${msg}" /></b></td>
                                 <td class="p-xs col-md-8 col-sm-8">{{instances.computeOffering.diskIo}}</td>
                             </tr> --%>
-                            <tr>
-                                <td colspan="2" class="p-xs">
-                                    <h4 class="text-danger price-text">
-                                        <app-currency></app-currency>0.10 <span>/ <fmt:message key="common.hour" bundle="${msg}" /></span>   <small class="text-right text-muted m-l-sm">(<app-currency></app-currency>7.2 / <fmt:message key="common.month" bundle="${msg}" />)</small>
-                                    </h4>
-                                </td>
-                            </tr>
                         </tbody>
                     </table>
                 </div>
-            </div>
+             </div>
+	         <div class="panel panel-info">
+	         <div class="panel-heading">
+	             <h3 class="panel-title"><i class="fa fa-list m-r-sm"></i><fmt:message key="common.plan" bundle="${msg}" /></h3>
+	         </div>
+	         <div class="panel-body no-padding">
+	             <table class="table table-condensed" cellspacing="1" cellpadding="1">
+	                 <tbody>
+	                     <tr>
+	                         <td colspan="2" class="p-xs">
+	                             <b>{{instanceForm.computeOffering.$viewValue.name}}</b>
+	                             <div>
+	                                 <input type="hidden" readonly="readonly" data-ng-model= "computeOfferCostSum" data-ng-bind= "computeOfferCostSum = (instance.computeOffering.computeCost[0].instanceRunningCostIops + instance.computeOffering.computeCost[0].instanceRunningCostMemory
+				    + instance.computeOffering.computeCost[0].instanceRunningCostVcpu + instance.computeOffering.computeCost[0].instanceStoppageCostIops
+				    + instance.computeOffering.computeCost[0].instanceStoppageCostMemory + instance.computeOffering.computeCost[0].instanceStoppageCostVcpu + instance.computeOffering.computeCost[0].instanceStoppageCostPerMhz
+				    + (instance.computeOffering.computeCost[0].instanceRunningCostPerMB > 0 ? (instance.computeOffer.memory.value * instance.computeOffering.computeCost[0].instanceRunningCostPerMB) : 0)
+				    + (instance.computeOffering.computeCost[0].instanceRunningCostPerVcpu > 0 ? (instance.computeOffer.cpuCore.value * instance.computeOffering.computeCost[0].instanceRunningCostPerVcpu) : 0)
+				    + (instance.computeOffering.computeCost[0].instanceRunningCostPerMhz > 0 ? (instance.computeOffer.cpuSpeed.value * instance.computeOffering.computeCost[0].instanceRunningCostPerMhz) : 0))" />
+				<span data-ng-show="computeOfferCostSum > 0" class="text-danger price-text">
+	                                     <app-currency></app-currency>{{computeOfferCostSum/30 | number:2 }}<span> / <fmt:message key="common.day" bundle="${msg}" /></span>
+	                                 </span>
+	                                 <span data-ng-hide="computeOfferCostSum > 0" class="font-bold text-success pricing-text">
+	                                     <fmt:message key="free" bundle="${msg}" />
+	                                 </span>
+	                             </div>
+	                             <div>
+	                                 <small data-ng-show="computeOfferCostSum > 0" class="text-muted">
+	                                     (<app-currency></app-currency>{{computeOfferCostSum | number:2 }} / <fmt:message key="common.month" bundle="${msg}" />)
+	                                 </small>
+	                             </div>
+	                         </td>
+	                     </tr>
+	                 </tbody>
+	             </table>
+	         </div>
+	       </div>
         </div>
     </div>
 </div>

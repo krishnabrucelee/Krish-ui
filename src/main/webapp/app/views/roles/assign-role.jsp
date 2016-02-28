@@ -7,7 +7,7 @@
 	method="post" novalidate="">
 	<div class="inmodal">
 		<div class="modal-header">
-			<panda-modal-header page-icon="fa fa-user-plus" hide-zone="false"
+			<panda-modal-header id="assign_role_page_title" page-icon="fa fa-user-plus" hide-zone="false"
 				page-title="Assign Role"></panda-modal-header>
 		</div>
 		<div class="modal-body">
@@ -54,7 +54,7 @@
 										key="common.department" bundle="${msg}" /><span
 									class="text-danger">*</span> </label>
 								<div class="col-md-5 col-sm-5" data-ng-if="userType != 'USER'">
-									<select class="form-control form-group-lg" name="department"
+									<select class="form-control form-group-lg" id="assign_role_department" name="department"
 										data-ng-model="role.department"
 										ng-change="getUsersByDepartment(role.department)"
 										data-ng-options="department.userName for department in formElements.departments"
@@ -97,7 +97,7 @@
 							<tbody>
 								<tr data-ng-repeat="user in userList">
 									<td>{{user.userName}}</td>
-									<td><select class="form-control input-group" name="role"
+									<td><select class="form-control input-group test_assign_role_user" id="assign_role_user_{{user.id}}" name="role"
 										data-ng-model="userRolePermissionList[user.id]"
 										data-ng-class="{'error': RoleForm.role.$invalid && formSubmitted}">
 											<option value=""><fmt:message key="common.select"
@@ -116,9 +116,9 @@
 		</div>
 	</div>
 	<div class="modal-footer">
-		<a class="btn btn-default" data-ng-click="cancel()"><fmt:message
+		<a class="btn btn-default" id="assign_role_cancel_button" data-ng-click="cancel()"><fmt:message
 				key="common.cancel" bundle="${msg}" /></a>
-		<button class="btn btn-info" type="submit">
+		<button class="btn btn-info" id="assign_role_add_button" type="submit">
 			<fmt:message key="common.add" bundle="${msg}" />
 		</button>
 	</div>

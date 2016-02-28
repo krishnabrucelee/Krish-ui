@@ -290,6 +290,26 @@ table.dataTable thead .sorting_desc::after {content: "\f0dd";}
 .quick-search .input-group { padding: 5px 0 4px;}
 .dashboard-box-pad{padding:16px 16px 17px 16px;}
 
+.hide-right{position:absolute; z-index:10000; width:75px; background-color:#fff; height:300px;}
+ .hide-left{position:absolute; z-index:1004; width:100px; background-color:#fff; height:300px; margin-left:-90px;}
+.hide-left{left:0;}
+.hide-right{right:0;}
+.flot-y-axis {
+	background-color:#FFF;
+	width:72px;
+	left:-28px!important;
+	z-index:1005;
+}
+
+.m-l-n-xxl {
+	margin-left:-60px;
+}
+
+.flotchart-container{margin-bottom:20px;}
+.flotchart-legend-container{margin-left: 38px; margin-top:20px;}
+.flotchart-legend-container td{padding:5px; font-size:13px;}
+.flotchart-container .flot-text .flot-y-axis .flot-tick-label.tickLabel{left:0 !important;}
+
 @media (min-width: 768px) and (max-width: 1023px) {
 .shown-page{width:100% !important;}
 .shown-entry{width:100% !important;}

@@ -13,6 +13,20 @@ angular
         .controller('editCtrl', editCtrl)
 
 function accountCtrl($scope, appService) {
+
+ $scope.$on(appService.globalConfig.webSocketEvents.accountEvents.addUser, function() {
+
+  //   $scope.accountList = appService.webSocket;
+    });
+ $scope.$on(appService.globalConfig.webSocketEvents.accountEvents.editUser, function() {
+
+  //   $scope.accountList = appService.webSocket;
+    });
+ $scope.$on(appService.globalConfig.webSocketEvents.accountEvents.deleteUser, function() {
+
+  //   $scope.accountList = appService.webSocket;
+    });
+
     $scope.global = appService.globalConfig;
     $scope.userData = "testss";
     $scope.addUser = function (form) {
@@ -205,6 +219,7 @@ function accountListCtrl($scope,$state, $log,$timeout, appService) {
                     if (user.password == $scope.account.confirmPassword) {
                     	var hasServer = appService.crudService.add("users", user);
                     	hasServer.then(function (result) {  // this is only run after $http completes
+			   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.accountEvents.addUser,result.id,$scope.global.sessionValues.id);
 				        $scope.showLoader = false;
                     	appService.notify({message: 'Added successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
 				        $modalInstance.close();
@@ -260,6 +275,7 @@ function accountListCtrl($scope,$state, $log,$timeout, appService) {
               $scope.showLoader = true;
                var hasServer = appService.crudService.softDelete("users", user);
                hasServer.then(function (result) {
+			   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.accountEvents.deleteUser,result.id,$scope.global.sessionValues.id);
                $scope.list(1);
                appService.notify({message: 'Deleted successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                $scope.showLoader = false;
@@ -311,6 +327,7 @@ function accountListCtrl($scope,$state, $log,$timeout, appService) {
                 user.departmentId = user.department.id;
     		    var hasServer = appService.crudService.update("users",user);
     		    hasServer.then(function (result) {
+			   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.accountEvents.editUser,result.id,$scope.global.sessionValues.id);
     		    	$scope.list(1);
     		        appService.notify({message: 'Updated successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
     		        $scope.cancel();
@@ -326,6 +343,7 @@ function accountListCtrl($scope,$state, $log,$timeout, appService) {
                 });
     		},
             $scope.cancel = function () {
+		$scope.list(1);
                 $modalInstance.close();
             };
        }]);

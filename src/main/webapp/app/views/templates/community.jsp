@@ -4,7 +4,7 @@ pageEncoding="UTF-8"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <div class="m-t-sm">
-    <div class="col-md-4 col-lg-4 col-xs-12 col-sm-12 template-panel-area" data-ng-repeat="templateObj in template.templateList|orderBy:template.name | filter: quickSearch">
+    <div data-ng-if="templateObj.share" class="col-md-4 col-lg-4 col-xs-12 col-sm-12 template-panel-area" data-ng-repeat="templateObj in template.templateList|orderBy:template.name | filter: quickSearch">
         <div class="hpanel">
             <div class="panel-body p-xs template-panel" data-ng-class="templateObj.openDescription ? 'template-panel-active': ''">
                 <div class="row">
@@ -29,7 +29,6 @@ pageEncoding="UTF-8"%>
                     </div>
                     <div class="col-md-7 col-sm-7 ">
                         <div class="row">
-                            <!--<button class="btn btn-info btn-sm pull-right" title="Properties">Properties</button>-->
                             <div class="col-md-8 col-sm-6">
                                 <div class="row">
                                     <h4>{{ templateObj.name}}</h4> <h5 class="text-success"><fmt:message key="common.version" bundle="${msg}" />:{{ templateObj.version}}</h5>
@@ -40,10 +39,10 @@ pageEncoding="UTF-8"%>
                             <div class="small  m-b-sm  "  data-ng-hide="templateObj.openDescription">
                                 {{ templateObj.description}}.
                             </div>
-                            <div class="small text-justify "    data-ng-show="templateObj.openDescription"> 
+                            <div class="small text-justify "    data-ng-show="templateObj.openDescription">
                                 <div  class="animate-panel slimScroll"  data-child="hpanel" data-effect="fadeInUp">
                                     <div class="animated-panel fadeInUp">
-                                        {{ templateObj.detailedDescription}}.
+                                    <p data-ng-bind-html="templateObj.detailedDescription"></p>
                                     </div>
                                 </div>
                             </div>
@@ -53,13 +52,13 @@ pageEncoding="UTF-8"%>
                     <div class="col-md-3 col-sm-3">
                         <div class="row m-t-md">
                             <div class="col-md-12 col-sm-12 ">
-                                <span data-ng-show="templateObj.templateCost[0].cost > 0" class="font-bold text-danger pricing-text pull-right">{{ templateObj.templateCost[0].cost | currency: global.settings.currency }} / <fmt:message key="common.month" bundle="${msg}" /></span>
+                                <span data-ng-show="templateObj.templateCost[0].cost > 0" class="font-bold text-danger pricing-text pull-right">{{ templateObj.templateCost[0].cost | currency: global.settings.currency }} / <fmt:message key="common.day" bundle="${msg}" /></span>
                                 <span data-ng-hide="templateObj.templateCost[0].cost > 0" class="font-bold text-success pricing-text pull-right"><fmt:message key="free" bundle="${msg}" /></span>
                             </div>
                         </div>
                         <div class="row m-t-md" >
                             <div class="col-md-12 col-sm-12 col-xs-12 ">
-                                <button class="btn btn-info btn-sm pull-right" title="Launch VM" data-ng-click="openAddInstance(templateObj)"><i class="fa fa-power-off"></i> <fmt:message key="common.launch" bundle="${msg}" /></button>
+                                <button class="btn btn-info btn-sm pull-right" title="<fmt:message key="common.launch" bundle="${msg}" />" data-ng-click="openAddInstance(templateObj)"><i class="fa fa-power-off"></i> <fmt:message key="common.launch" bundle="${msg}" /></button>
                             </div>
                         </div>
                     </div>
@@ -68,3 +67,4 @@ pageEncoding="UTF-8"%>
         </div>
     </div>
 </div>
+
