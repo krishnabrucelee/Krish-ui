@@ -176,7 +176,7 @@ $scope.selected = {};
 	var instanceId = instance;
 	$scope.selected = instanceId;
 	$scope.instances = instance;
-       	var hasNicIP = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbyvminstances?instanceid="+instanceId +"&lang=" + appService.localStorageService.cookie.get('language')+"&sortBy=-id");
+       	var hasNicIP = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbyvminstances?instanceid="+instanceId.id +"&lang=" + appService.localStorageService.cookie.get('language')+"&sortBy=-id");
         hasNicIP.then(function (result) {
             $scope.nicIPLists = result;
             $scope.showLoader = false;
@@ -778,7 +778,7 @@ $scope.networkRestart ={};
     };
 
     $scope.vpnUserList = function (ipDetatils) {
-    	var domainId = ipDetatils.domainId;
+    	var domainId = ipDetatils.network.domainId;
     	var departmentId = ipDetatils.network.departmentId;
     	$scope.showLoader = true;
        	var hasVpnUser = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL +
