@@ -6,31 +6,40 @@ pageEncoding="UTF-8"%>
 <div ui-view >
     <div  data-ng-controller="volumeCtrl">
         <div class="hpanel">
-            <div class="panel-heading">
+            <div class="panel-heading no-padding">
                 <div class="row">
                     <div class="col-md-12 col-sm-12 col-xs-12 ">
                         <div class="pull-left">
                             <div class="dashboard-box pull-left dashboard-box-pad">
-                                <span class="pull-right"><fmt:message key="total.volume" bundle="${msg}" /></span>
-                                <div class="clearfix"></div>
-                                <span class="pull-left m-t-xs"><img src="images/volume-icon.png"></span>
-                                <b class="pull-right">{{attachedCount + detachedCount}}</b>
-                                <div class="clearfix"></div>
+	                            <div class="instance-border-content-normal">
+	                            	<span class="pull-left"><img src="images/volume-icon.png"></span>
+	                                <span class="pull-left m-t-xs m-l-xs m-r-xs"><fmt:message key="total.volume" bundle="${msg}" /></span>
+
+	                                <b class="pull-left">{{attachedCount + detachedCount}}</b>
+	                                <div class="clearfix"></div>
+                                </div>
                             </div>
                             <div class="dashboard-box pull-left  dashboard-box-pad">
-                                <span class="pull-right"><fmt:message key="attached.volume" bundle="${msg}" /></span>
-                                <div class="clearfix"></div>
-                                <span class="pull-left m-t-xs"><img src="images/volume-icon.png"></span>
-                                <b class="pull-right">{{attachedCount}}</b>
-                                <div class="clearfix"></div>
+                            	<div class="instance-border-content-normal">
+                            		<span class="pull-left"><img src="images/volume-icon.png"></span>
+	                                <span class="pull-left m-t-xs m-l-xs m-r-xs"><fmt:message key="attached.volume" bundle="${msg}" /></span>
+
+	                                <b class="pull-left">{{attachedCount}}</b>
+	                                <div class="clearfix"></div>
+                                </div>
                             </div>
                             <div class="dashboard-box pull-left dashboard-box-pad">
-                                <span class="pull-right"><fmt:message key="detached.volume" bundle="${msg}" /></span>
-                                <div class="clearfix"></div>
-                                <span class="pull-left m-t-xs"><img src="images/volume-icon.png"></span>
-                                <b class="pull-right">{{detachedCount}}</b>
-                                <div class="clearfix"></div>
+	                            <div class="instance-border-content-normal">
+	                            	<span class="pull-left"><img src="images/volume-icon.png"></span>
+	                                <span class="pull-left m-t-xs m-l-xs m-r-xs"><fmt:message key="detached.volume" bundle="${msg}" /></span>
+
+	                                <b class="pull-left">{{detachedCount}}</b>
+	                                <div class="clearfix"></div>
+                                </div>
                             </div>
+                            <a class="btn btn-info" has-permission="UPLOAD_VOLUME" data-ng-click="uploadVolumeCtrl('md')"><span class="pe-7s-cloud-upload pe-lg font-bold m-r-xs"></span> <fmt:message key="common.upload" bundle="${msg}" /></a>
+                                <a class="btn btn-info" has-permission="ADD_VOLUME" data-ng-click="addVolume('md')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span>  <fmt:message key="add.volume" bundle="${msg}" /></a>
+                                <a class="btn btn-info" ui-sref="cloud.list-volume" title="<fmt:message key="common.refresh" bundle="${msg}" />" ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
                         </div>
                         <div class="pull-right">
                             <panda-quick-search></panda-quick-search>
@@ -38,9 +47,7 @@ pageEncoding="UTF-8"%>
                             <span class="pull-right m-l-sm m-t-sm">
 <%--                             	<a class="btn btn-info" data-ng-click="uploadVolumeFromLocalCtrl('md')"><span class="pe-7s-cloud-upload pe-lg font-bold m-r-xs"></span> <fmt:message key="upload.volume.from.local" bundle="${msg}" /></a> --%>
 <%-- 								<a class="btn btn-info" ><span class="pe-7s-cloud-upload pe-lg font-bold m-r-xs"></span> <fmt:message key="upload.volume.from.local" bundle="${msg}" /></a>
- --%>                                <a class="btn btn-info" has-permission="UPLOAD_VOLUME" data-ng-click="uploadVolumeCtrl('md')"><span class="pe-7s-cloud-upload pe-lg font-bold m-r-xs"></span> <fmt:message key="common.upload" bundle="${msg}" /></a>
-                                <a class="btn btn-info" has-permission="ADD_VOLUME" data-ng-click="addVolume('md')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span>  <fmt:message key="add.volume" bundle="${msg}" /></a>
-                                <a class="btn btn-info" ui-sref="cloud.list-volume" title="<fmt:message key="common.refresh" bundle="${msg}" />" ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
+ --%>
                             </span>
                         </div>
                     </div>
