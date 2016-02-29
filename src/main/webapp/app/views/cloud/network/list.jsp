@@ -22,7 +22,7 @@
 							</div>
 							<div class="dashboard-box pull-left dashboard-box-pad">
 								<div class="instance-border-content-normal">
-								<span class="pull-left"><img
+									<span class="pull-left"><img
 										src="images/network-icon.png"></span>
 									<span class="pull-left m-t-xs m-l-xs m-r-xs"><fmt:message
 											key="isolated.network" bundle="${msg}" /></span>
