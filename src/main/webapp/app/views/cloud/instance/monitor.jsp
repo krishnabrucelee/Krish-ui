@@ -8,7 +8,7 @@
 
        <div class="row " >
 
-            <div class="col-lg-10 col-md-10 col-sm-12 col-md-offset-1 animated-panel">
+            <div class="col-lg-10 col-md-10 col-sm-12 col-md-offset-1">
 
                 <div class="hpanel">
                     <div class="row">
@@ -24,7 +24,7 @@
 
                     <div class="pull-right m-r-sm">
 
-                        <select  data-ng-change="updateCpuPerformance(cpu.result, cpu.actions)"   class="form-control" name="cpuActions" data-ng-init="cpu.actions = instanceElements.actions[0]; updateCpuPerformance(cpu.result, cpu.actions);" data-ng-model="cpu.actions" ng-options="actions.name for actions in instanceElements.actions" >
+                        <select  data-ng-change="updateGraphByRange()"   class="form-control" name="cpuActions" data-ng-init="range.actions = instanceElements.actions[0]; updateGraphByRange();" data-ng-model="range.actions" ng-options="actions.name for actions in instanceElements.actions" >
                         </select>
                     </div>
 
@@ -61,16 +61,6 @@
 
 
                     </div>
-                    <div class="pull-right">
-                        <a href="javascript:void(0);" title="<fmt:message key="common.refresh" bundle="${msg}" />"  class="btn btn-info" data-ng-click="updateMemoryPerformance(memory.result, memory.actions)"><span class="fa fa-refresh fa-lg "></span></a>
-
-                    </div>
-
-                    <div class="pull-right m-r-sm">
-
-                        <select  data-ng-change="updateMemoryPerformance(memory.result, memory.actions)"   class="form-control" name="memoryActions" data-ng-init="memory.actions = instanceElements.actions[0]; updateMemoryPerformance(memory.result, memory.actions);" data-ng-model="memory.actions" ng-options="actions.name for actions in instanceElements.actions" >
-                        </select>
-                    </div>
                     </div>
                  </div>
             </div>
@@ -92,21 +82,11 @@
 
                 <div class="hpanel">
                     <div class="row">
-                    <div class="pull-left">
-                        <h4 class="m-b-sm ng-binding pull-left"><fmt:message key="disk.performance" bundle="${msg}" /> (Bps)</h4>
+                        <div class="pull-left">
+                            <h4 class="m-b-sm ng-binding pull-left"><fmt:message key="disk.performance" bundle="${msg}" /> (Bps)</h4>
 
 
-                    </div>
-                    <div class="pull-right">
-                        <a href="javascript:void(0);" title="<fmt:message key="common.refresh" bundle="${msg}" />"  class="btn btn-info" data-ng-click="updateStoragePerformance(storage.result, storage.actions)"><span class="fa fa-refresh fa-lg "></span></a>
-
-                    </div>
-
-                    <div class="pull-right m-r-sm">
-
-                        <select  data-ng-change="updateStoragePerformance(storage.result, storage.actions)"   class="form-control" name="storageActions" data-ng-init="storage.actions = instanceElements.actions[0]; updateStoragePerformance(storage.result, storage.actions);" data-ng-model="storage.actions" ng-options="actions.name for actions in instanceElements.actions" >
-                        </select>
-                    </div>
+                        </div>
                     </div>
                  </div>
             </div>
