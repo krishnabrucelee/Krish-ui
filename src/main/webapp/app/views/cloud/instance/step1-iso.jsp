@@ -17,7 +17,7 @@
 								<span class="control-label"><fmt:message key="common.os.category" bundle="${msg}" />:</span>
 							</div>
 							<div class="col-md-12 col-xs-12 col-sm-12 p-xs">
-								<select class="form-control input-group" name="osCategory"
+								<select class="form-control input-group" id="create_instance_iso_os_category" name="osCategory"
 									data-ng-model="instance.osCategory" ng-change="getIsoByFilters()"
 									ng-options="osCategory.name for osCategory in formElements.osCategoryListByFilter">
 									<option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
@@ -30,11 +30,11 @@
 							<div class="m-b-sm">
 							 <span class=" "><fmt:message key="common.architecture" bundle="${msg}" />: </span>
 						    </div>
-								  <label class=" "> <input icheck type="radio"
+								  <label class=" "> <input icheck type="radio" id="create_instance_iso_architecture_radio_button"
 									data-ng-model="instance.architecture" value="32" ng-change="getIsoByFilters()" name="architecture">
 									32Bit
 								 </label>
-								 <label class=" "> <input icheck type="radio"
+								 <label class=" "> <input icheck type="radio" id="create_instance_iso_architecture_radio_button"
 									data-ng-model="instance.architecture" value="64" ng-change="getIsoByFilters()" name="architecture">
 									64Bit
 								</label>
@@ -45,7 +45,7 @@
 								<span class="control-label"><fmt:message key="common.os.version/release" bundle="${msg}" />:</span>
 							<div class="col-md-12 col-xs-12 col-sm-12 p-xs">
 								<div class="input-group">
-									<input data-ng-model="instance.osVersion" type="text" class="form-control input-medium">
+									<input data-ng-model="instance.osVersion" id="create_instance_iso_os_version" type="text" class="form-control input-medium">
 								</div>
 							</div>
 						</div>
@@ -71,7 +71,7 @@
 								<div class="instance-templates"
 									style=" overflow-y: auto; overflow-x: hidden;">
 									<div>
-										<table cellspacing="1" cellpadding="1" class="table table-striped no-margins">
+										<table cellspacing="1" cellpadding="1" id="create_instance_iso_table" class="table table-striped no-margins">
 										<tr data-ng-show="formElements.templateList.length == 0">
 											<td><fmt:message key="common.no.records.found" bundle="${msg}" /></td>
 										</tr>
@@ -92,7 +92,7 @@
 											 <div class="col-md-8 col-sm-8"><label class="col-md-11 col-sm-11">{{templateObj.name}}</label><span class="col-md-11 col-sm-11">{{templateObj.displayText}}</span></div>
 											 <div class="col-md-1 col-sm-1">
 													<div class="form-group">
-															<label class=" "> <input icheck type="radio" data-ng-model="instance.template.id" name="template" data-ng-value="{{templateObj.id}}" data-ng-checked="instance.template.id===templateObj.id">
+															<label class=" "> <input icheck type="radio" id="create_instance_iso_radio_button_{{templateObj.id}}" data-ng-model="instance.template.id" name="template" data-ng-value="{{templateObj.id}}" data-ng-checked="instance.template.id===templateObj.id">
 															</label>
 													</div>
 											 </div>
