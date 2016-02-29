@@ -236,7 +236,7 @@
                                                             </span>
                                                         </span>
                                                         <span data-ng-hide="storageCostSum > 0" class="font-bold text-success pricing-text pull-right">
-		                                                    <fmt:message key="free" bundle="${msg}" /> {{storageCostSum}}
+		                                                    <fmt:message key="free" bundle="${msg}" />
 		                                                </span>
                                                     </div>
                                                 </div>
