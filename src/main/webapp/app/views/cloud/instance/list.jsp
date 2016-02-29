@@ -88,7 +88,7 @@
 										<th ng-click="changeSorting('ipAddress')"
 											data-ng-class="sort.descending && sort.column =='ipAddress'? 'sorting_desc' : 'sorting_asc' ">
 										<fmt:message key="common.ip" bundle="${msg}" /></th>
-
+										<th class="custom-width-xs" ng-click="changeSorting('status')" data-ng-class="sort.descending && sort.column =='status'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="common.status" bundle="${msg}" /></th>
 										<th><fmt:message key="common.action" bundle="${msg}" /></th>
 									</tr>
 								</thead>
@@ -134,32 +134,35 @@
 										<!--                                         <td>{{volume[0].diskSize / global.Math.pow(2, 30)}}</td> -->
 										<td>{{ instance.ipAddress}}</td>
 										<td>
-										<div class="pull-left ">
-												<button class="btn btn-xs btn-success btn-circle" data-ng-if="instance.status == 'RUNNING'"
+										<div class="text-center">
+										<img src="images/status/running.png" data-ng-if="instance.status == 'RUNNING'" title="{{ instance.status}}">
+												<!-- <button class="btn btn-xs btn-success btn-circle" data-ng-if="instance.status == 'RUNNING'"
 													title="{{ instance.status}}"
-												></button>
-												<button class="btn btn-xs btn-danger btn-circle" data-ng-if="instance.status == 'STOPPED'"
+												></button> -->
+												<img src="images/status/stopped.png" data-ng-if="instance.status == 'STOPPED'"
 													title="{{ instance.status}}"
-												></button>
-												<button class="btn btn-xs btn-warning btn-circle" data-ng-if="instance.status == 'STARTING'"
+												>
+												<img src="images/status/warning.png" data-ng-if="instance.status == 'STARTING'"
 													title="{{ instance.status}}"
-												></button>
-												<button class="btn btn-xs btn-danger btn-circle" data-ng-if="instance.status == 'ERROR'"
+												>
+												<img src="images/status/stopped.png" data-ng-if="instance.status == 'ERROR'"
 													title="{{ instance.status}}"
-												></button>
-												<button class="btn btn-xs btn-warning btn-circle" data-ng-if="instance.status == 'STOPPING'"
+												>
+												<img src="images/status/warning.png" data-ng-if="instance.status == 'STOPPING'"
 													title="{{ instance.status}}"
-												>&nbsp</button>
-												<button class="btn btn-xs btn-warning btn-circle" data-ng-if="instance.status == 'EXPUNGING'"
+												>
+												<img src="images/status/warning.png" data-ng-if="instance.status == 'EXPUNGING'"
 													title="{{ instance.status}}"
-												></button>
-												<button class="btn btn-xs btn-danger btn-circle" data-ng-if="instance.status == 'DESTROYED'"
+												>
+												<img src="images/status/stopped.png" data-ng-if="instance.status == 'DESTROYED'"
 													title="{{ instance.status}}"
-												></button>
-												<button class="btn btn-xs btn-warning btn-circle" data-ng-if="instance.status == 'MIGRATING'"
+												>
+												<img src="images/status/warning.png" data-ng-if="instance.status == 'MIGRATING'"
 													title="{{ instance.status}}"
-												></button>
+												>
 		   							    </div>
+		   							    </td>
+		   							    <td>
 										<div class="">
 													<div has-permission="START_VM"
 														data-ng-if="instance.status != 'ERROR' || instance.status != 'EXPUNGING' || instance.status != 'STARTING' || instance.status != 'STOPPING' || instance.status != 'DESTROYING'  ">
