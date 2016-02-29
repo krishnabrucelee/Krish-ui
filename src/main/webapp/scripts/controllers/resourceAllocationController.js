@@ -217,11 +217,15 @@ function resourceAllocationCtrl($scope, crudService, globalConfig, notify, $stat
 	// Get the departments by domain.
 
 	$scope.loadEditOption = function(list, scopeObject, object) {
+		if (object != null) {
 		angular.forEach(list, function(domainObject, domainKey) {
 			 if(domainObject.id == object.id) {
 				 scopeObject = domainObject;
 			 }
 		 });
+		} else {
+			$state.reload();
+		}
 	};
 
 	// Get the projects by department.
