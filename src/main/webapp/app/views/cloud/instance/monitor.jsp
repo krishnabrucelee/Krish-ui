@@ -8,7 +8,7 @@
 
        <div class="row " >
 
-            <div class="col-lg-10 col-md-10 col-sm-12 col-md-offset-1 animated-panel">
+            <div class="col-lg-10 col-md-10 col-sm-12 col-md-offset-1">
 
                 <div class="hpanel">
                     <div class="row">
@@ -24,7 +24,7 @@
 
                     <div class="pull-right m-r-sm">
 
-                        <select  data-ng-change="updateCpuPerformance(cpu.result, cpu.actions)"   class="form-control" name="cpuActions" data-ng-init="cpu.actions = instanceElements.actions[0]; updateCpuPerformance(cpu.result, cpu.actions);" data-ng-model="cpu.actions" ng-options="actions.name for actions in instanceElements.actions" >
+                        <select  data-ng-change="updateGraphByRange()"   class="form-control" name="cpuActions" data-ng-init="range.actions = instanceElements.actions[0]; updateGraphByRange();" data-ng-model="range.actions" ng-options="actions.name for actions in instanceElements.actions" >
                         </select>
                     </div>
 
@@ -33,14 +33,33 @@
 
                 </div>
 
-                <div id="cpuLegendContent" class="flotchart-legend-content">
-                    <div data-ng-repeat="cpuLegend in cpuData" data-ng-click="togglePlot($index, cpuData.length)">
 
-                        <a>CPU {{ $index}}</a>
-                    </div>
-                 </div>
+            </div>
+
+            <div class="col-md-1">
+                <div id="cpuLegendContent" class="flotchart-legend-content">
+                    <table style="position:absolute;top:5px;right:5px;;font-size:smaller;color:#545454">
+                    <tbody>
+                            <tr data-ng-repeat="cpuLegend in cpuData">
+                                <td class="legendColorBox" data-ng-click="togglePlot($index, cpuData.length)">
+                                    <a></a><div style="border: 1px solid #ccc; padding: 1px">
+                                        <div data-ng-if="cpu.dataset[$index].length != 0" style="width: 4px; height: 0; border: 5px solid #333333; overflow: hidden"></div>
+                                        <div data-ng-if="cpu.dataset[$index].length == 0" style="width: 4px; height: 0; border: 5px solid #CCCCCC; overflow: hidden"></div>
+                                    </div>
+                                    </a>
+                                    </td>
+                                <td class="legendLabel" data-ng-click="togglePlot($index, cpuData.length)">
+                                    <a class="m-l-sm">CPU {{ $index}}</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
+
+
+
         <div class="row"  id="cpu-chart-container">
             <div class="col-md-offset-1 col-md-11">
                 <div class="hide-left"></div>
@@ -61,19 +80,11 @@
 
 
                     </div>
-                    <div class="pull-right">
-                        <a href="javascript:void(0);" title="<fmt:message key="common.refresh" bundle="${msg}" />"  class="btn btn-info" data-ng-click="updateMemoryPerformance(memory.result, memory.actions)"><span class="fa fa-refresh fa-lg "></span></a>
-
-                    </div>
-
-                    <div class="pull-right m-r-sm">
-
-                        <select  data-ng-change="updateMemoryPerformance(memory.result, memory.actions)"   class="form-control" name="memoryActions" data-ng-init="memory.actions = instanceElements.actions[0]; updateMemoryPerformance(memory.result, memory.actions);" data-ng-model="memory.actions" ng-options="actions.name for actions in instanceElements.actions" >
-                        </select>
-                    </div>
                     </div>
                  </div>
             </div>
+
+
         </div>
 
         <div class="row"  id="memory-chart-container">
@@ -92,24 +103,16 @@
 
                 <div class="hpanel">
                     <div class="row">
-                    <div class="pull-left">
-                        <h4 class="m-b-sm ng-binding pull-left"><fmt:message key="disk.performance" bundle="${msg}" /> (Bps)</h4>
+                        <div class="pull-left">
+                            <h4 class="m-b-sm ng-binding pull-left"><fmt:message key="disk.performance" bundle="${msg}" /> (Bps)</h4>
 
 
-                    </div>
-                    <div class="pull-right">
-                        <a href="javascript:void(0);" title="<fmt:message key="common.refresh" bundle="${msg}" />"  class="btn btn-info" data-ng-click="updateStoragePerformance(storage.result, storage.actions)"><span class="fa fa-refresh fa-lg "></span></a>
-
-                    </div>
-
-                    <div class="pull-right m-r-sm">
-
-                        <select  data-ng-change="updateStoragePerformance(storage.result, storage.actions)"   class="form-control" name="storageActions" data-ng-init="storage.actions = instanceElements.actions[0]; updateStoragePerformance(storage.result, storage.actions);" data-ng-model="storage.actions" ng-options="actions.name for actions in instanceElements.actions" >
-                        </select>
-                    </div>
+                        </div>
                     </div>
                  </div>
             </div>
+
+
         </div>
 
         <div class="row"  id="storage-chart-container">
