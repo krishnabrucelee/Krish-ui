@@ -200,13 +200,12 @@
 	                             <b>{{instanceForm.computeOffering.$viewValue.name}}</b>
 	                             <div>
 	                                 <input type="hidden" readonly="readonly" data-ng-model= "computeOfferCostSum" data-ng-bind= "computeOfferCostSum = (instance.computeOffering.computeCost[0].instanceRunningCostIops + instance.computeOffering.computeCost[0].instanceRunningCostMemory
-				    + instance.computeOffering.computeCost[0].instanceRunningCostVcpu + instance.computeOffering.computeCost[0].instanceStoppageCostIops
-				    + instance.computeOffering.computeCost[0].instanceStoppageCostMemory + instance.computeOffering.computeCost[0].instanceStoppageCostVcpu + instance.computeOffering.computeCost[0].instanceStoppageCostPerMhz
+				    + instance.computeOffering.computeCost[0].instanceRunningCostVcpu
 				    + (instance.computeOffering.computeCost[0].instanceRunningCostPerMB > 0 ? (instance.computeOffer.memory.value * instance.computeOffering.computeCost[0].instanceRunningCostPerMB) : 0)
 				    + (instance.computeOffering.computeCost[0].instanceRunningCostPerVcpu > 0 ? (instance.computeOffer.cpuCore.value * instance.computeOffering.computeCost[0].instanceRunningCostPerVcpu) : 0)
 				    + (instance.computeOffering.computeCost[0].instanceRunningCostPerMhz > 0 ? (instance.computeOffer.cpuSpeed.value * instance.computeOffering.computeCost[0].instanceRunningCostPerMhz) : 0))" />
 				<span data-ng-show="computeOfferCostSum > 0" class="text-danger price-text">
-	                                     <app-currency></app-currency>{{computeOfferCostSum/30 | number:2 }}<span> / <fmt:message key="common.day" bundle="${msg}" /></span>
+	                                     <app-currency></app-currency>{{computeOfferCostSum/30 | number:4 }}<span> / <fmt:message key="common.day" bundle="${msg}" /></span>
 	                                 </span>
 	                                 <span data-ng-hide="computeOfferCostSum > 0" class="font-bold text-success pricing-text">
 	                                     <fmt:message key="free" bundle="${msg}" />
@@ -214,7 +213,7 @@
 	                             </div>
 	                             <div>
 	                                 <small data-ng-show="computeOfferCostSum > 0" class="text-muted">
-	                                     (<app-currency></app-currency>{{computeOfferCostSum | number:2 }} / <fmt:message key="common.month" bundle="${msg}" />)
+	                                     (<app-currency></app-currency>{{computeOfferCostSum | number:4 }} / <fmt:message key="common.month" bundle="${msg}" />)
 	                                 </small>
 	                             </div>
 	                         </td>
