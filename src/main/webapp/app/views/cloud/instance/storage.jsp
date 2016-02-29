@@ -37,7 +37,7 @@
                     <div class="hpanel">
 
                         <div class=" vertical-container" animate-panel child="vertical-timeline-block" delay="3">
-                            <div class="v-timeline  vertical-timeline-block" data-ng-class="{'timeline-primary' : $index == 0}"  data-ng-repeat="volume in volumeList" >
+                            <div class="v-timeline  vertical-timeline-block" data-ng-class="{'timeline-primary' : volume.volumeType == 'ROOT'}"  data-ng-repeat="volume in volumeList" >
                                 <div class="h-timeline">
                                     <div class="vertical-timeline-content">
 
@@ -85,18 +85,7 @@
                                                             </div>
                                                         </div>
                                                      </div>
-                                                    <div class="row p-sm m-b-n-xl" data-ng-init="getStoragePerformanceByFilters(volume.vmInstance.name, volume.storageOffering.diskSize)">
 
-                                                        <div class="progress full" style="height: 50px;">
-                                                            <div
-                                                            data-ng-class="usedSpace > 85 ? 'progress-bar-danger' : 'progress-bar-success'"
-                                                             class="progress-bar"
-                                                                role="progressbar" data-ng-style="memoryStyle">
-                                                                <span style="top: 13px; position: relative">
-                                                                {{ usedSpace }} % </span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

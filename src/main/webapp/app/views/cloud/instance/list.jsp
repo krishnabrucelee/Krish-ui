@@ -39,7 +39,7 @@
 									<div class="clearfix"></div>
 								</div>
 							</div>
-							<a has-permission="CREATE_VM" class="btn btn-info"
+							<a has-permission="CREATE_VM"
 							<span class="pull-right m-l-sm m-t-sm"> <a has-permission="CREATE_VM" class="btn btn-info" id="instances_create_vm_button"
 								data-ng-click="openAddInstance('lg')"
 							><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span>
