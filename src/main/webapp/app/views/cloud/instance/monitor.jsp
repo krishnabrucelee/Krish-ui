@@ -33,14 +33,33 @@
 
                 </div>
 
-                <div id="cpuLegendContent" class="flotchart-legend-content">
-                    <div data-ng-repeat="cpuLegend in cpuData" data-ng-click="togglePlot($index, cpuData.length)">
 
-                        <a>CPU {{ $index}}</a>
-                    </div>
-                 </div>
+            </div>
+
+            <div class="col-md-1">
+                <div id="cpuLegendContent" class="flotchart-legend-content">
+                    <table style="position:absolute;top:5px;right:5px;;font-size:smaller;color:#545454">
+                    <tbody>
+                            <tr data-ng-repeat="cpuLegend in cpuData">
+                                <td class="legendColorBox" data-ng-click="togglePlot($index, cpuData.length)">
+                                    <a></a><div style="border: 1px solid #ccc; padding: 1px">
+                                        <div data-ng-if="cpu.dataset[$index].length != 0" style="width: 4px; height: 0; border: 5px solid #333333; overflow: hidden"></div>
+                                        <div data-ng-if="cpu.dataset[$index].length == 0" style="width: 4px; height: 0; border: 5px solid #CCCCCC; overflow: hidden"></div>
+                                    </div>
+                                    </a>
+                                    </td>
+                                <td class="legendLabel" data-ng-click="togglePlot($index, cpuData.length)">
+                                    <a class="m-l-sm">CPU {{ $index}}</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
+
+
+
         <div class="row"  id="cpu-chart-container">
             <div class="col-md-offset-1 col-md-11">
                 <div class="hide-left"></div>
@@ -64,6 +83,8 @@
                     </div>
                  </div>
             </div>
+
+
         </div>
 
         <div class="row"  id="memory-chart-container">
@@ -90,6 +111,8 @@
                     </div>
                  </div>
             </div>
+
+
         </div>
 
         <div class="row"  id="storage-chart-container">
