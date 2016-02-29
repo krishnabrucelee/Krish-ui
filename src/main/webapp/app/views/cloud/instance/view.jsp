@@ -472,17 +472,30 @@ pageEncoding="UTF-8"%>
                                                         <fmt:message key="subscription.cost" bundle="${msg}" />
                                                     </b>
                                                 </td>
-                                                <td class="col-md-8 col-sm-8">
-                                                    <span class="text-danger">
-                                                        <app-currency></app-currency>
-                                                        {{(instance.template.templateCost[0].cost + instance.storageOffering.storagePrice[0].costGbPerMonth + instance.storageOffering.storagePrice[0].costIopsPerMonth +
-                                                                    instance.computeOffering.computeCost[0].instanceRunningCostIops + instance.computeOffering.computeCost[0].instanceRunningCostMemory + instance.computeOffering.computeCost[0].instanceRunningCostVcpu
-
-                                                                    + instance.computeOffering.computeCost[0].instanceStoppageCostIops + instance.computeOffering.computeCost[0].instanceStoppageCostMemory + instance.computeOffering.computeCost[0].instanceStoppageCostVcpu)/30 | number:2
-
-                                                        }}
-                                                    </span>
-                                                    /
+                                                <td class="col-md-8 col-sm-8"><span class="text-danger"
+														data-ng-if="!instance.computeOffering.customized"
+													> <app-currency></app-currency> {{(instance.computeOffering.computeCost[0].instanceRunningCostIops +
+															instance.computeOffering.computeCost[0].instanceRunningCostMemory +
+															instance.computeOffering.computeCost[0].instanceRunningCostVcpu +
+															(instance.computeOffering.computeCost[0].instanceRunningCostPerMB > 0 ?
+															(instance.computeOffer.memory.value * instance.computeOffering.computeCost[0].instanceRunningCostPerMB) :
+															0) + (instance.computeOffering.computeCost[0].instanceRunningCostPerVcpu > 0 ?
+															(instance.computeOffer.cpuCore.value *
+															instance.computeOffering.computeCost[0].instanceRunningCostPerVcpu) : 0) +
+															(instance.computeOffering.computeCost[0].instanceRunningCostPerMhz > 0 ?
+															(instance.computeOffer.cpuSpeed.value *
+															instance.computeOffering.computeCost[0].instanceRunningCostPerMhz) : 0))/30 | number:4 }}
+													</span> <span class="text-danger" data-ng-if="instance.computeOffering.customized"> <app-currency></app-currency>
+															{{(instance.computeOffering.computeCost[0].instanceRunningCostIops +
+															instance.computeOffering.computeCost[0].instanceRunningCostMemory +
+															instance.computeOffering.computeCost[0].instanceRunningCostVcpu +
+															(instance.computeOffering.computeCost[0].instanceRunningCostPerMB > 0 ? (instance.memory*
+															instance.computeOffering.computeCost[0].instanceRunningCostPerMB) : 0) +
+															(instance.computeOffering.computeCost[0].instanceRunningCostPerVcpu > 0 ? (instance.cpuCore *
+															instance.computeOffering.computeCost[0].instanceRunningCostPerVcpu) : 0) +
+															(instance.computeOffering.computeCost[0].instanceRunningCostPerMhz > 0 ? (instance.cpuSpeed *
+															instance.computeOffering.computeCost[0].instanceRunningCostPerMhz) : 0))/30 | number:4 }}
+													</span> /
                                             <fmt:message key="common.day" bundle="${msg}" />
                                             </td>
                                             </tr>

@@ -5,7 +5,7 @@
 <div ui-view>
 	<div data-ng-hide="viewContent" ng-controller="instanceListCtrl">
 		<div class="hpanel">
-			<div class="panel-heading">
+			<div class="panel-heading no-padding">
 				<div class="row">
 					<div class="col-md-12 col-sm-12 col-xs-12 ">
 						<div class="pull-left">
@@ -13,9 +13,9 @@
 								<div class="instance-border-content-normal"
 									data-ng-class="{'instance-border-content' : borderContent=='Expunging'}"
 								>
-									<span class="pull-right"><fmt:message key="total.instance" bundle="${msg}" /></span>
-									<div class="clearfix"></div>
-									<span class="pull-left m-t-xs"><img src="images/instance-icon.png"></span> <b class="pull-right">{{totalCount}}</b>
+									 <span class="pull-left"><img src="images/instance-icon.png"></span>
+									<span class="pull-left m-t-xs m-l-xs m-r-xs"><fmt:message key="total.instance" bundle="${msg}" /></span>
+									 <b class="pull-left">{{totalCount}}</b>
 									<div class="clearfix"></div>
 								</div>
 							</div>
@@ -23,9 +23,9 @@
 								<div class="instance-border-content-normal"
 									data-ng-class="{'instance-border-content' : borderContent=='Running'}"
 								>
-									<span class="pull-right"><fmt:message key="running.instance" bundle="${msg}" /></span>
-									<div class="clearfix"></div>
-									<span class="pull-left m-t-xs"><img src="images/instance-icon.png"></span> <b class="pull-right">{{runningVmCount}}</b>
+									<span class="pull-left"><img src="images/instance-icon.png"></span>
+									<span class="pull-left m-t-xs m-l-xs m-r-xs"><fmt:message key="running.instance" bundle="${msg}" /></span>
+									<b class="pull-left">{{runningVmCount}}</b>
 									<div class="clearfix"></div>
 								</div>
 							</div>
@@ -33,22 +33,24 @@
 								<div class="instance-border-content-normal"
 									data-ng-class="{'instance-border-content' : borderContent=='Stopped'}"
 								>
-									<span class="pull-right"><fmt:message key="stopped.instance" bundle="${msg}" /></span>
-									<div class="clearfix"></div>
-									<span class="pull-left m-t-xs"><img src="images/instance-icon.png"></span> <b class="pull-right">{{stoppedVmCount}}</b>
+									<span class="pull-left"><img src="images/instance-icon.png"></span>
+									<span class="pull-left m-t-xs m-l-xs m-r-xs"><fmt:message key="stopped.instance" bundle="${msg}" /></span>
+									<b class="pull-left">{{stoppedVmCount}}</b>
 									<div class="clearfix"></div>
 								</div>
 							</div>
-						</div>
-						<div class="pull-right">
-							<panda-quick-search></panda-quick-search>
-							<div class="clearfix"></div>
+							<a has-permission="CREATE_VM" class="btn btn-info"
 							<span class="pull-right m-l-sm m-t-sm"> <a has-permission="CREATE_VM" class="btn btn-info" id="instances_create_vm_button"
 								data-ng-click="openAddInstance('lg')"
 							><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span>
 								<fmt:message key="create.vm" bundle="${msg}" /></a> <a class="btn btn-info" data-ng-click="list(1, borderContent)"
 								id="instances_refresh_button" title="<fmt:message key="common.refresh" bundle="${msg}" />" ui-sref-opts="{reload: true}"
 							><span class="fa fa-refresh fa-lg "></span></a>
+						</div>
+						<div class="pull-right">
+							<panda-quick-search></panda-quick-search>
+							<div class="clearfix"></div>
+							<span class="pull-right m-l-sm m-t-sm">
 							</span>
 						</div>
 					</div>
@@ -87,6 +89,7 @@
 										<th ng-click="changeSorting('ipAddress')"
 											data-ng-class="sort.descending && sort.column =='ipAddress'? 'sorting_desc' : 'sorting_asc' ">
 										<fmt:message key="common.ip" bundle="${msg}" /></th>
+										<th class="custom-width-xs" ng-click="changeSorting('status')" data-ng-class="sort.descending && sort.column =='status'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="common.status" bundle="${msg}" /></th>
 										<th><fmt:message key="common.action" bundle="${msg}" /></th>
 									</tr>
 								</thead>
@@ -97,7 +100,7 @@
 								</tbody>
 								<tbody data-ng-show="instanceList.length > 0">
 									<tr
-										data-ng-repeat="instance in filteredCount = (instanceList | filter: quickSearch  |orderBy:sort.column:sort.descending)">
+										data-ng-repeat="instance in filteredCount = (instanceList | filter: quickSearch  |orderBy:sort.column:sort.descending) ">
 
 										<td><a class="text-info" ui-sref="cloud.list-instance.view-instance({id: {{ instance.id}}})"
 											title="View Instance">
@@ -132,32 +135,35 @@
 										<!--                                         <td>{{volume[0].diskSize / global.Math.pow(2, 30)}}</td> -->
 										<td>{{ instance.ipAddress}}</td>
 										<td>
-										<div class="pull-left ">
-												<button class="btn btn-xs btn-success btn-circle" data-ng-if="instance.status == 'RUNNING'"
+										<div class="text-center">
+										<img src="images/status/running.png" data-ng-if="instance.status == 'RUNNING'" title="{{ instance.status}}">
+												<!-- <button class="btn btn-xs btn-success btn-circle" data-ng-if="instance.status == 'RUNNING'"
 													title="{{ instance.status}}"
-												></button>
-												<button class="btn btn-xs btn-danger btn-circle" data-ng-if="instance.status == 'STOPPED'"
+												></button> -->
+												<img src="images/status/stopped.png" data-ng-if="instance.status == 'STOPPED'"
 													title="{{ instance.status}}"
-												></button>
-												<button class="btn btn-xs btn-warning btn-circle" data-ng-if="instance.status == 'STARTING'"
+												>
+												<img src="images/status/warning.png" data-ng-if="instance.status == 'STARTING'"
 													title="{{ instance.status}}"
-												></button>
-												<button class="btn btn-xs btn-danger btn-circle" data-ng-if="instance.status == 'ERROR'"
+												>
+												<img src="images/status/stopped.png" data-ng-if="instance.status == 'ERROR'"
 													title="{{ instance.status}}"
-												></button>
-												<button class="btn btn-xs btn-warning btn-circle" data-ng-if="instance.status == 'STOPPING'"
+												>
+												<img src="images/status/warning.png" data-ng-if="instance.status == 'STOPPING'"
 													title="{{ instance.status}}"
-												>&nbsp</button>
-												<button class="btn btn-xs btn-warning btn-circle" data-ng-if="instance.status == 'EXPUNGING'"
+												>
+												<img src="images/status/warning.png" data-ng-if="instance.status == 'EXPUNGING'"
 													title="{{ instance.status}}"
-												></button>
-												<button class="btn btn-xs btn-danger btn-circle" data-ng-if="instance.status == 'DESTROYED'"
+												>
+												<img src="images/status/stopped.png" data-ng-if="instance.status == 'DESTROYED'"
 													title="{{ instance.status}}"
-												></button>
-												<button class="btn btn-xs btn-warning btn-circle" data-ng-if="instance.status == 'MIGRATING'"
+												>
+												<img src="images/status/warning.png" data-ng-if="instance.status == 'MIGRATING'"
 													title="{{ instance.status}}"
-												></button>
+												>
 		   							    </div>
+		   							    </td>
+		   							    <td>
 										<div class="">
 													<div has-permission="START_VM"
 														data-ng-if="instance.status != 'ERROR' || instance.status != 'EXPUNGING' || instance.status != 'STARTING' || instance.status != 'STOPPING' || instance.status != 'DESTROYING'  ">

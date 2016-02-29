@@ -226,16 +226,15 @@ pageEncoding="UTF-8"%>
             <span class="pull-left" data-ng-if="volume.storageOffering.name">
 				<input type="hidden" readonly="readonly" data-ng-model= "storageOfferVolumeCostSum" data-ng-bind= "storageOfferVolumeCostSum =
 				    (volume.storageOffering.storagePrice[0].costPerMonth
-				    + volume.storageOffering.storagePrice[0].costPerIops + volume.storageOffering.storagePrice[0].costIopsPerMonth
 				    + (volume.storageOffering.storagePrice[0].costGbPerMonth > 0 ? volume.storageOffering.storagePrice[0].costGbPerMonth : 0))" />
 
 				  <span data-ng-show="storageOfferVolumeCostSum > 0" class="text-danger price-text">
-                       <app-currency></app-currency>{{storageOfferVolumeCostSum/30 | number:2 }}
+                       <app-currency></app-currency>{{storageOfferVolumeCostSum/30 | number:4 }}
                        <span> /
                            <fmt:message key="common.day" bundle="${msg}" />
                        </span>
                        <small class="text-muted">
-                           (<app-currency></app-currency>{{storageOfferVolumeCostSum | number:2 }} / <fmt:message key="common.month" bundle="${msg}" />)
+                           (<app-currency></app-currency>{{storageOfferVolumeCostSum | number:4 }} / <fmt:message key="common.month" bundle="${msg}" />)
                        </small>
                   </span>
                   <span data-ng-hide="storageOfferVolumeCostSum > 0" class="font-bold text-success pricing-text">
