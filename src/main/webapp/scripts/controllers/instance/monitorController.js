@@ -83,7 +83,7 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
             tickSize: [5, "minute"],
             tickFormatter: function (v, axis) {
                 var date = new Date(v);
-                return appService.monitorService.getPandaChart().getChartLabelByRangeAndDate($scope.cpu.actions.id, date);
+                return appService.monitorService.getPandaChart().getChartLabelByRangeAndDate($scope.range.actions.id, date);
 
             },
             axisLabel: "Date",
@@ -140,7 +140,7 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
 
 
     function getPerformanceByFilters(url, indexValue, instanceName, totalCount, chartType) {
-        var chartConfig = pandaChart.getConfigurationByRange($scope.cpu.actions.id);
+        var chartConfig = pandaChart.getConfigurationByRange($scope.range.actions.id);
         dataIndexCount = chartConfig.dataIndexCount;
         chartIterationCount = chartConfig.iterationCountCount;
 
@@ -208,7 +208,7 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
         if(indexValue ==0) {
             jQuery('.cpu-chart-container').find('.flot-base, .flot-x-axis, .flot-overlay').css({"margin-left": 0});
         }
-        pandaChart.updateChartMarginByRangeAndIndex($scope.cpu.actions.id, indexValue, chartIteration, 'cpu-chart-container');
+        pandaChart.updateChartMarginByRangeAndIndex($scope.range.actions.id, indexValue, chartIteration, 'cpu-chart-container');
     }
 
     var updatePerformance = 0;
@@ -218,14 +218,14 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
         forAdditionalIterations = [];
         var displayName = "monitor-vm";
         for(var cpuCores=0; cpuCores < 4; cpuCores++) {
-            getPerformanceByFilters("query?start=" + $scope.cpu.actions.id + "-ago&m=p75:rate:linux.cpu.percpu{host="+ displayName +",cpu=" + cpuCores + "}", cpuCores, displayName, -1, pandaChart.chartTypes.CPU);
+            getPerformanceByFilters("query?start=" + $scope.range.actions.id + "-ago&m=p75:rate:linux.cpu.percpu{host="+ displayName +",cpu=" + cpuCores + "}", cpuCores, displayName, -1, pandaChart.chartTypes.CPU);
         }
 
         if(updatePerformance == 1)  {
             setInterval(function() {
                 $scope.$apply(function () {
                     for(var cpuCores=0; cpuCores < 4; cpuCores++) {
-                        getPerformanceByFilters("query?start=" + $scope.cpu.actions.id + "-ago&m=p75:rate:linux.cpu.percpu{host="+ displayName +",cpu=" + cpuCores + "}", cpuCores, displayName, 3, pandaChart.chartTypes.CPU);
+                        getPerformanceByFilters("query?start=" + $scope.range.actions.id + "-ago&m=p75:rate:linux.cpu.percpu{host="+ displayName +",cpu=" + cpuCores + "}", cpuCores, displayName, 3, pandaChart.chartTypes.CPU);
                     }
                 });
             }, 5000);
@@ -270,7 +270,7 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
                 tickSize: [5, "minute"],
                 tickFormatter: function (v, axis) {
                     var date = new Date(v);
-                    return pandaMemoryChart.getChartLabelByRangeAndDate($scope.cpu.actions.id, date);
+                    return pandaMemoryChart.getChartLabelByRangeAndDate($scope.range.actions.id, date);
 
                 },
                 axisLabel: "Date",
@@ -307,7 +307,7 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
     var memoryForAdditionalIterations = [];
 
     function getMemoryPerformanceByFilters(url, indexValue, instanceName, totalCount, chartType, memoryType) {
-        var chartConfig = pandaChart.getConfigurationByRange($scope.memory.actions.id);
+        var chartConfig = pandaChart.getConfigurationByRange($scope.range.actions.id);
         memoryIndexCount = chartConfig.dataIndexCount;
         memoryChartIterationCount = chartConfig.iterationCountCount;
         $scope.memoryFlotOptions.xaxes[0].tickSize = chartConfig.tickSize;
@@ -370,7 +370,7 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
         if(indexValue ==0) {
             jQuery('.memory-chart-container').find('.flot-base, .flot-x-axis, .flot-overlay').css({"margin-left": 0});
         }
-        pandaChart.updateChartMarginByRangeAndIndex($scope.memory.actions.id, indexValue, memoryChartIteration, 'memory-chart-container');
+        pandaChart.updateChartMarginByRangeAndIndex($scope.range.actions.id, indexValue, memoryChartIteration, 'memory-chart-container');
     }
 
     var updateMemoryPerformance = 0;
@@ -380,15 +380,15 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
         memoryForAdditionalIterations = [];
         var displayName = "monitor-vm";
 
-        getMemoryPerformanceByFilters("query?start=" + $scope.memory.actions.id + "-ago&m=avg:os.mem.total{host="+ displayName +"}", 0,  displayName.toLowerCase(), -1, pandaChart.chartTypes.MEMORY, "Total");
-        getMemoryPerformanceByFilters("query?start=" + $scope.memory.actions.id + "-ago&m=avg:os.mem.free{host="+ displayName +"}", 1,  displayName.toLowerCase(), -1, pandaChart.chartTypes.MEMORY, "Free");
+        getMemoryPerformanceByFilters("query?start=" + $scope.range.actions.id + "-ago&m=avg:os.mem.total{host="+ displayName +"}", 0,  displayName.toLowerCase(), -1, pandaChart.chartTypes.MEMORY, "Total");
+        getMemoryPerformanceByFilters("query?start=" + $scope.range.actions.id + "-ago&m=avg:os.mem.free{host="+ displayName +"}", 1,  displayName.toLowerCase(), -1, pandaChart.chartTypes.MEMORY, "Free");
         //getMemoryPerformanceByFilters("query?start=" + $scope.memory.actions.id + "-ago&m=sum:os.mem.used{host="+ displayName +"}", 2,  displayName.toLowerCase(), -1, pandaChart.chartTypes.MEMORY);
 
         if(updateMemoryPerformance == 1)  {
             setInterval(function() {
                 $scope.$apply(function () {
-                    getMemoryPerformanceByFilters("query?start=" + $scope.memory.actions.id + "-ago&m=avg:os.mem.total{host="+ displayName +"}", 0,  displayName.toLowerCase(), 2, pandaChart.chartTypes.MEMORY, "Total");
-                    getMemoryPerformanceByFilters("query?start=" + $scope.memory.actions.id + "-ago&m=avg:os.mem.free{host="+ displayName +"}", 1,  displayName.toLowerCase(), 2, pandaChart.chartTypes.MEMORY, "Free");
+                    getMemoryPerformanceByFilters("query?start=" + $scope.range.actions.id + "-ago&m=avg:os.mem.total{host="+ displayName +"}", 0,  displayName.toLowerCase(), 2, pandaChart.chartTypes.MEMORY, "Total");
+                    getMemoryPerformanceByFilters("query?start=" + $scope.range.actions.id + "-ago&m=avg:os.mem.free{host="+ displayName +"}", 1,  displayName.toLowerCase(), 2, pandaChart.chartTypes.MEMORY, "Free");
                    // getMemoryPerformanceByFilters("query?start=" + $scope.memory.actions.id + "-ago&m=sum:os.mem.used{host="+ displayName +"}", 2,  displayName.toLowerCase(), 2, pandaChart.chartTypes.MEMORY);
                 });
             }, 5000);
@@ -434,7 +434,7 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
                 tickSize: [5, "minute"],
                 tickFormatter: function (v, axis) {
                     var date = new Date(v);
-                    return pandaChart.getChartLabelByRangeAndDate($scope.cpu.actions.id, date);
+                    return pandaChart.getChartLabelByRangeAndDate($scope.range.actions.id, date);
 
                 },
                 axisLabel: "Date",
@@ -469,7 +469,7 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
     var storageForAdditionalIterations = [];
 
     function getStoragePerformanceByFilters(url, indexValue, instanceName, totalCount, chartType, diskType) {
-        var chartConfig = pandaChart.getConfigurationByRange($scope.storage.actions.id);
+        var chartConfig = pandaChart.getConfigurationByRange($scope.range.actions.id);
         storageIndexCount = chartConfig.dataIndexCount;
         storageChartIterationCount = chartConfig.iterationCountCount;
         $scope.storageFlotOptions.xaxes[0].tickSize = chartConfig.tickSize;
@@ -530,7 +530,7 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
         if(indexValue ==0) {
             jQuery('.storage-chart-container').find('.flot-base, .flot-x-axis, .flot-overlay').css({"margin-left": 0});
         }
-        pandaChart.updateChartMarginByRangeAndIndex($scope.storage.actions.id, indexValue, storageChartIteration, 'storage-chart-container');
+        pandaChart.updateChartMarginByRangeAndIndex($scope.range.actions.id, indexValue, storageChartIteration, 'storage-chart-container');
     }
 
     var updateStoragePerformance = 0;
@@ -539,16 +539,16 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
         storageChartIteration = 0; storageTotalDelayCount=0; start = 0; end = 0; forAdditionalTenIndex=0; storageChartIterationCount = 3;
         storageForAdditionalIterations = [];
         var displayName = "monitor-vm";
-        getStoragePerformanceByFilters("query?start=" + $scope.storage.actions.id + "-ago&m=avg:rate:linux.disk.write_requests{host="+ displayName +"}", 0,  displayName.toLowerCase(), -1, pandaChart.chartTypes.DISK, "Write");
-        getStoragePerformanceByFilters("query?start=" + $scope.storage.actions.id + "-ago&m=avg:rate:linux.disk.read_requests{host="+ displayName +"}", 1,  displayName.toLowerCase(), -1, pandaChart.chartTypes.DISK, "Read");
-        //getStoragePerformanceByFilters("query?start=" + $scope.storage.actions.id + "-ago&m=sum:os.mem.used{host="+ displayName +"}", 2,  displayName.toLowerCase(), -1);
+        getStoragePerformanceByFilters("query?start=" + $scope.range.actions.id + "-ago&m=avg:rate:linux.disk.write_requests{host="+ displayName +"}", 0,  displayName.toLowerCase(), -1, pandaChart.chartTypes.DISK, "Write");
+        getStoragePerformanceByFilters("query?start=" + $scope.range.actions.id + "-ago&m=avg:rate:linux.disk.read_requests{host="+ displayName +"}", 1,  displayName.toLowerCase(), -1, pandaChart.chartTypes.DISK, "Read");
+        //getStoragePerformanceByFilters("query?start=" + $scope.range.actions.id + "-ago&m=sum:os.mem.used{host="+ displayName +"}", 2,  displayName.toLowerCase(), -1);
 
         if(updateStoragePerformance == 1)  {
             setInterval(function() {
                 $scope.$apply(function () {
-                    getStoragePerformanceByFilters("query?start=" + $scope.storage.actions.id + "-ago&m=avg:rate:linux.disk.write_requests{host="+ displayName +"}", 0,  displayName.toLowerCase(), 1, pandaChart.chartTypes.DISK, "Write");
-                    getStoragePerformanceByFilters("query?start=" + $scope.storage.actions.id + "-ago&m=avg:rate:linux.disk.read_requests{host="+ displayName +"}", 1,  displayName.toLowerCase(), 1, pandaChart.chartTypes.DISK, "Read");
-                    //getStoragePerformanceByFilters("query?start=" + $scope.storage.actions.id + "-ago&m=sum:os.mem.used{host="+ displayName +"}", 2,  displayName.toLowerCase(), 3);
+                    getStoragePerformanceByFilters("query?start=" + $scope.range.actions.id + "-ago&m=avg:rate:linux.disk.write_requests{host="+ displayName +"}", 0,  displayName.toLowerCase(), 1, pandaChart.chartTypes.DISK, "Write");
+                    getStoragePerformanceByFilters("query?start=" + $scope.range.actions.id + "-ago&m=avg:rate:linux.disk.read_requests{host="+ displayName +"}", 1,  displayName.toLowerCase(), 1, pandaChart.chartTypes.DISK, "Read");
+                    //getStoragePerformanceByFilters("query?start=" + $scope.range.actions.id + "-ago&m=sum:os.mem.used{host="+ displayName +"}", 2,  displayName.toLowerCase(), 3);
                 });
             }, 5000);
         }
@@ -598,10 +598,11 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
         }
 
 
+        $scope.updateGraphByRange = function() {
+
+            $scope.updateCpuPerformance($scope.cpu.result, $scope.range.actions);
+            $scope.updateMemoryPerformance($scope.memory.result, $scope.range.actions);
+            $scope.updateStoragePerformance($scope.storage.result, $scope.range.actions);
+        }
 }
 
-
-
-function togglePlot($this, index) {
-    alert("test")
-}

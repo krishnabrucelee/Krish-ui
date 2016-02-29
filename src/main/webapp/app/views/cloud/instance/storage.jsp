@@ -11,9 +11,7 @@
             <div class="row">
                     <div class="col-md-12 col-sm-12">
                         <h4><fmt:message key="instance.storage.manager" bundle="${msg}" />
-
                          <span class="pull-right">
-
                             <a class="btn btn-info" has-permission="ATTACH_DISK" data-ng-click="attach(md, volume.instanceId)"><span class="pe-7s-paperclip pe-lg font-bold m-r-xs"></span><fmt:message key="attach.volume" bundle="${msg}" /></a>
                             <a class="btn btn-info" has-permission="ADD_VOLUME" data-ng-click="addVolume('md')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="add.volume" bundle="${msg}" /></a>
                         </span>
@@ -44,7 +42,7 @@
                                     <div class="vertical-timeline-content">
 
                                         <div class="timeline-title">
-                                           {{ volume.name }} Created on {{ volume.createdDateTime*1000 | date:'yyyy-MM-dd HH:mm:ss'}}
+                                         {{ volume.name }} Created on {{ volume.createdDateTime*1000 | date:'yyyy-MM-dd HH:mm:ss'}}
                                        </div>
                                         <div class="row">
                                             <div class="col-md-12">

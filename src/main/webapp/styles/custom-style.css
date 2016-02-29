@@ -308,12 +308,13 @@ table.dataTable thead .sorting_desc::after {content: "\f0dd";}
 .flotchart-legend-container td{padding:5px; font-size:13px;}
 .flotchart-container .flot-text .flot-y-axis .flot-tick-label.tickLabel{left:0 !important;}
 .flotchart-legend-content{
-    float: right;
-    margin-top: 1px;
-    position: absolute;
-    right: 0;
+     line-height: 20px;
+    margin-bottom: 10px;
+    position: relative;
+    top: 64px;
     z-index: 10001;
 }
+
 
 @media (min-width: 768px) and (max-width: 1023px) {
 .shown-page{width:100% !important;}
@@ -332,5 +333,5 @@ table.dataTable thead .sorting_desc::after {content: "\f0dd";}
 }
 
 .custom-icon-ip-disabled {
-	background: rgba(0, 0, 0, 0) url("../images/ip-icon.png") no-repeat scroll center top !important;
+    background: rgba(0, 0, 0, 0) url("../images/ip-icon.png") no-repeat scroll center top !important;
 }
