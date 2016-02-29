@@ -414,63 +414,109 @@ $scope.stopVm = function(size,item) {
     // Create a new egress rule
     $scope.actionRules = false;
     $scope.cidrValidates = false;
-    $scope.ingressSave = function (form,firewallRuleIngress) {
-    	$scope.firewallRuleIngress.networkId = $stateParams.id;
+
+$scope.ingressSave = function (form,firewallRuleIngress) {
+        $scope.firewallRuleIngress.networkId = $stateParams.id;
         $scope.firewallRuleIngress.ipAddressId = $stateParams.id1;
         $scope.formSubmitted = true;
         if (form.$valid) {
         $scope.showLoader = true;
         var CheckIP = /^([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\/([0-9]|[12][0-9]|3[012])$/;
-        if ($scope.firewallRuleIngress.sourceCIDR && $scope.firewallRuleIngress.protocol && $scope.firewallRuleIngress.startPort && $scope.firewallRuleIngress.endPort) {
-
+        if ($scope.firewallRuleIngress.sourceCIDR && $scope.firewallRuleIngress.protocol) {
             if (CheckIP.test($scope.firewallRuleIngress.sourceCIDR)) {
-                if ($scope.firewallRuleIngress.sourceCIDR && $scope.firewallRuleIngress.protocol && $scope.firewallRuleIngress.startPort && $scope.firewallRuleIngress.endPort) {
-                    var hasServer = appService.crudService.add("egress/ingress", $scope.firewallRuleIngress);
-                    hasServer.then(function (result) {
+                if ($scope.firewallRuleIngress.sourceCIDR && $scope.firewallRuleIngress.protocol) {
+                    if ($scope.firewallRuleIngress.protocol == 'TCP' || $scope.firewallRuleIngress.protocol == 'UDP') {
+                        if ($scope.firewallRuleIngress.startPort && $scope.firewallRuleIngress.endPort) {
+                        delete $scope.firewallRuleIngress.icmpType;
+                        delete $scope.firewallRuleIngress.icmpCode;
+                        var hasServer = appService.crudService.add("egress/ingress", $scope.firewallRuleIngress);
+                            hasServer.then(function (result) {  // this is only
 			    appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.ingressSave,result.id,$scope.global.sessionValues.id);
-                        $scope.formSubmitted = false;
-                        $timeout(function(){
-                           $scope.showLoader = false;
-                           $scope.formSubmitted = false;
-                           appService.notify({message: 'Firewall rule added successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
-                           $scope.firewallRuleIngress ={};
-                           $scope.firewallRule(1);
+			      	        $timeout(function() {
+                                                $scope.showLoader = true;
+                                                $scope.formSubmitted = false;
+					        $scope.showLoader = false;
+                            appService.notify({message: 'Firewall rule added successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                            $scope.firewallRuleIngress = {};
+                            $scope.firewallRule(1);
                             }, 25000);
-                        $scope.firewallRule(1);
-                        $scope.templateCategory = 'firewall';
-                    }).catch(function (result) {
-                        $scope.formSubmitted = false;
-			$scope.showLoader = false;
-                        if (!angular.isUndefined(result.data)) {
-                            if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
-                                var msg = result.data.globalError[0];
-                                appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
-                            } else if (result.data.fieldErrors != null) {
-                                angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
-                                    $scope.egressForm[key].$invalid = true;
-                                    $scope.egressForm[key].errorMessage = errorMessage;
-                                });
-                            }
+
+                                $scope.formSubmitted = false;
+                                $scope.templateCategory = 'firewall';
+                            }).catch(function (result) {
+				$scope.showLoader = false;
+                                if (!angular.isUndefined(result.data)) {
+                                    if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
+                                        var msg = result.data.globalError[0];
+					$scope.showLoader = false;
+                                        appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                                    } else if (result.data.fieldErrors != null) {
+                                        angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
+                                            $scope.egressForm[key].$invalid = true;
+					    $scope.showLoader = false;
+                                            $scope.egressForm[key].errorMessage = errorMessage;
+                                        });
+                                    }
+                                }
+                            });
                         }
-                    });
+                    } else {
+			
+                        if ($scope.firewallRuleIngress.icmpType && $scope.firewallRuleIngress.icmpCode) {
+		    $scope.firewallRuleIngress.icmpMessage = $scope.firewallRuleIngress.icmpType;
+                     delete $scope.firewallRuleIngress.startPort;
+                     delete $scope.firewallRuleIngress.endPort;
+                    var hasServer = appService.crudService.add("egress/ingress", $scope.firewallRuleIngress);
+                            hasServer.then(function (result) {
+			    appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.ingressSave,result.id,$scope.global.sessionValues.id);
+			     $timeout(function(){
+
+                     $scope.showLoader = true;
+                     $scope.formSubmitted = false;
+                     $scope.showLoader = false;
+                     appService.notify({message: 'Firewall rule added successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                     $scope.firewallRuleIngress = {};
+                     $scope.firewallRule(1);
+			     }, 25000);
+                        $scope.templateCategory = 'firewall';
+                            }).catch(function (result) {
+					$scope.showLoader = false;
+                                if (!angular.isUndefined(result.data)) {
+                                    if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
+                                        var msg = result.data.globalError[0];
+					$scope.showLoader = false;
+                                        appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                                    } else if (result.data.fieldErrors != null) {
+                                        angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
+                                            $scope.egressForm[key].$invalid = true;
+					    $scope.showLoader = false;
+                                            $scope.egressForm[key].errorMessage = errorMessage;
+                                        });
+                                    }
+                                }
+                            });
+                        }
+		else {
+			$scope.showLoader = false;
+		}
+                    }
+
                 }
-                $scope.actionRules = false;
+                $scope.actionRule = false;
             }
             else {
 		$scope.showLoader = false;
 		appService.notify({message: 'Invalid cidr format ' + $scope.firewallRuleIngress.sourceCIDR, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
-                $scope.actionRules = true;
-                $scope.cidrValidates = true;
+                $scope.actionRule = true;
+                $scope.cidrValidate = true;
             }
+
         }
         else {
-            $scope.actionRules = true;
-            $scope.cidrValidates = true;
+            $scope.actionRule = true;
+            $scope.cidrValidate = true;
         }
-    }
-};
-    $scope.cancel = function () {
-        $modalInstance.close();
+}
     };
 
     // Delete the ingress rule
