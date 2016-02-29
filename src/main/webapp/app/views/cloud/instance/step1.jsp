@@ -30,11 +30,11 @@
 							<div class="m-b-sm">
 							 <span class=" "><fmt:message key="common.architecture" bundle="${msg}" />: </span>
 						    </div>
-								  <label class=" "> <input icheck type="radio" id="create_instance_template_architecture_radio_button"
+								  <label class=" "> <input icheck type="radio" id="create_instance_template_architecture_32_radio_button"
 									data-ng-model="instance.architecture" value="32" ng-change="getTemplatesByFilters()" name="architecture">
 									32Bit
 								 </label>
-								 <label class=" "> <input icheck type="radio" id="create_instance_template_architecture_radio_button"
+								 <label class=" "> <input icheck type="radio" id="create_instance_template_architecture_64_radio_button"
 									data-ng-model="instance.architecture" value="64" ng-change="getTemplatesByFilters()" name="architecture">
 									64Bit
 								</label>
