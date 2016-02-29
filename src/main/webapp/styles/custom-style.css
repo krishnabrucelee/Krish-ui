@@ -233,10 +233,12 @@ border-color: #e74c3c !important;}
 
 .dashboard-box {
     cursor: pointer;
-    padding:5px;
-    border: 1px solid #48a9da;
-    border-style: dashed;
+    padding:0px;
+    border: none;
+    border-style: none;
 }
+
+.dashboard-box b{line-height:27px;}
 
 .col-12-table.table-responsive{overflow-x:visible;}
 .col-12-table.table-responsive table{table-layout:fixed;}
@@ -314,6 +316,11 @@ table.dataTable thead .sorting_desc::after {content: "\f0dd";}
     top: 64px;
     z-index: 10001;
 }
+
+.dashboard-box b{font-size:20px; line-height:27px;}
+.dashboard-box{font-size:14px; padding:0px; border:none;}
+
+.dashboard-box .instance-border-content-normal.instance-border-content b{ color:#fff; text-shadow:none;}
 
 
 @media (min-width: 768px) and (max-width: 1023px) {

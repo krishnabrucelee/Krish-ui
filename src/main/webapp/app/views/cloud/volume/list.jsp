@@ -10,7 +10,7 @@ pageEncoding="UTF-8"%>
                 <div class="row">
                     <div class="col-md-12 col-sm-12 col-xs-12 ">
                         <div class="pull-left">
-                            <div class="dashboard-box pull-left dashboard-box-pad">
+                            <div class="dashboard-box pull-left">
 	                            <div class="instance-border-content-normal">
 	                            	<span class="pull-left"><img src="images/volume-icon.png"></span>
 	                                <span class="pull-left m-t-xs m-l-xs m-r-xs"><fmt:message key="total.volume" bundle="${msg}" /></span>
@@ -19,7 +19,7 @@ pageEncoding="UTF-8"%>
 	                                <div class="clearfix"></div>
                                 </div>
                             </div>
-                            <div class="dashboard-box pull-left  dashboard-box-pad">
+                            <div class="dashboard-box pull-left">
                             	<div class="instance-border-content-normal">
                             		<span class="pull-left"><img src="images/volume-icon.png"></span>
 	                                <span class="pull-left m-t-xs m-l-xs m-r-xs"><fmt:message key="attached.volume" bundle="${msg}" /></span>
@@ -28,7 +28,7 @@ pageEncoding="UTF-8"%>
 	                                <div class="clearfix"></div>
                                 </div>
                             </div>
-                            <div class="dashboard-box pull-left dashboard-box-pad">
+                            <div class="dashboard-box pull-left">
 	                            <div class="instance-border-content-normal">
 	                            	<span class="pull-left"><img src="images/volume-icon.png"></span>
 	                                <span class="pull-left m-t-xs m-l-xs m-r-xs"><fmt:message key="detached.volume" bundle="${msg}" /></span>

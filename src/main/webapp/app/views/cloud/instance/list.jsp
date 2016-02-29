@@ -39,11 +39,12 @@
 									<div class="clearfix"></div>
 								</div>
 							</div>
-							<a has-permission="CREATE_VM" class="btn btn-info"
+							<a has-permission="CREATE_VM"
+							<span class="pull-right m-l-sm m-t-sm"> <a has-permission="CREATE_VM" class="btn btn-info" id="instances_create_vm_button"
 								data-ng-click="openAddInstance('lg')"
 							><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span>
 								<fmt:message key="create.vm" bundle="${msg}" /></a> <a class="btn btn-info" data-ng-click="list(1, borderContent)"
-								title="<fmt:message key="common.refresh" bundle="${msg}" />" ui-sref-opts="{reload: true}"
+								id="instances_refresh_button" title="<fmt:message key="common.refresh" bundle="${msg}" />" ui-sref-opts="{reload: true}"
 							><span class="fa fa-refresh fa-lg "></span></a>
 						</div>
 						<div class="pull-right">

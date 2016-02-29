@@ -132,64 +132,7 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
 
     $scope.networkTab = function() {
     	$scope.templateCategory = 'network';
-    }
-
-  $scope.resetSSHKey = function(size,instance) {
-       $scope.resetSSH = instance;
-$scope.formElements.sshKeyList = [];
-       if (!angular.isUndefined($scope.instance.project) && $scope.instance.project != null) {
-	        var hasSSHKeyList = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL
-        		+ "sshkeys/search/project?project="+$scope.instance.project.id);
-	        hasSSHKeyList.then(function (result) {  
-                    angular.forEach(result, function(object,value) {
-        		if(object.id !== $scope.instance.keypairId) {
-        			$scope.formElements.sshKeyList.push(object);
-        		}        		
-		    });
-	        });
-        } else if (!angular.isUndefined($scope.instance.department) && $scope.instance.department != null) {
-	        var hasSSHKeyList = appService.crudService.listAllByFilter("sshkeys/search/department", $scope.instance.department);
-	        hasSSHKeyList.then(function (result) {
-	    	    angular.forEach(result, function(object,value) {
-        		if(object.id !== $scope.instance.keypairId) {
-        			$scope.formElements.sshKeyList.push(object);
-        		}        		
-		    });
-	        });
-        }
-     	 appService.dialogService.openDialog("app/views/cloud/instance/reset-ssh-key.jsp", size,  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
-	  		$scope.resetKey = function (form, resetSSH) {
-          		$scope.formSubmitted = true;
-          		if (form.$valid) {
-          			$scope.showLoader= true;
-                                resetSSH.keypairId = resetSSH.keypairName.id;
-          			var hasServer = appService.crudService.updates("virtualmachine/reset", $scope.resetSSH);
-          			hasServer.then(function (result) {
-                                $scope.formSubmitted = false;
-                                $modalInstance.close();
-                                $scope.showLoader = false;
-                                if (resetSSH.passwordEnabled == true) {
-                                    $scope.resetPassword(resetSSH);
-                                }                                
-                                appService.notify({message: 'Keypair reset successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
-                                 $scope.vmList();                                
-          			}).catch(function (result) {
-                        if (!angular.isUndefined(result) && result.data != null) {
-	                        if (result.data.fieldErrors != '') {
-	                            angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
-	                            $scope.resetForm[key].$invalid = true;
-	                            $scope.resetForm[key].errorMessage = errorMessage;
-	                            });
-	                            }
-                        }
-                        });
-          			}
-          		},
-				  $scope.cancel = function () {
-	               $modalInstance.close();
-	           };
-	       }]);
-	  };
+    } 
 
  // Volume List
 $scope.volume = {};

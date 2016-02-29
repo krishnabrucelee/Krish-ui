@@ -12,9 +12,10 @@ pageEncoding="UTF-8"%>
             <li data-ng-if ="instance.status == 'STOPPED'" data-ng-class="{'active' : templateCategory == 'config'}"><a has-permission="RESIZE" data-ng-click="selectab()"  data-toggle="tab"> <i class="fa fa-cogs"></i> <fmt:message key="configuration" bundle="${msg}" /></a></li>
             <li class=""><a  data-ng-click="templateCategory = 'storage'" data-toggle="tab"><i class="fa fa-database"></i> <fmt:message key="storage" bundle="${msg}" /></a></li>
             <li class=""><a  data-ng-click="networkTab()" data-toggle="tab"> <!--<i class="fa fa-sitemap"></i>--><i class="custom-icon custom-icon-network"></i> <fmt:message key="networking" bundle="${msg}" /></a></li>
-            <li class=""><a has-permission="MONITOR_VM_PERFORMANCE" data-ng-click="templateCategory = 'monitor'" data-toggle="tab"> <i class="fa fa-desktop"></i> <fmt:message key="monitor" bundle="${msg}" /></a></li>
+            <li class=""><a has-permission="MONITOR_VM_PERFORMANCE" href="javascript:void(0)" data-ng-class="{'active': templateCategory == 'monitor'}" data-ng-click="templateCategory = 'monitor'" data-toggle="tab"> <i class="fa fa-desktop"></i> <fmt:message key="monitor" bundle="${msg}" /></a></li>
+
             <div class="pull-right">
-            	<a title="<fmt:message key="common.refresh" bundle="${msg}" />"  class="btn btn-info" ui-sref="cloud.list-instance.view-instance"  ui-sref-opts="{reload: true}" ><span class="fa fa-refresh fa-lg "></span></a>
+            	<button type="button" data-ng-hide="templateCategory == 'monitor'" title="<fmt:message key="common.refresh" bundle="${msg}" />"  class="btn btn-info" ui-sref="cloud.list-instance.view-instance"  ui-sref-opts="{reload: true}" ><span class="fa fa-refresh fa-lg "></span></button>
             </div>
         </ul>
 
@@ -209,9 +210,6 @@ pageEncoding="UTF-8"%>
                                         </li>
                                          <li has-permission="RESET_PASSWORD" class="list-group-item">
                                             <button ng-class = "(instance.passwordEnabled == true && instance.status == 'STOPPED') ? 'resizelink enable' : 'resizelink disable'" data-ng-disabled="instance.passwordEnabled == false || instance.status !== 'STOPPED'" href="javascript:void(0);" title="<fmt:message key="reset.password" bundle="${msg}" />" data-ng-click="resetPassword(instance)"><span class="fa-key fa font-bold m-xs"></span> <fmt:message key="reset.password" bundle="${msg}" /></button>
-                                        </li>
-                                        <li class="list-group-item " >
-                                              <button ng-class = "(instance.status == 'STOPPED') ? 'resizelink enable' : 'resizelink disable'" data-ng-disabled="instance.status !== 'STOPPED'" href="javascript:void(0);"   data-ng-click="resetSSHKey('md',instance)" title="<fmt:message key="reset.ssh.key.pair" bundle="${msg}" />"><span class="fa-lock fa font-bold m-xs"></span> <fmt:message key="reset.ssh.key.pair" bundle="${msg}" /></button>
                                         </li>
                                     </div>
                                 </ul>
@@ -449,14 +447,6 @@ pageEncoding="UTF-8"%>
                                                     </b>
                                                 </td>
                                                 <td class="col-md-8 col-sm-8">{{instance.template.dynamicallyScalable}}</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="col-md-4 col-sm-4">
-                                                    <b>
-                                                        <fmt:message key="ssh.key.pair" bundle="${msg}" />
-                                                    </b>
-                                                </td>
-                                                <td class="col-md-8 col-sm-8">{{instance.keypair.name}}</td>
                                             </tr>
                                             </tbody>
                                         </table>

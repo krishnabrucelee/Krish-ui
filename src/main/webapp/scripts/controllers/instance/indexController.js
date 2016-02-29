@@ -329,8 +329,6 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
     }
 
     $scope.changedepartment = function(obj) {
-        $scope.formElements.sshKeyList = {};
-        $scope.instance.sshkey = null;
         $scope.instance.instanceOwner =null;
     	$scope.instance.project = null;
         $scope.instance.networks.networkList  = null;
@@ -339,12 +337,6 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
                 $scope.listNetworks(obj.id, 'department');
                 $scope.formElements.projecttypeList = {};
 
-        }
-        if (!angular.isUndefined($scope.instance.department) && $scope.global.sessionValues.type != "USER") {
-	        var hasSSHKeyList = appService.crudService.listAllByFilter("sshkeys/search/department", $scope.instance.department);
-	        hasSSHKeyList.then(function (result) {
-	    	    $scope.formElements.sshKeyList = result;
-	        });
         }
     };
 
@@ -361,18 +353,9 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
     }
 
 	$scope.changeproject=function (obj) {
-        $scope.formElements.sshKeyList = {};
-        $scope.instance.sshkey = null;
         $scope.instance.networks.networkList  = null;
   	  if (!angular.isUndefined(obj)) {
             $scope.listNetworks(obj.id, 'project');
-        }
-        if (!angular.isUndefined($scope.instance.project)) {
-	        var hasSSHKeyList = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL
-        		+ "sshkeys/search/project?project="+$scope.instance.project.id);
-	        hasSSHKeyList.then(function (result) {
-	    	    $scope.formElements.sshKeyList = result;
-	        });
         }
 
   	  };
@@ -613,9 +596,6 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
         	 delete instance.hypervisor;
          }
         instance.zoneId = $scope.global.zone.id;
-        if (!angular.isUndefined(instance.sshkey) && instance.sshkey !== null) {
-        	 instance.keypairId = instance.sshkey.id;
-        }
         var hasServer = appService.crudService.add("virtualmachine", instance);
         hasServer.then(function (result) {  // this is only run after $http completes
             $scope.showLoader = false;
@@ -673,9 +653,6 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
 
     $scope.save = function () {
         var instance = $scope.instance;
-        if (!angular.isUndefined(instance.sshkey) && instance.sshkey !== null) {
-        	 instance.keypairId = instance.sshkey.id;
-        }
         var hasServer = appService.crudService.add("virtualmachine", instance);
         hasServer.then(function (result) {  // this is only run after $http completes
             appService.notify({message: 'instance created successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
@@ -890,11 +867,6 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
                     $scope.listNetworks(result.id, 'department');
 
                 }
-
-      var hasSSHKeyList = appService.crudService.listAllByFilter("sshkeys/search/department", $scope.instance.department);
-        hasSSHKeyList.then(function (result) {
-            $scope.formElements.sshKeyList = result;
-        });
         });
 
 

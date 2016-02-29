@@ -203,23 +203,6 @@
 				<i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="<fmt:message key="name.of.the.project" bundle="${msg}" />"></i>
 			</div>
 		</div>
-		<div class="row  form-group">
-			<div class="col-md-5 col-xs-5 col-sm-5">
-
-				<span class="control-label"><fmt:message key="ssh.key.pair" bundle="${msg}" /></span>
-			</div>
-			<div class="col-md-6 col-xs-6 col-sm-6">
-						<div  custom-select="t as t.name for t in formElements.sshKeyList | filter: { name: $searchTerm }" id="create_instance_ssh_key" data-ng-model="instance.sshkey">
-
-						<div class="pull-left">
-						<strong>{{t.name }}</strong>
-						<br />
-						</div>
-						<div class="clearfix"></div>
-						</div>
-				<i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="<fmt:message key="ssh.key.pair" bundle="${msg}" />"></i>
-			</div>
-		</div>
 		<div class="h-90"></div>
 		<div class="pull-right">
 			<a class="btn btn-default" id="create_instance_cancel_button" ng-click="cancel()"> <fmt:message key="common.cancel" bundle="${msg}" /> </a>

@@ -10,7 +10,7 @@
 				<div class="row">
 					<div class="col-md-12 col-sm-12 col-xs-12 ">
 						<div class="pull-left">
-							<div class="dashboard-box pull-left dashboard-box-pad">
+							<div class="dashboard-box pull-left">
 								<div class="instance-border-content-normal">
 									<span class="pull-left"><img
 										src="images/network-icon.png"></span>
@@ -20,7 +20,7 @@
 									<div class="clearfix"></div>
 								</div>
 							</div>
-							<div class="dashboard-box pull-left dashboard-box-pad">
+							<div class="dashboard-box pull-left">
 								<div class="instance-border-content-normal">
 									<span class="pull-left"><img
 										src="images/network-icon.png"></span>
@@ -30,7 +30,7 @@
 									<div class="clearfix"></div>
 								</div>
 							</div>
-							<div class="dashboard-box pull-left dashboard-box-pad">
+							<div class="dashboard-box pull-left">
 								<div class="instance-border-content-normal">
 									<span class="pull-left"><img
 										src="images/network-icon.png"></span>
