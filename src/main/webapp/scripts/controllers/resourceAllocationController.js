@@ -150,6 +150,7 @@ function resourceAllocationCtrl($scope, crudService, globalConfig, notify, $stat
 				$scope.isDisabledProject = false;
 				$scope.formSubmitted = false;
 	            notify({message: 'Updated successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+	            $state.reload();
 	        }).catch(function (result) {
 	        	$scope.showLoader = false;
 	            if (!angular.isUndefined(result.data)) {
@@ -195,7 +196,7 @@ function resourceAllocationCtrl($scope, crudService, globalConfig, notify, $stat
 				$scope.showLoader = false;
 				$scope.formSubmitted = false;
 	            notify({message: 'Updated successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
-
+	            $state.reload();
 	        }).catch(function (result) {
 	        	$scope.showLoader = false;
 	            if (!angular.isUndefined(result.data)) {
