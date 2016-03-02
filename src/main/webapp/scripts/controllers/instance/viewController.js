@@ -451,9 +451,10 @@ $scope.list = function () {
 							  	 appService.dialogService.openDialog("app/views/cloud/instance/createVmSnapshot.jsp", 'md',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance, $rootScope) {
 							  		 $scope.instance = vm;
 							  		 $scope.validateVMSnapshot= function(form) {
-							  			    $scope.showLoader = true;
+
 								  			$scope.formSubmitted = true;
 						                    if (form.$valid) {
+						                    	$scope.showLoader = true;
 						                    	$scope.vmsnapshot.domainId = $scope.instance.domainId;
 						                    	$scope.vmsnapshot.vmId = $scope.instance.id;
 						                    	if (angular.isUndefined($scope.vmsnapshot.snapshotMemory) || $scope.vmsnapshot.snapshotMemory === null || $scope.vmsnapshot.snapshotMemory === '') {
