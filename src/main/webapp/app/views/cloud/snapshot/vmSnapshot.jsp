@@ -32,7 +32,7 @@
                 </div>
               </div>
             <div class="white-content">
-				<div data-ng-show = "showLoaderOffer" style="margin: 1%"><get-loader-image data-ng-show="showLoaderOffer"></get-loader-image></div>
+				<div data-ng-show = "showLoaderOffer" style="margin: 1%"><get-loader-image-offer data-ng-show="showLoaderOffer"></get-loader-image-offer></div>
       					<div  data-ng-hide="showLoaderOffer" class="table-responsive col-12-table">
                         <table cellspacing="1" cellpadding="1" class="table dataTable table-bordered table-striped">
                             <thead>
