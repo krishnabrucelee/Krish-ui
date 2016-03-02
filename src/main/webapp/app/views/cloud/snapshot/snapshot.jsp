@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<div class="" data-ng-controller="snapshotListCtrl">
+<div class="" >
 	<get-loader-image data-ng-show="showLoader"></get-loader-image>
 	<div class="col-md-12 col-sm-12" data-ng-hide="showLoader">
         <div class="hpanel">

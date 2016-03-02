@@ -71,7 +71,6 @@ function storageCtrl($scope, $state, $stateParams, appService, $window, volumeSe
         var hasVolumes = appService.promiseAjax.httpTokenRequest(appService.crudService.globalConfig.HTTP_GET, appService.crudService.globalConfig.APP_URL + "volumes/listbyinstances?instanceid=" + instanceId + "&lang=" + appService.localStorageService.cookie.get('language') + "&sortBy=-id");
         hasVolumes.then(function(result) {
             $scope.volumeList = result;
-
             updateStorageProgeress($scope.volumeList);
 
 
@@ -382,8 +381,8 @@ function storageCtrl($scope, $state, $stateParams, appService, $window, volumeSe
                     if ($scope.global.sessionValues.type !== 'ROOT_ADMIN'
                         && !angular.isUndefined($scope.global.sessionValues.domainId)) {
                         $scope.getDiskList($scope.global.sessionValues.domainId, tag);
-                    } else if (!angular.isUndefined($scope.volume.domain)) {
-                        $scope.getDiskList($scope.volume.domain.id, tag);
+                    } else if (!angular.isUndefined($scope.instance.domain)) {
+                        $scope.getDiskList($scope.instance.domain.id, tag);
                     }
 
                 };
