@@ -24,7 +24,7 @@
                             <div class="clearfix"></div>
                             <span class="pull-right m-l-sm m-t-sm">
                                 <a class="btn btn-info"  ng-click="openAddVMSnapshotContainer()"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="create.vm.snapshot" bundle="${msg}" /></a>
-                                <a class="btn btn-info" title="<fmt:message key="common.refresh" bundle="${msg}" />"  ><span class="fa fa-refresh fa-lg"></span></a>
+                                <a class="btn btn-info" ui-sref="cloud.list-snapshot" title="<fmt:message key="common.refresh" bundle="${msg}" />"  ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
                             </span>
                         </div>
                     </div>
@@ -32,16 +32,17 @@
                 </div>
               </div>
             <div class="white-content">
-				<get-loader-image-offer data-ng-show="showLoaderOffer"></get-loader-image-offer>
-                <div data-ng-hide="showLoaderOffer" class="table-responsive">
-                    <table cellspacing="1" cellpadding="1" class="table table-bordered table-striped">
-                        <thead>
+				<div data-ng-show = "showLoader" style="margin: 1%"><get-loader-image data-ng-show="showLoader"></get-loader-image></div>
+      					<div  data-ng-hide="showLoader" class="table-responsive col-12-table">
+                        <table cellspacing="1" cellpadding="1" class="table dataTable table-bordered table-striped">
+                            <thead>
                             <tr>
-                                <th class="col-md-2 col-sm-2"><fmt:message key="common.name" bundle="${msg}" /></th>
-                                <th class="col-md-2 col-sm-2"><fmt:message key="common.description" bundle="${msg}" /></th>
-                                <th class="col-md-2 col-sm-2"><fmt:message key="common.instance" bundle="${msg}" /></th>
-                                <th class="col-md-2 col-sm-2"><fmt:message key="common.created.date" bundle="${msg}" /></th>
-                                <th class="col-md-1 col-sm-1"><fmt:message key="common.status" bundle="${msg}" /></th>
+                                <th data-ng-click="changeSorting('name')" data-ng-class="sort.descending && sort.column =='name'? 'sorting_desc' : 'sorting_asc'"><fmt:message key="common.name" bundle="${msg}" /></th>
+                                <th data-ng-click="changeSorting('description')" data-ng-class="sort.descending && sort.column =='description'? 'sorting_desc' : 'sorting_asc'"><fmt:message key="common.description" bundle="${msg}" /></th>
+                                <th data-ng-click="changeSorting('vm.name')" data-ng-class="sort.descending && sort.column =='vm.name'? 'sorting_desc' : 'sorting_asc'"><fmt:message key="common.instance" bundle="${msg}" /></th>
+                                <th data-ng-click="changeSorting('snapshot.isCurrent')" data-ng-class="sort.descending && sort.column =='snapshot.isCurrent'? 'sorting_desc' : 'sorting_asc'"><fmt:message key="common.iscurrent" bundle="${msg}" /></th>
+                                <th data-ng-click="changeSorting('createdDateTime')" data-ng-class="sort.descending && sort.column =='createdDateTime'? 'sorting_desc' : 'sorting_asc'"><fmt:message key="common.created.date" bundle="${msg}" /></th>
+                                <th data-ng-click="changeSorting('status')" data-ng-class="sort.descending && sort.column =='status'? 'sorting_desc' : 'sorting_asc'"><fmt:message key="common.status" bundle="${msg}" /></th>
                                 <th class="col-md-1 col-sm-1"><fmt:message key="common.action" bundle="${msg}" /></th>
                             </tr>
                         </thead>
@@ -51,7 +52,7 @@
 						</tr>
 						</tbody>
                         <tbody data-ng-show="vmSnapshotList.length > 0">
-                            <tr data-ng-repeat="snapshot in vmSnapshotList | filter:quickSearch">
+                            <tr data-ng-repeat="snapshot in filteredCount = (vmSnapshotList| filter: quickSearch | orderBy:sort.column:sort.descending)">
                                 <td>
                                     {{ snapshot.name}}
                                 </td>
@@ -61,14 +62,20 @@
                                 <td>
                                     {{ snapshot.vm.name}}
                                 </td>
-                                   <td>
+                                <td data-ng-show = "snapshot.isCurrent">
+                                    Yes
+                                </td>
+                                <td data-ng-show = "!snapshot.isCurrent">
+                                    No
+                                </td>
+                                <td>
                                     {{ snapshot.createdDateTime*1000 | date:'yyyy-MM-dd HH:mm:ss'}}
                                 </td>
                                 <td>
                                     {{ snapshot.status}}
                                 </td>
                                  <td>
-                                    <a class="icon-button" title="<fmt:message key="restore.vm.snapshot" bundle="${msg}" />"  data-ng-click="restoresnapshot(snapshot)">
+                                    <a data-ng-show = "snapshot.status != 'Error'" class="icon-button" title="<fmt:message key="restore.vm.snapshot" bundle="${msg}" />"  data-ng-click="restoresnapshot(snapshot)">
                                         <span class="fa fa-rotate-left "> </span>
                                     </a>
                                     <a class="icon-button" title="<fmt:message key="delete.vm.snapshot" bundle="${msg}" />" data-ng-click="deleteSnapshots('sm', snapshot)"><span class="fa fa-trash"></span></a>
@@ -78,6 +85,7 @@
                     </table>
                 </div>
             </div>
+            <pagination-contents></pagination-contents>
         </div>
     </div>
 </div>

@@ -377,7 +377,7 @@ pageEncoding="UTF-8"%>
                                                         <fmt:message key="common.templates" bundle="${msg}" />
                                                     </b>
                                                 </td>
-                                                <td>{{instance.template.name}}</td>
+                                                <td>{{instance.templateName}}</td>
                                             </tr>
                                             <tr>
                                                 <td class="col-md-4 col-sm-4">
@@ -398,7 +398,7 @@ pageEncoding="UTF-8"%>
                                                         <fmt:message key="common.osType" bundle="${msg}" />
                                                     </b>
                                                 </td>
-                                                <td class="col-md-8 col-sm-8">{{instance.template.osType.description}}</td>
+                                                <td class="col-md-8 col-sm-8">{{instance.osType}}</td>
                                             </tr>
                                             <tr>
                                                 <td class="col-md-4 col-sm-4">
