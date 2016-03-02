@@ -152,9 +152,9 @@ localStorageService, $window, dialogService,$stateParams, notify, appService) {
 	  	 dialogService.openDialog("app/views/cloud/snapshot/createVm.jsp", 'md',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance, $rootScope) {
 	  		$scope.instanceId(1);
 	  		 $scope.validateVMSnapshot= function(form) {
-	  			$scope.showLoader = true;
 		  			$scope.formSubmitted = true;
                    if (form.$valid) {
+                	$scope.showLoader = true;
                    	$scope.vmsnapshot.domainId = $scope.vmsnapshot.vm.domainId;
                    	$scope.vmsnapshot.vmId = $scope.vmsnapshot.vm.id;
 		  				var hasVm = crudService.add("vmsnapshot",$scope.vmsnapshot);
