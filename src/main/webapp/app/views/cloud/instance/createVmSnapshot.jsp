@@ -53,13 +53,13 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group" >
+                    <div class="form-group" ng-class="{'text-danger': vmsnapshotForm.snapshotMemory.$invalid && formSubmitted}">
                         <div class="row" >
                             <label class="col-md-3 col-sm-3 control-label" ><fmt:message key="snapshot.memory" bundle="${msg}" />
-
+ 								<span class="text-danger">*</span>
                             </label>
                             <div class="col-md-5 col-sm-5">
-                                <label> <input icheck type="checkbox" value="true" data-ng-model="vmsnapshot.snapshotMemory"> </label>
+                                <label> <input icheck type="checkbox" name="snapshotMemory" required value="true"  data-ng-model="vmsnapshot.snapshotMemory"  data-ng-class="{'error':  vmsnapshotForm.snapshotMemory.$invalid && formSubmitted}"> </label>
 
 
 
@@ -70,7 +70,6 @@
                     <div class="form-group" >
                         <div class="row" >
                             <label class="col-md-3 col-sm-3 control-label" ><fmt:message key="common.instance" bundle="${msg}" />
-                                <span class="text-danger">*</span>
                             </label>
 
                             <div class="col-md-5 col-sm-5 ">
