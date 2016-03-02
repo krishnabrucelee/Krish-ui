@@ -3,7 +3,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
-<div class="" data-ng-controller="snapshotListCtrl">
+<div class="" >
     <div class="col-md-12 col-sm-12">
         <div class="hpanel">
             <div class="panel-heading">
@@ -32,8 +32,8 @@
                 </div>
               </div>
             <div class="white-content">
-				<div data-ng-show = "showLoader" style="margin: 1%"><get-loader-image data-ng-show="showLoader"></get-loader-image></div>
-      					<div  data-ng-hide="showLoader" class="table-responsive col-12-table">
+				<div data-ng-show = "showLoaderOffer" style="margin: 1%"><get-loader-image data-ng-show="showLoaderOffer"></get-loader-image></div>
+      					<div  data-ng-hide="showLoaderOffer" class="table-responsive col-12-table">
                         <table cellspacing="1" cellpadding="1" class="table dataTable table-bordered table-striped">
                             <thead>
                             <tr>

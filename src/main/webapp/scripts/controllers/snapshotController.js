@@ -75,6 +75,7 @@ function addVMSnapshotCtrl($scope, globalConfig, $window,appService, notify) {
     };
 
 };
+
 function snapshotListCtrl($scope, crudService,$state, $timeout, promiseAjax, globalConfig,
 localStorageService, $window, dialogService,$stateParams, notify, appService) {
 

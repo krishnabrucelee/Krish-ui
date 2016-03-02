@@ -61,16 +61,12 @@ pageEncoding="UTF-8"%>
 							</div>
 						</div>
 					</div>
-
-
-
-
 					<div data-ng-if="global.sessionValues.type != 'ROOT_ADMIN'">
 						<div class="form-group">
 							<div class="row">
                             	<label class="col-md-3 col-xs-12 col-sm-2 control-label"><fmt:message key="common.domain" bundle="${msg}" /><span class="text-danger">*</span></label>
                             	<div class="col-md-5 col-xs-12 col-sm-5">
-                                {{ global.sessionValues.domainName }}
+                                <label>{{ global.sessionValues.domainName }}</label>
                                 <input type="hidden" name="domain"  data-ng-model="volume.domain" data-ng-init="volume.domainId=global.sessionValues.domainId" />
                             	</div>
                         	</div>
@@ -78,7 +74,7 @@ pageEncoding="UTF-8"%>
 	                	</div>
 
 	                	<div data-ng-if="global.sessionValues.type == 'ROOT_ADMIN'">
-                        <div class="form-group" ng-class="{'text-danger':volumeForm.domain.$invalid && formSubmitted}">
+<%--                         <div class="form-group" ng-class="{'text-danger':volumeForm.domain.$invalid && formSubmitted}">
                             <div class="row">
                                 <label class="col-md-3 col-xs-12 col-sm-2 control-label"><fmt:message key="common.company" bundle="${msg}" /><span class="text-danger">*</span>
                                 </label>
@@ -92,12 +88,17 @@ pageEncoding="UTF-8"%>
                                     <div class="error-area" data-ng-show="volumeForm.domain.$invalid && formSubmitted" ><i  tooltip="<fmt:message key="company.is.required" bundle="${msg}" />" class="fa fa-warning error-icon"></i></div>
                                 </div>
                             </div>
+                        </div> --%>
+                        <div class="form-group">
+							<div class="row">
+                            	<label class="col-md-3 col-xs-12 col-sm-2 control-label"><fmt:message key="common.domain" bundle="${msg}" /><span class="text-danger">*</span></label>
+                            	<div class="col-md-5 col-xs-12 col-sm-5">
+                                <label>{{ instance.domain.name }}</label>
+                                <input type="hidden" name="domain"  data-ng-model="volume.domain" data-ng-init="volume.domainId=instance.domain.id" />
+                            	</div>
+                        	</div>
                         </div>
                         </div>
-
-
-
-
 					<div class="form-group"
 						data-ng-class="{ 'text-danger' : volumeForm.diskOfferings.$invalid && formSubmitted}">
 						<div class="row">
