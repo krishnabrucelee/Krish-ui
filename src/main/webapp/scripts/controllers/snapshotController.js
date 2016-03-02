@@ -101,11 +101,15 @@ localStorageService, $window, dialogService,$stateParams, notify, appService) {
     });
 
 	$scope.confirmsnapshot = {};
+	$scope.paginationObject = {};
+	$scope.paginationObjects = {};
 	$scope.global = globalConfig;
 	$scope.global = crudService.globalConfig;
 	$scope.snapshotList = {};
 	$scope.vmSnapshotList = {};
 	$scope.instanceList = {};
+	$scope.sort = appService.globalConfig.sort;
+	$scope.changeSorting = appService.utilService.changeSorting;
     $scope.list = function(pageNumber) {
     	$scope.showLoader = true;
 	    var limit = (angular.isUndefined($scope.paginationObject.limit)) ? crudService.globalConfig.CONTENT_LIMIT : $scope.paginationObject.limit;
@@ -120,21 +124,22 @@ localStorageService, $window, dialogService,$stateParams, notify, appService) {
 	    });
     }
     $scope.list(1);
-	$scope.vmSnapshot = function(pageNumber){
-		  $scope.showLoaderOffer = true;
-		  var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
-	        var hasSnapshots = crudService.list("vmsnapshot", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
-	        hasSnapshots.then(function (result) {  // this is only run after
-													// $http completes0
-	        	$scope.showLoaderOffer = false;
-	            $scope.vmSnapshotList = result;
-	            // For pagination
-	            $scope.paginationObject.limit  = limit;
-	            $scope.paginationObject.currentPage = pageNumber;
-	            $scope.paginationObject.totalItems = result.totalItems;
-	        });
-		};
-		$scope.instanceList = {};
+	$scope.lists = function(pageNumber){
+		$scope.showLoaderOffer = true;
+		var limit = (angular.isUndefined($scope.paginationObjects.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObjects.limit;
+		var hasSnapshots = crudService.list("vmsnapshot", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+        hasSnapshots.then(function (result) {  // this is only run after
+												// $http completes0
+        	$scope.showLoaderOffer = false;
+            $scope.vmSnapshotList = result;
+            // For pagination
+            $scope.paginationObjects.limit  = limit;
+            $scope.paginationObjects.currentPage = pageNumber;
+            $scope.paginationObjects.totalItems = result.totalItems;
+        });
+	};
+	$scope.lists(1);
+	$scope.instanceList = {};
     $scope.instanceId = function(pageNumber) {
 		var hasUsers = crudService.listAll("virtualmachine/list");
 		hasUsers.then(function(result) { // this is only run after $http
@@ -147,16 +152,20 @@ localStorageService, $window, dialogService,$stateParams, notify, appService) {
 	  	 dialogService.openDialog("app/views/cloud/snapshot/createVm.jsp", 'md',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance, $rootScope) {
 	  		$scope.instanceId(1);
 	  		 $scope.validateVMSnapshot= function(form) {
+	  			$scope.showLoader = true;
 		  			$scope.formSubmitted = true;
                    if (form.$valid) {
                    	$scope.vmsnapshot.domainId = $scope.vmsnapshot.vm.domainId;
                    	$scope.vmsnapshot.vmId = $scope.vmsnapshot.vm.id;
 		  				var hasVm = crudService.add("vmsnapshot",$scope.vmsnapshot);
 		  				hasVm.then(function(result) {
-			   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.snapshotEvents.createvmsnapshot,result.id,$scope.global.sessionValues.id);
-		  					$state.reload();
+			                 appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.snapshotEvents.createvmsnapshot,result.id,$scope.global.sessionValues.id);
+		  					 $state.reload();
+		  					$scope.showLoader = false;
 		  					 $scope.cancel();
-		  				}).catch(function (result) { 
+		  					notify({message: $scope.vmsnapshot.name+" is creating for "+$scope.vmsnapshot.vm.name, classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+		  				}).catch(function (result) {
+		  					$scope.showLoader = false;
 		  				  $scope.homerTemplate = 'app/views/notification/notify.jsp';
 		                     notify({message: result.data.globalError[0], classes: 'alert-danger', "timeOut": "5000", templateUrl: $scope.homerTemplate});
 
@@ -193,12 +202,15 @@ localStorageService, $window, dialogService,$stateParams, notify, appService) {
     	 dialogService.openDialog("app/views/cloud/snapshot/delete-snapshot.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
              $scope.deleteObject = snapshot;
              $scope.ok = function () {
+            	 $scope.showLoader = true;
             	 var event = "VMSNAPSHOT.DELETE";
 				 var hasServer = crudService.vmUpdate("vmsnapshot/event", snapshot.uuid, event);
                  hasServer.then(function (result) {
-			   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.snapshotEvents.deleteSnapshots,result.id,$scope.global.sessionValues.id);
+                	 $scope.lists(1);
+			         appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.snapshotEvents.deleteSnapshots,result.id,$scope.global.sessionValues.id);
                 	 $scope.cancel();
-                	 $scope.list(1);
+                	 $scope.showLoader = false;
+                	 $modalInstance.close();
                      notify({message: 'Deleting '+snapshot.name, classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
 
                  }).catch(function (result) {
@@ -207,6 +219,8 @@ localStorageService, $window, dialogService,$stateParams, notify, appService) {
 			        	 var msg = result.data.globalError[0];
 			        	 notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
 			         }
+			         $scope.showLoader = false;
+			         $modalInstance.close();
                   });
              },
              $scope.cancel = function () {
@@ -237,12 +251,16 @@ localStorageService, $window, dialogService,$stateParams, notify, appService) {
    	 dialogService.openDialog("app/views/cloud/snapshot/revert-vmsnapshot.jsp", 'sm',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
 
    	     $scope.ok = function () {
+   	    	    $scope.showLoader = true;
    	    	    var event = "VMSNAPSHOT.REVERTTO";
 				var hasVm = crudService.vmUpdate("vmsnapshot/event", vmsnapshot.uuid, event);
 				hasVm.then(function(result) {
-			   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.snapshotEvents.restoresnapshot,result.id,$scope.global.sessionValues.id);
+				  $scope.lists(1);
+			      appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.snapshotEvents.restoresnapshot,result.id,$scope.global.sessionValues.id);
 				  $state.reload();
 				  $scope.cancel();
+				  $scope.showLoader = false;
+				  $modalInstance.close();
 				  notify({message: 'Reverting snapshot in VM '+vmsnapshot.vm.name, classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
 				}).catch(function (result) {
 
@@ -250,6 +268,8 @@ localStorageService, $window, dialogService,$stateParams, notify, appService) {
 			        	 var msg = result.data.globalError[0];
 			        	 notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
 			         }
+			         $scope.showLoader = false;
+			         $modalInstance.close();
                    });
    	     },
    	  $scope.cancel = function () {
