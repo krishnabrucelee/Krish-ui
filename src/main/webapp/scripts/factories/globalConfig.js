@@ -43,7 +43,7 @@ function globalConfig($window) {
         Math: window.Math,
 
  	STICKINESS : {
-				NONE: "NONE",
+				NONE: "None",
                 SOURCEBASED: "SourceBased",
         		APPCOOKIE: "AppCookie",
         		LBCOOKIE: "LbCookie"

@@ -171,7 +171,8 @@ function networksCtrl($scope, $sce, $rootScope,filterFilter, $state, $stateParam
     };
  //$scope.vmLists(1);
 
-$scope.selected = {};
+
+    $scope.selected = {};
     $scope.nicIPList = function (instance) {
 	var instanceId = instance;
 	$scope.selected = instanceId;
@@ -183,6 +184,7 @@ $scope.selected = {};
 
         });
     };
+
 
     $scope.showConsole = function (vm) {
         $scope.vm = vm;
@@ -461,7 +463,7 @@ $scope.ingressSave = function (form,firewallRuleIngress) {
                             });
                         }
                     } else {
-			
+
                         if ($scope.firewallRuleIngress.icmpType && $scope.firewallRuleIngress.icmpCode) {
 		    $scope.firewallRuleIngress.icmpMessage = $scope.firewallRuleIngress.icmpType;
                      delete $scope.firewallRuleIngress.startPort;
@@ -778,6 +780,7 @@ $scope.networkRestart ={};
     };
 
     $scope.vpnUserList = function (ipDetatils) {
+
     	var domainId = ipDetatils.network.domainId;
     	var departmentId = ipDetatils.network.departmentId;
     	$scope.showLoader = true;
@@ -1231,6 +1234,7 @@ $scope.networkRestart ={};
     $scope.LBlist = function (loadBalancer) {
 $scope.rulesvmList ={};
     $scope.stickiness = {};
+    $scope.loadBalancer = {};
     $scope.loadFormSubmitted = false;
   var ipAddressId = $stateParams.id1;
  	var hasloadBalancer = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL +"loadBalancer/list?ipAddressId="+$stateParams.id1 +"&lang=" + appService.localStorageService.cookie.get('language')+"&sortBy=-id");
@@ -1267,47 +1271,83 @@ appService.dialogService.openDialog("app/views/cloud/network/vm-list.jsp", 'lg' 
 	$scope.lbvmLists();
 
   $scope.loadbalancerSave = function(loadBalancer) {
+		loadBalancer.vmIpAddress = [];
   $scope.loadBalancer = $scope.global.rulesLB[0];
-  $scope.formSubmitted = true;
-  $scope.showLoader = true;
+    $scope.showLoader = true;
   $scope.loadBalancer.ipAddressId = $stateParams.id1;
   // var loadBalancer = angular.copy($scope.loadBalancer);
   $scope.loadBalancer.protocol = $scope.loadBalancer.protocol.toUpperCase();
   $scope.loadBalancer.state = $scope.loadBalancer.state.toUpperCase();
 	$scope.loadBalancer.state = $scope.loadBalancer.state.toUpperCase();
-loadBalancer.vmIpAddress = [];
-if (!angular.isUndefined(loadBalancer.vmIpAddress) && loadBalancer.vmIpAddress != null) {
+	console.log("lb",loadBalancer);
+	console.log("lb13",loadBalancer['loginSession']);
+	console.log("lbvmip",loadBalancer['vmIpAddress']);
+	$scope.flag = false;
+
+
+
+	if (!angular.isUndefined(loadBalancer.vmIpAddress) && loadBalancer.vmIpAddress != null ) {
+		angular.forEach(loadBalancer, function(obj, key) {
+		if(obj.lbvm && angular.isArray(obj.ipAddress)) {
+			if(obj.ipAddress.length>0) {
+				$scope.flag = true;
+			}
+		}
+
+	})
+}
+
+
+
+	console.log("==========",$scope.flag)
+
+
+
+if (!angular.isUndefined(loadBalancer.vmIpAddress) && loadBalancer.vmIpAddress != null ) {
 		angular.forEach(loadBalancer, function(obj, key) {
 		   if(obj.lbvm && angular.isArray(obj.ipAddress)) {
-			   angular.forEach(obj.ipAddress, function(vmIpAddress, vmIpAddressKey) {
+			   angular.forEach(obj.ipAddress, function(vmIpAddress, vmIpAddressKey) { alert("00000000000");
 			   	loadBalancer.vmIpAddress.push(vmIpAddress);
 			   })
-			}
 
-		})
-}
- $scope.loadBalancer.vmIpAddress = loadBalancer.vmIpAddress;
-$scope.loadBalancer.lbPolicy = {};
-	  var loadBalancerParams = ["stickinessMethod", "stickinessName", "stickyTableSize","cookieName","stickyExpires","stickyMode","stickyLength","stickyRequestLearn",
+
+			   console.log("lbvmip.................",loadBalancer.vmIpAddress);
+
+			   if (!angular.isUndefined(loadBalancer.vmIpAddress))
+			   	{
+				   $scope.loadBalancer.vmIpAddress = loadBalancer.vmIpAddress;
+				   console.log(loadBalancer.vmIpAddress);
+				   $scope.loadBalancer.lbPolicy = {};
+				   var loadBalancerParams = ["stickinessMethod", "stickinessName", "stickyTableSize","cookieName","stickyExpires","stickyMode","stickyLength","stickyRequestLearn",
               "stickyPrefix","stickyNoCache","stickyIndirect","stickyPostOnly","stickyCompany"];
-	for(var i=0; i < loadBalancerParams.length; i++) {
-				if(!angular.isUndefined($scope.stickiness[loadBalancerParams[i]]) && $scope.stickiness[loadBalancerParams[i]] != null){
-					$scope.loadBalancer.lbPolicy[loadBalancerParams[i]] = $scope.stickiness[loadBalancerParams[i]];
-				}
-			}
-  var hasLoadBalancer = appService.crudService.add("loadBalancer", $scope.loadBalancer);
-  hasLoadBalancer.then(function (result) { // this is only run after
-  appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.loadbalancerSave,result.id,$scope.global.sessionValues.id);
-  $scope.showLoader = true;
-      $scope.formSubmitted = false;
-      $scope.showLoader = false;
-      $modalInstance.close();
-      appService.notify({
-  message: 'LoadBalancer rule added successfully ',
+				   for(var i=0; i < loadBalancerParams.length; i++) {
+					   if(!angular.isUndefined($scope.stickiness[loadBalancerParams[i]]) && $scope.stickiness[loadBalancerParams[i]] != null){
+						   $scope.loadBalancer.lbPolicy[loadBalancerParams[i]] = $scope.stickiness[loadBalancerParams[i]];
+					   }
+				   }
 
+				   delete $scope.loadBalancer.lbPolicy.stickyTableSize;
+				   delete $scope.loadBalancer.lbPolicy.stickyExpires;
+				   delete $scope.loadBalancer.lbPolicy.stickyMode;
+				   delete $scope.loadBalancer.lbPolicy.stickyLength;
+				   delete $scope.loadBalancer.lbPolicy.stickyHoldTime;
+				   delete $scope.loadBalancer.lbPolicy.cookieName;
+				   delete $scope.loadBalancer.lbPolicy.stickyRequestLearn;
+				   delete $scope.loadBalancer.lbPolicy.stickyPrefix;
+				   delete $scope.loadBalancer.lbPolicy.stickyPostOnly;
+				   delete $scope.loadBalancer.lbPolicy.stickyIndirect;
+				   delete $scope.loadBalancer.lbPolicy.stickyNoCache;
+
+				   var hasLoadBalancer = appService.crudService.add("loadBalancer", $scope.loadBalancer);
+				   hasLoadBalancer.then(function (result) { // this is only run after
+					   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.loadbalancerSave,result.id,$scope.global.sessionValues.id);
+					   $scope.showLoader = true;
+					   $scope.formSubmitted = false;
+					   $scope.showLoader = false;
+					   $modalInstance.close();
+					   appService.notify({ message: 'LoadBalancer rule added successfully ',
           classes: 'alert-success',
           templateUrl: $scope.global.NOTIFICATION_TEMPLATE
-
       });
       $scope.LBlist(1);
   }).catch(function (result) {
@@ -1334,7 +1374,20 @@ $scope.loadBalancer.lbPolicy = {};
               });
           }
       }
-}) },
+}) }
+
+			}
+		})
+}
+	/*else if(loadBalancer.vmIpAddress.length == 0)  {
+	        submitError = true;
+        $scope.showLoader = false;
+       $scope.homerTemplate = 'app/views/notification/notify.jsp';
+        appService.notify({message: 'Select Instance or Select IpAddress belongs to an Instance ', classes: 'alert-danger',
+        	templateUrl: $scope.homerTemplate});
+
+	}*/
+  },
               $scope.cancel = function () {
                   $modalInstance.close();
               };
@@ -1392,6 +1445,9 @@ $scope.applyNewRule = function (size, loadBalancer) {
 			}
 
 		})
+		if(loadBalancer.algorithm == $scope.global.STICKINESS.NONE) {
+			delete loadBalancer.algorithm;
+		}
                   $scope.showLoader = true;
               var hasServer = appService.crudService.update("loadBalancer", loadBalancer);
               hasServer.then(function (result) {
@@ -2171,7 +2227,7 @@ $scope.stickyLoadBalancer.lbPolicy = {};
 
     $scope.formElements = {
         stickinessList: [
-            {id: 1, name: 'None'},
+            {id: 1, name: ''},
             {id: 2, name: 'SourceBased'},
             {id: 3, name: 'AppCookie'},
             {id: 4, name: 'LbCookie'},
@@ -2207,12 +2263,29 @@ $scope.editStickiness = function (size,loadBalancer) {
 			}
 		    delete $scope.stickyLoadBalancer.stickyTableSize;
 			delete $scope.stickyLoadBalancer.stickyExpires;
+			delete $scope.stickyLoadBalancer.stickyMode;
+			delete $scope.stickyLoadBalancer.stickyLength;
+			delete $scope.stickyLoadBalancer.stickyHoldTime;
 			delete $scope.stickyLoadBalancer.cookieName;
+			delete $scope.stickyLoadBalancer.stickyRequestLearn;
+			delete $scope.stickyLoadBalancer.stickyPrefix;
+			delete $scope.stickyLoadBalancer.stickyPostOnly;
+			delete $scope.stickyLoadBalancer.stickyIndirect;
+			delete $scope.stickyLoadBalancer.stickyNoCache;
                         $scope.showLoader = true;
-                        var hasServer = appService.crudService.update("loadBalancer", $scope.stickyLoadBalancer);
+                        console.log($scope.stickyLoadBalancer);
+                        var hasServer = appService.crudService.update("LbStickinessPolicy", $scope.stickyLoadBalancer);
                         hasServer.then(function (result) {
   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.editStickiness,result.id,$scope.global.sessionValues.id);
                             appService.notify({message: 'Policy updated successfully.', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                            $scope.stickiness.stickinessMethod = "";
+            			    $scope.stickiness.stickinessName = "";
+            			    $scope.stickiness.stickyTableSize = "";
+            			    $scope.stickiness.stickyExpires = "";
+                            $scope.stickiness.cookieName = "";
+                            $scope.stickiness.stickyMode = "";
+                            $scope.stickiness.stickyLength = "";
+                            $scope.stickiness.stickyHoldTime = "";
                             $modalInstance.close();
                             $scope.showLoader = false;
                         }).catch(function (result) {
