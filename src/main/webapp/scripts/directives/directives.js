@@ -27,6 +27,7 @@ angular
     .directive('appScroll', appScroll)
     .directive('templateQuickSearch', templateQuickSearch)
     .directive('paginationContent', paginationContent)
+    .directive('paginationContents', paginationContents)
     .directive('getLoaderImage', getLoaderImage)
     .directive('getLoaderImageOffer', getLoaderOfferImage)
     .directive('getLoaderImageDetail', getLoaderDetailImage)
@@ -680,6 +681,16 @@ function paginationContent() {
 
         },
         templateUrl: "app/views/common/pagination-content.jsp",
+    };
+}
+
+function paginationContents() {
+    return {
+        restrict: 'E',
+        link: function (scope, element, attrs) {
+
+        },
+        templateUrl: "app/views/common/pagination-contents.jsp",
     };
 }
 

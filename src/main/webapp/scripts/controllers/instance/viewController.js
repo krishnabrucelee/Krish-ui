@@ -132,7 +132,7 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
 
     $scope.networkTab = function() {
     	$scope.templateCategory = 'network';
-    } 
+    }
 
  // Volume List
 $scope.volume = {};
@@ -451,8 +451,10 @@ $scope.list = function () {
 							  	 appService.dialogService.openDialog("app/views/cloud/instance/createVmSnapshot.jsp", 'md',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance, $rootScope) {
 							  		 $scope.instance = vm;
 							  		 $scope.validateVMSnapshot= function(form) {
+
 								  			$scope.formSubmitted = true;
 						                    if (form.$valid) {
+						                    	$scope.showLoader = true;
 						                    	$scope.vmsnapshot.domainId = $scope.instance.domainId;
 						                    	$scope.vmsnapshot.vmId = $scope.instance.id;
 						                    	if (angular.isUndefined($scope.vmsnapshot.snapshotMemory) || $scope.vmsnapshot.snapshotMemory === null || $scope.vmsnapshot.snapshotMemory === '') {
@@ -460,13 +462,15 @@ $scope.list = function () {
 						                    	}
 								  				var hasVm = appService.crudService.add("vmsnapshot",$scope.vmsnapshot);
 								  				hasVm.then(function(result) {
-                                             appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.takeSnapshot,result.id,$scope.global.sessionValues.id);
+                                                    appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.takeSnapshot,result.id,$scope.global.sessionValues.id);
 								  					$scope.homerTemplate = 'app/views/notification/notify.jsp';
-								                     appService.notify({message: $scope.vmsnapshot.name+" is creating for "+$scope.instance.name, classes: 'alert-success', "timeOut": "5000", templateUrl: $scope.homerTemplate});
-								  					 $state.reload();
-								  					 $scope.cancel();
+								                    appService.notify({message: $scope.vmsnapshot.name+" is creating for "+$scope.instance.name, classes: 'alert-success', "timeOut": "5000", templateUrl: $scope.homerTemplate});
+								  					$modalInstance.close();
+								  					$scope.showLoader = false;
+								  				    $window.location.href = '#/snapshot/list';
 								  				}).catch(function (result) {
-								  				    $state.reload();
+								  					 $scope.showLoader = false;
+								  				     $state.reload();
 									  			     $scope.cancel();
 						                        });
 						                    }

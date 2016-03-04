@@ -7,7 +7,7 @@
 angular.module('homer').controller('instanceListCtrl', instanceListCtrl)
 		.controller('instanceDetailsCtrl', instanceDetailsCtrl)
 
-function instanceListCtrl($scope, $sce, $log, $filter, dialogService, promiseAjax, $state,
+function instanceListCtrl($scope, $sce, $log, $filter, dialogService,$timeout, promiseAjax, $state,
 		globalConfig, crudService,$modal, localStorageService, $window, notify, appService, $stateParams) {
 
 
@@ -31,7 +31,8 @@ function instanceListCtrl($scope, $sce, $log, $filter, dialogService, promiseAja
 	$scope.paginationObject = {};
     $scope.sort = appService.globalConfig.sort;
     $scope.changeSorting = appService.utilService.changeSorting;
-
+    $scope.paginationObject.sortOrder = '+';
+    $scope.paginationObject.sortBy = 'name';
     if ($stateParams.id > 0) {
         var hasServer = appService.crudService.read("virtualmachine", $stateParams.id);
         hasServer.then(function (result) {  // this is only run after $http
@@ -51,31 +52,36 @@ function instanceListCtrl($scope, $sce, $log, $filter, dialogService, promiseAja
 	   $scope.hostList();
 
 	   $scope.showConsole = function(vm) {
-		   $scope.vm = vm;
-		   var hasVms = crudService.updates("virtualmachine/console", vm);
-		   hasVms.then(function(result) {
-			   var consoleUrl = result.success + "&displayname="+vm.displayName;
-			   window.open($sce.trustAsResourceUrl(consoleUrl), vm.name + vm.id,'width=750,height=460');
-			   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.showConsole,result.id,$scope.global.sessionValues.id);
-		   });
+		   var hasServer = appService.crudService.read("virtualmachine", vm.id);
+	       hasServer.then(function (result) {
+	    	   $scope.vm = result;
+	    	   var hasVms = crudService.updates("virtualmachine/console",  $scope.vm);
+			   hasVms.then(function(result) {
+				   var consoleUrl = result.success + "&displayname="+$scope.vm.displayName;
+				   window.open($sce.trustAsResourceUrl(consoleUrl), $scope.vm.name + $scope.vm.id,'width=750,height=460');
+				   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.showConsole,result.id,$scope.global.sessionValues.id);
+			   });
+	       });
 
 	   }
 
 
 	   $scope.startVm = function(size, item) {
-	       $scope.instance = item;
 	       if($scope.global.sessionValues.type === 'ROOT_ADMIN'){
 	           size = 'md';
 	       } else {
 	    		size = 'sm';
 	       }
 	       appService.dialogService.openDialog("app/views/cloud/instance/start.jsp", size,  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
-		       var vms = item;
+		       var vms = {};
 		  	   var event = "VM.START";
 		  	   $scope.update= function(form) {
-		  	       vms.event = event;
 		  		   $scope.formSubmitted = true;
 	               if (form.$valid) {
+	            	   var hasServer = appService.crudService.read("virtualmachine", item.id);
+				       hasServer.then(function (result) {
+				    	   vms = result;
+				  	       vms.event = event;
 	                   if($scope.instance.host != null) {
 	                       vms.hostUuid = $scope.instance.host.uuid;
 	                   }
@@ -83,13 +89,14 @@ function instanceListCtrl($scope, $sce, $log, $filter, dialogService, promiseAja
 
 			  		       hasVm.then(function(result) {
 			  		    	 appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.startVm,result.id,$scope.global.sessionValues.id);
-			                   $state.reload();
+			  		    	 $scope.list($scope.paginationObject.currentPage);
 			  				   $scope.cancel();
 			  			   }).catch(function (result) {
 
-			  				  $state.reload();
                               $scope.cancel();
 		                    });
+
+				       });
 		  		 }
 
 	                },
@@ -104,37 +111,45 @@ function instanceListCtrl($scope, $sce, $log, $filter, dialogService, promiseAja
 	               value2 : true
 	             };
 	  $scope.stopVm = function(size,item) {
-              $scope.item =item;
+		  $scope.item = item;
              appService.dialogService.openDialog("app/views/cloud/instance/stop.jsp", size,  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
-                     $scope.item = item;
-                    $scope.vmStop = function(item) {
+                            $scope.vmStop = function(item) {
                             var event = "VM.STOP";
                             $scope.actionExpunge = true;
                             if ($scope.agree.value1) {
+                      		  var hasServer = appService.crudService.read("virtualmachine", item.id);
+                      	       hasServer.then(function (result) {
+                      	         item = result;
                                  item.transForcedStop = $scope.agree.value1;
                                  item.event = event;
                                  var hasVm = appService.crudService.updates("virtualmachine/handleevent/vm", item);
                                  hasVm.then(function(result) {
-                                        $state.reload();
+                                	 $scope.list($scope.paginationObject.currentPage);
                                         $scope.cancel();
                                         appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.stopVm,result.id,$scope.global.sessionValues.id);
                                  }).catch(function (result) {
-                                        $state.reload();
                                         $scope.cancel();
 
                                  });
+
+                      	       });
                             } else {
                               var event = "VM.STOP";
+
+                      		  var hasServer = appService.crudService.read("virtualmachine", item.id);
+                      	       hasServer.then(function (result) {
+                      	    	   item = result;
                                     var hasVm = appService.crudService.vmUpdate("virtualmachine/handlevmevent", item.uuid, event);
                                     hasVm.then(function(result) {
                                             $state.reload();
                                              $scope.cancel();
                                              appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.stopVm,result.id,$scope.global.sessionValues.id);
                                     }).catch(function (result) {
-                                      $state.reload();
+                                    	 $scope.list($scope.paginationObject.currentPage);
                                       $scope.cancel();
 
                                     });
+                      	       });
                               }
                             },
                               $scope.cancel = function () {
@@ -144,15 +159,18 @@ function instanceListCtrl($scope, $sce, $log, $filter, dialogService, promiseAja
       };
     $scope.rebootVm = function(size,item) {
     	 dialogService.openDialog("app/views/cloud/instance/reboot.jsp", size,  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
-    		 $scope.item =item;
-    		 $scope.vmRestart = function(item) {
+    		  $scope.vmRestart = function(item) {
     				var event = "VM.REBOOT";
+    				 var hasServer = appService.crudService.read("virtualmachine", item.id);
+            	       hasServer.then(function (result) {
+            	    	   item = result;
     				var hasVm = crudService.vmUpdate("virtualmachine/handlevmevent", item.uuid, event);
     				hasVm.then(function(result) {
-    					$state.reload();
+    					 $scope.list($scope.paginationObject.currentPage);
     					 $scope.cancel();
     	    				appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.rebootVm,result.id,$scope.global.sessionValues.id);
     				});
+            	       });
     			},
 			  $scope.cancel = function () {
                  $modalInstance.close();
@@ -172,14 +190,15 @@ function instanceListCtrl($scope, $sce, $log, $filter, dialogService, promiseAja
 	} else {
 	$scope.vm.status=$window.sessionStorage.getItem("status");
         }
+
 		$scope.showLoader = true;
 		var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
 
-		var hasUsers =  promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "virtualmachine/listByStatus" +"?lang=" + localStorageService.cookie.get('language') + "&status="+$scope.vm.status+"&sortBy=+name&limit="+limit,  $scope.global.paginationHeaders(pageNumber, limit), {
+		var hasUsers =  promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "virtualmachine/listByStatus" +"?lang=" + localStorageService.cookie.get('language') + "&status="+$scope.vm.status+"&sortBy="+$scope.paginationObject.sortOrder+$scope.paginationObject.sortBy+"&limit="+limit,  $scope.global.paginationHeaders(pageNumber, limit), {
 			"limit" : limit
 		})
 
-		$scope.borderContent = status
+		$scope.borderContent = status;
 		hasUsers.then(function(result) { // this is only run after $http
 			// completes0
 			$scope.instanceList = result;
@@ -187,7 +206,7 @@ function instanceListCtrl($scope, $sce, $log, $filter, dialogService, promiseAja
 
                 $scope.instancesList.Count = 0;
            		 for (i = 0; i < result.length; i++) {
-            		 if($scope.instanceList[i].status.indexOf("Expunging") > -1) {
+            		 if($scope.instanceList[i].status.indexOf("EXPUNGING") > -1) {
             		 $scope.instancesList.Count++;
            		  }
            		 }
@@ -207,6 +226,49 @@ function instanceListCtrl($scope, $sce, $log, $filter, dialogService, promiseAja
 	};
 
 	$scope.list(1, "Expunging");
+
+	$scope.changeSort = function(sortBy, pageNumber) {
+			var sort = globalConfig.sort;
+			if (sort.column == sortBy) {
+				sort.descending = !sort.descending;
+			} else {
+				sort.column = sortBy;
+				sort.descending = false;
+			}
+			var sortOrder = '-';
+			if(!sort.descending){
+				sortOrder = '+';
+			}
+			$scope.paginationObject.sortOrder = sortOrder;
+			$scope.paginationObject.sortBy = sortBy;
+			$scope.showLoader = true;
+			var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
+
+			var hasUsers =  promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "virtualmachine/listByStatus" +"?lang=" + localStorageService.cookie.get('language') + "&status="+$scope.vm.status+"&sortBy="+sortOrder+sortBy+"&limit="+limit,  $scope.global.paginationHeaders(pageNumber, limit), {
+				"limit" : limit
+			})
+
+			$scope.borderContent = $scope.vm.status;
+			hasUsers.then(function(result) { // this is only run after $http
+				// completes0
+				$scope.instanceList = result;
+				// For pagination
+
+	                $scope.instancesList.Count = 0;
+	           		 for (i = 0; i < result.length; i++) {
+	            		 if($scope.instanceList[i].status.indexOf("EXPUNGING") > -1) {
+	            		 $scope.instancesList.Count++;
+	           		  }
+	           		 }
+
+				$scope.paginationObject.limit = limit;
+				$scope.paginationObject.currentPage = pageNumber;
+				$scope.paginationObject.totalItems = result.totalItems;
+				$scope.paginationObject.sortOrder = sortOrder;
+				$scope.paginationObject.sortBy = sortBy;
+				$scope.showLoader = false;
+			});
+		};
 
 
 	$scope.openAddInstance = function(size) {
@@ -233,13 +295,17 @@ function instanceListCtrl($scope, $sce, $log, $filter, dialogService, promiseAja
 	};
 
 	$scope.showDescription = function(vm) {
-            $scope.instance = vm;
-            appService.dialogService.openDialog("app/views/cloud/instance/displaynote.jsp", 'sm',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
+		 var hasServer = appService.crudService.read("virtualmachine", vm.id);
+	       hasServer.then(function (result) {
+	    	   $scope.instance = result;
+	    	   appService.dialogService.openDialog("app/views/cloud/instance/displaynote.jsp", 'sm',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
 
-                $scope.cancel = function () {
-                        $modalInstance.close();
-                };
-            }]);
+	                $scope.cancel = function () {
+	                        $modalInstance.close();
+	                };
+	            }]);
+	       });
+
          };
 
 	$scope.addApplication = function(vm) {
@@ -250,24 +316,28 @@ function instanceListCtrl($scope, $sce, $log, $filter, dialogService, promiseAja
     		       });
 
 	  	 appService.dialogService.openDialog("app/views/cloud/instance/add-application.jsp", 'md',  $scope, ['$scope', '$modalInstance','$rootScope', function ($scope, $modalInstance , $rootScope) {
-	  		var tempVm = vm;
+
 	  		 var event = "ADD.APPLICATION";
 	  		 $scope.addApplicationtoVM = function(form) {
 	  			$scope.formSubmitted =true;
 	  			 if(form.$valid) {
-	  				tempVm.application = $scope.application;
-	  				tempVm.applicationList = $scope.applications;
-	  				tempVm.event = event;
-		  				var hasVm = appService.crudService.updates("virtualmachine/handleevent/vm", tempVm);
-		  				hasVm.then(function(result) {
-		  					$scope.homerTemplate = 'app/views/notification/notify.jsp';
-		                     appService.notify({message: $scope.application+" is adding to this VM", classes: 'alert-success', "timeOut": "5000", templateUrl: $scope.homerTemplate});
-		  					 $state.reload();
-		  					 $scope.cancel();
-		  				}).catch(function (result) {
-		  				  $state.reload();
-                          $scope.cancel();
-	                            });
+	  				var hasServer = appService.crudService.read("virtualmachine", vm.id);
+	  		       hasServer.then(function (result) {
+	  		    	 $scope.tempVm = result;
+	 	 		     $scope.tempVm.application = $scope.application;
+	 	 		    $scope.tempVm.applicationList = $scope.applications;
+	 	 		     $scope.tempVm.event = event;
+	 		  				var hasVm = appService.crudService.updates("virtualmachine/handleevent/vm", $scope.tempVm);
+	 		  				hasVm.then(function(result) {
+	 		  					$scope.homerTemplate = 'app/views/notification/notify.jsp';
+	 		                     appService.notify({message: $scope.application+" is adding to this VM", classes: 'alert-success', "timeOut": "5000", templateUrl: $scope.homerTemplate});
+	 		  				     $scope.list($scope.paginationObject.currentPage);
+	 		                     $scope.cancel();
+	 		  				}).catch(function (result) {
+	 	                    });
+
+
+	  		       });
 	  			 }
 	  			},
 				  $scope.cancel = function () {

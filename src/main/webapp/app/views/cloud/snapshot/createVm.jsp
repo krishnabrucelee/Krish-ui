@@ -54,13 +54,12 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group" >
+                    <div class="form-group" ng-class="{'text-danger': vmsnapshotForm.snapshotMemory.$invalid && formSubmitted}">
                         <div class="row" >
-                            <label class="col-md-3 col-sm-3 control-label" ><fmt:message key="snapshot.memory" bundle="${msg}" />
-
+                            <label class="col-md-3 col-sm-3 control-label" ><fmt:message key="snapshot.memory" bundle="${msg}" /> <span class="text-danger">*</span>
                             </label>
                             <div class="col-md-5 col-sm-5">
-                                <label> <input icheck type="checkbox" value="true" data-ng-model="vmsnapshot.snapshotMemory"> </label>
+                                <label> <input icheck type="checkbox" name="snapshotMemory"  required value="true" data-ng-model="vmsnapshot.snapshotMemory" data-ng-class="{'error':  vmsnapshotForm.snapshotMemory.$invalid && formSubmitted}" > </label>
 
 
 
@@ -99,8 +98,9 @@
 
 
         <div class="modal-footer">
-            <button type="button" class="btn btn-default " ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.cancel" bundle="${msg}" /></button>
-            <button class="btn btn-info" type="submit"><fmt:message key="common.create" bundle="${msg}" /></button>
+            <get-loader-image data-ng-show="showLoader"></get-loader-image>
+            <button type="button" data-ng-hide="showLoader" class="btn btn-default " ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.cancel" bundle="${msg}" /></button>
+            <button class="btn btn-info" data-ng-hide="showLoader" type="submit"><fmt:message key="common.create" bundle="${msg}" /></button>
 
         </div></div>
 </form>
