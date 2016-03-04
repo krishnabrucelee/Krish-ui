@@ -64,7 +64,7 @@
 							<get-loader-image data-ng-show="showLoader"></get-loader-image>
 						</div>
 						<div data-ng-hide="showLoader" class="table-responsive col-12-table">
-							<table cellspacing="1" cellpadding="1" id="departments_table" class="table dataTable table-bordered table-striped ">
+							<table cellspacing="1" cellpadding="1" id="instances_table" class="table dataTable table-bordered table-striped ">
 								<thead>
 									<tr>
 										<th ng-click="changeSorting('name')" data-ng-class="sort.descending && sort.column =='name'? 'sorting_desc' : 'sorting_asc' ">
