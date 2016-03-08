@@ -6,7 +6,7 @@ angular
         .module('homer')
         .controller('departmentCtrl', departmentCtrl)
 
-function departmentCtrl($scope, $sce, appService) {
+function departmentCtrl($scope, $sce, appService, localStorageService, globalConfig) {
 
   $scope.$on(appService.globalConfig.webSocketEvents.departmentEvents.createDepartment, function() {
 
@@ -27,8 +27,39 @@ function departmentCtrl($scope, $sce, appService) {
     $scope.global = appService.globalConfig;
     $scope.sort = appService.globalConfig.sort;
     $scope.changeSorting = appService.utilService.changeSorting;
+    $scope.paginationObject.sortOrder = '+';
+    $scope.paginationObject.sortBy = 'name';
 
+    $scope.changeSort = function(sortBy, pageNumber) {
+			var sort = appService.globalConfig.sort;
+			if (sort.column == sortBy) {
+				sort.descending = !sort.descending;
+			} else {
+				sort.column = sortBy;
+				sort.descending = false;
+			}
+			var sortOrder = '-';
+			if(!sort.descending){
+				sortOrder = '+';
+			}
+			$scope.paginationObject.sortOrder = sortOrder;
+			$scope.paginationObject.sortBy = sortBy;
+			$scope.showLoader = true;
+			var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
+                        var hasDepartmentLists =  appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "departments" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+sortOrder+sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
 
+			hasDepartmentLists.then(function(result) { // this is only run after $http
+				// completes0
+				$scope.departmentList = result;
+				// For pagination
+				$scope.paginationObject.limit = limit;
+				$scope.paginationObject.currentPage = pageNumber;
+				$scope.paginationObject.totalItems = result.totalItems;
+				$scope.paginationObject.sortOrder = sortOrder;
+				$scope.paginationObject.sortBy = sortBy;
+				$scope.showLoader = false;
+			});
+		};
 
     // Department List
     $scope.list = function (pageNumber) {

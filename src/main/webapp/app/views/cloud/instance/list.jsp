@@ -47,7 +47,7 @@
 								id="instances_refresh_button" title="<fmt:message key="common.refresh" bundle="${msg}" />" ui-sref-opts="{reload: true}"
 							><span class="fa fa-refresh fa-lg "></span></a>
 						</div>
-						<div class="pull-right">
+						<div class="pull-right" id="instances_quick_search">
 							<panda-quick-search></panda-quick-search>
 							<div class="clearfix"></div>
 							<span class="pull-right m-l-sm m-t-sm">
@@ -57,7 +57,7 @@
 				</div>
 				<div class="clearfix"></div>
 			</div>
-			<div class="row">
+			<div class="row" id="instances_pagination_container">
 				<div class="col-md-12 col-sm-12 col-xs-12 ">
 					<div class="white-content">
 						<div data-ng-show="showLoader" style="margin: 1%">

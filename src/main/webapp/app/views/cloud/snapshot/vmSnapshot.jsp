@@ -37,12 +37,12 @@
                         <table cellspacing="1" cellpadding="1" class="table dataTable table-bordered table-striped">
                             <thead>
                             <tr>
-                                <th class="col-md-2 col-sm-2" data-ng-click="changeSorting('name')" data-ng-class="sort.descending && sort.column =='name'? 'sorting_desc' : 'sorting_asc'"><fmt:message key="common.name" bundle="${msg}" /></th>
-                                <th class="col-md-2 col-sm-2" data-ng-click="changeSorting('description')" data-ng-class="sort.descending && sort.column =='description'? 'sorting_desc' : 'sorting_asc'"><fmt:message key="common.description" bundle="${msg}" /></th>
-                                <th class="col-md-2 col-sm-2" data-ng-click="changeSorting('vm.name')" data-ng-class="sort.descending && sort.column =='vm.name'? 'sorting_desc' : 'sorting_asc'"><fmt:message key="common.instance" bundle="${msg}" /></th>
-                                <th class="col-md-2 col-sm-2" data-ng-click="changeSorting('snapshot.isCurrent')" data-ng-class="sort.descending && sort.column =='snapshot.isCurrent'? 'sorting_desc' : 'sorting_asc'"><fmt:message key="common.iscurrent" bundle="${msg}" /></th>
-                                <th class="col-md-2 col-sm-2" data-ng-click="changeSorting('createdDateTime')" data-ng-class="sort.descending && sort.column =='createdDateTime'? 'sorting_desc' : 'sorting_asc'"><fmt:message key="common.created.date" bundle="${msg}" /></th>
-                                <th class="col-md-2 col-sm-2" data-ng-click="changeSorting('status')" data-ng-class="sort.descending && sort.column =='status'? 'sorting_desc' : 'sorting_asc'"><fmt:message key="common.status" bundle="${msg}" /></th>
+                                <th class="col-md-2 col-sm-2" data-ng-click="changeSort('name',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='name'? 'sorting_desc' : 'sorting_asc'"><fmt:message key="common.name" bundle="${msg}" /></th>
+                                <th class="col-md-2 col-sm-2" data-ng-click="changeSort('description',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='description'? 'sorting_desc' : 'sorting_asc'"><fmt:message key="common.description" bundle="${msg}" /></th>
+                                <th class="col-md-2 col-sm-2" data-ng-click="changeSort('vm.name',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='vm.name'? 'sorting_desc' : 'sorting_asc'"><fmt:message key="common.instance" bundle="${msg}" /></th>
+                                <th class="col-md-2 col-sm-2" data-ng-click="changeSort('snapshot.isCurrent',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='snapshot.isCurrent'? 'sorting_desc' : 'sorting_asc'"><fmt:message key="common.iscurrent" bundle="${msg}" /></th>
+                                <th class="col-md-2 col-sm-2" data-ng-click="changeSort('createdDateTime',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='createdDateTime'? 'sorting_desc' : 'sorting_asc'"><fmt:message key="common.created.date" bundle="${msg}" /></th>
+                                <th class="col-md-2 col-sm-2" data-ng-click="changeSort('status',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='status'? 'sorting_desc' : 'sorting_asc'"><fmt:message key="common.status" bundle="${msg}" /></th>
                                 <th class="col-md-1 col-sm-1"><fmt:message key="common.action" bundle="${msg}" /></th>
                             </tr>
                         </thead>

@@ -8,7 +8,7 @@ angular
         .module('homer')
         .controller('sshkeyListCtrl', sshkeyListCtrl)
 
-function sshkeyListCtrl($scope,appService,$state) {
+function sshkeyListCtrl($scope,appService,$state,localStorageService, globalConfig) {
 
     $scope.$on(appService.globalConfig.webSocketEvents.sshKeyEvents.createSSHKey, function() {
 
@@ -27,6 +27,39 @@ function sshkeyListCtrl($scope,appService,$state) {
     $scope.sort = appService.globalConfig.sort;
     $scope.changeSorting = appService.utilService.changeSorting;
     $scope.userElement = {};
+    $scope.paginationObject.sortOrder = '+';
+    $scope.paginationObject.sortBy = 'name';
+
+    $scope.changeSort = function(sortBy, pageNumber) {
+		var sort = appService.globalConfig.sort;
+		if (sort.column == sortBy) {
+			sort.descending = !sort.descending;
+		} else {
+			sort.column = sortBy;
+			sort.descending = false;
+		}
+		var sortOrder = '-';
+		if(!sort.descending){
+			sortOrder = '+';
+		}
+		$scope.paginationObject.sortOrder = sortOrder;
+		$scope.paginationObject.sortBy = sortBy;
+		$scope.showLoader = true;
+		var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
+                    var hasSSHKeysLists =  appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "sshkeys" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+sortOrder+sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+
+                    hasSSHKeysLists.then(function(result) { // this is only run after $http
+			// completes0
+			$scope.sshkeyList = result;
+			// For pagination
+			$scope.paginationObject.limit = limit;
+			$scope.paginationObject.currentPage = pageNumber;
+			$scope.paginationObject.totalItems = result.totalItems;
+			$scope.paginationObject.sortOrder = sortOrder;
+			$scope.paginationObject.sortBy = sortBy;
+			$scope.showLoader = false;
+		});
+	};
 
     // SSH Key List
     $scope.list = function (pageNumber) {
