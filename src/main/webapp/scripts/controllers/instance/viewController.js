@@ -368,7 +368,7 @@ $scope.list = function () {
 	  			 		var hasVm = appService.crudService.update("virtualmachine", $scope.vm);
 		  				hasVm.then(function(result) {
                                              appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.updateDisplayName,result.id,$scope.global.sessionValues.id);
-                            appService.notify({message: 'Updated successfully', classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                            appService.notify({message: 'Updated successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
 
                              $state.reload();
 		  					 $scope.cancel();
