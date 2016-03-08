@@ -64,7 +64,7 @@
 							<get-loader-image data-ng-show="showLoader"></get-loader-image>
 						</div>
 						<div data-ng-hide="showLoader" class="table-responsive col-12-table">
-							<table cellspacing="1" cellpadding="1" class="table dataTable table-bordered table-striped ">
+							<table cellspacing="1" cellpadding="1" id="instances_table" class="table dataTable table-bordered table-striped ">
 								<thead>
 									<tr>
 										<th ng-click="changeSort('name',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='name'? 'sorting_desc' : 'sorting_asc' ">
@@ -102,7 +102,7 @@
 									<tr
 										data-ng-repeat="instance in filteredCount = (instanceList | filter: quickSearch  |orderBy:sort.column:sort.descending) ">
 
-										<td><a class="text-info" ui-sref="cloud.list-instance.view-instance({id: {{ instance.id}}})"
+										<td><a class="text-info" id="instances_name_button" ui-sref="cloud.list-instance.view-instance({id: {{ instance.id}}})"
 											title="View Instance">
 										{{ instance.name}}</a></td>
 										<td>{{ instance.instanceOwner}}</td>
@@ -167,29 +167,29 @@
 										<div class="">
 													<div has-permission="START_VM"
 														data-ng-if="instance.status != 'ERROR' || instance.status != 'EXPUNGING' || instance.status != 'STARTING' || instance.status != 'STOPPING' || instance.status != 'DESTROYING'  ">
-													<a class="icon-button text-center" title="<fmt:message key="start" bundle="${msg}" />"
+													<a class="icon-button text-center test_instances_start_vm_button" id="instances_start_vm_button_{{instance.id}}" title="<fmt:message key="start" bundle="${msg}" />"
 														data-ng-click="startVm('sm',instance)" data-ng-if="instance.status == 'STOPPED'"
 													> <span class="fa fa-play m-xs"></span>
 													</a></div>
 													<div has-permission="STOP_VM"
 														data-ng-if="instance.status != 'ERROR' || instance.status != 'EXPUNGING' || instance.status != 'STARTING' || instance.status != 'STOPPING' || instance.status != 'DESTROYING'  "
-													><a class="icon-button text-center" data-ng-click="stopVm('sm',instance)"
+													><a class="icon-button text-center test_instances_stop_vm_button" id="instances_stop_vm_button_{{instance.id}}" data-ng-click="stopVm('sm',instance)"
 														title="<fmt:message key="stop" bundle="${msg}" />" data-ng-if="instance.status  == 'RUNNING'"
 													> <span class="fa fa-ban m-xs"></span>
 													</a></div>
 													<div has-permission="REBOOT_VM"
 														data-ng-if="instance.status != 'ERROR' || instance.status != 'EXPUNGING' || instance.status != 'STARTING' || instance.status != 'STOPPING' || instance.status != 'DESTROYING'  "
-													><a class="icon-button text-center" data-ng-if="instance.status == 'RUNNING'"
+													><a class="icon-button text-center test_instances_reboot_vm_button" id="instances_reboot_vm_button_{{instance.id}}" data-ng-if="instance.status == 'RUNNING'"
 														title="<fmt:message key="restart" bundle="${msg}" />" data-ng-click="rebootVm('sm',instance)"
 													><span class="fa fa-rotate-left m-xs"></span>  </a></div>
 													<div has-permission="VIEW_CONSOLE" data-ng-if="instance.status == 'RUNNING'"><a
-														data-ng-click="showConsole(instance)" class="icon-button text-center"
+														data-ng-click="showConsole(instance)" id="instances_view_console_button_{{instance.id}}" class="icon-button text-center test_instances_view_console_button"
 														title="<fmt:message key="view.console" bundle="${msg}" />"
 													><span class="fa-desktop fa m-xs"></span>  </a></div>
-													<div><a class="icon-button text-center" title="<fmt:message key="display.note" bundle="${msg}" />"
+													<div><a class="icon-button text-center test_instances_display_note_button" id="instances_display_note_button_{{instance.id}}" title="<fmt:message key="display.note" bundle="${msg}" />"
 														data-ng-click="showDescription(instance)"
 													><span class="fa-file-text fa m-xs"></span>  </a></div>
-													<div data-ng-if="instance.application == null"><a class="icon-button text-center"
+													<div data-ng-if="instance.application == null"><a class="icon-button text-center test_instances_add_application_button" id="instances_add_application_button_{{instance.id}}"
 														title="<fmt:message key="instance.application.assign" bundle="${msg}" />"
 														data-ng-click="addApplication(instance)"
 													><span class="fa-plus fa m-xs"></span>
