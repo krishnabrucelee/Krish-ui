@@ -49,10 +49,8 @@
                                     <div class="clearfix"></div>
                                     <span class="pull-right m-l-sm m-t-sm">
                                         <a has-permission="CREATE_USER" class="btn btn-info" data-ng-click="addUser('lg')"><span class="pe-7s-add-user pe-lg font-bold m-r-xs"></span><fmt:message key="add.user" bundle="${msg}" /></a>
-                                        <a has-permission="EDIT_USER" data-ng-class="oneChecked && edit ? 'btn btn-info' : 'btn btn-default disabled'" data-ng-disabled="!oneChecked"  data-ng-click="editUser('md')"><span class="fa fa-edit font-bold m-r-xs"></span><fmt:message key="edit.user" bundle="${msg}" /></a>
                                         <!-- <a data-ng-class="disabled && activate ? 'btn btn-info' : 'btn btn-default disabled'" data-ng-click="activating()"><span class="pe-7s-user pe-lg font-bold m-r-xs"></span>Activate User</a>
                                         <a data-ng-class="disabled && revoke ? 'btn btn-info' : 'btn btn-default disabled'" data-ng-click="revoking()" ><span class="pe-7s-delete-user pe-lg font-bold m-r-xs"></span>Revoke User</a> -->
-                                        <a has-permission="DELETE_USER" data-ng-class="oneChecked && deletes ? 'btn btn-info' : 'btn btn-default disabled'" data-ng-disabled="!oneChecked" data-ng-click="deleteUser('sm')"><span class="pe-7s-trash pe-lg font-bold m-r-xs"></span><fmt:message key="delete.user" bundle="${msg}" /></a>
                                         <a class="btn btn-info " ui-sref="accounts" title="Refresh"  ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
                                     </span>
                                 </div>
@@ -72,33 +70,39 @@
                                     <table cellspacing="1" cellpadding="1" class="table table-bordered dataTable table-striped ">
                                         <thead>
                                         <tr>
-                                                <th class="w-5"></th>
-
-                                     	<th  data-ng-click="changeSorting('userName')" data-ng-class="sort.descending && sort.column =='userName'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="user.name" bundle="${msg}" /></th>
-                                     	<th  data-ng-click="changeSorting('firstName')" data-ng-class="sort.descending && sort.column =='firstName'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="first.name" bundle="${msg}" /></th>
+                                        <th  data-ng-click="changeSorting('userName')" data-ng-class="sort.descending && sort.column =='userName'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="user.name" bundle="${msg}" /></th>
+                                     	<th  data-ng-click="changeSorting('department.userName')" data-ng-class="sort.descending && sort.column =='department.userName'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.department" bundle="${msg}" /></th>
+                                     	<th  data-ng-click="changeSorting('domain.name')" data-ng-class="sort.descending && sort.column =='domain.name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.domain" bundle="${msg}" /></th>
                                      	<th  data-ng-click="changeSorting('type')" data-ng-class="sort.descending && sort.column =='type'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="user.type" bundle="${msg}" /></th>
                                      	<th  data-ng-click="changeSorting('email')" data-ng-class="sort.descending && sort.column =='email'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.email" bundle="${msg}" /></th>
-                                     	<th  data-ng-click="changeSorting('userName')" data-ng-class="sort.descending && sort.column =='userName'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.status" bundle="${msg}" /></th>
-
+                                     	<th  data-ng-click="changeSorting('isActive')" data-ng-class="sort.descending && sort.column =='isActive'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.status" bundle="${msg}" /></th>
+										<th><fmt:message key="common.action" bundle="${msg}" /></th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                             <tr data-ng-repeat="account in filteredCount = (accountList| filter: quickSearch | orderBy:sort.column:sort.descending)">
                                                 <td>
-													<div class="radio radio-single radio-info">
-														<input type="radio" value="{{account.id}}" data-ng-model="account.isSelected" id="acc_{{account.id}}" name = "accounts" data-ng-click="viewAccountd(account)"> <label></label>
-													</div>
-                                                </td>
-                                                <td>
-                                                    <a class="text-info"  data-ng-click="viewAccountd(account)">{{ account.userName}}</a>
+                                                    <a class="text-info" >{{ account.userName}}</a>
                                                </td>
-                                                <td>{{account.firstName}}</td>
+                                                <td>{{account.department.userName}}</td>
+                                                <td>{{account.domain.name}}</td>
                                                 <td>{{account.type}}</td>
                                                 <td>{{account.email}}</td>
                                                 <td>
                                                     <label class="badge badge-success p-xs" data-ng-if="account.isActive == true"> Active </label>
                                                     <label class="badge badge-danger p-xs" data-ng-if="account.isActive == false"> Inactive </label>
                                                 </td>
+                                                <td><a class="icon-button"
+													has-permission="EDIT_USER"
+													title="<fmt:message key="edit.user" bundle="${msg}" />"
+													data-ng-click="editUser('md',account)">
+														<span class="fa fa-edit m-r"> </span>
+												</a>
+												 <a
+													class="icon-button" has-permission="DELETE_USER"
+													title="<fmt:message key="common.delete" bundle="${msg}" /> "
+													data-ng-click="deleteUser('sm',account)"><span
+														class="fa fa-trash"></span></a></td>
                                             </tr>
                                         </tbody>
                                     </table>
