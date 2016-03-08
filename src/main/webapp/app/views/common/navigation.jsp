@@ -11,7 +11,7 @@
             </a>
         </li>
         <li ng-class="{active: $state.includes('cloud')}" >
-            <a href="#"><span class="pe-7s-cloud pe-2x nav-menu-icons"></span> <span class="nav-label"><fmt:message key="common.cloud" bundle="${msg}" /> </span><span class="fa arrow"></span> </a>
+            <a href="#" id="cloud_navigation_button"><span class="pe-7s-cloud pe-2x nav-menu-icons"></span> <span class="nav-label"><fmt:message key="common.cloud" bundle="${msg}" /> </span><span class="fa arrow"></span> </a>
             <ul class="nav nav-second-level" ng-class="{in: $state.includes('cloud')}">
                 <li ui-sref-active="active"><a ui-sref="cloud.list-instance" id="instances_navigation_button"><fmt:message key="common.instance" bundle="${msg}" /> </a></li>
                 <li ui-sref-active="active"><a ui-sref="cloud.list-volume" id="volumes_navigation_button"><fmt:message key="common.volume" bundle="${msg}" /> </a></li>

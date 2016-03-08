@@ -71,7 +71,7 @@
 					class="text-danger font-bold">*</span></span>
 			</div>
 			<div class="col-md-6 col-xs-6 col-sm-6">
-						<div  data-ng-class="{'error': !instance.department && instance.department==null && templateFormSubmitted}" custom-select="t as t.userName for t in formElements.departmenttypeList | filter: { name: $searchTerm }" id="create_instance_department" ng-model="instance.department" data-ng-change="changedepartment(instance.department)">
+						<div  data-ng-class="{'error': !instance.department && instance.department==null && templateFormSubmitted}" custom-select="t as t.userName for t in formElements.departmenttypeList | filter: { userName: $searchTerm }" id="create_instance_department" ng-model="instance.department" data-ng-change="changedepartment(instance.department)">
 						<div class="pull-left">
 						<strong>{{ t.userName }}</strong><br />
 						</div>
