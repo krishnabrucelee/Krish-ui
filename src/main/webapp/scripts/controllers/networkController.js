@@ -177,7 +177,7 @@ function networksCtrl($scope, $sce, $rootScope,filterFilter, $state, $stateParam
 	var instanceId = instance;
 	$scope.selected = instanceId;
 	$scope.instances = instance;
-       	var hasNicIP = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbyvminstances?instanceid="+instanceId.id +"&lang=" + appService.localStorageService.cookie.get('language')+"&sortBy=-id");
+       	var hasNicIP = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbyvminstances?instanceid="+instanceId +"&lang=" + appService.localStorageService.cookie.get('language')+"&sortBy=-id");
         hasNicIP.then(function (result) {
             $scope.nicIPLists = result;
             $scope.showLoader = false;
@@ -1279,42 +1279,15 @@ appService.dialogService.openDialog("app/views/cloud/network/vm-list.jsp", 'lg' 
   $scope.loadBalancer.protocol = $scope.loadBalancer.protocol.toUpperCase();
   $scope.loadBalancer.state = $scope.loadBalancer.state.toUpperCase();
 	$scope.loadBalancer.state = $scope.loadBalancer.state.toUpperCase();
-	console.log("lb",loadBalancer);
-	console.log("lb13",loadBalancer['loginSession']);
-	console.log("lbvmip",loadBalancer['vmIpAddress']);
 	$scope.flag = false;
 
 
-
-	if (!angular.isUndefined(loadBalancer.vmIpAddress) && loadBalancer.vmIpAddress != null ) {
-		angular.forEach(loadBalancer, function(obj, key) {
-		if(obj.lbvm && angular.isArray(obj.ipAddress)) {
-			if(obj.ipAddress.length>0) {
-				$scope.flag = true;
-			}
-		}
-
-	})
-}
-
-
-
-	console.log("==========",$scope.flag)
-
-
-
 if (!angular.isUndefined(loadBalancer.vmIpAddress) && loadBalancer.vmIpAddress != null ) {
-		angular.forEach(loadBalancer, function(obj, key) {
+   	angular.forEach(loadBalancer, function(obj, key) {
 		   if(obj.lbvm && angular.isArray(obj.ipAddress)) {
-			   angular.forEach(obj.ipAddress, function(vmIpAddress, vmIpAddressKey) { alert("00000000000");
+			   angular.forEach(obj.ipAddress, function(vmIpAddress, vmIpAddressKey) {
 			   	loadBalancer.vmIpAddress.push(vmIpAddress);
 			   })
-
-
-			   console.log("lbvmip.................",loadBalancer.vmIpAddress);
-
-			   if (!angular.isUndefined(loadBalancer.vmIpAddress))
-			   	{
 				   $scope.loadBalancer.vmIpAddress = loadBalancer.vmIpAddress;
 				   console.log(loadBalancer.vmIpAddress);
 				   $scope.loadBalancer.lbPolicy = {};
@@ -1374,19 +1347,14 @@ if (!angular.isUndefined(loadBalancer.vmIpAddress) && loadBalancer.vmIpAddress !
               });
           }
       }
-}) }
+}) 
 
 			}
 		})
-}
-	/*else if(loadBalancer.vmIpAddress.length == 0)  {
-	        submitError = true;
-        $scope.showLoader = false;
-       $scope.homerTemplate = 'app/views/notification/notify.jsp';
-        appService.notify({message: 'Select Instance or Select IpAddress belongs to an Instance ', classes: 'alert-danger',
-        	templateUrl: $scope.homerTemplate});
 
-	}*/
+
+}
+	
   },
               $scope.cancel = function () {
                   $modalInstance.close();
