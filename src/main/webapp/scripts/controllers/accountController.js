@@ -94,6 +94,15 @@ function accountListCtrl($scope,$state, $log,$timeout, appService) {
         $scope.getDepartmentList(domain);
     }
 
+    if($scope.global.sessionValues.type === 'USER') {
+	var hasUsers = appService.crudService.read("users", $scope.global.sessionValues.id);
+        hasUsers.then(function (result) {
+            if (!angular.isUndefined(result)) {
+            	$scope.userElement = result;
+            }
+        });
+	}
+
     // Load domain
     $scope.domain = {};
     var hasDomains = appService.crudService.listAll("domains/list");
@@ -255,10 +264,21 @@ function accountListCtrl($scope,$state, $log,$timeout, appService) {
 		    var hasProjects =  appService.promiseAjax.httpTokenRequest( appService.crudService.globalConfig.HTTP_GET, appService.crudService.globalConfig.APP_URL + "projects"  +"/department/"+department.id);
 		    hasProjects.then(function (result) {  // this is only run after $http completes0
                 $scope.options = result;
-            });
+            });                
            	};
-
         }])};
+
+       if ($scope.global.sessionValues.type === "USER") { 
+       var hasRoles =  appService.promiseAjax.httpTokenRequest( appService.crudService.globalConfig.HTTP_GET, appService.crudService.globalConfig.APP_URL + "roles"  +"/department/"+$scope.global.sessionValues.departmentId);
+            	 hasRoles.then(function (result) {  // this is only run after $http completes0
+            		 $scope.accountElements.roleList = result;
+            	 });
+
+		    var hasProjects =  appService.promiseAjax.httpTokenRequest( appService.crudService.globalConfig.HTTP_GET, appService.crudService.globalConfig.APP_URL + "projects"  +"/department/"+$scope.global.sessionValues.departmentId);
+		    hasProjects.then(function (result) {  // this is only run after $http completes0
+                $scope.options = result;
+            });
+}
 
         // Delete user data from database
         $scope.deleteUser = function (size) {
