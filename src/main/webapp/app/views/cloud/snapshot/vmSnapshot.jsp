@@ -73,17 +73,17 @@
                                 </td>
                                 <td>
                                 <div class="text-center">
-										<img src="images/status/running.png" data-ng-if="snapshot.status == 'Ready'" title="{{ snapshot.status}}">
-										<img src="images/status/warning.png" data-ng-if="snapshot.status == 'Expunging'"
+										<img src="images/vmsnapshot/ready.png" data-ng-if="snapshot.status == 'Ready'" title="{{ snapshot.status}}">
+										<img src="images/vmsnapshot/expunging.png" data-ng-if="snapshot.status == 'Expunging'"
 													title="{{ snapshot.status}}"
 												>
-										<img src="images/status/stopped.png" data-ng-if="snapshot.status == 'Error'"
+										<img src="images/vmsnapshot/error.png" data-ng-if="snapshot.status == 'Error'"
 													title="{{ snapshot.status}}"
 												>
-										<img src="images/status/warning.png" data-ng-if="snapshot.status == 'Creating'"
+										<img src="images/vmsnapshot/creating.png" data-ng-if="snapshot.status == 'Creating'"
 													title="{{ snapshot.status}}"
 												>
-										<img src="images/status/warning.png" data-ng-if="instance.status == 'Implemented'"
+										<img src="images/vmsnapshot/implemented.png" data-ng-if="instance.status == 'Implemented'"
 													title="{{ snapshot.status}}"
 												>
 										</div>
