@@ -145,17 +145,27 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<div class="row" data-ng-if="global.sessionValues.type != 'USER'">
+						<div class="row" ng-class="{'text-danger':addnetworkForm.domain.$invalid && formSubmitted}"
+						 data-ng-if="global.sessionValues.type != 'USER'">
 							<label
 								class="col-md-4 col-xs-12 col-sm-4 control-label control-normal"><fmt:message
-									key="common.domain" bundle="${msg}" /></label>
+									key="common.domain" bundle="${msg}" /><span
+								class="text-danger">*</span></label>
 							<div class="col-md-6  col-sm-6 col-xs-12">
-								<select class="form-control input-group" name="domain"
-									data-ng-model="network.domain"
+								<select required="true" class="form-control input-group" name="domain"
+									data-ng-model="network.domain" data-ng-class="{'error': addnetworkForm.domain.$invalid && formSubmitted}"
+
 									ng-options="domain.name for domain in domainList">
 									<option value=""><fmt:message key="common.select"
 											bundle="${msg}" /></option>
-								</select> <i
+								</select>
+								<div class="error-area"
+									data-ng-show="addnetworkForm.domain.$invalid && formSubmitted">
+									<i
+										ng-attr-tooltip="{{ addnetworkForm.company.errorMessage || '<fmt:message key="company.is.required" bundle="${msg}" />' }}"
+										class="fa fa-warning error-icon"></i>
+								</div>
+								 <i
 									tooltip="<fmt:message key="choose.domain" bundle="${msg}" /> "
 									class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
 							</div>

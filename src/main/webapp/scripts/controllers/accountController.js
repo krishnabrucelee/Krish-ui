@@ -37,7 +37,7 @@ function accountCtrl($scope, appService) {
 }
 
 // Load list page of user
-function accountListCtrl($scope,$state, $log,$timeout, appService, localStorageService, globalConfig) {
+function accountListCtrl($scope,$state, $log,$timeout,$stateParams, appService, localStorageService, globalConfig) {
     $scope.accounts = {
         category: "users",
         oneItemSelected: {},
@@ -162,6 +162,7 @@ function accountListCtrl($scope,$state, $log,$timeout, appService, localStorageS
             $scope.paginationObject.currentPage = pageNumber;
             $scope.paginationObject.totalItems = result.totalItems;
             $scope.showLoader = false;
+
 
         });
     };
@@ -314,14 +315,15 @@ function accountListCtrl($scope,$state, $log,$timeout, appService, localStorageS
 }
 
         // Delete user data from database
-        $scope.deleteUser = function (size) {
+        $scope.deleteUser = function (size,account) {
 
-         var user = {};
+         var user = account;
        	 angular.forEach($scope.accountList, function (item, key) {
                 if (item['isSelected']) {
                	 user = item;
                 }
        	 });
+
        	$scope.user = user;
       appService.dialogService.openDialog("app/views/account/delete-user.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
           $scope.deleteUsers = function(user) {
@@ -363,14 +365,13 @@ function accountListCtrl($scope,$state, $log,$timeout, appService, localStorageS
         };
 
     // Edit user data
-    $scope.editUser = function (size) {
-    	var user = {};
+    $scope.editUser = function (size,account) {
+    	var user = account;
     	 angular.forEach($scope.accountList, function (item, key) {
              if (item['isSelected']) {
             	 user = item;
              }
     	 });
-
     	appService.dialogService.openDialog("app/views/account/edit-user.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
     	    $scope.user = angular.copy(user);
     		$scope.saveUser = function (user) {

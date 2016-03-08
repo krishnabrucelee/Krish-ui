@@ -494,7 +494,7 @@ $scope.ingressSave = function (form,firewallRuleIngress) {
                             });
                         }
                     } else {
-			
+
                         if ($scope.firewallRuleIngress.icmpType && $scope.firewallRuleIngress.icmpCode) {
 		    $scope.firewallRuleIngress.icmpMessage = $scope.firewallRuleIngress.icmpType;
                      delete $scope.firewallRuleIngress.startPort;
@@ -612,6 +612,8 @@ $scope.ingressSave = function (form,firewallRuleIngress) {
     };
 
     $scope.openAddIsolatedNetwork = function (size) {
+        $scope.projectList = "";
+
         appService.dialogService.openDialog("app/views/cloud/network/add.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
                 $scope.network = {};
                 if ($scope.global.sessionValues.type === 'USER') {
@@ -623,8 +625,8 @@ $scope.ingressSave = function (form,firewallRuleIngress) {
                 // Create a new Isolated Network
                 $scope.save = function (form, network) {
                     $scope.formSubmitted = true;
-                    var network = $scope.network;
                     if (form.$valid) {
+                        var network = angular.copy($scope.network);
 
                         if (!angular.isUndefined($scope.network.domain) && $scope.network.domain != null) {
                             network.domainId = $scope.network.domain.id;
@@ -662,11 +664,13 @@ $scope.ingressSave = function (form,firewallRuleIngress) {
                                 });
                             }
                             $modalInstance.close();
+
                         });
                         $scope.cancel = function () {
                             $modalInstance.close();
                         };
                     }
+
                 },
                         $scope.$watch('network.domain', function (obj) {
                             if (!angular.isUndefined(obj)) {
