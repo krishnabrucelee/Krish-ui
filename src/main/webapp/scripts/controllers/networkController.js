@@ -1292,6 +1292,8 @@ if (!angular.isUndefined(loadBalancer.vmIpAddress) && loadBalancer.vmIpAddress !
 			   angular.forEach(obj.ipAddress, function(vmIpAddress, vmIpAddressKey) {
 			   	loadBalancer.vmIpAddress.push(vmIpAddress);
 			   })
+		   }
+		   })
 				   $scope.loadBalancer.vmIpAddress = loadBalancer.vmIpAddress;
 				   console.log(loadBalancer.vmIpAddress);
 				   $scope.loadBalancer.lbPolicy = {};
@@ -1351,14 +1353,11 @@ if (!angular.isUndefined(loadBalancer.vmIpAddress) && loadBalancer.vmIpAddress !
               });
           }
       }
-}) 
-
-			}
-		})
+})
 
 
 }
-	
+
   },
               $scope.cancel = function () {
                   $modalInstance.close();

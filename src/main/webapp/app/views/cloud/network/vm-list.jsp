@@ -69,7 +69,6 @@
 												data-ng-model="instance.lbvm"
 												data-ng-value="{{instance.vmInstance.id}}" name="selectVM"
 												data-ng-change="nicIPList(instance.vmInstance.id)" >
-												{{instance.lbvm}}
 										</div>
 					</td>
 							</tr>
