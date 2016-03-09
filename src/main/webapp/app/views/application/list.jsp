@@ -29,7 +29,7 @@
                     </ol>
                 </div>
                 <h2 class="font-light m-b-xs">
-                    <span data-ng-if="$state.current.data.pageTitle === 'common.applications'"><fmt:message key="common.applications" bundle="${msg}" /></span>
+                    <span id="applications_page_title" data-ng-if="$state.current.data.pageTitle === 'common.applications'"><fmt:message key="common.applications" bundle="${msg}" /></span>
                 </h2>
                 <small>{{ $state.current.data.pageDesc}}</small>
             </div>
@@ -49,8 +49,8 @@
 									<panda-quick-search></panda-quick-search>
 										<div class="clearfix"></div>
 									<span class="pull-right m-l-sm m-t-sm">
-									<a has-permission="CREATE_APPLICATION_TYPE" class="btn btn-info" ng-click="createApplication('md')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span>
-									<fmt:message key="common.add" bundle="${msg}" /></a> <a class="btn btn-info" ui-sref="applications" title="<fmt:message key="common.refresh" bundle="${msg}" />" ui-sref-opts="{reload: true}">
+									<a has-permission="CREATE_APPLICATION_TYPE" id="applications_add_button" class="btn btn-info" ng-click="createApplication('md')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span>
+									<fmt:message key="common.add" bundle="${msg}" /></a> <a class="btn btn-info" id="applications_refresh_button" ui-sref="applications" title="<fmt:message key="common.refresh" bundle="${msg}" />" ui-sref-opts="{reload: true}">
 									<span class="fa fa-refresh fa-lg"></span></a>
 									</span>
 								</div>
@@ -59,32 +59,34 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-md-12 col-sm-12 col-xs-12 ">
+						<div class="col-md-12 col-sm-12 col-xs-12 " id="applications_pagination_container">
 
 							<div data-ng-show = "showLoader" style="margin: 1%">
     				  		<get-loader-image data-ng-show="showLoader"></get-loader-image>
       						</div>
 								<div data-ng-hide="showLoader" class="table-responsive">
 									<div class="white-content">
-									<table cellspacing="1" cellpadding="1"
+									<table cellspacing="1" cellpadding="1" id="applications_table"
 										class="table table-bordered dataTable table-striped">
 										<thead>
 											<tr>
-												<th class="col-md-2 col-sm-2"  data-ng-click="changeSorting('domain.name')" data-ng-class="sort.descending && sort.column =='domain.name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.domain" bundle="${msg}" /></th>
-												<th class="col-md-2 col-sm-2"  data-ng-click="changeSorting('type')" data-ng-class="sort.descending && sort.column =='type'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.type" bundle="${msg}" /></th>
-												<th class="col-md-2 col-sm-2"  data-ng-click="changeSorting('description')" data-ng-class="sort.descending && sort.column =='description'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.description" bundle="${msg}" /></th>
-												<th class="col-md-2 col-sm-2"  data-ng-click="changeSorting('status')" data-ng-class="sort.descending && sort.column =='status'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.status" bundle="${msg}" /></th>
+												<th class="col-md-2 col-sm-2"  data-ng-click="changeSort('type',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='type'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.type" bundle="${msg}" /></th>
+												<th class="col-md-2 col-sm-2"  data-ng-click="changeSort('domain.name',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='domain.name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.domain" bundle="${msg}" /></th>
+												<th class="col-md-2 col-sm-2"  data-ng-click="changeSort('description',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='description'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.description" bundle="${msg}" /></th>
+												<th class="col-md-2 col-sm-2"  data-ng-click="changeSort('status',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='status'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.status" bundle="${msg}" /></th>
 												<th class="col-md-1 col-sm-2"><fmt:message key="common.action" bundle="${msg}" /></th>
 											</tr>
 										</thead>
 										<tbody>
 											<tr data-ng-repeat=" application in filteredCount = (applicationList| filter: quickSearch | orderBy:sort.column:sort.descending)">
-												<td>{{ application.domain.name }}</td>
 												<td>{{ application.type}}</td>
+												<td>{{ application.domain.name }}</td>
 												<td>{{ application.description}}</td>
 												<td>{{ application.status}}</td>
-												<td><a has-permission="EDIT_APPLICATION_TYPE" class="icon-button" title="<fmt:message key="common.edit" bundle="${msg}" />" data-ng-click="edit('md', application)"> <span class="fa fa-edit"></span></a>
-												<a has-permission="DELETE_APPLICATION_TYPE" class="icon-button" title="<fmt:message key="common.delete" bundle="${msg}" />" data-ng-click="delete('sm', application)"><span class="fa fa-trash"></span></a>
+												<td>
+    	                                        <input type="hidden" id="applications_unique_{{application.id}}"  data-unique-field="{{ application.domain.name }}-{{ application.type}}" class="test_applications_unique">
+												<a has-permission="EDIT_APPLICATION_TYPE" id="applications_edit_button_{{application.id}}" class="icon-button test_applications_edit_button" title="<fmt:message key="common.edit" bundle="${msg}" />" data-ng-click="edit('md', application)"> <span class="fa fa-edit"></span></a>
+												<a has-permission="DELETE_APPLICATION_TYPE" id="applications_delete_button_{{application.id}}" class="icon-button test_applications_delete_button" title="<fmt:message key="common.delete" bundle="${msg}" />" data-ng-click="delete('sm', application)"><span class="fa fa-trash"></span></a>
 												</td>
 											</tr>
 										</tbody>

@@ -10,7 +10,7 @@ angular
         .controller('recurringSnapshotCtrl', recurringSnapshotCtrl)
         //.controller('uploadVolumeCtrl', uploadVolumeCtrl)
 
-function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeService, $window) {
+function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeService, $window, localStorageService, globalConfig) {
 
      $scope.$on(appService.globalConfig.webSocketEvents.volumeEvents.attachVolume, function() {
     //    $scope.volumeList = appService.webSocket;
@@ -58,6 +58,39 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
     $scope.options = {};
     $scope.global = appService.globalConfig;
     $scope.userElement = {};
+    $scope.paginationObject.sortOrder = '+';
+    $scope.paginationObject.sortBy = 'name';
+
+    $scope.changeSort = function(sortBy, pageNumber) {
+		var sort = appService.globalConfig.sort;
+		if (sort.column == sortBy) {
+			sort.descending = !sort.descending;
+		} else {
+			sort.column = sortBy;
+			sort.descending = false;
+		}
+		var sortOrder = '-';
+		if(!sort.descending){
+			sortOrder = '+';
+		}
+		$scope.paginationObject.sortOrder = sortOrder;
+		$scope.paginationObject.sortBy = sortBy;
+		$scope.showLoader = true;
+		var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
+                    var hasVolumesLists =  appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "volumes" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+sortOrder+sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+
+                    hasVolumesLists.then(function(result) { // this is only run after $http
+			// completes0
+			$scope.volumeList = result;
+			// For pagination
+			$scope.paginationObject.limit = limit;
+			$scope.paginationObject.currentPage = pageNumber;
+			$scope.paginationObject.totalItems = result.totalItems;
+			$scope.paginationObject.sortOrder = sortOrder;
+			$scope.paginationObject.sortBy = sortBy;
+			$scope.showLoader = false;
+		});
+	};
 
     // Load domain
     $scope.domain = {};
@@ -101,6 +134,8 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
 
     // Volume List
     $scope.list = function (pageNumber) {
+        appService.globalConfig.sort.sortOrder = $scope.paginationObject.sortOrder;
+        appService.globalConfig.sort.sortBy = $scope.paginationObject.sortBy;
     	 $scope.showLoader = true;
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasVolumes = appService.crudService.list("volumes", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});

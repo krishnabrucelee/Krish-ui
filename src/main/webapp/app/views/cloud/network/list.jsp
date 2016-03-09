@@ -83,22 +83,22 @@
 										class="table table-bordered dataTable table-striped">
 										<thead>
 											<tr>
-												<th data-ng-click="changeSorting('name')"
+												<th data-ng-click="changeSort('name',paginationObject.currentPage)"
 													data-ng-class="sort.descending && sort.column =='name'? 'sorting_desc' : 'sorting_asc' "><fmt:message
 														key="common.name" bundle="${msg}" /></th>
-												<th data-ng-click="changeSorting('department.userName')"
+												<th data-ng-click="changeSort('department.userName',paginationObject.currentPage)"
 													data-ng-class="sort.descending && sort.column =='Account'? 'sorting_desc' : 'sorting_asc' "><fmt:message
-														key="common.account" bundle="${msg}" /></th>
-												<th data-ng-click="changeSorting('project.name')"
+														key="common.department" bundle="${msg}" /></th>
+												<th data-ng-click="changeSort('project.name',paginationObject.currentPage)"
 													data-ng-class="sort.descending && sort.column =='project.name'? 'sorting_desc' : 'sorting_asc' "><fmt:message
 														key="common.project" bundle="${msg}" /></th>
-												<th data-ng-click="changeSorting('networkType')"
+												<th data-ng-click="changeSort('networkType',paginationObject.currentPage)"
 													data-ng-class="sort.descending && sort.column =='networkType'? 'sorting_desc' : 'sorting_asc' "><fmt:message
 														key="common.type" bundle="${msg}" /></th>
-												<th data-ng-click="changeSorting('cIDR')"
+												<th data-ng-click="changeSort('cIDR',paginationObject.currentPage)"
 													data-ng-class="sort.descending && sort.column =='cIDR'? 'sorting_desc' : 'sorting_asc' "><fmt:message
 														key="common.cidr" bundle="${msg}" /></th>
-												<th data-ng-click="changeSorting('gateway')"
+												<th data-ng-click="changeSort('gateway',paginationObject.currentPage)"
 													data-ng-class="sort.descending && sort.column =='gateway'? 'sorting_desc' : 'sorting_asc' "><fmt:message
 														key="gateway" bundle="${msg}" /></th>
 												<th><fmt:message key="common.action" bundle="${msg}" /></th>

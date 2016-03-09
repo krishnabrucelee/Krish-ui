@@ -10,7 +10,7 @@ angular
         .module('homer')
         .controller('networksCtrl', networksCtrl)
 
-function networksCtrl($scope, $sce, $rootScope,filterFilter, $state, $stateParams, $timeout, $window, appService) {
+function networksCtrl($scope, $sce, $rootScope,filterFilter, $state, $stateParams, $timeout, $window, appService, localStorageService, globalConfig) {
 
      $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.startVm, function() {
     //    $scope.instanceList = appService.webSocket;
@@ -90,6 +90,39 @@ function networksCtrl($scope, $sce, $rootScope,filterFilter, $state, $stateParam
     $scope.showLoader = false;
     $scope.vpnKey = {};
     $scope.vpnUsersList = {};
+    $scope.paginationObject.sortOrder = '+';
+    $scope.paginationObject.sortBy = 'name';
+
+    $scope.changeSort = function(sortBy, pageNumber) {
+		var sort = appService.globalConfig.sort;
+		if (sort.column == sortBy) {
+			sort.descending = !sort.descending;
+		} else {
+			sort.column = sortBy;
+			sort.descending = false;
+		}
+		var sortOrder = '-';
+		if(!sort.descending){
+			sortOrder = '+';
+		}
+		$scope.paginationObject.sortOrder = sortOrder;
+		$scope.paginationObject.sortBy = sortBy;
+		$scope.showLoader = true;
+		var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
+                    var hasGuestnetworkLists =  appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "guestnetwork" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+sortOrder+sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+
+                    hasGuestnetworkLists.then(function(result) { // this is only run after $http
+			// completes0
+			$scope.networkList = result;
+			// For pagination
+			$scope.paginationObject.limit = limit;
+			$scope.paginationObject.currentPage = pageNumber;
+			$scope.paginationObject.totalItems = result.totalItems;
+			$scope.paginationObject.sortOrder = sortOrder;
+			$scope.paginationObject.sortBy = sortBy;
+			$scope.showLoader = false;
+		});
+	};
 
     if ($stateParams.id > 0) {
  	    var hasServer = appService.crudService.read("guestnetwork", $stateParams.id);
@@ -658,11 +691,12 @@ $scope.ingressSave = function (form,firewallRuleIngress) {
     };
 
     $scope.networkList = [];
-    $scope.paginationObject = {};
     $scope.networkForm = {};
     $scope.global = appService.globalConfig;
     // Guest Network List
     $scope.list = function (pageNumber) {
+        $scope.global.sort.sortOrder = $scope.paginationObject.sortOrder;
+        $scope.global.sort.sortBy = $scope.paginationObject.sortBy;
         $scope.showLoader = true;
         $scope.type = $stateParams.view;
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
