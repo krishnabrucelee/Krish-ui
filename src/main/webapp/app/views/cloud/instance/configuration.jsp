@@ -227,4 +227,64 @@
 	       </div>
         </div>
     </div>
+
+       <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <h4>
+               <fmt:message key="affinity.group" bundle="${msg}" /> (<fmt:message key="optional" bundle="${msg}" />)
+            </h4>
+            <hr class="m-t-xs">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-7 col-sm-7 col-xs-12">
+
+            <div class="row m-t-md">
+                <div class="col-md-10 col-sm-10 col-xs-10">
+
+                    <form name="affinityForm" method="POST" data-ng-submit="saveAffinity(affinityForm)" novalidate class="form-horizontal">
+                        <div class="form-group" ng-class="{ 'text-danger' : affinityForm.group.$invalid && affinitySubmitted}">
+                            <label class="col-sm-4 control-label"><fmt:message key="select.group" bundle="${msg}" />
+                                <span class="text-danger">*</span>
+                            </label>
+                            <div class="col-sm-5">
+                                <select required="true" class="form-control input-group" name="group"
+                                        data-ng-model="affinity.group" data-ng-class="{'error': affinityForm.group.$invalid && affinitySubmitted}"
+                                        data-ng-options="group.name for group in affinityElements.groupList" >
+                                    <option value="">Select</option>
+                                </select>
+                                <div class="error-area" data-ng-show="affinityForm.group.$invalid && affinitySubmitted" ><i  tooltip="Group is required" class="fa fa-warning error-icon"></i></div>
+                            </div>
+                            <div class="col-sm-3">
+                                <a class="btn btn-info" data-ng-click="addAffinityGroup('md')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="add.new.affinity" bundle="${msg}" /></a>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label"><fmt:message key="note" bundle="${msg}" /></label>
+                            <div class="col-sm-8">
+                                <div class="well">
+                                   <fmt:message key="your.instance.must.be.stopped.before.attempting.to.change.the.affinity.group" bundle="${msg}" />
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-8 col-sm-offset-4">
+                                <a class="btn btn-default"  ui-sref="cloud.list-instance"><fmt:message key="common.cancel" bundle="${msg}" /></a>
+                                <button class="btn btn-info" type="submit"  ><fmt:message key="common.ok" bundle="${msg}" /></button>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5">
+
+        </div>
+    </div>
 </div>

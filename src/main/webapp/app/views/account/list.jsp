@@ -130,6 +130,10 @@
 													data-ng-click="editUser('md',account)">
 														<span class="fa fa-edit m-r"> </span>
 												</a>
+												 <a class="icon-button"
+													title="<fmt:message key="reset.password" bundle="${msg}" /> "
+													data-ng-click="resetPassword('md',account)"><span class="fa-key fa font-bold m-r"></span>
+													</a>
 												 <a data-ng-if="global.sessionValues.type =='DOMAIN_ADMIN'"
 												 data-ng-hide = "global.sessionValues.type =='DOMAIN_ADMIN' && account.type == 'DOMAIN_ADMIN'"
 													class="icon-button" has-permission="DELETE_USER"

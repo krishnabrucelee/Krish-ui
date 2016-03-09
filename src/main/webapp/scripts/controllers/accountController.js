@@ -398,6 +398,55 @@ function accountListCtrl($scope,$state, $log,$timeout,$stateParams, appService) 
        }]);
     };
 
+    // Reset Password
+    $scope.resetPassword = function (size,account) {
+    	var user = account;
+    	 angular.forEach($scope.accountList, function (item, key) {
+             if (item['isSelected']) {
+            	 user = item;
+             }
+    	 });
+    	appService.dialogService.openDialog("app/views/account/reset-password.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+    	    $scope.profile = angular.copy(user);
+    		$scope.updatePassword = function (form, profile) {
+    	        $scope.formSubmitted = true;
+    	        if (form.$valid) {
+    	        	$scope.showLoader = true;
+    	        	if(profile.newPassword != profile.confirmPassword) {
+    	        		appService.notify({message: 'Password did not match', classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+    	        		$scope.showLoader = false;
+    	        	} else {
+    	            	profile.confirmPassword = profile.confirmPassword;
+    	            	profile.password = null;
+    	            var hasUpdatePassword = appService.crudService.add("users/updatePassword", profile);
+    	            hasUpdatePassword.then(function (result) {
+    	            	$scope.showLoader = false;
+    	                appService.notify({message: 'Updated successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+    	                $modalInstance.close();
+    	                $scope.list(1);
+    	            }).catch(function (result) {
+    	            	$scope.showLoader = false;
+    	    		    if (!angular.isUndefined(result.data)) {
+    	        		 if (result.data.fieldErrors != null) {
+    	               	$scope.showLoader = false;
+    	                	angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
+    	                    	$scope.profileForm[key].$invalid = true;
+    	                    	$scope.profileForm[key].errorMessage = errorMessage;
+    	                	});
+    	        		}
+    	        	}
+    	    	});
+    	            $scope.list(1);
+    	    }
+    	    }
+    	    },
+            $scope.cancel = function () {
+		$scope.list(1);
+                $modalInstance.close();
+            };
+       }]);
+    };
+
     $scope.ok = function () {
         $timeout($scope.generateLoad, 3000);
     };
