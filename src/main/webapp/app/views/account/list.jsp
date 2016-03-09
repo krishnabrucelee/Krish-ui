@@ -44,21 +44,21 @@
 							<div class="dashboard-box pull-left">
      							<div class="instance-border-content-normal">
                                 <span class="pull-left m-t-xs m-l-xs m-r-xs"><fmt:message key="common.total" bundle="${msg}" /></span>
-                                <b class="pull-left">{{paginationObject.totalItems}}</b>
+                                <b class="pull-left">{{accountList.Count}}</b>
                                 <div class="clearfix"></div>
                                 </div>
                             </div>
                             <div class="dashboard-box pull-left">
                       			<div class="instance-border-content-normal">
                                 <span class="pull-left m-t-xs m-l-xs m-r-xs"><fmt:message key="common.active" bundle="${msg}" /></span>
-                                <b class="pull-left">{{(activeUsers | filter:{status:'ENABLED'}).length}}</b>
+                                <b class="pull-left">{{(activeUsers | filter:{status:'ENABLED', domainId:domainView.id}:true).length}}</b>
                                 <div class="clearfix"></div>
                                 </div>
                             </div>
                             <div class="dashboard-box pull-left">
                                  <div class="instance-border-content-normal">
                                 <span class="pull-left m-t-xs m-l-xs m-r-xs"><fmt:message key="common.inactive" bundle="${msg}" /></span>
-                                <b class="pull-left">{{(activeUsers | filter:{status:'DISABLED'}).length}}</b>
+                                <b class="pull-left">{{(activeUsers | filter:{status:'DISABLED', domainId:domainView.id}:true).length}}</b>
                                 <div class="clearfix"></div>
                                 </div>
                             </div>

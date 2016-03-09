@@ -64,12 +64,14 @@ function accountListCtrl($scope,$state, $log,$timeout,$stateParams, appService) 
 
     };
 
-    var hasUsers = appService.crudService.listAll("users/list");
-	$scope.showLoader = true;
-	hasUsers.then(function (result) {  // this is only run after $http completes0
-	$scope.activeUsers = result;
-
-});
+    $scope.userList = function() {
+	    var hasUsers = appService.crudService.listAll("users/list");
+		$scope.showLoader = true;
+		hasUsers.then(function (result) {  // this is only run after $http completes0
+		   $scope.activeUsers = result;
+	    });
+    }
+    $scope.userList();
 
     // Department list load based on the domain
     $scope.domainChange = function() {
@@ -88,8 +90,6 @@ function accountListCtrl($scope,$state, $log,$timeout,$stateParams, appService) 
     	$scope.accountElements.departmentList = result;
     });
     }
-
-
 
     $scope.departmentList = {};
     $scope.getDepartmentList = function (domain) {
@@ -479,6 +479,7 @@ function accountListCtrl($scope,$state, $log,$timeout,$stateParams, appService) 
                    var hasServer = appService.crudService.update("users/disable", user);
                    hasServer.then(function (result) {
     			     $scope.list(1);
+    			     $scope.userList();
                    appService.notify({message: 'Disabled successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                    $scope.showLoader = false;
                    $scope.cancel();
@@ -503,6 +504,7 @@ function accountListCtrl($scope,$state, $log,$timeout,$stateParams, appService) 
                  var hasServer = appService.crudService.update("users/enable", user);
                  hasServer.then(function (result) {
   			     $scope.list(1);
+  			     $scope.userList();
                  appService.notify({message: 'Enabled successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                  $scope.showLoader = false;
                  $scope.cancel();
