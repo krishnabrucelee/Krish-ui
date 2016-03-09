@@ -54,29 +54,41 @@
 						<div class="row">
 							<div class="col-md-12 col-sm-12 col-xs-12 ">
 								<div class="pull-left">
-									<div class="pull-left h-100"></div>
-								</div>
-								<div class="pull-right">
-									<panda-quick-search></panda-quick-search>
-									<div class="clearfix"></div>
-									<span class="pull-right m-l-sm m-t-sm"> <a has-permission="CREATE_PROJECT"
+									<div class="dashboard-box pull-left">
+		     							<div class="instance-border-content-normal">
+		                                <span class="pull-left m-t-xs m-l-xs m-r-xs"><fmt:message key="common.total" bundle="${msg}" /></span>
+		                                <b class="pull-left">{{projectList.Count}}</b>
+		                                <div class="clearfix"></div>
+		                                </div>
+		                            </div>
+		                            <a has-permission="CREATE_PROJECT"
 										class="btn btn-info" data-ng-click="createProject('md')"><span
-											class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="create.project" bundle="${msg}" /></a> <a has-permission="EDIT_PROJECT" class="btn btn-info"
+											class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="common.create" bundle="${msg}" /></a> <a has-permission="EDIT_PROJECT" class="btn btn-info"
 										data-ng-click="editProject('md')"
 										data-ng-disabled="!oneChecked"><span
-											class="fa fa-edit fa-lg m-r-xs"></span><fmt:message key="edit.project" bundle="${msg}" /></a>
-
-
+											class="fa fa-edit fa-lg m-r-xs"></span><fmt:message key="common.edit" bundle="${msg}" /></a>
 											 <a has-permission="DELETE_PROJECT"
 										class="btn btn-danger"
 										data-ng-click="projectDeleteConfirmation('sm', project.totalCheckedCount)"
 										data-ng-disabled="!oneChecked"><span
 											class="fa fa-times-circle-o fa-lg m-r-xs"></span><fmt:message key="common.delete" bundle="${msg}" /></a>
-									<a class="btn btn-info" ui-sref="projects" title="<fmt:message key="common.refresh" bundle="${msg}" />" ui-sref-opts="{reload: true}"><span
+									    <a class="btn btn-info" ui-sref="projects" title="<fmt:message key="common.refresh" bundle="${msg}" />" ui-sref-opts="{reload: true}"><span
 											class="fa fa-refresh fa-lg "></span></a>
-									</span>
 								</div>
-
+								<div class="pull-right">
+									<panda-quick-search></panda-quick-search>
+									<span class="pull-right m-r-sm" data-ng-show="global.sessionValues.type == 'ROOT_ADMIN'">
+										<select
+											class="form-control input-group col-xs-5" name="domainView"
+											data-ng-model="domainView"
+											data-ng-change="selectDomainView(1)"
+											data-ng-options="domainView.name for domainView in formElements.domainList">
+											<option value="">Select Domain</option>
+										</select>
+									</span>
+									<div class="clearfix"></div>
+									<span class="pull-right m-l-sm m-t-sm"></span>
+								</div>
 							</div>
 						</div>
 						<div class="clearfix"></div>
@@ -99,7 +111,7 @@
 												<th ng-click="changeSorting('projectOwner.userName')" data-ng-class="sort.descending && sort.column =='projectOwner.userName'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="billing.owner" bundle="${msg}" /></th>
 												<th ng-click="changeSorting('department.userName')" data-ng-class="sort.descending && sort.column =='department.userName'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="common.department" bundle="${msg}" /></th>
 												<th ng-click="changeSorting('createdDateTime')" data-ng-class="sort.descending && sort.column =='createdDateTime'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="create.time" bundle="${msg}" /></th>
-												<th><fmt:message key="operation" bundle="${msg}" /></th>
+												<th><fmt:message key="common.action" bundle="${msg}" /></th>
 											</tr>
 										</thead>
 									<tbody data-ng-hide="projectList.length > 0">

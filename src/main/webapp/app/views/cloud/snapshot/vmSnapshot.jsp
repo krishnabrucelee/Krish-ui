@@ -14,18 +14,21 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12 col-sm-12 col-xs-12 ">
+                    	<div class="pull-left">
+                            <div class="dashboard-box pull-left">
+     							<div class="instance-border-content-normal">
+                                <span class="pull-left m-t-xs m-l-xs m-r-xs"><fmt:message key="total.vm.snapshot" bundle="${msg}" /></span>
+                                <b class="pull-left">{{vmSnapshotList.Count}}</b>
+                                <div class="clearfix"></div>
+                                </div>
+                            </div>
+                            <a class="btn btn-info"  ng-click="openAddVMSnapshotContainer()"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="create.vm.snapshot" bundle="${msg}" /></a>
+                            <a class="btn btn-info" ui-sref="cloud.list-snapshot" title="<fmt:message key="common.refresh" bundle="${msg}" />"  ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
+                        </div>
                         <div class="pull-right">
-                            <div class="quick-search pull-right">
-										<div class="input-group">
-											<input data-ng-model="quickSearch" type="text" class="form-control input-medium" placeholder="<fmt:message key="common.quick.search" bundle="${msg}" />" aria-describedby="quicksearch-go">
-											 <span class="input-group-addon" id="quicksearch-go"><span class="pe-7s-search pe-lg font-bold"></span></span>
-										</div>
-									</div>
-                            <div class="clearfix"></div>
-                            <span class="pull-right m-l-sm m-t-sm">
-                                <a class="btn btn-info"  ng-click="openAddVMSnapshotContainer()"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="create.vm.snapshot" bundle="${msg}" /></a>
-                                <a class="btn btn-info" ui-sref="cloud.list-snapshot" title="<fmt:message key="common.refresh" bundle="${msg}" />"  ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
-                            </span>
+					        <panda-quick-search></panda-quick-search>
+							<div class="clearfix"></div>
+							<span class="pull-right m-l-sm m-t-sm"></span>
                         </div>
                     </div>
                     <div class="clearfix"></div>

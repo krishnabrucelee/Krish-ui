@@ -46,6 +46,9 @@
                                         <div class="pull-left">
                                             <a title="Grid View" class="btn btn-info" data-ng-click="showCommunityTemplateContent()"  data-ng-class="!listView ? 'disabled' : ''" > <i class="fa fa-th-large" /></a>
                                             <a title="List View"  class="btn btn-info" data-ng-click="showCommunityTemplateContent()" data-ng-class="listView ? 'disabled' : ''" > <i class="fa fa-list" /></a>
+                                            <a class="btn btn-info" data-ng-click="showCommunityTemplateContent()"
+											id="community_refresh_button" title="<fmt:message key="common.refresh" bundle="${msg}" />"
+											ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
                                         </div>
                                     </div>
                                     <div class="pull-right">
@@ -80,6 +83,9 @@
                                         <div class="pull-left">
                                             <a title="Grid View" class="btn btn-info" data-ng-click="showFeaturedTemplateContent()"  data-ng-class="!listView ? 'disabled' : ''" > <i class="fa fa-th-large" /></a>
                                             <a title="List View"  class="btn btn-info" data-ng-click="showFeaturedTemplateContent()"  data-ng-class="listView ? 'disabled' : ''" > <i class="fa fa-list" /></a>
+			                                <a class="btn btn-info" data-ng-click="showFeaturedTemplateContent()"
+											id="featured_refresh_button" title="<fmt:message key="common.refresh" bundle="${msg}" />"
+											ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
                                         </div>
                                     </div>
                                     <div class="pull-right">

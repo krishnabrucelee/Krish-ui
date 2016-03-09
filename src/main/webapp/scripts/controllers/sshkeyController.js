@@ -33,10 +33,22 @@ function sshkeyListCtrl($scope,appService,$state) {
         $scope.showLoader = true;
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT :
         	$scope.paginationObject.limit;
-        var hasSSHKeys = appService.crudService.list("sshkeys", $scope.global.paginationHeaders(pageNumber, limit),
-            {"limit": limit});
+        var hasSSHKeys = {};
+        if ($scope.domainView == null) {
+        	hasSSHKeys = appService.crudService.list("sshkeys", $scope.global.paginationHeaders(pageNumber, limit),
+                    {"limit": limit});
+        } else {
+        	hasSSHKeys =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "sshkeys/listByDomain"
+				+"?lang=" +appService.localStorageService.cookie.get('language')
+				+ "&domainId="+$scope.domainView.id+"&sortBy=ASC"+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+        }
         hasSSHKeys.then(function (result) {
             $scope.sshkeyList = result;
+            $scope.sshkeyList.Count = 0;
+            if (result.length != 0) {
+                $scope.sshkeyList.Count = result.totalItems;
+            }
+
             // For pagination
             $scope.paginationObject.limit = limit;
             $scope.paginationObject.currentPage = pageNumber;
@@ -45,6 +57,11 @@ function sshkeyListCtrl($scope,appService,$state) {
         });
     };
     $scope.list(1);
+
+    // Get ssh key list based on domain selection
+    $scope.selectDomainView = function(pageNumber) {
+    	$scope.list(1);
+    };
 
     // Open dialogue box to create SSH Key
     $scope.sshkey = {};

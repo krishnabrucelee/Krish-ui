@@ -56,18 +56,29 @@
                             <div class="row">
                                 <div class="col-md-12 col-sm-12 col-xs-12 ">
                                     <div class="pull-left">
-                                        <div class="pull-left">
-
-                                        </div>
+                                        <div class="dashboard-box pull-left">
+			     							<div class="instance-border-content-normal">
+			                                <span class="pull-left m-t-xs m-l-xs m-r-xs"><fmt:message key="common.total" bundle="${msg}" /></span>
+			                                <b class="pull-left">{{departmentList.Count}}</b>
+			                                <div class="clearfix"></div>
+			                                </div>
+			                            </div>
+			                            <a has-permission="ADD_DEPARTMENT" id="departments_add_button" class="btn btn-info"  ng-click="createDepartment('md')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="common.add" bundle="${msg}" /> </a>
+                                        <a class="btn btn-info" id="departments_refresh_button" ui-sref="department" title="<fmt:message key="common.refresh" bundle="${msg}" /> " ui-sref-opts="{reload: true}" ><span class="fa fa-refresh fa-lg"></span></a>
                                     </div>
                                     <div class="pull-right">
                                         <panda-quick-search></panda-quick-search>
+                                        <span class="pull-right m-r-sm" data-ng-show="global.sessionValues.type == 'ROOT_ADMIN'">
+											<select
+												class="form-control input-group col-xs-5" name="domainView"
+												data-ng-model="domainView"
+												data-ng-change="selectDomainView(1)"
+												data-ng-options="domainView.name for domainView in formElements.domainList">
+												<option value="">Select Domain</option>
+											</select>
+										</span>
                                         <div class="clearfix"></div>
-
-                                        <span class="pull-right m-l-sm m-t-sm">
-                                            <a has-permission="ADD_DEPARTMENT" id="departments_add_button" class="btn btn-info"  ng-click="createDepartment('md')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="common.add" bundle="${msg}" /> </a>
-                                            <a class="btn btn-info" id="departments_refresh_button" ui-sref="department" title="<fmt:message key="common.refresh" bundle="${msg}" /> " ui-sref-opts="{reload: true}" ><span class="fa fa-refresh fa-lg"></span></a>
-                                        </span>
+                                        <span class="pull-right m-l-sm m-t-sm"></span>
                                     </div>
                                 </div>
                                 <div class="clearfix"></div>

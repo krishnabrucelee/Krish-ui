@@ -42,17 +42,22 @@
                         <div class="row">
                             <div class="col-md-12 col-sm-12 col-xs-12 ">
                                 <div class="pull-left">
-
+		                            <a has-permission="CREATE_USER" class="btn btn-info" data-ng-click="addUser('lg')"><span class="pe-7s-add-user pe-lg font-bold m-r-xs"></span><fmt:message key="common.add" bundle="${msg}" /></a>
+                                    <a class="btn btn-info " ui-sref="accounts" title="Refresh"  ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
                                 </div>
                                 <div class="pull-right">
                                     <panda-quick-search></panda-quick-search>
+                                    <span class="pull-right m-r-sm" data-ng-show="global.sessionValues.type == 'ROOT_ADMIN'">
+										<select
+											class="form-control input-group col-xs-5" name="domainView"
+											data-ng-model="domainView"
+											data-ng-change="selectDomainView(1)"
+											data-ng-options="domainView.name for domainView in accountElements.domainList">
+											<option value="">Select Domain</option>
+										</select>
+									</span>
                                     <div class="clearfix"></div>
-                                    <span class="pull-right m-l-sm m-t-sm">
-                                        <a has-permission="CREATE_USER" class="btn btn-info" data-ng-click="addUser('lg')"><span class="pe-7s-add-user pe-lg font-bold m-r-xs"></span><fmt:message key="add.user" bundle="${msg}" /></a>
-                                        <!-- <a data-ng-class="disabled && activate ? 'btn btn-info' : 'btn btn-default disabled'" data-ng-click="activating()"><span class="pe-7s-user pe-lg font-bold m-r-xs"></span>Activate User</a>
-                                        <a data-ng-class="disabled && revoke ? 'btn btn-info' : 'btn btn-default disabled'" data-ng-click="revoking()" ><span class="pe-7s-delete-user pe-lg font-bold m-r-xs"></span>Revoke User</a> -->
-                                        <a class="btn btn-info " ui-sref="accounts" title="Refresh"  ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
-                                    </span>
+                                    <span class="pull-right m-l-sm m-t-sm"></span>
                                 </div>
 
                             </div>
@@ -79,7 +84,12 @@
 										<th><fmt:message key="common.action" bundle="${msg}" /></th>
                                         </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody data-ng-hide="accountList.length > 0">
+		                                    <tr>
+		                                        <td class="col-md-7 col-sm-7" colspan="7"><fmt:message key="common.no.records.found" bundle="${msg}" />!!</td>
+		                                    </tr>
+		                                </tbody>
+                                        <tbody data-ng-show="accountList.length > 0">
                                             <tr data-ng-repeat="account in filteredCount = (accountList| filter: quickSearch | orderBy:sort.column:sort.descending)">
                                                 <td>
                                                     <a class="text-info" >{{ account.userName}}</a>

@@ -5,7 +5,7 @@ angular
  function rolesListCtrl($scope, appService, $window, $stateParams) {
 
 
-  
+
   $scope.$on(appService.globalConfig.webSocketEvents.roleEvents.createRole, function() {
 
   //   $scope.roleList = appService.webSocket;
@@ -40,9 +40,21 @@ angular
     $scope.list = function (pageNumber) {
     	$scope.showLoader = true;
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
-        var hasRoles = appService.crudService.list("roles", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+        var hasRoles = {};
+        if ($scope.domainView == null) {
+        	hasRoles = appService.crudService.list("roles", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+        } else {
+        	hasRoles =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "roles/listByDomain"
+				+"?lang=" +appService.localStorageService.cookie.get('language')
+				+ "&domainId="+$scope.domainView.id+"&sortBy=ASC"+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+        }
         hasRoles.then(function (result) {  // this is only run after $http
             $scope.roleList = result;
+            $scope.roleList.Count = 0;
+            if (result.length != 0) {
+                $scope.roleList.Count = result.totalItems;
+            }
+
             // For pagination
             $scope.paginationObject.limit  = limit;
             $scope.paginationObject.currentPage = pageNumber;
@@ -51,6 +63,11 @@ angular
         });
     };
     $scope.list(1);
+
+    // Get role list based on domain selection
+    $scope.selectDomainView = function(pageNumber) {
+    	$scope.list(1);
+    };
 
 
     // Load permission

@@ -655,6 +655,13 @@ $scope.ingressSave = function (form,firewallRuleIngress) {
             }]);
     };
 
+    // Get network list based on domain selection
+    $scope.domainId = null;
+    $scope.selectDomainView = function(pageNumber, domainId) {
+    	$scope.domainId = domainId;
+    	$scope.list(1);
+    };
+
     $scope.networkList = [];
     $scope.paginationObject = {};
     $scope.networkForm = {};
@@ -664,7 +671,14 @@ $scope.ingressSave = function (form,firewallRuleIngress) {
         $scope.showLoader = true;
         $scope.type = $stateParams.view;
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
-        var hasGuestNetworks = appService.crudService.list("guestnetwork", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+        var hasGuestNetworks = {};
+        if ($scope.domainId == null || angular.isUndefined($scope.domainId)) {
+        	hasGuestNetworks = appService.crudService.list("guestnetwork", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+        } else {
+        	hasGuestNetworks =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "guestnetwork/listByDomain"
+				+"?lang=" +appService.localStorageService.cookie.get('language')
+				+ "&domainId="+$scope.domainId+"&sortBy=ASC"+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+        }
         hasGuestNetworks.then(function (result) {
             $scope.showLoader = true;
             $scope.networkList = angular.copy(result);

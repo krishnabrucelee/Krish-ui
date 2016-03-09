@@ -116,14 +116,31 @@ function accountListCtrl($scope,$state, $log,$timeout,$stateParams, appService) 
         $scope.checkOne(item);
     }
 
+    // Get account list based on domain selection
+    $scope.selectDomainView = function(pageNumber) {
+    	$scope.list(1);
+    };
+
     // User List
     $scope.list = function (pageNumber) {
     	$scope.showLoader = true;
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
-        var hasUsers = appService.crudService.list("users", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+        var hasUsers = {};
+        if ($scope.domainView == null) {
+        	hasUsers = appService.crudService.list("users", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+        } else {
+        	hasUsers =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "users/listByUserDomain"
+				+"?lang=" +appService.localStorageService.cookie.get('language')
+				+ "&domainId="+$scope.domainView.id+"&sortBy=ASC"+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+        }
         hasUsers.then(function (result) {  // this is only run after $http completes0
 
             $scope.accountList = result;
+            $scope.accountList.Count = 0;
+            if (result.length != 0) {
+                $scope.accountList.Count = result.totalItems;
+            }
+
             // For pagination
             $scope.paginationObject.limit  = limit;
             $scope.paginationObject.currentPage = pageNumber;
@@ -265,11 +282,11 @@ function accountListCtrl($scope,$state, $log,$timeout,$stateParams, appService) 
 		    var hasProjects =  appService.promiseAjax.httpTokenRequest( appService.crudService.globalConfig.HTTP_GET, appService.crudService.globalConfig.APP_URL + "projects"  +"/department/"+department.id);
 		    hasProjects.then(function (result) {  // this is only run after $http completes0
                 $scope.options = result;
-            });                
+            });
            	};
         }])};
 
-       if ($scope.global.sessionValues.type === "USER") { 
+       if ($scope.global.sessionValues.type === "USER") {
        var hasRoles =  appService.promiseAjax.httpTokenRequest( appService.crudService.globalConfig.HTTP_GET, appService.crudService.globalConfig.APP_URL + "roles"  +"/department/"+$scope.global.sessionValues.departmentId);
             	 hasRoles.then(function (result) {  // this is only run after $http completes0
             		 $scope.accountElements.roleList = result;

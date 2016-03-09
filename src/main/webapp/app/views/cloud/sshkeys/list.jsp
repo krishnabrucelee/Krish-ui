@@ -9,18 +9,34 @@
             <div class="row">
                 <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="pull-left">
+                    	<div class="dashboard-box pull-left">
+  							<div class="instance-border-content-normal">
+                             <span class="pull-left m-t-xs m-l-xs m-r-xs"><fmt:message key="common.total" bundle="${msg}" /></span>
+                             <b class="pull-left">{{sshkeyList.Count}}</b>
+                             <div class="clearfix"></div>
+                             </div>
+                         </div>
+                         <a has-permission="CREATE_SSH_KEY" class="btn btn-info"  ng-click="createSSHKey('md')"  data-backdrop="static" data-keyboard="false"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="create.ssh.key.pair" bundle="${msg}" /></a>
+                         <a class="btn btn-info" data-ng-click="list(1)"  title="<fmt:message key="common.refresh" bundle="${msg}"/>"><span class="fa fa-refresh fa-lg "></span></a>
                     </div>
                     <div class="pull-right">
-                        <div class="quick-search">
+                        <div class="quick-search pull-right m-r-sm">
 							<div class="input-group">
 								<input data-ng-model="sshkeySearch" type="text" class="form-control input-medium" placeholder="<fmt:message key="common.quick.search" bundle="${msg}" />" aria-describedby="quicksearch-go">
 							   	 <span class="input-group-addon" id="quicksearch-go"><span class="pe-7s-search pe-lg font-bold"></span></span>
 							</div>
 						</div>
-                        <span class="pull-right m-l-sm m-t-sm m-b-sm">
-                            <a has-permission="CREATE_SSH_KEY" class="btn btn-info"  ng-click="createSSHKey('md')"  data-backdrop="static" data-keyboard="false"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="create.ssh.key.pair" bundle="${msg}" /></a>
-                            <a class="btn btn-info" data-ng-click="list(1)"  title="<fmt:message key="common.refresh" bundle="${msg}"/>"><span class="fa fa-refresh fa-lg "></span></a>
-                        </span>
+						<span class="pull-right m-r-sm" data-ng-show="global.sessionValues.type == 'ROOT_ADMIN'">
+							<select
+								class="form-control input-group col-xs-5" name="domainView"
+								data-ng-model="domainView"
+								data-ng-change="selectDomainView(1)"
+								data-ng-options="domainView.name for domainView in formElements.domainList">
+								<option value="">Select Domain</option>
+							</select>
+						</span>
+						<div class="clearfix"></div>
+						<span class="pull-right m-l-sm m-t-sm"></span>
                     </div>
                 </div>
                 <div class="clearfix"></div>

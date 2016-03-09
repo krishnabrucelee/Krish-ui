@@ -99,23 +99,43 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
         $scope.getDepartmentList(domain);
     }
 
+    // Get volume list based on domain selection
+    $scope.selectDomainView = function(pageNumber) {
+    	$scope.list(1);
+    };
+
     // Volume List
     $scope.list = function (pageNumber) {
     	 $scope.showLoader = true;
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
-        var hasVolumes = appService.crudService.list("volumes", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+        var hasVolumes = {};
+        if ($scope.domainView == null) {
+        	hasVolumes = appService.crudService.list("volumes", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+        } else {
+        	hasVolumes =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "volumes/listByDomain"
+				+"?lang=" +appService.localStorageService.cookie.get('language')
+				+ "&domainId="+$scope.domainView.id+"&sortBy=ASC"+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+        }
         hasVolumes.then(function (result) {
-
             $scope.volumeList = result;
-
             $scope.volumeList.Count = result.totalItems;
 
       		 // Get the count of the listings
-       		var hasVmCount =  appService.crudService.listAll("volumes/volumeCounts");
+            var hasVmCount = {};
+            if ($scope.domainView == null) {
+       		    hasVmCount = appService.crudService.listAll("volumes/volumeCounts");
+            } else {
+            	hasVmCount = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL +
+            			"volumes/volumeCountsByDomain?domainId="+$scope.domainView.id +"&lang="+
+            			appService.localStorageService.cookie.get('language')+"&sortBy=ASC");
+            }
        		hasVmCount.then(function(result) {
        			$scope.attachedCount = result.attachedCount;
-       			$scope.detachedCount = result.detachedCount;
-       			$scope.totalCount = result.totalCount;
+       			if ($scope.domainView == null) {
+       				$scope.detachedCount = result.detachedCount;
+                } else {
+                	$scope.detachedCount = $scope.volumeList.Count - result.attachedCount;
+                }
     		});
 
             // For pagination
