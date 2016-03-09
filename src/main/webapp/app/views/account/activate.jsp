@@ -1,17 +1,59 @@
-
-<div class="inmodal" data-ng-controller="accountListCtrl"  >
-      <div class="modal-header">
-            <panda-modal-header page-icon="fa fa-user-md" hide-zone="false" page-title="Activate User"></panda-modal-header>                
-        </div>
-        <div class="modal-body" >
-           
-
-            <div class="text-center" data-ng-init="ok()">
-                <span>Activating Please wait..</span><br/>
-                <span><img src="images/loading-bars.svg" /> </span>
-            </div>
-        
-        </div>
-  
-          
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<div class="inmodal" data-ng-contoller="accountListCtrl">
+    <div class="modal-header">
+        <panda-modal-header hide-zone="false" page-icon="fa fa-user-md" page-title="<fmt:message key="enable.user" bundle="${msg}" />"></panda-modal-header>
     </div>
+
+    <div class="modal-body">
+        <div class=" row">
+            <div class="form-group has-error col-md-3 col-sm-3  col-xs-3">
+
+                <img src="images/warning.png" alt="">
+            </div>
+            <div class="form-group has-error col-md-9 col-sm-9  col-xs-9 m-t-md">
+                <p ><fmt:message key="enable.message" bundle="${msg}" /> </p>
+            </div>
+
+
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <get-loader-image data-ng-show="showLoader"></get-loader-image>
+
+        <button type="button" data-ng-hide="showLoader" class="btn btn-default "  ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.cancel" bundle="${msg}" /></button>
+        <button type="button" data-ng-hide="showLoader" class="btn btn-info"   ng-click="ok(user)" data-dismiss="modal"><fmt:message key="common.enable" bundle="${msg}" /></button>
+
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

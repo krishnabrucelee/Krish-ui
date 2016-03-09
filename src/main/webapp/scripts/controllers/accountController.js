@@ -44,7 +44,9 @@ function accountListCtrl($scope,$state, $log,$timeout,$stateParams, appService) 
         selectedAll: {},
         totalcount: 0
     };
-
+    $scope.activeUsers = [];
+    $scope.active = {};
+	$scope.inActive = {};
     $scope.oneChecked = false;
     $scope.default_option = true;
     $scope.revokes = false;
@@ -61,6 +63,13 @@ function accountListCtrl($scope,$state, $log,$timeout,$stateParams, appService) 
     $scope.accountElements={
 
     };
+
+    var hasUsers = appService.crudService.listAll("users/list");
+	$scope.showLoader = true;
+	hasUsers.then(function (result) {  // this is only run after $http completes0
+	$scope.activeUsers = result;
+
+});
 
     // Department list load based on the domain
     $scope.domainChange = function() {
@@ -79,6 +88,8 @@ function accountListCtrl($scope,$state, $log,$timeout,$stateParams, appService) 
     	$scope.accountElements.departmentList = result;
     });
     }
+
+
 
     $scope.departmentList = {};
     $scope.getDepartmentList = function (domain) {
@@ -265,11 +276,11 @@ function accountListCtrl($scope,$state, $log,$timeout,$stateParams, appService) 
 		    var hasProjects =  appService.promiseAjax.httpTokenRequest( appService.crudService.globalConfig.HTTP_GET, appService.crudService.globalConfig.APP_URL + "projects"  +"/department/"+department.id);
 		    hasProjects.then(function (result) {  // this is only run after $http completes0
                 $scope.options = result;
-            });                
+            });
            	};
         }])};
 
-       if ($scope.global.sessionValues.type === "USER") { 
+       if ($scope.global.sessionValues.type === "USER") {
        var hasRoles =  appService.promiseAjax.httpTokenRequest( appService.crudService.globalConfig.HTTP_GET, appService.crudService.globalConfig.APP_URL + "roles"  +"/department/"+$scope.global.sessionValues.departmentId);
             	 hasRoles.then(function (result) {  // this is only run after $http completes0
             		 $scope.accountElements.roleList = result;
@@ -393,12 +404,53 @@ function accountListCtrl($scope,$state, $log,$timeout,$stateParams, appService) 
         $timeout($scope.generateRevoke, 3000);
     };
 
-    $scope.revoking = function () {
-        appService.modalService.trigger('views/account/revoke.html', 'md');
-    }
+    $scope.revoking = function (account) {
+    	var user = account;
+      	$scope.user = user;
+    	  appService.dialogService.openDialog("app/views/account/revoke.jsp", 'sm', $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
+    		  $scope.ok = function(user) {
+                  $scope.showLoader = true;
+                   var hasServer = appService.crudService.update("users/disable", user);
+                   hasServer.then(function (result) {
+    			     $scope.list(1);
+                   appService.notify({message: 'Disabled successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                   $scope.showLoader = false;
+                   $scope.cancel();
+                   }).catch(function (result) {
+                       $scope.showLoader = false;
+                       $scope.cancel();
+                   });
+              },
+              $scope.cancel = function(){
+                  $modalInstance.close();
+              }
 
-    $scope.activating = function () {
-        appService.modalService.trigger('views/account/activate.html', 'md');
+    	  }]);    }
+
+    $scope.activating = function (account) {
+    	var user = account;
+      	$scope.user = user;
+        appService.dialogService.openDialog("app/views/account/activate.jsp", 'sm', $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
+
+        	$scope.ok = function(user) {
+                $scope.showLoader = true;
+                 var hasServer = appService.crudService.update("users/enable", user);
+                 hasServer.then(function (result) {
+  			     $scope.list(1);
+                 appService.notify({message: 'Enabled successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                 $scope.showLoader = false;
+                 $scope.cancel();
+                 }).catch(function (result) {
+                     $scope.showLoader = false;
+                     $scope.cancel();
+                 });
+            },
+            $scope.cancel = function(){
+                $modalInstance.close();
+            }
+
+
+        }]);
     }
 }
 
