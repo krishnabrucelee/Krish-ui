@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<form name="vmlistform">
 <div class="inmodal">
 <div class="modal-header">
 	<panda-modal-header page-icon="fa fa-cloud" page-title="Add VMs"></panda-modal-header>
@@ -46,9 +47,10 @@
 							<td><a class="text-info">{{ instance.vmInstance.name }}</a>
 
 									<div data-ng-show="instance.lbvm">
-									<select required="true" data-ng-show="instance.lbvm" multiple class="form-control input-group" name="ipAddress" data-ng-model="instance.ipAddress"  data-ng-options="ipAddress.guestIpAddress for ipAddress in instance.vmIpAddress"  >
+									<select required="true" data-ng-show="instance.lbvm"  multiple class="form-control input-group" name="ipAddress" data-ng-model="instance.ipAddress"  data-ng-options="ipAddress.guestIpAddress for ipAddress in instance.vmIpAddress"  >
 									</select>
 									</div>
+
 										</td>
 								<td>{{instance.vmInstance.instanceInternalName}}</td>
 								<td>{{instance.vmInstance.displayName}}</td>
@@ -62,12 +64,11 @@
 								</td>
 								<td>
 
-										<div class="">
-
-											<input type="checkbox" icheck
+										<div class="form-group"  >
+											<input required type="checkbox"  class="form-control" icheck
 												data-ng-model="instance.lbvm"
 												data-ng-value="{{instance.vmInstance.id}}" name="selectVM"
-												data-ng-change="nicIPList(instance.vmInstance.id)">
+												data-ng-change="nicIPList(instance.vmInstance.id)" >
 										</div>
 					</td>
 							</tr>
@@ -83,8 +84,13 @@
 			<get-loader-image data-ng-if="showLoader"></get-loader-image>
 			<button type="button" data-ng-if="!showLoader" class="btn btn-default " ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.cancel" bundle="${msg}" /></button>
 			<button class="btn btn-info"  data-ng-if="!showLoader" data-ng-click="loadbalancerSave(lbvmList)"><fmt:message key="common.apply" bundle="${msg}" /></button>
+  			</div>
+
 		</div>
+
+
 </div>
+</form>
 
 
 

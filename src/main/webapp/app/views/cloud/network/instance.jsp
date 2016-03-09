@@ -33,7 +33,7 @@ pageEncoding="UTF-8"%>
             <tbody>
                 <tr data-ng-repeat="instance in vmList | filter: networkSearch ">
                     <td>
-                        <a class="text-info" ui-sref="cloud.list-instance.view-instance({id: {{ instance.id}}})"  title="View Instance" >{{ instance.vmInstance.name}}</a>
+                        <a class="text-info" ui-sref="cloud.list-instance.view-instance({id: {{ instance.vmInstance.id}}})"  title="View Instance" >{{ instance.vmInstance.name}}</a>
                     </td>
 					<td >{{instance.vmInstance.instanceInternalName}} </td>
 					<td >{{instance.vmInstance.displayName}} </td>

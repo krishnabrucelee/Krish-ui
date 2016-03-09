@@ -72,7 +72,21 @@
                                     {{ snapshot.createdDateTime*1000 | date:'yyyy-MM-dd HH:mm:ss'}}
                                 </td>
                                 <td>
-                                    {{ snapshot.status}}
+                                <div class="text-center">
+										<img src="images/vmsnapshot/ready.png" data-ng-if="snapshot.status == 'Ready'" title="{{ snapshot.status}}">
+										<img src="images/vmsnapshot/expunging.png" data-ng-if="snapshot.status == 'Expunging'"
+													title="{{ snapshot.status}}"
+												>
+										<img src="images/vmsnapshot/error.png" data-ng-if="snapshot.status == 'Error'"
+													title="{{ snapshot.status}}"
+												>
+										<img src="images/vmsnapshot/creating.png" data-ng-if="snapshot.status == 'Creating'"
+													title="{{ snapshot.status}}"
+												>
+										<img src="images/vmsnapshot/implemented.png" data-ng-if="instance.status == 'Implemented'"
+													title="{{ snapshot.status}}"
+												>
+										</div>
                                 </td>
                                  <td>
                                     <a data-ng-show = "snapshot.status != 'Error'" class="icon-button" title="<fmt:message key="restore.vm.snapshot" bundle="${msg}" />"  data-ng-click="restoresnapshot(snapshot)">

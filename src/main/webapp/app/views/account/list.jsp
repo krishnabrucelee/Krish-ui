@@ -115,7 +115,22 @@
 													data-ng-click="editUser('md',account)">
 														<span class="fa fa-edit m-r"> </span>
 												</a>
-												 <a
+												 <a data-ng-if="global.sessionValues.type =='DOMAIN_ADMIN'"
+												 data-ng-hide = "global.sessionValues.type =='DOMAIN_ADMIN' && account.type == 'DOMAIN_ADMIN'"
+													class="icon-button" has-permission="DELETE_USER"
+													title="<fmt:message key="common.delete" bundle="${msg}" /> "
+													data-ng-click="deleteUser('sm',account)"><span
+														class="fa fa-trash"></span></a>
+
+														 <a data-ng-if="global.sessionValues.type =='ROOT_ADMIN'"
+												   data-ng-hide = "account.type == 'ROOT_ADMIN'"
+													class="icon-button" has-permission="DELETE_USER"
+													title="<fmt:message key="common.delete" bundle="${msg}" /> "
+													data-ng-click="deleteUser('sm',account)"><span
+														class="fa fa-trash"></span></a>
+
+														<a data-ng-if="global.sessionValues.type =='USER' "
+												   data-ng-hide = "account.type == 'DOMAIN_ADMIN' || global.sessionValues.userName == '{{account.userName}}'"
 													class="icon-button" has-permission="DELETE_USER"
 													title="<fmt:message key="common.delete" bundle="${msg}" /> "
 													data-ng-click="deleteUser('sm',account)"><span

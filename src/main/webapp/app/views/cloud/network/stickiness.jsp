@@ -33,7 +33,7 @@
 						</div>
 						<div class="form-group"
 							ng-class="{'text-danger': !stickiness.stickinessName && formSubmitted}"
-							data-ng-show="stickiness.stickinessMethod == 'SourceBased' || stickiness.stickinessMethod == 'AppCookie'">
+							data-ng-show="stickiness.stickinessMethod == 'SourceBased' || stickiness.stickinessMethod == 'AppCookie' || stickiness.stickinessMethod == 'LbCookie' ">
 							<div class="row">
 								<label class="col-md-3 col-xs-12 col-sm-3 control-label"><fmt:message
 										key="sticky.name" bundle="${msg}" /> <span
