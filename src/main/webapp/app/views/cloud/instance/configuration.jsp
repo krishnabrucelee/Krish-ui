@@ -78,27 +78,30 @@
 				</div>
 			</div>
 		</div>
-		<div class="row m-b-xl"
-			ng-class="{ 'text-danger' : instanceForm.cpuSpeed.$modelValue <= 1000 && OfferingSubmitted}">
-			<label class="col-md-3 col-sm-3 control-label"><fmt:message key="cpu.speed" bundle="${msg}" /> :</label>
-			<div class="col-md-5 col-sm-5">
-				<rzslider rz-slider-model="instance.computeOffer.cpuSpeed.value"
-					rz-slider-floor="instance.computeOffer.cpuSpeed.floor"
-					rz-slider-ceil="instance.computeOffer.cpuSpeed.ceil"
-					rz-slider-always-show-bar="true"></rzslider>
-			</div>
-			<div class="col-md-3 col-sm-3 digit-2-width">
-				<div class="input-group">
-					<input valid-number
-						data-ng-min="{{ instance.computeOffer.cpuSpeed.floor}}"
-						data-ng-max="{{ instance.computeOffer.cpuSpeed.ceil}}" type="text"
-						class="form-control" name="cpuSpeed"
-						data-ng-model="instance.computeOffer.cpuSpeed.value"> <span
-						class="input-group-addon">MHz</span>
+			<div class="row m-b-xl"
+				data-ng-class="{ 'text-danger' : instanceForm.cpuSpeed.$modelValue < 500 && OfferingSubmitted}">
+				<label class="col-md-3 col-sm-3 control-label"><fmt:message key="cpu.speed" bundle="${msg}" /> :</label>
+				<div class="col-md-5 col-sm-5">
+					<rzslider rz-slider-model="instance.computeOffer.cpuSpeed.value" data-ng-init="instance.computeOffer.cpuSpeed.value = 500"
+						rz-slider-floor="instance.computeOffer.cpuSpeed.floor"
+						rz-slider-ceil="instance.computeOffer.cpuSpeed.ceil"
+						rz-slider-always-show-bar="true">
+
+					</rzslider>
+				</div>
+				<div class="col-md-3 col-sm-3 digit-2-width">
+					<div class="input-group">
+						<input valid-number id="create_instance_compute_offering_cpu_speed"
+							data-ng-min="{{ instance.computeOffer.cpuSpeed.floor}}"
+							data-ng-max="{{ instance.computeOffer.cpuSpeed.ceil}}"
+							type="text" class="form-control" name="cpuSpeed"
+							data-ng-model="instance.computeOffer.cpuSpeed.value"  >
+													<span class="input-group-addon">MHz</span>
+					</div>
+
 				</div>
 			</div>
-		</div>
-		<div class="row m-b-xl" data-ng-show="instance.computeOffering.customizedIops">
+		<%-- <div class="row m-b-xl" data-ng-show="instance.computeOffering.customizedIops">
 			<div class="col-md-5 col-sm-6">
 				<div class="form-group"
 					ng-class="{ 'text-danger' : instanceForm.minIops.$modelValue <= 0 && OfferingSubmitted}">
@@ -121,7 +124,7 @@
 					</div>
 				</div>
 			</div>
-		</div>
+		</div> --%>
 	</div>
 
                         <div class="form-group">
