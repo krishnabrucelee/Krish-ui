@@ -32,6 +32,8 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
     $scope.template = {
         templateList: {}
     };
+    $scope.paginationObject.sortOrder = '+';
+    $scope.paginationObject.sortBy = 'name'; 
     $scope.templateCategories = appService.localStorageService.get("view");
     $scope.templateVM = appService.localStorageService.get("selectedTemplate");
     if (!angular.isUndefined($scope.templateVM) && $scope.templateVM != null && $scope.templateVM.$valid) {
@@ -109,6 +111,8 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
 
       // Hypervisors list from server
       $scope.hypervisorList = function () {
+          appService.globalConfig.sort.sortOrder = $scope.paginationObject.sortOrder;
+          appService.globalConfig.sort.sortBy = $scope.paginationObject.sortBy;
     	  var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
     	  var hashypervisorList = appService.crudService.list("hypervisors", $scope.global.paginationHeaders(1, limit), {"limit": limit});
     	  hashypervisorList.then(function (result) {

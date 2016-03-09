@@ -32,7 +32,7 @@ function instanceListCtrl($scope, $sce, $log, $filter, dialogService,$timeout, p
     $scope.sort = appService.globalConfig.sort;
     $scope.changeSorting = appService.utilService.changeSorting;
     $scope.paginationObject.sortOrder = '+';
-    $scope.paginationObject.sortBy = 'name';
+    $scope.paginationObject.sortBy = 'displayName';
     if ($stateParams.id > 0) {
         var hasServer = appService.crudService.read("virtualmachine", $stateParams.id);
         hasServer.then(function (result) {  // this is only run after $http
@@ -192,6 +192,8 @@ function instanceListCtrl($scope, $sce, $log, $filter, dialogService,$timeout, p
 	$scope.vm = {};
 
 	$scope.list = function(pageNumber, status) {
+        appService.globalConfig.sort.sortOrder = $scope.paginationObject.sortOrder;
+        appService.globalConfig.sort.sortBy = $scope.paginationObject.sortBy;
 	    if(!angular.isUndefined(status)) {
 	        $scope.vm.status = status;
  	        $window.sessionStorage.removeItem("status")
@@ -217,7 +219,7 @@ function instanceListCtrl($scope, $sce, $log, $filter, dialogService,$timeout, p
 			$scope.instanceList = result;
 			$scope.instanceList.Count = result.totalItems;
 			// For pagination
-
+               console.log($scope.instanceList);
                 $scope.instancesList.Count = 0;
            		 for (i = 0; i < result.length; i++) {
             		 if($scope.instanceList[i].status.indexOf("EXPUNGING") > -1) {

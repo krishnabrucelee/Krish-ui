@@ -8,7 +8,7 @@ angular
     .module('homer')
     .controller('secondaryIpCtrl', secondaryIpCtrl)
 
-function secondaryIpCtrl($scope, $modal, $state, $window, $stateParams,appService) {
+function secondaryIpCtrl($scope, $modal, $state, $window, $stateParams,appService,localStorageService, globalConfig) {
 
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.acquireNewIP, function() {
   //      $scope.nicIPLists = appService.webSocket;
@@ -25,6 +25,38 @@ function secondaryIpCtrl($scope, $modal, $state, $window, $stateParams,appServic
     $scope.networkList = [];
     $scope.nic = {};
     $scope.vmIp = {};
+    $scope.paginationObject.sortOrder = '+';
+    $scope.paginationObject.sortBy = 'name';
+    $scope.changeSort = function(sortBy, pageNumber) {
+			var sort = appService.globalConfig.sort;
+			if (sort.column == sortBy) {
+				sort.descending = !sort.descending;
+			} else {
+				sort.column = sortBy;
+				sort.descending = false;
+			}
+			var sortOrder = '-';
+			if(!sort.descending){
+				sortOrder = '+';
+			}
+			$scope.paginationObject.sortOrder = sortOrder;
+			$scope.paginationObject.sortBy = sortBy;
+			$scope.showLoader = true;
+                        var instanceId = $stateParams.id;
+			var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
+                        var hasIPLists = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbyvminstances?instanceid="+instanceId +"&lang=" + appService.localStorageService.cookie.get('language')+"&sortBy="+sortOrder+sortBy);
+			hasIPLists.then(function(result) { // this is only run after $http
+				// completes0
+				$scope.nicIPLists = result;
+				// For pagination
+				$scope.paginationObject.limit = limit;
+				$scope.paginationObject.currentPage = pageNumber;
+				$scope.paginationObject.totalItems = result.totalItems;
+				$scope.paginationObject.sortOrder = sortOrder;
+				$scope.paginationObject.sortBy = sortBy;
+				$scope.showLoader = false;
+			});
+		};
 
     $scope.instanceDetails='';
     if ($stateParams.id > 0) {
@@ -41,11 +73,13 @@ function secondaryIpCtrl($scope, $modal, $state, $window, $stateParams,appServic
 
      // Nic List
     $scope.nicIPList = function () {
+        appService.globalConfig.sort.sortOrder = $scope.paginationObject.sortOrder;
+        appService.globalConfig.sort.sortBy = $scope.paginationObject.sortBy;
     	$scope.showLoader = true;
         $scope.nic = {};
         var instanceId = $stateParams.id;
 	$scope.nicip=$stateParams.id1;
-       	var hasNicIP = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbyvminstances?instanceid="+instanceId +"&lang=" + appService.localStorageService.cookie.get('language')+"&sortBy=-id");
+       	var hasNicIP = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbyvminstances?instanceid="+instanceId +"&lang=" + appService.localStorageService.cookie.get('language')+"&sortBy="+appService.globalConfig.sort.sortOrder+appService.globalConfig.sort.sortBy);
         hasNicIP.then(function (result) {
             $scope.nicIPLists = result;
             $scope.showLoader = false;

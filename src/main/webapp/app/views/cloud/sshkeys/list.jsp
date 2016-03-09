@@ -52,10 +52,10 @@
                             <table cellspacing="1" cellpadding="1" class="table dataTable table-bordered table-striped">
                                 <thead>
                                     <tr>
-								    	<th class="col-md-2 col-sm-2" data-ng-click="changeSorting('name')" data-ng-class="sort.descending && sort.column =='name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.name" bundle="${msg}" /> </th>
-										<th class="col-md-2 col-sm-3" data-ng-click="changeSorting('department.domain.name')" data-ng-class="sort.descending && sort.column =='department.domain.name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.company" bundle="${msg}" /></th>
-										<th class="col-md-2 col-sm-5" data-ng-click="changeSorting('department.userName')" data-ng-class="sort.descending && sort.column =='department.userName'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.account" bundle="${msg}" /></th>
-										<th class="col-md-3 col-sm-2" data-ng-click="changeSorting('privatekey')" data-ng-class="sort.descending && sort.column =='privatekey'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="common.private.key" bundle="${msg}" /></th>
+								    	<th class="col-md-2 col-sm-2" data-ng-click="changeSort('name',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.name" bundle="${msg}" /> </th>
+										<th class="col-md-2 col-sm-3" data-ng-click="changeSort('department.domain.name',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='department.domain.name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.company" bundle="${msg}" /></th>
+										<th class="col-md-2 col-sm-5" data-ng-click="changeSort('department.userName',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='department.userName'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.account" bundle="${msg}" /></th>
+										<th class="col-md-3 col-sm-2" data-ng-click="changeSort('privatekey',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='privatekey'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="common.private.key" bundle="${msg}" /></th>
 										<th class="col-md-1 col-sm-2"><fmt:message key="common.action" bundle="${msg}" /></th>
 									</tr>
                                 </thead>

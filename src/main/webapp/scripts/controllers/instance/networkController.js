@@ -28,6 +28,7 @@ function networkCtrl($scope, $modal, $state, $window, $stateParams,appService) {
     $scope.networkList = [];
     $scope.nic = {};
     $scope.vmIp = {};
+    
 
     $scope.instanceDetails='';
     if ($stateParams.id > 0) {
@@ -43,8 +44,14 @@ function networkCtrl($scope, $modal, $state, $window, $stateParams,appService) {
     $scope.paginationObject = {};
     $scope.networkForm = {};
     $scope.global = appService.crudService.globalConfig;
+    $scope.paginationObject.sortOrder = '+';
+    $scope.paginationObject.sortBy = 'name'; 
+
+
     // Guest Network List
     $scope.list = function (pageNumber) {
+         appService.globalConfig.sort.sortOrder = $scope.paginationObject.sortOrder;
+         appService.globalConfig.sort.sortBy = $scope.paginationObject.sortBy;
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasGuestNetworks = appService.crudService.list("guestnetwork", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
         hasGuestNetworks.then(function (result) {

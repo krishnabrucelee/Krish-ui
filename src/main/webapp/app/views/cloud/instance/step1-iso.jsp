@@ -91,7 +91,7 @@
 											</div>
 											 <div class="col-md-8 col-sm-8"><label class="col-md-11 col-sm-11">{{templateObj.name}}</label><span class="col-md-11 col-sm-11">{{templateObj.displayText}}</span></div>
 											 <div class="col-md-1 col-sm-1">
-													<div class="form-group">
+													<div class="form-group" id="create_instance_iso_unique_{{templateObj.id}}"  data-unique-field="{{ templateObj.name }}-{{ templateObj.architecture}}-{{templateObj.osVersion}}" class="test_create_instance__iso_unique">
 															<label class=" "> <input icheck type="radio" id="create_instance_iso_radio_button_{{templateObj.id}}" data-ng-model="instance.template.id" name="template" data-ng-value="{{templateObj.id}}" data-ng-checked="instance.template.id===templateObj.id">
 															</label>
 													</div>

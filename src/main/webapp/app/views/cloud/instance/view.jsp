@@ -227,6 +227,15 @@ pageEncoding="UTF-8"%>
                                         <table class="table table-condensed table-striped" cellspacing="1" cellpadding="1">
                                             <tbody>
                                             <h4 class="text-info"><fmt:message key="basic.info" bundle="${msg}" /></h4>
+                                            <tr>
+                                                <td class="col-md-4 col-sm-4">
+                                                    <b>
+                                                        <fmt:message key="instance.name" bundle="${msg}" />
+                                                    </b>
+                                                </td>
+                                                <td class="col-md-8 col-sm-8">{{ instance.name}}</td>
+                                            </tr>
+                                            <tr>
                                             <td class="col-md-4 col-sm-4">
                                                 <b>
                                                     <fmt:message key="instance.display.name" bundle="${msg}" />
@@ -411,7 +420,7 @@ pageEncoding="UTF-8"%>
                                             <tr>
                                                 <td class="col-md-4 col-sm-4">
                                                     <b>
-                                                        <fmt:message key="memory" bundle="${msg}" />
+                                                        <fmt:message key="ram" bundle="${msg}" />
                                                     </b>
                                                 </td>
                                                 <td class="col-md-8 col-sm-8"><span data-ng-if="!instance.computeOffering.customized">{{ instance.computeOffering.memory}}</span><span data-ng-if="instance.computeOffering.customized">{{ instance.memory}}</span></td>
