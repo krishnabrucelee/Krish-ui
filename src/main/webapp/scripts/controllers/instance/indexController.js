@@ -603,7 +603,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
             appService.notify({message: "Instance creation started", classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
             $modalInstance.close();
             $window.location.href = '#/instance/list';
-           // $state.reload();
+            $state.reload();
 
         }).catch(function (result) {
             $scope.showLoader = false;
@@ -659,7 +659,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
         hasServer.then(function (result) {  // this is only run after $http completes
             appService.notify({message: 'instance created successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
             $modalInstance.close();
-           
+
 
         }).catch(function (result) {
             if (!angular.isUndefined(result.data)) {
