@@ -62,7 +62,7 @@ function accountListCtrl($scope,$state, $log,$timeout,$stateParams, appService, 
 
     };
     $scope.paginationObject.sortOrder = '+';
-    $scope.paginationObject.sortBy = 'name';
+    $scope.paginationObject.sortBy = 'userName';
 
     $scope.changeSort = function(sortBy, pageNumber) {
 			var sort = appService.globalConfig.sort;
@@ -151,6 +151,8 @@ function accountListCtrl($scope,$state, $log,$timeout,$stateParams, appService, 
 
     // User List
     $scope.list = function (pageNumber) {
+        appService.globalConfig.sort.sortOrder = $scope.paginationObject.sortOrder;
+        appService.globalConfig.sort.sortBy = $scope.paginationObject.sortBy;
     	$scope.showLoader = true;
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasUsers = appService.crudService.list("users", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});

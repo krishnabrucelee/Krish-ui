@@ -63,6 +63,8 @@ function sshkeyListCtrl($scope,appService,$state,localStorageService, globalConf
 
     // SSH Key List
     $scope.list = function (pageNumber) {
+        appService.globalConfig.sort.sortOrder = $scope.paginationObject.sortOrder;
+        appService.globalConfig.sort.sortBy = $scope.paginationObject.sortBy;
         $scope.showLoader = true;
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT :
         	$scope.paginationObject.limit;

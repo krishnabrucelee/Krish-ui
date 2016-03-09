@@ -28,8 +28,7 @@ function departmentCtrl($scope, $sce, appService, localStorageService, globalCon
     $scope.sort = appService.globalConfig.sort;
     $scope.changeSorting = appService.utilService.changeSorting;
     $scope.paginationObject.sortOrder = '+';
-    $scope.paginationObject.sortBy = 'name';
-
+    $scope.paginationObject.sortBy = 'userName';
     $scope.changeSort = function(sortBy, pageNumber) {
 			var sort = appService.globalConfig.sort;
 			if (sort.column == sortBy) {
@@ -63,8 +62,10 @@ function departmentCtrl($scope, $sce, appService, localStorageService, globalCon
 
     // Department List
     $scope.list = function (pageNumber) {
+    appService.globalConfig.sort.sortOrder = $scope.paginationObject.sortOrder;
+    appService.globalConfig.sort.sortBy = $scope.paginationObject.sortBy;
     	$scope.showLoader = true;
-    	$scope.department = {}
+    	$scope.department = {};
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasDepartments = appService.crudService.list("departments", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
         hasDepartments.then(function (result) {  // this is only run after $http completes0

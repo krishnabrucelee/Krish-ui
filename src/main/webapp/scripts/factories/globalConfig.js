@@ -25,8 +25,10 @@ function globalConfig($window) {
             name:''
         },
         sort : {
-        		column : '',
-        		descending : false
+        	column : '',
+    		descending : false,
+		    sortBy : 'id',
+		    sortOrder : '+'
         	},
         rulesLB:[{name:'Test','protocol':'tcp',publicPort:'90',privatePort:'90',publicEndPort:'120',privateEndPort:'120',algorithm:'Round-robin',vms:[{id:'',name: "NorthChina- Beijing",zone:"Beijing"}],state:'active'}],
         rulesPF:[{publicStartPort:90,privateStartPort:90,publicEndPort:120,privateEndPort:120,protocolType:'TCP',state:true}],

@@ -7,7 +7,7 @@
 
 	<div class="inmodal">
 		<div class="modal-header">
-			<panda-modal-header page-icon="fa fa-plus-circle"
+			<panda-modal-header id="add_application_page_title" page-icon="fa fa-plus-circle"
 				page-title="<fmt:message key="add.application" bundle="${msg}" />"></panda-modal-header>
 		</div>
 
@@ -20,7 +20,7 @@
                             <label class="col-md-3 col-xs-12 col-sm-3 control-label control-normal"><fmt:message key="common.domain" bundle="${msg}" /><span class="text-danger">*</span></label>
                             <div class="col-md-6  col-sm-6 col-xs-12">
                                 {{ global.sessionValues.domainName }}
-                                <input type="hidden" name="domain"  data-ng-model="application.domain" data-ng-init="application.domainId=global.sessionValues.domainId" />
+                                <input type="hidden" name="domain" id = "add_application_domain"  data-ng-model="application.domain" data-ng-init="application.domainId=global.sessionValues.domainId" />
                             </div>
                         </div>
                         </div>
@@ -30,7 +30,7 @@
                         <div class="row">
                             <label class="col-md-3 col-xs-12 col-sm-3 control-label control-normal"><fmt:message key="common.domain" bundle="${msg}" /><span class="text-danger">*</span></label>
                             <div class="col-md-6  col-sm-6 col-xs-12">
-                                <select required="true" class="form-control input-group" name="domain" data-ng-model="application.domain" ng-options="domain.name for domain in formElements.domainList" data-ng-class="{'error': applicationForm.domain.$invalid && formSubmitted}" >
+                                <select required="true" class="form-control input-group" name="domain" id = "add_application_domain" data-ng-model="application.domain" ng-options="domain.name for domain in formElements.domainList" data-ng-class="{'error': applicationForm.domain.$invalid && formSubmitted}" >
                                     <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
 
                                 </select>
@@ -44,7 +44,7 @@
 						<div class="row">
 							<label class="col-md-3 col-xs-12 col-sm-3 control-label"><fmt:message key="common.type" bundle="${msg}" /> <span class="text-danger">*</span></label>
 							<div class="col-md-6 col-xs-12 col-sm-6">
-								<input required="true" type="text" name="type" data-ng-model="application.type" class="form-control" data-ng-class="{'error': applicationForm.type.$invalid && formSubmitted}">
+								<input required="true" type="text" name="type" id = "add_application_type" data-ng-model="application.type" class="form-control" data-ng-class="{'error': applicationForm.type.$invalid && formSubmitted}">
 								<i tooltip="<fmt:message key="type.of.the.application" bundle="${msg}" />" class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
 								<div class="error-area" data-ng-show="applicationForm.type.$invalid && formSubmitted">
 									<i ng-attr-tooltip="{{ applicationForm.type.errorMessage || '<fmt:message key="application.type.is.required" bundle="${msg}" />' }}" class="fa fa-warning error-icon"></i>
@@ -57,7 +57,7 @@
 							<label class="col-md-3 col-xs-12 col-sm-3 control-label"><fmt:message key="common.description" bundle="${msg}" /> <span class="text-danger">*</span>
 							</label>
 							<div class="col-md-6 col-xs-12 col-sm-6">
-								<textarea rows="4" required="true" type="text" name="description" data-ng-model="application.description" class="form-control" data-ng-class="{'error': applicationForm.description.$invalid && formSubmitted}"></textarea>
+								<textarea rows="4" required="true" type="text" name="description" id = "add_application_description" data-ng-model="application.description" class="form-control" data-ng-class="{'error': applicationForm.description.$invalid && formSubmitted}"></textarea>
 								<i tooltip="<fmt:message key="description.of.the.application" bundle="${msg}" />" class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
 								<div class="error-area" data-ng-show="applicationForm.description.$invalid && formSubmitted">
 									<i tooltip="<fmt:message key="application.description.is.required" bundle="${msg}" />" class="fa fa-warning error-icon"></i>
@@ -71,8 +71,8 @@
 
 		<div class="modal-footer">
 			<get-loader-image data-ng-if="showLoader"></get-loader-image>
-			<button type="button" data-ng-if="!showLoader" class="btn btn-default " ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.cancel" bundle="${msg}" /></button>
-			<button class="btn btn-info"  data-ng-if="!showLoader" type="submit"><fmt:message key="common.add" bundle="${msg}" /></button>
+			<button type="button" data-ng-if="!showLoader" class="btn btn-default " id = "add_application_cancel_button" ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.cancel" bundle="${msg}" /></button>
+			<button class="btn btn-info"  data-ng-if="!showLoader" id = "add_application_add_button" type="submit"><fmt:message key="common.add" bundle="${msg}" /></button>
 		</div>
 	</div>
 </form>

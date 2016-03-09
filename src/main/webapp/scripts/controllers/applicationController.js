@@ -30,7 +30,7 @@ function applicationListCtrl($scope, appService, localStorageService, globalConf
     $scope.sort = appService.globalConfig.sort;
     $scope.changeSorting = appService.utilService.changeSorting;
     $scope.paginationObject.sortOrder = '+';
-    $scope.paginationObject.sortBy = 'name';
+    $scope.paginationObject.sortBy = 'type';
 
     $scope.changeSort = function(sortBy, pageNumber) {
 		var sort = appService.globalConfig.sort;
@@ -65,6 +65,8 @@ function applicationListCtrl($scope, appService, localStorageService, globalConf
 
     // Application List
     $scope.list = function (pageNumber) {
+        appService.globalConfig.sort.sortOrder = $scope.paginationObject.sortOrder;
+        appService.globalConfig.sort.sortBy = $scope.paginationObject.sortBy;
     	$scope.showLoader = true;
         $scope.application = {};
     	var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;

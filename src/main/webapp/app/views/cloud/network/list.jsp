@@ -88,7 +88,7 @@
 														key="common.name" bundle="${msg}" /></th>
 												<th data-ng-click="changeSort('department.userName',paginationObject.currentPage)"
 													data-ng-class="sort.descending && sort.column =='Account'? 'sorting_desc' : 'sorting_asc' "><fmt:message
-														key="common.account" bundle="${msg}" /></th>
+														key="common.department" bundle="${msg}" /></th>
 												<th data-ng-click="changeSort('project.name',paginationObject.currentPage)"
 													data-ng-class="sort.descending && sort.column =='project.name'? 'sorting_desc' : 'sorting_asc' "><fmt:message
 														key="common.project" bundle="${msg}" /></th>

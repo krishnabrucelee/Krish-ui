@@ -689,11 +689,12 @@ $scope.ingressSave = function (form,firewallRuleIngress) {
     };
 
     $scope.networkList = [];
-    $scope.paginationObject = {};
     $scope.networkForm = {};
     $scope.global = appService.globalConfig;
     // Guest Network List
     $scope.list = function (pageNumber) {
+        $scope.global.sort.sortOrder = $scope.paginationObject.sortOrder;
+        $scope.global.sort.sortBy = $scope.paginationObject.sortBy;
         $scope.showLoader = true;
         $scope.type = $stateParams.view;
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
