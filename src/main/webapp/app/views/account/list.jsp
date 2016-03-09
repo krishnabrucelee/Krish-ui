@@ -41,10 +41,30 @@
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-md-12 col-sm-12 col-xs-12 ">
-                                <div class="pull-left">
-		                            <a has-permission="CREATE_USER" class="btn btn-info" data-ng-click="addUser('lg')"><span class="pe-7s-add-user pe-lg font-bold m-r-xs"></span><fmt:message key="common.add" bundle="${msg}" /></a>
-                                    <a class="btn btn-info " ui-sref="accounts" title="Refresh"  ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
+							<div class="dashboard-box pull-left">
+     							<div class="instance-border-content-normal">
+                                <span class="pull-left m-t-xs m-l-xs m-r-xs"><fmt:message key="common.total" bundle="${msg}" /></span>
+                                <b class="pull-left">{{paginationObject.totalItems}}</b>
+                                <div class="clearfix"></div>
                                 </div>
+                            </div>
+                            <div class="dashboard-box pull-left">
+                      			<div class="instance-border-content-normal">
+                                <span class="pull-left m-t-xs m-l-xs m-r-xs"><fmt:message key="common.active" bundle="${msg}" /></span>
+                                <b class="pull-left">{{(activeUsers | filter:{status:'ENABLED'}).length}}</b>
+                                <div class="clearfix"></div>
+                                </div>
+                            </div>
+                            <div class="dashboard-box pull-left">
+                                 <div class="instance-border-content-normal">
+                                <span class="pull-left m-t-xs m-l-xs m-r-xs"><fmt:message key="common.inactive" bundle="${msg}" /></span>
+                                <b class="pull-left">{{(activeUsers | filter:{status:'DISABLED'}).length}}</b>
+                                <div class="clearfix"></div>
+                                </div>
+                            </div>
+                            <a has-permission="CREATE_USER" class="btn btn-info" data-ng-click="addUser('lg')"><span class="pe-7s-add-user pe-lg font-bold m-r-xs"></span><fmt:message key="add.user" bundle="${msg}" /></a>
+                            <a class="btn btn-info " ui-sref="accounts" title="Refresh"  ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
+
                                 <div class="pull-right">
                                     <panda-quick-search></panda-quick-search>
                                     <span class="pull-right m-r-sm" data-ng-show="global.sessionValues.type == 'ROOT_ADMIN'">
@@ -55,14 +75,13 @@
 											data-ng-options="domainView.name for domainView in accountElements.domainList">
 											<option value="">Select Domain</option>
 										</select>
-									</span>
+		                    </span>
+
                                     <div class="clearfix"></div>
                                     <span class="pull-right m-l-sm m-t-sm"></span>
                                 </div>
-
                             </div>
                         </div>
-                        <div class="clearfix"></div>
                     </div>
                     <div class="row">
                         <div class="col-md-12 col-sm-12 col-xs-12 ">
@@ -71,7 +90,6 @@
     				  		<get-loader-image data-ng-show="showLoader"></get-loader-image>
       						</div>
       						<div  data-ng-hide="showLoader" class="table-responsive col-12-table">
-
                                     <table cellspacing="1" cellpadding="1" class="table table-bordered dataTable table-striped ">
                                         <thead>
                                         <tr>
@@ -79,8 +97,9 @@
                                      	<th  data-ng-click="changeSorting('department.userName')" data-ng-class="sort.descending && sort.column =='department.userName'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.department" bundle="${msg}" /></th>
                                      	<th  data-ng-click="changeSorting('domain.name')" data-ng-class="sort.descending && sort.column =='domain.name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.domain" bundle="${msg}" /></th>
                                      	<th  data-ng-click="changeSorting('type')" data-ng-class="sort.descending && sort.column =='type'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="user.type" bundle="${msg}" /></th>
+                                       	<th  data-ng-click="changeSorting('role.name')" data-ng-class="sort.descending && sort.column =='role.name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.roles" bundle="${msg}" /></th>
                                      	<th  data-ng-click="changeSorting('email')" data-ng-class="sort.descending && sort.column =='email'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.email" bundle="${msg}" /></th>
-                                     	<th  data-ng-click="changeSorting('isActive')" data-ng-class="sort.descending && sort.column =='isActive'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.status" bundle="${msg}" /></th>
+                                     	<th  data-ng-click="changeSorting('status')" data-ng-class="sort.descending && sort.column =='status'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.status" bundle="${msg}" /></th>
 										<th><fmt:message key="common.action" bundle="${msg}" /></th>
                                         </tr>
                                         </thead>
@@ -90,17 +109,20 @@
 		                                    </tr>
 		                                </tbody>
                                         <tbody data-ng-show="accountList.length > 0">
-                                            <tr data-ng-repeat="account in filteredCount = (accountList| filter: quickSearch | orderBy:sort.column:sort.descending)">
+                                            <tr  data-ng-repeat="account in filteredCount = (accountList| filter: quickSearch | orderBy:sort.column:sort.descending)">
                                                 <td>
                                                     <a class="text-info" >{{ account.userName}}</a>
                                                </td>
                                                 <td>{{account.department.userName}}</td>
                                                 <td>{{account.domain.name}}</td>
                                                 <td>{{account.type}}</td>
-                                                <td>{{account.email}}</td>
+                                                <td>{{account.role.name || '-'}}</td>
+                                                <td>{{account.email || '-'}}</td>
                                                 <td>
-                                                    <label class="badge badge-success p-xs" data-ng-if="account.isActive == true"> Active </label>
-                                                    <label class="badge badge-danger p-xs" data-ng-if="account.isActive == false"> Inactive </label>
+ 												<label class="badge badge-success p-xs" data-ng-if="account.status == 'ENABLED'"> <fmt:message key="common.enabled" bundle="${msg}" /> </label>
+                	                            <label class="badge badge-danger p-xs" data-ng-if="account.status == 'DISABLED'"> <fmt:message key="common.disabled" bundle="${msg}" /> </label>
+                	                            <label class="badge badge-danger p-xs" data-ng-if="account.status == 'DELETED'"> <fmt:message key="common.deleted" bundle="${msg}" /> </label>
+
                                                 </td>
                                                 <td><a class="icon-button"
 													has-permission="EDIT_USER"
@@ -112,7 +134,11 @@
 													class="icon-button" has-permission="DELETE_USER"
 													title="<fmt:message key="common.delete" bundle="${msg}" /> "
 													data-ng-click="deleteUser('sm',account)"><span
-														class="fa fa-trash"></span></a></td>
+														class="fa fa-trash"></span>
+												</a>
+												 <a has-permission="ENABLE_USER" data-ng-show="account.status == 'DISABLED'" data-ng-click="activating(account)"><span class="pe-7s-user pe-lg font-bold m-r-xs" title="Enable User"></span></a>
+                                        		 <a has-permission="DISABLE_USER" data-ng-show="account.status == 'ENABLED'" data-ng-click="revoking(account)" ><span class="pe-7s-delete-user pe-lg font-bold m-r-xs" title="Disable User"></span></a>
+												</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -125,5 +151,5 @@
             </div>
         </div>
     </div>
-<div id="footer" ng-include="'app/views/common/footer.jsp'"></div>
+	<div id="footer" ng-include="'app/views/common/footer.jsp'"></div>
 </div>
