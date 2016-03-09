@@ -178,32 +178,46 @@ function instanceListCtrl($scope, $sce, $log, $filter, dialogService,$timeout, p
          }]);
     };
 
+    // Get domain list
+    var hasdomainListView = appService.crudService.listAll("domains/list");
+    hasdomainListView.then(function (result) {
+    	$scope.domainListView = result;
+    });
 
+    // Get instance list based on domain selection
+    $scope.selectDomainView = function(pageNumber) {
+    	$scope.list(1, "Expunging");
+    };
 
 	$scope.vm = {};
 
 	$scope.list = function(pageNumber, status) {
         appService.globalConfig.sort.sortOrder = $scope.paginationObject.sortOrder;
         appService.globalConfig.sort.sortBy = $scope.paginationObject.sortBy;
-	if(!angular.isUndefined(status)) {
-	$scope.vm.status = status;
- 	$window.sessionStorage.removeItem("status")
- 	$window.sessionStorage.setItem("status",status);
-	} else {
-	$scope.vm.status=$window.sessionStorage.getItem("status");
+	    if(!angular.isUndefined(status)) {
+	        $scope.vm.status = status;
+ 	        $window.sessionStorage.removeItem("status")
+ 	        $window.sessionStorage.setItem("status",status);
+	    } else {
+	        $scope.vm.status=$window.sessionStorage.getItem("status");
         }
 
 		$scope.showLoader = true;
 		var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
-
-		var hasUsers =  promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "virtualmachine/listByStatus" +"?lang=" + localStorageService.cookie.get('language') + "&status="+$scope.vm.status+"&sortBy="+$scope.paginationObject.sortOrder+$scope.paginationObject.sortBy+"&limit="+limit,  $scope.global.paginationHeaders(pageNumber, limit), {
-			"limit" : limit
-		})
-
+		var hasUsers = {};
+        if ($scope.domainView == null) {
+        	hasUsers =  promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "virtualmachine/listByStatus" +"?lang=" + localStorageService.cookie.get('language') + "&status="+$scope.vm.status+"&sortBy="+$scope.paginationObject.sortOrder+$scope.paginationObject.sortBy+"&limit="+limit,  $scope.global.paginationHeaders(pageNumber, limit), {
+    			"limit" : limit});
+        } else {
+        	hasUsers =  promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "virtualmachine/listByDomain"
+				+"?lang=" +appService.localStorageService.cookie.get('language')
+				+ "&status="+$scope.vm.status + "&domainId="+$scope.domainView.id+"&sortBy=ASC"+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+        }
 		$scope.borderContent = status;
 		hasUsers.then(function(result) { // this is only run after $http
 			// completes0
 			$scope.instanceList = result;
+			$scope.instanceList.Count = result.totalItems;
 			// For pagination
                console.log($scope.instanceList);
                 $scope.instancesList.Count = 0;
@@ -214,7 +228,14 @@ function instanceListCtrl($scope, $sce, $log, $filter, dialogService,$timeout, p
            		 }
 
            		 // Get the count of the listings
-           		var hasVmCount =  crudService.listAll("virtualmachine/vmCounts");
+           		var hasVmCount = {};
+                if ($scope.domainView == null) {
+                	hasVmCount =  crudService.listAll("virtualmachine/vmCounts");
+                } else {
+                	hasVmCount = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL +
+                			"virtualmachine/vmCountsByDomain?domainId="+$scope.domainView.id +"&lang="+
+                			appService.localStorageService.cookie.get('language')+"&sortBy=ASC");
+                }
            		hasVmCount.then(function(result) {
            			$scope.runningVmCount = result.runningVmCount;
            			$scope.stoppedVmCount = result.stoppedVmCount;

@@ -55,16 +55,30 @@
                     <div class="row" >
                         <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="pull-left">
-                            <div class="pull-left"></div>
+                            	<div class="dashboard-box pull-left">
+	     							<div class="instance-border-content-normal">
+	                                <span class="pull-left m-t-xs m-l-xs m-r-xs"><fmt:message key="common.total" bundle="${msg}" /></span>
+	                                <b class="pull-left">{{roleList.Count}}</b>
+	                                <div class="clearfix"></div>
+	                                </div>
+	                            </div>
+                                <a class="btn btn-info" id="roles_add_role_button" has-permission="CREATE_ROLE"  ui-sref="roles.list-add"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="common.add" bundle="${msg}" /></a>
+                                <a class="btn btn-info" id="roles_assign_user_role_button" has-permission="ASSIGN_ROLE" data-ng-click="assignRole('lg')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="assign.user.role" bundle="${msg}" /></a>
+                                <a class="btn btn-info" id="roles_refresh_button" ui-sref="roles" title="<fmt:message key="common.refresh" bundle="${msg}" />"  ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
                             </div>
                             <div class="pull-right">
                                 <panda-quick-search></panda-quick-search>
+                                <span class="pull-right m-r-sm" data-ng-show="global.sessionValues.type == 'ROOT_ADMIN'">
+									<select
+										class="form-control input-group col-xs-5" name="domainView"
+										data-ng-model="domainView"
+										data-ng-change="selectDomainView(1)"
+										data-ng-options="domainView.name for domainView in formElements.domainList">
+										<option value="">Select Domain</option>
+									</select>
+								</span>
                                 <div class="clearfix"></div>
-                                <span class="pull-right m-l-sm m-t-sm m-b-sm">
-                                	<a class="btn btn-info" id="roles_assign_user_role_button" has-permission="ASSIGN_ROLE" data-ng-click="assignRole('lg')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="assign.user.role" bundle="${msg}" /></a>
-                                    <a class="btn btn-info" id="roles_add_role_button" has-permission="CREATE_ROLE"  ui-sref="roles.list-add"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="add.role" bundle="${msg}" /></a>
-                                    <a class="btn btn-info" id="roles_refresh_button" ui-sref="roles" title="<fmt:message key="common.refresh" bundle="${msg}" />"  ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
-                                </span>
+                                <span class="pull-right m-l-sm m-t-sm m-b-sm"></span>
                             </div>
                         </div>
                         <div class="clearfix"></div>
@@ -87,7 +101,12 @@
                                                 <th><fmt:message key="common.action" bundle="${msg}" /></th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
+                                            <tbody data-ng-hide="roleList.length > 0">
+			                                    <tr>
+			                                        <td class="col-md-5 col-sm-5" colspan="5"><fmt:message key="common.no.records.found" bundle="${msg}" />!!</td>
+			                                    </tr>
+			                                </tbody>
+                                            <tbody data-ng-show="roleList.length > 0">
                                                 <tr data-ng-repeat="role in filteredCount = (roleList| filter: quickSearch | orderBy:sort.column:sort.descending)">
                                                     <td>
                                                        {{ role.name}}

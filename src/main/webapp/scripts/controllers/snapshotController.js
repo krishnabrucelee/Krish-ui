@@ -153,6 +153,12 @@ localStorageService, $window, dialogService,$stateParams, notify, appService) {
 	    hasVolumes.then(function (result) {
 	    	$scope.showLoader = false;
 	        $scope.snapshotList = result;
+	        $scope.snapshotList.Count = 0;
+            if (result.length != 0) {
+                $scope.snapshotList.Count = result.totalItems;
+            }
+
+            // For pagination
 	        $scope.paginationObject.limit  = limit;
 	        $scope.paginationObject.currentPage = pageNumber;
 	        $scope.paginationObject.totalItems = result.totalItems;
@@ -168,6 +174,11 @@ localStorageService, $window, dialogService,$stateParams, notify, appService) {
 												// $http completes0
         	$scope.showLoaderOffer = false;
             $scope.vmSnapshotList = result;
+            $scope.vmSnapshotList.Count = 0;
+            if (result.length != 0) {
+                $scope.vmSnapshotList.Count = result.totalItems;
+            }
+
             // For pagination
             $scope.paginationObjects.limit  = limit;
             $scope.paginationObjects.currentPage = pageNumber;

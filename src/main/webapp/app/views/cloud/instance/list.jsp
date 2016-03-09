@@ -49,6 +49,15 @@
 						</div>
 						<div class="pull-right" id="instances_quick_search">
 							<panda-quick-search></panda-quick-search>
+							<span class="pull-right m-r-sm" data-ng-show="global.sessionValues.type == 'ROOT_ADMIN'">
+								<select
+									class="form-control input-group col-xs-5" name="domainView"
+									data-ng-model="domainView"
+									data-ng-change="selectDomainView(1)"
+									data-ng-options="domainView.name for domainView in domainListView">
+									<option value="">Select Domain</option>
+								</select>
+							</span>
 							<div class="clearfix"></div>
 							<span class="pull-right m-l-sm m-t-sm">
 							</span>

@@ -15,7 +15,7 @@ pageEncoding="UTF-8"%>
 	                            	<span class="pull-left"><img src="images/volume-icon.png"></span>
 	                                <span class="pull-left m-t-xs m-l-xs m-r-xs"><fmt:message key="total.volume" bundle="${msg}" /></span>
 
-	                                <b class="pull-left">{{attachedCount + detachedCount}}</b>
+	                                <b class="pull-left">{{volumeList.Count}}</b>
 	                                <div class="clearfix"></div>
                                 </div>
                             </div>
@@ -37,12 +37,21 @@ pageEncoding="UTF-8"%>
 	                                <div class="clearfix"></div>
                                 </div>
                             </div>
-                            <a class="btn btn-info" has-permission="UPLOAD_VOLUME" data-ng-click="uploadVolumeCtrl('md')"><span class="pe-7s-cloud-upload pe-lg font-bold m-r-xs"></span> <fmt:message key="common.upload" bundle="${msg}" /></a>
-                                <a class="btn btn-info" has-permission="ADD_VOLUME" data-ng-click="addVolume('md')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span>  <fmt:message key="add.volume" bundle="${msg}" /></a>
+                            <a class="btn btn-info" has-permission="UPLOAD_VOLUME" data-ng-click="uploadVolumeCtrl('md')"><span class="pe-7s-cloud-upload pe-lg font-bold m-r-xs"></span> <fmt:message key="upload.volume" bundle="${msg}" /></a>
+                                <a class="btn btn-info" has-permission="ADD_VOLUME" data-ng-click="addVolume('md')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span>  <fmt:message key="common.add" bundle="${msg}" /></a>
                                 <a class="btn btn-info" ui-sref="cloud.list-volume" title="<fmt:message key="common.refresh" bundle="${msg}" />" ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
                         </div>
                         <div class="pull-right">
                             <panda-quick-search></panda-quick-search>
+                            <span class="pull-right m-r-sm" data-ng-show="global.sessionValues.type == 'ROOT_ADMIN'">
+								<select
+									class="form-control input-group col-xs-5" name="domainView"
+									data-ng-model="domainView"
+									data-ng-change="selectDomainView(1)"
+									data-ng-options="domainView.name for domainView in volumeElement.domainList">
+									<option value="">Select Domain</option>
+								</select>
+							</span>
                             <div class="clearfix"></div>
                             <span class="pull-right m-l-sm m-t-sm">
 <%--                             	<a class="btn btn-info" data-ng-click="uploadVolumeFromLocalCtrl('md')"><span class="pe-7s-cloud-upload pe-lg font-bold m-r-xs"></span> <fmt:message key="upload.volume.from.local" bundle="${msg}" /></a> --%>
@@ -76,7 +85,12 @@ pageEncoding="UTF-8"%>
                             		<th class="col-md-1 col-xs-1"><fmt:message key="common.action" bundle="${msg}" /></th>
                             	</tr>
                             </thead>
-                            <tbody>
+                            <tbody data-ng-hide="volumeList.length > 0">
+                                <tr>
+                                    <td class="col-md-9 col-sm-9" colspan="9"><fmt:message key="common.no.records.found" bundle="${msg}" />!!</td>
+                                </tr>
+                            </tbody>
+                            <tbody data-ng-show="volumeList.length > 0">
                                 <tr data-ng-repeat="volume in filteredCount = (volumeList| filter:quickSearch | orderBy:sort.column:sort.descending)">
                                     <td>
                                         <!-- <a class="text-info" href="javascript:void(0)"  title="View Volume" > -->{{ volume.name}}<!-- </a> -->
