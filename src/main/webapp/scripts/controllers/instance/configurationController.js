@@ -139,7 +139,7 @@ function configurationCtrl($scope, $stateParams, appService, localStorageService
 	                            });
 	                            }
               				$scope.showLoader= false;
-
+              				$state.reload();
                         }
                         });
           			}
