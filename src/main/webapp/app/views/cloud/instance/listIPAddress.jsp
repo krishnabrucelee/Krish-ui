@@ -41,7 +41,7 @@
 											</tr>
 										</thead>
 										<tbody>
-											<tr data-ng-show="nic.nicId==nicip" data-ng-repeat=" nic in filteredCount = (nicIPLists| filter: quickSearch | orderBy:sort.column:sort.descending)">
+											<tr data-ng-if = "nic.ipType != 'primaryIpAddress'"data-ng-show="nic.nicId==nicip" data-ng-repeat=" nic in filteredCount = (nicIPLists| filter: quickSearch | orderBy:sort.column:sort.descending)">
 												<td>{{ nic.vmInstance.name }}</td>
 												<td>{{ nic.guestIpAddress}}</td>
 
