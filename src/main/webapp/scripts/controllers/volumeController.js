@@ -250,6 +250,7 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
                             if (!angular.isUndefined(result.data)) {
                                  if (result.data.fieldErrors != null) {
                                     angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
+                                    	$scope.showLoader = false;
                                         $scope.attachvolumeForm[key].$invalid = true;
                                         $scope.attachvolumeForm[key].errorMessage = errorMessage;
                                     });
@@ -310,6 +311,7 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
                         if (!angular.isUndefined(result.data)) {
                              if (result.data.fieldErrors != null) {
                                 angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
+                                	$scope.showLoader = false;
                                     $scope.attachvolumeForm[key].$invalid = true;
                                     $scope.attachvolumeForm[key].errorMessage = errorMessage;
                                 });
@@ -813,7 +815,7 @@ if(obj.scheduleType== 6)
 		{
 		obj.day="Saturday";
 		}
-		
+
  //var scheduleTypeDay= ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday","Saturday"];
  		   //  obj.scheduleTypes = scheduleType[obj.scheduleType];
 			$scope.snapshotList[key] = obj;
@@ -829,7 +831,7 @@ if(obj.scheduleType== 6)
             $scope.ok = function (deleteObject) {
                 var hasServer = appService.crudService.delete("snapshotpolicies", deleteObject);
                 hasServer.then(function (result) {
-	
+
              appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.volumeEvents.deleteSnapshot,result.id,$scope.global.sessionValues.id);
                     appService.notify({message: 'Deleted successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
 		                     $modalInstance.close();
@@ -937,7 +939,7 @@ $scope.delete = function (size, volume) {
                      $scope.list(1);
                 }).catch(function (result) {
                     if (!angular.isUndefined(result) && result.data != null) {
-
+                    	$scope.showLoader = false;
                         angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
                             $scope.addnetworkForm[key].$invalid = true;
                             $scope.addnetworkForm[key].errorMessage = errorMessage;

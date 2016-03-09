@@ -51,8 +51,8 @@ function configurationCtrl($scope, $stateParams, appService, localStorageService
                 ceil: 32
             },
             cpuSpeed: {
-                value: 1000,
-                floor: 1000,
+                value: 500,
+                floor: 500,
                 ceil: 3500
             },
             isOpen: true
@@ -134,9 +134,12 @@ function configurationCtrl($scope, $stateParams, appService, localStorageService
 	                        if (result.data.fieldErrors != '') {
 	                            angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
 	                            $scope.instanceForm[key].$invalid = true;
+	              				$scope.showLoader= false;
 	                            $scope.instanceForm[key].errorMessage = errorMessage;
 	                            });
 	                            }
+              				$scope.showLoader= false;
+              				$state.reload();
                         }
                         });
           			}

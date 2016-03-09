@@ -212,6 +212,7 @@
     <script src="scripts/controllers/networkController.js"></script>
     <script src="scripts/controllers/supportController.js"></script>
     <script src="scripts/controllers/snapshotController.js"></script>
+    <script src="scripts/controllers/profileController.js"></script>
     <script src="scripts/controllers/projectController.js"></script>
     <script src="scripts/controllers/accountController.js"></script>
     <script src="scripts/controllers/applicationController.js"></script>

@@ -44,7 +44,9 @@ function accountListCtrl($scope,$state, $log,$timeout,$stateParams, appService, 
         selectedAll: {},
         totalcount: 0
     };
-
+    $scope.activeUsers = [];
+    $scope.active = {};
+	$scope.inActive = {};
     $scope.oneChecked = false;
     $scope.default_option = true;
     $scope.revokes = false;
@@ -95,6 +97,13 @@ function accountListCtrl($scope,$state, $log,$timeout,$stateParams, appService, 
 			});
 		};
 
+    var hasUsers = appService.crudService.listAll("users/list");
+	$scope.showLoader = true;
+	hasUsers.then(function (result) {  // this is only run after $http completes0
+	$scope.activeUsers = result;
+
+});
+
     // Department list load based on the domain
     $scope.domainChange = function() {
         $scope.domains = {};
@@ -112,6 +121,8 @@ function accountListCtrl($scope,$state, $log,$timeout,$stateParams, appService, 
     	$scope.accountElements.departmentList = result;
     });
     }
+
+
 
     $scope.departmentList = {};
     $scope.getDepartmentList = function (domain) {
@@ -300,11 +311,11 @@ function accountListCtrl($scope,$state, $log,$timeout,$stateParams, appService, 
 		    var hasProjects =  appService.promiseAjax.httpTokenRequest( appService.crudService.globalConfig.HTTP_GET, appService.crudService.globalConfig.APP_URL + "projects"  +"/department/"+department.id);
 		    hasProjects.then(function (result) {  // this is only run after $http completes0
                 $scope.options = result;
-            });                
+            });
            	};
         }])};
 
-       if ($scope.global.sessionValues.type === "USER") { 
+       if ($scope.global.sessionValues.type === "USER") {
        var hasRoles =  appService.promiseAjax.httpTokenRequest( appService.crudService.globalConfig.HTTP_GET, appService.crudService.globalConfig.APP_URL + "roles"  +"/department/"+$scope.global.sessionValues.departmentId);
             	 hasRoles.then(function (result) {  // this is only run after $http completes0
             		 $scope.accountElements.roleList = result;
@@ -405,6 +416,55 @@ function accountListCtrl($scope,$state, $log,$timeout,$stateParams, appService, 
        }]);
     };
 
+    // Reset Password
+    $scope.resetPassword = function (size,account) {
+    	var user = account;
+    	 angular.forEach($scope.accountList, function (item, key) {
+             if (item['isSelected']) {
+            	 user = item;
+             }
+    	 });
+    	appService.dialogService.openDialog("app/views/account/reset-password.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+    	    $scope.profile = angular.copy(user);
+    		$scope.updatePassword = function (form, profile) {
+    	        $scope.formSubmitted = true;
+    	        if (form.$valid) {
+    	        	$scope.showLoader = true;
+    	        	if(profile.newPassword != profile.confirmPassword) {
+    	        		appService.notify({message: 'Password did not match', classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+    	        		$scope.showLoader = false;
+    	        	} else {
+    	            	profile.confirmPassword = profile.confirmPassword;
+    	            	profile.password = null;
+    	            var hasUpdatePassword = appService.crudService.add("users/updatePassword", profile);
+    	            hasUpdatePassword.then(function (result) {
+    	            	$scope.showLoader = false;
+    	                appService.notify({message: 'Updated successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+    	                $modalInstance.close();
+    	                $scope.list(1);
+    	            }).catch(function (result) {
+    	            	$scope.showLoader = false;
+    	    		    if (!angular.isUndefined(result.data)) {
+    	        		 if (result.data.fieldErrors != null) {
+    	               	$scope.showLoader = false;
+    	                	angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
+    	                    	$scope.profileForm[key].$invalid = true;
+    	                    	$scope.profileForm[key].errorMessage = errorMessage;
+    	                	});
+    	        		}
+    	        	}
+    	    	});
+    	            $scope.list(1);
+    	    }
+    	    }
+    	    },
+            $scope.cancel = function () {
+		$scope.list(1);
+                $modalInstance.close();
+            };
+       }]);
+    };
+
     $scope.ok = function () {
         $timeout($scope.generateLoad, 3000);
     };
@@ -428,12 +488,53 @@ function accountListCtrl($scope,$state, $log,$timeout,$stateParams, appService, 
         $timeout($scope.generateRevoke, 3000);
     };
 
-    $scope.revoking = function () {
-        appService.modalService.trigger('views/account/revoke.html', 'md');
-    }
+    $scope.revoking = function (account) {
+    	var user = account;
+      	$scope.user = user;
+    	  appService.dialogService.openDialog("app/views/account/revoke.jsp", 'sm', $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
+    		  $scope.ok = function(user) {
+                  $scope.showLoader = true;
+                   var hasServer = appService.crudService.update("users/disable", user);
+                   hasServer.then(function (result) {
+    			     $scope.list(1);
+                   appService.notify({message: 'Disabled successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                   $scope.showLoader = false;
+                   $scope.cancel();
+                   }).catch(function (result) {
+                       $scope.showLoader = false;
+                       $scope.cancel();
+                   });
+              },
+              $scope.cancel = function(){
+                  $modalInstance.close();
+              }
 
-    $scope.activating = function () {
-        appService.modalService.trigger('views/account/activate.html', 'md');
+    	  }]);    }
+
+    $scope.activating = function (account) {
+    	var user = account;
+      	$scope.user = user;
+        appService.dialogService.openDialog("app/views/account/activate.jsp", 'sm', $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
+
+        	$scope.ok = function(user) {
+                $scope.showLoader = true;
+                 var hasServer = appService.crudService.update("users/enable", user);
+                 hasServer.then(function (result) {
+  			     $scope.list(1);
+                 appService.notify({message: 'Enabled successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                 $scope.showLoader = false;
+                 $scope.cancel();
+                 }).catch(function (result) {
+                     $scope.showLoader = false;
+                     $scope.cancel();
+                 });
+            },
+            $scope.cancel = function(){
+                $modalInstance.close();
+            }
+
+
+        }]);
     }
 }
 

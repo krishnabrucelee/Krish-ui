@@ -184,7 +184,7 @@ pageEncoding="UTF-8"%>
                                      name="department" data-ng-model="volume.department" ng-options="department.userName for department in volumeElement.departmentList" data-ng-class="{'error': volumeForm.department.$invalid && formSubmitted}" >
                                         <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
                                     </select>
-                                    <i  tooltip="<fmt:message key="volume.department" bundle="${msg}" />" class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
+                                    <i  tooltip="<fmt:message key="common.department" bundle="${msg}" />" class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
                                     <div class="error-area" data-ng-show="volumeForm.department.$invalid && formSubmitted" >
                                     	<i ng-attr-tooltip="{{ volumeForm.department.errorMessage || '<fmt:message key="department.is.required" bundle="${msg}" />' }}"
 												class="fa fa-warning error-icon"></i>
@@ -203,7 +203,7 @@ pageEncoding="UTF-8"%>
                                         <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
 
                                     </select>
-                                    <i  tooltip="<fmt:message key="volume.department" bundle="${msg}" />" class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
+                                    <i  tooltip="<fmt:message key="common.department" bundle="${msg}" />" class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
                                     <div class="error-area" data-ng-show="volumeForm.department.$invalid && formSubmitted" >
                                     	<i ng-attr-tooltip="{{ volumeForm.department.errorMessage || '<fmt:message key="department.is.required" bundle="${msg}" />' }}"
 												class="fa fa-warning error-icon"></i>
