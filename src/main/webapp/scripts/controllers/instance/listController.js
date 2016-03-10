@@ -205,7 +205,6 @@ function instanceListCtrl($scope, $sce, $log, $filter, dialogService,$timeout, p
 			// completes0
 			$scope.instanceList = result;
 			// For pagination
-               console.log($scope.instanceList);
                 $scope.instancesList.Count = 0;
            		 for (i = 0; i < result.length; i++) {
             		 if($scope.instanceList[i].status.indexOf("EXPUNGING") > -1) {

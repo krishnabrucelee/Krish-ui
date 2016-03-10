@@ -67,15 +67,15 @@
 							<table cellspacing="1" cellpadding="1" id="instances_table" class="table dataTable table-bordered table-striped ">
 								<thead>
 									<tr>
-										<th ng-click="changeSort('displayName',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='name'? 'sorting_desc' : 'sorting_asc' ">
+										<th ng-click="changeSort('displayName',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='displayName'? 'sorting_desc' : 'sorting_asc' ">
 										<fmt:message key="display.name" bundle="${msg}" /></th>
 										<th ng-click="changeSort('instanceOwner.userName',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='instanceOwner.userName'? 'sorting_desc' : 'sorting_asc' ">
 										<fmt:message key="owner" bundle="${msg}" /></th>
 										<th class="custom-width-sm" ng-click="changeSort('application',paginationObject.currentPage)"
 											data-ng-class="sort.descending && sort.column =='application'? 'sorting_desc' : 'sorting_asc' ">
 										<fmt:message key="common.application" bundle="${msg}" /></th>
-										<th class="custom-width-sm" ng-click="changeSort('template',paginationObject.currentPage)"
-											data-ng-class="sort.descending && sort.column =='template'? 'sorting_desc' : 'sorting_asc' ">
+										<th class="custom-width-sm" ng-click="changeSort('osType',paginationObject.currentPage)"
+											data-ng-class="sort.descending && sort.column =='osType'? 'sorting_desc' : 'sorting_asc' ">
 										<fmt:message key="common.osType" bundle="${msg}" /></th>
 										<th class="custom-width-xs" ng-click="changeSort('cpuCore',paginationObject.currentPage)"
 											data-ng-class="sort.descending && sort.column =='cpuCore'? 'sorting_desc' : 'sorting_asc' ">
