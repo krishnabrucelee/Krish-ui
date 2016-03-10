@@ -109,11 +109,22 @@ function networksCtrl($scope, $sce, $rootScope,filterFilter, $state, $stateParam
 		$scope.paginationObject.sortBy = sortBy;
 		$scope.showLoader = true;
 		var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
-                    var hasGuestnetworkLists =  appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "guestnetwork" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+sortOrder+sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
 
-                    hasGuestnetworkLists.then(function(result) { // this is only run after $http
+            var hasGuestnetworkLists = {};
+            if ($scope.domainId == null || angular.isUndefined($scope.domainId)) {
+            	hasGuestnetworkLists =  appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "guestnetwork" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+sortOrder+sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+            } else {
+            	hasGuestnetworkLists =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "guestnetwork/listByDomain"
+    				+"?lang=" +appService.localStorageService.cookie.get('language')
+    				+ "&domainId="+$scope.domainId+"&sortBy="+$scope.paginationObject.sortOrder+$scope.paginationObject.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+            }
+            hasGuestnetworkLists.then(function(result) { // this is only run after $http
 			// completes0
 			$scope.networkList = result;
+			$scope.networkList.Count = 0;
+            if (result.length != 0) {
+                $scope.networkList.Count = result.totalItems;
+            }
 			// For pagination
 			$scope.paginationObject.limit = limit;
 			$scope.paginationObject.currentPage = pageNumber;
@@ -713,7 +724,7 @@ $scope.ingressSave = function (form,firewallRuleIngress) {
         } else {
         	hasGuestNetworks =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "guestnetwork/listByDomain"
 				+"?lang=" +appService.localStorageService.cookie.get('language')
-				+ "&domainId="+$scope.domainId+"&sortBy=ASC"+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+				+ "&domainId="+$scope.domainId+"&sortBy="+globalConfig.sort.sortOrder+globalConfig.sort.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
         }
         hasGuestNetworks.then(function (result) {
             $scope.showLoader = true;

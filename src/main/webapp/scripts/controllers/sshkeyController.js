@@ -46,11 +46,21 @@ function sshkeyListCtrl($scope,appService,$state,localStorageService, globalConf
 		$scope.paginationObject.sortBy = sortBy;
 		$scope.showLoader = true;
 		var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
-                    var hasSSHKeysLists =  appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "sshkeys" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+sortOrder+sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
-
-                    hasSSHKeysLists.then(function(result) { // this is only run after $http
+            var hasSSHKeysLists = {};
+            if ($scope.domainView == null) {
+            	hasSSHKeysLists =  appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "sshkeys" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+sortOrder+sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+            } else {
+            	hasSSHKeysLists =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "sshkeys/listByDomain"
+    				+"?lang=" +appService.localStorageService.cookie.get('language')
+    				+ "&domainId="+$scope.domainView.id+"&sortBy="+$scope.paginationObject.sortOrder+$scope.paginationObject.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+            }
+            hasSSHKeysLists.then(function(result) { // this is only run after $http
 			// completes0
 			$scope.sshkeyList = result;
+			$scope.sshkeyList.Count = 0;
+            if (result.length != 0) {
+                $scope.sshkeyList.Count = result.totalItems;
+            }
 			// For pagination
 			$scope.paginationObject.limit = limit;
 			$scope.paginationObject.currentPage = pageNumber;
@@ -75,7 +85,7 @@ function sshkeyListCtrl($scope,appService,$state,localStorageService, globalConf
         } else {
         	hasSSHKeys =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "sshkeys/listByDomain"
 				+"?lang=" +appService.localStorageService.cookie.get('language')
-				+ "&domainId="+$scope.domainView.id+"&sortBy=ASC"+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+				+ "&domainId="+$scope.domainView.id+"&sortBy="+globalConfig.sort.sortOrder+globalConfig.sort.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
         }
         hasSSHKeys.then(function (result) {
             $scope.sshkeyList = result;

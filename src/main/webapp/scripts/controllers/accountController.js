@@ -82,11 +82,22 @@ function accountListCtrl($scope,$state, $log,$timeout,$stateParams, appService, 
 			$scope.paginationObject.sortBy = sortBy;
 			$scope.showLoader = true;
 			var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
-                        var hasUserLists =  appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "users" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+sortOrder+sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+            var hasUserLists = {};
+            if ($scope.domainView == null) {
+            	hasUserLists =  appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "users" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+sortOrder+sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+            } else {
+            	hasUserLists =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "users/listByUserDomain"
+    				+"?lang=" +appService.localStorageService.cookie.get('language')
+    				+ "&domainId="+$scope.domainView.id+"&sortBy="+$scope.paginationObject.sortOrder+$scope.paginationObject.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+            }
 
 			hasUserLists.then(function(result) { // this is only run after $http
 				// completes0
 				$scope.accountList = result;
+				$scope.accountList.Count = 0;
+	            if (result.length != 0) {
+	                $scope.accountList.Count = result.totalItems;
+	            }
 				// For pagination
 				$scope.paginationObject.limit = limit;
 				$scope.paginationObject.currentPage = pageNumber;
@@ -177,7 +188,7 @@ function accountListCtrl($scope,$state, $log,$timeout,$stateParams, appService, 
         } else {
         	hasUsers =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "users/listByUserDomain"
 				+"?lang=" +appService.localStorageService.cookie.get('language')
-				+ "&domainId="+$scope.domainView.id+"&sortBy=ASC"+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+				+ "&domainId="+$scope.domainView.id+"&sortBy="+globalConfig.sort.sortOrder+globalConfig.sort.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
         }
         hasUsers.then(function (result) {  // this is only run after $http completes0
 
