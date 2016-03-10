@@ -109,7 +109,12 @@ function accountListCtrl($scope,$state, $log,$timeout,$stateParams, appService, 
 		};
 
     $scope.userList = function() {
-	    var hasUsers = appService.crudService.listAll("users/list");
+    	var hasUsers = {};
+        if ($scope.global.sessionValues.type == "ROOT_ADMIN") {
+            hasUsers = appService.crudService.listAll("users/list");
+        } else {
+        	hasUsers = appService.crudService.listAll("users/listbydomain");
+        }
 		$scope.showLoader = true;
 		hasUsers.then(function (result) {  // this is only run after $http completes0
 		   $scope.activeUsers = result;

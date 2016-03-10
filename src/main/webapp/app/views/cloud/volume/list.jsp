@@ -49,7 +49,7 @@ pageEncoding="UTF-8"%>
 									data-ng-model="domainView"
 									data-ng-change="selectDomainView(1)"
 									data-ng-options="domainView.name for domainView in volumeElement.domainList">
-									<option value="">Select Domain</option>
+									<option value="">All Domain</option>
 								</select>
 							</span>
                             <div class="clearfix"></div>
