@@ -45,11 +45,22 @@ function departmentCtrl($scope, $sce, appService, localStorageService, globalCon
 			$scope.paginationObject.sortBy = sortBy;
 			$scope.showLoader = true;
 			var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
-                        var hasDepartmentLists =  appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "departments" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+sortOrder+sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
 
+            var hasDepartmentLists = {};
+            if ($scope.domainView == null) {
+            	hasDepartmentLists =  appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "departments" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+sortOrder+sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+            } else {
+            	hasDepartmentLists =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "departments/listByDomain"
+    				+"?lang=" +appService.localStorageService.cookie.get('language')
+    				+ "&domainId="+$scope.domainView.id+"&sortBy="+$scope.paginationObject.sortOrder+$scope.paginationObject.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+            }
 			hasDepartmentLists.then(function(result) { // this is only run after $http
 				// completes0
 				$scope.departmentList = result;
+				$scope.departmentList.Count = 0;
+	            if (result.length != 0) {
+	                $scope.departmentList.Count = result.totalItems;
+	            }
 				// For pagination
 				$scope.paginationObject.limit = limit;
 				$scope.paginationObject.currentPage = pageNumber;
@@ -73,7 +84,7 @@ function departmentCtrl($scope, $sce, appService, localStorageService, globalCon
         } else {
         	hasDepartments =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "departments/listByDomain"
 				+"?lang=" +appService.localStorageService.cookie.get('language')
-				+ "&domainId="+$scope.domainView.id+"&sortBy=ASC"+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+				+ "&domainId="+$scope.domainView.id+"&sortBy="+globalConfig.sort.sortOrder+globalConfig.sort.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
         }
         hasDepartments.then(function (result) {  // this is only run after $http completes0
 
