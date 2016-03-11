@@ -107,7 +107,7 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams, localStor
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasProjects = {};
         if ($scope.domainView == null) {
-        	var hasProjects = appService.crudService.list("projects", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+        	hasProjects = appService.crudService.list("projects", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
         } else {
         	hasProjects =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "projects/listByDomain"
 				+"?lang=" +appService.localStorageService.cookie.get('language')

@@ -62,7 +62,7 @@
 											data-ng-model="domainView"
 											data-ng-change="selectDomainView(1)"
 											data-ng-options="domainView.name for domainView in formElements.domainList">
-											<option value="">Select Domain</option>
+											<option value="">All Domain</option>
 										</select>
 									</span>
 									<div class="clearfix"></div>
@@ -98,7 +98,7 @@
 		                                </tbody>
 										<tbody data-ng-show="applicationList.length > 0">
 											<tr data-ng-repeat=" application in filteredCount = (applicationList| filter: quickSearch | orderBy:sort.column:sort.descending)">
-												
+
 												<td>{{ application.type}}</td>
                                                                                                 <td>{{ application.domain.name }}</td>
 												<td>{{ application.description}}</td>

@@ -55,7 +55,7 @@
 									data-ng-model="domainView"
 									data-ng-change="selectDomainView(1)"
 									data-ng-options="domainView.name for domainView in domainListView">
-									<option value="">Select Domain</option>
+									<option value="">All Domain</option>
 								</select>
 							</span>
 							<div class="clearfix"></div>
