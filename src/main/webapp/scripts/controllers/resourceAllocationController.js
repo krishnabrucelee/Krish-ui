@@ -9,7 +9,7 @@ angular
 .module('homer')
 .controller('resourceAllocationCtrl', resourceAllocationCtrl);
 
-function resourceAllocationCtrl($scope, crudService, globalConfig, notify, $state, $stateParams, promiseAjax) {
+function resourceAllocationCtrl($scope, crudService, globalConfig, notify, $state, $stateParams, promiseAjax, appService) {
 
 	$scope.resourceQuota = {};
 	$scope.resourceQuota = {};
@@ -39,14 +39,18 @@ function resourceAllocationCtrl($scope, crudService, globalConfig, notify, $stat
 	                        "SecondaryStorage"];
 
 	$scope.paginationObject = {};
-    $scope.global = crudService.globalConfig;
+        $scope.global = crudService.globalConfig;
+        $scope.sort = appService.globalConfig.sort;
 	$scope.domainList = {};
+	
 
     // Domain List
     $scope.departmentList = {};
-	$scope.paginationObject = {};
-	$scope.departmentForm = {};
-	$scope.global = crudService.globalConfig;
+    $scope.paginationObject = {};
+    $scope.departmentForm = {};
+    $scope.global = crudService.globalConfig;
+    $scope.paginationObject.sortOrder = '+';
+    $scope.paginationObject.sortBy = 'name';
 
 
     // Save Resource limits based on the quota type.
@@ -95,7 +99,8 @@ function resourceAllocationCtrl($scope, crudService, globalConfig, notify, $stat
 
 
     $scope.projectquotalist = function (pageNumber) {
-
+    	appService.globalConfig.sort.sortOrder = $scope.paginationObject.sortOrder;
+        appService.globalConfig.sort.sortBy = $scope.paginationObject.sortBy;
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasProjects = crudService.list("projects", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
         hasProjects.then(function (result) {  // this is only run after $http completes0
