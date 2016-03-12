@@ -37,6 +37,8 @@ function configurationCtrl($scope, $stateParams, appService, localStorageService
         $scope.computeList();
 	});
 
+
+
     	$scope.instance = {
         computeOffer: {
             category: 'static',
