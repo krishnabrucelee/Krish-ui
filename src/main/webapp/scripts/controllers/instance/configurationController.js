@@ -16,13 +16,14 @@ function configurationCtrl($scope, $stateParams, appService, localStorageService
 
     $scope.formSubmitted = false;
     $scope.instanceList = [];
-    $scope.formElements=[];
+    $scope.formElements={};
     $scope.global = crudService.globalConfig;
     $scope.instanceForm = [];
     $scope.instanceElements = {};
     $scope.instance = {};
     $scope.instances = [];
     $scope.instances.computeOffering ={};
+    $scope.resetForm = [];
 
     // Form Field Decleration
     $scope.computeOffer = {
@@ -35,6 +36,7 @@ function configurationCtrl($scope, $stateParams, appService, localStorageService
 	hasServers.then(function (result) {
 	$scope.instances = result;
         $scope.computeList();
+        $scope.resetSSHKey();
 	});
 
     	$scope.instance = {
@@ -195,5 +197,73 @@ function configurationCtrl($scope, $stateParams, appService, localStorageService
         });
 
     };
+  $scope.resetSSHKey = function() {
+    $scope.formElements.sshKeyList = [];
+     if (!angular.isUndefined($scope.instances.project) && $scope.instances.project != null) {
+	        var hasSSHKeyList = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL
+        		+ "sshkeys/search/project?project="+$scope.instances.project.id);
+	        hasSSHKeyList.then(function (result) {
+                    angular.forEach(result, function(object,value) {
+        		if(object.id !== $scope.instances.keypairId) {
+        			$scope.formElements.sshKeyList.push(object);
+        		}
+		    });
+	        });
+        } else if (!angular.isUndefined($scope.instances.department) && $scope.instances.department != null) {
+	        var hasSSHKeyList = appService.crudService.listAllByFilter("sshkeys/search/department", $scope.instances.department);
+	        hasSSHKeyList.then(function (result) {
+	    	    angular.forEach(result, function(object,value) {
+        		if(object.id !== $scope.instances.keypairId) {
+        			$scope.formElements.sshKeyList.push(object);
+        		}
+		    });
+	        });
+        }
+  }
+    
+
+    $scope.resetKey = function (form, resetSSH) {
+   		$scope.formSubmitted = true;
+   		if (form.$valid) {
+   			$scope.showLoader= true;
+                        $scope.instances.keypairId = $scope.resetSSH.keypairName.id;
+   			var hasServer = appService.crudService.updates("virtualmachine/reset", $scope.instances);
+   			hasServer.then(function (result) {
+                         $scope.showLoader = false;
+                         if ($scope.instances.passwordEnabled == true) {
+                             $scope.resetPassword($scope.instances);
+                         }
+                         appService.notify({message: 'Keypair added successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+                         $state.reload();
+   			}).catch(function (result) {
+                 if (!angular.isUndefined(result) && result.data != null) {
+                     if (result.data.fieldErrors != '') {
+                         angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
+                         $scope.resetForm[key].$invalid = true;
+                         $scope.resetForm[key].errorMessage = errorMessage;
+                         });
+                         }
+                       $scope.showLoader= false;
+              	       $state.reload();
+                 }
+                 });
+   			}
+   		};   
+      $scope.resetPassword= function(vm) {
+          var event = "VM.RESETPASSWORD";
+	  $scope.vm = vm;
+	  $scope.vm.event = event;
+	  $scope.vm.password = "reset";
+	  $scope.formSubmitted = true;
+          var hasVm = appService.crudService.updates("virtualmachine/handleevent/vm", $scope.vm);
+	  hasVm.then(function(result) {
+	  appService.notify({message: "VM password updated successfully. Please refresh and click show password", classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+	  $state.reload();
+	  $scope.cancel();
+	  }).catch(function (result) {
+			  				  //$state.reload();
+
+     });
+     }; 
 
 }
