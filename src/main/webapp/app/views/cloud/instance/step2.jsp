@@ -6,6 +6,7 @@
 <div data-ng-if="showLoaderOffer" style="margin: 40%">
 	<get-loader-image-offer data-ng-show="showLoaderOffer"></get-loader-image-offer>
 </div>
+<form name="instanceForm" class="form-horizontal" >
 <div data-ng-if="!showLoaderOffer">
 	<div class="row border-content">
 		<div class="col-offset-3 col-md-12 col-sm-12">
@@ -52,20 +53,20 @@
 			</div>
 		</div>
 		<div data-ng-show="compute  && instance.computeOffering.customized">
-			<div class="row m-b-xl"
+			<div class="row m-b-xl form-group"
 				data-ng-class="{ 'text-danger' : instanceForm.memory.$modelValue < 512 }">
 				<label class="col-md-3 col-sm-3 control-label"><fmt:message key="memory" bundle="${msg}" /> :</label>
 				<div class="col-md-5 col-sm-5">
-					<rzslider rz-slider-model="instance.computeOffer.memory.value" data-ng-init="instance.computeOffer.memory.value = 512"
+					<rzslider  rz-slider-model="instance.computeOffer.memory.value"
 						rz-slider-floor="instance.computeOffer.memory.floor"
 						rz-slider-ceil="instance.computeOffer.memory.ceil"
-						rz-slider-always-show-bar="true"></rzslider>
+						rz-slider-on-change="instance.computeOffer.memory.value"
+						rz-slider-always-show-bar="true" rz-active></rzslider>
 				</div>
-				<div class="col-md-3 col-sm-3 digit-2-width">
+				<div class="col-md-3 col-sm-3 digit-2-width" >
 					<div class="input-group">
-						<input class="form-control" name="memory" valid-number id="create_instance_compute_offering_memory"
-							data-ng-min="{{ instance.computeOffer.memory.floor}}"
-							data-ng-max="{{ instance.computeOffer.memory.ceil}}" type="text"
+						<input class="form-control" required="true" name="memory"  id="create_instance_compute_offering_memory" data-ng-change="customMemory(instance.computeOffer.memory.value)"
+							 type="number" min="{{instance.computeOffer.memory.floor}}" max="{{instance.computeOffer.memory.ceil}}"
 							data-ng-model="instance.computeOffer.memory.value"> <span class="input-group-addon" id="basic-addon2">MB</span>
 					</div>
 				</div>
@@ -83,9 +84,9 @@
 				</div>
 				<div class="col-md-3 col-sm-3 digit-2-width">
 					<div class="input-group">
-						<input valid-number
-							data-ng-min="{{ instance.computeOffer.cpuCore.floor}}" id="create_instance_compute_offering_cpu_core"
-							data-ng-max="{{ instance.computeOffer.cpuCore.ceil}}" type="text"
+						<input
+							min="{{ instance.computeOffer.cpuCore.floor}}" id="create_instance_compute_offering_cpu_core" data-ng-change="customCpuCore(instance.computeOffer.cpuCore.value)"
+							max="{{ instance.computeOffer.cpuCore.ceil}}" type="number"
 							class="form-control" name="cpuCore"
 							data-ng-model="instance.computeOffer.cpuCore.value">
 							<span class="input-group-addon"><fmt:message key="core" bundle="${msg}" /></span>
@@ -105,14 +106,13 @@
 				</div>
 				<div class="col-md-3 col-sm-3 digit-2-width">
 					<div class="input-group">
-						<input valid-number id="create_instance_compute_offering_cpu_speed"
-							data-ng-min="{{ instance.computeOffer.cpuSpeed.floor}}"
-							data-ng-max="{{ instance.computeOffer.cpuSpeed.ceil}}"
-							type="text" class="form-control" name="cpuSpeed"
+						<input id="create_instance_compute_offering_cpu_speed" required="true" data-ng-change="customCpuSpeed(instance.computeOffer.cpuSpeed.value)"
+							min="{{ instance.computeOffer.cpuSpeed.floor}}"
+							max="{{ instance.computeOffer.cpuSpeed.ceil}}"
+							type="number" class="form-control" name="cpuSpeed"
 							data-ng-model="instance.computeOffer.cpuSpeed.value"  >
 													<span class="input-group-addon">MHz</span>
 					</div>
-
 				</div>
 			</div>
 			<div class="row m-b-xl"
@@ -408,3 +408,4 @@
 		</div>
 	</div>
 </div>
+</form>
