@@ -14,6 +14,16 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
 		        value: 1000
 		    };
 
+
+		$scope.customdiskSize = function (input) {
+
+          if (input === undefined || input === null) {
+              $scope.homerTemplate = 'app/views/notification/notify.jsp';
+              appService.notify({message: 'The value must be between 1 to 1024 ', classes: 'alert-danger', templateUrl: $scope.homerTemplate});
+          }
+
+	}
+
 	$scope.customMemory = function (input) {
 
             if (input === undefined || input === null) {

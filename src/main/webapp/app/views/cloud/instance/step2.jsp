@@ -180,11 +180,11 @@
 						</rzslider>
 					</div>
 					<div class="col-md-2 col-xs-12 col-sm-3">
-						<input type="text" required="true" id="create_instance_disk_size"
-							data-ng-min="{{ instance.diskOffer.diskSize.floor }}"
-							data-ng-max="{{ instance.diskOffer.diskSize.ceil}}"
-							class="form-control input-mini" name="diskSize"
-							data-ng-model="instance.diskSize" valid-number="">
+						<input type="number" required="true" id="create_instance_disk_size" required="true" data-ng-change="customdiskSize(instance.diskSize)"
+							min="{{ instance.diskOffer.diskSize.floor }}"
+							max="{{ instance.diskOffer.diskSize.ceil}}"
+							class="form-control " name="diskSize"
+							data-ng-model="instance.diskSize" >
 					</div>
 				</div>
 			</div>
