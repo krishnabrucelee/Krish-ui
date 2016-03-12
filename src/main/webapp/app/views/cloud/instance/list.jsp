@@ -48,7 +48,13 @@
 							><span class="fa fa-refresh fa-lg "></span></a>
 						</div>
 						<div class="pull-right" id="instances_quick_search">
-							<panda-quick-search></panda-quick-search>
+						<form data-ng-submit="searchList(vmSearch)">
+							<div class="quick-search pull-right m-r-sm">
+								<div class="input-group">
+									<input data-ng-model="vmSearch" type="text" class="form-control input-medium" placeholder="<fmt:message key="common.quick.search" bundle="${msg}" />" aria-describedby="quicksearch-go">
+								   	<span class="input-group-addon" id="quicksearch-go"><span class="pe-7s-search pe-lg font-bold"></span></span>
+								</div>
+							</div>
 							<span class="pull-right m-r-sm" data-ng-show="global.sessionValues.type == 'ROOT_ADMIN'">
 								<select
 									class="form-control input-group col-xs-5" name="domainView"
@@ -61,6 +67,7 @@
 							<div class="clearfix"></div>
 							<span class="pull-right m-l-sm m-t-sm">
 							</span>
+						</form>
 						</div>
 					</div>
 				</div>
