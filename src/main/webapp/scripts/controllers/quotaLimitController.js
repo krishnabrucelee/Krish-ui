@@ -71,25 +71,43 @@ function quotaLimitCtrl($scope, $state, $stateParams, appService, $window) {
 			angular.forEach(result, function(object, key) {
 				i++;
 				$scope.resourceQuota[object.resourceType] = object.usedLimit;
-				$scope.resourceQuota[object.resourceType] = object.available;
+				$scope.resourceQuota[object.resourceType] = object.max;
 				if (object.resourceType != "Project") {
 					if (object.resourceType == "Memory") {
-						object.available = Math.round(object.available / 1024);
 						object.usedLimit = Math.round( object.usedLimit / 1024);
-						object.resourceType = object.resourceType + " " + "(GB)";
+						if (object.max != -1) {
+							object.max = Math.round(object.max / 1024);
+						}
+						object.resourceType = object.resourceType + " " + "(GiB)";
 					}
-					if (object.available == -1 && object.resourceType == "PrimaryStorage" || object.available == -1 && object.resourceType == "SecondaryStorage") {
-					    object.usedLimit = Math.round( object.usedLimit / (1024 * 1024 * 1024));
+//					if (object.resourceType == "PrimaryStorage" || object.resourceType == "SecondaryStorage") {
+//					    object.usedLimit = Math.round( object.usedLimit / (1024 * 1024 * 1024));
+//					    if (object.max != -1) {
+//					    	object.max = Math.round( object.max / (1024 * 1024 * 1024));
+//					    	console.log("gdhfvgsh", object.max);
+//					    }
+//					    object.resourceType = object.resourceType + " " + "(GiB)";
+//				    }
+					if (object.max == -1 && object.resourceType == "PrimaryStorage" || object.max == -1 && object.resourceType == "SecondaryStorage") {
+						object.usedLimit = Math.round( object.usedLimit / (1024 * 1024 * 1024));
 					    object.resourceType = object.resourceType + " " + "(GiB)";
-				    }
+ 				    }
+					if (object.resourceType == "PrimaryStorage" || object.resourceType == "SecondaryStorage") {
+					    object.resourceType = object.resourceType + " " + "(GiB)";
+ 				    }
 					if (object.usedLimit == null) {
 						object.usedLimit = 0;
 					}
-					if (object.available == null || object.available == -1 || object.available == 0) {
-						object.available = 100;
-					}
+//					if (object.available == null || object.available == -1 || object.available == 0) {
+//						object.available = 100 - object.usedLimit;
+//					}
+					if (object.max != -1) {
 					$scope.resourceListMap(object.resourceType,
-							object.usedLimit, object.available);
+							object.usedLimit, object.max - object.usedLimit);
+					} else {
+						$scope.resourceListMap(object.resourceType,
+								object.usedLimit, object.max);
+					}
 				}
 			});
 
@@ -121,21 +139,20 @@ function quotaLimitCtrl($scope, $state, $stateParams, appService, $window) {
 	 */
 	$scope.quotaLimitData = [];
 	$scope.resource = {};
-	$scope.resourceListMap = function(resourceName, available, used) {
-		console.log(resourceName);
+	$scope.resourceListMap = function(resourceName, used, max) {
 		$scope.resource[resourceName + "Limit"] = {
 			"title" : resourceName,
 			"options" : [ {
 				value : parseFloat(used),
-				color : "#A9A9A9",
-				highlight : "#57b32c",
-				label : "Available",
-				showLabels : "true",
-			}, {
-				value : parseFloat(available),
 				color : "#3399FF",
 				highlight : "#e74c3c",
 				label : "Used",
+				showLabels : "true",
+			}, {
+				value : parseFloat(max),
+				color : "#A9A9A9",
+				highlight : "#57b32c",
+				label : "Available",
 				showLabels : "true",
 			} ]
 		};

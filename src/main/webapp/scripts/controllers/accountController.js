@@ -82,11 +82,22 @@ function accountListCtrl($scope,$state, $log,$timeout,$stateParams, appService, 
 			$scope.paginationObject.sortBy = sortBy;
 			$scope.showLoader = true;
 			var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
-                        var hasUserLists =  appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "users" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+sortOrder+sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+            var hasUserLists = {};
+            if ($scope.domainView == null) {
+            	hasUserLists =  appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "users" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+sortOrder+sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+            } else {
+            	hasUserLists =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "users/listByUserDomain"
+    				+"?lang=" +appService.localStorageService.cookie.get('language')
+    				+ "&domainId="+$scope.domainView.id+"&sortBy="+$scope.paginationObject.sortOrder+$scope.paginationObject.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+            }
 
 			hasUserLists.then(function(result) { // this is only run after $http
 				// completes0
 				$scope.accountList = result;
+				$scope.accountList.Count = 0;
+	            if (result.length != 0) {
+	                $scope.accountList.Count = result.totalItems;
+	            }
 				// For pagination
 				$scope.paginationObject.limit = limit;
 				$scope.paginationObject.currentPage = pageNumber;
@@ -97,12 +108,19 @@ function accountListCtrl($scope,$state, $log,$timeout,$stateParams, appService, 
 			});
 		};
 
-    var hasUsers = appService.crudService.listAll("users/list");
-	$scope.showLoader = true;
-	hasUsers.then(function (result) {  // this is only run after $http completes0
-	$scope.activeUsers = result;
-
-});
+    $scope.userList = function() {
+    	var hasUsers = {};
+        if ($scope.global.sessionValues.type == "ROOT_ADMIN") {
+            hasUsers = appService.crudService.listAll("users/list");
+        } else {
+        	hasUsers = appService.crudService.listAll("users/listbydomain");
+        }
+		$scope.showLoader = true;
+		hasUsers.then(function (result) {  // this is only run after $http completes0
+		   $scope.activeUsers = result;
+	    });
+    }
+    $scope.userList();
 
     // Department list load based on the domain
     $scope.domainChange = function() {
@@ -121,8 +139,6 @@ function accountListCtrl($scope,$state, $log,$timeout,$stateParams, appService, 
     	$scope.accountElements.departmentList = result;
     });
     }
-
-
 
     $scope.departmentList = {};
     $scope.getDepartmentList = function (domain) {
@@ -160,16 +176,33 @@ function accountListCtrl($scope,$state, $log,$timeout,$stateParams, appService, 
         $scope.checkOne(item);
     }
 
+    // Get account list based on domain selection
+    $scope.selectDomainView = function(pageNumber) {
+    	$scope.list(1);
+    };
+
     // User List
     $scope.list = function (pageNumber) {
         appService.globalConfig.sort.sortOrder = $scope.paginationObject.sortOrder;
         appService.globalConfig.sort.sortBy = $scope.paginationObject.sortBy;
     	$scope.showLoader = true;
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
-        var hasUsers = appService.crudService.list("users", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+        var hasUsers = {};
+        if ($scope.domainView == null) {
+        	hasUsers = appService.crudService.list("users", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+        } else {
+        	hasUsers =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "users/listByUserDomain"
+				+"?lang=" +appService.localStorageService.cookie.get('language')
+				+ "&domainId="+$scope.domainView.id+"&sortBy="+globalConfig.sort.sortOrder+globalConfig.sort.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+        }
         hasUsers.then(function (result) {  // this is only run after $http completes0
 
             $scope.accountList = result;
+            $scope.accountList.Count = 0;
+            if (result.length != 0) {
+                $scope.accountList.Count = result.totalItems;
+            }
+
             // For pagination
             $scope.paginationObject.limit  = limit;
             $scope.paginationObject.currentPage = pageNumber;
@@ -497,6 +530,7 @@ function accountListCtrl($scope,$state, $log,$timeout,$stateParams, appService, 
                    var hasServer = appService.crudService.update("users/disable", user);
                    hasServer.then(function (result) {
     			     $scope.list(1);
+    			     $scope.userList();
                    appService.notify({message: 'Disabled successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                    $scope.showLoader = false;
                    $scope.cancel();
@@ -521,6 +555,7 @@ function accountListCtrl($scope,$state, $log,$timeout,$stateParams, appService, 
                  var hasServer = appService.crudService.update("users/enable", user);
                  hasServer.then(function (result) {
   			     $scope.list(1);
+  			     $scope.userList();
                  appService.notify({message: 'Enabled successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                  $scope.showLoader = false;
                  $scope.cancel();

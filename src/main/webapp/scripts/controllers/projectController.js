@@ -73,11 +73,23 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams, localStor
 		$scope.paginationObject.sortBy = sortBy;
 		$scope.showLoader = true;
 		var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
-                    var hasProjectsLists =  appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "projects" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+sortOrder+sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
 
-                    hasProjectsLists.then(function(result) { // this is only run after $http
+            var hasProjectsLists = {};
+            if ($scope.domainView == null) {
+            	var hasProjectsLists =  appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "projects" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+sortOrder+sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+            } else {
+            	hasProjectsLists =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "projects/listByDomain"
+    				+"?lang=" +appService.localStorageService.cookie.get('language')
+    				+ "&domainId="+$scope.domainView.id+"&sortBy="+$scope.paginationObject.sortOrder+$scope.paginationObject.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+            }
+
+            hasProjectsLists.then(function(result) { // this is only run after $http
 			// completes0
 			$scope.projectList = result;
+			$scope.projectList.Count = 0;
+            if (result.length != 0) {
+                $scope.projectList.Count = result.totalItems;
+            }
 			// For pagination
 			$scope.paginationObject.limit = limit;
 			$scope.paginationObject.currentPage = pageNumber;
@@ -93,9 +105,21 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams, localStor
         appService.globalConfig.sort.sortBy = $scope.paginationObject.sortBy;
     	$scope.showLoader = true;
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
-        var hasProjects = appService.crudService.list("projects", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+        var hasProjects = {};
+        if ($scope.domainView == null) {
+        	hasProjects = appService.crudService.list("projects", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+        } else {
+        	hasProjects =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "projects/listByDomain"
+				+"?lang=" +appService.localStorageService.cookie.get('language')
+				+ "&domainId="+$scope.domainView.id+"&sortBy="+globalConfig.sort.sortOrder+globalConfig.sort.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+        }
         hasProjects.then(function (result) {  // this is only run after $http completes0
             $scope.projectList = result;
+            $scope.projectList.Count = 0;
+            if (result.length != 0) {
+                $scope.projectList.Count = result.totalItems;
+            }
+
             // For pagination
             $scope.paginationObject.limit  = limit;
             $scope.paginationObject.currentPage = pageNumber;
@@ -104,6 +128,11 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams, localStor
         });
     };
     $scope.list(1);
+
+    // Get project list based on domain selection
+    $scope.selectDomainView = function(pageNumber) {
+    	$scope.list(1);
+    };
 
     var hasDomains = appService.crudService.listAll("domains/list");
 	hasDomains.then(function (result) {  // this is only run after $http completes0

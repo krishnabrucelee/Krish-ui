@@ -44,21 +44,23 @@
 							<div class="dashboard-box pull-left">
      							<div class="instance-border-content-normal">
                                 <span class="pull-left m-t-xs m-l-xs m-r-xs"><fmt:message key="common.total" bundle="${msg}" /></span>
-                                <b class="pull-left">{{paginationObject.totalItems}}</b>
+                                <b class="pull-left">{{accountList.Count}}</b>
                                 <div class="clearfix"></div>
                                 </div>
                             </div>
                             <div class="dashboard-box pull-left">
                       			<div class="instance-border-content-normal">
                                 <span class="pull-left m-t-xs m-l-xs m-r-xs"><fmt:message key="common.active" bundle="${msg}" /></span>
-                                <b class="pull-left">{{(activeUsers | filter:{status:'ENABLED'}).length}}</b>
+                                <b data-ng-show="global.sessionValues.type == 'ROOT_ADMIN'" class="pull-left">{{(activeUsers | filter:{status:'ENABLED', domainId:domainView.id}:true).length}}</b>
+                                <b data-ng-show="global.sessionValues.type != 'ROOT_ADMIN'" class="pull-left">{{(activeUsers | filter:{status:'ENABLED'}).length}}</b>
                                 <div class="clearfix"></div>
                                 </div>
                             </div>
                             <div class="dashboard-box pull-left">
                                  <div class="instance-border-content-normal">
                                 <span class="pull-left m-t-xs m-l-xs m-r-xs"><fmt:message key="common.inactive" bundle="${msg}" /></span>
-                                <b class="pull-left">{{(activeUsers | filter:{status:'DISABLED'}).length}}</b>
+                                <b data-ng-show="global.sessionValues.type == 'ROOT_ADMIN'" class="pull-left">{{(activeUsers | filter:{status:'DISABLED', domainId:domainView.id}:true).length}}</b>
+                                <b data-ng-show="global.sessionValues.type != 'ROOT_ADMIN'" class="pull-left">{{(activeUsers | filter:{status:'DISABLED'}).length}}</b>
                                 <div class="clearfix"></div>
                                 </div>
                             </div>
@@ -67,8 +69,18 @@
 
                                 <div class="pull-right">
                                     <panda-quick-search></panda-quick-search>
-                                    <div class="clearfix"></div>
+                                    <span class="pull-right m-r-sm" data-ng-show="global.sessionValues.type == 'ROOT_ADMIN'">
+										<select
+											class="form-control input-group col-xs-5" name="domainView"
+											data-ng-model="domainView"
+											data-ng-change="selectDomainView(1)"
+											data-ng-options="domainView.name for domainView in accountElements.domainList">
+											<option value="">All Domain</option>
+										</select>
+		                    </span>
 
+                                    <div class="clearfix"></div>
+                                    <span class="pull-right m-l-sm m-t-sm"></span>
                                 </div>
                             </div>
                         </div>
@@ -93,7 +105,12 @@
 										<th><fmt:message key="common.action" bundle="${msg}" /></th>
                                         </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody data-ng-hide="accountList.length > 0">
+		                                    <tr>
+		                                        <td class="col-md-7 col-sm-7" colspan="7"><fmt:message key="common.no.records.found" bundle="${msg}" />!!</td>
+		                                    </tr>
+		                                </tbody>
+                                        <tbody data-ng-show="accountList.length > 0">
                                             <tr  data-ng-repeat="account in filteredCount = (accountList| filter: quickSearch | orderBy:sort.column:sort.descending)">
                                                 <td>
                                                     <a class="text-info" >{{ account.userName}}</a>
@@ -140,8 +157,8 @@
 													data-ng-click="deleteUser('sm',account)"><span
 														class="fa fa-trash"></span>
 												</a>
-												 <a data-ng-show="account.status == 'DISABLED'" data-ng-click="activating(account)"><span class="pe-7s-user pe-lg font-bold m-r-xs" title="Enable User"></span></a>
-                                        		 <a data-ng-show="account.status == 'ENABLED'" data-ng-click="revoking(account)" ><span class="pe-7s-delete-user pe-lg font-bold m-r-xs" title="Disable User"></span></a>
+												 <a has-permission="ENABLE_USER" data-ng-show="account.status == 'DISABLED'" data-ng-click="activating(account)"><span class="pe-7s-user pe-lg font-bold m-r-xs" title="Enable User"></span></a>
+                                        		 <a has-permission="DISABLE_USER" data-ng-show="account.status == 'ENABLED'" data-ng-click="revoking(account)" ><span class="pe-7s-delete-user pe-lg font-bold m-r-xs" title="Disable User"></span></a>
 												</td>
                                             </tr>
                                         </tbody>

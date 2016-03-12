@@ -153,6 +153,12 @@ localStorageService, $window, dialogService,$stateParams, notify, appService) {
 	    hasVolumes.then(function (result) {
 	    	$scope.showLoader = false;
 	        $scope.snapshotList = result;
+	        $scope.snapshotList.Count = 0;
+            if (result.length != 0) {
+                $scope.snapshotList.Count = result.totalItems;
+            }
+
+            // For pagination
 	        $scope.paginationObject.limit  = limit;
 	        $scope.paginationObject.currentPage = pageNumber;
 	        $scope.paginationObject.totalItems = result.totalItems;
@@ -160,14 +166,27 @@ localStorageService, $window, dialogService,$stateParams, notify, appService) {
 	    });
     }
     $scope.list(1);
+
 	$scope.lists = function(pageNumber){
 		$scope.showLoaderOffer = true;
 		var limit = (angular.isUndefined($scope.paginationObjects.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObjects.limit;
-		var hasSnapshots = crudService.list("vmsnapshot", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+		var hasSnapshots = {};
+        if ($scope.domainId == null) {
+        	hasSnapshots = appService.crudService.list("vmsnapshot", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+        } else {
+        	hasSnapshots =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "vmsnapshot/listByDomain"
+				+"?lang=" +appService.localStorageService.cookie.get('language')
+				+ "&domainId="+$scope.domainId+"&sortBy="+globalConfig.sort.sortOrder+globalConfig.sort.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+        }
         hasSnapshots.then(function (result) {  // this is only run after
 												// $http completes0
         	$scope.showLoaderOffer = false;
             $scope.vmSnapshotList = result;
+            $scope.vmSnapshotList.Count = 0;
+            if (result.length != 0) {
+                $scope.vmSnapshotList.Count = result.totalItems;
+            }
+
             // For pagination
             $scope.paginationObjects.limit  = limit;
             $scope.paginationObjects.currentPage = pageNumber;
@@ -175,6 +194,20 @@ localStorageService, $window, dialogService,$stateParams, notify, appService) {
         });
 	};
 	$scope.lists(1);
+
+	// Get domain list
+    var hasdomainListView = appService.crudService.listAll("domains/list");
+    hasdomainListView.then(function (result) {
+    	$scope.domainListView = result;
+    });
+
+    // Get project list based on domain selection
+    $scope.domainId = null;
+    $scope.selectDomainView = function(pageNumber, domainId) {
+    	$scope.domainId = domainId;
+    	$scope.lists(1);
+    };
+
 	$scope.instanceList = {};
     $scope.instanceId = function(pageNumber) {
 		var hasUsers = crudService.listAll("virtualmachine/list");
