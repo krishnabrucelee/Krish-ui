@@ -166,6 +166,8 @@
         src="bower_components/angular-local-storage/dist/angular-local-storage.js"></script>
     <script src="bower_components/angularjs-slider/rzslider.js"></script>
     <script src="bower_components/angular-filter/dist/angular-filter.js"></script>
+    <script src="bower_components/sockjs/sockjs.min.js"></script>
+	<script src="bower_components/stomp/lib/stomp.min.js"></script>
 
     <!-- endbuild -->
 
@@ -233,6 +235,7 @@
     <script src="scripts/factories/monitorService.js"></script>
     <script src="scripts/factories/Search.js"></script>
     <script src="scripts/factories/webSocket.js"></script>
+    <script src="scripts/factories/webSocketService.js"></script>
     <script>
     <!-- endbuild -->
         $('html').addClass("page-scroll");
