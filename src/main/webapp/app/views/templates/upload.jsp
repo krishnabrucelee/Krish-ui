@@ -203,8 +203,8 @@
                             <div class="row">
                                 <label class="col-md-3 col-sm-3 col-xs-3 control-label" ><fmt:message key="template.architecture" bundle="${msg}" /><span class="text-danger">*</span></label>
                                 <div class="col-md-6  col-sm-6 col-lg-6  col-sm-6 col-lg-6">
-                                    <label> <input required="true" icheck type="radio" name= "architecture" value="64" ng-model="templates.architecture"> 64 <fmt:message key="common.bit" bundle="${msg}" /></label>
-                                    <label class="m-l-sm"> <input required="true"  icheck type="radio" name= "architecture" value="32" ng-model="templates.architecture"> 32 <fmt:message key="common.bit" bundle="${msg}" /></label>
+                                    <label> <input required="true" icheck type="radio" name= "architecture" value="64" ng-model="templates.architecture"> 64 <fmt:message key="template.architecture" bundle="${msg}" /></label>
+                                    <label class="m-l-sm"> <input required="true"  icheck type="radio" name= "architecture" value="32" ng-model="templates.architecture"> 32 <fmt:message key="template.architecture" bundle="${msg}" /></label>
                                     <div class="error-area" data-ng-show="uploadTemplateForm.architecture.$invalid && formSubmitted" >
                                     	<i  ng-attr-tooltip="<fmt:message key="template.architecture.error" bundle="${msg}" />" class="fa error-icon"></i>
                                     </div>
@@ -263,7 +263,7 @@
                             <div class="col-md-12 col-sm-12">
                              <span class="pull-left">
                         <h4 class="text-danger price-text m-l-lg">
-                            <app-currency></app-currency>{{miscellaneousList[0].costperGB / 30 | number:4}} <span>/ Day</span>   <small class="text-right text-muted m-l-sm" data-ng-model="miscellaneousList[0].costperGB">(<app-currency></app-currency>{{miscellaneousList[0].costperGB}})</small>
+                            <app-currency></app-currency>{{miscellaneousList[0].costperGB / 30 | number:4}} <span>/day</span>   <small class="text-right text-muted m-l-sm" data-ng-model="miscellaneousList[0].costperGB">(<app-currency></app-currency>{{miscellaneousList[0].costperGB}})</small>
                         </h4>
                     </span>
                                 <span  data-ng-hide="showLoader" class="pull-right">

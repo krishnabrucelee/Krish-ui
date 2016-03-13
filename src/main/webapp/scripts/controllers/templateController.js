@@ -228,8 +228,6 @@ $scope.template.listAllTemplate = {};
         var hastemplateList = appService.crudService.listAll("miscellaneous/list");
         hastemplateList.then(function (result) {  // this is only run after $http completes0
             $scope.miscellaneousList = result;
-		console.log("list",$scope.miscellaneousList);
-		console.log(result[0].costperGB);
             $scope.showLoader = false;
         });
 

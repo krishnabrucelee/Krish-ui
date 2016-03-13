@@ -51,7 +51,9 @@
                                     <td>{{ (template.passwordEnabled) ? "Yes" : "No"}}</td>
                                     <td>{{ (template.dynamicallyScalable) ? "Yes" : "No" }}</td>
                                     <td>
-                                        <button title="Launch" class="btn btn-info btn-sm pull-right" data-ng-click="openAddInstance(template)"><i class="fa fa-power-off"></i> <fmt:message key="common.launch" bundle="${msg}" /></button>
+                                        <a class="icon-button text-center test_instances_stop_vm_button" title="<fmt:message key="common.launch" bundle="${msg}" />" data-ng-click="openAddInstance(template)"><i class="fa fa-power-off"></i></a>
+                                    	<a has-permission ="EDIT_TEMPLATE"  class="icon-button test_applications_edit_button" title="<fmt:message key="common.edit" bundle="${msg}" />" data-ng-click="editTemplateContainer('lg', template)"> <span class="fa fa-edit"></span></a>
+										<a has-permission= "DELETE_MY_TEMPLATE" class="icon-button test_applications_delete_button" title="<fmt:message key="common.delete" bundle="${msg}" />" data-ng-click="delete('sm', template)"><span class="fa fa-trash"></span></a>
                                     </td>
                                 </tr>
                             </tbody>
