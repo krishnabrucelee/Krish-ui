@@ -174,7 +174,7 @@ function globalConfig($window) {
                 editStickiness : 'LB.STICKINESSPOLICY.CREATE'
             },
             sshKeyEvents : {
-                createSSHKey : 'CREATESSHKEY',
+                createSSHKey : 'REGISTER.SSH.KEYPAIR',
                 deleteSSHKey : 'DELETE',
                 assignSSH : 'REGISTER.SSH.KEYPAIR'
             },

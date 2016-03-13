@@ -261,7 +261,6 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
             var hasVm = appService.crudService.update("virtualmachine", $scope.vm);
             hasVm.then(function(result) {
                 appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.updateVM, result.uuid, $scope.global.sessionValues.id);
-                $scope.cancel();
             });
         }
     };
