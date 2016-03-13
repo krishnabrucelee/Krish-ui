@@ -6,7 +6,7 @@ function webSocket($rootScope, $timeout, webSockets, globalConfig, notify) {
     var headers = {};
 
     var initStompClient = function() {
-        webSockets.init('http://localhost:8080/socket/ws');
+        webSockets.init(globalConfig.SOCKET_URL + 'socket/ws');
         headers['x-auth-token'] = globalConfig.sessionValues.token;
         webSockets.connect(function(frame) {
 
