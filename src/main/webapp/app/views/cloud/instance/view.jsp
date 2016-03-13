@@ -9,7 +9,7 @@ pageEncoding="UTF-8"%>
 
         <ul class="nav nav-tabs" data-ng-init="templateCategory = 'dashboard'">
             <li data-ng-class="{'active' : templateCategory == 'dashboard'}"><a href="javascript:void(0)" data-ng-click="templateCategory = 'dashboard'" data-toggle="tab">  <i class="fa fa-laptop"></i> <fmt:message key="dashboard" bundle="${msg}" /></a></li>
-            <li data-ng-if ="instance.status == 'STOPPED'" data-ng-class="{'active' : templateCategory == 'config'}"><a has-permission="RESIZE" data-ng-click="selectab()"  data-toggle="tab"> <i class="fa fa-cogs"></i> <fmt:message key="configuration" bundle="${msg}" /></a></li>
+            <li data-ng-class="{'active' : templateCategory == 'config'}"><a has-permission="RESIZE" data-ng-click="selectab()"  data-toggle="tab"> <i class="fa fa-cogs"></i> <fmt:message key="configuration" bundle="${msg}" /></a></li>
             <li class=""><a  data-ng-click="templateCategory = 'storage'" data-toggle="tab"><i class="fa fa-database"></i> <fmt:message key="storage" bundle="${msg}" /></a></li>
             <li class=""><a  data-ng-click="networkTab()" data-toggle="tab"> <!--<i class="fa fa-sitemap"></i>--><i class="custom-icon custom-icon-network"></i> <fmt:message key="networking" bundle="${msg}" /></a></li>
             <li class=""><a has-permission="MONITOR_VM_PERFORMANCE" href="javascript:void(0)" data-ng-class="{'active': templateCategory == 'monitor'}" data-ng-click="templateCategory = 'monitor'" data-toggle="tab"> <i class="fa fa-desktop"></i> <fmt:message key="monitor" bundle="${msg}" /></a></li>
@@ -396,7 +396,7 @@ pageEncoding="UTF-8"%>
                                                 </td>
                                                 <td class="col-md-8 col-sm-8">
                                                     {{ instance.computeOffering.name}}
-                                                    <a has-permission="RESIZE" data-ng-if = "instance.status == 'STOPPED'" data-ng-click="selectab()"  class="fa fa-edit m-l-lg">
+                                                    <a has-permission="RESIZE" data-ng-click="selectab()"  class="fa fa-edit m-l-lg">
                                                         <fmt:message key="common.edit" bundle="${msg}" />
                                                     </a>
                                                 </td>
@@ -456,6 +456,18 @@ pageEncoding="UTF-8"%>
                                                     </b>
                                                 </td>
                                                 <td class="col-md-8 col-sm-8">{{instance.template.dynamicallyScalable}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="col-md-4 col-sm-4">
+                                                    <b>
+                                                        <fmt:message key="ssh.key.pair" bundle="${msg}" />
+                                                    </b>
+                                                </td>
+                                                <td class="col-md-8 col-sm-8">{{instance.keypair.name}}
+                                                <a data-ng-click="selectab()"  class="fa fa-exchange m-l-lg">
+                                                        <fmt:message key="common.change" bundle="${msg}" />
+                                                    </a>
+                                                 </td>
                                             </tr>
                                             </tbody>
                                         </table>

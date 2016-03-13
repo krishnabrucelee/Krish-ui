@@ -34,18 +34,21 @@
                 <div class="hpanel">
                     <div class="row m-l-sm m-r-sm panel-body" ng-controller="activityCtrl">
                         <ul class="nav nav-tabs" >
-                            <li data-ng-class="{'active' : activity.category == 'events'}"><a href="javascript:void(0)"  data-ng-click="getActivityByCategory('events')" data-toggle="tab">  <i class="fa fa-calendar"></i> Events</a></li>
-                            <li data-ng-class="{'active' : activity.category == 'alerts'}"><a  data-ng-click="getActivityByCategory('alerts')" data-toggle="tab"> <i class="fa fa-warning"></i> Alerts</a></li>
-                            <li data-ng-class="{'active' : activity.category == 'notifications'}"><a  data-ng-click="getActivityByCategory('notifications')" data-toggle="tab"> <i class="fa fa-bell"></i> Notifications</a></li>
-                        </ul>
-                        <div class="tab-content">
-                            <div class="tab-pane"  data-ng-class="{'active' : activity.category == 'events'}" id="events">
+                            <li data-ng-class="{'active' : activity.category == 'events'}"><a   data-ng-click="getActivityByCategory('events', 1)" data-toggle="tab">  <i class="fa fa-calendar"></i> Events</a></li>
+                            <li data-ng-class="{'active' : activity.category == 'alerts'}"><a   data-ng-click="getActivityByCategory('alerts', 1)" data-toggle="tab"> <i class="fa fa-warning"></i> Alerts</a></li>
+                            <li data-ng-class="{'active' : activity.category == 'notifications'}"><a data-ng-click="getActivityByCategory('events', 1)" data-toggle="tab"> <i class="fa fa-bell"></i> Notifications</a></li>
+               			</ul>
+                      <div class="tab-content">
+                      <div data-ng-show="showLoader" style="margin: 1%">
+							<get-loader-image data-ng-show="showLoader"></get-loader-image>
+						</div>
+                            <div data-ng-hide="showLoader" class="tab-pane"  data-ng-class="{'active' : activity.category == 'events'}" id="events">
                                 <div data-ng-include src="'app/views/activity/events.jsp'"></div>
                             </div>
-                            <div class="tab-pane"  data-ng-class="{'active' : activity.category == 'alerts'}" id="alerts">
+                            <div data-ng-hide="showLoader" class="tab-pane"  data-ng-class="{'active' : activity.category == 'alerts'}" id="alerts">
                                 <div data-ng-include src="'app/views/activity/alerts.jsp'"></div>
                             </div>
-                            <div class="tab-pane"  data-ng-class="{'active' : activity.category == 'notifications'}" id="notifications">
+                            <div data-ng-hide="showLoader" class="tab-pane"  data-ng-class="{'active' : activity.category == 'notifications'}" id="notifications">
                                 <div data-ng-include src="'app/views/activity/notifications.jsp'"></div>
                             </div>
                         </div>

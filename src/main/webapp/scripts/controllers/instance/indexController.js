@@ -10,6 +10,45 @@ angular
 
 function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter, appService, $window, sweetAlert) {
 
+	  $scope.minSlider = {
+		        value: 1000
+		    };
+
+
+		$scope.customdiskSize = function (input) {
+
+          if (input === undefined || input === null) {
+              $scope.homerTemplate = 'app/views/notification/notify.jsp';
+              appService.notify({message: 'The value must be between 1 to 1024 ', classes: 'alert-danger', templateUrl: $scope.homerTemplate});
+          }
+
+	}
+
+	$scope.customMemory = function (input) {
+
+            if (input === undefined || input === null) {
+                $scope.homerTemplate = 'app/views/notification/notify.jsp';
+                appService.notify({message: 'The value must be between 512 to 4096 ', classes: 'alert-danger', templateUrl: $scope.homerTemplate});
+            }
+
+	}
+
+	$scope.customCpuSpeed = function (input) {
+        if (input === undefined || input === null) {
+            $scope.homerTemplate = 'app/views/notification/notify.jsp';
+            appService.notify({message: 'The value must be between 500 to 3500 ', classes: 'alert-danger', templateUrl: $scope.homerTemplate});
+        }
+
+}
+
+	$scope.customCpuCore = function (input) {
+
+        if (input === undefined || input === null) {
+            $scope.homerTemplate = 'app/views/notification/notify.jsp';
+            appService.notify({message: 'The value must be between 1 to 32 ', classes: 'alert-danger', templateUrl: $scope.homerTemplate});
+        }
+
+}
 
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.vmCreate, function() {
        // $scope.instanceList = appService.webSocket;
@@ -33,7 +72,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
         templateList: {}
     };
     $scope.paginationObject.sortOrder = '+';
-    $scope.paginationObject.sortBy = 'name'; 
+    $scope.paginationObject.sortBy = 'name';
     $scope.templateCategories = appService.localStorageService.get("view");
     $scope.templateVM = appService.localStorageService.get("selectedTemplate");
     if (!angular.isUndefined($scope.templateVM) && $scope.templateVM != null && $scope.templateVM.$valid) {
@@ -296,11 +335,21 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
 
     //Application list by filter
     $scope.applicationList = function () {
+    	if (!angular.isUndefined($scope.instance.domain)) {
     	var hasApplicationList = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL
         		+ "applications/domain?domainId="+$scope.instance.domain.id);
         hasApplicationList.then(function (result) {
             $scope.formElements.applicationsList = result;
         });
+    	}
+    	else
+    		{
+    		  delete $scope.formElements.applicationsList;
+    		  delete  $scope.formElements.instanceOwnerList;
+    		  delete $scope.formElements.projecttypeList;
+          	 delete $scope.instance.instanceOwner
+          	delete $scope.instance.project ;
+    		}
     };
 
     $scope.applicationsList = {};
@@ -318,13 +367,14 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
 
     $scope.changedomain=function (obj)
     {
-        $scope.applicationList();
-	$scope.computeList();
-	$scope.instance.department =null;
+      	$scope.applicationList();
+      	$scope.computeList();
+      	$scope.instance.department =null;
     	$scope.instance.instanceOwner = null;
-	$scope.instance.project = null;
+    	$scope.instance.project = null;
         $scope.instance.networks.networkList  = {};
 	if (!angular.isUndefined(obj)) {
+
             $scope.departmentList(obj);
             $scope.formElements.instanceOwnerList = {};
             $scope.formElements.projecttypeList = {};
@@ -332,7 +382,9 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
         }
     }
 
+    $scope.depValue={};
     $scope.changedepartment = function(obj) {
+    	$scope.depValue= obj.id;
         $scope.instance.instanceOwner =null;
     	$scope.instance.project = null;
         $scope.instance.networks.networkList  = null;
@@ -360,7 +412,10 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
         $scope.instance.networks.networkList  = null;
   	  if (!angular.isUndefined(obj)) {
             $scope.listNetworks(obj.id, 'project');
-        }
+        } else
+        	{
+        	 $scope.listNetworks($scope.depValue, 'department');
+        	}
 
   	  };
 
@@ -646,7 +701,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
 
     $scope.someSelected = function (object) {
         return Object.keys(object).some(function (key) {
-            return object[key];
+              object[key];
         });
     }
 

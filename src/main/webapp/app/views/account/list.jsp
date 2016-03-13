@@ -51,14 +51,16 @@
                             <div class="dashboard-box pull-left">
                       			<div class="instance-border-content-normal">
                                 <span class="pull-left m-t-xs m-l-xs m-r-xs"><fmt:message key="common.active" bundle="${msg}" /></span>
-                                <b class="pull-left">{{(activeUsers | filter:{status:'ENABLED', domainId:domainView.id}:true).length}}</b>
+                                <b data-ng-show="global.sessionValues.type == 'ROOT_ADMIN'" class="pull-left">{{(activeUsers | filter:{status:'ENABLED', domainId:domainView.id}:true).length}}</b>
+                                <b data-ng-show="global.sessionValues.type != 'ROOT_ADMIN'" class="pull-left">{{(activeUsers | filter:{status:'ENABLED'}).length}}</b>
                                 <div class="clearfix"></div>
                                 </div>
                             </div>
                             <div class="dashboard-box pull-left">
                                  <div class="instance-border-content-normal">
                                 <span class="pull-left m-t-xs m-l-xs m-r-xs"><fmt:message key="common.inactive" bundle="${msg}" /></span>
-                                <b class="pull-left">{{(activeUsers | filter:{status:'DISABLED', domainId:domainView.id}:true).length}}</b>
+                                <b data-ng-show="global.sessionValues.type == 'ROOT_ADMIN'" class="pull-left">{{(activeUsers | filter:{status:'DISABLED', domainId:domainView.id}:true).length}}</b>
+                                <b data-ng-show="global.sessionValues.type != 'ROOT_ADMIN'" class="pull-left">{{(activeUsers | filter:{status:'DISABLED'}).length}}</b>
                                 <div class="clearfix"></div>
                                 </div>
                             </div>
@@ -73,7 +75,7 @@
 											data-ng-model="domainView"
 											data-ng-change="selectDomainView(1)"
 											data-ng-options="domainView.name for domainView in accountElements.domainList">
-											<option value="">Select Domain</option>
+											<option value="">All Domain</option>
 										</select>
 		                    </span>
 

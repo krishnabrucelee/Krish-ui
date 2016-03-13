@@ -12,28 +12,76 @@ angular
         .controller('deleteCtrl', deleteCtrl)
         .controller('activityViewCtrl', activityViewCtrl)
 
-function activityCtrl($scope, $modal, promiseAjax, localStorageService, modalService) {
-
+function activityCtrl($scope, appService, $modal, promiseAjax, localStorageService, modalService) {
+    $scope.global = appService.globalConfig;
+    $scope.owner = {};
     $scope.activity = {
         category: "events",
         oneItemSelected: {},
         selectedAll: {}
     };
-    $scope.getActivityByCategory = function (category) {
-        $scope.activity = {
-            category: category,
-            oneItemSelected: {},
-            selectedAll: {}
-        };
-        $scope.activity.category = category;
-        $scope.pageTitle = category.substring(0, 1).toUpperCase() + category.substring(1).toLowerCase();
-        var hasServer = promiseAjax.httpRequest("GET", "api/activity-" + category + ".json");
-        hasServer.then(function (result) {  // this is only run after $http completes
-            $scope.activityList = result;
+    $scope.paginationObject = {};
+    $scope.sort = appService.globalConfig.sort;
+    $scope.changeSorting = appService.utilService.changeSorting;
 
-        });
+    var hasUsers = appService.crudService.read("users", $scope.global.sessionValues.id);
+    hasUsers.then(function (result) {
+        $scope.owner = result;
+    });
+    $scope.getActivityByCategory = function (category, pageNumber) {
+        $scope.activity.category = category;
+        $scope.showLoader = true;
+        $scope.pageTitle = category.substring(0, 1).toUpperCase() + category.substring(1).toLowerCase();
+        var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
+        if(category == 'events') {
+            var hasactionServer = appService.crudService.list("events", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+            hasactionServer.then(function (result) {  // this is only run after $http completes
+                $scope.activityList = result;
+                // For pagination
+                $scope.paginationObject.limit = limit;
+                $scope.paginationObject.currentPage = pageNumber;
+                $scope.paginationObject.totalItems = result.totalItems;
+                $scope.global.events = result.totalItems;
+                $scope.showLoader = false;
+            });
+        } else {
+            var hasactionServer = appService.promiseAjax.httpTokenRequest( $scope.global.HTTP_GET, $scope.global.APP_URL + "events/list/event" +"?lang=" + localStorageService.cookie.get('language') + "&type=ALERT&sortBy=+id&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+            hasactionServer.then(function (result) {  // this is only run after $http completes
+                $scope.activityList = result;
+                // For pagination
+                $scope.paginationObject.limit = limit;
+                $scope.paginationObject.currentPage = pageNumber;
+                $scope.paginationObject.totalItems = result.totalItems;
+                $scope.showLoader = false;
+            });
+        }
     }
-    $scope.getActivityByCategory($scope.activity.category);
+    $scope.getActivityByCategory($scope.activity.category, 1);
+    $scope.list = function(pageNumber) {
+        $scope.showLoader = true;
+        var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
+        if($scope.activity.category == "events"){
+            var hasactionServer = appService.crudService.list("events", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+            hasactionServer.then(function (result) {  // this is only run after $http completes
+            $scope.activityList = result;
+            // For pagination
+            $scope.paginationObject.limit = limit;
+            $scope.paginationObject.currentPage = pageNumber;
+            $scope.paginationObject.totalItems = result.totalItems;
+            $scope.showLoader = false;
+            });
+        } else {
+            var hasactionServer = appService.promiseAjax.httpTokenRequest( $scope.global.HTTP_GET, $scope.global.APP_URL + "events/list/event" +"?lang=" + localStorageService.cookie.get('language') + "&type=ALERT&sortBy=+id&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+            hasactionServer.then(function (result) {  // this is only run after $http completes
+                $scope.activityList = result;
+                // For pagination
+                $scope.paginationObject.limit = limit;
+                $scope.paginationObject.currentPage = pageNumber;
+                $scope.paginationObject.totalItems = result.totalItems;
+                $scope.showLoader = false;
+            });
+        }
+    }
 
     $scope.archiveGlobal = function () {
         modalService.trigger('app/views/activity/archive.jsp', 'md', 'Archive ' + $scope.pageTitle);
@@ -83,13 +131,11 @@ function activityCtrl($scope, $modal, promiseAjax, localStorageService, modalSer
             }
         });
     }
-
-
     $scope.showDescription = function (activity) {
         $scope.currentActivity = activity;
         activity.pageTitle = $scope.pageTitle;
         activity.category = $scope.activity.category;
-
+        activity.owner = $scope.owner;
         var modalInstance = $modal.open({
             animation: $scope.animationsEnabled,
             templateUrl: 'app/views/activity/activity-description.jsp',
@@ -100,7 +146,10 @@ function activityCtrl($scope, $modal, promiseAjax, localStorageService, modalSer
             resolve: {
                 activity: function () {
                     return angular.copy(activity);
-                }
+                },
+                owner:function () {
+                    return angular.copy( $scope.owner);
+                },
             }
         });
 
@@ -110,6 +159,11 @@ function activityCtrl($scope, $modal, promiseAjax, localStorageService, modalSer
         }, function () {
         });
     };
+
+
+    $scope.$on("EVENTS", function() {
+        $scope.getActivityByCategory("events", 1);
+    });
 };
 
 

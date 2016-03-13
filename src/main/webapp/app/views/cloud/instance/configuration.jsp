@@ -143,7 +143,9 @@
                                  <get-loader-image data-ng-show="showLoader"></get-loader-image>
 
                                 <a class="btn btn-default" data-ng-hide="showLoader" ui-sref="cloud.list-instance"><fmt:message key="common.cancel" bundle="${msg}" /></a>
-                                <button class="btn btn-info" data-ng-hide="showLoader" type="submit"  ><fmt:message key="common.resize" bundle="${msg}" /></button>
+                                <button data-ng-class = "(instances.status == 'STOPPED') ? 'btn btn-info' : 'btn btn-disable'" data-ng-disabled="instances.status != 'STOPPED'" href="javascript:void(0);" data-ng-hide="showLoader" type="submit"  ><fmt:message key="common.resize" bundle="${msg}" /></button>
+
+
                             </div>
                         </div>
                     </form>
@@ -228,6 +230,64 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <h4>
+               <fmt:message key="add.ssh.key.pair" bundle="${msg}" />
+            </h4>
+            <hr class="m-t-xs">
+        </div>
+    </div>
+
+      <div class="row">
+        <div class="col-md-7 col-sm-7 col-xs-12">
+
+            <div class="row m-t-md">
+                <div class="col-md-10 col-sm-10 col-xs-10">
+
+                    <form name="resetForm" data-ng-submit="resetKey(resetForm, resetSSH)" method="post" novalidate class="form-horizontal">
+                        <div class="form-group" ng-class="{ 'text-danger' : resetForm.keypairName.$invalid && formSubmitted}">
+                            <label class="col-sm-4 control-label"><fmt:message key="select.the.key.pair" bundle="${msg}" />
+                                <span class="text-danger">*</span>
+                            </label>
+                            <div class="col-sm-5">
+                                <select required="true" class="form-control input-group" name="keypairName"
+                                        data-ng-model="resetSSH.keypairName" data-ng-class="{'error': resetForm.keypairName.$invalid && formSubmitted}"
+                                        data-ng-options="keypairName.name for keypairName in formElements.sshKeyList" >
+                                    <option value="">Select</option>
+                                </select>
+                                <div class="error-area" data-ng-show="resetForm.keypairName.$invalid && formSubmitted" ><i  tooltip="keypair.is.required" class="fa fa-warning error-icon"></i></div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label"><fmt:message key="note" bundle="${msg}" /></label>
+                            <div class="col-sm-8">
+                                <div class="well">
+                                   1.<fmt:message key="note.reset.ssh.key" bundle="${msg}" /><br>
+                                   2.<fmt:message key="add.ssh.key.vm.note" bundle="${msg}" /><br>
+                                   3.<fmt:message key="add.ssh.key.vm.note.for.instance" bundle="${msg}" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-8 col-sm-offset-4">
+                                <get-loader-image data-ng-if="showLoader"></get-loader-image>
+                                <button type="button" data-ng-if="!showLoader" class="btn btn-default " ui-sref="cloud.list-instance"><fmt:message key="common.cancel" bundle="${msg}" /></button>
+			                    <button data-ng-class = "(instances.status == 'STOPPED' && instances.template.osCategory.name != 'Windows') ? 'btn btn-info' : 'btn btn-disable'" data-ng-disabled="instances.status != 'STOPPED' || instances.template.osCategory.name == 'Windows'" href="javascript:void(0);" data-ng-hide="showLoader" type="submit"  ><fmt:message key="common.ok" bundle="${msg}" /></button>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5">
+
+        </div>
+    </div>
+
        <div class="row">
         <div class="col-md-12 col-sm-12">
             <h4>
@@ -275,7 +335,7 @@
                         <div class="form-group">
                             <div class="col-sm-8 col-sm-offset-4">
                                 <a class="btn btn-default"  ui-sref="cloud.list-instance"><fmt:message key="common.cancel" bundle="${msg}" /></a>
-                                <button class="btn btn-info" type="submit"  ><fmt:message key="common.ok" bundle="${msg}" /></button>
+                                <button data-ng-class = "(instances.status == 'STOPPED') ? 'btn btn-info' : 'btn btn-disable'" data-ng-disabled="instances.status != 'STOPPED'" href="javascript:void(0);" data-ng-hide="showLoader" type="submit"  ><fmt:message key="common.ok" bundle="${msg}" /></button>
                             </div>
                         </div>
                     </form>
