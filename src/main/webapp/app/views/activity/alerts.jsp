@@ -1,6 +1,6 @@
 <div class="hpanel" >
     <div class="panel-heading">
-        
+
         <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12 ">
                 <div class="pull-left">
@@ -13,21 +13,21 @@
                     <div class="clearfix"></div>
 
                     <span class="pull-right m-l-sm m-t-sm">
-                        <span data-ng-hide="activity.oneItemSelected.alerts"> 
+                        <!-- <span data-ng-hide="activity.oneItemSelected.alerts">
                             <a class="btn btn-info" data-ng-click="archiveGlobal()"><span class="fa fa-file-archive-o"></span> Archive Alerts</a>
                             <a class="btn btn-info" data-ng-click="deleteGlobal()"><span class="fa fa-trash"></span> Delete Alerts</a>
                         </span>
                         <span data-ng-show="activity.oneItemSelected.alerts">
                             <a class="btn btn-info" data-ng-click="archive()"><span class="fa fa-file-archive-o"></span> Archive Alerts</a>
                             <a class="btn btn-info" data-ng-click="delete()"><span class="fa fa-trash"></span> Delete Alerts</a>
-                        </span>
-                        <a class="btn btn-info" title="Refresh" ><span class="fa fa-refresh fa-lg "></span></a>
+                        </span> -->
+                        <a class="btn btn-info" data-ng-click="getActivityByCategory('alerts',1)" title="Refresh" ><span class="fa fa-refresh fa-lg "></span></a>
                     </span>
                 </div>
             </div>
             <div class="clearfix"></div>
         </div>
-        
+
     </div>
 
     <div class="white-content">
@@ -36,7 +36,7 @@
                  <thead>
                     <tr>
                         <th><div class="checkbox checkbox-single checkbox-info">
-                              <input type="checkbox" data-ng-model="activity.selectedAll.alerts" data-ng-click="checkAll();"> 
+                              <input type="checkbox" data-ng-model="activity.selectedAll.alerts" data-ng-click="checkAll();">
                                 <label></label>
                             </div>
                         </th>
@@ -47,25 +47,26 @@
                     </tr>
                     </thead>
                     <tbody>
-                    
-                    <tr data-ng-repeat="alert in activityList| filter: quickSearch">
+
+                    <tr data-ng-repeat="alert in activityList | filter: quickSearch">
                         <td class="">
                             <div class="checkbox checkbox-single checkbox-info">
                                   <input type="checkbox" data-ng-model="alert.isSelected" data-ng-click="checkOne(alert)">
                                 <label></label>
                             </div>
                         </td>
-                        <td><a data-ng-click="showDescription(alert)">{{ alert.description }}</a></td>
-                        <td>{{ alert.type }}</td>
-                        <td>{{ alert.date }}</td>
+                        <td><a data-ng-click="showDescription(alert)">{{ alert.message }}</a></td>
+                        <td>{{ alert.event }}</td>
+                        <td>{{ alert.eventDateTime * 1000  | date:'yyyy-MM-dd HH:mm:ss' }}</td>
                          <td>
                            <a class="icon-button" data-ng-click="archive()" title="Archive"><span class="fa fa-file-archive-o"></span></a>
                             <a class="icon-button"   data-ng-click="delete()"title="Delete"><span class="fa fa-trash"></span></a>
                         </td>
                     </tr>
-                    
+
                 </tbody>
             </table>
             </div>
     </div>
+     <pagination-content></pagination-content>
 </div>
