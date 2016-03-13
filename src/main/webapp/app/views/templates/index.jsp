@@ -35,9 +35,9 @@
                             <ul class="nav nav-tabs" data-ng-init="formElements.category = 'community'">
                                 <li class="active"><a href="javascript:void(0)" data-ng-click="communitylist()" data-toggle="tab"> <fmt:message key="common.community" bundle="${msg}" /></a></li>
                                 <li class=""><a href="javascript:void(0)" data-ng-click="featuredlist()" data-toggle="tab"><fmt:message key="common.featured" bundle="${msg}" /></a></li>
-                                <!-- <li class=""><a href="javascript:void(0)" data-ng-click="formElements.category = 'mytemplates'" data-toggle="tab">My Templates</a></li>
-                                <li class=""><a href="javascript:void(0)" data-ng-click="formElements.category = 'snapshot'" data-toggle="tab">Snapshot</a></li> -->
-                            </ul>
+                                <li class=""><a href="javascript:void(0)" data-ng-click="usertemplatelist()" data-toggle="tab">My Templates</a></li>
+<!--                                 <li class=""><a href="javascript:void(0)" data-ng-click="formElements.category = 'snapshot'" data-toggle="tab">Snapshot</a></li>
+ -->                            </ul>
                         </div>
                         <div class="tab-pane" data-ng-class="{'active' : formElements.category == 'community'}" id="step1-community">
                             <div class="row">
@@ -111,20 +111,20 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- <div class="tab-pane" data-ng-class="{'active' : formElements.category == 'mytemplates'}" id="step1-mytemplates">
+                        <div class="tab-pane" data-ng-class="{'active' : formElements.category == 'mytemplates'}" id="step1-mytemplates">
                             <div class="row">
                                 <div class="col-md-12 col-sm-12 col-xs-12 ">
                                     <div class="pull-left">
                                         <div class="pull-left">
-                                            <a title="Grid View" class="btn btn-info" data-ng-click="showTemplateContent()"   data-ng-class="!listView ? 'disabled' : ''" > <i class="fa fa-th-large" /></a>
-                                            <a title="List View"  class="btn btn-info" data-ng-click="showTemplateContent()"  data-ng-class="listView ? 'disabled' : ''" > <i class="fa fa-list" /></a>
+                                            <a title="Grid View" class="btn btn-info"  data-ng-click="showUserTemplateContent()"   data-ng-class="!listView ? 'disabled' : ''" > <i class="fa fa-th-large" /></a>
+                                            <a title="List View"  class="btn btn-info" data-ng-click="showUserTemplateContent()"  data-ng-class="listView ? 'disabled' : ''" > <i class="fa fa-list" /></a>
                                         </div>
                                     </div>
                                     <div class="pull-right">
                                         <panda-quick-search></panda-quick-search>
                                         <div class="clearfix"></div>
                                         <span class="pull-right m-l-sm m-t-sm">
-                                            <a  class="btn btn-info" data-ng-click="uploadTemplateContainer()"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span> Register Template</a>
+                                            <a  class="btn btn-info" has-permission = "REGISTER_TEMPLATE" data-ng-click="uploadTemplateContainer(size)"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span> Register Template</a>
                                             <a  class="btn btn-info" title="Refresh"><span class="fa fa-refresh fa-lg "></span></a>
                                         </span>
                                     </div>
@@ -136,13 +136,13 @@
                             </div>
                             <div data-ng-hide="showLoader">
                                 <div data-ng-show="listView">
-                                    <div class="row" data-ng-include src="'app/views/templates/list.jsp'"></div>
+                                    <div class="row" data-ng-include src="'app/views/templates/userTemplatelist.jsp'"></div>
                                 </div>
                                 <div data-ng-hide="listView">
                                     <div class="row" data-ng-include src="'app/views/templates/mytemplates.jsp'"></div>
                                 </div>
                             </div>
-                        </div> -->
+                        </div>
                         <!-- <div class="tab-pane" data-ng-class="{'active' : formElements.category == 'snapshot'}" id="step1-snapshot">
                             <div class="row">
                                 <div class="col-md-12 col-sm-12 col-xs-12 ">

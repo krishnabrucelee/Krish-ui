@@ -573,7 +573,7 @@ $scope.ingressSave = function (form,firewallRuleIngress) {
                         if (!angular.isUndefined(result.data)) {
                             if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
                                 var msg = result.data.globalError[0];
-                                appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                                appService.notify({message: msg, classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                             }
                         }
                         $modalInstance.close();
@@ -602,7 +602,7 @@ $scope.ingressSave = function (form,firewallRuleIngress) {
                         if (!angular.isUndefined(result.data)) {
                             if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
                                 var msg = result.data.globalError[0];
-                                appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                                appService.notify({message: msg, classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                             }
                         }
                         $modalInstance.close();
