@@ -13,15 +13,15 @@
                     <div class="clearfix"></div>
 
                     <span class="pull-right m-l-sm m-t-sm">
-                        <span data-ng-hide="activity.oneItemSelected.events"> 
+                       <!--  <span data-ng-hide="activity.oneItemSelected.events">
                             <a class="btn btn-info" data-ng-click="archiveGlobal()"><span class="fa fa-file-archive-o"></span> Archive Events</a>
                             <a class="btn btn-info" data-ng-click="deleteGlobal()"><span class="fa fa-trash"></span> Delete Events</a>
                         </span>
                         <span data-ng-show="activity.oneItemSelected.events">
                             <a class="btn btn-info" data-ng-click="archive()"><span class="fa fa-file-archive-o"></span> Archive Events</a>
                             <a class="btn btn-info" data-ng-click="delete()"><span class="fa fa-trash"></span> Delete Events</a>
-                        </span>
-                        <a class="btn btn-info" title="Refresh" ><span class="fa fa-refresh fa-lg "></span></a>
+                        </span> -->
+                        <a class="btn btn-info" data-ng-click="getActivityByCategory('events',1)" title="Refresh" ><span class="fa fa-refresh fa-lg "></span></a>
                     </span>
                 </div>
             </div>
@@ -43,16 +43,15 @@
                 </div>
                 </th>
                 <th>Description</th>
-                <th>Level</th>
+                <th>Status</th>
                 <th>Type</th>
                 <th>Domain</th>
                 <th>Account</th>
-                <th>Date</th>
-                <th>Action</th>
+                <th>Date</th><!--
+                <th>Action</th> -->
                 </tr>
                 </thead>
                 <tbody>
-
                     <tr data-ng-repeat="event in activityList| filter: quickSearch">
                         <td class="">
                             <div class="checkbox checkbox-single checkbox-info">
@@ -60,20 +59,21 @@
                                 <label></label>
                             </div>
                         </td>
-                        <td><a data-ng-click="showDescription(event)">{{ event.description}}</a></td>
-                        <td>{{ event.level}}</td>
-                        <td>{{ event.type}}</td>
-                        <td>{{ event.domain}}</td>
-                        <td>{{ event.account}}</td>
-                        <td>{{ event.date}}</td>
-                        <td>
-                            <a class="icon-button" data-ng-click="archive()" title="Archive"><span class="fa fa-file-archive-o"></span></a>
-                            <a class="icon-button"   data-ng-click="delete()"title="Delete"><span class="fa fa-trash"></span></a>
-                        </td>
+                        <td><a data-ng-click="showDescription(event)">{{ event.message}}</a></td>
+                        <td>{{ event.status}}</td>
+                        <td>{{ event.event}}</td>
+                        <td>{{owner.domain.name}}</td>
+                        <td>{{owner.userName}}</td>
+                        <td>{{event.eventDateTime * 1000  | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                        <!-- <td>
+                            <a class="icon-button"  data-ng-click="archive()" title="Archive"><span class="fa fa-file-archive-o"></span></a>
+                            <a class="icon-button" data-ng-click="delete()"title="Delete"><span class="fa fa-trash"></span></a>
+                        </td> -->
                     </tr>
 
                 </tbody>
             </table>
         </div>
     </div>
+    <pagination-content></pagination-content>
 </div>

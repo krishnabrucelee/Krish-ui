@@ -20,7 +20,7 @@
 			<li data-ng-class="{active: $state.includes('activity')}"><a
 				class="label-menu-corner" ui-sref="activity"><fmt:message
 						key="common.activity" bundle="${msg}" /><span
-					class="label label-warning">2</span></a></li>
+					class="label label-warning">{{global.events}}</span></a></li>
 			<li data-ng-class="{active: $state.includes('billing')}"><a
 				class="label-menu-corner" ui-sref="billing.current-usage"><fmt:message
 						key="common.billing" bundle="${msg}" /><span
