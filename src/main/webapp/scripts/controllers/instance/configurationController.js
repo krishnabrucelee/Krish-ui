@@ -254,11 +254,9 @@ function configurationCtrl($scope, $stateParams, appService, localStorageService
      };
      $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.vmresize, function() {
          $scope.viewInstance($scope.instances.id);
-         notify({message: 'Updated successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
      });
      $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.vmSSHKEY, function() {
          $scope.viewInstance($scope.instances.id);
-         appService.notify({message: 'Keypair added successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
          if ($scope.instances.passwordEnabled == true) {
          $scope.resetPassword($scope.instances);
          }
