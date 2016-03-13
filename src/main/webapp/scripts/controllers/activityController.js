@@ -23,7 +23,11 @@ function activityCtrl($scope, appService, $modal, promiseAjax, localStorageServi
     $scope.paginationObject = {};
     $scope.sort = appService.globalConfig.sort;
     $scope.changeSorting = appService.utilService.changeSorting;
+    $scope.paginationObject.sortOrder = '-';
+    $scope.paginationObject.sortBy = 'eventDateTime';
 
+    appService.globalConfig.sort.sortOrder = $scope.paginationObject.sortOrder;
+    appService.globalConfig.sort.sortBy = $scope.paginationObject.sortBy;
     var hasUsers = appService.crudService.read("users", $scope.global.sessionValues.id);
     hasUsers.then(function (result) {
         $scope.owner = result;
