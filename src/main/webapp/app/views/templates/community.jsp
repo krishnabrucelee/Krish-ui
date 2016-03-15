@@ -3,7 +3,7 @@ pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<div class="m-t-sm">{{templateObj}}
+<div class="m-t-sm">
     <div data-ng-if="templateObj.share" class="col-md-4 col-lg-4 col-xs-12 col-sm-12 template-panel-area" data-ng-repeat="templateObj in template.templateList|orderBy:template.name | filter: quickSearch">
         <div class="hpanel">
             <div class="panel-body p-xs template-panel" data-ng-class="templateObj.openDescription ? 'template-panel-active': ''">
@@ -37,7 +37,7 @@ pageEncoding="UTF-8"%>
                         </div>
                         <div class="row">
                             <div class="small  m-b-sm  "  data-ng-hide="templateObj.openDescription">
-                                {{ templateObj.description}}.
+                                {{ templateObj.description}}
                             </div>
                             <div class="small text-justify "    data-ng-show="templateObj.openDescription">
                                 <div  class="animate-panel slimScroll"  data-child="hpanel" data-effect="fadeInUp">
