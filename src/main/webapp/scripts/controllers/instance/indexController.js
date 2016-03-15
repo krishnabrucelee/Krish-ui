@@ -519,6 +519,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
                 }
                 var networkSelected = false;
                 if ($scope.instance.networkOfferinglist.value == 'vpc' || $scope.instance.networkOfferinglist.value == 'all') {
+                	var allNetworks = "";
                     for (var i = 0; i < $scope.instance.networks.networkList.length; i++) {
                         if ($scope.instance.networks[i] == true) {
                             var networks = $scope.instance.networks.networkList[i];
@@ -527,11 +528,13 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
                                 $scope.instance.networkUuid = networks.uuid;
                                 networkSelected = true;
                                 submitError = false;
-                                break;
+                            } else {
+                            	allNetworks = allNetworks+","+networks.uuid;
                             }
                         }
 
                     }
+                    $scope.instance.networkUuid = $scope.instance.networkUuid+allNetworks;
                     if (!networkSelected) {
                         submitError = true;
                         $scope.networks = true;
