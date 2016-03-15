@@ -9,11 +9,6 @@ angular
     .controller('configurationCtrl', configurationCtrl)
 
 function configurationCtrl($scope, $stateParams, appService, localStorageService, promiseAjax, $modal, $window, globalConfig, crudService, notify, $state) {
-
-    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.vmresize, function() {
-      //  $scope.instances = appService.webSocket;
-    });
-
     $scope.formSubmitted = false;
     $scope.instanceList = [];
     $scope.formElements={};
@@ -32,12 +27,15 @@ function configurationCtrl($scope, $stateParams, appService, localStorageService
 
 
 	var instanceId = $stateParams.id;
-	var hasServers = crudService.read("virtualmachine", instanceId);
-	hasServers.then(function (result) {
-	$scope.instances = result;
-        $scope.computeList();
-        $scope.resetSSHKey();
-	});
+	$scope.viewInstance = function(instanceId) {
+            var hasServers = crudService.read("virtualmachine", instanceId);
+            hasServers.then(function (result) {
+                $scope.instances = result;
+                $scope.computeList();
+                $scope.resetSSHKey();
+            });
+        };
+        $scope.viewInstance(instanceId);
 
 
 
@@ -128,11 +126,8 @@ function configurationCtrl($scope, $stateParams, appService, localStorageService
           			$scope.instances.computeOffering = $scope.instance.computeOffering;
           			var hasServer =crudService.updates("virtualmachine/resize", $scope.instances);
           			hasServer.then(function (result) {
-			   	appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.vmresize,result.id,$scope.global.sessionValues.id);
+			   	appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.vmresize,result.uuid,$scope.global.sessionValues.id);
           				$scope.showLoader= false;
-
-          				notify({message: 'Updated successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
-          				$state.reload();
           			}).catch(function (result) {
                         if (!angular.isUndefined(result) && result.data != null) {
 	                        if (result.data.fieldErrors != '') {
@@ -143,7 +138,6 @@ function configurationCtrl($scope, $stateParams, appService, localStorageService
 	                            });
 	                            }
               				$scope.showLoader= false;
-              				$state.reload();
                         }
                         });
           			}
@@ -222,7 +216,7 @@ function configurationCtrl($scope, $stateParams, appService, localStorageService
 	        });
         }
   }
-    
+
 
     $scope.resetKey = function (form, resetSSH) {
    		$scope.formSubmitted = true;
@@ -232,12 +226,8 @@ function configurationCtrl($scope, $stateParams, appService, localStorageService
    			var hasServer = appService.crudService.updates("virtualmachine/reset", $scope.instances);
    			hasServer.then(function (result) {
                          $scope.showLoader = false;
-                         if ($scope.instances.passwordEnabled == true) {
-                             $scope.resetPassword($scope.instances);
-                         }
-                         appService.notify({message: 'Keypair added successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
-                         $state.reload();
-   			}).catch(function (result) {
+                         appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.vmSSHKEY,result.uuid,$scope.global.sessionValues.id);
+                        }).catch(function (result) {
                  if (!angular.isUndefined(result) && result.data != null) {
                      if (result.data.fieldErrors != '') {
                          angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
@@ -246,11 +236,10 @@ function configurationCtrl($scope, $stateParams, appService, localStorageService
                          });
                          }
                        $scope.showLoader= false;
-              	       $state.reload();
                  }
                  });
    			}
-   		};   
+   		};
       $scope.resetPassword= function(vm) {
           var event = "VM.RESETPASSWORD";
 	  $scope.vm = vm;
@@ -260,12 +249,16 @@ function configurationCtrl($scope, $stateParams, appService, localStorageService
           var hasVm = appService.crudService.updates("virtualmachine/handleevent/vm", $scope.vm);
 	  hasVm.then(function(result) {
 	  appService.notify({message: "VM password updated successfully. Please refresh and click show password", classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
-	  $state.reload();
-	  $scope.cancel();
 	  }).catch(function (result) {
-			  				  //$state.reload();
-
      });
-     }; 
-
+     };
+     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.vmresize, function() {
+         $scope.viewInstance($scope.instances.id);
+     });
+     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.vmSSHKEY, function() {
+         $scope.viewInstance($scope.instances.id);
+         if ($scope.instances.passwordEnabled == true) {
+         $scope.resetPassword($scope.instances);
+         }
+       });
 }

@@ -59,7 +59,7 @@
                             <label class="col-md-3 col-sm-3 control-label" ><fmt:message key="snapshot.memory" bundle="${msg}" /> <span class="text-danger">*</span>
                             </label>
                             <div class="col-md-5 col-sm-5">
-                                <label> <input icheck type="checkbox" name="snapshotMemory"  required value="true" data-ng-model="vmsnapshot.snapshotMemory" data-ng-class="{'error':  vmsnapshotForm.snapshotMemory.$invalid && formSubmitted}" > </label>
+                                <label> <input icheck type="checkbox" name="snapshotMemory"  data-ng-model="vmsnapshot.snapshotMemory" data-ng-class="{'error':  vmsnapshotForm.snapshotMemory.$invalid && formSubmitted}" > </label>
 
 
 

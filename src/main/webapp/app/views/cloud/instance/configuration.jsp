@@ -288,15 +288,15 @@
         </div>
     </div>
 
-       <div class="row">
+<%--        <div class="row">
         <div class="col-md-12 col-sm-12">
             <h4>
                <fmt:message key="affinity.group" bundle="${msg}" /> (<fmt:message key="optional" bundle="${msg}" />)
             </h4>
             <hr class="m-t-xs">
         </div>
-    </div>
-
+    </div> --%>
+<%--
     <div class="row">
         <div class="col-md-7 col-sm-7 col-xs-12">
 
@@ -346,5 +346,5 @@
         <div class="col-md-5">
 
         </div>
-    </div>
+    </div> --%>
 </div>

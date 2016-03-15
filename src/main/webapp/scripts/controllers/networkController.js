@@ -175,6 +175,7 @@ function networksCtrl($scope, $sce, $rootScope,filterFilter, $state, $stateParam
             $scope.paginationObject.totalItems = result.totalItems;
         });
     };
+
     // Port forward Rule List
     $scope.portRulesLists = function (pageNumber) {
 	$scope.showLoader = true;
@@ -192,7 +193,6 @@ function networksCtrl($scope, $sce, $rootScope,filterFilter, $state, $stateParam
             $scope.paginationObject.totalItems = result.totalItems;
         });
     };
-
 
     $scope.hostList = function () {
         var hashostList = appService.crudService.listAll("host/list");
@@ -215,7 +215,6 @@ function networksCtrl($scope, $sce, $rootScope,filterFilter, $state, $stateParam
     };
  //$scope.vmLists(1);
 
-
     $scope.selected = {};
     $scope.nicIPList = function (instance) {
 	var instanceId = instance;
@@ -229,21 +228,13 @@ function networksCtrl($scope, $sce, $rootScope,filterFilter, $state, $stateParam
         });
     };
 
-
     $scope.showConsole = function (vm) {
         $scope.vm = vm;
         var hasVms = appService.crudService.updates("virtualmachine/console", vm);
         hasVms.then(function (result) {
             var consoleUrl = result.success;
             window.open($sce.trustAsResourceUrl(consoleUrl), vm.name + vm.id, 'width=750,height=460');
-            /*
-			 * var consoleParams = consoleUrl.split("token=");
-			 * $window.sessionStorage.setItem("consoleProxy", consoleParams[0]);
-			 * $scope.instance = vm; var randomnumber =
-			 * Math.floor((Math.random()*100)+1);
-			 * window.open("app/console.jsp?token="+consoleParams[1]+"&instance="+
-			 * btoa(vm.id), vm.name + vm.id,'width=800,height=580');
-			 */			});
+            });
     }
 
     $scope.startVm = function (size, item) {

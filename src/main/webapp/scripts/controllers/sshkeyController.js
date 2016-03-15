@@ -10,14 +10,6 @@ angular
 
 function sshkeyListCtrl($scope,appService,$state,localStorageService, globalConfig) {
 
-    $scope.$on(appService.globalConfig.webSocketEvents.sshKeyEvents.createSSHKey, function() {
-
-  //   $scope.sshkeyList = appService.webSocket;
-    });
-    $scope.$on(appService.globalConfig.webSocketEvents.sshKeyEvents.deleteSSHKey, function() {
-
-  //   $scope.sshkeyList = appService.webSocket;
-    });
     $scope.sshkeyList = {};
     $scope.paginationObject = {};
     $scope.sshkeyForm = {};
@@ -326,8 +318,6 @@ function sshkeyListCtrl($scope,appService,$state,localStorageService, globalConf
 			                $scope.formSubmitted = false;
 			                $modalInstance.close();
 			                $scope.showLoader = false;
-			                appService.notify({message: 'SSH key created successfully', classes: 'alert-success',
-			                	templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
 			                $scope.list(1);
 			                $scope.sshkey.name = "";
 			                $scope.sshkey.publicKey = "";
@@ -391,4 +381,12 @@ function sshkeyListCtrl($scope,appService,$state,localStorageService, globalConf
             };
             }]);
     };
+
+
+    $scope.$on(appService.globalConfig.webSocketEvents.sshKeyEvents.createSSHKey, function() {
+    	$scope.list($scope.paginationObject.currentPage);
+    });
+    $scope.$on(appService.globalConfig.webSocketEvents.sshKeyEvents.deleteSSHKey, function() {
+    	$scope.list($scope.paginationObject.currentPage);
+    });
 };

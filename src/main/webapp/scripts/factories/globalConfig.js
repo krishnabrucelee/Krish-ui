@@ -5,7 +5,6 @@ angular.module('homer').factory('globalConfig', globalConfig);
 
 function globalConfig($window) {
     var appGlobalConfig = {};
-
     /**
      *  Global configuration goes here
      */
@@ -91,13 +90,11 @@ function globalConfig($window) {
             minDate : new Date(),
         },
         Math : window.Math,
-
         STICKINESS : {
             NONE : "None",
             SOURCEBASED : "SourceBased",
             APPCOOKIE : "AppCookie",
             LBCOOKIE : "LbCookie"
-
         },
         events : 2,
         webSocketEvents : {
@@ -135,7 +132,6 @@ function globalConfig($window) {
                 volumedelete : 'VOLUME.DELETE',
                 createSnapshot : 'SNAPSHOT.CREATE'
             },
-
             volumeEvents : {
                 attachVolume : 'VOLUME.ATTACH',
                 detachVolume : 'VOLUME.DETACH',
@@ -147,7 +143,6 @@ function globalConfig($window) {
                 volumedelete : 'VOLUME.DELETE',
                 recurringSnapshot : 'SNAPSHOTPOLICY.CREATE'
             },
-
             snapshotEvents : {
                 createvmsnapshot : 'VMSNAPSHOT.CREATE',
                 deleteSnapshots : 'VMSNAPSHOT.DELETE',
@@ -155,9 +150,8 @@ function globalConfig($window) {
                 restoresnapshot : 'VMSNAPSHOT.REVERTTO',
                 createsnapshot : 'SNAPSHOT.CREATE',
                 createsnapshotvolume : 'VOLUME.CREATE',
-                revertSnapshot : 'VMSNAPSHOT.REVERTTO'
+                revertSnapshot : 'SNAPSHOT.REVERTTO'
             },
-
             networkEvents : {
                 startVm : 'VM.START',
                 stopVm : 'VM.STOP',
@@ -179,12 +173,11 @@ function globalConfig($window) {
                 configureStickiness : 'LB.STICKINESSPOLICY.CREATE',
                 editStickiness : 'LB.STICKINESSPOLICY.CREATE'
             },
-
             sshKeyEvents : {
-                createSSHKey : 'CREATESSHKEY',
-                deleteSSHKey : 'DELETE'
+                createSSHKey : 'REGISTER.SSH.KEYPAIR',
+                deleteSSHKey : 'DELETE',
+                assignSSH : 'REGISTER.SSH.KEYPAIR'
             },
-
             projectEvents : {
                 createProject : 'PROJECT.CREATE',
                 addUser : 'ADDUSER',
@@ -194,13 +187,11 @@ function globalConfig($window) {
                 activateProject : 'PROJECT.ACTIVATE',
                 deleteProject : 'PROJECT.DELETE'
             },
-
             applicationEvents : {
                 createApplication : 'CREATEAPPLICATION',
                 editApplication : 'EDIT',
                 deleteApplication : 'DELETE'
             },
-
             accountEvents : {
                 addUser : 'USER.CREATE',
                 editUser : 'USER.UPDATE',
@@ -209,14 +200,12 @@ function globalConfig($window) {
                 deleteUser : 'USER.DELETE',
                 apiKey : 'REGISTER.USER.KEY'
             },
-
             roleEvents : {
                 createRole : 'CREATEROLE',
                 updateRole : 'UPDATE',
                 deleteRole : 'DELETE',
                 assignRole : 'ASSIGNROLESAVE'
             },
-
             departmentEvents : {
                 createDepartment : 'ACCOUNT.CREATE',
                 editDepartment : 'ACCOUNT.UPDATE',
@@ -265,21 +254,19 @@ function globalConfig($window) {
         HTTP_PUT : 'PUT',
         HTTP_DELETE : 'DELETE',
         APP_URL : "http://localhost:8080/api/",
+        SOCKET_URL : "http://localhost:8080/",
         CONTENT_LIMIT : 10,
         VIEW_URL : 'app/views/',
         NOTIFICATION_TEMPLATE : 'app/views/notification/notify.jsp',
         TOKEN_SEPARATOR : "@@",
         PAGE_ERROR_SEPARATOR : "PAGE_ERROR",
-
         paginationHeaders : function(pageNumber, limit) {
             var headers = {};
-
             var rangeStart = (pageNumber - 1) * limit;
             var rangeEnd = (pageNumber - 1) * limit + (limit - 1);
             headers.Range = "items=" + rangeStart + "-" + rangeEnd;
             return headers;
         },
-
         getViewPageUrl : function(url) {
             return appGlobalConfig.VIEW_URL + url;
         },
@@ -335,7 +322,5 @@ function globalConfig($window) {
         sessionValues : JSON.parse($window.sessionStorage.getItem("loginSession")),
         loginRemeberMeTimeout : 30 * 24 * 60 * 60 * 1000
     };
-
     return appGlobalConfig;
-
 }
