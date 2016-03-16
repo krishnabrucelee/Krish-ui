@@ -210,7 +210,7 @@
 													<div><a class="icon-button text-center test_instances_display_note_button" id="instances_display_note_button_{{instance.id}}" title="<fmt:message key="display.note" bundle="${msg}" />"
 														data-ng-click="showDescription(instance)"
 													><span class="fa-file-text fa m-xs"></span>  </a></div>
-													<div data-ng-if="instance.application == null"><a class="icon-button text-center test_instances_add_application_button" id="instances_add_application_button_{{instance.id}}"
+													<div has-permission="ADD_APPLICATION_TO_VM" data-ng-if="instance.application == null"><a class="icon-button text-center test_instances_add_application_button" id="instances_add_application_button_{{instance.id}}"
 														title="<fmt:message key="instance.application.assign" bundle="${msg}" />"
 														data-ng-click="addApplication(instance)"
 													><span class="fa-plus fa m-xs"></span>
