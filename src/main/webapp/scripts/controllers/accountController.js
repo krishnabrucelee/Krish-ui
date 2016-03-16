@@ -313,7 +313,6 @@ function accountListCtrl($scope,$state, $log,$timeout,$stateParams, appService, 
                         }
                     if (user.password == $scope.account.confirmPassword) {
                     	var hasServer = appService.crudService.add("users", user); 
-                        console.log(user);             
                     	hasServer.then(function (result) {  // this is only run after $http completes
 			   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.accountEvents.addUser,result.id,$scope.global.sessionValues.id);
 				        $scope.showLoader = false;
