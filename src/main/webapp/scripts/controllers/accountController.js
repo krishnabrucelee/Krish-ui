@@ -87,7 +87,7 @@ function accountListCtrl($scope,$state, $log,$timeout,$stateParams, appService, 
             	hasUserLists =  appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "users" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+sortOrder+sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
             } else {
             	hasUserLists =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "users/listByUserDomain"
-    				+"?lang=" +appService.localStorageService.cookie.get('language')
+    				+"?lang=" +appService.localStorageService.cookie.get('language')+"&flag=pandaUserPanel"
     				+ "&domainId="+$scope.domainView.id+"&sortBy="+$scope.paginationObject.sortOrder+$scope.paginationObject.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
             }
 
@@ -192,7 +192,7 @@ function accountListCtrl($scope,$state, $log,$timeout,$stateParams, appService, 
         	hasUsers = appService.crudService.list("users", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
         } else {
         	hasUsers =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "users/listByUserDomain"
-				+"?lang=" +appService.localStorageService.cookie.get('language')
+				+"?lang=" +appService.localStorageService.cookie.get('language')+"&flag=pandaUserPanel"
 				+ "&domainId="+$scope.domainView.id+"&sortBy="+globalConfig.sort.sortOrder+globalConfig.sort.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
         }
         hasUsers.then(function (result) {  // this is only run after $http completes0
@@ -379,6 +379,7 @@ function accountListCtrl($scope,$state, $log,$timeout,$stateParams, appService, 
 			   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.accountEvents.deleteUser,result.id,$scope.global.sessionValues.id);
                $scope.list(1);
                appService.notify({message: 'Deleted successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+               $scope.userList();
                $scope.showLoader = false;
                $scope.cancel();
                }).catch(function (result) {
