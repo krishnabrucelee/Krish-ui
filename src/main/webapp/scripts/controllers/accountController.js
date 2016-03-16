@@ -295,16 +295,17 @@ function accountListCtrl($scope,$state, $log,$timeout,$stateParams, appService, 
                 if (form.$valid) {
 		            $scope.showLoader = true;
                     var user = angular.copy($scope.user);
-		            if(!angular.isUndefined($scope.user.department)) {
+ 		            if ($scope.global.sessionValues.type == "DOMAIN_ADMIN") {
+ 		        	    domain.id = $scope.global.sessionValues.domainId;
+ 		        	    user.domainId = domain.id;
                         user.departmentId = user.department.id;
+    	            } else if ($scope.global.sessionValues.type == "ROOT_ADMIN"){
+				        user.domainId = user.domain.id;
+                        user.departmentId = user.department.id;
+			        } else if ($scope.global.sessionValues.type == "USER") {
+                        user.domainId = $scope.global.sessionValues.domainId;
+                        user.departmentId = $scope.userElement.department.id;
                     }
-
- 		         if ($scope.global.sessionValues.type != "ROOT_ADMIN") {
- 		        	 domain.id = $scope.global.sessionValues.domainId;
- 		        	 user.domainId = domain.id;
-    	               } else {
-				user.domainId = user.domain.id;
-			}
                     if (user.password == $scope.account.confirmPassword) {
                     	var hasServer = appService.crudService.add("users", user);
                     	hasServer.then(function (result) {  // this is only run after $http completes
