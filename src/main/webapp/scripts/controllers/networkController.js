@@ -181,6 +181,7 @@ function networksCtrl($scope, $sce, $rootScope,filterFilter, $state, $stateParam
 	$scope.showLoader = true;
         $scope.templateCategory = 'port-forward';
         $scope.firewallRules = {};
+	$scope.portForward = {};
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasFirewallRuless = appService.crudService.listAllByQuery("portforwarding/list?ipaddress=" + $stateParams.id1, $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
         hasFirewallRuless.then(function (result) {  // this is only run after
@@ -214,10 +215,11 @@ function networksCtrl($scope, $sce, $rootScope,filterFilter, $state, $stateParam
         });
     };
  //$scope.vmLists(1);
-
+$scope.vmPortId = {};
     $scope.selected = {};
     $scope.nicIPList = function (instance) {
 	var instanceId = instance;
+$scope.vmPortId = instance;
 	$scope.selected = instanceId;
 	$scope.instances = instance;
        	var hasNicIP = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbyvminstances?instanceid="+instanceId +"&lang=" + appService.localStorageService.cookie.get('language')+"&sortBy=-id");
@@ -1324,7 +1326,7 @@ appService.dialogService.openDialog("app/views/cloud/network/vm-list.jsp", 'lg' 
     };
 	$scope.lbvmLists();
 
-  $scope.loadbalancerSave = function(loadBalancer) {
+ $scope.loadbalancerSave = function(loadBalancer) {
 		loadBalancer.vmIpAddress = [];
   $scope.loadBalancer = $scope.global.rulesLB[0];
     $scope.showLoader = true;
@@ -1333,17 +1335,32 @@ appService.dialogService.openDialog("app/views/cloud/network/vm-list.jsp", 'lg' 
   $scope.loadBalancer.protocol = $scope.loadBalancer.protocol.toUpperCase();
   $scope.loadBalancer.state = $scope.loadBalancer.state.toUpperCase();
 	$scope.loadBalancer.state = $scope.loadBalancer.state.toUpperCase();
-	$scope.flag = false;
-
-
-if (!angular.isUndefined(loadBalancer.vmIpAddress) && loadBalancer.vmIpAddress != null ) {
+	var hasError = true;
+	var assignedVmIpCount = 0;
+	var selectedVmCount = 0;
    	angular.forEach(loadBalancer, function(obj, key) {
-		   if(obj.lbvm && angular.isArray(obj.ipAddress)) {
-			   angular.forEach(obj.ipAddress, function(vmIpAddress, vmIpAddressKey) {
+console.log("obj",obj.lbvm);
+	  if(!angular.isUndefined(obj.lbvm))
+		selectedVmCount++;
+		if(angular.isArray(obj.ipAddress)) {
+			assignedVmIpCount++;
+		   	angular.forEach(obj.ipAddress, function(vmIpAddress, vmIpAddressKey) {
 			   	loadBalancer.vmIpAddress.push(vmIpAddress);
 			   })
 		   }
-		   })
+	  	})
+		
+		if(selectedVmCount == 0) {
+			$scope.homerTemplate = 'app/views/notification/notify.jsp';
+            		appService.notify({message: 'Please choose atleast one VM Instance and associated Ip Address from given List', classes: 'alert-danger', "timeOut": "1000", templateUrl: $scope.homerTemplate});
+			          $scope.showLoader = false;
+		}
+		else if(assignedVmIpCount != selectedVmCount) {
+			$scope.homerTemplate = 'app/views/notification/notify.jsp';
+            		appService.notify({message: 'Please assign Ip Address for all the selected VM Instances', classes: 'alert-danger', "timeOut": "1000", templateUrl: $scope.homerTemplate});
+				$scope.showLoader = false;
+		}
+		else {				
 				   $scope.loadBalancer.vmIpAddress = loadBalancer.vmIpAddress;
 				   console.log(loadBalancer.vmIpAddress);
 				   $scope.loadBalancer.lbPolicy = {};
@@ -1404,7 +1421,6 @@ if (!angular.isUndefined(loadBalancer.vmIpAddress) && loadBalancer.vmIpAddress !
           }
       }
 })
-
 
 }
 
@@ -1612,7 +1628,7 @@ $scope.deleteRules = function (size, loadBalancer) {
         $scope.templateCategory = 'instance';
         $scope.portvmList = [];
      	 var networkId = $stateParams.id;
-        var hasVms = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "virtualmachine/network?networkId="+networkId +"&lang=" + 	appService.localStorageService.cookie.get('language')+"&sortBy=-id");
+        var hasVms = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbynetwork?networkid="+networkId +"&lang=" + appService.localStorageService.cookie.get('language')+"&sortBy=-id");
         hasVms.then(function (result) {  // this is only run after $http
         $scope.portvmList = result;
         });
@@ -1621,18 +1637,39 @@ $scope.portvmLists ();
 
  $scope.portforwardSave = function (portinstance) {
 			$scope.instances = portinstance;
-
                         $scope.portForward = $scope.global.rulesPF[0];
                         $scope.formSubmitted = true;
                         $scope.showLoader = true;
-                        $scope.portForward.vmInstanceId = $scope.instances.id;
                         $scope.portForward.networkId = 	$stateParams.id;
-if(angular.isUndefined($scope.instanceLists.ipAddress.guestIpAddress)){
-                        $scope.portForward.vmGuestIp = $scope.instances.ipAddress;
-} else
-{
-$scope.portForward.vmGuestIp = $scope.instanceLists.ipAddress.guestIpAddress;
-}
+                         $scope.vmIpAddress = {};
+			$scope.instance = {};
+                  	var hasError = true;
+	var assignedVmIpCount = 0;
+	var selectedVmCount = 0;
+
+   	angular.forEach(portinstance, function(obj, key) {
+	  if(!angular.isUndefined(obj.port)) {
+		selectedVmCount++;
+	     }
+		if(!angular.isUndefined(obj.port) && !angular.isUndefined(obj.ipAddress.guestIpAddress)) {		
+			$scope.vmIpAddress = obj.ipAddress.guestIpAddress;
+			assignedVmIpCount = 1;
+		   }
+	  	})
+
+		if(selectedVmCount == 0) {
+				$scope.homerTemplate = 'app/views/notification/notify.jsp';
+            		appService.notify({message: 'Please choose atleast one VM Instance and associated Ip Address from given List', classes: 'alert-danger', "timeOut": "1000", templateUrl: $scope.homerTemplate});
+			          $scope.showLoader = false;
+		}
+		else if(assignedVmIpCount != selectedVmCount) {
+			$scope.homerTemplate = 'app/views/notification/notify.jsp';
+            		appService.notify({message: 'Please assign Ip Address for all the selected VM Instances', classes: 'alert-danger', "timeOut": "1000", templateUrl: $scope.homerTemplate});
+				$scope.showLoader = false;
+		}
+		else {
+                        $scope.portForward.vmGuestIp = $scope.vmIpAddress;
+                        $scope.portForward.vmInstanceId = $scope.vmPortId;
                         $scope.portForward.ipAddressId = $stateParams.id1;
                         $scope.portForward.protocolType = $scope.portForward.protocolType.name;
 
@@ -1647,8 +1684,8 @@ $scope.portForward.vmGuestIp = $scope.instanceLists.ipAddress.guestIpAddress;
                                 classes: 'alert-success',
                                 templateUrl: $scope.global.NOTIFICATION_TEMPLATE
                             });
-			$scope.portRulesLists(1);
 
+			$scope.portRulesLists(1);
                         }).catch(function (result) {
                             $scope.showLoader = false;
                             if (!angular.isUndefined(result.data)) {
@@ -1675,7 +1712,7 @@ $scope.portForward.vmGuestIp = $scope.instanceLists.ipAddress.guestIpAddress;
                             }
                             $modalInstance.close();
                         });
-
+}
   };
 
 //$scope.portForward.privateStartPort = '';
