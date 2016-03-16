@@ -159,6 +159,7 @@ function accountListCtrl($scope,$state, $log,$timeout,$stateParams, appService, 
         hasUsers.then(function (result) {
             if (!angular.isUndefined(result)) {
             	$scope.userElement = result;
+
             }
         });
 	}
@@ -295,18 +296,24 @@ function accountListCtrl($scope,$state, $log,$timeout,$stateParams, appService, 
                 if (form.$valid) {
 		            $scope.showLoader = true;
                     var user = angular.copy($scope.user);
-		            if(!angular.isUndefined($scope.user.department)) {
-                        user.departmentId = user.department.id;
-                    }
+		    //if (!angular.isUndefined($scope.user.department)) {
+                      //  user.departmentId = user.department.id;
+                    //}
 
- 		         if ($scope.global.sessionValues.type != "ROOT_ADMIN") {
+ 		         if ($scope.global.sessionValues.type == "DOMAIN_ADMIN") {
  		        	 domain.id = $scope.global.sessionValues.domainId;
  		        	 user.domainId = domain.id;
-    	               } else {
+                                 user.departmentId = user.department.id;
+    	               } else if ($scope.global.sessionValues.type == "ROOT_ADMIN"){
 				user.domainId = user.domain.id;
-			}
+                                user.departmentId = user.department.id;
+			} else if ($scope.global.sessionValues.type == "USER") {
+                                user.domainId = $scope.global.sessionValues.domainId;
+                                user.departmentId = $scope.userElement.department.id;    
+                        }
                     if (user.password == $scope.account.confirmPassword) {
-                    	var hasServer = appService.crudService.add("users", user);
+                    	var hasServer = appService.crudService.add("users", user); 
+                        console.log(user);             
                     	hasServer.then(function (result) {  // this is only run after $http completes
 			   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.accountEvents.addUser,result.id,$scope.global.sessionValues.id);
 				        $scope.showLoader = false;
