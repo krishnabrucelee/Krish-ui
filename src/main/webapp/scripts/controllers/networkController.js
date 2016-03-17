@@ -1079,7 +1079,7 @@ console.log("obj",obj.lbvm);
                                     })
                                 }
 	  	})
-		
+
 		if(selectedVmCount == 0) {
 			$scope.homerTemplate = 'app/views/notification/notify.jsp';
             		appService.notify({message: 'Please choose atleast one VM Instance and associated Ip Address from given List', classes: 'alert-danger', "timeOut": "1000", templateUrl: $scope.homerTemplate});
@@ -1090,9 +1090,8 @@ console.log("obj",obj.lbvm);
             		appService.notify({message: 'Please assign Ip Address for all the selected VM Instances', classes: 'alert-danger', "timeOut": "1000", templateUrl: $scope.homerTemplate});
 				$scope.showLoader = false;
 		}
-		else {				
+		else {
                             $scope.loadBalancer.vmIpAddress = loadBalancer.vmIpAddress;
-                            console.log(loadBalancer.vmIpAddress);
                             $scope.loadBalancer.lbPolicy = {};
                             var loadBalancerParams = ["stickinessMethod", "stickinessName", "stickyTableSize", "cookieName", "stickyExpires", "stickyMode", "stickyLength", "stickyRequestLearn", "stickyPrefix", "stickyNoCache", "stickyIndirect", "stickyPostOnly", "stickyCompany"];
                             for (var i = 0; i < loadBalancerParams.length; i++) {
@@ -1349,7 +1348,7 @@ console.log("obj",obj.lbvm);
 	  if(!angular.isUndefined(obj.port)) {
 		selectedVmCount++;
 	     }
-		if(!angular.isUndefined(obj.port) && !angular.isUndefined(obj.ipAddress.guestIpAddress)) {		
+		if(!angular.isUndefined(obj.port) && !angular.isUndefined(obj.ipAddress.guestIpAddress)) {
 			$scope.vmIpAddress = obj.ipAddress.guestIpAddress;
 			assignedVmIpCount = 1;
 		   }
@@ -1393,12 +1392,7 @@ console.log("obj",obj.lbvm);
                     });
 }
                 };
-                //$scope.portForward.privateStartPort = '';
-                //$scope.portForward.privateEndPort = '';
-                //$scope.portForward.publicStartPort = '';
-                //$scope.portForward.publicEndPort = '';
-                //$scope.portForward.protocolType = '';
-                $scope.cancel = function() {
+                 $scope.cancel = function() {
                     $modalInstance.close();
                 };
             }]);
@@ -1793,7 +1787,6 @@ console.log("obj",obj.lbvm);
             //Assign loadbalancer stickiness in object
             $scope.addStickiness = function(form, stickiness) {
                     $scope.stickyLoadBalancer.lbPolicy = {};
-                    console.log(stickiness);
                     $scope.formSubmitted = true;
                     if (!angular.isUndefined($scope.stickyLoadBalancer.id) && $scope.stickyLoadBalancer.id != null) {
                         var loadBalancerParams = ["stickinessMethod", "stickinessName", "stickyTableSize", "cookieName", "stickyExpires", "stickyMode", "stickyLength", "stickyRequestLearn", "stickyPrefix", "stickyNoCache", "stickyIndirect", "stickyPostOnly", "stickyCompany"];
@@ -1883,7 +1876,6 @@ console.log("obj",obj.lbvm);
                         delete $scope.stickyLoadBalancer.stickyIndirect;
                         delete $scope.stickyLoadBalancer.stickyNoCache;
                         $scope.showLoader = true;
-                        console.log($scope.stickyLoadBalancer);
                         var hasServer = appService.crudService.update("LbStickinessPolicy", $scope.stickyLoadBalancer);
                         hasServer.then(function(result) {
                             appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.editStickiness, result.uuid, $scope.global.sessionValues.id);

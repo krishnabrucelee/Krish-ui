@@ -4,7 +4,6 @@ pageEncoding="UTF-8"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
   <div class="inmodal" >
-
         <div class="modal-header">
             <panda-modal-header page-icon="fa fa-cloud" page-title="<fmt:message key="add.vm" bundle="${msg}" />"></panda-modal-header>
         </div>
@@ -21,7 +20,6 @@ pageEncoding="UTF-8"%>
                             </div>
                         </div>
                     </div>
-
                 </div>
                <div class="clearfix"></div>
             </div>
@@ -44,11 +42,10 @@ pageEncoding="UTF-8"%>
                         <td>
                             <a class="text-info" >{{ instancesList.vmInstance.name }}</a>
                              <div  data-ng-show="instancesList.port">
-                            <select  required="true" class="form-control input-group" name="ipAddress" data-ng-model="instancesList.ipAddress"  data-ng-options="ipAddress.guestIpAddress for ipAddress in nicIPLists">
-                             <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
-                             </select>
-                             </div>
-
+                            	<select  required="true" class="form-control input-group" name="ipAddress" data-ng-model="instancesList.ipAddress"  data-ng-options="ipAddress.guestIpAddress for ipAddress in nicIPLists">
+                             	<option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
+                            	</select>
+                            </div>
                         </td>
                   		 <td>{{ instancesList.vmInstance.instanceInternalName}}</td>
                         <td>{{ instancesList.vmInstance.displayName }}</td>
@@ -64,19 +61,17 @@ pageEncoding="UTF-8"%>
                                      <input type="radio" icheck name="select" data-ng-model="instancesList.port" data-ng-value="true" data-ng-change="nicIPList(instancesList.vmInstance.id)"  >
                                  </div>
                             </label>
-
                         </td>
                     </tr>
                     </tbody>
                 </table>
                  <button class="btn btn-xs btn-success btn-circle" data-ng-if="instance.vmInstance.status == 'RUNNING'" title="{{ instance.vmInstance.status}}"></button>
-	                                            <button class="btn btn-xs btn-danger btn-circle" data-ng-if="instance.vmInstance.status == 'STOPPED'"  title="{{ instance.vmInstance.status}}"></button>
-	                                            <button class="btn btn-xs btn-warning btn-circle" data-ng-if="instance.vmInstance.status == 'STARTING'"  title="{{ instance.vmInstance.status}}"></button>
-	                                            <button class="btn btn-xs btn-danger btn-circle" data-ng-if="instance.vmInstance.status == 'ERROR'"  title="{{ instance.vmInstance.status}}"></button>
-						    					<button class="btn btn-xs btn-warning btn-circle" data-ng-if="instance.vmInstance.status == 'STOPPING'"  title="{{ instance.vmInstance.status}}">&nbsp</button>
-	                                            <button class="btn btn-xs btn-danger btn-circle" data-ng-if="instance.vmInstance.status == 'EXPUNGING'"  title="{{ instance.vmInstance.status}}"></button>
-	                                            <button class="btn btn-xs btn-danger btn-circle" data-ng-if="instance.vmInstance.status == 'DESTROYED'"  title="{{ instance.vmInstance.status}}"></button>
-
+	             <button class="btn btn-xs btn-danger btn-circle" data-ng-if="instance.vmInstance.status == 'STOPPED'"  title="{{ instance.vmInstance.status}}"></button>
+	             <button class="btn btn-xs btn-warning btn-circle" data-ng-if="instance.vmInstance.status == 'STARTING'"  title="{{ instance.vmInstance.status}}"></button>
+	             <button class="btn btn-xs btn-danger btn-circle" data-ng-if="instance.vmInstance.status == 'ERROR'"  title="{{ instance.vmInstance.status}}"></button>
+				 <button class="btn btn-xs btn-warning btn-circle" data-ng-if="instance.vmInstance.status == 'STOPPING'"  title="{{ instance.vmInstance.status}}">&nbsp</button>
+	             <button class="btn btn-xs btn-danger btn-circle" data-ng-if="instance.vmInstance.status == 'EXPUNGING'"  title="{{ instance.vmInstance.status}}"></button>
+	             <button class="btn btn-xs btn-danger btn-circle" data-ng-if="instance.vmInstance.status == 'DESTROYED'"  title="{{ instance.vmInstance.status}}"></button>
                 </div>
             </div>
         </div>
