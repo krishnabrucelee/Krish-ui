@@ -9,13 +9,8 @@ function webSocket($rootScope, $timeout, webSockets, globalConfig, notify) {
         webSockets.init(globalConfig.SOCKET_URL + 'socket/ws');
         headers['x-auth-token'] = globalConfig.sessionValues.token;
         webSockets.connect(function(frame) {
-
             webSockets.subscribe("/topic/action.event/", function(message) {
-                notify({
-                    message : message.body,
-                    classes : 'alert-success',
-                    templateUrl : globalConfig.NOTIFICATION_TEMPLATE
-                });
+
             });
 
             webSockets.subscribe("/topic/async.event/", function(message) {
@@ -79,7 +74,7 @@ function webSocket($rootScope, $timeout, webSockets, globalConfig, notify) {
                 $rootScope.$broadcast(msg, id, userId);
             }
             if (message.body.indexOf("Error") > -1 && (message.body.indexOf("ISO") > -1 || message.body
-                    .indexOf("secondary ip") > -1 || message.body.indexOf("Snapshot"))) {
+                    .indexOf("secondary ip") > -1)) {
                 notify({
                     message : message.body,
                     classes : 'alert-danger',
@@ -119,11 +114,8 @@ function webSocket($rootScope, $timeout, webSockets, globalConfig, notify) {
         webSockets.subscribe("/topic/resource.event/" + id, function(message) {
             $rootScope.$broadcast(msg, id, userId);
         });
-
     };
-
     initStompClient();
-
     return webSocket;
 };
 
