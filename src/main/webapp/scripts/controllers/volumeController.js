@@ -904,7 +904,7 @@ $scope.delete = function (size, volume) {
 
                 var hasServer = appService.crudService.softDelete("volumes", volume);
                 hasServer.then(function (result) {
-             appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.volumeEvents.volumedelete,result.uuid,$scope.global.sessionValues.id);
+             appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.volumeEvents.volumedelete,volume.uuid,$scope.global.sessionValues.id);
                      $scope.showLoader = false;
                      $modalInstance.close();
                 }).catch(function (result) {
