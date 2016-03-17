@@ -126,6 +126,7 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
         $scope.showLoader = true;
         $scope.templateCategory = 'port-forward';
         $scope.firewallRules = {};
+	$scope.portForward = {};
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasFirewallRuless = appService.crudService.listAllByQuery("portforwarding/list?ipaddress=" + $stateParams.id1, $scope.global.paginationHeaders(pageNumber, limit), {
             "limit": limit
@@ -158,9 +159,11 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
         });
     };
     //$scope.vmLists(1);
+$scope.vmPortId = {};
     $scope.selected = {};
     $scope.nicIPList = function(instance) {
         var instanceId = instance;
+$scope.vmPortId = instance;
         $scope.selected = instanceId;
         $scope.instances = instance;
         var hasNicIP = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbyvminstances?instanceid=" + instanceId + "&lang=" + appService.localStorageService.cookie.get('language') + "&sortBy=-id");
@@ -1053,7 +1056,7 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
                     });
                 };
                 $scope.lbvmLists();
-                $scope.loadbalancerSave = function(loadBalancer) {
+ $scope.loadbalancerSave = function(loadBalancer) {
                         loadBalancer.vmIpAddress = [];
                         $scope.loadBalancer = $scope.global.rulesLB[0];
                         $scope.showLoader = true;
@@ -1062,17 +1065,33 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
                         $scope.loadBalancer.protocol = $scope.loadBalancer.protocol.toUpperCase();
                         $scope.loadBalancer.state = $scope.loadBalancer.state.toUpperCase();
                         $scope.loadBalancer.state = $scope.loadBalancer.state.toUpperCase();
-                        $scope.flag = false;
-                        if (!angular.isUndefined(loadBalancer.vmIpAddress) && loadBalancer.vmIpAddress != null) {
+	var hasError = true;
+	var assignedVmIpCount = 0;
+	var selectedVmCount = 0;
                             angular.forEach(loadBalancer, function(obj, key) {
-                                if (obj.lbvm && angular.isArray(obj.ipAddress)) {
-                                    angular.forEach(obj.ipAddress, function(vmIpAddress, vmIpAddressKey) {
+console.log("obj",obj.lbvm);
+	  if(!angular.isUndefined(obj.lbvm))
+		selectedVmCount++;
+		if(angular.isArray(obj.ipAddress)) {
+			assignedVmIpCount++;
+		   	angular.forEach(obj.ipAddress, function(vmIpAddress, vmIpAddressKey) {
                                         loadBalancer.vmIpAddress.push(vmIpAddress);
                                     })
                                 }
-                            })
+	  	})
+
+		if(selectedVmCount == 0) {
+			$scope.homerTemplate = 'app/views/notification/notify.jsp';
+            		appService.notify({message: 'Please choose atleast one VM Instance and associated Ip Address from given List', classes: 'alert-danger', "timeOut": "1000", templateUrl: $scope.homerTemplate});
+			          $scope.showLoader = false;
+		}
+		else if(assignedVmIpCount != selectedVmCount) {
+			$scope.homerTemplate = 'app/views/notification/notify.jsp';
+            		appService.notify({message: 'Please assign Ip Address for all the selected VM Instances', classes: 'alert-danger', "timeOut": "1000", templateUrl: $scope.homerTemplate});
+				$scope.showLoader = false;
+		}
+		else {
                             $scope.loadBalancer.vmIpAddress = loadBalancer.vmIpAddress;
-                            console.log(loadBalancer.vmIpAddress);
                             $scope.loadBalancer.lbPolicy = {};
                             var loadBalancerParams = ["stickinessMethod", "stickinessName", "stickyTableSize", "cookieName", "stickyExpires", "stickyMode", "stickyLength", "stickyRequestLearn", "stickyPrefix", "stickyNoCache", "stickyIndirect", "stickyPostOnly", "stickyCompany"];
                             for (var i = 0; i < loadBalancerParams.length; i++) {
@@ -1307,7 +1326,7 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
                     $scope.templateCategory = 'instance';
                     $scope.portvmList = [];
                     var networkId = $stateParams.id;
-                    var hasVms = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "virtualmachine/network?networkId=" + networkId + "&lang=" + appService.localStorageService.cookie.get('language') + "&sortBy=-id");
+        var hasVms = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbynetwork?networkid="+networkId +"&lang=" + appService.localStorageService.cookie.get('language')+"&sortBy=-id");
                     hasVms.then(function(result) { // this is only run after $http
                         $scope.portvmList = result;
                     });
@@ -1318,13 +1337,36 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
                     $scope.portForward = $scope.global.rulesPF[0];
                     $scope.formSubmitted = true;
                     $scope.showLoader = true;
-                    $scope.portForward.vmInstanceId = $scope.instances.id;
                     $scope.portForward.networkId = $stateParams.id;
-                    if (angular.isUndefined($scope.instanceLists.ipAddress.guestIpAddress)) {
-                        $scope.portForward.vmGuestIp = $scope.instances.ipAddress;
-                    } else {
-                        $scope.portForward.vmGuestIp = $scope.instanceLists.ipAddress.guestIpAddress;
-                    }
+                         $scope.vmIpAddress = {};
+			$scope.instance = {};
+                  	var hasError = true;
+	var assignedVmIpCount = 0;
+	var selectedVmCount = 0;
+
+   	angular.forEach(portinstance, function(obj, key) {
+	  if(!angular.isUndefined(obj.port)) {
+		selectedVmCount++;
+	     }
+		if(!angular.isUndefined(obj.port) && !angular.isUndefined(obj.ipAddress.guestIpAddress)) {
+			$scope.vmIpAddress = obj.ipAddress.guestIpAddress;
+			assignedVmIpCount = 1;
+		   }
+	  	})
+
+		if(selectedVmCount == 0) {
+				$scope.homerTemplate = 'app/views/notification/notify.jsp';
+            		appService.notify({message: 'Please choose atleast one VM Instance and associated Ip Address from given List', classes: 'alert-danger', "timeOut": "1000", templateUrl: $scope.homerTemplate});
+			          $scope.showLoader = false;
+		}
+		else if(assignedVmIpCount != selectedVmCount) {
+			$scope.homerTemplate = 'app/views/notification/notify.jsp';
+            		appService.notify({message: 'Please assign Ip Address for all the selected VM Instances', classes: 'alert-danger', "timeOut": "1000", templateUrl: $scope.homerTemplate});
+				$scope.showLoader = false;
+		}
+		else {
+                        $scope.portForward.vmGuestIp = $scope.vmIpAddress;
+                        $scope.portForward.vmInstanceId = $scope.vmPortId;
                     $scope.portForward.ipAddressId = $stateParams.id1;
                     $scope.portForward.protocolType = $scope.portForward.protocolType.name;
                     var hasPortForward = appService.crudService.add("portforwarding", $scope.portForward);
@@ -1333,6 +1375,7 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
                         $scope.formSubmitted = false;
                         $modalInstance.close();
                         $scope.showLoader = false;
+			$scope.portRulesLists(1);
                     }).catch(function(result) {
                         $scope.showLoader = false;
                         if (!angular.isUndefined(result.data)) {
@@ -1347,13 +1390,9 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
                         }
                         $modalInstance.close();
                     });
+}
                 };
-                //$scope.portForward.privateStartPort = '';
-                //$scope.portForward.privateEndPort = '';
-                //$scope.portForward.publicStartPort = '';
-                //$scope.portForward.publicEndPort = '';
-                //$scope.portForward.protocolType = '';
-                $scope.cancel = function() {
+                 $scope.cancel = function() {
                     $modalInstance.close();
                 };
             }]);
@@ -1748,7 +1787,6 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
             //Assign loadbalancer stickiness in object
             $scope.addStickiness = function(form, stickiness) {
                     $scope.stickyLoadBalancer.lbPolicy = {};
-                    console.log(stickiness);
                     $scope.formSubmitted = true;
                     if (!angular.isUndefined($scope.stickyLoadBalancer.id) && $scope.stickyLoadBalancer.id != null) {
                         var loadBalancerParams = ["stickinessMethod", "stickinessName", "stickyTableSize", "cookieName", "stickyExpires", "stickyMode", "stickyLength", "stickyRequestLearn", "stickyPrefix", "stickyNoCache", "stickyIndirect", "stickyPostOnly", "stickyCompany"];
@@ -1838,7 +1876,6 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
                         delete $scope.stickyLoadBalancer.stickyIndirect;
                         delete $scope.stickyLoadBalancer.stickyNoCache;
                         $scope.showLoader = true;
-                        console.log($scope.stickyLoadBalancer);
                         var hasServer = appService.crudService.update("LbStickinessPolicy", $scope.stickyLoadBalancer);
                         hasServer.then(function(result) {
                             appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.editStickiness, result.uuid, $scope.global.sessionValues.id);
