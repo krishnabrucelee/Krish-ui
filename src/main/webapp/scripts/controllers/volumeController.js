@@ -10,7 +10,7 @@ angular
         .controller('recurringSnapshotCtrl', recurringSnapshotCtrl)
         //.controller('uploadVolumeCtrl', uploadVolumeCtrl)
 
-function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeService, $window, localStorageService, globalConfig) {
+function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeService, $window, localStorageService, globalConfig, notify) {
     $scope.global = appService.globalConfig;
     $scope.sort = appService.globalConfig.sort;
     $scope.changeSorting = appService.utilService.changeSorting;
@@ -678,9 +678,10 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
 
              var hasUploadVolume = appService.crudService.add("volumes/upload", volume);
              hasUploadVolume.then(function (result) {
-		 appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.volumeEvents.uploadVolume,result.uuid,$scope.global.sessionValues.id);
+		 appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.volumeEvents.uploadVolume,result.transJobId,$scope.global.sessionValues.id);
             	 $scope.showLoader = false;
             	 $modalInstance.close();
+            	 notify({message: 'Uploaded successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
              }).catch(function (result) {
              	$scope.showLoader = false;
     		    if (!angular.isUndefined(result.data)) {
