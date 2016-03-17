@@ -381,18 +381,18 @@ function instanceListCtrl($scope, $sce, $log, $filter, dialogService, $timeout, 
     };
 
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.vmCreate, function() {
-        $scope.list(1, "Expunging");
+        $scope.list($scope.paginationObject.currentPage, "Expunging");
         $scope.borderContent = "Expunging";
     });
 
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.startVm, function() {
-        $scope.list($scope.paginationObject.currentPage, "Running");
-        $scope.borderContent = "Running";
+        $scope.list($scope.paginationObject.currentPage, "Expunging");
+        $scope.borderContent = "Expunging";
     });
 
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.stopVm, function() {
-        $scope.list($scope.paginationObject.currentPage, "Stopped");
-        $scope.borderContent = "Stopped";
+        $scope.list($scope.paginationObject.currentPage, "Expunging");
+        $scope.borderContent = "Expunging";
     });
 
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.rebootVm, function() {

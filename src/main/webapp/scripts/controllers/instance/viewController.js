@@ -75,6 +75,7 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
         $scope.templateCategory = 'storage';
     };
     $scope.startVm = function(size, item) {
+        $scope.hostList();
         $scope.instance = item;
         if ($scope.global.sessionValues.type === 'ROOT_ADMIN') {
             size = 'md';
