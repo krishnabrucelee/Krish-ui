@@ -328,6 +328,7 @@ function accountListCtrl($scope,$state, $log,$timeout,$stateParams, appService, 
                     	var key = 'confirmpassword';
                     	$scope.userForm[key].$invalid = true;
                     	$scope.userForm[key].errorMessage = document.getElementById("passwordErrorMessage").value;
+                    	 $scope.showLoader = true;
                     }
                 }
             },
