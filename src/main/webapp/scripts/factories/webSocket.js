@@ -67,7 +67,8 @@ function webSocket($rootScope, $timeout, webSockets, globalConfig, notify) {
             if (message.body.indexOf("completed") > -1 && (message.body.indexOf("ISO") > -1 || message.body
                     .indexOf("secondary ip") > -1 || message.body.indexOf("Snapshot") > -1 || message.body
                     .indexOf("Nic") > -1 || message.body.indexOf("uploading volume") > -1 || message.body
-                    .indexOf("vm snapshots") > -1)) {
+                    .indexOf("vm snapshots") > -1 || message.body
+                    .indexOf("static nat") > -1)) {
                 notify({
                     message : message.body,
                     classes : 'alert-success',
@@ -77,7 +78,8 @@ function webSocket($rootScope, $timeout, webSockets, globalConfig, notify) {
             }
             if (message.body.indexOf("Error") > -1 && (message.body.indexOf("ISO") > -1 || message.body
                     .indexOf("secondary ip") > -1 || message.body.indexOf("Nic") > -1 || message.body
-                    .indexOf("uploading volume") > -1 || message.body.indexOf("vm snapshots") > -1)) {
+                    .indexOf("uploading volume") > -1 || message.body.indexOf("vm snapshots") > -1 || message.body
+                    .indexOf("static nat") > -1)) {
                 notify({
                     message : message.body,
                     classes : 'alert-danger',
