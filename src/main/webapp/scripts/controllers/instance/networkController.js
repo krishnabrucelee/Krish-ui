@@ -111,6 +111,8 @@ function networkCtrl($scope, $modal, $state, $window, $stateParams, appService) 
                                     });
                                 }
                             }
+                            $scope.showLoader = false;
+                            $modalInstance.close();
                         });
                     }
                 },

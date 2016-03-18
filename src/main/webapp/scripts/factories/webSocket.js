@@ -65,7 +65,9 @@ function webSocket($rootScope, $timeout, webSockets, globalConfig, notify) {
         webSockets.subscribe("/topic/action.event/" + globalConfig.sessionValues.id, function(message) {
             globalConfig.events = parseInt(globalConfig.events) + 1;
             if (message.body.indexOf("completed") > -1 && (message.body.indexOf("ISO") > -1 || message.body
-                    .indexOf("secondary ip") > -1 || message.body.indexOf("Snapshot") > -1)) {
+                    .indexOf("secondary ip") > -1 || message.body.indexOf("Snapshot") > -1 || message.body
+                    .indexOf("Nic") > -1 || message.body.indexOf("uploading volume") > -1 || message.body
+                    .indexOf("vm snapshots") > -1)) {
                 notify({
                     message : message.body,
                     classes : 'alert-success',
@@ -74,14 +76,15 @@ function webSocket($rootScope, $timeout, webSockets, globalConfig, notify) {
                 $rootScope.$broadcast(msg, id, userId);
             }
             if (message.body.indexOf("Error") > -1 && (message.body.indexOf("ISO") > -1 || message.body
-                    .indexOf("secondary ip") > -1)) {
+                    .indexOf("secondary ip") > -1 || message.body.indexOf("Nic") > -1 || message.body
+                    .indexOf("uploading volume") > -1 || message.body.indexOf("vm snapshots") > -1)) {
                 notify({
                     message : message.body,
                     classes : 'alert-danger',
                     templateUrl : globalConfig.NOTIFICATION_TEMPLATE
                 });
-                $rootScope.$broadcast(msg, id, userId);
             }
+            $rootScope.$broadcast(msg, id, userId);
         });
 
         webSockets.subscribe("/topic/action.event/" + msg + "/" + userId + "/" + id, function(message) {
@@ -98,7 +101,11 @@ function webSocket($rootScope, $timeout, webSockets, globalConfig, notify) {
                     classes : 'alert-danger',
                     templateUrl : globalConfig.NOTIFICATION_TEMPLATE
                 });
-                $rootScope.$broadcast(msg, id, userId);
+                if (message.body.indexOf("SSHKey") > -1) {
+
+                } else {
+                    $rootScope.$broadcast(msg, id, userId);
+                }
             }
         });
         webSockets.subscribe("/topic/async.event/" + msg + "/" + userId + "/" + id, function(message) {
