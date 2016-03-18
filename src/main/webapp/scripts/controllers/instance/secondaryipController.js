@@ -87,6 +87,7 @@ function secondaryIpCtrl($scope, $modal, $state, $window, $stateParams, appServi
                             appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.acquireNewIP, result.uuid, $scope.global.sessionValues.id);
                             $scope.formSubmitted = false;
                             $modalInstance.close();
+                            $scope.nicIPList();
                             $scope.showLoader = false;
                         }).catch(function(result) {
                             $scope.showLoader = false;
@@ -118,6 +119,7 @@ function secondaryIpCtrl($scope, $modal, $state, $window, $stateParams, appServi
                     hasServer.then(function(result) {
                         appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.deleteIP, result.uuid, $scope.global.sessionValues.id);
                         $scope.showLoader = false;
+                        $scope.nicIPList();
                     }).catch(function(result) {});
                     $modalInstance.close();
                 },

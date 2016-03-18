@@ -582,12 +582,8 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
         });
     });
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.updateVM, function() {
-        appService.notify({
-            message: 'Updated successfully',
-            classes: 'alert-success',
-            templateUrl: $scope.global.NOTIFICATION_TEMPLATE
-        });
         $scope.viewInstance($scope.instance.id);
+        $scope.instnaceEdit = false;
     });
 }
 

@@ -35,7 +35,6 @@ function storageCtrl($scope, $state, $stateParams, appService, $window, volumeSe
         var hasVolumes = appService.promiseAjax.httpTokenRequest(appService.crudService.globalConfig.HTTP_GET, appService.crudService.globalConfig.APP_URL + "volumes/listbyinstances?instanceid=" + instanceId + "&lang=" + appService.localStorageService.cookie.get('language') + "&sortBy=-id");
         hasVolumes.then(function(result) {
             $scope.volumeList = result;
-            updateStorageProgeress($scope.volumeList);
         });
     };
     $scope.list(1);
@@ -562,54 +561,8 @@ function storageCtrl($scope, $state, $stateParams, appService, $window, volumeSe
                 };
         }]);
     };
-    // API for storage
-    /**
-     * Data for Line chart
-     */
-    function getDateByTime(unixTimeStamp) {
-        var date = new Date(unixTimeStamp * 1000);
-        return date;
-    }
-
-    function updateStorageProgeress(volumeList) {
-        angular.forEach(volumeList, function(obj, key) {
-            getStoragePerformanceByFilters(obj.vmInstance.displayName, obj);
-            setInterval(function() {
-                $scope.$apply(function() {
-                    getStoragePerformanceByFilters(obj.vmInstance.displayName, obj);
-                });
-            }, 5000);
-        });
-    }
-
-    function getStoragePerformanceByFilters(vmName, volume) {
-        vmName = 'monitor-vm';
-        var diskSize = 0;
-        if (volume.volumeType == 'ROOT' || (volume.volumeType == 'DATADISK' && volume.storageOffering.isCustomDisk)) {
-            diskSize = volume.diskSize / $scope.global.Math.pow(2, 30);
-        } else {
-            diskSize = volume.storageOffering.diskSize;
-        }
-        var hasServer = appService.promiseAjax.httpRequest("GET", "http://192.168.1.137:4242/api/query?start=1m-ago&m=sum:linux.disk.fs.space_used{host=" + vmName + ",mount=/}");
-        hasServer.then(function(result) {
-            for (var i = 0; i < result.length; i++) {
-                var dataPoints = result[i].dps;
-                var dataIndex = 0;
-                var currentValue = dataPoints[Object.keys(dataPoints)[Object.keys(dataPoints).length - 1]];
-                if (!angular.isUndefined(currentValue) && currentValue != 0) {
-                    currentValue = currentValue / (1024 * 1024 * 1024);
-                    var usedTotal = (currentValue.toFixed(2) / 3.9) * 100;
-                    $scope.memoryStyle = {
-                        width: parseInt(usedTotal) + "%"
-                    };
-                    $scope.usedSpace = usedTotal.toFixed(2);
-                }
-            }
-        });
-    }
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.attachVolume, function() {
         $scope.list(1);
-        //$window.location.href = '#/instance/list/view/';
     });
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.detachVolume, function() {
         $scope.list(1);
