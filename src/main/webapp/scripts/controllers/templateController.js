@@ -143,6 +143,39 @@ $scope.template.listAllTemplate = {};
     $scope.list (1);
    }
 
+   $scope.changeSortings = function(sortBy, pageNumber) {
+		var sort = appService.globalConfig.sort;
+		if (sort.column == sortBy) {
+			sort.descending = !sort.descending;
+		} else {
+			sort.column = sortBy;
+			sort.descending = false;
+		}
+		var sortOrder = '-';
+		if(!sort.descending){
+			sortOrder = '+';
+		}
+		$scope.paginationObject.sortOrder = sortOrder;
+		$scope.paginationObject.sortBy = sortBy;
+		$scope.showLoader = true;
+		var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
+                var hasUserTemplateList = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "templates/listall" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+sortOrder+sortBy +"&type=user"+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+
+
+                    hasUserTemplateList.then(function(result) { // this is only run after $http
+			// completes0
+			$scope.userTemplateList = result;
+			// For pagination
+			$scope.paginationObject.limit = limit;
+			$scope.paginationObject.currentPage = pageNumber;
+			$scope.paginationObject.totalItems = result.totalItems;
+			$scope.paginationObject.sortOrder = sortOrder;
+			$scope.paginationObject.sortBy = sortBy;
+			$scope.showLoader = false;
+		});
+	};
+   
+
    $scope.usertemplatelist = function () {
    $scope.formElements.category = 'mytemplates';
 
@@ -152,7 +185,7 @@ $scope.template.listAllTemplate = {};
             $scope.showLoader = false;
         });
 
-    //featured List
+    //Mytemplate List
     $scope.list = function (pageNumber) {
         appService.globalConfig.sort.sortOrder = $scope.paginationObject.sortOrder;
         appService.globalConfig.sort.sortBy = $scope.paginationObject.sortBy;
