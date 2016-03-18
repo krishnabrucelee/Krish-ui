@@ -34,12 +34,18 @@ pageEncoding="UTF-8"%>
         </div>
 
         <div class="modal-footer" data-ng-hide="acquiringIP">
-
+			 <div class="form-group">
+                            <div class="col-md-12 col-sm-12">
+                             <span class="pull-left">
+                        <h4 class="text-danger price-text m-l-lg">
+                            <app-currency></app-currency>{{miscellaneousList[0].costperGB }} <span>/IP/day</span>
+                        </h4>
+                    </span>
             <span class="pull-right">
                 <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="cancel()">No</button>
                 <button type="button" class="btn btn-info" ng-click="acquire(network)">Yes</button>
             </span>
-
+</div>
         </div>
 
     </div>

@@ -258,7 +258,7 @@ $scope.template.listAllTemplate = {};
 
 	  $scope.templateCostList = function () {
         $scope.showLoader = true;
-        var hastemplateList = appService.crudService.listAll("miscellaneous/list");
+        var hastemplateList = appService.crudService.listAll("miscellaneous/listtemplate");
         hastemplateList.then(function (result) {  // this is only run after $http completes0
             $scope.miscellaneousList = result;
             $scope.showLoader = false;

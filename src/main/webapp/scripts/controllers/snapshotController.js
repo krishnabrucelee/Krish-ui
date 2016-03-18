@@ -178,15 +178,17 @@ function snapshotListCtrl($scope, crudService, $state, $timeout, promiseAjax, gl
         });
     };
 
-	  $scope.vmsnapshotCostList = function () {
-		alert("hi");
-        var vmsnapshotCost = appService.crudService.listAll("miscellaneous/listvmsnapshot");
-        hasvmsnapshotCost.then(function (result) {  // this is only run after $http completes0
+   ipCost : {}
+
+ $scope.vmCostList = function () {
+        var hasipCost= appService.crudService.listAll("miscellaneous/listvmsnapshot");
+        hasipCost.then(function (result) {  // this is only run after $http completes0
             $scope.miscellaneousList = result;
-		console.log($scope.miscellaneousList);
         });
 
     };
+$scope.vmCostList();
+
     $scope.openAddVMSnapshotContainer = function() {
         dialogService.openDialog("app/views/cloud/snapshot/createVm.jsp", 'md', $scope, ['$scope', '$modalInstance', '$rootScope', function($scope, $modalInstance, $rootScope) {
             $scope.instanceId(1);

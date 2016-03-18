@@ -251,8 +251,8 @@
                             <div class="col-md-12 col-sm-12">
                              <span class="pull-left">
                         <h4 class="text-danger price-text m-l-lg">
-                            <app-currency></app-currency>{{miscellaneousList[0].costperGB / 30 | number:4}} <span>/day</span>   <small class="text-right text-muted m-l-sm" data-ng-model="miscellaneousList[0].costperGB">(<app-currency></app-currency>{{miscellaneousList[0].costperGB}})</small>
-                        </h4>
+                            <app-currency></app-currency>{{miscellaneousList[0].costperGB }} <span>/GB/day</span>
+	                        </h4>
                     </span>
                                 <span  data-ng-hide="showLoader" class="pull-right">
                                           	 <get-loader-image data-ng-show="showLoader"></get-loader-image>
