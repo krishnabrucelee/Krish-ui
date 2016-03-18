@@ -191,6 +191,18 @@ $scope.vmPortId = instance;
             $scope.paginationObject.totalItems = result.totalItems;
         });
     };
+
+   ipCost : {}
+
+ $scope.ipCostList = function () {
+        var hasipCost= appService.crudService.listAll("miscellaneous/listbyipcost");
+        hasipCost.then(function (result) {  // this is only run after $http completes0
+            $scope.miscellaneousList = result;
+        });
+
+    };
+$scope.ipCostList();
+
     // Open dialogue box to create egress rule
     $scope.firewallRules = {};
     // Create a new egress rule
@@ -1527,6 +1539,8 @@ console.log("obj",obj.lbvm);
             name: 'Month'
         }]
     };
+
+ 
     $scope.openAddIP = function(size, network) {
         appService.dialogService.openDialog("app/views/cloud/network/acquire-IP.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function($scope, $modalInstance, $rootScope) {
             $scope.acquire = function(network) {
