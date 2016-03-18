@@ -1553,6 +1553,7 @@ console.log("obj",obj.lbvm);
     };
     $scope.staticNat = function(size, network) {
         appService.dialogService.openDialog("app/views/cloud/network/enable-static-nat.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function($scope, $modalInstance, $rootScope) {
+        	$modalInstance.close();
         	$scope.enableStaticNat = function(network) {
                 $scope.actionEnable = true;
                 appService.dialogService.openDialog("app/views/cloud/network/vm-list-enable-nat.jsp", "lg", $scope, ['$scope', '$modalInstance', '$rootScope', function($scope, $modalInstance, $rootScope) {
@@ -1609,6 +1610,7 @@ console.log("obj",obj.lbvm);
                             appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.enableStaticNat, result.uuid, $scope.global.sessionValues.id);
                             $scope.formSubmitted = false;
                             $modalInstance.close();
+                            $scope.cancelInst();
                             $scope.showLoader = false;
                         }).catch(function(result) {
                             $scope.showLoader = false;
@@ -1625,14 +1627,15 @@ console.log("obj",obj.lbvm);
                             $modalInstance.close();
                         });
             		}
-               	$modalInstance.close();
+
                     },
                     $scope.cancel = function() {
                         $modalInstance.close();
                     };
                 }]);
             },
-            $scope.cancel = function() {
+            $modalInstance.close();
+            $scope.cancelInst = function() {
                 $modalInstance.close();
             };
             $modalInstance.close();

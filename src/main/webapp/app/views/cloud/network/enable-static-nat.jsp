@@ -29,7 +29,7 @@ pageEncoding="UTF-8"%>
         <div class="modal-footer" data-ng-hide="enableNat">
 
             <span class="pull-right">
-                <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="cancel()">No</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="cancelInst()">No</button>
                 <button type="button" class="btn btn-info" ng-click="enableStaticNat(network)">Yes</button>
             </span>
 
