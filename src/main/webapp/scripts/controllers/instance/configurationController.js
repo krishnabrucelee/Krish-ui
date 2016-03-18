@@ -248,7 +248,6 @@ function configurationCtrl($scope, $stateParams, appService, localStorageService
 	  $scope.formSubmitted = true;
           var hasVm = appService.crudService.updates("virtualmachine/handleevent/vm", $scope.vm);
 	  hasVm.then(function(result) {
-	  appService.notify({message: "VM password updated successfully. Please refresh and click show password", classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
 	  }).catch(function (result) {
      });
      };
@@ -258,7 +257,7 @@ function configurationCtrl($scope, $stateParams, appService, localStorageService
      $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.vmSSHKEY, function() {
          $scope.viewInstance($scope.instances.id);
          if ($scope.instances.passwordEnabled == true) {
-         $scope.resetPassword($scope.instances);
+             $scope.resetPassword($scope.instances);
          }
        });
 }
