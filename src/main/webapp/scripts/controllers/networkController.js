@@ -1345,6 +1345,7 @@ console.log("obj",obj.lbvm);
                 };
                 $scope.portvmLists();
                 $scope.portforwardSave = function(portinstance) {
+	 console.log(portinstance);
                     $scope.instances = portinstance;
                     $scope.portForward = $scope.global.rulesPF[0];
                     $scope.formSubmitted = true;
@@ -1566,7 +1567,8 @@ console.log("obj",obj.lbvm);
     };
     $scope.staticNat = function(size, network) {
         appService.dialogService.openDialog("app/views/cloud/network/enable-static-nat.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function($scope, $modalInstance, $rootScope) {
-            $scope.enableStaticNat = function(network) {
+        	$modalInstance.close();
+        	$scope.enableStaticNat = function(network) {
                 $scope.actionEnable = true;
                 appService.dialogService.openDialog("app/views/cloud/network/vm-list-enable-nat.jsp", "lg", $scope, ['$scope', '$modalInstance', '$rootScope', function($scope, $modalInstance, $rootScope) {
                     $scope.portvmLists = function() {
@@ -1580,24 +1582,50 @@ console.log("obj",obj.lbvm);
                     };
                     $scope.portvmLists();
                     $scope.enableStaticNatSave = function(natInstance) {
-                        $scope.instances = natInstance;
                         $scope.staticNat = $scope.global.rulesPF[0];
                         $scope.formSubmitted = true;
                         $scope.showLoader = true;
                         $scope.staticNat.vmInstanceId = $scope.natInstance.id;
                         $scope.staticNat.networkId = $stateParams.id;
-                        if (angular.isUndefined($scope.instanceLists.ipAddress.guestIpAddress)) {
-                            $scope.staticNat.vmGuestIp = $scope.instances.ipAddress;
-                        } else {
-                            $scope.staticNat.vmGuestIp = $scope.instanceLists.ipAddress.guestIpAddress;
-                        }
+                        $scope.staticNat.vmGuestIp = $scope.natInstance.ipAddress;
+
+                        $scope.vmIpAddress = {};
+            			$scope.instance = {};
+                              	var hasError = true;
+            	var assignedVmIpCount = 0;
+            	var selectedVmCount = 0;
+
+               	angular.forEach(natInstance, function(obj, key) {
+            	  if(!angular.isUndefined(obj.port)) {
+            		selectedVmCount++;
+            	     }
+
+            		if(!angular.isUndefined(obj.port) && !angular.isUndefined(obj.ipAddress)) {
+            			$scope.vmId = obj.id;
+            			$scope.vmIpAddress = obj.ipAddress;
+            			assignedVmIpCount = 1;
+            		   }
+            	  	})
+            		if(selectedVmCount == 0) {
+            				$scope.homerTemplate = 'app/views/notification/notify.jsp';
+                        		appService.notify({message: 'Please choose atleast one VM Instance and associated Ip Address from given List', classes: 'alert-danger', "timeOut": "1000", templateUrl: $scope.homerTemplate});
+            			          $scope.showLoader = false;
+            		}
+            		else if(assignedVmIpCount != selectedVmCount) {
+            			$scope.homerTemplate = 'app/views/notification/notify.jsp';
+                        		appService.notify({message: 'Please assign Ip Address for all the selected VM Instances', classes: 'alert-danger', "timeOut": "1000", templateUrl: $scope.homerTemplate});
+            				$scope.showLoader = false;
+            		}
+            		else {
                         $scope.staticNat.ipAddressId = $stateParams.id1;
-                        var hasStaticNat = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "ipAddresses/nat?ipaddress=" + $scope.staticNat.ipAddressId + "&vm=" + natInstance.id + "&guestip=" + $scope.staticNat.vmGuestIp + "&type=" + "enable" + "&lang=" + appService.localStorageService.cookie.get('language') + "&sortBy=-id");
+                        var hasStaticNat = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "ipAddresses/nat?ipaddress=" + $scope.staticNat.ipAddressId +
+                        	"&vm=" + $scope.vmId + "&guestip=" + $scope.vmIpAddress + "&type=" + "enable" + "&lang=" + appService.localStorageService.cookie.get('language') + "&sortBy=-id");
                         hasStaticNat.then(function(result) {
                             appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.enableStaticNat, result.uuid, $scope.global.sessionValues.id);
                             $scope.formSubmitted = false;
+                            $modalInstance.close();
+                            $scope.cancelInst();
                             $scope.showLoader = false;
-                            $scope.cancel();
                         }).catch(function(result) {
                             $scope.showLoader = false;
                             if (!angular.isUndefined(result.data)) {
@@ -1612,15 +1640,19 @@ console.log("obj",obj.lbvm);
                             }
                             $modalInstance.close();
                         });
+            		}
+
                     },
                     $scope.cancel = function() {
                         $modalInstance.close();
                     };
                 }]);
             },
-            $scope.cancel = function() {
+            $modalInstance.close();
+            $scope.cancelInst = function() {
                 $modalInstance.close();
             };
+            $modalInstance.close();
         }]);
     };
     $scope.disableNat = function(size, natInstance) {
