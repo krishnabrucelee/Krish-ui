@@ -400,6 +400,10 @@ function instanceListCtrl($scope, $sce, $log, $filter, dialogService, $timeout, 
         $scope.borderContent = "Running";
     });
 
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.expungeVM, function() {
+        $scope.list(1, "Expunging");
+    });
+
 }
 
 function instanceDetailsCtrl($scope, instance, notify, $modalInstance) {
