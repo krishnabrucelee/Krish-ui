@@ -169,6 +169,7 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
                         var hasVm = appService.crudService.vmUpdate("virtualmachine/handlevmevent", item.uuid, event);
                         hasVm.then(function(result) {
                             appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.expungeVM, result.uuid, $scope.global.sessionValues.id);
+                            window.location.href = "index#/instance/list";
                             $scope.cancel();
                         }).catch(function(result) {
                             $scope.cancel();
@@ -178,6 +179,7 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
                         var hasVm = appService.crudService.vmUpdate("virtualmachine/handlevmevent", item.uuid, event);
                         hasVm.then(function(result) {
                             appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.reDestroyVm, result.uuid, $scope.global.sessionValues.id);
+                            window.location.href = "index#/instance/list";
                             $scope.cancel();
                         }).catch(function(result) {
                             $scope.cancel();
@@ -339,6 +341,7 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
                         hasVm.then(function(result) {
                             appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.takeSnapshot, result.uuid, $scope.global.sessionValues.id);
                             $modalInstance.close();
+                            window.location.href = "index#/snapshot/list";
                             $scope.showLoader = false;
                         }).catch(function(result) {
                             $scope.showLoader = false;
@@ -402,7 +405,6 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
         var hasVm = appService.crudService.updates("virtualmachine/handleevent/vm", $scope.vm);
         hasVm.then(function(result) {
             appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.resetPassword, result.uuid, $scope.global.sessionValues.id);
-            $scope.cancel();
         }).catch(function(result) {
             //$state.reload();
         });
@@ -551,11 +553,10 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
     });
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.reDestroyVm, function() {
         $scope.viewInstance($scope.instance.id);
-        window.location.href = "index#/instance/list";
     });
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.expungeVM, function() {
         $scope.viewInstance($scope.instance.id);
-        window.location.href = "index#/instance/list";
+
     });
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.recoverVm, function() {
         $scope.viewInstance($scope.instance.id);
@@ -568,18 +569,12 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
     });
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.takeSnapshot, function() {
         $scope.viewInstance($scope.instance.id);
-        window.location.href = "index#/snapshot/list";
     });
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.hostMigrate, function() {
         $scope.viewInstance($scope.instance.id);
     });
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.resetPassword, function() {
         $scope.viewInstance($scope.instance.id);
-        appService.notify({
-            message: "VM password updated successfully. Please refresh and click show password",
-            classes: 'alert-success',
-            templateUrl: $scope.global.NOTIFICATION_TEMPLATE
-        });
     });
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.updateVM, function() {
         $scope.viewInstance($scope.instance.id);
