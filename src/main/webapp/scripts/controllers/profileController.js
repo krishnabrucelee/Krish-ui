@@ -10,7 +10,7 @@ angular
         .controller('profileCtrl', profileCtrl)
 
 
-function profileCtrl($scope, appService) {
+function profileCtrl($scope, appService, $state) {
 
     $scope.global = appService.globalConfig;
     $scope.profile = {};
@@ -19,6 +19,13 @@ function profileCtrl($scope, appService) {
         $scope.status.basic = true;
         $scope.status.password = true;
         $scope.status.api = true;
+
+        $scope.formElements = {
+        		LanguageList: {
+                    "0":"English",
+                    "1":"Chinese"
+                }
+        };
 
     // User List
     $scope.list = function (pageNumber) {
@@ -31,6 +38,28 @@ function profileCtrl($scope, appService) {
         });
     };
     $scope.list(1);
+
+    $scope.updateLanguage = function (profile) {
+    	console.log(profile);
+        if (profile.language != null) {
+        	$scope.showLoader = true;
+            var hasServer = appService.crudService.update("users", profile);
+            hasServer.then(function (result) {
+                $scope.showLoader = false;
+                appService.notify({message: 'Email language updated successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+                $state.reload();
+            }).catch(function (result) {
+            	$scope.showLoader = false;
+		    if (!angular.isUndefined(result.data)) {
+    		if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
+      	   	 var msg = result.data.globalError[0];
+      	   	 $scope.showLoader = false;
+    	    	 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+        	}
+    	}
+	});
+        	}
+    	},
 
     $scope.updatePassword = function (form, profile) {
         $scope.formSubmitted = true;

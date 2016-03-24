@@ -634,6 +634,7 @@ $scope.ipCostList();
                     $scope.showLoader = true;
                     user.domainId = $scope.ipDetails.domainId;
                     user.departmentId = $scope.ipDetails.network.departmentId;
+                    user.networkId = $scope.ipDetails.network.id;
                     var hasServer = appService.crudService.add("vpnUser", user);
                     hasServer.then(function(result) {
                         appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.vpnUserAdd, result.uuid, $scope.global.sessionValues.id);
