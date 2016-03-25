@@ -160,6 +160,34 @@ pageEncoding="UTF-8"%>
 
 
                         </div> </accordion-group>
+                        <accordion-group is-open="status.password">
+                        <accordion-heading>
+                            <fmt:message key="language.preference" bundle="${msg}" /> <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.password, 'glyphicon-chevron-right': !status.password}"></i>
+                        </accordion-heading>
+                        <div class="row">
+                            <div class="col-md-7 col-sm-7 col-xs-7">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <label class="col-md-4 col-sm-4 control-label"> <span class="pull-right">Email Language</span></label>
+                                        <div class="col-md-6 col-sm-6 col-xs-6">
+                                            <select class="form-control input-group" name="language" data-ng-model="profile.language" ng-options="language for (id, language) in formElements.LanguageList">
+                                            <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
+                                            </select>
+							            </div>
+                                        </div>
+                                    </div>
+                                <div class="row">
+                                    <div class="col-md-4 col-sm-4 col-xs-4"></div>
+                                    <div class="col-md-6 col-sm-6 col-xs-6">
+                                    	<get-loader-image data-ng-if="showLoader"></get-loader-image>
+                                        <button type="button" data-ng-if="!showLoader" data-ng-click="updateLanguage(profile)" class="btn btn-info" value="Update"><fmt:message key="common.update" bundle="${msg}" /></button>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                        </div> </accordion-group>
                     <accordion-group is-open="status.api">
                         <accordion-heading>
                            <fmt:message key="api.information" bundle="${msg}" /> <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.api, 'glyphicon-chevron-right': !status.api}"></i>

@@ -104,9 +104,7 @@
 										<fmt:message key="disk" bundle="${msg}" /></th>
 										<th ng-click="changeSort('publicIpAddress',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='publicIpAddress'? 'sorting_desc' : 'sorting_asc' ">
 										<fmt:message key="public.ip" bundle="${msg}" /></th>
-										<th ng-click="changeSort('ipAddress',paginationObject.currentPage)"
-											data-ng-class="sort.descending && sort.column =='ipAddress'? 'sorting_desc' : 'sorting_asc' ">
-										<fmt:message key="common.ip" bundle="${msg}" /></th>
+										<th><fmt:message key="common.ip" bundle="${msg}" /></th>
 										<th class="custom-width-xs" ng-click="changeSort('status',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='status'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="common.state" bundle="${msg}" /></th>
 										<th><fmt:message key="common.action" bundle="${msg}" /></th>
 									</tr>

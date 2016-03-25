@@ -132,7 +132,7 @@
 													data-ng-click="editUser('md',account)">
 														<span class="fa fa-edit m-r"> </span>
 												</a>
-												 <a class="icon-button"
+												 <a class="icon-button" has-permission="RESET_USER_PASSWORD"
 													title="<fmt:message key="reset.password" bundle="${msg}" /> "
 													data-ng-click="resetPassword('md',account)"><span class="fa-key fa font-bold m-r"></span>
 													</a>
