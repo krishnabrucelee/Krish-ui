@@ -134,7 +134,18 @@
                 </div>
 
                 <div class="col-md-9 col-sm-9 col-xs-9">
-
+					<div class="form-group" ng-class="{'text-danger': TemplateForm.osCategory.$invalid && formSubmitted}">
+                            <div class="row" >
+                                <label class="col-md-4 col-sm-3 col-xs-3 control-label" ><fmt:message key="template.oscategory" bundle="${msg}" /><span class="text-danger">*</span></label>
+                                <div class="col-md-6  col-sm-7 col-xs-7">
+                                    <select required="true" class="form-control input-group" name="osCategory" data-ng-change="categoryChange()" data-ng-model="templates.osCategory" ng-options="osCategory.name for osCategory in formElements.osCategoryList" data-ng-class="{'error': TemplateForm.osCategory.$invalid && formSubmitted}" >
+                                        <option value="">Select</option>
+                                    </select>
+                                    <i tooltip="<fmt:message key="template.oscategory.tooltip" bundle="${msg}" />"  class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
+                                    <div class="error-area" data-ng-show="TemplateForm.osCategory.$invalid && formSubmitted" ><i  tooltip="<fmt:message key="template.oscategory.error" bundle="${msg}" />" class="fa fa-warning error-icon"></i></div>
+                                </div>
+                            </div>
+                        </div>
 
 
                     <div class="form-group" ng-class="{

@@ -418,9 +418,24 @@ $scope.template.listAllTemplate = {};
         $scope.edit($stateParams.id)
     }
 
+ 
  $scope.editTemplateContainer = function (size, templateObj){
 	$scope.templates = templateObj;
            appService.dialogService.openDialog("app/views/templates/edit-template.jsp", 'lg', $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
+
+$scope.oscategorys = {};
+    $scope.getOsCategoryList = function() {
+	    var hasOsCategoryList = appService.crudService.listAll("oscategorys/list");
+	    hasOsCategoryList.then(function (result) {
+	    	$scope.formElements.osCategoryList = result;
+	    	angular.forEach($scope.formElements.osCategoryList, function(obj, key) {
+	    		if(obj.id == $scope.templates.osCategory.id) {
+	    			$scope.templates.osCategory = obj;
+	    		}
+	    	});
+	    });
+    }
+$scope.getOsCategoryList();
 
     // Edit the Template
     $scope.update = function (form, template) {
