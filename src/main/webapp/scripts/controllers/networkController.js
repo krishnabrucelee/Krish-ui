@@ -638,6 +638,9 @@ $scope.ipCostList();
                     var hasServer = appService.crudService.add("vpnUser", user);
                     hasServer.then(function(result) {
                         appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.vpnUserAdd, result.uuid, $scope.global.sessionValues.id);
+                        user.userName = "";
+                        user.password = "";
+                        $scope.vpnFormSubmitted = false;
                         $scope.showLoader = false;
                     }).catch(function(result) {
                     });
@@ -1542,7 +1545,7 @@ console.log("obj",obj.lbvm);
         }]
     };
 
- 
+
     $scope.openAddIP = function(size, network) {
         appService.dialogService.openDialog("app/views/cloud/network/acquire-IP.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function($scope, $modalInstance, $rootScope) {
             $scope.acquire = function(network) {
