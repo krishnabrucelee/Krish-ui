@@ -94,6 +94,7 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
         $scope.templateCategory = 'egress';
         $scope.firewallRules = {};
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
+if (!angular.isUndefined($stateParams.id1)) {
         var hasFirewallRuless = appService.crudService.listAllByQuery("egress/firewallrules?network=" + $stateParams.id + "&type=egress", $scope.global.paginationHeaders(pageNumber, limit), {
             "limit": limit
         });
@@ -104,12 +105,17 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
             $scope.paginationObject.currentPage = pageNumber;
             $scope.paginationObject.totalItems = result.totalItems;
         });
+}
     };
+/** if(angular.isUndefined($stateParams.id) {
+	$scope.firewallRulesLists();	
+  });**/
     // Egress Rule List
     $scope.firewallRule = function(pageNumber) {
         $scope.templateCategory = 'firewall';
         $scope.firewallRules = {};
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
+if (!angular.isUndefined($stateParams.id1)) {
         var hasFirewallRuless = appService.crudService.listAllByQuery("egress/firewallrules?network=" + $stateParams.id1 + "&type=ingress", $scope.global.paginationHeaders(pageNumber, limit), {
             "limit": limit
         });
@@ -120,7 +126,11 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
             $scope.paginationObject.currentPage = pageNumber;
             $scope.paginationObject.totalItems = result.totalItems;
         });
+}
     };
+/**if(angular.isUndefined($stateParams.id1) {
+	$scope.firewallRulesLists();	
+  });**/
     // Port forward Rule List
     $scope.portRulesLists = function(pageNumber) {
         $scope.showLoader = true;
@@ -178,7 +188,9 @@ $scope.vmPortId = instance;
     };
     $scope.ipLists = function(pageNumber) {
         $scope.templateCategory = 'ip';
+	//var networkId = $stateParams.id;
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
+if (!angular.isUndefined($stateParams.id)) {
         var hasFirewallRuless = appService.crudService.listAllByQuery("ipAddresses/iplist?network=" + $stateParams.id, $scope.global.paginationHeaders(pageNumber, limit), {
             "limit": limit
         });
@@ -190,7 +202,9 @@ $scope.vmPortId = instance;
             $scope.paginationObject.currentPage = pageNumber;
             $scope.paginationObject.totalItems = result.totalItems;
         });
+}
     };
+
 
    ipCost : {}
 

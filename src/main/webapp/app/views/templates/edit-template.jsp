@@ -155,7 +155,7 @@
                                <div class="row" >
                                 <label class="col-md-3 col-sm-3 col-xs-3 control-label" ><fmt:message key="template.oscategory" bundle="${msg}" /><span class="text-danger">*</span></label>
                                 <div class="col-md-7  col-sm-7 col-xs-7">
-                                    <select required="true" class="form-control input-group" name="osCategory" data-ng-model="templates.osCategory"  value="{{template.osCategory.name}}" ng-options="osCategory.name for osCategory in formElements.osCategoryList" data-ng-class="{'error': uploadTemplateForm.osCategory.$invalid && formSubmitted}" >
+                                    <select required="true" class="form-control input-group" name="osCategory" data-ng-model="templates.osCategory"  value="{{templates.osCategory.name}}" ng-options="osCategory.name for osCategory in formElements.osCategoryList" data-ng-class="{'error': uploadTemplateForm.osCategory.$invalid && formSubmitted}" >
                                         <option value="">Select</option>
                                     </select>
                                     <div class="error-area" data-ng-show="uploadTemplateForm.osCategory.$invalid && formSubmitted" ><i  ng-attr-tooltip="<fmt:message key="template.oscategory.error" bundle="${msg}" />" class="fa fa-warning error-icon"></i></div>
@@ -186,8 +186,8 @@
                              <div class="row">
                                 <label class="col-md-3 col-sm-3 col-xs-3 control-label" ><fmt:message key="template.architecture" bundle="${msg}" /><span class="text-danger">*</span></label>
                                 <div class="col-md-6  col-sm-6 col-lg-6  col-sm-6 col-lg-6">
-                                    <label> <input required="true" icheck type="radio" name= "architecture" ng-checked="template.architecture=='64'" value="64" ng-model="template.architecture"> 64 <fmt:message key="common.bit"  bundle="${msg}" /></label>
-                                    <label  class="m-l-sm"> <input required="true" icheck type="radio" name= "architecture" ng-checked="template.architecture=='32'" value="32" ng-model="template.architecture"> 32 <fmt:message key="common.bit"  bundle="${msg}" /></label>
+                                    <label> <input required="true" icheck type="radio" name= "architecture" ng-checked="templates.architecture=='64'" value="64" ng-model="templates.architecture"> 64 <fmt:message key="common.bit"  bundle="${msg}" /></label>
+                                    <label  class="m-l-sm"> <input required="true" icheck type="radio" name= "architecture" ng-checked="templates.architecture=='32'" value="32" ng-model="templates.architecture"> 32 <fmt:message key="common.bit"  bundle="${msg}" /></label>
                                     <div class="error-area" data-ng-show="uploadTemplateForm.architecture.$invalid && formSubmitted" >
                                     	<i  ng-attr-tooltip="<fmt:message key="template.architecture.error" bundle="${msg}" />" class="fa error-icon"></i>
                                     </div>
