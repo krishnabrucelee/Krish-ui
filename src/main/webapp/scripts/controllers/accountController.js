@@ -315,6 +315,7 @@ function accountListCtrl($scope,$state, $log,$timeout,$stateParams, appService, 
 				        $modalInstance.close();
 				        $scope.list(1);
                     	}).catch(function (result) {
+                            $scope.showLoader = false;
                     		if(!angular.isUndefined(result) && result.data != null) {
 				            $scope.showLoader = false;
 				            angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
@@ -328,7 +329,7 @@ function accountListCtrl($scope,$state, $log,$timeout,$stateParams, appService, 
                     	var key = 'confirmpassword';
                     	$scope.userForm[key].$invalid = true;
                     	$scope.userForm[key].errorMessage = document.getElementById("passwordErrorMessage").value;
-                    	 $scope.showLoader = true;
+                    	 $scope.showLoader = false;
                     }
                 }
             },
