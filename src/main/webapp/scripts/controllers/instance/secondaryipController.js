@@ -7,6 +7,7 @@ angular.module('homer').controller('secondaryIpCtrl', secondaryIpCtrl)
 
 function secondaryIpCtrl($scope, $modal, $state, $window, $stateParams, appService, localStorageService, globalConfig) {
     $scope.nicIPLists = {};
+    $scope.paginationObject = {};
     $scope.nicForm = {};
     $scope.global = appService.globalConfig;
     $scope.sort = appService.globalConfig.sort;
@@ -59,16 +60,22 @@ function secondaryIpCtrl($scope, $modal, $state, $window, $stateParams, appServi
         });
     }
     // Nic List
-    $scope.nicIPList = function() {
+    $scope.nicIPList = function(pageNumber) {
         appService.globalConfig.sort.sortOrder = $scope.paginationObject.sortOrder;
         appService.globalConfig.sort.sortBy = $scope.paginationObject.sortBy;
         $scope.showLoader = true;
         $scope.nic = {};
         var instanceId = $stateParams.id;
         $scope.nicip = $stateParams.id1;
+        var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasNicIP = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbyvminstances?instanceid=" + instanceId + "&lang=" + appService.localStorageService.cookie.get('language') + "&sortBy=" + appService.globalConfig.sort.sortOrder + appService.globalConfig.sort.sortBy);
         hasNicIP.then(function(result) {
             $scope.nicIPLists = result;
+            $scope.showLoader = false;
+            // For pagination
+            $scope.paginationObject.limit = limit;
+            $scope.paginationObject.currentPage = pageNumber;
+            $scope.paginationObject.totalItems = result.totalItems;
             $scope.showLoader = false;
         });
     };
