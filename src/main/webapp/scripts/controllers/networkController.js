@@ -80,9 +80,16 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
             $scope.showLoader = false;
         });
     };
+
     if ($stateParams.id > 0) {
+        $scope.showLoader = true;
+        $scope.showLoaderOffer = true;
+        $state.current.data.pageName = "";
+        $state.current.data.id = "";
         var hasServer = appService.crudService.read("guestnetwork", $stateParams.id);
         hasServer.then(function(result) {
+            $scope.showLoader = false;
+            $scope.showLoaderOffer = false;
             $scope.networkBreadCrumb = result;
             $scope.networkBreadCrumbList = result;
             $state.current.data.pageName = result.name;
