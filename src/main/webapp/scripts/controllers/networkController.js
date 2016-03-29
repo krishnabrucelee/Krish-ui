@@ -128,10 +128,19 @@ if (!angular.isUndefined($stateParams.id1)) {
         });
 }
     };
-/**if(angular.isUndefined($stateParams.id1) {
-	$scope.firewallRulesLists();	
-  });**/
-    // Port forward Rule List
+
+       $scope.portIPList = function(instance) {
+        var instanceId = instance;
+$scope.vmPortId = instance;
+        $scope.selected = instanceId;
+        $scope.instances = instance;
+        var hasPortIP = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbynicandinstances?instanceid=" + instanceId + "&lang=" + appService.localStorageService.cookie.get('language') + "&sortBy=-id");
+        hasPortIP.then(function(result) {
+            $scope.portIPLists = result;
+            $scope.showLoader = false;
+        });
+    };
+
     $scope.portRulesLists = function(pageNumber) {
         $scope.showLoader = true;
         $scope.templateCategory = 'port-forward';
@@ -171,12 +180,21 @@ if (!angular.isUndefined($stateParams.id1)) {
     //$scope.vmLists(1);
 $scope.vmPortId = {};
     $scope.selected = {};
+   $scope.nic ={};
     $scope.nicIPList = function(instance) {
         var instanceId = instance;
 $scope.vmPortId = instance;
         $scope.selected = instanceId;
+	$scope.nic.instance = instanceId;
+        var networkId = $stateParams.id;
+	$scope.nic.network = $stateParams.id;
+	console.log($scope.nic);
         $scope.instances = instance;
-        var hasNicIP = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbyvminstances?instanceid=" + instanceId + "&lang=" + appService.localStorageService.cookie.get('language') + "&sortBy=-id");
+
+ /**var hasStaticNat = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "ipAddresses/nat?ipaddress=" + $scope.staticNat.ipAddressId +
+                        	"&vm=" + $scope.vmId + "&guestip=" + $scope.vmIpAddress + "&type=" + "enable" + "&lang=" + appService.localStorageService.cookie.get('language') + "&sortBy=-id");**/
+
+        var hasNicIP = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbyvminstances?instanceid=" + instanceId + "&networkid=" +networkId+ "&lang=" + appService.localStorageService.cookie.get('language') + "&sortBy=-id");
         hasNicIP.then(function(result) {
             $scope.nicIPLists = result;
             $scope.showLoader = false;
@@ -1397,6 +1415,7 @@ console.log("obj",obj.lbvm);
                         $scope.portForward.vmInstanceId = $scope.vmPortId;
                     $scope.portForward.ipAddressId = $stateParams.id1;
                     $scope.portForward.protocolType = $scope.portForward.protocolType.name;
+			console.log("port",$scope.portforward);
                     var hasPortForward = appService.crudService.add("portforwarding", $scope.portForward);
                     hasPortForward.then(function(result) {
                         appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.portforwardSave, result.uuid, $scope.global.sessionValues.id);
