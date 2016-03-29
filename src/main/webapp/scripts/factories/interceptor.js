@@ -22,6 +22,14 @@ function interceptorAPI($q, globalConfig, $injector) {
         	} else if (response.data != null && response.status !== 401) {
                 if (!angular.isUndefined(response.data.globalError) && response.data.globalError[0] != null) {
                     var msg = response.data.globalError[0];
+                    if (msg.indexOf("in progress")>-1) {
+                       var appService = $injector.get('appService');
+	                    appService.notify({
+	                        message : msg,
+	                        classes : 'alert-info',
+	                        templateUrl : global.NOTIFICATION_TEMPLATE
+	                    });
+                    } else {     
                     var errorList = msg.split(global.TOKEN_SEPARATOR);
                     if(errorList[0] != global.PAGE_ERROR_SEPARATOR) {
 	                    var appService = $injector.get('appService');
@@ -31,6 +39,7 @@ function interceptorAPI($q, globalConfig, $injector) {
 	                        templateUrl : global.NOTIFICATION_TEMPLATE
 	                    });
                     }
+                 }
                 }
             } else if (response.data != null && response.status === 401) {
                 if (!angular.isUndefined(response.data.message) && response.data.message != null) {
