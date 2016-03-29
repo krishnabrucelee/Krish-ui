@@ -33,7 +33,7 @@ function secondaryIpCtrl($scope, $modal, $state, $window, $stateParams, appServi
         $scope.showLoader = true;
         var instanceId = $stateParams.id;
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
-        var hasIPLists = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbyvminstances?instanceid=" + instanceId + "&lang=" + appService.localStorageService.cookie.get('language') + "&sortBy=" + sortOrder + sortBy);
+        var hasIPLists = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbyinstanceid?instanceid=" + instanceId + "&lang=" + appService.localStorageService.cookie.get('language') + "&sortBy=" + sortOrder + sortBy);
         hasIPLists.then(function(result) { // this is only run after $http
             // completes0
             $scope.nicIPLists = result;
@@ -66,7 +66,7 @@ function secondaryIpCtrl($scope, $modal, $state, $window, $stateParams, appServi
         $scope.nic = {};
         var instanceId = $stateParams.id;
         $scope.nicip = $stateParams.id1;
-        var hasNicIP = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbyvminstances?instanceid=" + instanceId + "&lang=" + appService.localStorageService.cookie.get('language') + "&sortBy=" + appService.globalConfig.sort.sortOrder + appService.globalConfig.sort.sortBy);
+        var hasNicIP = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbyinstanceid?instanceid=" + instanceId + "&lang=" + appService.localStorageService.cookie.get('language') + "&sortBy=" + appService.globalConfig.sort.sortOrder + appService.globalConfig.sort.sortBy);
         hasNicIP.then(function(result) {
             $scope.nicIPLists = result;
             $scope.showLoader = false;
@@ -87,7 +87,7 @@ function secondaryIpCtrl($scope, $modal, $state, $window, $stateParams, appServi
                             appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.acquireNewIP, result.uuid, $scope.global.sessionValues.id);
                             $scope.formSubmitted = false;
                             $modalInstance.close();
-                            $scope.nicIPList();
+			           $scope.nicIPList();
                             $scope.showLoader = false;
                         }).catch(function(result) {
                             $scope.showLoader = false;
@@ -119,7 +119,7 @@ function secondaryIpCtrl($scope, $modal, $state, $window, $stateParams, appServi
                     hasServer.then(function(result) {
                         appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.deleteIP, result.uuid, $scope.global.sessionValues.id);
                         $scope.showLoader = false;
-                        $scope.nicIPList();
+			           $scope.nicIPList();
                     }).catch(function(result) {});
                     $modalInstance.close();
                 },
