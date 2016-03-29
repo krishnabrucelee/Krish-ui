@@ -1,3 +1,5 @@
+
+
 /**
  *
  * networkCtrl
@@ -28,6 +30,7 @@ function networkCtrl($scope, $modal, $state, $window, $stateParams,appService) {
     $scope.networkList = [];
     $scope.nic = {};
     $scope.vmIp = {};
+    
 
     $scope.instanceDetails='';
     if ($stateParams.id > 0) {
@@ -43,8 +46,14 @@ function networkCtrl($scope, $modal, $state, $window, $stateParams,appService) {
     $scope.paginationObject = {};
     $scope.networkForm = {};
     $scope.global = appService.crudService.globalConfig;
+    $scope.paginationObject.sortOrder = '+';
+    $scope.paginationObject.sortBy = 'name'; 
+
+
     // Guest Network List
     $scope.list = function (pageNumber) {
+         appService.globalConfig.sort.sortOrder = $scope.paginationObject.sortOrder;
+         appService.globalConfig.sort.sortBy = $scope.paginationObject.sortBy;
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasGuestNetworks = appService.crudService.list("guestnetwork", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
         hasGuestNetworks.then(function (result) {
@@ -112,7 +121,6 @@ function networkCtrl($scope, $modal, $state, $window, $stateParams,appService) {
                         $scope.showLoader = true;
                         var hasServer = appService.crudService.add("nics", $scope.nic);
                         hasServer.then(function (result) {  // this is only run after $http completes
-			appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.addNicToVm,result.id,$scope.global.sessionValues.id);
                         $scope.showLoader = false;
                     	appService.notify({message: 'Attached successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
         			    $state.reload();
@@ -121,7 +129,9 @@ function networkCtrl($scope, $modal, $state, $window, $stateParams,appService) {
                         $scope.instanceNicList();
                }).catch(function (result) {
                         if (!angular.isUndefined(result.data)) {
+				  $scope.showLoader = false;
                              if (result.data.fieldErrors != null) {
+				                       $scope.showLoader = false;
                                 angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
                                     $scope.attachvolumeForm[key].$invalid = true;
                                     $scope.attachvolumeForm[key].errorMessage = errorMessage;
@@ -155,7 +165,6 @@ function networkCtrl($scope, $modal, $state, $window, $stateParams,appService) {
 		     $scope.showLoader = true;
 		     var hasNic = appService.crudService.softDelete("nics", nic);
              hasNic.then(function (result) {
-			appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.removeNicToVM,result.id,$scope.global.sessionValues.id);
 		       $scope.showLoader = false;
                appService.notify({message: 'NIC deleted successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                $modalInstance.close();
@@ -188,7 +197,7 @@ function networkCtrl($scope, $modal, $state, $window, $stateParams,appService) {
                 	$scope.showLoader = true;
                     var hasServer = appService.crudService.update("nics", nic);
                     hasServer.then(function (result) {
-			appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.updateNicToVM,result.id,$scope.global.sessionValues.id);
+			
                        $scope.showLoader = false;
                        appService.notify({message: 'NIC updated successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
               		 	$state.reload();
@@ -213,3 +222,5 @@ function networkCtrl($scope, $modal, $state, $window, $stateParams,appService) {
             }]);
        };
      }
+
+

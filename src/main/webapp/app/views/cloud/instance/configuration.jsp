@@ -78,27 +78,30 @@
 				</div>
 			</div>
 		</div>
-		<div class="row m-b-xl"
-			ng-class="{ 'text-danger' : instanceForm.cpuSpeed.$modelValue <= 1000 && OfferingSubmitted}">
-			<label class="col-md-3 col-sm-3 control-label"><fmt:message key="cpu.speed" bundle="${msg}" /> :</label>
-			<div class="col-md-5 col-sm-5">
-				<rzslider rz-slider-model="instance.computeOffer.cpuSpeed.value"
-					rz-slider-floor="instance.computeOffer.cpuSpeed.floor"
-					rz-slider-ceil="instance.computeOffer.cpuSpeed.ceil"
-					rz-slider-always-show-bar="true"></rzslider>
-			</div>
-			<div class="col-md-3 col-sm-3 digit-2-width">
-				<div class="input-group">
-					<input valid-number
-						data-ng-min="{{ instance.computeOffer.cpuSpeed.floor}}"
-						data-ng-max="{{ instance.computeOffer.cpuSpeed.ceil}}" type="text"
-						class="form-control" name="cpuSpeed"
-						data-ng-model="instance.computeOffer.cpuSpeed.value"> <span
-						class="input-group-addon">MHz</span>
+			<div class="row m-b-xl"
+				data-ng-class="{ 'text-danger' : instanceForm.cpuSpeed.$modelValue < 500 && OfferingSubmitted}">
+				<label class="col-md-3 col-sm-3 control-label"><fmt:message key="cpu.speed" bundle="${msg}" /> :</label>
+				<div class="col-md-5 col-sm-5">
+					<rzslider rz-slider-model="instance.computeOffer.cpuSpeed.value" data-ng-init="instance.computeOffer.cpuSpeed.value = 500"
+						rz-slider-floor="instance.computeOffer.cpuSpeed.floor"
+						rz-slider-ceil="instance.computeOffer.cpuSpeed.ceil"
+						rz-slider-always-show-bar="true">
+
+					</rzslider>
+				</div>
+				<div class="col-md-3 col-sm-3 digit-2-width">
+					<div class="input-group">
+						<input valid-number id="create_instance_compute_offering_cpu_speed"
+							data-ng-min="{{ instance.computeOffer.cpuSpeed.floor}}"
+							data-ng-max="{{ instance.computeOffer.cpuSpeed.ceil}}"
+							type="text" class="form-control" name="cpuSpeed"
+							data-ng-model="instance.computeOffer.cpuSpeed.value"  >
+													<span class="input-group-addon">MHz</span>
+					</div>
+
 				</div>
 			</div>
-		</div>
-		<div class="row m-b-xl" data-ng-show="instance.computeOffering.customizedIops">
+		<%-- <div class="row m-b-xl" data-ng-show="instance.computeOffering.customizedIops">
 			<div class="col-md-5 col-sm-6">
 				<div class="form-group"
 					ng-class="{ 'text-danger' : instanceForm.minIops.$modelValue <= 0 && OfferingSubmitted}">
@@ -121,7 +124,7 @@
 					</div>
 				</div>
 			</div>
-		</div>
+		</div> --%>
 	</div>
 
                         <div class="form-group">
@@ -140,7 +143,9 @@
                                  <get-loader-image data-ng-show="showLoader"></get-loader-image>
 
                                 <a class="btn btn-default" data-ng-hide="showLoader" ui-sref="cloud.list-instance"><fmt:message key="common.cancel" bundle="${msg}" /></a>
-                                <button class="btn btn-info" data-ng-hide="showLoader" type="submit"  ><fmt:message key="common.resize" bundle="${msg}" /></button>
+                                <button data-ng-class = "(instances.status == 'STOPPED') ? 'btn btn-info' : 'btn btn-disable'" data-ng-disabled="instances.status != 'STOPPED'" href="javascript:void(0);" data-ng-hide="showLoader" type="submit"  ><fmt:message key="common.resize" bundle="${msg}" /></button>
+
+
                             </div>
                         </div>
                     </form>
@@ -200,13 +205,12 @@
 	                             <b>{{instanceForm.computeOffering.$viewValue.name}}</b>
 	                             <div>
 	                                 <input type="hidden" readonly="readonly" data-ng-model= "computeOfferCostSum" data-ng-bind= "computeOfferCostSum = (instance.computeOffering.computeCost[0].instanceRunningCostIops + instance.computeOffering.computeCost[0].instanceRunningCostMemory
-				    + instance.computeOffering.computeCost[0].instanceRunningCostVcpu + instance.computeOffering.computeCost[0].instanceStoppageCostIops
-				    + instance.computeOffering.computeCost[0].instanceStoppageCostMemory + instance.computeOffering.computeCost[0].instanceStoppageCostVcpu + instance.computeOffering.computeCost[0].instanceStoppageCostPerMhz
+				    + instance.computeOffering.computeCost[0].instanceRunningCostVcpu
 				    + (instance.computeOffering.computeCost[0].instanceRunningCostPerMB > 0 ? (instance.computeOffer.memory.value * instance.computeOffering.computeCost[0].instanceRunningCostPerMB) : 0)
 				    + (instance.computeOffering.computeCost[0].instanceRunningCostPerVcpu > 0 ? (instance.computeOffer.cpuCore.value * instance.computeOffering.computeCost[0].instanceRunningCostPerVcpu) : 0)
 				    + (instance.computeOffering.computeCost[0].instanceRunningCostPerMhz > 0 ? (instance.computeOffer.cpuSpeed.value * instance.computeOffering.computeCost[0].instanceRunningCostPerMhz) : 0))" />
 				<span data-ng-show="computeOfferCostSum > 0" class="text-danger price-text">
-	                                     <app-currency></app-currency>{{computeOfferCostSum/30 | number:2 }}<span> / <fmt:message key="common.day" bundle="${msg}" /></span>
+	                                     <app-currency></app-currency>{{computeOfferCostSum/30 | number:4 }}<span> / <fmt:message key="common.day" bundle="${msg}" /></span>
 	                                 </span>
 	                                 <span data-ng-hide="computeOfferCostSum > 0" class="font-bold text-success pricing-text">
 	                                     <fmt:message key="free" bundle="${msg}" />
@@ -214,7 +218,7 @@
 	                             </div>
 	                             <div>
 	                                 <small data-ng-show="computeOfferCostSum > 0" class="text-muted">
-	                                     (<app-currency></app-currency>{{computeOfferCostSum | number:2 }} / <fmt:message key="common.month" bundle="${msg}" />)
+	                                     (<app-currency></app-currency>{{computeOfferCostSum | number:4 }} / <fmt:message key="common.month" bundle="${msg}" />)
 	                                 </small>
 	                             </div>
 	                         </td>
@@ -225,4 +229,122 @@
 	       </div>
         </div>
     </div>
+
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <h4>
+               <fmt:message key="add.ssh.key.pair" bundle="${msg}" />
+            </h4>
+            <hr class="m-t-xs">
+        </div>
+    </div>
+
+      <div class="row">
+        <div class="col-md-7 col-sm-7 col-xs-12">
+
+            <div class="row m-t-md">
+                <div class="col-md-10 col-sm-10 col-xs-10">
+
+                    <form name="resetForm" data-ng-submit="resetKey(resetForm, resetSSH)" method="post" novalidate class="form-horizontal">
+                        <div class="form-group" ng-class="{ 'text-danger' : resetForm.keypairName.$invalid && formSubmitted}">
+                            <label class="col-sm-4 control-label"><fmt:message key="select.the.key.pair" bundle="${msg}" />
+                                <span class="text-danger">*</span>
+                            </label>
+                            <div class="col-sm-5">
+                                <select required="true" class="form-control input-group" name="keypairName"
+                                        data-ng-model="resetSSH.keypairName" data-ng-class="{'error': resetForm.keypairName.$invalid && formSubmitted}"
+                                        data-ng-options="keypairName.name for keypairName in formElements.sshKeyList" >
+                                    <option value="">Select</option>
+                                </select>
+                                <div class="error-area" data-ng-show="resetForm.keypairName.$invalid && formSubmitted" ><i  tooltip="keypair.is.required" class="fa fa-warning error-icon"></i></div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label"><fmt:message key="note" bundle="${msg}" /></label>
+                            <div class="col-sm-8">
+                                <div class="well">
+                                   1.<fmt:message key="note.reset.ssh.key" bundle="${msg}" /><br>
+                                   2.<fmt:message key="add.ssh.key.vm.note" bundle="${msg}" /><br>
+                                   3.<fmt:message key="add.ssh.key.vm.note.for.instance" bundle="${msg}" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-8 col-sm-offset-4">
+                                <get-loader-image data-ng-if="showLoader"></get-loader-image>
+                                <button type="button" data-ng-if="!showLoader" class="btn btn-default " ui-sref="cloud.list-instance"><fmt:message key="common.cancel" bundle="${msg}" /></button>
+			                    <button data-ng-class = "(instances.status == 'STOPPED' && instances.template.osCategory.name != 'Windows') ? 'btn btn-info' : 'btn btn-disable'" data-ng-disabled="instances.status != 'STOPPED' || instances.template.osCategory.name == 'Windows'" href="javascript:void(0);" data-ng-hide="showLoader" type="submit"  ><fmt:message key="common.ok" bundle="${msg}" /></button>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5">
+
+        </div>
+    </div>
+
+<%--        <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <h4>
+               <fmt:message key="affinity.group" bundle="${msg}" /> (<fmt:message key="optional" bundle="${msg}" />)
+            </h4>
+            <hr class="m-t-xs">
+        </div>
+    </div> --%>
+<%--
+    <div class="row">
+        <div class="col-md-7 col-sm-7 col-xs-12">
+
+            <div class="row m-t-md">
+                <div class="col-md-10 col-sm-10 col-xs-10">
+
+                    <form name="affinityForm" method="POST" data-ng-submit="saveAffinity(affinityForm)" novalidate class="form-horizontal">
+                        <div class="form-group" ng-class="{ 'text-danger' : affinityForm.group.$invalid && affinitySubmitted}">
+                            <label class="col-sm-4 control-label"><fmt:message key="select.group" bundle="${msg}" />
+                                <span class="text-danger">*</span>
+                            </label>
+                            <div class="col-sm-5">
+                                <select required="true" class="form-control input-group" name="group"
+                                        data-ng-model="affinity.group" data-ng-class="{'error': affinityForm.group.$invalid && affinitySubmitted}"
+                                        data-ng-options="group.name for group in affinityElements.groupList" >
+                                    <option value="">Select</option>
+                                </select>
+                                <div class="error-area" data-ng-show="affinityForm.group.$invalid && affinitySubmitted" ><i  tooltip="Group is required" class="fa fa-warning error-icon"></i></div>
+                            </div>
+                            <div class="col-sm-3">
+                                <a class="btn btn-info" data-ng-click="addAffinityGroup('md')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="add.new.affinity" bundle="${msg}" /></a>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label"><fmt:message key="note" bundle="${msg}" /></label>
+                            <div class="col-sm-8">
+                                <div class="well">
+                                   <fmt:message key="your.instance.must.be.stopped.before.attempting.to.change.the.affinity.group" bundle="${msg}" />
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-8 col-sm-offset-4">
+                                <a class="btn btn-default"  ui-sref="cloud.list-instance"><fmt:message key="common.cancel" bundle="${msg}" /></a>
+                                <button data-ng-class = "(instances.status == 'STOPPED') ? 'btn btn-info' : 'btn btn-disable'" data-ng-disabled="instances.status != 'STOPPED'" href="javascript:void(0);" data-ng-hide="showLoader" type="submit"  ><fmt:message key="common.ok" bundle="${msg}" /></button>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5">
+
+        </div>
+    </div> --%>
 </div>

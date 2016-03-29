@@ -1,5 +1,5 @@
 <form name="archiveForm" method="POST" data-ng-submit="save(archiveForm)" novalidate  data-ng-controller="archiveCtrl">
-    <div class="inmodal" > 
+    <div class="inmodal" >
         <div class="modal-header">
             <panda-modal-header page-icon="fa fa-file-archive-o"  page-title="{{ modalTitle}}"></panda-modal-header>
 
@@ -9,7 +9,7 @@
                 <div class="col-md-12">
                     <div class="form-group" ng-class="{'text-danger': archiveForm.type.$invalid && formSubmitted}">
                         <div class="row">
-                            <label  class="col-md-3 col-xs-12 col-sm-2 control-label">By type 
+                            <label  class="col-md-3 col-xs-12 col-sm-2 control-label">By Type
                             </label>
                             <div class="col-md-5 col-xs-12 col-sm-5">
                                 <input required="true" type="text" name="type" data-ng-class="{'error': archiveForm.type.$invalid && formSubmitted}" data-ng-model="activity.type" class="form-control" >
@@ -19,7 +19,7 @@
                     </div>
                     <div class="form-group" ng-class="{'text-danger': archiveForm.startDate.$invalid && formSubmitted}">
                         <div class="row">
-                            <label  class="col-md-3 col-xs-12 col-sm-2 control-label">By date (Start) 
+                            <label  class="col-md-3 col-xs-12 col-sm-2 control-label">By date (Start)
                             </label>
                             <div class="col-md-5 col-xs-12 col-sm-5 ">
 
@@ -37,7 +37,7 @@
                     </div>
                     <div class="form-group" ng-class="{'text-danger': archiveForm.endDate.$invalid && formSubmitted}">
                         <div class="row">
-                            <label  class="col-md-3 col-xs-12 col-sm-2 control-label">By date (End) 
+                            <label  class="col-md-3 col-xs-12 col-sm-2 control-label">By date (End)
                             </label>
                             <div class="col-md-5 col-xs-12 col-sm-5">
                                 <div class="input-group">

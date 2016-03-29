@@ -30,14 +30,14 @@
 							<div class="m-b-sm">
 							 <span class=" "><fmt:message key="common.architecture" bundle="${msg}" />: </span>
 						    </div>
-								  <label class=" "> <input icheck type="radio" id="create_instance_iso_architecture_radio_button"
+								  <div class="test_create_instance_iso_architecture_32 pull-left"> <input icheck type="radio" id="create_instance_iso_architecture_32_radio_button"
 									data-ng-model="instance.architecture" value="32" ng-change="getIsoByFilters()" name="architecture">
-									32Bit
-								 </label>
-								 <label class=" "> <input icheck type="radio" id="create_instance_iso_architecture_radio_button"
+									<label>32Bit</label>
+								 </div>
+								 <div class="test_create_instance_iso_architecture_64 pull-left m-l-sm"> <input icheck type="radio" id="create_instance_iso_architecture_64_radio_button"
 									data-ng-model="instance.architecture" value="64" ng-change="getIsoByFilters()" name="architecture">
-									64Bit
-								</label>
+									<label>64Bit</label>
+								</div>
 						</div>
 						</div>
 						<div class= "col-md-4 col-sm-4 m-t-sm">
@@ -91,7 +91,7 @@
 											</div>
 											 <div class="col-md-8 col-sm-8"><label class="col-md-11 col-sm-11">{{templateObj.name}}</label><span class="col-md-11 col-sm-11">{{templateObj.displayText}}</span></div>
 											 <div class="col-md-1 col-sm-1">
-													<div class="form-group">
+													<div class="form-group" id="create_instance_iso_unique_{{templateObj.id}}"  data-unique-field="{{ templateObj.name }}-{{ templateObj.architecture}}-{{templateObj.osVersion}}" class="test_create_instance__iso_unique">
 															<label class=" "> <input icheck type="radio" id="create_instance_iso_radio_button_{{templateObj.id}}" data-ng-model="instance.template.id" name="template" data-ng-value="{{templateObj.id}}" data-ng-checked="instance.template.id===templateObj.id">
 															</label>
 													</div>

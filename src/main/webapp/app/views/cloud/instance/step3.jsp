@@ -3,7 +3,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<head>
 
+   <link rel="stylesheet" href="scripts/test/select2.css">
+	<link rel="stylesheet" href="scripts/test/select2-bootstrap.css">
+</head>
+<body>
     <div data-ng-if= "showLoaderDetail" style="margin: 40%">
       <get-loader-image-detail data-ng-show="showLoaderDetail"></get-loader-image-detail>
       </div>
@@ -36,13 +41,18 @@
 						key="common.domain" bundle="${msg}" /><span title="<fmt:message key="common.required" bundle="${msg}" />"
 					class="text-danger font-bold">*</span></span>
 			</div>
-			<div class="col-md-6 col-xs-6 col-sm-6">
+			<div class="col-md-6 col-xs-6 col-sm-6" >
 					<div  data-ng-class="{'error': !instance.domain && templateFormSubmitted}" custom-select="t as t.name for t in formElements.domainList | filter: { name: $searchTerm }" id="create_instance_domain" data-ng-model="instance.domain" data-ng-change="changedomain(instance.domain)">
 						<div class="pull-left">
 						<strong>{{ t.name }}</strong><br />
 						</div>
 						<div class="clearfix"></div>
 						</div>
+
+						<!-- <select required="true" data-ng-class="{'error': !instance.domain && templateFormSubmitted}" onmouseover="loadSelect2()"  id="create_instance_domain" class="form-control input-sm select2 mandatory-select" data-ng-options="t as t.name for t in formElements.domainList | filter: { name: $searchTerm }" data-ng-change="changedomain(instance.domain)" data-ng-model="instance.domain">
+						<strong>{{t.name }}</strong>
+  	                    </select> -->
+
 				<i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"
 					tooltip="<fmt:message key="choose.domain" bundle="${msg}" />"></i>
 				<div class="error-area"
@@ -70,13 +80,16 @@
 						key="department.name" bundle="${msg}" /><span title="<fmt:message key="common.required" bundle="${msg}" />"
 					class="text-danger font-bold">*</span></span>
 			</div>
-			<div class="col-md-6 col-xs-6 col-sm-6">
-						<div  data-ng-class="{'error': !instance.department && instance.department==null && templateFormSubmitted}" custom-select="t as t.userName for t in formElements.departmenttypeList | filter: { name: $searchTerm }" id="create_instance_department" ng-model="instance.department" data-ng-change="changedepartment(instance.department)">
+			<div class="col-md-6 col-xs-6 col-sm-6" >
+						<div  data-ng-class="{'error': !instance.department && instance.department==null && templateFormSubmitted}" custom-select="t as t.userName for t in formElements.departmenttypeList | filter: { userName: $searchTerm }" id="create_instance_department" ng-model="instance.department" data-ng-change="changedepartment(instance.department)">
 						<div class="pull-left">
 						<strong>{{ t.userName }}</strong><br />
 						</div>
 						<div class="clearfix"></div>
 						</div>
+						<!-- <select required="true" onmouseover="loadSelect2()" data-ng-class="{'error': !instance.department && instance.department==null && templateFormSubmitted}" id="create_instance_department" class="form-control input-sm select2" data-ng-options="t as t.userName for t in formElements.departmenttypeList | filter: { userName: $searchTerm }" data-ng-change="changedepartment(instance.department)" data-ng-model="instance.department">
+						<strong>{{t.name }}</strong>
+  	                    </select> -->
 				<i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"
 					tooltip="<fmt:message key="department.name" bundle="${msg}" />"></i>
 				<div class="error-area"
@@ -106,13 +119,16 @@
 						bundle="${msg}" /><span title="<fmt:message key="common.required" bundle="${msg}" />"
 					class="text-danger font-bold">*</span></span>
 			</div>
-			<div class="col-md-6 col-xs-6 col-sm-6">
+			<div class="col-md-6 col-xs-6 col-sm-6" >
 					<div  data-ng-class="{'error': !instance.instanceOwner && templateFormSubmitted}" custom-select="t as t.userName for t in formElements.instanceOwnerList | filter: { userName: $searchTerm }" id="create_instance_instance_owner" ng-model="instance.instanceOwner" data-ng-change="changeinstanceowner(instance.instanceOwner)" >
 						<div class="pull-left">
 						<strong>{{ t.userName }}</strong><br />
 						</div>
 						<div class="clearfix"></div>
 						</div>
+					<!-- 	<select required="true" onmouseover="loadSelect2()"  data-ng-class="{'error': !instance.instanceOwner && templateFormSubmitted}" id="create_instance_instance_owner" class="form-control input-sm select2" data-ng-options="t as t.userName for t in formElements.instanceOwnerList | filter: { userName: $searchTerm }" data-ng-change="changeinstanceowner(instance.instanceOwner)" data-ng-model="instance.instanceOwner">
+						<strong>{{t.name }}</strong>
+  	                    </select> -->
 				<li class="selectlist" ng-repeat="item in search.users" style = "list-style:none;padding: 5px;"><a  data-ng-click="setUser(item)" >{{ item.userName }}</a></li>
 			</ul>
 				<i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"
@@ -188,36 +204,19 @@
 			<div class="col-md-6 col-xs-6 col-sm-6"><!--
 				<input type="text" name="project" data-ng-model="instance.projct"
 					class="form-control col-md-4" autofocus autocomplete="off"> -->
-						<div  custom-select="t as t.name for t in formElements.projecttypeList | filter: { name: $searchTerm }" id="create_instance_project" data-ng-model="instance.project" data-ng-change="changeproject(instance.project)">
+						<!-- <div  custom-select="t as t.name for t in formElements.projecttypeList | filter: { name: $searchTerm }" id="create_instance_project" data-ng-model="instance.project" data-ng-change="changeproject(instance.project)">
 
 						<div class="pull-left">
 						<strong>{{t.name }}</strong>
 						<br />
 						</div>
 						<div class="clearfix"></div>
-						</div>
-<!--
-				<ul data-ng-show="search.projects.length > 0" style = "padding: 10px; z-index:1000; width: 83%; margin-left:1px; height:150px; overflow:scroll; overflow-x:hidden; background: #FFF none repeat scroll 0% 0%; box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3); margin-bottom: 30px; position:absolute; margin-top:30px;">
-				<li ng-repeat="item in search.projects" style = "list-style:none;padding: 5px;"><a  data-ng-click="setProject(item)" >{{ item.name }}</a></li>
-				</ul> -->
+						</div> -->
+						<select onmouseover="loadSelect2()" id="create_instance_project" class="form-control input-sm select2" data-ng-options="t as t.name for t in formElements.projecttypeList | filter: { name: $searchTerm }" data-ng-change="changeproject(instance.project)" data-ng-model="instance.project">
+						<strong>{{t.name }}</strong>
+  	                    </select>
+
 				<i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="<fmt:message key="name.of.the.project" bundle="${msg}" />"></i>
-			</div>
-		</div>
-		<div class="row  form-group">
-			<div class="col-md-5 col-xs-5 col-sm-5">
-
-				<span class="control-label"><fmt:message key="ssh.key.pair" bundle="${msg}" /></span>
-			</div>
-			<div class="col-md-6 col-xs-6 col-sm-6">
-						<div  custom-select="t as t.name for t in formElements.sshKeyList | filter: { name: $searchTerm }" id="create_instance_ssh_key" data-ng-model="instance.sshkey">
-
-						<div class="pull-left">
-						<strong>{{t.name }}</strong>
-						<br />
-						</div>
-						<div class="clearfix"></div>
-						</div>
-				<i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="<fmt:message key="ssh.key.pair" bundle="${msg}" />"></i>
 			</div>
 		</div>
 		<div class="h-90"></div>
@@ -226,3 +225,7 @@
 			<button type="submit" id="create_instance_next_button" class="btn btn-info"><fmt:message key="common.next" bundle="${msg}" /></button>
 		</div>
 	</div>
+	<script src="scripts/test/select2.js"></script>
+	<select2></select2>
+
+</body>

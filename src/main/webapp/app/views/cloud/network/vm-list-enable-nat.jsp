@@ -44,8 +44,8 @@ pageEncoding="UTF-8"%>
                         <td>
                             <a class="text-info" >{{ instancesList.name }}</a>
                              <div  data-ng-if="selected === instancesList.id" >
-                             <select  data-ng-show="selected == instancesList.id" required="true" class="form-control input-group" name="ipAddress" data-ng-model="ipAddress" data-ng-change = "instanceLists.ipAddress.guestIpAddress = ipAddress.guestIpAddress"   data-ng-options="ipAddress.guestIpAddress for ipAddress in nicIPLists">
-                             <option value="">{{instancesList.ipAddress}} (Primary)</option>
+                             <select  data-ng-if="selected == instancesList.id" required="true" class="form-control input-group" name="ipAddress" data-ng-model="ipAddress" data-ng-change = "instanceLists.ipAddress.guestIpAddress = ipAddress.guestIpAddress"   data-ng-options="ipAddress.guestIpAddress for ipAddress in nicIPLists">
+                             <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
                              </select>
 
                              </div>
@@ -62,7 +62,8 @@ pageEncoding="UTF-8"%>
                          <td>
                             <label class="">
                                  <div  style="position: relative;" >
-                                     <input type="radio" icheck data-ng-model="port" name="name" data-ng-value="{{instancesList.id}}" data-ng-change="nicIPList(instancesList)"  >
+                                  <input type="radio" icheck name="select" data-ng-model="instancesList.port" data-ng-value="true" data-ng-change="nicIPList(instancesList.id)"  >
+                                     <!-- <input type="radio" icheck data-ng-model="port" name="name" data-ng-value="{{instancesList.id}}" data-ng-change="nicIPList(instancesList.id)"  > -->
                                  </div>
                             </label>
 
@@ -78,6 +79,6 @@ pageEncoding="UTF-8"%>
       <div class="modal-footer">
 			<get-loader-image data-ng-show="showLoader"></get-loader-image>
             <a class="btn btn-default" data-ng-hide="showLoader" data-ng-click="cancel()"><fmt:message key="common.cancel" bundle="${msg}" /></a>
-            <a class="btn btn-info" data-ng-hide="showLoader" type="submit" data-ng-click="enableStaticNatSave(instances)"><fmt:message key="common.add" bundle="${msg}" /></a>
+            <a class="btn btn-info" data-ng-hide="showLoader" type="submit" data-ng-click="enableStaticNatSave(portvmList)"><fmt:message key="common.add" bundle="${msg}" /></a>
       </div>
   </div>

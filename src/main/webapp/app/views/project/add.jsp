@@ -5,7 +5,7 @@
 
     <div class="inmodal" data-ng-controller="projectCtrl">
         <div class="modal-header">
-            <panda-modal-header page-icon="fa fa-plus-circle" page-title="<fmt:message key="add.project" bundle="${msg}" />"></panda-modal-header>
+            <panda-modal-header id="add_project_page_title" page-icon="fa fa-plus-circle" page-title="<fmt:message key="add.project" bundle="${msg}" />"></panda-modal-header>
 
         </div>
         <div class="modal-body">
@@ -19,7 +19,7 @@
                                 <span class="text-danger">*</span>
                             </label>
                             <div class="col-md-5 col-xs-12 col-sm-5">
-                                <input required="true" type="text" name="name" data-ng-model="newProject.name" class="form-control" data-ng-class="{'error': projectForm.name.$invalid && formSubmitted}">
+                                <input required="true" id="add_project_name" type="text" name="name" data-ng-model="newProject.name" class="form-control" data-ng-class="{'error': projectForm.name.$invalid && formSubmitted}">
                                 <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="<fmt:message key="name.of.the.project" bundle="${msg}" />" ></i>
                                 <div class="error-area" data-ng-show="projectForm.name.$invalid && formSubmitted" ><i  ng-attr-tooltip="{{ projectForm.name.errorMessage || '<fmt:message key="project.name.is.required" bundle="${msg}" />' }}"  class="fa fa-warning error-icon"></i></div>
                             </div>
@@ -30,7 +30,7 @@
                         <div class="row">
                             <label class="col-md-3 col-xs-12 col-sm-3 control-label"><fmt:message key="common.description" bundle="${msg}" /><span class="m-l-xs"></span></label>
                             <div class="col-md-5 col-xs-12 col-sm-5">
-                                <textarea name="description" data-ng-model="newProject.description" class="form-control"></textarea>
+                                <textarea name="description" id="add_project_description" data-ng-model="newProject.description" class="form-control"></textarea>
                             </div>
 
                         </div>
@@ -40,7 +40,7 @@
 	                        <div class="row">
 	                            <label class="col-md-3 col-xs-12 col-sm-3 control-label control-normal"><fmt:message key="common.domain" bundle="${msg}" /><span class="text-danger">*</span></label>
 	                            <div class="col-md-7  col-sm-7 col-xs-12">
-	                                <select required="true" class="form-control input-group" name="domain" data-ng-model="newProject.domain" ng-options="domain.name for domain in formElements.domainList" data-ng-class="{'error': projectForm.domain.$invalid && formSubmitted}" >
+	                                <select required="true" id="add_project_domain" class="form-control input-group" name="domain" data-ng-model="newProject.domain" ng-options="domain.name for domain in formElements.domainList" data-ng-class="{'error': projectForm.domain.$invalid && formSubmitted}" >
 	                                    <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
 	                                </select>
 	                                <i  tooltip="<fmt:message key="choose.domain" bundle="${msg}" /> " class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
@@ -54,7 +54,7 @@
                             <div class="row">
                                 <label class="col-md-3 col-sm-3 control-label control-normal"><fmt:message key="common.department" bundle="${msg}" /><span class="text-danger">*</span></label>
                                 <div class="col-md-7  col-sm-7 col-xs-7">
-                                    <select required="true" class="form-control input-group" name="department" data-ng-model="newProject.department" data-ng-class="{'error': projectForm.department.$invalid && formSubmitted}" data-ng-options="department.userName for department in formElements.departmenttypeList" data-ng-class="{'error':  projectForm.department.$invalid && formSubmitted}" >
+                                    <select required="true" id="add_project_department" class="form-control input-group" name="department" data-ng-model="newProject.department" data-ng-class="{'error': projectForm.department.$invalid && formSubmitted}" data-ng-options="department.userName for department in formElements.departmenttypeList" data-ng-class="{'error':  projectForm.department.$invalid && formSubmitted}" >
                                         <option value="">Select</option>
 
                                     </select>
@@ -84,7 +84,7 @@
                                 <span class="text-danger">*</span>
                             </label>
                             <div class="col-md-7 col-xs-7 col-sm-5">
-                                <select required="true" class="form-control input-group" name="projectOwner"
+                                <select required="true" class="form-control input-group" name="projectOwner" id="add_project_project_owner"
                                         data-ng-model="newProject.projectOwner" data-ng-class="{'error': projectForm.projectOwner.$invalid && formSubmitted}"
                                         data-ng-options="projectOwner.userName group by projectOwner.group for projectOwner in projectElements.projectOwnerList" >
                                     <option value="">Select a user</option>
@@ -99,9 +99,9 @@
                     <div class="row">
                         <div class="col-md-12">
                             <span class="pull-right">
-                                <a class="btn btn-default" data-ng-if="!projectLoader" data-ng-click="cancel()"><fmt:message key="common.cancel" bundle="${msg}" /></a>
+                                <a class="btn btn-default" id = "add_project_cancel_button" data-ng-if="!projectLoader" data-ng-click="cancel()"><fmt:message key="common.cancel" bundle="${msg}" /></a>
                                  <img src="images/loading-bars.svg" data-ng-if="projectLoader" width="30" height="30" />
-                                <button class="btn btn-info"  data-ng-if="!projectLoader"  type="submit"><fmt:message key="common.add" bundle="${msg}" /></button>
+                                <button class="btn btn-info"  id = "add_project_add_button" data-ng-if="!projectLoader"  type="submit"><fmt:message key="common.add" bundle="${msg}" /></button>
                             </span>
                         </div>
 
@@ -160,8 +160,8 @@
                 <div class="row">
                     <div class="col-md-12">
                         <span class="pull-right">
-                            <a class="btn btn-default"  data-ng-click="cancel()"><fmt:message key="common.cancel" bundle="${msg}" /></a>
-                            <a class="btn btn-info"  data-ng-click="projectElements.projectStep =!projectElements.projectStep"><fmt:message key="common.back" bundle="${msg}" /></a>
+                            <a class="btn btn-default" id = "add_project_cancel_button"  data-ng-click="cancel()"><fmt:message key="common.cancel" bundle="${msg}" /></a>
+                            <a class="btn btn-info" id = "add_project_back_button"  data-ng-click="projectElements.projectStep =!projectElements.projectStep"><fmt:message key="common.back" bundle="${msg}" /></a>
                         </span>
                     </div>
 

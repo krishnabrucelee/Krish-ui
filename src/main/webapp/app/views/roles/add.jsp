@@ -140,7 +140,7 @@
 
 	                	<div   class="col-md-4 col-sm-4 col-lg-4" ng-repeat="permission in module">
 	                    	<div class="row" data-ng-hide = "showLoader" >
-	                        	<label> <input id="add_role_permission_{{permission.id}}" class="test_add_role_permission" type="checkbox" ng-model="permissionList[permission.id]" data-ng-click="checkOne(permission, module)">  <span class="m-l-sm font-normal">{{permission.action}}</span></label>
+	                        	<label> <input id="add_role_permission_{{permission.id}}" data-unique-field="{{module[0].description}}-{{permission.action}}" class="test_add_role_permission" type="checkbox" ng-model="permissionList[permission.id]" data-ng-click="checkOne(permission, module)">  <span class="m-l-sm font-normal">{{permission.action}}</span></label>
 	                        </div>
                         </div>
                     </div>

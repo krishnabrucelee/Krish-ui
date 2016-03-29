@@ -6,41 +6,57 @@ pageEncoding="UTF-8"%>
 <div ui-view >
     <div  data-ng-controller="volumeCtrl">
         <div class="hpanel">
-            <div class="panel-heading">
+            <div class="panel-heading no-padding">
                 <div class="row">
                     <div class="col-md-12 col-sm-12 col-xs-12 ">
                         <div class="pull-left">
-                            <div class="dashboard-box pull-left dashboard-box-pad">
-                                <span class="pull-right"><fmt:message key="total.volume" bundle="${msg}" /></span>
-                                <div class="clearfix"></div>
-                                <span class="pull-left m-t-xs"><img src="images/volume-icon.png"></span>
-                                <b class="pull-right">{{attachedCount + detachedCount}}</b>
-                                <div class="clearfix"></div>
+                            <div class="dashboard-box pull-left">
+	                            <div class="instance-border-content-normal">
+	                            	<span class="pull-left"><img src="images/volume-icon.png"></span>
+	                                <span class="pull-left m-t-xs m-l-xs m-r-xs"><fmt:message key="total.volume" bundle="${msg}" /></span>
+
+	                                <b class="pull-left">{{volumeList.Count}}</b>
+	                                <div class="clearfix"></div>
+                                </div>
                             </div>
-                            <div class="dashboard-box pull-left  dashboard-box-pad">
-                                <span class="pull-right"><fmt:message key="attached.volume" bundle="${msg}" /></span>
-                                <div class="clearfix"></div>
-                                <span class="pull-left m-t-xs"><img src="images/volume-icon.png"></span>
-                                <b class="pull-right">{{attachedCount}}</b>
-                                <div class="clearfix"></div>
+                            <div class="dashboard-box pull-left">
+                            	<div class="instance-border-content-normal">
+                            		<span class="pull-left"><img src="images/volume-icon.png"></span>
+	                                <span class="pull-left m-t-xs m-l-xs m-r-xs"><fmt:message key="attached.volume" bundle="${msg}" /></span>
+
+	                                <b class="pull-left">{{attachedCount}}</b>
+	                                <div class="clearfix"></div>
+                                </div>
                             </div>
-                            <div class="dashboard-box pull-left dashboard-box-pad">
-                                <span class="pull-right"><fmt:message key="detached.volume" bundle="${msg}" /></span>
-                                <div class="clearfix"></div>
-                                <span class="pull-left m-t-xs"><img src="images/volume-icon.png"></span>
-                                <b class="pull-right">{{detachedCount}}</b>
-                                <div class="clearfix"></div>
+                            <div class="dashboard-box pull-left">
+	                            <div class="instance-border-content-normal">
+	                            	<span class="pull-left"><img src="images/volume-icon.png"></span>
+	                                <span class="pull-left m-t-xs m-l-xs m-r-xs"><fmt:message key="detached.volume" bundle="${msg}" /></span>
+
+	                                <b class="pull-left">{{detachedCount}}</b>
+	                                <div class="clearfix"></div>
+                                </div>
                             </div>
+                            <a class="btn btn-info" has-permission="UPLOAD_VOLUME" data-ng-click="uploadVolumeCtrl('md')"><span class="pe-7s-cloud-upload pe-lg font-bold m-r-xs"></span> <fmt:message key="upload.volume" bundle="${msg}" /></a>
+                                <a class="btn btn-info" has-permission="ADD_VOLUME" data-ng-click="addVolume('md')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span>  <fmt:message key="common.add" bundle="${msg}" /></a>
+                                <a class="btn btn-info" ui-sref="cloud.list-volume" title="<fmt:message key="common.refresh" bundle="${msg}" />" ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
                         </div>
                         <div class="pull-right">
                             <panda-quick-search></panda-quick-search>
+                            <span class="pull-right m-r-sm" data-ng-show="global.sessionValues.type == 'ROOT_ADMIN'">
+								<select
+									class="form-control input-group col-xs-5" name="domainView"
+									data-ng-model="domainView"
+									data-ng-change="selectDomainView(1)"
+									data-ng-options="domainView.name for domainView in volumeElement.domainList">
+									<option value="">All Domain</option>
+								</select>
+							</span>
                             <div class="clearfix"></div>
                             <span class="pull-right m-l-sm m-t-sm">
 <%--                             	<a class="btn btn-info" data-ng-click="uploadVolumeFromLocalCtrl('md')"><span class="pe-7s-cloud-upload pe-lg font-bold m-r-xs"></span> <fmt:message key="upload.volume.from.local" bundle="${msg}" /></a> --%>
 <%-- 								<a class="btn btn-info" ><span class="pe-7s-cloud-upload pe-lg font-bold m-r-xs"></span> <fmt:message key="upload.volume.from.local" bundle="${msg}" /></a>
- --%>                                <a class="btn btn-info" has-permission="UPLOAD_VOLUME" data-ng-click="uploadVolumeCtrl('md')"><span class="pe-7s-cloud-upload pe-lg font-bold m-r-xs"></span> <fmt:message key="common.upload" bundle="${msg}" /></a>
-                                <a class="btn btn-info" has-permission="ADD_VOLUME" data-ng-click="addVolume('md')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span>  <fmt:message key="add.volume" bundle="${msg}" /></a>
-                                <a class="btn btn-info" ui-sref="cloud.list-volume" title="<fmt:message key="common.refresh" bundle="${msg}" />" ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
+ --%>
                             </span>
                         </div>
                     </div>
@@ -57,19 +73,24 @@ pageEncoding="UTF-8"%>
                         <table cellspacing="1" cellpadding="1" class="table dataTable table-bordered table-striped">
                             <thead>
                                <tr>
-                            	    <th  data-ng-click="changeSorting('name')" data-ng-class="sort.descending && sort.column =='name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.name" bundle="${msg}" /></th>
-                            	    <th  data-ng-click="changeSorting('department.userName')" data-ng-class="sort.descending && sort.column =='department.userName'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.department" bundle="${msg}" /></th>
-                            		<th  data-ng-click="changeSorting('project.name')" data-ng-class="sort.descending && sort.column =='project.name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.project" bundle="${msg}" /></th>
-                            	    <th  data-ng-click="changeSorting('volumeType')" data-ng-class="sort.descending && sort.column =='volumeType'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.type" bundle="${msg}" /></th>
-                            	    <th  data-ng-click="changeSorting('storageOffering.name')" data-ng-class="sort.descending && sort.column =='storageOffering.name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.plan" bundle="${msg}" /></th>
-                            		<th  data-ng-click="changeSorting('vmInstance.name')" data-ng-class="sort.descending && sort.column =='vmInstance.name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.attached.to" bundle="${msg}" /></th>
-                            	    <th  data-ng-click="changeSorting('diskSize')" data-ng-class="sort.descending && sort.column =='diskSize'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.size" bundle="${msg}" /> GB</th>
-                            	    <th  data-ng-click="changeSorting('createdDateTime')" data-ng-class="sort.descending && sort.column =='createdDateTime'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.created.date" bundle="${msg}" /></th>
+                            	    <th  data-ng-click="changeSort('name',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.name" bundle="${msg}" /></th>
+                            	    <th  data-ng-click="changeSort('department.userName',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='department.userName'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.department" bundle="${msg}" /></th>
+                            		<th><fmt:message key="common.project" bundle="${msg}" /></th>
+                            	    <th  data-ng-click="changeSort('volumeType',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='volumeType'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.type" bundle="${msg}" /></th>
+                            	    <th><fmt:message key="common.plan" bundle="${msg}" /></th>
+                            		<th><fmt:message key="common.attached.to" bundle="${msg}" /></th>
+                            	    <th  data-ng-click="changeSort('diskSize',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='diskSize'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.size" bundle="${msg}" /> GB</th>
+                            	    <th  data-ng-click="changeSort('createdDateTime',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='createdDateTime'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.created.date" bundle="${msg}" /></th>
 
                             		<th class="col-md-1 col-xs-1"><fmt:message key="common.action" bundle="${msg}" /></th>
                             	</tr>
                             </thead>
-                            <tbody>
+                            <tbody data-ng-hide="volumeList.length > 0">
+                                <tr>
+                                    <td class="col-md-9 col-sm-9" colspan="9"><fmt:message key="common.no.records.found" bundle="${msg}" />!!</td>
+                                </tr>
+                            </tbody>
+                            <tbody data-ng-show="volumeList.length > 0">
                                 <tr data-ng-repeat="volume in filteredCount = (volumeList| filter:quickSearch | orderBy:sort.column:sort.descending)">
                                     <td>
                                         <!-- <a class="text-info" href="javascript:void(0)"  title="View Volume" > -->{{ volume.name}}<!-- </a> -->

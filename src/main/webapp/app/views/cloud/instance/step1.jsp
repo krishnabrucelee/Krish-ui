@@ -30,14 +30,14 @@
 							<div class="m-b-sm">
 							 <span class=" "><fmt:message key="common.architecture" bundle="${msg}" />: </span>
 						    </div>
-								  <label class=" "> <input icheck type="radio" id="create_instance_template_architecture_radio_button"
+								  <div class="test_create_instance_template_architecture_32 pull-left"><input icheck type="radio" id="create_instance_template_architecture_32_radio_button"
 									data-ng-model="instance.architecture" value="32" ng-change="getTemplatesByFilters()" name="architecture">
-									32Bit
-								 </label>
-								 <label class=" "> <input icheck type="radio" id="create_instance_template_architecture_radio_button"
+									<label>32Bit</label>
+								  </div>
+								  <div class="test_create_instance_template_architecture_64 pull-left m-l-sm"><input icheck type="radio" id="create_instance_template_architecture_64_radio_button"
 									data-ng-model="instance.architecture" value="64" ng-change="getTemplatesByFilters()" name="architecture">
-									64Bit
-								</label>
+									<label>64Bit</label>
+								  </div>
 						</div>
 						</div>
 						<div class= "col-md-4 col-sm-4 m-t-sm">
@@ -77,8 +77,7 @@
 										</tr>
 											<tr data-ng-if = "templateObj.format!='ISO'" data-ng-repeat="templateObj in formElements.templateList | filter: instance.osVersion ">
 												<td>
-												<div class="col-md-3 col-sm-3">
-
+											<div class="col-md-3 col-sm-3">
 											<img data-ng-show="templateObj.displayText.toLowerCase().indexOf('cent') > -1" src="images/os/centos_logo.png" alt="" height="25" width="25" class="m-r-5" >
 											<img data-ng-show="templateObj.displayText.toLowerCase().indexOf('ubuntu') > -1" src="images/os/ubuntu_logo.png" alt="" height="25" width="25" class="m-r-5" >
 											<img data-ng-show="templateObj.displayText.toLowerCase().indexOf('debian') > -1" src="images/os/debian_logo.png" alt="" height="25" width="25" class="m-r-5" >
@@ -92,7 +91,7 @@
 											</div>
 											 <div class="col-md-8 col-sm-8"><label class="col-md-11 col-sm-11">{{templateObj.name}}</label><span class="col-md-11 col-sm-11">{{templateObj.displayText}}</span></div>
 											 <div class="col-md-1 col-sm-1">
-													<div class="form-group">
+													<div class="form-group" id="create_instance_template_unique_{{templateObj.id}}"  data-unique-field="{{ templateObj.name }}-{{ templateObj.architecture}}-{{templateObj.osVersion}}" class="test_create_instance_template_unique">
 															<label class=" ">
 																 <input icheck type="radio" id="create_instance_template_radio_button_{{templateObj.id}}" class="test_create_instance_template_radio_button" data-ng-model="instance.template.id" name="template" data-ng-value="{{templateObj.id}}" data-ng-checked="instance.template.id===templateObj.id" >
 															</label>

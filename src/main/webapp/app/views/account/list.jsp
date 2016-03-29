@@ -41,25 +41,49 @@
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-md-12 col-sm-12 col-xs-12 ">
-                                <div class="pull-left">
-
+							<div class="dashboard-box pull-left">
+     							<div class="instance-border-content-normal">
+                                <span class="pull-left m-t-xs m-l-xs m-r-xs"><fmt:message key="common.total" bundle="${msg}" /></span>
+                                <b class="pull-left">{{accountList.Count}}</b>
+                                <div class="clearfix"></div>
                                 </div>
+                            </div>
+                            <div class="dashboard-box pull-left">
+                      			<div class="instance-border-content-normal">
+                                <span class="pull-left m-t-xs m-l-xs m-r-xs"><fmt:message key="common.active" bundle="${msg}" /></span>
+                                <b data-ng-show="global.sessionValues.type == 'ROOT_ADMIN'" class="pull-left">{{(activeUsers | filter:{status:'ENABLED', domainId:domainView.id}:true).length}}</b>
+                                <b data-ng-show="global.sessionValues.type != 'ROOT_ADMIN'" class="pull-left">{{(activeUsers | filter:{status:'ENABLED'}).length}}</b>
+                                <div class="clearfix"></div>
+                                </div>
+                            </div>
+                            <div class="dashboard-box pull-left">
+                                 <div class="instance-border-content-normal">
+                                <span class="pull-left m-t-xs m-l-xs m-r-xs"><fmt:message key="common.inactive" bundle="${msg}" /></span>
+                                <b data-ng-show="global.sessionValues.type == 'ROOT_ADMIN'" class="pull-left">{{(activeUsers | filter:{status:'DISABLED', domainId:domainView.id}:true).length}}</b>
+                                <b data-ng-show="global.sessionValues.type != 'ROOT_ADMIN'" class="pull-left">{{(activeUsers | filter:{status:'DISABLED'}).length}}</b>
+                                <div class="clearfix"></div>
+                                </div>
+                            </div>
+                            <a has-permission="CREATE_USER" class="btn btn-info" data-ng-click="addUser('lg')"><span class="pe-7s-add-user pe-lg font-bold m-r-xs"></span><fmt:message key="add.user" bundle="${msg}" /></a>
+                            <a class="btn btn-info " ui-sref="accounts" title="Refresh"  ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
+
                                 <div class="pull-right">
                                     <panda-quick-search></panda-quick-search>
-                                    <div class="clearfix"></div>
-                                    <span class="pull-right m-l-sm m-t-sm">
-                                        <a has-permission="CREATE_USER" class="btn btn-info" data-ng-click="addUser('lg')"><span class="pe-7s-add-user pe-lg font-bold m-r-xs"></span><fmt:message key="add.user" bundle="${msg}" /></a>
-                                        <a has-permission="EDIT_USER" data-ng-class="oneChecked && edit ? 'btn btn-info' : 'btn btn-default disabled'" data-ng-disabled="!oneChecked"  data-ng-click="editUser('md')"><span class="fa fa-edit font-bold m-r-xs"></span><fmt:message key="edit.user" bundle="${msg}" /></a>
-                                        <!-- <a data-ng-class="disabled && activate ? 'btn btn-info' : 'btn btn-default disabled'" data-ng-click="activating()"><span class="pe-7s-user pe-lg font-bold m-r-xs"></span>Activate User</a>
-                                        <a data-ng-class="disabled && revoke ? 'btn btn-info' : 'btn btn-default disabled'" data-ng-click="revoking()" ><span class="pe-7s-delete-user pe-lg font-bold m-r-xs"></span>Revoke User</a> -->
-                                        <a has-permission="DELETE_USER" data-ng-class="oneChecked && deletes ? 'btn btn-info' : 'btn btn-default disabled'" data-ng-disabled="!oneChecked" data-ng-click="deleteUser('sm')"><span class="pe-7s-trash pe-lg font-bold m-r-xs"></span><fmt:message key="delete.user" bundle="${msg}" /></a>
-                                        <a class="btn btn-info " ui-sref="accounts" title="Refresh"  ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
-                                    </span>
-                                </div>
+                                    <span class="pull-right m-r-sm" data-ng-show="global.sessionValues.type == 'ROOT_ADMIN'">
+										<select
+											class="form-control input-group col-xs-5" name="domainView"
+											data-ng-model="domainView"
+											data-ng-change="selectDomainView(1)"
+											data-ng-options="domainView.name for domainView in accountElements.domainList">
+											<option value="">All Domain</option>
+										</select>
+		                    </span>
 
+                                    <div class="clearfix"></div>
+                                    <span class="pull-right m-l-sm m-t-sm"></span>
+                                </div>
                             </div>
                         </div>
-                        <div class="clearfix"></div>
                     </div>
                     <div class="row">
                         <div class="col-md-12 col-sm-12 col-xs-12 ">
@@ -68,37 +92,74 @@
     				  		<get-loader-image data-ng-show="showLoader"></get-loader-image>
       						</div>
       						<div  data-ng-hide="showLoader" class="table-responsive col-12-table">
-
                                     <table cellspacing="1" cellpadding="1" class="table table-bordered dataTable table-striped ">
                                         <thead>
                                         <tr>
-                                                <th class="w-5"></th>
-
-                                     	<th  data-ng-click="changeSorting('userName')" data-ng-class="sort.descending && sort.column =='userName'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="user.name" bundle="${msg}" /></th>
-                                     	<th  data-ng-click="changeSorting('firstName')" data-ng-class="sort.descending && sort.column =='firstName'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="first.name" bundle="${msg}" /></th>
-                                     	<th  data-ng-click="changeSorting('type')" data-ng-class="sort.descending && sort.column =='type'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="user.type" bundle="${msg}" /></th>
-                                     	<th  data-ng-click="changeSorting('email')" data-ng-class="sort.descending && sort.column =='email'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.email" bundle="${msg}" /></th>
-                                     	<th  data-ng-click="changeSorting('userName')" data-ng-class="sort.descending && sort.column =='userName'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.status" bundle="${msg}" /></th>
-
+                                        <th  data-ng-click="changeSort('userName',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='userName'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="user.name" bundle="${msg}" /></th>
+                                     	<th  data-ng-click="changeSort('department.userName',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='department.userName'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.department" bundle="${msg}" /></th>
+                                     	<th  data-ng-click="changeSort('domain.name',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='domain.name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.domain" bundle="${msg}" /></th>
+                                     	<th  data-ng-click="changeSort('type',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='type'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="user.type" bundle="${msg}" /></th>
+                                       	<th><fmt:message key="common.roles" bundle="${msg}" /></th>
+                                     	<th  data-ng-click="changeSort('email',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='email'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.email" bundle="${msg}" /></th>
+                                     	<th  data-ng-click="changeSort('status',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='status'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.status" bundle="${msg}" /></th>
+										<th><fmt:message key="common.action" bundle="${msg}" /></th>
                                         </tr>
                                         </thead>
-                                        <tbody>
-                                            <tr data-ng-repeat="account in filteredCount = (accountList| filter: quickSearch | orderBy:sort.column:sort.descending)">
+                                        <tbody data-ng-hide="accountList.length > 0">
+		                                    <tr>
+		                                        <td class="col-md-7 col-sm-7" colspan="7"><fmt:message key="common.no.records.found" bundle="${msg}" />!!</td>
+		                                    </tr>
+		                                </tbody>
+                                        <tbody data-ng-show="accountList.length > 0">
+                                            <tr  data-ng-repeat="account in filteredCount = (accountList| filter: quickSearch | orderBy:sort.column:sort.descending)">
                                                 <td>
-													<div class="radio radio-single radio-info">
-														<input type="radio" value="{{account.id}}" data-ng-model="account.isSelected" id="acc_{{account.id}}" name = "accounts" data-ng-click="viewAccountd(account)"> <label></label>
-													</div>
-                                                </td>
-                                                <td>
-                                                    <a class="text-info"  data-ng-click="viewAccountd(account)">{{ account.userName}}</a>
+                                                    <a class="text-info" >{{ account.userName}}</a>
                                                </td>
-                                                <td>{{account.firstName}}</td>
+                                                <td>{{account.department.userName}}</td>
+                                                <td>{{account.domain.name}}</td>
                                                 <td>{{account.type}}</td>
-                                                <td>{{account.email}}</td>
+                                                <td>{{account.role.name || '-'}}</td>
+                                                <td>{{account.email || '-'}}</td>
                                                 <td>
-                                                    <label class="badge badge-success p-xs" data-ng-if="account.isActive == true"> Active </label>
-                                                    <label class="badge badge-danger p-xs" data-ng-if="account.isActive == false"> Inactive </label>
+ 												<label class="badge badge-success p-xs" data-ng-if="account.status == 'ENABLED'"> <fmt:message key="common.enabled" bundle="${msg}" /> </label>
+                	                            <label class="badge badge-danger p-xs" data-ng-if="account.status == 'DISABLED'"> <fmt:message key="common.disabled" bundle="${msg}" /> </label>
+                	                            <label class="badge badge-danger p-xs" data-ng-if="account.status == 'DELETED'"> <fmt:message key="common.deleted" bundle="${msg}" /> </label>
+
                                                 </td>
+                                                <td><a class="icon-button"
+													has-permission="EDIT_USER"
+													title="<fmt:message key="edit.user" bundle="${msg}" />"
+													data-ng-click="editUser('md',account)">
+														<span class="fa fa-edit m-r"> </span>
+												</a>
+												 <a class="icon-button" has-permission="RESET_USER_PASSWORD"
+													title="<fmt:message key="reset.password" bundle="${msg}" /> "
+													data-ng-click="resetPassword('md',account)"><span class="fa-key fa font-bold m-r"></span>
+													</a>
+												 <a data-ng-if="global.sessionValues.type =='DOMAIN_ADMIN'"
+												 data-ng-hide = "global.sessionValues.type =='DOMAIN_ADMIN' && account.type == 'DOMAIN_ADMIN'"
+													class="icon-button" has-permission="DELETE_USER"
+													title="<fmt:message key="common.delete" bundle="${msg}" /> "
+													data-ng-click="deleteUser('sm',account)"><span
+														class="fa fa-trash"></span></a>
+
+														 <a data-ng-if="global.sessionValues.type =='ROOT_ADMIN'"
+												   data-ng-hide = "account.type == 'ROOT_ADMIN'"
+													class="icon-button" has-permission="DELETE_USER"
+													title="<fmt:message key="common.delete" bundle="${msg}" /> "
+													data-ng-click="deleteUser('sm',account)"><span
+														class="fa fa-trash"></span></a>
+
+														<a data-ng-if="global.sessionValues.type =='USER' "
+												   data-ng-hide = "account.type == 'DOMAIN_ADMIN' || global.sessionValues.userName == '{{account.userName}}'"
+													class="icon-button" has-permission="DELETE_USER"
+													title="<fmt:message key="common.delete" bundle="${msg}" /> "
+													data-ng-click="deleteUser('sm',account)"><span
+														class="fa fa-trash"></span>
+												</a>
+												 <a has-permission="ENABLE_USER" data-ng-show="account.status == 'DISABLED'" data-ng-click="activating(account)"><span class="pe-7s-user pe-lg font-bold m-r-xs" title="Enable User"></span></a>
+                                        		 <a has-permission="DISABLE_USER" data-ng-show="account.status == 'ENABLED'" data-ng-click="revoking(account)" ><span class="pe-7s-delete-user pe-lg font-bold m-r-xs" title="Disable User"></span></a>
+												</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -111,5 +172,5 @@
             </div>
         </div>
     </div>
-<div id="footer" ng-include="'app/views/common/footer.jsp'"></div>
+	<div id="footer" ng-include="'app/views/common/footer.jsp'"></div>
 </div>

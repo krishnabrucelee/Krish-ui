@@ -8,13 +8,14 @@ pageEncoding="UTF-8"%>
     <div class="row m-l-sm m-r-sm panel-body" ng-controller="instanceViewCtrl">
 
         <ul class="nav nav-tabs" data-ng-init="templateCategory = 'dashboard'">
-            <li data-ng-class="{'active' : templateCategory == 'dashboard'}"><a href="javascript:void(0)" data-ng-click="templateCategory = 'dashboard'" data-toggle="tab">  <i class="fa fa-laptop"></i> <fmt:message key="dashboard" bundle="${msg}" /></a></li>
-            <li data-ng-if ="instance.status == 'STOPPED'" data-ng-class="{'active' : templateCategory == 'config'}"><a has-permission="RESIZE" data-ng-click="selectab()"  data-toggle="tab"> <i class="fa fa-cogs"></i> <fmt:message key="configuration" bundle="${msg}" /></a></li>
-            <li class=""><a  data-ng-click="templateCategory = 'storage'" data-toggle="tab"><i class="fa fa-database"></i> <fmt:message key="storage" bundle="${msg}" /></a></li>
+            <li data-ng-class="{'active' : templateCategory == 'dashboard'}"><a href="javascript:void(0)" data-ng-click="viewInstance('0');" data-toggle="tab">  <i class="fa fa-laptop"></i> <fmt:message key="dashboard" bundle="${msg}" /></a></li>
+            <li data-ng-class="{'active' : templateCategory == 'config'}"><a has-permission="RESIZE" data-ng-click="selectab()"  data-toggle="tab"> <i class="fa fa-cogs"></i> <fmt:message key="configuration" bundle="${msg}" /></a></li>
+            <li class=""><a  data-ng-click="list();" data-toggle="tab"><i class="fa fa-database"></i> <fmt:message key="storage" bundle="${msg}" /></a></li>
             <li class=""><a  data-ng-click="networkTab()" data-toggle="tab"> <!--<i class="fa fa-sitemap"></i>--><i class="custom-icon custom-icon-network"></i> <fmt:message key="networking" bundle="${msg}" /></a></li>
-            <li class=""><a has-permission="MONITOR_VM_PERFORMANCE" data-ng-click="templateCategory = 'monitor'" data-toggle="tab"> <i class="fa fa-desktop"></i> <fmt:message key="monitor" bundle="${msg}" /></a></li>
+            <li class=""><a has-permission="MONITOR_VM_PERFORMANCE" href="javascript:void(0)" data-ng-class="{'active': templateCategory == 'monitor'}" data-ng-click="templateCategory = 'monitor'" data-toggle="tab"> <i class="fa fa-desktop"></i> <fmt:message key="monitor" bundle="${msg}" /></a></li>
+
             <div class="pull-right">
-            	<a title="<fmt:message key="common.refresh" bundle="${msg}" />"  class="btn btn-info" ui-sref="cloud.list-instance.view-instance"  ui-sref-opts="{reload: true}" ><span class="fa fa-refresh fa-lg "></span></a>
+            	<button type="button" data-ng-hide="templateCategory == 'monitor'" title="<fmt:message key="common.refresh" bundle="${msg}" />"  class="btn btn-info" ui-sref="cloud.list-instance.view-instance"  ui-sref-opts="{reload: true}" ><span class="fa fa-refresh fa-lg "></span></button>
             </div>
         </ul>
 
@@ -226,6 +227,15 @@ pageEncoding="UTF-8"%>
                                         <table class="table table-condensed table-striped" cellspacing="1" cellpadding="1">
                                             <tbody>
                                             <h4 class="text-info"><fmt:message key="basic.info" bundle="${msg}" /></h4>
+                                            <tr>
+                                                <td class="col-md-4 col-sm-4">
+                                                    <b>
+                                                        <fmt:message key="instance.name" bundle="${msg}" />
+                                                    </b>
+                                                </td>
+                                                <td class="col-md-8 col-sm-8">{{ instance.name}}</td>
+                                            </tr>
+                                            <tr>
                                             <td class="col-md-4 col-sm-4">
                                                 <b>
                                                     <fmt:message key="instance.display.name" bundle="${msg}" />
@@ -368,7 +378,7 @@ pageEncoding="UTF-8"%>
                                                     <fmt:message key="common.hypervisor" bundle="${msg}" />
                                                 </b>
                                             </td>
-                                            <td class="col-md-8 col-sm-8">{{instance.template.hypervisor.name}}</td>
+                                            <td class="col-md-8 col-sm-8">{{instance.hypervisor.name}}</td>
                                             </tr>
                                             <tr>
                                                 <td class="col-md-4 col-sm-4">
@@ -376,7 +386,7 @@ pageEncoding="UTF-8"%>
                                                         <fmt:message key="common.templates" bundle="${msg}" />
                                                     </b>
                                                 </td>
-                                                <td>{{instance.template.name}}</td>
+                                                <td>{{instance.templateName}}</td>
                                             </tr>
                                             <tr>
                                                 <td class="col-md-4 col-sm-4">
@@ -386,7 +396,7 @@ pageEncoding="UTF-8"%>
                                                 </td>
                                                 <td class="col-md-8 col-sm-8">
                                                     {{ instance.computeOffering.name}}
-                                                    <a has-permission="RESIZE" data-ng-if = "instance.status == 'STOPPED'" data-ng-click="selectab()"  class="fa fa-edit m-l-lg">
+                                                    <a has-permission="RESIZE" data-ng-click="selectab()"  class="fa fa-edit m-l-lg">
                                                         <fmt:message key="common.edit" bundle="${msg}" />
                                                     </a>
                                                 </td>
@@ -397,7 +407,7 @@ pageEncoding="UTF-8"%>
                                                         <fmt:message key="common.osType" bundle="${msg}" />
                                                     </b>
                                                 </td>
-                                                <td class="col-md-8 col-sm-8">{{instance.template.osType.description}}</td>
+                                                <td class="col-md-8 col-sm-8">{{instance.osType}}</td>
                                             </tr>
                                             <tr>
                                                 <td class="col-md-4 col-sm-4">
@@ -410,7 +420,7 @@ pageEncoding="UTF-8"%>
                                             <tr>
                                                 <td class="col-md-4 col-sm-4">
                                                     <b>
-                                                        <fmt:message key="memory" bundle="${msg}" />
+                                                        <fmt:message key="ram" bundle="${msg}" />
                                                     </b>
                                                 </td>
                                                 <td class="col-md-8 col-sm-8"><span data-ng-if="!instance.computeOffering.customized">{{ instance.computeOffering.memory}}</span><span data-ng-if="instance.computeOffering.customized">{{ instance.memory}}</span></td>
@@ -447,6 +457,18 @@ pageEncoding="UTF-8"%>
                                                 </td>
                                                 <td class="col-md-8 col-sm-8">{{instance.template.dynamicallyScalable}}</td>
                                             </tr>
+                                            <tr>
+                                                <td class="col-md-4 col-sm-4">
+                                                    <b>
+                                                        <fmt:message key="ssh.key.pair" bundle="${msg}" />
+                                                    </b>
+                                                </td>
+                                                <td class="col-md-8 col-sm-8">{{instance.keypair.name}}
+                                                <a data-ng-click="selectab()"  class="fa fa-exchange m-l-lg">
+                                                        <fmt:message key="common.change" bundle="${msg}" />
+                                                    </a>
+                                                 </td>
+                                            </tr>
                                             </tbody>
                                         </table>
                                     </div>
@@ -460,17 +482,30 @@ pageEncoding="UTF-8"%>
                                                         <fmt:message key="subscription.cost" bundle="${msg}" />
                                                     </b>
                                                 </td>
-                                                <td class="col-md-8 col-sm-8">
-                                                    <span class="text-danger">
-                                                        <app-currency></app-currency>
-                                                        {{(instance.template.templateCost[0].cost + instance.storageOffering.storagePrice[0].costGbPerMonth + instance.storageOffering.storagePrice[0].costIopsPerMonth +
-                                                                    instance.computeOffering.computeCost[0].instanceRunningCostIops + instance.computeOffering.computeCost[0].instanceRunningCostMemory + instance.computeOffering.computeCost[0].instanceRunningCostVcpu
-
-                                                                    + instance.computeOffering.computeCost[0].instanceStoppageCostIops + instance.computeOffering.computeCost[0].instanceStoppageCostMemory + instance.computeOffering.computeCost[0].instanceStoppageCostVcpu)/30 | number:2
-
-                                                        }}
-                                                    </span>
-                                                    /
+                                                <td class="col-md-8 col-sm-8"><span class="text-danger"
+														data-ng-if="!instance.computeOffering.customized"
+													> <app-currency></app-currency> {{(instance.computeOffering.computeCost[0].instanceRunningCostIops +
+															instance.computeOffering.computeCost[0].instanceRunningCostMemory +
+															instance.computeOffering.computeCost[0].instanceRunningCostVcpu +
+															(instance.computeOffering.computeCost[0].instanceRunningCostPerMB > 0 ?
+															(instance.computeOffer.memory.value * instance.computeOffering.computeCost[0].instanceRunningCostPerMB) :
+															0) + (instance.computeOffering.computeCost[0].instanceRunningCostPerVcpu > 0 ?
+															(instance.computeOffer.cpuCore.value *
+															instance.computeOffering.computeCost[0].instanceRunningCostPerVcpu) : 0) +
+															(instance.computeOffering.computeCost[0].instanceRunningCostPerMhz > 0 ?
+															(instance.computeOffer.cpuSpeed.value *
+															instance.computeOffering.computeCost[0].instanceRunningCostPerMhz) : 0))/30 | number:4 }}
+													</span> <span class="text-danger" data-ng-if="instance.computeOffering.customized"> <app-currency></app-currency>
+															{{(instance.computeOffering.computeCost[0].instanceRunningCostIops +
+															instance.computeOffering.computeCost[0].instanceRunningCostMemory +
+															instance.computeOffering.computeCost[0].instanceRunningCostVcpu +
+															(instance.computeOffering.computeCost[0].instanceRunningCostPerMB > 0 ? (instance.memory*
+															instance.computeOffering.computeCost[0].instanceRunningCostPerMB) : 0) +
+															(instance.computeOffering.computeCost[0].instanceRunningCostPerVcpu > 0 ? (instance.cpuCore *
+															instance.computeOffering.computeCost[0].instanceRunningCostPerVcpu) : 0) +
+															(instance.computeOffering.computeCost[0].instanceRunningCostPerMhz > 0 ? (instance.cpuSpeed *
+															instance.computeOffering.computeCost[0].instanceRunningCostPerMhz) : 0))/30 | number:4 }}
+													</span> /
                                             <fmt:message key="common.day" bundle="${msg}" />
                                             </td>
                                             </tr>

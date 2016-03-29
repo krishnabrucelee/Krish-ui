@@ -2,24 +2,28 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<div class="" data-ng-controller="snapshotListCtrl">
+<div class="" >
 	<get-loader-image data-ng-show="showLoader"></get-loader-image>
 	<div class="col-md-12 col-sm-12" data-ng-hide="showLoader">
         <div class="hpanel">
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-md-12 col-sm-12 col-xs-12 ">
-                        <div class="pull-left">
-                            <div class="pull-left">
+                    	<div class="pull-left">
+                            <div class="dashboard-box pull-left">
+     							<div class="instance-border-content-normal">
+                                <span class="pull-left m-t-xs m-l-xs m-r-xs"><fmt:message key="total.snapshot" bundle="${msg}" /></span>
+                                <b class="pull-left">{{snapshotList.Count}}</b>
+                                <div class="clearfix"></div>
+                                </div>
                             </div>
+                            <a class="btn btn-info"  has-permission= "DISK_SNAPSHOT" ng-click="openAddSnapshotContainer()"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span>Create Snapshot</a>
+                                <a class="btn btn-info" title="Refresh" ><span class="fa fa-refresh fa-lg"></span></a>
                         </div>
                         <div class="pull-right">
-                            <panda-quick-search></panda-quick-search>
-                            <div class="clearfix"></div>
-                            <span class="pull-right m-l-sm m-t-sm">
-                                <a class="btn btn-info"  has-permission= "DISK_SNAPSHOT" ng-click="openAddSnapshotContainer()"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span>Create Snapshot</a>
-                                <a class="btn btn-info" title="Refresh" ><span class="fa fa-refresh fa-lg"></span></a>
-                            </span>
+					        <panda-quick-search></panda-quick-search>
+							<div class="clearfix"></div>
+							<span class="pull-right m-l-sm m-t-sm"></span>
                         </div>
                     </div>
                     <div class="clearfix"></div>

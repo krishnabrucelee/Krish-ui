@@ -35,13 +35,13 @@
 										class="table table-bordered dataTable table-striped">
 										<thead>
 											<tr>
-												<th class="col-md-3 col-sm-4"  data-ng-click="changeSorting('vm.name')" data-ng-class="sort.descending && sort.column =='vm.name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.vm.name" bundle="${msg}" /></th>
-												<th class="col-md-3 col-sm-4"  data-ng-click="changeSorting('ips')" data-ng-class="sort.descending && sort.column =='ips'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.ips" bundle="${msg}" /></th>
+												<th class="col-md-3 col-sm-4"  data-ng-click="changeSort('vmInstance.name',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='vm.name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.vm.name" bundle="${msg}" /></th>
+												<th class="col-md-3 col-sm-4"  data-ng-click="changeSort('guestIpAddress',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='ips'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.ips" bundle="${msg}" /></th>
 												<th class="col-md-3 col-sm-4"><fmt:message key="common.action" bundle="${msg}" /></th>
 											</tr>
 										</thead>
 										<tbody>
-											<tr data-ng-show="nic.nicId==nicip" data-ng-repeat=" nic in filteredCount = (nicIPLists| filter: quickSearch | orderBy:sort.column:sort.descending)">
+											<tr data-ng-if = "nic.ipType != 'primaryIpAddress'"data-ng-show="nic.nicId==nicip" data-ng-repeat=" nic in filteredCount = (nicIPLists| filter: quickSearch | orderBy:sort.column:sort.descending)">
 												<td>{{ nic.vmInstance.name }}</td>
 												<td>{{ nic.guestIpAddress}}</td>
 
@@ -52,6 +52,7 @@
 									</table>
 								</div>
 							</div>
+							<pagination-content></pagination-content>
 						</div>
 					</div>
 				</div>

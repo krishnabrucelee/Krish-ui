@@ -8,7 +8,7 @@ angular
         .module('homer')
         .controller('applicationListCtrl', applicationListCtrl)
 
-function applicationListCtrl($scope, appService) {
+function applicationListCtrl($scope, appService, localStorageService, globalConfig) {
 
     $scope.$on(appService.globalConfig.webSocketEvents.applicationEvents.createApplication, function() {
 
@@ -29,15 +29,72 @@ function applicationListCtrl($scope, appService) {
     $scope.global = appService.globalConfig;
     $scope.sort = appService.globalConfig.sort;
     $scope.changeSorting = appService.utilService.changeSorting;
+    $scope.paginationObject.sortOrder = '+';
+    $scope.paginationObject.sortBy = 'type';
+
+    $scope.changeSort = function(sortBy, pageNumber) {
+		var sort = appService.globalConfig.sort;
+		if (sort.column == sortBy) {
+			sort.descending = !sort.descending;
+		} else {
+			sort.column = sortBy;
+			sort.descending = false;
+		}
+		var sortOrder = '-';
+		if(!sort.descending){
+			sortOrder = '+';
+		}
+		$scope.paginationObject.sortOrder = sortOrder;
+		$scope.paginationObject.sortBy = sortBy;
+		$scope.showLoader = true;
+		var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
+            var hasApplicationsLists = {};
+            if ($scope.domainView == null) {
+            	hasApplicationsLists =  appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "applications" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+sortOrder+sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+            } else {
+            	hasApplicationsLists =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "applications/listByDomain"
+    				+"?lang=" +appService.localStorageService.cookie.get('language')
+    				+ "&domainId="+$scope.domainView.id+"&sortBy="+$scope.paginationObject.sortOrder+$scope.paginationObject.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+            }
+
+            hasApplicationsLists.then(function(result) { // this is only run after $http
+			// completes0
+			$scope.applicationList = result;
+			$scope.applicationList.Count = 0;
+            if (result.length != 0) {
+                $scope.applicationList.Count = result.totalItems;
+            }
+			// For pagination
+			$scope.paginationObject.limit = limit;
+			$scope.paginationObject.currentPage = pageNumber;
+			$scope.paginationObject.totalItems = result.totalItems;
+			$scope.paginationObject.sortOrder = sortOrder;
+			$scope.paginationObject.sortBy = sortBy;
+			$scope.showLoader = false;
+		});
+	};
 
     // Application List
     $scope.list = function (pageNumber) {
+        appService.globalConfig.sort.sortOrder = $scope.paginationObject.sortOrder;
+        appService.globalConfig.sort.sortBy = $scope.paginationObject.sortBy;
     	$scope.showLoader = true;
         $scope.application = {};
     	var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
-        var hasApplications = appService.crudService.list("applications", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+        var hasApplications = {};
+        if ($scope.domainView == null) {
+        	hasApplications = appService.crudService.list("applications", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+        } else {
+        	hasApplications =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "applications/listByDomain"
+				+"?lang=" +appService.localStorageService.cookie.get('language')
+				+ "&domainId="+$scope.domainView.id+"&sortBy="+globalConfig.sort.sortOrder+globalConfig.sort.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+        }
         hasApplications.then(function (result) {  // this is only run after $http completes0
             $scope.applicationList = result;
+            $scope.applicationList.Count = 0;
+            if (result.length != 0) {
+                $scope.applicationList.Count = result.totalItems;
+            }
 
             // For pagination
             $scope.paginationObject.limit = limit;
@@ -51,6 +108,11 @@ function applicationListCtrl($scope, appService) {
     // Open dialogue box to create application
     $scope.application = {};
     $scope.formElements = {};
+
+    // Get application list based on domain selection
+    $scope.selectDomainView = function(pageNumber) {
+    	$scope.list(1);
+    };
 
     // Domain List
 	var hasDomains = appService.crudService.listAll("domains/list");

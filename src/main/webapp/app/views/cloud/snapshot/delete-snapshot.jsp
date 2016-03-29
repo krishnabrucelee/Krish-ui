@@ -7,10 +7,9 @@
 
     <div class="inmodal" >
         <div class="modal-header">
-            <panda-modal-header page-icon="fa fa-trash pe-lg" page-title="<fmt:message key="delete.snapshot" bundle="${msg}" />"></panda-modal-header>
+            <panda-modal-header hide-zone="false" page-icon="fa fa-trash pe-lg" page-title="<fmt:message key="delete.snapshot" bundle="${msg}" />"></panda-modal-header>
 
         </div>
-
         <div class="modal-body">
             <div class=" row">
                 <div class="form-group has-error col-md-3 col-sm-3  col-xs-3">
@@ -27,11 +26,9 @@
         </div>
 
         <div class="modal-footer">
+            <get-loader-image data-ng-show="showLoader"></get-loader-image>
             <button type="button"  data-ng-hide="showLoader" class="btn btn-default " ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.no" bundle="${msg}" /></button>
             <button class="btn btn-info" data-ng-hide="showLoader"  type="button" ng-click="ok()"><fmt:message key="common.yes" bundle="${msg}" /></button>
-
-
-
         </div>
     </div>
 </form>

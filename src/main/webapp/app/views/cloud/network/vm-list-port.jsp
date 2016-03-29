@@ -4,7 +4,6 @@ pageEncoding="UTF-8"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
   <div class="inmodal" >
-
         <div class="modal-header">
             <panda-modal-header page-icon="fa fa-cloud" page-title="<fmt:message key="add.vm" bundle="${msg}" />"></panda-modal-header>
         </div>
@@ -21,7 +20,6 @@ pageEncoding="UTF-8"%>
                             </div>
                         </div>
                     </div>
-
                 </div>
                <div class="clearfix"></div>
             </div>
@@ -42,34 +40,38 @@ pageEncoding="UTF-8"%>
                     <tbody>
                     <tr data-ng-repeat="instancesList in portvmList | filter: instanceSearch">
                         <td>
-                            <a class="text-info" >{{ instancesList.name }}</a>
-                             <div  data-ng-if="selected === instancesList.id" >
-                             <select  data-ng-show="selected == instancesList.id" required="true" class="form-control input-group" name="ipAddress" data-ng-model="ipAddress" data-ng-change = "instanceLists.ipAddress.guestIpAddress = ipAddress.guestIpAddress"   data-ng-options="ipAddress.guestIpAddress for ipAddress in nicIPLists">
-                             <option value="">{{instancesList.ipAddress}} (Primary)</option>
-                             </select>
-
-                             </div>
-
+                            <a class="text-info" >{{ instancesList.vmInstance.name }}</a>
+                             <div  data-ng-show="instancesList.port">
+                            	<select  required="true" class="form-control input-group" name="ipAddress" data-ng-model="instancesList.ipAddress"  data-ng-options="ipAddress.guestIpAddress for ipAddress in portIPLists">
+                             	<option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
+                            	</select>
+                            </div>
                         </td>
-                  		 <td>{{ instancesList.instanceInternalName}}</td>
-                        <td>{{ instancesList.displayName }}</td>
-                        <td>{{ instancesList.zone.name }}
-                         <input type="hidden" data-ng-model="instances.zoneName" value="{{ instancesList.zone.name }}"/></td>
+                  		 <td>{{ instancesList.vmInstance.instanceInternalName}}</td>
+                        <td>{{ instancesList.vmInstance.displayName }}</td>
+                        <td>{{ instancesList.vmInstance.zone.name}}
+                         <input type="hidden" data-ng-model="instances.zoneName" value="{{ instancesList.vmInstance.zone.name }}"/></td>
                         <td>
-                            <label class="label label-success" data-ng-if="instancesList.status == 'RUNNING'">{{instancesList.status}}</label>
-                            <label class="label label-danger" data-ng-if="instancesList.status == 'STOPPED'">{{instancesList.status}}</label>
+                            <label class="label label-success" data-ng-if="instancesList.vmInstance.status == 'RUNNING'">{{instancesList.vmInstance.status}}</label>
+                            <label class="label label-danger" data-ng-if="instancesList.vmInstance.status == 'STOPPED'">{{instancesList.vmInstance.status}}</label>
                         </td>
                          <td>
                             <label class="">
                                  <div  style="position: relative;" >
-                                     <input type="radio" icheck data-ng-model="port" name="name" data-ng-value="{{instancesList.id}}" data-ng-change="nicIPList(instancesList)"  >
+                                     <input type="radio" icheck name="select" data-ng-model="instancesList.port" data-ng-value="true" data-ng-change="portIPList(instancesList.vmInstance.id)"  >
                                  </div>
                             </label>
-
                         </td>
                     </tr>
                     </tbody>
                 </table>
+                 <button class="btn btn-xs btn-success btn-circle" data-ng-if="instance.vmInstance.status == 'RUNNING'" title="{{ instance.vmInstance.status}}"></button>
+	             <button class="btn btn-xs btn-danger btn-circle" data-ng-if="instance.vmInstance.status == 'STOPPED'"  title="{{ instance.vmInstance.status}}"></button>
+	             <button class="btn btn-xs btn-warning btn-circle" data-ng-if="instance.vmInstance.status == 'STARTING'"  title="{{ instance.vmInstance.status}}"></button>
+	             <button class="btn btn-xs btn-danger btn-circle" data-ng-if="instance.vmInstance.status == 'ERROR'"  title="{{ instance.vmInstance.status}}"></button>
+				 <button class="btn btn-xs btn-warning btn-circle" data-ng-if="instance.vmInstance.status == 'STOPPING'"  title="{{ instance.vmInstance.status}}">&nbsp</button>
+	             <button class="btn btn-xs btn-danger btn-circle" data-ng-if="instance.vmInstance.status == 'EXPUNGING'"  title="{{ instance.vmInstance.status}}"></button>
+	             <button class="btn btn-xs btn-danger btn-circle" data-ng-if="instance.vmInstance.status == 'DESTROYED'"  title="{{ instance.vmInstance.status}}"></button>
                 </div>
             </div>
         </div>
@@ -78,6 +80,6 @@ pageEncoding="UTF-8"%>
       <div class="modal-footer">
 			<get-loader-image data-ng-show="showLoader"></get-loader-image>
             <a class="btn btn-default" data-ng-hide="showLoader" data-ng-click="cancel()"><fmt:message key="common.cancel" bundle="${msg}" /></a>
-            <a class="btn btn-info" data-ng-hide="showLoader" type="submit" data-ng-click="portforwardSave(instances)"><fmt:message key="common.add" bundle="${msg}" /></a>
+            <a class="btn btn-info" data-ng-hide="showLoader" type="submit" data-ng-click="portforwardSave(portvmList)"><fmt:message key="common.add" bundle="${msg}" /></a>
       </div>
   </div>

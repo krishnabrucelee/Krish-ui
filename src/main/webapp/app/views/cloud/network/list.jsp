@@ -6,50 +6,41 @@
 <div ui-view ng-controller="networksCtrl">
 	<div data-ng-hide="viewContent" data-ng-init="list(1)">
 		<div class="hpanel">
-			<div class="panel-heading">
+			<div class="panel-heading no-padding">
 				<div class="row">
 					<div class="col-md-12 col-sm-12 col-xs-12 ">
 						<div class="pull-left">
-							<div class="dashboard-box pull-left dashboard-box-pad">
-								<span class="pull-right"><fmt:message key="total.network"
-										bundle="${msg}" /></span>
-								<div class="clearfix"></div>
-								<span class="pull-left m-t-xs"><img
-									src="images/network-icon.png"></span> <b class="pull-right">{{networkList.Count}}</b>
-								<div class="clearfix"></div>
-							</div>
-							<div class="dashboard-box pull-left dashboard-box-pad">
-								<span class="pull-right"><fmt:message
-										key="isolated.network" bundle="${msg}" /></span>
-								<div class="clearfix"></div>
-								<span class="pull-left m-t-xs"><img
-									src="images/network-icon.png"></span> <b class="pull-right">{{networkList.Count}}</b>
-								<div class="clearfix"></div>
-							</div>
-							<div class="dashboard-box pull-left dashboard-box-pad">
-								<span class="pull-right"><fmt:message
-										key="shared.network" bundle="${msg}" /></span>
-								<div class="clearfix"></div>
-								<span class="pull-left m-t-xs"><img
-									src="images/network-icon.png"></span> <b class="pull-right">0</b>
-								<div class="clearfix"></div>
-							</div>
-						</div>
-						<div class="pull-right">
-							<panda-quick-search></panda-quick-search>
-							<span class="pull-right m-r-sm">
-								<div class="p-xxs">
-									<select
-										class="form-control input-group col-xs-5" name="networkView"
-										data-ng-init="network.networkView = dropnetworkLists.views[0]"
-										data-ng-model="network.networkView"
-										data-ng-change="selectView(network.networkView.name)"
-										data-ng-options="networkView.name for networkView in dropnetworkLists.views">
-									</select>
+							<div class="dashboard-box pull-left">
+								<div class="instance-border-content-normal">
+									<span class="pull-left"><img
+										src="images/network-icon.png"></span>
+									<span class="pull-left m-t-xs m-l-xs m-r-xs"><fmt:message key="total.network"
+											bundle="${msg}" /></span>
+									 <b class="pull-left">{{networkList.Count}}</b>
+									<div class="clearfix"></div>
 								</div>
-							</span>
-							<div class="clearfix"></div>
-							<span class="pull-right m-l-sm m-t-sm"> <a
+							</div>
+							<div class="dashboard-box pull-left">
+								<div class="instance-border-content-normal">
+									<span class="pull-left"><img
+										src="images/network-icon.png"></span>
+									<span class="pull-left m-t-xs m-l-xs m-r-xs"><fmt:message
+											key="isolated.network" bundle="${msg}" /></span>
+									 <b class="pull-left">{{networkList.Count}}</b>
+									<div class="clearfix"></div>
+								</div>
+							</div>
+							<div class="dashboard-box pull-left">
+								<div class="instance-border-content-normal">
+									<span class="pull-left"><img
+										src="images/network-icon.png"></span>
+									<span class="pull-left m-t-xs m-l-xs m-r-xs"><fmt:message
+											key="shared.network" bundle="${msg}" /></span>
+									 <b class="pull-left">0</b>
+									<div class="clearfix"></div>
+								</div>
+							</div>
+							<a
 								class="btn btn-info" has-permission="ADD_ISOLATED_NETWORK"
 								data-ng-click="openAddIsolatedNetwork('md')"><span
 									class="pe-7s-plus pe-lg font-bold m-r-xs"></span> <fmt:message
@@ -58,7 +49,32 @@
 								title="<fmt:message key="common.refresh" bundle="${msg}" /> "
 								ui-sref-opts="{reload: true}"><span
 									class="fa fa-refresh fa-lg"></span></a>
+						</div>
+						<div class="pull-right">
+							<panda-quick-search></panda-quick-search>
+						</div>
+							<div class="clearfix"></div>
+							<div>
+							<span class="pull-right m-t-xs">
+									<select
+										class="form-control input-group col-xs-5" name="networkView"
+										data-ng-init="network.networkView = dropnetworkLists.views[0]"
+										data-ng-model="network.networkView"
+										data-ng-change="selectView(network.networkView.name)"
+										data-ng-options="networkView.name for networkView in dropnetworkLists.views">
+									</select>
 							</span>
+							<span class="pull-right m-r-sm m-t-xs" data-ng-show="global.sessionValues.type == 'ROOT_ADMIN'">
+								<select
+									class="form-control input-group col-xs-5" name="domainView"
+									data-ng-model="domainView"
+									data-ng-change="selectDomainView(1, domainView.id)"
+									data-ng-options="domainView.name for domainView in domainList">
+									<option value="">All Domain</option>
+								</select>
+							</span>
+							<div class="clearfix"></div>
+							<span class="pull-right m-l-sm m-t-sm"></span>
 						</div>
 					</div>
 				</div>
@@ -78,28 +94,31 @@
 										class="table table-bordered dataTable table-striped">
 										<thead>
 											<tr>
-												<th data-ng-click="changeSorting('name')"
+												<th data-ng-click="changeSort('name',paginationObject.currentPage)"
 													data-ng-class="sort.descending && sort.column =='name'? 'sorting_desc' : 'sorting_asc' "><fmt:message
 														key="common.name" bundle="${msg}" /></th>
-												<th data-ng-click="changeSorting('department.userName')"
+												<th data-ng-click="changeSort('department.userName',paginationObject.currentPage)"
 													data-ng-class="sort.descending && sort.column =='Account'? 'sorting_desc' : 'sorting_asc' "><fmt:message
-														key="common.account" bundle="${msg}" /></th>
-												<th data-ng-click="changeSorting('project.name')"
-													data-ng-class="sort.descending && sort.column =='project.name'? 'sorting_desc' : 'sorting_asc' "><fmt:message
-														key="common.project" bundle="${msg}" /></th>
-												<th data-ng-click="changeSorting('networkType')"
+														key="common.department" bundle="${msg}" /></th>
+												<th><fmt:message key="common.project" bundle="${msg}" /></th>
+												<th data-ng-click="changeSort('networkType',paginationObject.currentPage)"
 													data-ng-class="sort.descending && sort.column =='networkType'? 'sorting_desc' : 'sorting_asc' "><fmt:message
 														key="common.type" bundle="${msg}" /></th>
-												<th data-ng-click="changeSorting('cIDR')"
+												<th data-ng-click="changeSort('cIDR',paginationObject.currentPage)"
 													data-ng-class="sort.descending && sort.column =='cIDR'? 'sorting_desc' : 'sorting_asc' "><fmt:message
 														key="common.cidr" bundle="${msg}" /></th>
-												<th data-ng-click="changeSorting('gateway')"
+												<th data-ng-click="changeSort('gateway',paginationObject.currentPage)"
 													data-ng-class="sort.descending && sort.column =='gateway'? 'sorting_desc' : 'sorting_asc' "><fmt:message
 														key="gateway" bundle="${msg}" /></th>
 												<th><fmt:message key="common.action" bundle="${msg}" /></th>
 											</tr>
 										</thead>
-										<tbody>
+										<tbody data-ng-hide="networkList.length > 0">
+			                                <tr>
+			                                    <td class="col-md-9 col-sm-9" colspan="9"><fmt:message key="common.no.records.found" bundle="${msg}" />!!</td>
+			                                </tr>
+			                            </tbody>
+			                            <tbody data-ng-show="networkList.length > 0">
 											<tr
 												data-ng-repeat="network in filteredCount = (networkList | filter: quickSearch | orderBy:sort.column:sort.descending)">
 												<td><a class="text-info"

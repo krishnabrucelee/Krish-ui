@@ -184,7 +184,7 @@ pageEncoding="UTF-8"%>
                                      name="department" data-ng-model="volume.department" ng-options="department.userName for department in volumeElement.departmentList" data-ng-class="{'error': volumeForm.department.$invalid && formSubmitted}" >
                                         <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
                                     </select>
-                                    <i  tooltip="<fmt:message key="volume.department" bundle="${msg}" />" class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
+                                    <i  tooltip="<fmt:message key="common.department" bundle="${msg}" />" class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
                                     <div class="error-area" data-ng-show="volumeForm.department.$invalid && formSubmitted" >
                                     	<i ng-attr-tooltip="{{ volumeForm.department.errorMessage || '<fmt:message key="department.is.required" bundle="${msg}" />' }}"
 												class="fa fa-warning error-icon"></i>
@@ -203,7 +203,7 @@ pageEncoding="UTF-8"%>
                                         <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
 
                                     </select>
-                                    <i  tooltip="<fmt:message key="volume.department" bundle="${msg}" />" class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
+                                    <i  tooltip="<fmt:message key="common.department" bundle="${msg}" />" class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
                                     <div class="error-area" data-ng-show="volumeForm.department.$invalid && formSubmitted" >
                                     	<i ng-attr-tooltip="{{ volumeForm.department.errorMessage || '<fmt:message key="department.is.required" bundle="${msg}" />' }}"
 												class="fa fa-warning error-icon"></i>
@@ -287,16 +287,15 @@ pageEncoding="UTF-8"%>
              <span class="pull-left" data-ng-if="volume.storageOffering.name">
 				<input type="hidden" readonly="readonly" data-ng-model= "storageOfferCostSum" data-ng-bind= "storageOfferCostSum =
 				    (volume.storageOffering.storagePrice[0].costPerMonth
-				    + volume.storageOffering.storagePrice[0].costPerIops + volume.storageOffering.storagePrice[0].costIopsPerMonth
 				    + (volume.storageOffering.storagePrice[0].costGbPerMonth > 0 ? (volume.diskSize * volume.storageOffering.storagePrice[0].costGbPerMonth) : 0))" />
 
 				  <span data-ng-show="storageOfferCostSum > 0" class="text-danger price-text">
-                       <app-currency></app-currency>{{storageOfferCostSum/30 | number:2 }}
+                       <app-currency></app-currency>{{storageOfferCostSum/30 | number:4}}
                        <span> /
                            <fmt:message key="common.day" bundle="${msg}" />
                        </span>
                        <small class="text-muted">
-                           (<app-currency></app-currency>{{storageOfferCostSum | number:2 }} / <fmt:message key="common.month" bundle="${msg}" />)
+                           (<app-currency></app-currency>{{storageOfferCostSum | number:4 }} / <fmt:message key="common.month" bundle="${msg}" />)
                        </small>
                   </span>
                   <span data-ng-hide="storageOfferCostSum > 0" class="font-bold text-success pricing-text">

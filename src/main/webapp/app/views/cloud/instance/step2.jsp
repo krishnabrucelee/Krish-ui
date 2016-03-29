@@ -6,6 +6,7 @@
 <div data-ng-if="showLoaderOffer" style="margin: 40%">
 	<get-loader-image-offer data-ng-show="showLoaderOffer"></get-loader-image-offer>
 </div>
+<form name="instanceForm" class="form-horizontal" >
 <div data-ng-if="!showLoaderOffer">
 	<div class="row border-content">
 		<div class="col-offset-3 col-md-12 col-sm-12">
@@ -52,20 +53,20 @@
 			</div>
 		</div>
 		<div data-ng-show="compute  && instance.computeOffering.customized">
-			<div class="row m-b-xl"
+			<div class="row m-b-xl form-group"
 				data-ng-class="{ 'text-danger' : instanceForm.memory.$modelValue < 512 }">
 				<label class="col-md-3 col-sm-3 control-label"><fmt:message key="memory" bundle="${msg}" /> :</label>
 				<div class="col-md-5 col-sm-5">
-					<rzslider rz-slider-model="instance.computeOffer.memory.value" data-ng-init="instance.computeOffer.memory.value = 512"
+					<rzslider  rz-slider-model="instance.computeOffer.memory.value"
 						rz-slider-floor="instance.computeOffer.memory.floor"
 						rz-slider-ceil="instance.computeOffer.memory.ceil"
-						rz-slider-always-show-bar="true"></rzslider>
+						rz-slider-on-change="instance.computeOffer.memory.value"
+						rz-slider-always-show-bar="true" rz-active></rzslider>
 				</div>
-				<div class="col-md-3 col-sm-3 digit-2-width">
+				<div class="col-md-3 col-sm-3 digit-2-width" >
 					<div class="input-group">
-						<input class="form-control" name="memory" valid-number id="create_instance_compute_offering_memory"
-							data-ng-min="{{ instance.computeOffer.memory.floor}}"
-							data-ng-max="{{ instance.computeOffer.memory.ceil}}" type="text"
+						<input class="form-control" required="true" name="memory"  id="create_instance_compute_offering_memory" data-ng-change="customMemory(instance.computeOffer.memory.value)"
+							 type="number" min="{{instance.computeOffer.memory.floor}}" max="{{instance.computeOffer.memory.ceil}}"
 							data-ng-model="instance.computeOffer.memory.value"> <span class="input-group-addon" id="basic-addon2">MB</span>
 					</div>
 				</div>
@@ -83,9 +84,9 @@
 				</div>
 				<div class="col-md-3 col-sm-3 digit-2-width">
 					<div class="input-group">
-						<input valid-number
-							data-ng-min="{{ instance.computeOffer.cpuCore.floor}}" id="create_instance_compute_offering_cpu_core"
-							data-ng-max="{{ instance.computeOffer.cpuCore.ceil}}" type="text"
+						<input
+							min="{{ instance.computeOffer.cpuCore.floor}}" id="create_instance_compute_offering_cpu_core" data-ng-change="customCpuCore(instance.computeOffer.cpuCore.value)"
+							max="{{ instance.computeOffer.cpuCore.ceil}}" type="number"
 							class="form-control" name="cpuCore"
 							data-ng-model="instance.computeOffer.cpuCore.value">
 							<span class="input-group-addon"><fmt:message key="core" bundle="${msg}" /></span>
@@ -105,14 +106,13 @@
 				</div>
 				<div class="col-md-3 col-sm-3 digit-2-width">
 					<div class="input-group">
-						<input valid-number id="create_instance_compute_offering_cpu_speed"
-							data-ng-min="{{ instance.computeOffer.cpuSpeed.floor}}"
-							data-ng-max="{{ instance.computeOffer.cpuSpeed.ceil}}"
-							type="text" class="form-control" name="cpuSpeed"
+						<input id="create_instance_compute_offering_cpu_speed" required="true" data-ng-change="customCpuSpeed(instance.computeOffer.cpuSpeed.value)"
+							min="{{ instance.computeOffer.cpuSpeed.floor}}"
+							max="{{ instance.computeOffer.cpuSpeed.ceil}}"
+							type="number" class="form-control" name="cpuSpeed"
 							data-ng-model="instance.computeOffer.cpuSpeed.value"  >
 													<span class="input-group-addon">MHz</span>
 					</div>
-
 				</div>
 			</div>
 			<div class="row m-b-xl"
@@ -180,11 +180,11 @@
 						</rzslider>
 					</div>
 					<div class="col-md-2 col-xs-12 col-sm-3">
-						<input type="text" required="true" id="create_instance_disk_size"
-							data-ng-min="{{ instance.diskOffer.diskSize.floor }}"
-							data-ng-max="{{ instance.diskOffer.diskSize.ceil}}"
-							class="form-control input-mini" name="diskSize"
-							data-ng-model="instance.diskSize" valid-number="">
+						<input type="number" required="true" id="create_instance_disk_size" required="true" data-ng-change="customdiskSize(instance.diskSize)"
+							min="{{ instance.diskOffer.diskSize.floor }}"
+							max="{{ instance.diskOffer.diskSize.ceil}}"
+							class="form-control " name="diskSize"
+							data-ng-model="instance.diskSize" >
 					</div>
 				</div>
 			</div>
@@ -338,20 +338,20 @@
 									<tr data-ng-repeat="networks in instance.networks.networkList">
 										<td>
 											<label>
-												<input id="create_instance_network_checkbox" data-ng-model="instance.networks[$index]" type="checkbox" data-ng-checked="false"
-													required="true" name="network" value="{{networks}}">
+												<input id="create_instance_network_checkbox_{{networks.id}}" data-unique-field="{{networks.name}}-{{networks.networkOffering.displayText}}" data-ng-model="instance.networks[$index]" type="checkbox" data-ng-checked="false"
+												class="test_create_instance_network_checkbox" required="true" name="network" value="{{networks}}">
 													{{ networks.name}}
 											</label>
 										</td>
 										<td>{{ networks.networkType}}</td>
 										<td>
 											<a title="<fmt:message key="ip.address" bundle="${msg}" />"></a>
-											<input type="text" valid-cidr required="true" id="create_instance_network_ip_addess"
-												placeholder="<fmt:message key="ip.address" bundle="${msg}" />"
+											<input type="text" valid-cidr required="true" id="create_instance_network_ip_addess_{{networks.id}}"
+											class="test_create_instance_network_ip_addess" data-unique-field="{{networks.name}}-{{networks.networkOffering.displayText}}" placeholder="<fmt:message key="ip.address" bundle="${msg}" />"
 												class="input-small" data-ng-model="networks.ipaddress" />
 											<span>
 												<label>
-													<input type="radio" id="create_instance_network_default_radio_button" name="instance.networks.default" data-ng-model="instance.networkc" value="{{networks}}">
+													<input type="radio" id="create_instance_network_default_radio_button_{{networks.id}}" class="test_create_instance_network_default_radio_button" data-unique-field="{{networks.name}}-{{networks.networkOffering.displayText}}" name="instance.networks.default" data-ng-model="instance.networkc" value="{{networks}}">
 														<fmt:message key="common.default" bundle="${msg}" />
 												</label>
 											</span>
@@ -380,21 +380,21 @@
 										data-ng-repeat="networks in instance.networks.networkList| filter:{ vpc : true }">
 										<td>
 											<label>
-												<input data-ng-model="networks.selected" type="checkbox" id="create_instance_network_checkbox"
-													required="true" name="instance.networks" value="networks">
+												<input data-ng-model="networks.selected" type="checkbox" id="create_instance_network_checkbox_{{networks.id}}"
+													data-unique-field="{{networks.name}}-{{networks.networkOffering.displayText}}" class="test_create_instance_network_checkbox" required="true" name="instance.networks" value="networks">
 													{{ networks.name}}
 											</label>
 										</td>
 										<td>{{ networks.type}}</td>
 										<td>
 											<a title="<fmt:message key="ip.address" bundle="${msg}" />"></a>
-											<input type="text" required="true" valid-cidr id="create_instance_network_ip_address"
-												placeholder="<fmt:message key="ip.address" bundle="${msg}" />"
+											<input type="text" required="true" valid-cidr id="create_instance_network_ip_address_{{networks.id}}"
+												data-unique-field="{{networks.name}}-{{networks.networkOffering.displayText}}" class="test_create_instance_network_ip_address" placeholder="<fmt:message key="ip.address" bundle="${msg}" />"
 												class="input-small" data-ng-model="networks.ipaddress" />
 											<span>
 												<label>
-													<input type="radio" id="create_instance_network_default_radio" name="instance.networks.default" data-ng-model="instance.networks[$index]"
-														value="{{networks}}"> <fmt:message key="common.default" bundle="${msg}" />
+													<input type="radio" id="create_instance_network_default_radio__{{networks.id}}" data-unique-field="{{networks.name}}-{{networks.networkOffering.displayText}}" name="instance.networks.default" data-ng-model="instance.networks[$index]"
+													class="test_create_instance_network_default_radio" value="{{networks}}"> <fmt:message key="common.default" bundle="${msg}" />
 												</label>
 											</span>
 										</td>
@@ -408,3 +408,4 @@
 		</div>
 	</div>
 </div>
+</form>

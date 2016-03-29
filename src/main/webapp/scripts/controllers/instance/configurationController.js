@@ -9,20 +9,16 @@ angular
     .controller('configurationCtrl', configurationCtrl)
 
 function configurationCtrl($scope, $stateParams, appService, localStorageService, promiseAjax, $modal, $window, globalConfig, crudService, notify, $state) {
-
-    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.vmresize, function() {
-      //  $scope.instances = appService.webSocket;
-    });
-
     $scope.formSubmitted = false;
     $scope.instanceList = [];
-    $scope.formElements=[];
+    $scope.formElements={};
     $scope.global = crudService.globalConfig;
     $scope.instanceForm = [];
     $scope.instanceElements = {};
     $scope.instance = {};
     $scope.instances = [];
     $scope.instances.computeOffering ={};
+    $scope.resetForm = [];
 
     // Form Field Decleration
     $scope.computeOffer = {
@@ -31,11 +27,17 @@ function configurationCtrl($scope, $stateParams, appService, localStorageService
 
 
 	var instanceId = $stateParams.id;
-	var hasServers = crudService.read("virtualmachine", instanceId);
-	hasServers.then(function (result) {
-	$scope.instances = result;
-        $scope.computeList();
-	});
+	$scope.viewInstance = function(instanceId) {
+            var hasServers = crudService.read("virtualmachine", instanceId);
+            hasServers.then(function (result) {
+                $scope.instances = result;
+                $scope.computeList();
+                $scope.resetSSHKey();
+            });
+        };
+        $scope.viewInstance(instanceId);
+
+
 
     	$scope.instance = {
         computeOffer: {
@@ -51,8 +53,8 @@ function configurationCtrl($scope, $stateParams, appService, localStorageService
                 ceil: 32
             },
             cpuSpeed: {
-                value: 1000,
-                floor: 1000,
+                value: 500,
+                floor: 500,
                 ceil: 3500
             },
             isOpen: true
@@ -124,19 +126,18 @@ function configurationCtrl($scope, $stateParams, appService, localStorageService
           			$scope.instances.computeOffering = $scope.instance.computeOffering;
           			var hasServer =crudService.updates("virtualmachine/resize", $scope.instances);
           			hasServer.then(function (result) {
-			   	appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.vmresize,result.id,$scope.global.sessionValues.id);
+			   	appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.vmresize,result.uuid,$scope.global.sessionValues.id);
           				$scope.showLoader= false;
-
-          				notify({message: 'Updated successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
-          				$state.reload();
           			}).catch(function (result) {
                         if (!angular.isUndefined(result) && result.data != null) {
 	                        if (result.data.fieldErrors != '') {
 	                            angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
 	                            $scope.instanceForm[key].$invalid = true;
+	              				$scope.showLoader= false;
 	                            $scope.instanceForm[key].errorMessage = errorMessage;
 	                            });
 	                            }
+              				$scope.showLoader= false;
                         }
                         });
           			}
@@ -192,5 +193,71 @@ function configurationCtrl($scope, $stateParams, appService, localStorageService
         });
 
     };
+  $scope.resetSSHKey = function() {
+    $scope.formElements.sshKeyList = [];
+     if (!angular.isUndefined($scope.instances.project) && $scope.instances.project != null) {
+	        var hasSSHKeyList = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL
+        		+ "sshkeys/search/project?project="+$scope.instances.project.id);
+	        hasSSHKeyList.then(function (result) {
+                    angular.forEach(result, function(object,value) {
+        		if(object.id !== $scope.instances.keypairId) {
+        			$scope.formElements.sshKeyList.push(object);
+        		}
+		    });
+	        });
+        } else if (!angular.isUndefined($scope.instances.department) && $scope.instances.department != null) {
+	        var hasSSHKeyList = appService.crudService.listAllByFilter("sshkeys/search/department", $scope.instances.department);
+	        hasSSHKeyList.then(function (result) {
+	    	    angular.forEach(result, function(object,value) {
+        		if(object.id !== $scope.instances.keypairId) {
+        			$scope.formElements.sshKeyList.push(object);
+        		}
+		    });
+	        });
+        }
+  }
 
+
+    $scope.resetKey = function (form, resetSSH) {
+   		$scope.formSubmitted = true;
+   		if (form.$valid) {
+   			$scope.showLoader= true;
+                        $scope.instances.keypairId = $scope.resetSSH.keypairName.id;
+   			var hasServer = appService.crudService.updates("virtualmachine/reset", $scope.instances);
+   			hasServer.then(function (result) {
+                         $scope.showLoader = false;
+                         appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.vmSSHKEY,result.uuid,$scope.global.sessionValues.id);
+                        }).catch(function (result) {
+                 if (!angular.isUndefined(result) && result.data != null) {
+                     if (result.data.fieldErrors != '') {
+                         angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
+                         $scope.resetForm[key].$invalid = true;
+                         $scope.resetForm[key].errorMessage = errorMessage;
+                         });
+                         }
+                       $scope.showLoader= false;
+                 }
+                 });
+   			}
+   		};
+      $scope.resetPassword= function(vm) {
+          var event = "VM.RESETPASSWORD";
+	  $scope.vm = vm;
+	  $scope.vm.event = event;
+	  $scope.vm.password = "reset";
+	  $scope.formSubmitted = true;
+          var hasVm = appService.crudService.updates("virtualmachine/handleevent/vm", $scope.vm);
+	  hasVm.then(function(result) {
+	  }).catch(function (result) {
+     });
+     };
+     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.vmresize, function() {
+         $scope.viewInstance($scope.instances.id);
+     });
+     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.vmSSHKEY, function() {
+         $scope.viewInstance($scope.instances.id);
+         if ($scope.instances.passwordEnabled == true) {
+             $scope.resetPassword($scope.instances);
+         }
+       });
 }

@@ -6,7 +6,7 @@
 <form name="form.detachForsm">
     <div class="inmodal" >
         <div class="modal-header"> {{ deleteId }}
-            <panda-modal-header hide-zone="false" page-title="<fmt:message key="delete.project" bundle="${msg}" />"></panda-modal-header>
+            <panda-modal-header id="delete_project_page_title" hide-zone="false" page-title="<fmt:message key="delete.project" bundle="${msg}" />"></panda-modal-header>
             <!--<h2 class="modal-title" id="myModalLabel">Confirm Detach Volume</h2>-->
         </div>
 
@@ -25,8 +25,8 @@
 
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-default " ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.cancel" bundle="${msg}" /></button>
-            <button type="submit" class="btn btn-default btn-danger2" ng-click="deleteProject()" data-dismiss="modal"><fmt:message key="common.ok" bundle="${msg}" /></button>
+            <button type="button" id="delete_project_cancel_button" class="btn btn-default " ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.cancel" bundle="${msg}" /></button>
+            <button type="submit" id="delete_project_ok_button" class="btn btn-default btn-danger2" ng-click="deleteProject()" data-dismiss="modal"><fmt:message key="common.ok" bundle="${msg}" /></button>
 
         </div>
     </div>

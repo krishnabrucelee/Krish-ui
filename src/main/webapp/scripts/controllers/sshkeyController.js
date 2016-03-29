@@ -8,16 +8,8 @@ angular
         .module('homer')
         .controller('sshkeyListCtrl', sshkeyListCtrl)
 
-function sshkeyListCtrl($scope,appService,$state) {
+function sshkeyListCtrl($scope,appService,$state,localStorageService, globalConfig) {
 
-    $scope.$on(appService.globalConfig.webSocketEvents.sshKeyEvents.createSSHKey, function() {
-
-  //   $scope.sshkeyList = appService.webSocket;
-    });
-    $scope.$on(appService.globalConfig.webSocketEvents.sshKeyEvents.deleteSSHKey, function() {
-
-  //   $scope.sshkeyList = appService.webSocket;
-    });
     $scope.sshkeyList = {};
     $scope.paginationObject = {};
     $scope.sshkeyForm = {};
@@ -27,16 +19,73 @@ function sshkeyListCtrl($scope,appService,$state) {
     $scope.sort = appService.globalConfig.sort;
     $scope.changeSorting = appService.utilService.changeSorting;
     $scope.userElement = {};
+    $scope.paginationObject.sortOrder = '+';
+    $scope.paginationObject.sortBy = 'name';
+
+    $scope.changeSort = function(sortBy, pageNumber) {
+		var sort = appService.globalConfig.sort;
+		if (sort.column == sortBy) {
+			sort.descending = !sort.descending;
+		} else {
+			sort.column = sortBy;
+			sort.descending = false;
+		}
+		var sortOrder = '-';
+		if(!sort.descending){
+			sortOrder = '+';
+		}
+		$scope.paginationObject.sortOrder = sortOrder;
+		$scope.paginationObject.sortBy = sortBy;
+		$scope.showLoader = true;
+		var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
+            var hasSSHKeysLists = {};
+            if ($scope.domainView == null) {
+            	hasSSHKeysLists =  appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "sshkeys" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+sortOrder+sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+            } else {
+            	hasSSHKeysLists =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "sshkeys/listByDomain"
+    				+"?lang=" +appService.localStorageService.cookie.get('language')
+    				+ "&domainId="+$scope.domainView.id+"&sortBy="+$scope.paginationObject.sortOrder+$scope.paginationObject.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+            }
+            hasSSHKeysLists.then(function(result) { // this is only run after $http
+			// completes0
+			$scope.sshkeyList = result;
+			$scope.sshkeyList.Count = 0;
+            if (result.length != 0) {
+                $scope.sshkeyList.Count = result.totalItems;
+            }
+			// For pagination
+			$scope.paginationObject.limit = limit;
+			$scope.paginationObject.currentPage = pageNumber;
+			$scope.paginationObject.totalItems = result.totalItems;
+			$scope.paginationObject.sortOrder = sortOrder;
+			$scope.paginationObject.sortBy = sortBy;
+			$scope.showLoader = false;
+		});
+	};
 
     // SSH Key List
     $scope.list = function (pageNumber) {
+        appService.globalConfig.sort.sortOrder = $scope.paginationObject.sortOrder;
+        appService.globalConfig.sort.sortBy = $scope.paginationObject.sortBy;
         $scope.showLoader = true;
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT :
         	$scope.paginationObject.limit;
-        var hasSSHKeys = appService.crudService.list("sshkeys", $scope.global.paginationHeaders(pageNumber, limit),
-            {"limit": limit});
+        var hasSSHKeys = {};
+        if ($scope.domainView == null) {
+        	hasSSHKeys = appService.crudService.list("sshkeys", $scope.global.paginationHeaders(pageNumber, limit),
+                    {"limit": limit});
+        } else {
+        	hasSSHKeys =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "sshkeys/listByDomain"
+				+"?lang=" +appService.localStorageService.cookie.get('language')
+				+ "&domainId="+$scope.domainView.id+"&sortBy="+globalConfig.sort.sortOrder+globalConfig.sort.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+        }
         hasSSHKeys.then(function (result) {
             $scope.sshkeyList = result;
+            $scope.sshkeyList.Count = 0;
+            if (result.length != 0) {
+                $scope.sshkeyList.Count = result.totalItems;
+            }
+
             // For pagination
             $scope.paginationObject.limit = limit;
             $scope.paginationObject.currentPage = pageNumber;
@@ -45,6 +94,11 @@ function sshkeyListCtrl($scope,appService,$state) {
         });
     };
     $scope.list(1);
+
+    // Get ssh key list based on domain selection
+    $scope.selectDomainView = function(pageNumber) {
+    	$scope.list(1);
+    };
 
     // Open dialogue box to create SSH Key
     $scope.sshkey = {};
@@ -264,8 +318,6 @@ function sshkeyListCtrl($scope,appService,$state) {
 			                $scope.formSubmitted = false;
 			                $modalInstance.close();
 			                $scope.showLoader = false;
-			                appService.notify({message: 'SSH key created successfully', classes: 'alert-success',
-			                	templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
 			                $scope.list(1);
 			                $scope.sshkey.name = "";
 			                $scope.sshkey.publicKey = "";
@@ -329,4 +381,12 @@ function sshkeyListCtrl($scope,appService,$state) {
             };
             }]);
     };
+
+
+    $scope.$on(appService.globalConfig.webSocketEvents.sshKeyEvents.createSSHKey, function() {
+    	$scope.list($scope.paginationObject.currentPage);
+    });
+    $scope.$on(appService.globalConfig.webSocketEvents.sshKeyEvents.deleteSSHKey, function() {
+    	$scope.list($scope.paginationObject.currentPage);
+    });
 };

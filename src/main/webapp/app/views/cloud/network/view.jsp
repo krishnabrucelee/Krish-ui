@@ -12,6 +12,9 @@
         <li ><a data-ng-click="vmLists(1)" data-toggle="tab"> <i class="fa fa-cloud"></i> <fmt:message key="common.instance" bundle="${msg}" /></a></li>
     </ul>
      <div class="tab-content">
+     <div data-ng-if = "showLoaderOffer" style="margin: 20%">
+                <get-loader-image data-ng-if="showLoaderOffer"></get-loader-image>
+            </div>
         <div class="tab-pane" data-ng-class="{'active' : templateCategory == 'details'}" id="step1-dashboard">
             <div data-ng-include src="'app/views/cloud/network/details.jsp'"></div>
         </div>

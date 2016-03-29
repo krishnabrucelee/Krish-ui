@@ -55,16 +55,30 @@
                     <div class="row" >
                         <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="pull-left">
-                            <div class="pull-left"></div>
+                            	<div class="dashboard-box pull-left">
+	     							<div class="instance-border-content-normal">
+	                                <span class="pull-left m-t-xs m-l-xs m-r-xs"><fmt:message key="common.total" bundle="${msg}" /></span>
+	                                <b class="pull-left">{{roleList.Count}}</b>
+	                                <div class="clearfix"></div>
+	                                </div>
+	                            </div>
+                                <a class="btn btn-info" id="roles_add_role_button" has-permission="CREATE_ROLE"  ui-sref="roles.list-add"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="common.add" bundle="${msg}" /></a>
+                                <a class="btn btn-info" id="roles_assign_user_role_button" has-permission="ASSIGN_ROLE" data-ng-click="assignRole('lg')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="assign.user.role" bundle="${msg}" /></a>
+                                <a class="btn btn-info" id="roles_refresh_button" ui-sref="roles" title="<fmt:message key="common.refresh" bundle="${msg}" />"  ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
                             </div>
                             <div class="pull-right">
                                 <panda-quick-search></panda-quick-search>
+                                <span class="pull-right m-r-sm" data-ng-show="global.sessionValues.type == 'ROOT_ADMIN'">
+									<select
+										class="form-control input-group col-xs-5" name="domainView"
+										data-ng-model="domainView"
+										data-ng-change="selectDomainView(1)"
+										data-ng-options="domainView.name for domainView in formElements.domainList">
+										<option value="">All Domain</option>
+									</select>
+								</span>
                                 <div class="clearfix"></div>
-                                <span class="pull-right m-l-sm m-t-sm m-b-sm">
-                                	<a class="btn btn-info" id="roles_assign_user_role_button" has-permission="ASSIGN_ROLE" data-ng-click="assignRole('lg')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="assign.user.role" bundle="${msg}" /></a>
-                                    <a class="btn btn-info" id="roles_add_role_button" has-permission="CREATE_ROLE"  ui-sref="roles.list-add"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="add.role" bundle="${msg}" /></a>
-                                    <a class="btn btn-info" id="roles_refresh_button" ui-sref="roles" title="<fmt:message key="common.refresh" bundle="${msg}" />"  ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
-                                </span>
+                                <span class="pull-right m-l-sm m-t-sm m-b-sm"></span>
                             </div>
                         </div>
                         <div class="clearfix"></div>
@@ -80,14 +94,19 @@
                                         <table cellspacing="1" cellpadding="1" id="roles_table" class="table dataTable table-bordered table-striped">
                                             <thead>
                                                 <tr>
-                                                <th   data-ng-click="changeSorting('name')" data-ng-class="sort.descending && sort.column =='name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.name" bundle="${msg}" />${messages.getString("locale.profile")}</th>
-                                                <th   data-ng-click="changeSorting('domain.name')" data-ng-class="sort.descending && sort.column =='domain.name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.domain" bundle="${msg}" /></th>
-                                                <th   data-ng-click="changeSorting('department.userName')" data-ng-class="sort.descending && sort.column =='department.userName'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.department" bundle="${msg}" /></th>
-                                                <th   data-ng-click="changeSorting('description')" data-ng-class="sort.descending && sort.column =='description'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.description" bundle="${msg}" /></th>
+                                                <th   data-ng-click="changeSort('name',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.name" bundle="${msg}" />${messages.getString("locale.profile")}</th>
+                                                <th   data-ng-click="changeSort('domain.name',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='domain.name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.domain" bundle="${msg}" /></th>
+                                                <th   data-ng-click="changeSort('department.userName',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='department.userName'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.department" bundle="${msg}" /></th>
+                                                <th   data-ng-click="changeSort('description',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='description'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.description" bundle="${msg}" /></th>
                                                 <th><fmt:message key="common.action" bundle="${msg}" /></th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
+                                            <tbody data-ng-hide="roleList.length > 0">
+			                                    <tr>
+			                                        <td class="col-md-5 col-sm-5" colspan="5"><fmt:message key="common.no.records.found" bundle="${msg}" />!!</td>
+			                                    </tr>
+			                                </tbody>
+                                            <tbody data-ng-show="roleList.length > 0">
                                                 <tr data-ng-repeat="role in filteredCount = (roleList| filter: quickSearch | orderBy:sort.column:sort.descending)">
                                                     <td>
                                                        {{ role.name}}
@@ -104,6 +123,7 @@
                                                         {{ role.description}}
                                                     </td>
                                                     <td>
+                                                        <input type="hidden" id="role_unique_{{role.id}}"  data-unique-field="{{ role.domain.name}}-{{ role.department.userName }}-{{ role.name}}" class="test_role_unique">
                                                         <a has-permission="EDIT_ROLE" id="role_edit_button_{{role.id}}" data-unique-field="edit-{{ role.domain.name}}-{{ role.department.userName }}-{{ role.name}}" class="icon-button test_role_edit_button" title="<fmt:message key="common.edit" bundle="${msg}" />" ui-sref="roles.list-edit({id: {{ role.id}}})" ><span class="fa fa-edit m-r"></span></a>
                                                         <a has-permission="DELETE_ROLE" id="role_delete_button_{{role.id}}" data-unique-field="delete-{{ role.domain.name}}-{{ role.department.userName }}-{{ role.name}}" class="icon-button test_role_delete_button" title="<fmt:message key="common.delete" bundle="${msg}" />"  data-ng-click="delete('sm',role)"  ><span class="fa fa-trash"></span></a>
                                                     </td>
