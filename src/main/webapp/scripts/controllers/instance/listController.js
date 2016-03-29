@@ -17,7 +17,11 @@ function instanceListCtrl($scope, $sce, $log, $filter, dialogService, $timeout, 
     $scope.changeSorting = appService.utilService.changeSorting;
     $scope.paginationObject.sortOrder = '+';
     $scope.paginationObject.sortBy = 'displayName';
+
+
     if ($stateParams.id > 0) {
+        $state.current.data.pageName = "";
+        $state.current.data.id = "";
         var hasServer = appService.crudService.read("virtualmachine", $stateParams.id);
         hasServer.then(function(result) { // this is only run after $http
             $scope.instance = result;
