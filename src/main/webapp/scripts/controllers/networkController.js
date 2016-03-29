@@ -101,7 +101,7 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
         $scope.templateCategory = 'egress';
         $scope.firewallRules = {};
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
-if (!angular.isUndefined($stateParams.id1)) {
+if (!angular.isUndefined($stateParams.id)) {
         var hasFirewallRuless = appService.crudService.listAllByQuery("egress/firewallrules?network=" + $stateParams.id + "&type=egress", $scope.global.paginationHeaders(pageNumber, limit), {
             "limit": limit
         });
@@ -1768,6 +1768,8 @@ console.log("obj",obj.lbvm);
                     hasVpn.then(function(result) {
                         appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.vpnCreate, result.uuid, $scope.global.sessionValues.id);
                         $scope.ipDetails = result;
+			 appService.localStorageService.set('view', 'vpn-details');
+    $window.location.href = '#network/list/view/' + $stateParams.id + '/ip-address/' + $scope.ipDetails.id;
                         $scope.showLoader = false;
                         $scope.cancel();
                     }).catch(function(result) {
@@ -1789,6 +1791,8 @@ console.log("obj",obj.lbvm);
                     hasVpn.then(function(result) {
                         appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.vpnDestroy, $scope.ipAddress.uuid, $scope.global.sessionValues.id);
                         $scope.ipDetails = result;
+		 appService.localStorageService.set('view', 'details');
+  		  $window.location.href = '#network/list/view/' + $stateParams.id + '/ip-address/' + $scope.ipDetails.id;
                         $scope.showLoader = false;
                         $scope.cancel();
                     }).catch(function(result) {
