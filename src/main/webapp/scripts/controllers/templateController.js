@@ -174,7 +174,7 @@ $scope.template.listAllTemplate = {};
 			$scope.showLoader = false;
 		});
 	};
-   
+
 
    $scope.usertemplatelist = function () {
    $scope.formElements.category = 'mytemplates';
@@ -249,6 +249,8 @@ $scope.template.listAllTemplate = {};
 
 	 // Hypervisors list from server
     $scope.hypervisors = {};
+    appService.globalConfig.sort.sortOrder = $scope.paginationObject.sortOrder;
+    appService.globalConfig.sort.sortBy = $scope.paginationObject.sortBy;
     var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
     var hashypervisorList = appService.crudService.list("hypervisors", $scope.global.paginationHeaders(1, limit), {"limit": limit});
     hashypervisorList.then(function (result) {
@@ -326,7 +328,7 @@ $scope.template.listAllTemplate = {};
     	$scope.formElements.zoneList = result;
     });
 
-   
+
 
      $scope.uploadTemplateContainer = function (size){
            appService.dialogService.openDialog("app/views/templates/upload.jsp", 'lg', $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
@@ -413,7 +415,7 @@ $scope.template.listAllTemplate = {};
             }]);
     };
 
-	
+
     if (!angular.isUndefined($stateParams.id) && $stateParams.id != '') {
         $scope.edit($stateParams.id)
     }

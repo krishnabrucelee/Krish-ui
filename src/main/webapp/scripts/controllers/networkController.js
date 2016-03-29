@@ -80,9 +80,16 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
             $scope.showLoader = false;
         });
     };
+
     if ($stateParams.id > 0) {
+        $scope.showLoader = true;
+        $scope.showLoaderOffer = true;
+        $state.current.data.pageName = "";
+        $state.current.data.id = "";
         var hasServer = appService.crudService.read("guestnetwork", $stateParams.id);
         hasServer.then(function(result) {
+            $scope.showLoader = false;
+            $scope.showLoaderOffer = false;
             $scope.networkBreadCrumb = result;
             $scope.networkBreadCrumbList = result;
             $state.current.data.pageName = result.name;
@@ -670,6 +677,9 @@ $scope.ipCostList();
                     var hasServer = appService.crudService.add("vpnUser", user);
                     hasServer.then(function(result) {
                         appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.vpnUserAdd, result.uuid, $scope.global.sessionValues.id);
+                        user.userName = "";
+                        user.password = "";
+                        $scope.vpnFormSubmitted = false;
                         $scope.showLoader = false;
                     }).catch(function(result) {
                     });
@@ -1575,7 +1585,7 @@ console.log("obj",obj.lbvm);
         }]
     };
 
- 
+
     $scope.openAddIP = function(size, network) {
         appService.dialogService.openDialog("app/views/cloud/network/acquire-IP.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function($scope, $modalInstance, $rootScope) {
             $scope.acquire = function(network) {
