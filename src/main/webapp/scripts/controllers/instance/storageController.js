@@ -569,43 +569,18 @@ function storageCtrl($scope, $state, $stateParams, appService, $window, volumeSe
     });
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.createSnapshot, function() {
         $scope.list(1);
-        appService.notify({
-            message: 'Added successfully ',
-            classes: 'alert-success',
-            templateUrl: $scope.global.NOTIFICATION_TEMPLATE
-        });
         $window.location = "#/snapshot/list";
     });
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.volumeresize, function() {
         $scope.list(1);
-        appService.notify({
-            message: 'Updated successfully',
-            classes: 'alert-success',
-            templateUrl: $scope.global.NOTIFICATION_TEMPLATE
-        });
     });
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.volumesave, function() {
         $scope.list(1);
-        appService.notify({
-            message: 'Added successfully',
-            classes: 'alert-success',
-            templateUrl: $scope.global.NOTIFICATION_TEMPLATE
-        });
     });
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.uploadVolume, function() {
         $scope.list(1);
-        appService.notify({
-            message: 'Uploaded successfully',
-            classes: 'alert-success',
-            templateUrl: $scope.global.NOTIFICATION_TEMPLATE
-        });
-    });
+     });
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.volumedelete, function() {
         $scope.list(1);
-        appService.notify({
-            message: 'Deleted successfully ',
-            classes: 'alert-success',
-            templateUrl: $scope.global.NOTIFICATION_TEMPLATE
-        });
     });
 };
