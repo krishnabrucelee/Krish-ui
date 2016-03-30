@@ -25,7 +25,6 @@ function configurationCtrl($scope, $stateParams, appService, localStorageService
 //        type: {id:1, name:"Basic"}
     };
 
-
 	var instanceId = $stateParams.id;
 	$scope.viewInstance = function(instanceId) {
             var hasServers = crudService.read("virtualmachine", instanceId);
@@ -251,6 +250,15 @@ function configurationCtrl($scope, $stateParams, appService, localStorageService
 	  }).catch(function (result) {
      });
      };
+
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.startVm, function() {
+        $scope.viewInstance($scope.instances.id);
+    });
+
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.stopVm, function() {
+        $scope.viewInstance($scope.instances.id);
+    });
+
      $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.vmresize, function() {
          $scope.viewInstance($scope.instances.id);
      });
@@ -260,4 +268,19 @@ function configurationCtrl($scope, $stateParams, appService, localStorageService
              $scope.resetPassword($scope.instances);
          }
        });
+
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.rebootVm, function() {
+        $scope.viewInstance($scope.instances.id);
+    });
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.reInstallVm, function() {
+        $scope.viewInstance($scope.instances.id);
+    });
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.reDestroyVm, function() {
+        $scope.viewInstance($scope.instances.id);
+    });
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.expungeVM, function() {
+        $scope.viewInstance($scope.instances.id);
+
+    });
+
 }
