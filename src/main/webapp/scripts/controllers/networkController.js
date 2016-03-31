@@ -101,7 +101,7 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
         $scope.templateCategory = 'egress';
         $scope.firewallRules = {};
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
-if (!angular.isUndefined($stateParams.id1)) {
+if (!angular.isUndefined($stateParams.id)) {
         var hasFirewallRuless = appService.crudService.listAllByQuery("egress/firewallrules?network=" + $stateParams.id + "&type=egress", $scope.global.paginationHeaders(pageNumber, limit), {
             "limit": limit
         });
@@ -1626,6 +1626,7 @@ console.log("obj",obj.lbvm);
                     };
                     $scope.portvmLists();
                     $scope.enableStaticNatSave = function(natInstance) {
+                        console.log(natInstance[0]);
                         $scope.staticNat = $scope.global.rulesPF[0];
                         $scope.formSubmitted = true;
                         $scope.showLoader = true;
@@ -1663,7 +1664,7 @@ console.log("obj",obj.lbvm);
             		else {
                         $scope.staticNat.ipAddressId = $stateParams.id1;
                         var hasStaticNat = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "ipAddresses/nat?ipaddress=" + $scope.staticNat.ipAddressId +
-                        	"&vm=" + $scope.vmId + "&guestip=" + $scope.vmIpAddress + "&type=" + "enable" + "&lang=" + appService.localStorageService.cookie.get('language') + "&sortBy=-id");
+                        	"&vm=" + natInstance.id + "&guestip=" + $scope.vmIpAddress + "&type=" + "enable" + "&lang=" + appService.localStorageService.cookie.get('language') + "&sortBy=-id");
                         hasStaticNat.then(function(result) {
                             appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.enableStaticNat, result.uuid, $scope.global.sessionValues.id);
                             $scope.formSubmitted = false;
@@ -1768,6 +1769,8 @@ console.log("obj",obj.lbvm);
                     hasVpn.then(function(result) {
                         appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.vpnCreate, result.uuid, $scope.global.sessionValues.id);
                         $scope.ipDetails = result;
+			 appService.localStorageService.set('view', 'vpn-details');
+    $window.location.href = '#network/list/view/' + $stateParams.id + '/ip-address/' + $scope.ipDetails.id;
                         $scope.showLoader = false;
                         $scope.cancel();
                     }).catch(function(result) {
@@ -1789,6 +1792,8 @@ console.log("obj",obj.lbvm);
                     hasVpn.then(function(result) {
                         appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.vpnDestroy, $scope.ipAddress.uuid, $scope.global.sessionValues.id);
                         $scope.ipDetails = result;
+		 appService.localStorageService.set('view', 'details');
+  		  $window.location.href = '#network/list/view/' + $stateParams.id + '/ip-address/' + $scope.ipDetails.id;
                         $scope.showLoader = false;
                         $scope.cancel();
                     }).catch(function(result) {

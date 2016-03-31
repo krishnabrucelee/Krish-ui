@@ -17,7 +17,9 @@
         <div class="col-md-7 col-sm-7 col-xs-12">
             <div class="row m-t-md">
                 <div class="col-md-10 col-sm-10 col-xs-10">
-
+ 				<div data-ng-if="computeOfferLoader" class="overlay-wrapper">
+                	<img data-ng-if="computeOfferLoader" src="images/loading-bars.svg" class="inner-loading" width="64" height="64" />
+            	</div>
                     <form name="instanceForm" method="POST" data-ng-submit="save(instanceForm, instance)" novalidate class="form-horizontal">
                          <div class="form-group" ng-class="{ 'text-danger' : instanceForm.computeoffer.$invalid && OfferingSubmitted}">
                             <label class="col-sm-4 control-label"><fmt:message key="select.the.plan" bundle="${msg}" />
@@ -140,12 +142,8 @@
 
                         <div class="form-group">
                             <div class="col-sm-8 col-sm-offset-4">
-                                 <get-loader-image data-ng-show="showLoader"></get-loader-image>
-
-                                <a class="btn btn-default" data-ng-hide="showLoader" ui-sref="cloud.list-instance"><fmt:message key="common.cancel" bundle="${msg}" /></a>
-                                <button data-ng-class = "(instances.status == 'STOPPED') ? 'btn btn-info' : 'btn btn-disable'" data-ng-disabled="instances.status != 'STOPPED'" href="javascript:void(0);" data-ng-hide="showLoader" type="submit"  ><fmt:message key="common.resize" bundle="${msg}" /></button>
-
-
+                                <a class="btn btn-default"  ui-sref="cloud.list-instance"><fmt:message key="common.cancel" bundle="${msg}" /></a>
+                                <button data-ng-class = "(instances.status == 'STOPPED') ? 'btn btn-info' : 'btn btn-disable'" data-ng-disabled="instances.status != 'STOPPED'" href="javascript:void(0);" type="submit"  ><fmt:message key="common.resize" bundle="${msg}" /></button>
                             </div>
                         </div>
                     </form>
@@ -244,8 +242,10 @@
 
             <div class="row m-t-md">
                 <div class="col-md-10 col-sm-10 col-xs-10">
-
-                    <form name="resetForm" data-ng-submit="resetKey(resetForm, resetSSH)" method="post" novalidate class="form-horizontal">
+                <div data-ng-if="vmsshkeyLoader" class="overlay-wrapper">
+                <img data-ng-if="vmsshkeyLoader" src="images/loading-bars.svg" class="inner-loading" width="64" height="64" />
+            </div>
+                   <form name="resetForm" data-ng-submit="resetKey(resetForm, resetSSH)" method="post" novalidate class="form-horizontal">
                         <div class="form-group" ng-class="{ 'text-danger' : resetForm.keypairName.$invalid && formSubmitted}">
                             <label class="col-sm-4 control-label"><fmt:message key="select.the.key.pair" bundle="${msg}" />
                                 <span class="text-danger">*</span>
@@ -273,9 +273,8 @@
 
                         <div class="form-group">
                             <div class="col-sm-8 col-sm-offset-4">
-                                <get-loader-image data-ng-if="showLoader"></get-loader-image>
-                                <button type="button" data-ng-if="!showLoader" class="btn btn-default " ui-sref="cloud.list-instance"><fmt:message key="common.cancel" bundle="${msg}" /></button>
-			                    <button data-ng-class = "(instances.status == 'STOPPED' && instances.template.osCategory.name != 'Windows') ? 'btn btn-info' : 'btn btn-disable'" data-ng-disabled="instances.status != 'STOPPED' || instances.template.osCategory.name == 'Windows'" href="javascript:void(0);" data-ng-hide="showLoader" type="submit"  ><fmt:message key="common.ok" bundle="${msg}" /></button>
+                                <button type="button" class="btn btn-default " ui-sref="cloud.list-instance"><fmt:message key="common.cancel" bundle="${msg}" /></button>
+			                    <button data-ng-class = "(instances.status == 'STOPPED' && instances.template.osCategory.name != 'Windows') ? 'btn btn-info' : 'btn btn-disable'" data-ng-disabled="instances.status != 'STOPPED' || instances.template.osCategory.name == 'Windows'" href="javascript:void(0);" type="submit"  ><fmt:message key="common.ok" bundle="${msg}" /></button>
                             </div>
                         </div>
                     </form>

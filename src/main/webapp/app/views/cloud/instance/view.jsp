@@ -209,7 +209,7 @@ pageEncoding="UTF-8"%>
                                               <button ng-class = "(instance.status == 'STOPPED') ? 'resizelink enable' : 'resizelink disable'" data-ng-disabled="instance.status !== 'STOPPED'" href="javascript:void(0);"   data-ng-click="selectab()" title="<fmt:message key="resize.vm" bundle="${msg}" />"><span class="fa fa-expand m-xs"></span> <fmt:message key="resize.vm" bundle="${msg}" /></button>
                                         </li>
                                          <li has-permission="RESET_PASSWORD" class="list-group-item">
-                                            <button ng-class = "(instance.passwordEnabled == true && instance.status == 'STOPPED') ? 'resizelink enable' : 'resizelink disable'" data-ng-disabled="instance.passwordEnabled == false || instance.status !== 'STOPPED'" href="javascript:void(0);" title="<fmt:message key="reset.password" bundle="${msg}" />" data-ng-click="resetPassword(instance)"><span class="fa-key fa font-bold m-xs"></span> <fmt:message key="reset.password" bundle="${msg}" /></button>
+                                            <button ng-class = "(instance.passwordEnabled == true && instance.status == 'STOPPED') ? 'resizelink enable' : 'resizelink disable'" data-ng-disabled="instance.passwordEnabled == false || instance.status !== 'STOPPED'" href="javascript:void(0);" title="<fmt:message key="reset.password" bundle="${msg}" />" data-ng-click="resetPassword('sm',instance)"><span class="fa-key fa font-bold m-xs"></span> <fmt:message key="reset.password" bundle="${msg}" /></button>
                                         </li>
                                     </div>
                                 </ul>

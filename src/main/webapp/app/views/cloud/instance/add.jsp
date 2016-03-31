@@ -87,8 +87,8 @@
                                                 <div class="col-md-12 col-sm-12 m-t-xs">
 													{{ instance.template.name}}
                                                     <span data-ng-show="instance.template.templateCost[0].cost > 0" class="pull-right text-danger price-text m-l-lg">
-                                                        <app-currency></app-currency>{{ instance.template.templateCost[0].cost | number : 4}}
-                                                        <span> / <fmt:message key="common.day" bundle="${msg}" /></span>
+                                                        <app-currency></app-currency><span data-ng-if="!instance.template.oneTimeChargeable">{{ instance.template.templateCost[0].cost | number : 4}}
+                                                        <span> / <fmt:message key="common.day" bundle="${msg}" /></span></span><span data-ng-if="instance.template.oneTimeChargeable">{{ instance.template.templateCost[0].cost | number : 4}}</span>
                                                     </span>
                                                     <span data-ng-hide="instance.template.templateCost[0].cost > 0" class="font-bold text-success pricing-text pull-right">
                                                         <fmt:message key="free" bundle="${msg}" />
@@ -157,8 +157,8 @@
                                                     <div class="col-md-12 col-sm-12 m-t-xs">
 														{{ instance.template.name}}
                                                         <span data-ng-show="instance.template.templateCost[0].cost > 0" class="pull-right text-danger price-text m-l-lg">
-                                                            <app-currency></app-currency> {{ instance.template.templateCost[0].cost | number:4}}
-                                                            <span> / <fmt:message key="common.day" bundle="${msg}" /></span>
+                                                            <app-currency></app-currency> <span data-ng-if="!instance.template.oneTimeChargeable">{{ instance.template.templateCost[0].cost | number : 4}}
+                                                        <span> / <fmt:message key="common.day" bundle="${msg}" /></span></span><span  data-ng-if="instance.template.oneTimeChargeable">{{ instance.template.templateCost[0].cost | number : 4}}</span>
                                                         </span>
                                                         <span data-ng-hide="instance.template.templateCost[0].cost > 0" class="font-bold text-success pricing-text pull-right">
                                                             <fmt:message key="free" bundle="${msg}" />
@@ -186,7 +186,7 @@
 														    + (instance.computeOffering.computeCost[0].instanceRunningCostPerMhz > 0 ? (instance.computeOffer.cpuSpeed.value * instance.computeOffering.computeCost[0].instanceRunningCostPerMhz) : 0))" />
                                                         <span data-ng-show="computeCostSum > 0"
 															class="pull-right text-danger price-text m-l-lg">
-                                                            <app-currency></app-currency>{{computeCostSum/30 | number:4 }}
+                                                            <app-currency></app-currency>{{computeCostSum | number:4 }}
                                                             <span> /
                                                                 <fmt:message key="common.day" bundle="${msg}" />
                                                             </span>
@@ -230,7 +230,7 @@
 														<input type="hidden" readonly="readonly" id="create_instance_storage_cost"  data-ng-model= "storageCostSum" data-ng-bind= "storageCostSum =
 															(instance.storageOffering.storagePrice[0].costGbPerMonth > 0 ? (instance.diskSize * instance.storageOffering.storagePrice[0].costGbPerMonth) : 0) + (instance.storageOffering.storagePrice[0].costPerMonth > 0 ? (instance.storageOffering.storagePrice[0].costPerMonth) : 0)"" />
 													    <span data-ng-show="storageCostSum > 0" class="pull-right text-danger price-text m-l-lg">
-                                                            <app-currency></app-currency>{{storageCostSum/30 | number:4 }}
+                                                            <app-currency></app-currency>{{storageCostSum | number:4 }}
                                                             <span> /
                                                                 <fmt:message key="common.day" bundle="${msg}" />
                                                             </span>
@@ -254,7 +254,7 @@
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12 m-t-xs">
                                                         <fmt:message key="common.cost" bundle="${msg}" />
-                                                        <input type="hidden" readonly="readonly" id="create_instance_average_cost_month" data-ng-model= "avgCostMonth" data-ng-bind= "avgCostMonth = ((instance.template.templateCost[0].cost > 0 ? instance.template.templateCost[0].cost * 30 : instance.template.templateCost[0].cost)
+                                                        <input type="hidden" readonly="readonly" id="create_instance_average_cost_month" data-ng-model= "avgCostMonth" data-ng-bind= "avgCostMonth = (((instance.template.templateCost[0].cost > 0 && !instance.template.oneTimeChargeable) ? instance.template.templateCost[0].cost : 0)
                                                             + instance.storageOffering.storagePrice[0].costPerMonth
                                                             + instance.computeOffering.computeCost[0].instanceRunningCostIops + instance.computeOffering.computeCost[0].instanceRunningCostMemory + instance.computeOffering.computeCost[0].instanceRunningCostVcpu
                                                             + (instance.computeOffering.computeCost[0].instanceRunningCostPerMB > 0 ? (instance.computeOffer.memory.value * instance.computeOffering.computeCost[0].instanceRunningCostPerMB) : 0)
@@ -263,7 +263,7 @@
 														    + (instance.storageOffering.storagePrice[0].costGbPerMonth > 0 ? (instance.diskSize * instance.storageOffering.storagePrice[0].costGbPerMonth) : 0))" />
                                                         <span data-ng-show="avgCostMonth > 0"
 															class="pull-right text-danger price-text m-l-lg">
-                                                            <app-currency></app-currency>{{avgCostMonth/30 | number:4
+                                                            <app-currency></app-currency>{{avgCostMonth | number:4
 															 }}
                                                             <span> /
                                                                 <fmt:message key="common.day" bundle="${msg}" />
@@ -280,8 +280,7 @@
                                             <div class="col-md-12 col-sm-12">
                                                 <small data-ng-show="avgCostMonth > 0"
 													class="pull-right text-right font-bold  m-l-lg">
-                                                    <app-currency></app-currency>{{avgCostMonth | number:4
-															 }}
+                                                    <app-currency></app-currency>{{avgCostMonth * 30 | number:4}}
                                                     <span> /
                                                         <fmt:message key="common.month" bundle="${msg}" />
                                                     </span>
@@ -302,6 +301,16 @@
                                                 <span data-ng-hide="instance.computeOffering.computeCost[0].setupCost > 0" class="font-bold text-success pricing-text pull-right">
                                                     <fmt:message key="free" bundle="${msg}" />
                                                 </span>
+                                            </div>
+                                        </div>
+                                        <div  data-ng-if="instance.template.oneTimeChargeable" class="row">
+                                            <div class="col-md-12 col-sm-12 m-t-xs " data-ng-show="instance.computeOffering">
+                                                <fmt:message key="common.template" bundle="${msg}" />
+                                                <span class="font-bold"> (
+                                                    <fmt:message key="one.time" bundle="${msg}" />)
+                                                </span>
+                                                <span data-ng-if="instance.template.oneTimeChargeable" class="pull-right text-danger price-text m-l-lg">
+                                                    <app-currency></app-currency>{{instance.template.templateCost[0].cost | number:4}}</span>
                                             </div>
                                         </div>
                                     </li>

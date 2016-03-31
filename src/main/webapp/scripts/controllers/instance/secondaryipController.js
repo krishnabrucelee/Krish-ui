@@ -66,13 +66,10 @@ function secondaryIpCtrl($scope, $modal, $state, $window, $stateParams, appServi
         $scope.showLoader = true;
         $scope.nic = {};
         var instanceId = $stateParams.id;
-        $scope.nicip = $stateParams.id1;
-<<<<<<< HEAD
-        var hasNicIP = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbyinstanceid?instanceid=" + instanceId + "&lang=" + appService.localStorageService.cookie.get('language') + "&sortBy=" + appService.globalConfig.sort.sortOrder + appService.globalConfig.sort.sortBy);
-=======
+        $scope.nicip = $stateParams.id1;   
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
-        var hasNicIP = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbyvminstances?instanceid=" + instanceId + "&lang=" + appService.localStorageService.cookie.get('language') + "&sortBy=" + appService.globalConfig.sort.sortOrder + appService.globalConfig.sort.sortBy);
->>>>>>> 6f8b53da602e21285bb60ce51358aa38558e987e
+        var hasNicIP = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbyinstanceid?instanceid=" + instanceId + "&lang=" + appService.localStorageService.cookie.get('language') + "&sortBy=" + appService.globalConfig.sort.sortOrder + appService.globalConfig.sort.sortBy);
+
         hasNicIP.then(function(result) {
             $scope.nicIPLists = result;
             $scope.showLoader = false;
