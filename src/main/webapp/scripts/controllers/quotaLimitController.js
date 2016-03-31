@@ -31,10 +31,11 @@ function quotaReasonCtrl($scope, $modalInstance, userForm, quotaReason, notify) 
     };
 };
 
-function quotaLimitCtrl($scope, $state, $stateParams, appService, $window) {
+function quotaLimitCtrl($scope, $state, $stateParams, globalConfig, appService, $window) {
 
 	$scope.global = appService.globalConfig;
-	$scope.resourceDomainList = [];
+	$scope.sort = appService.globalConfig.sort;
+	$scope.resourceDomainList = {};
 	$scope.resourceQuota = {};
 	$scope.resourceTypeList = [ "Instance",
 	/** Number of public IP addresses a user can own. */
@@ -60,12 +61,28 @@ function quotaLimitCtrl($scope, $state, $stateParams, appService, $window) {
 	/** Total secondary storage space (in GiB) a user can use. */
 	"SecondaryStorage" ];
 
-	$scope.resourceDomainList = function() {
-		var hasresourceDomainList = appService.crudService
+    // Load domain
+    $scope.domain = {};
+    $scope.domainList = [];
+    var hasDomains = appService.crudService.listAll("domains/list");
+    hasDomains.then(function (result) {
+    	$scope.domainList = result;
+    });
+
+	$scope.getResourceDomain = function() {
+		$scope.quotaLimitData = [];
+    	$scope.showLoader = true;
+    	var hasresourceDomainList = {};
+    	$scope.resourceDomainList = {};
+		if (angular.isUndefined($scope.domainView) || $scope.domainView == null) {
+
+			hasresourceDomainList = appService.crudService
 				.listAll("resourceDomains/listresourcedomains");
+		} else {
+			hasresourceDomainList = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET , globalConfig.APP_URL + "resourceDomains/listByDomain/"+$scope.domainView.id);
+		}
 		hasresourceDomainList.then(function(result) { // this is only run
-			// after $http
-			// completes0
+
 			$scope.resourceDomainList = result;
 			var i = 0;
 			angular.forEach(result, function(object, key) {
@@ -111,10 +128,16 @@ function quotaLimitCtrl($scope, $state, $stateParams, appService, $window) {
 				}
 			});
 
+
 		});
 	};
-	$scope.resourceDomainList(1);
+	$scope.getResourceDomain();
 
+	// Get volume list based on domain selection
+    $scope.selectDomainView = function() {
+    	$scope.resourceDomainList = {};
+    	$scope.getResourceDomain();
+    };
 	$scope.showForm = function(quotaReason) {
 		// $scope.quota = quota;
 		var modalInstance = $modal.open({
