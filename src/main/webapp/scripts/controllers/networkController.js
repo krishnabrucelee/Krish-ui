@@ -1652,9 +1652,9 @@ console.log("obj",obj.lbvm);
             	var selectedVmCount = 0;
 
                	angular.forEach(natInstance, function(obj, key) {
-            	  if(!angular.isUndefined(obj.port)) {
-            		selectedVmCount++;
-            	     }
+            	   if(obj.port== true) {
+		selectedVmCount++;
+	     }
 
             		if(!angular.isUndefined(obj.port) && !angular.isUndefined(obj.ipAddress)) {
             			$scope.vmId = obj.id;
