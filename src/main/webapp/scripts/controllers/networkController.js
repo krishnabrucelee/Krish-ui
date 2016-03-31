@@ -1440,7 +1440,6 @@ if (!angular.isUndefined($stateParams.id1)) {
                         $scope.formSubmitted = false;
                         $modalInstance.close();
                         $scope.showLoader = false;
-			$scope.portRulesLists(1);
                     }).catch(function(result) {
                         $scope.showLoader = false;
                         if (!angular.isUndefined(result.data)) {
