@@ -10,7 +10,6 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
     $scope.testvar = "test";
     $scope.global = appService.globalConfig;
     $scope.formElements = {};
-    $scope.global.webSocketLoaders.vmsshKey = true;
     $scope.viewLoader = $scope.global.webSocketLoaders.viewLoader;
 
     $scope.viewInstances = function(id) {
