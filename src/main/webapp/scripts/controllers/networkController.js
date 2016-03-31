@@ -136,11 +136,19 @@ if (!angular.isUndefined($stateParams.id1)) {
 }
     };
 
-       $scope.portIPList = function(instance) {
+       $scope.portIPList = function(instance, portvmList, index) {
+	angular.forEach(portvmList, function(obj, key) {
+		if(key == index) {
+		    	obj.port = true;
+		} else {
+			obj.port = false;
+                 }
+	})
         var instanceId = instance;
 $scope.vmPortId = instance;
         $scope.selected = instanceId;
         $scope.instances = instance;
+	
         var hasPortIP = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbynicandinstances?instanceid=" + instanceId + "&lang=" + appService.localStorageService.cookie.get('language') + "&sortBy=-id");
         hasPortIP.then(function(result) {
             $scope.portIPLists = result;
@@ -1084,10 +1092,12 @@ $scope.ipCostList();
         $scope.loadBalancer = {};
         $scope.loadFormSubmitted = false;
         var ipAddressId = $stateParams.id1;
+if (!angular.isUndefined($stateParams.id1)) {
         var hasloadBalancer = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "loadBalancer/list?ipAddressId=" + $stateParams.id1 + "&lang=" + appService.localStorageService.cookie.get('language') + "&sortBy=-id");
         hasloadBalancer.then(function(result) {
             $scope.rulesList = result;
         });
+}
     };
     if (!angular.isUndefined($stateParams.id1)) {
         $scope.LBlist(1);
@@ -1368,6 +1378,8 @@ console.log("obj",obj.lbvm);
             $state.reload();
         }
     }
+
+
     $scope.addVM = function(form) {
         $scope.portFormSubmitted = true;
         if (form.$valid) {
@@ -1399,11 +1411,11 @@ console.log("obj",obj.lbvm);
                   	var hasError = true;
 	var assignedVmIpCount = 0;
 	var selectedVmCount = 0;
-
    	angular.forEach(portinstance, function(obj, key) {
-	  if(!angular.isUndefined(obj.port)) {
+	  if(obj.port== true) {
 		selectedVmCount++;
 	     }
+		console.log("count",selectedVmCount);
 		if(!angular.isUndefined(obj.port) && !angular.isUndefined(obj.ipAddress.guestIpAddress)) {
 			$scope.vmIpAddress = obj.ipAddress.guestIpAddress;
 			assignedVmIpCount = 1;
@@ -1425,10 +1437,10 @@ console.log("obj",obj.lbvm);
                         $scope.portForward.vmInstanceId = $scope.vmPortId;
                     $scope.portForward.ipAddressId = $stateParams.id1;
                     $scope.portForward.protocolType = $scope.portForward.protocolType.name;
-			console.log("port",$scope.portforward);
                     var hasPortForward = appService.crudService.add("portforwarding", $scope.portForward);
                     hasPortForward.then(function(result) {
                         appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.portforwardSave, result.uuid, $scope.global.sessionValues.id);
+			$scope.portForward = {};
                         $scope.formSubmitted = false;
                         $modalInstance.close();
                         $scope.showLoader = false;

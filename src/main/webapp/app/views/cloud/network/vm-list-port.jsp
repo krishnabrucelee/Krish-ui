@@ -40,8 +40,8 @@ pageEncoding="UTF-8"%>
                     <tbody>
                     <tr data-ng-repeat="instancesList in portvmList | filter: instanceSearch">
                         <td>
-                            <a class="text-info" >{{ instancesList.vmInstance.name }}</a>
-                             <div  data-ng-show="instancesList.port">
+                            <a class="text-info">{{ instancesList.vmInstance.displayName }}</a>
+                             <div data-ng-show="instancesList.port">
                             	<select  required="true" class="form-control input-group" name="ipAddress" data-ng-model="instancesList.ipAddress"  data-ng-options="ipAddress.guestIpAddress for ipAddress in portIPLists">
                              	<option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
                             	</select>
@@ -58,8 +58,10 @@ pageEncoding="UTF-8"%>
                          <td>
                             <label class="">
                                  <div  style="position: relative;" >
-                                     <input type="radio" icheck name="select" data-ng-model="instancesList.port" data-ng-value="true" data-ng-change="portIPList(instancesList.vmInstance.id)"  >
-                                 </div>
+<!--                                      <input type="radio" name="select" data-ng-model="instancesList.port" data-ng-click="portIPList(instancesList.vmInstance.id, portvmList, $index)"  >
+ -->                                                                   <input type="radio" icheck name="select" data-ng-model="instancesList.port" data-ng-value="true" data-ng-change="portIPList(instancesList.vmInstance.id,portvmList, $index)"  >
+
+ </div>
                             </label>
                         </td>
                     </tr>
