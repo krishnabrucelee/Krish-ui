@@ -97,6 +97,27 @@ function globalConfig($window) {
             LBCOOKIE : "LbCookie"
         },
         events : 2,
+        webSocketLoaders : {
+            instanceCreate : false,
+            vmsshKey : false,
+            computeOffer : false,
+            viewLoader : false,
+            nicLoader : false,
+            storageLoader : false,
+            vmlistLoader : false,
+            volumeLoader : false,
+            networkLoader : false,
+            snapshotLoader : false,
+            volumeBackupLoader : false,
+            sshKey : false,
+            templateLoader : false,
+            projectLoader : false,
+            applicationLoader : false,
+            accountLoader : false,
+            roleLoader : false,
+            departmentLoader : false,
+            projectAssign : false
+        },
         webSocketEvents : {
             vmEvents : {
                 stopVm : 'VM.STOP',

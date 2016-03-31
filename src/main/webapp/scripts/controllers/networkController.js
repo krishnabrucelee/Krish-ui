@@ -1626,6 +1626,7 @@ console.log("obj",obj.lbvm);
                     };
                     $scope.portvmLists();
                     $scope.enableStaticNatSave = function(natInstance) {
+                        console.log(natInstance[0]);
                         $scope.staticNat = $scope.global.rulesPF[0];
                         $scope.formSubmitted = true;
                         $scope.showLoader = true;
@@ -1663,7 +1664,7 @@ console.log("obj",obj.lbvm);
             		else {
                         $scope.staticNat.ipAddressId = $stateParams.id1;
                         var hasStaticNat = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "ipAddresses/nat?ipaddress=" + $scope.staticNat.ipAddressId +
-                        	"&vm=" + $scope.vmId + "&guestip=" + $scope.vmIpAddress + "&type=" + "enable" + "&lang=" + appService.localStorageService.cookie.get('language') + "&sortBy=-id");
+                        	"&vm=" + natInstance.id + "&guestip=" + $scope.vmIpAddress + "&type=" + "enable" + "&lang=" + appService.localStorageService.cookie.get('language') + "&sortBy=-id");
                         hasStaticNat.then(function(result) {
                             appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.enableStaticNat, result.uuid, $scope.global.sessionValues.id);
                             $scope.formSubmitted = false;

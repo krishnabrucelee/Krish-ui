@@ -10,7 +10,10 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
     $scope.testvar = "test";
     $scope.global = appService.globalConfig;
     $scope.formElements = {};
-    $scope.viewInstance = function(id) {
+    $scope.global.webSocketLoaders.vmsshKey = true;
+    $scope.viewLoader = $scope.global.webSocketLoaders.viewLoader;
+
+    $scope.viewInstances = function(id) {
         if (id == '0') {
             id = $stateParams.id;
         }
@@ -38,8 +41,37 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
             $scope.templateCategory = 'dashboard';
         });
     };
+
+    $scope.viewInstance = function(id) {
+        if (id == '0') {
+            id = $stateParams.id;
+        }
+        $scope.showLoader = true;
+        $scope.showLoaderOffer = true;
+        var hasServer = appService.crudService.read("virtualmachine", id);
+        hasServer.then(function(result) {
+            $scope.instance = result;
+            setTimeout(function() {
+                $state.current.data.pageName = result.name;
+                $state.current.data.id = result.id;
+            }, 1000)
+            var str = $scope.instance.cpuUsage;
+            if (str != null) {
+                var newString = str.replace(/^_+|_+$/g, '');
+                var num = parseFloat(newString).toFixed(2);
+                $scope.showLoaderOffer = false;
+                $scope.showLoader = false;
+                $scope.chart(num);
+            } else {
+                $scope.showLoaderOffer = false;
+                $scope.showLoader = false;
+                $scope.chart(0);
+            }
+        });
+        $scope.templateCategory = 'dashboard';
+    };
     if ($stateParams.id > 0) {
-        $scope.viewInstance($stateParams.id);
+        $scope.viewInstances($stateParams.id);
     }
     $scope.vmList = function() {
             var hasServer = appService.crudService.read("virtualmachine", $stateParams.id);
@@ -396,19 +428,29 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
             }]);
         });
     };
-    $scope.resetPassword = function(vm) {
-        var event = "VM.RESETPASSWORD";
-        $scope.vm = vm;
-        $scope.vm.event = event;
-        $scope.vm.password = "reset";
-        $scope.formSubmitted = true;
-        var hasVm = appService.crudService.updates("virtualmachine/handleevent/vm", $scope.vm);
-        hasVm.then(function(result) {
-            appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.resetPassword, result.uuid, $scope.global.sessionValues.id);
-        }).catch(function(result) {
-            //$state.reload();
-        });
-    };
+    $scope.resetPassword = function(size, vm) {
+        $scope.instance = vm;
+        appService.dialogService.openDialog("app/views/cloud/instance/reset-password.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function($scope, $modalInstance, $rootScope) {
+
+          $scope.reset = function (vm) {
+          var event = "VM.RESETPASSWORD";
+          $scope.vm = vm;
+          $scope.vm.event = event;
+          $scope.vm.password = "reset";
+          $scope.formSubmitted = true;
+          var hasVm = appService.crudService.updates("virtualmachine/handleevent/vm", $scope.vm);
+          hasVm.then(function(result) {
+              appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.resetPassword, result.uuid, $scope.global.sessionValues.id);
+              $scope.cancel();
+          }).catch(function(result) {
+          });
+         }
+         $scope.cancel = function() {
+             $modalInstance.close();
+         };
+
+  }]);
+    }
     $scope.templateCategory = 'dashboard';
     var instanceViewTab = appService.localStorageService.get("instanceViewTab");
     if (!angular.isUndefined(instanceViewTab) && instanceViewTab != null) {
@@ -542,7 +584,7 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.startVm, function() {
         $scope.viewInstance($scope.instance.id);
     });
-    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.stopVm, function() {
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.stopVm, function(msg,event,status) {console.log(msg+''+event+''+status);
         $scope.viewInstance($scope.instance.id);
     });
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.rebootVm, function() {
@@ -574,7 +616,7 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
         $scope.viewInstance($scope.instance.id);
     });
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.resetPassword, function() {
-        $scope.viewInstance($scope.instance.id);
+        $scope.viewInstance($stateParams.id);
     });
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.updateVM, function() {
         $scope.viewInstance($scope.instance.id);
