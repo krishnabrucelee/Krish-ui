@@ -203,7 +203,6 @@ $scope.vmPortId = instance;
 	$scope.nic.instance = instanceId;
         var networkId = $stateParams.id;
 	$scope.nic.network = $stateParams.id;
-	console.log($scope.nic);
         $scope.instances = instance;
 
  /**var hasStaticNat = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "ipAddresses/nat?ipaddress=" + $scope.staticNat.ipAddressId +
@@ -1134,7 +1133,6 @@ if (!angular.isUndefined($stateParams.id1)) {
 	var assignedVmIpCount = 0;
 	var selectedVmCount = 0;
                             angular.forEach(loadBalancer, function(obj, key) {
-console.log("obj",obj.lbvm);
 	  if(!angular.isUndefined(obj.lbvm))
 		selectedVmCount++;
 		if(angular.isArray(obj.ipAddress)) {
@@ -1400,7 +1398,6 @@ console.log("obj",obj.lbvm);
                 };
                 $scope.portvmLists();
                 $scope.portforwardSave = function(portinstance) {
-	 console.log(portinstance);
                     $scope.instances = portinstance;
                     $scope.portForward = $scope.global.rulesPF[0];
                     $scope.formSubmitted = true;
@@ -1415,7 +1412,6 @@ console.log("obj",obj.lbvm);
 	  if(obj.port== true) {
 		selectedVmCount++;
 	     }
-		console.log("count",selectedVmCount);
 		if(!angular.isUndefined(obj.port) && !angular.isUndefined(obj.ipAddress.guestIpAddress)) {
 			$scope.vmIpAddress = obj.ipAddress.guestIpAddress;
 			assignedVmIpCount = 1;
