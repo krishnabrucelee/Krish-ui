@@ -44,7 +44,7 @@ pageEncoding="UTF-8"%>
                         <td>
                             <a class="text-info" >{{ instancesList.name }}</a>
                              <div  data-ng-if="selected === instancesList.id" >
-                             <select  data-ng-if="selected == instancesList.id" required="true" class="form-control input-group" name="ipAddress" data-ng-model="ipAddress" data-ng-change = "instanceLists.ipAddress.guestIpAddress = ipAddress.guestIpAddress"   data-ng-options="ipAddress.guestIpAddress for ipAddress in nicIPLists">
+                             <select  data-ng-if="selected == instancesList.id" required="true" class="form-control input-group" name="ipAddress" data-ng-model="ipAddress" data-ng-change = "instanceLists.ipAddress.guestIpAddress = ipAddress.guestIpAddress"   data-ng-options="ipAddress.guestIpAddress for ipAddress in portIPLists">
                              <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
                              </select>
 
@@ -62,7 +62,7 @@ pageEncoding="UTF-8"%>
                          <td>
                             <label class="">
                                  <div  style="position: relative;" >
-                                  <input type="radio" icheck name="select" data-ng-model="instancesList.port" data-ng-value="true" data-ng-change="nicIPList(instancesList.id)"  >
+                                  <input type="radio" icheck name="select" data-ng-model="instancesList.port" data-ng-value="true" data-ng-change="portIPList(instancesList.id,portvmList, $index)"  >
                                      <!-- <input type="radio" icheck data-ng-model="port" name="name" data-ng-value="{{instancesList.id}}" data-ng-change="nicIPList(instancesList.id)"  > -->
                                  </div>
                             </label>
