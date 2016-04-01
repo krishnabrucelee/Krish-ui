@@ -1651,9 +1651,9 @@ if (!angular.isUndefined($stateParams.id1)) {
             	   if(obj.port== true) {
 		selectedVmCount++;
 	     }
-
             		if(!angular.isUndefined(obj.port) && !angular.isUndefined(obj.ipAddress)) {
             			$scope.vmId = obj.id;
+				console.log($scope.vmId);
             			$scope.vmIpAddress = obj.ipAddress;
             			assignedVmIpCount = 1;
             		   }
