@@ -4,6 +4,9 @@ pageEncoding="UTF-8"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <div data-ng-controller="networksCtrl">
+<div data-ng-if="global.webSocketLoaders.egressLoader" class="overlay-wrapper">
+   <img data-ng-if="global.webSocketLoaders.egressLoader" src="images/loading-bars.svg" class="inner-loading" width="64" height="64" style="margin: 10%"/>
+</div>
 	<form name = "egressForm" novalidate data-ng-submit="egressSave(egressForm,firewallRules)" method="post">
 
         <table cellspacing="1" cellpadding="1" class="table table-bordered table-striped">

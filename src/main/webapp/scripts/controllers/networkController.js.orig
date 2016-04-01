@@ -148,7 +148,7 @@ if (!angular.isUndefined($stateParams.id1)) {
 $scope.vmPortId = instance;
         $scope.selected = instanceId;
         $scope.instances = instance;
-
+	
         var hasPortIP = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbynicandinstances?instanceid=" + instanceId + "&lang=" + appService.localStorageService.cookie.get('language') + "&sortBy=-id");
         hasPortIP.then(function(result) {
             $scope.portIPLists = result;
@@ -1439,7 +1439,10 @@ if (!angular.isUndefined($stateParams.id1)) {
                 };
                 $scope.portvmLists();
                 $scope.portforwardSave = function(portinstance) {
+<<<<<<< Updated upstream
+=======
                     appService.globalConfig.webSocketLoaders.portForwardLoader = true;
+>>>>>>> Stashed changes
                     $scope.instances = portinstance;
                     $scope.portForward = $scope.global.rulesPF[0];
                     $scope.formSubmitted = true;
@@ -2207,24 +2210,17 @@ $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.vpnCreate, func
 });
 $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.vpnDestroy, function() {
     appService.globalConfig.webSocketLoaders.vpnLoader = false;
-    appService.globalConfig.webSocketLoaders.ipLoader = false;
     appService.localStorageService.set('view', 'details');
     $window.location.href = '#network/list/view/' + $stateParams.id + '/ip-address/' + $scope.ipDetails.id;
 });
 $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.vpnUserAdd, function() {
     appService.globalConfig.webSocketLoaders.vpnLoader = false;
     appService.localStorageService.set('view', 'vpn-details');
-    if (!angular.isUndefined($stateParams.id1) && $stateParams.id1 > 0) {
-        $scope.editIpaddress($stateParams.id1);
-        appService.localStorageService.set('view', 'vpn-details');
-    }
+    $scope.vpnUserList($scope.ipDetails);
 });
 $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.vpnUserDelete, function() {
     appService.globalConfig.webSocketLoaders.vpnLoader = false;
     appService.localStorageService.set('view', 'vpn-details');
-    if (!angular.isUndefined($stateParams.id1) && $stateParams.id1 > 0) {
-        $scope.editIpaddress($stateParams.id1);
-        appService.localStorageService.set('view', 'vpn-details');
-    }
+    $scope.vpnUserList($scope.ipDetails);
 });
 };

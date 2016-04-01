@@ -30,7 +30,7 @@ function networkCtrl($scope, $modal, $state, $window, $stateParams,appService) {
     $scope.networkList = [];
     $scope.nic = {};
     $scope.vmIp = {};
-    
+
 
     $scope.instanceDetails='';
     if ($stateParams.id > 0) {
@@ -47,7 +47,7 @@ function networkCtrl($scope, $modal, $state, $window, $stateParams,appService) {
     $scope.networkForm = {};
     $scope.global = appService.crudService.globalConfig;
     $scope.paginationObject.sortOrder = '+';
-    $scope.paginationObject.sortBy = 'name'; 
+    $scope.paginationObject.sortBy = 'name';
 
 
     // Guest Network List
@@ -122,7 +122,7 @@ function networkCtrl($scope, $modal, $state, $window, $stateParams,appService) {
                         var hasServer = appService.crudService.add("nics", $scope.nic);
                         hasServer.then(function (result) {  // this is only run after $http completes
                         $scope.showLoader = false;
-                    	appService.notify({message: 'Attached successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                    	appService.notify({message: 'Nic Attached successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
         			    $state.reload();
                         $modalInstance.close();
                         $state.reload();
@@ -197,7 +197,7 @@ function networkCtrl($scope, $modal, $state, $window, $stateParams,appService) {
                 	$scope.showLoader = true;
                     var hasServer = appService.crudService.update("nics", nic);
                     hasServer.then(function (result) {
-			
+
                        $scope.showLoader = false;
                        appService.notify({message: 'NIC updated successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
               		 	$state.reload();

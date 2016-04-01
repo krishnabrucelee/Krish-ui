@@ -3,7 +3,10 @@ pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<div class="panel-heading" ui-view>
+<div data-ng-if="global.webSocketLoaders.ipLoader" class="overlay-wrapper">
+    <img data-ng-if="global.webSocketLoaders.ipLoader" src="images/loading-bars.svg" class="inner-loading" width="64" height="64" style="margin: 10%"/>
+</div>
+<div class="panel-heading">
                 <div class="row">
                     <div class="col-md-3 col-sm-3 col-xs-3 ">
                         <div class="quick-search">
