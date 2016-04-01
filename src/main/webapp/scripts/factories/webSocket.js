@@ -127,7 +127,8 @@ function webSocket($rootScope, $timeout, webSockets, globalConfig, notify) {
                 .subscribe("/topic/async.event/" + msg + "/" + userId + "/" + id, function(message) {
                     if (msg.indexOf("FIREWALL.EGRESS") > -1 || msg.indexOf("NET.IP") > -1 || msg
                             .indexOf("FIREWALL.OPEN") > -1 || msg.indexOf("FIREWALL.CLOSE") > -1 || msg
-                            .indexOf("NET.RULEADD") > -1 || msg.indexOf("NET.RULEDELETE") > -1) {
+                            .indexOf("NET.RULEADD") > -1 || msg.indexOf("NET.RULEDELETE") > -1 || msg
+                            .indexOf("VM.RESETPASSWORD") > -1) {
 
                     } else {
                         $rootScope.$broadcast(msg, 'async.event', 'success', id, userId);
