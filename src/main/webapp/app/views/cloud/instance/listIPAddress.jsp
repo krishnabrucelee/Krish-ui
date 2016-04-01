@@ -31,7 +31,7 @@
 										class="table table-bordered dataTable table-striped">
 										<thead>
 											<tr>
-												<th class="col-md-3 col-sm-4"  data-ng-click="changeSort('vmInstance.name',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='vm.name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.vm.name" bundle="${msg}" /></th>
+												<th class="col-md-3 col-sm-4"><fmt:message key="common.vm.name" bundle="${msg}" /></th>
 												<th class="col-md-3 col-sm-4"><fmt:message key="common.ips" bundle="${msg}" /></th>
 												<th class="col-md-3 col-sm-4"><fmt:message key="common.action" bundle="${msg}" /></th>
 											</tr>

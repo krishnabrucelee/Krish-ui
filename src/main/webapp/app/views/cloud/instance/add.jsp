@@ -12,6 +12,10 @@
         </panda-modal-header>
     </div>
     <div class="modal-body">
+       		<div data-ng-show="showLoader" style="margin: 20%">
+			    <get-loader-image data-ng-show="showLoader"></get-loader-image>
+			</div>
+       		<div data-ng-hide="showLoader">
         <div class="row">
             <div id="configuration-setup-panel" class="col-md-7 col-sm-12">
                 <div ng-show="step == 1">
@@ -321,4 +325,5 @@
                 </div>
             </div>
         </div>
+    </div>
     </div>

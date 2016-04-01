@@ -19,12 +19,12 @@ function configurationCtrl($scope, $stateParams, appService, localStorageService
     $scope.instances = [];
     $scope.instances.computeOffering ={};
     $scope.resetForm = [];
-
+    $scope.vmsshkeyLoader = $scope.global.webSocketLoaders.vmsshKey;
+    $scope.computeOfferLoader = $scope.global.webSocketLoaders.computeOffer;
     // Form Field Decleration
     $scope.computeOffer = {
 //        type: {id:1, name:"Basic"}
     };
-
 
 	var instanceId = $stateParams.id;
 	$scope.viewInstance = function(instanceId) {
@@ -120,25 +120,26 @@ function configurationCtrl($scope, $stateParams, appService, localStorageService
 
           		$scope.save = function (form, instance) {
           		$scope.formSubmitted = true;
+          		$scope.global.webSocketLoaders.computeOffer = true;
+          		$scope.computeOfferLoader = $scope.global.webSocketLoaders.computeOffer;
           		if (form.$valid) {
-          			$scope.showLoader= true;
+          		        $scope.formSubmitted = false;
           			$scope.instances.computeOfferingId = $scope.instance.computeOffering.id;
           			$scope.instances.computeOffering = $scope.instance.computeOffering;
           			var hasServer =crudService.updates("virtualmachine/resize", $scope.instances);
           			hasServer.then(function (result) {
 			   	appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.vmresize,result.uuid,$scope.global.sessionValues.id);
-          				$scope.showLoader= false;
           			}).catch(function (result) {
                         if (!angular.isUndefined(result) && result.data != null) {
 	                        if (result.data.fieldErrors != '') {
 	                            angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
 	                            $scope.instanceForm[key].$invalid = true;
-	              				$scope.showLoader= false;
 	                            $scope.instanceForm[key].errorMessage = errorMessage;
 	                            });
 	                            }
-              				$scope.showLoader= false;
                         }
+                        $scope.global.webSocketLoaders.computeOffer = false;
+                        $scope.computeOfferLoader = $scope.global.webSocketLoaders.computeOffer;
                         });
           			}
           		},
@@ -221,13 +222,20 @@ function configurationCtrl($scope, $stateParams, appService, localStorageService
     $scope.resetKey = function (form, resetSSH) {
    		$scope.formSubmitted = true;
    		if (form.$valid) {
-   			$scope.showLoader= true;
+                        $scope.global.webSocketLoaders.vmsshKey = true;
+                        $scope.vmsshkeyLoader = $scope.global.webSocketLoaders.vmsshKey;
+                        $scope.formSubmitted = false;
                         $scope.instances.keypairId = $scope.resetSSH.keypairName.id;
    			var hasServer = appService.crudService.updates("virtualmachine/reset", $scope.instances);
    			hasServer.then(function (result) {
-                         $scope.showLoader = false;
+                         $scope.instances = result;
                          appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.vmSSHKEY,result.uuid,$scope.global.sessionValues.id);
-                        }).catch(function (result) {
+                         $scope.viewInstance(result.id);
+                         if ($scope.instances.passwordEnabled == true) {
+                             $scope.resetPassword($scope.instances);
+                         }
+
+   			}).catch(function (result) {
                  if (!angular.isUndefined(result) && result.data != null) {
                      if (result.data.fieldErrors != '') {
                          angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
@@ -235,8 +243,9 @@ function configurationCtrl($scope, $stateParams, appService, localStorageService
                          $scope.resetForm[key].errorMessage = errorMessage;
                          });
                          }
-                       $scope.showLoader= false;
                  }
+                 $scope.global.webSocketLoaders.vmsshKey = false;
+                 $scope.vmsshkeyLoader = $scope.global.webSocketLoaders.vmsshKey;
                  });
    			}
    		};
@@ -248,16 +257,43 @@ function configurationCtrl($scope, $stateParams, appService, localStorageService
 	  $scope.formSubmitted = true;
           var hasVm = appService.crudService.updates("virtualmachine/handleevent/vm", $scope.vm);
 	  hasVm.then(function(result) {
+	      appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.resetPassword, result.uuid, $scope.global.sessionValues.id);
 	  }).catch(function (result) {
      });
      };
+
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.startVm, function() {
+        $scope.viewInstance($scope.instances.id);
+    });
+
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.stopVm, function() {
+        $scope.viewInstance($scope.instances.id);
+    });
+
      $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.vmresize, function() {
+         $scope.global.webSocketLoaders.computeOffer = false;
+         $scope.computeOfferLoader = $scope.global.webSocketLoaders.computeOffer;
          $scope.viewInstance($scope.instances.id);
      });
      $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.vmSSHKEY, function() {
+         $scope.global.webSocketLoaders.vmsshKey = false;
+         $scope.vmsshkeyLoader = $scope.global.webSocketLoaders.vmsshKey;
          $scope.viewInstance($scope.instances.id);
-         if ($scope.instances.passwordEnabled == true) {
-             $scope.resetPassword($scope.instances);
-         }
        });
+
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.rebootVm, function() {
+        $scope.viewInstance($scope.instances.id);
+    });
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.reInstallVm, function() {
+        $scope.viewInstance($scope.instances.id);
+    });
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.reDestroyVm, function() {
+        $scope.viewInstance($scope.instances.id);
+    });
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.expungeVM, function() {
+        $scope.viewInstance($scope.instances.id);
+    });
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.resetPassword, function() {
+    });
+
 }

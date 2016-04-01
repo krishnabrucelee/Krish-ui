@@ -1634,6 +1634,7 @@ if (!angular.isUndefined($stateParams.id1)) {
                     };
                     $scope.portvmLists();
                     $scope.enableStaticNatSave = function(natInstance) {
+                        console.log(natInstance[0]);
                         $scope.staticNat = $scope.global.rulesPF[0];
                         $scope.formSubmitted = true;
                         $scope.showLoader = true;

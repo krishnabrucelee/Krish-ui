@@ -16,7 +16,15 @@ pageEncoding="UTF-8"%>
                                 	<a class="btn btn-info" ui-sref="cloud.quota-limit" title="<fmt:message key="common.refresh" bundle="${msg}" /> " ui-sref-opts="{reload: true}" ><span class="fa fa-refresh fa-lg"></span></a>
                                 </span>
                         </div>
-
+                        	<span class="pull-right m-r-sm" data-ng-show="global.sessionValues.type == 'ROOT_ADMIN'">
+								<select
+									class="form-control input-group col-xs-5" name="domainView"
+									data-ng-model="domainView"
+									data-ng-change="selectDomainView()"
+									data-ng-options="domainView.name for domainView in domainList">
+									<option value="">All Domain</option>
+								</select>
+							</span>
                     </div>
                 </div>
             </div>
