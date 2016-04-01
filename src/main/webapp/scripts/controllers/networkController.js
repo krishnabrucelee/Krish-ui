@@ -1652,9 +1652,9 @@ if (!angular.isUndefined($stateParams.id1)) {
             	   if(obj.port== true) {
 		selectedVmCount++;
 	     }
-
             		if(!angular.isUndefined(obj.port) && !angular.isUndefined(obj.ipAddress)) {
             			$scope.vmId = obj.id;
+				console.log($scope.vmId);
             			$scope.vmIpAddress = obj.ipAddress;
             			assignedVmIpCount = 1;
             		   }
@@ -1671,8 +1671,8 @@ if (!angular.isUndefined($stateParams.id1)) {
             		}
             		else {
                         $scope.staticNat.ipAddressId = $stateParams.id1;
-                        var hasStaticNat = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "ipAddresses/nat?ipaddress=" + $scope.staticNat.ipAddressId +
-                        	"&vm=" + natInstance.id + "&guestip=" + $scope.vmIpAddress + "&type=" + "enable" + "&lang=" + appService.localStorageService.cookie.get('language') + "&sortBy=-id");
+                       var hasStaticNat = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "ipAddresses/nat?ipaddress=" + $scope.staticNat.ipAddressId +
+                        	"&vm=" + $scope.vmId + "&guestip=" + $scope.vmIpAddress + "&type=" + "enable" + "&lang=" + appService.localStorageService.cookie.get('language') + "&sortBy=-id");
                         hasStaticNat.then(function(result) {
                             appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.enableStaticNat, result.uuid, $scope.global.sessionValues.id);
                             $scope.formSubmitted = false;
