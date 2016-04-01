@@ -1670,7 +1670,7 @@ if (!angular.isUndefined($stateParams.id1)) {
             		}
             		else {
                         $scope.staticNat.ipAddressId = $stateParams.id1;
-                        var hasStaticNat = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "ipAddresses/nat?ipaddress=" + $scope.staticNat.ipAddressId +
+                       var hasStaticNat = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "ipAddresses/nat?ipaddress=" + $scope.staticNat.ipAddressId +
                         	"&vm=" + $scope.vmId + "&guestip=" + $scope.vmIpAddress + "&type=" + "enable" + "&lang=" + appService.localStorageService.cookie.get('language') + "&sortBy=-id");
                         hasStaticNat.then(function(result) {
                             appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.enableStaticNat, result.uuid, $scope.global.sessionValues.id);
