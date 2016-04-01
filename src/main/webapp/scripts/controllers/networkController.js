@@ -1634,7 +1634,6 @@ if (!angular.isUndefined($stateParams.id1)) {
                     };
                     $scope.portvmLists();
                     $scope.enableStaticNatSave = function(natInstance) {
-                        console.log(natInstance[0]);
                         $scope.staticNat = $scope.global.rulesPF[0];
                         $scope.formSubmitted = true;
                         $scope.showLoader = true;
@@ -1654,7 +1653,6 @@ if (!angular.isUndefined($stateParams.id1)) {
 	     }
             		if(!angular.isUndefined(obj.port) && !angular.isUndefined(obj.ipAddress)) {
             			$scope.vmId = obj.id;
-				console.log($scope.vmId);
             			$scope.vmIpAddress = obj.ipAddress;
             			assignedVmIpCount = 1;
             		   }
