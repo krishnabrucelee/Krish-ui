@@ -6,7 +6,6 @@ pageEncoding="UTF-8"%>
 
 <div class="hpanel">
     <div class="row m-l-sm m-r-sm panel-body" ng-controller="instanceViewCtrl">
-
         <ul class="nav nav-tabs" data-ng-init="templateCategory = 'dashboard'">
             <li data-ng-class="{'active' : templateCategory == 'dashboard'}"><a href="javascript:void(0)" data-ng-click="viewInstance('0');" data-toggle="tab">  <i class="fa fa-laptop"></i> <fmt:message key="dashboard" bundle="${msg}" /></a></li>
             <li data-ng-class="{'active' : templateCategory == 'config'}"><a has-permission="RESIZE" data-ng-click="selectab()"  data-toggle="tab"> <i class="fa fa-cogs"></i> <fmt:message key="configuration" bundle="${msg}" /></a></li>
@@ -24,6 +23,9 @@ pageEncoding="UTF-8"%>
                 <get-loader-image data-ng-if="showLoaderOffer"></get-loader-image>
             </div>
             <div data-ng-if="!showLoaderOffer" class="tab-pane" data-ng-class="{'active' : templateCategory == 'dashboard'}" id="step1-dashboard">
+                <div data-ng-if="global.webSocketLoaders.viewLoader" class="overlay-wrapper">
+                <img data-ng-if="global.webSocketLoaders.viewLoader" src="images/loading-bars.svg" class="inner-loading" width="64" height="64" />
+            </div>
                 <div  class="row" >
                     <div class="col-lg-9 col-md-8 col-sm-12">
                         <div class="hpanel">
@@ -166,7 +168,7 @@ pageEncoding="UTF-8"%>
                                         <li has-permission="HOST_INFORMATION" data-ng-if="instance.status == 'RUNNING'" class="list-group-item">
                                             <a href="javascript:void(0);" title="<fmt:message key="host.information" bundle="${msg}" />" data-ng-click="hostInformation(instance)" ><span class="fa-square fa font-bold m-xs"></span> <fmt:message key="host.information" bundle="${msg}" /></a>
                                         </li>
-                                         <li class="list-group-item">
+                                         <li data-ng-if="instance.status == 'RUNNING' || instance.status == 'STOPPED' " class="list-group-item">
                                             <button data-ng-class = "(instance.passwordEnabled == true  && instance.vncPassword !== null) ? 'resizelink enable' : 'resizelink disable'" data-ng-disabled="(instance.vncPassword == null || !instance.passwordEnabled) && (instance.status == 'RUNNING' || instance.status == 'STOPPED')" href="javascript:void(0);" title="<fmt:message key="show.password" bundle="${msg}" />" data-ng-click="showPassword(instance)"><span class="fa-key fa font-bold m-xs"></span> <fmt:message key="show.password" bundle="${msg}" /></button>
                                         </li>
                                     </div>

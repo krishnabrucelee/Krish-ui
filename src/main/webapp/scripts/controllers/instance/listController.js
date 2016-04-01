@@ -385,26 +385,35 @@ function instanceListCtrl($scope, $sce, $log, $filter, dialogService, $timeout, 
     };
 
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.vmCreate, function() {
+        $scope.global.webSocketLoaders.viewLoader = false;
         $scope.list($scope.paginationObject.currentPage, "Expunging");
         $scope.borderContent = "Expunging";
     });
 
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.startVm, function() {
+        $scope.global.webSocketLoaders.viewLoader = false;
         $scope.list($scope.paginationObject.currentPage, "Expunging");
         $scope.borderContent = "Expunging";
     });
 
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.stopVm, function() {
+        $scope.global.webSocketLoaders.viewLoader = false;
         $scope.list($scope.paginationObject.currentPage, "Expunging");
         $scope.borderContent = "Expunging";
     });
 
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.rebootVm, function() {
+        $scope.global.webSocketLoaders.viewLoader = false;
         $scope.list($scope.paginationObject.currentPage, "Running");
         $scope.borderContent = "Running";
     });
 
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.expungeVM, function() {
+        $scope.global.webSocketLoaders.viewLoader = false;
+        $scope.list(1, "Expunging");
+    });
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.reDestroyVm, function() {
+        $scope.global.webSocketLoaders.viewLoader = false;
         $scope.list(1, "Expunging");
     });
 

@@ -4,6 +4,9 @@ pageEncoding="UTF-8"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
     <div class="white-content" >
+    <div data-ng-if="global.webSocketLoaders.vpnLoader" class="overlay-wrapper">
+    <img data-ng-if="global.webSocketLoaders.vpnLoader" src="images/loading-bars.svg" class="inner-loading" width="64" height="64" style="margin: 10%"/>
+</div>
         <div class="hpanel">
             <div class="panel-heading">
                 <div class="row" >

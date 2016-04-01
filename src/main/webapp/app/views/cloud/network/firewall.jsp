@@ -5,6 +5,9 @@ pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <div data-ng-controller="networksCtrl">
 <div class="white-content" >
+<div data-ng-if="global.webSocketLoaders.ingressLoader" class="overlay-wrapper">
+   <img data-ng-if="global.webSocketLoaders.ingressLoader" src="images/loading-bars.svg" class="inner-loading" width="64" height="64" style="margin: 10%"/>
+</div>
 	<form name = "ingressForm" novalidate data-ng-submit="ingressSave(ingressForm,firewallRuleIngress)" method="post">
 
 <table cellspacing="1" cellpadding="1" class="table table-bordered table-striped">

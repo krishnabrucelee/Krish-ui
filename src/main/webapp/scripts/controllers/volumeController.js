@@ -210,7 +210,7 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
                     $scope.formSubmitted = true;
                     if (form.$valid) {
                     	$scope.showLoader = true;
-
+                    	appService.globalConfig.webSocketLoaders.volumeLoader = true;
                         if(!angular.isUndefined(volume.vmInstance) && volume.vmInstance != null) {
                         	volume.vmInstanceId = volume.vmInstance.id;
                         	delete volume.vmInstance;
@@ -246,6 +246,7 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
                                     });
                                 }
                             }
+                            appService.globalConfig.webSocketLoaders.volumeLoader = false;
                         });
                     }
                 };
@@ -268,7 +269,7 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
                 $scope.instanceList();
                 $scope.detachVolume = function (volume) {
                     $scope.showLoader = true;
-
+                    appService.globalConfig.webSocketLoaders.volumeLoader = true;
                     if(!angular.isUndefined(volume.vmInstance) && volume.vmInstance != null) {
                     	volume.vmInstanceId = volume.vmInstance.id;
                     	delete volume.vmInstance;
@@ -304,6 +305,7 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
                                 });
                             }
                         }
+                        appService.globalConfig.webSocketLoaders.volumeLoader = false;
                     });
                 };
                 $scope.cancel = function () {
@@ -322,6 +324,7 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
                         $scope.formSubmitted = true;
                         if (form.$valid) {
                             var snapshot = $scope.snapshot;
+                            appService.globalConfig.webSocketLoaders.volumeLoader = true;
                             snapshot.volume = $scope.volume;
                             snapshot.zone = appService.crudService.globalConfig.zone;
                             var hasServer = appService.crudService.add("snapshots", snapshot);
@@ -339,6 +342,7 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
                                         $scope.confirmsnapshot[key].errorMessage = errorMessage;
                                     });
                                 }
+                                appService.globalConfig.webSocketLoaders.volumeLoader = false;
                             });
                         }
                     };
@@ -377,6 +381,7 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
                     $scope.formSubmitted = true;
                     if (form.$valid) {
                     	$scope.showLoader = true;
+                    	 appService.globalConfig.webSocketLoaders.volumeLoader = true;
                         $scope.volume.zone = $scope.global.zone;
                         var volume = $scope.volume;
                         var hasVolume = appService.crudService.add("volumes/resize/" + volume.id, volume);
@@ -393,6 +398,7 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
                                     });
                                 }
                             }
+                            appService.globalConfig.webSocketLoaders.volumeLoader = false;
                         });
                     }
                 },
@@ -498,6 +504,7 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
 
                     $scope.formSubmitted = true;
                     if (form.$valid) {
+                        appService.globalConfig.webSocketLoaders.volumeLoader = true;
                     	$scope.showLoader = true;
                         $scope.volume.zone = $scope.global.zone;
                         var volume = angular.copy($scope.volume);
@@ -540,6 +547,7 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
                             	});
                     		}
                     	}
+                		    appService.globalConfig.webSocketLoaders.volumeLoader = false;
                 	});
                     }
                 },
@@ -646,6 +654,7 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
         $scope.formSubmitted = true;
         if (form.$valid) {
         	$scope.showLoader = true;
+        	 appService.globalConfig.webSocketLoaders.volumeLoader = true;
              var volume = $scope.volume;
              if(volume.storageOffering == "") {
             	 delete volume.storageOffering;
@@ -681,9 +690,9 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
 		 appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.volumeEvents.uploadVolume,result.transJobId,$scope.global.sessionValues.id);
             	 $scope.showLoader = false;
             	 $modalInstance.close();
-            	 notify({message: 'Uploaded successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
-             }).catch(function (result) {
+            	}).catch(function (result) {
              	$scope.showLoader = false;
+             	 appService.globalConfig.webSocketLoaders.volumeLoader = false;
     		    if (!angular.isUndefined(result.data)) {
         		 if (result.data.fieldErrors != null) {
                	$scope.showLoader = false;
@@ -716,6 +725,7 @@ $scope.validateVolume = function (form, volume) {
 
     $scope.formSubmitted = true;
     if (form.$valid) {
+        appService.globalConfig.webSocketLoaders.volumeLoader = true;
     	 $scope.volume.zone = $scope.global.zone;
          var volume = $scope.volume;
          var hasUploadVolume = appService.crudService.add("volumes", volume);
@@ -737,6 +747,7 @@ $scope.validateVolume = function (form, volume) {
         });
 
 			}
+				 appService.globalConfig.webSocketLoaders.volumeLoader = false;
                     });
                 }
             },
@@ -810,7 +821,7 @@ if(obj.scheduleType== 6)
                 var hasServer = appService.crudService.delete("snapshotpolicies", deleteObject);
                 hasServer.then(function (result) {
                     appService.notify({message: 'Deleted successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
-		                     $modalInstance.close();
+		    $modalInstance.close();
                 });
             },
  $modalInstance.close();
@@ -825,7 +836,6 @@ if(obj.scheduleType== 6)
 
 
         $scope.recurringsave = function (form, recurringSnapshot) {
-	console.log(recurringSnapshot);
 		if (!angular.isUndefined($scope.recurringSnapshot.domain)) {
                 recurringSnapshot.domainId = $scope.recurringSnapshot.domain.id;
                 delete recurringSnapshot.domain;
@@ -851,7 +861,7 @@ if(obj.scheduleType== 6)
 			recurringSnapshot.intervalType = recurringSnapshot.intervalType.toUpperCase();
                 var hasVolume = appService.crudService.add("snapshotpolicies",  recurringSnapshot);
                 hasVolume.then(function (result) {
-             appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.volumeEvents.recurringSnapshot,result.uuid,$scope.global.sessionValues.id);
+                    appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.volumeEvents.recurringSnapshot,result.uuid,$scope.global.sessionValues.id);
                 	$scope.showLoader = false;
                 	$modalInstance.close();
                 }).catch(function (result) {
@@ -879,7 +889,7 @@ $scope.delete = function (size, volume) {
             $scope.deleteObject = volume;
             $scope.ok = function (volume) {
             	$scope.showLoader = true;
-
+            	 appService.globalConfig.webSocketLoaders.volumeLoader = true;
             	if(!angular.isUndefined(volume.domain) && volume.domain != null ) {
                 	volume.domainId = volume.domain.id;
                 	delete volume.domain;
@@ -916,10 +926,11 @@ $scope.delete = function (size, volume) {
                             $scope.addnetworkForm[key].errorMessage = errorMessage;
                         });
                     }
+                    appService.globalConfig.webSocketLoaders.volumeLoader = false;
                 });
 
             },
-                    $scope.cancel = function () {
+                    $scope.cancels= function () {
                         $modalInstance.close();
                     };
         }]);
@@ -1050,27 +1061,35 @@ $scope.delete = function (size, volume) {
         }
     };
         $scope.$on(appService.globalConfig.webSocketEvents.volumeEvents.attachVolume, function() {
+            appService.globalConfig.webSocketLoaders.volumeLoader = false;
             $scope.list($scope.paginationObject.currentPage);
         });
          $scope.$on(appService.globalConfig.webSocketEvents.volumeEvents.detachVolume, function() {
+             appService.globalConfig.webSocketLoaders.volumeLoader = false;
              $scope.list($scope.paginationObject.currentPage);
          });
          $scope.$on(appService.globalConfig.webSocketEvents.volumeEvents.createSnapshot, function() {
+             appService.globalConfig.webSocketLoaders.volumeLoader = false;
              $window.location = "#/snapshot/list";
         });
          $scope.$on(appService.globalConfig.webSocketEvents.volumeEvents.volumeresize, function() {
+             appService.globalConfig.webSocketLoaders.volumeLoader = false;
              $scope.list($scope.paginationObject.currentPage);
          });
          $scope.$on(appService.globalConfig.webSocketEvents.volumeEvents.volumesave, function() {
+             appService.globalConfig.webSocketLoaders.volumeLoader = false;
              $scope.list($scope.paginationObject.currentPage);
          });
          $scope.$on(appService.globalConfig.webSocketEvents.volumeEvents.uploadVolume, function() {
+             appService.globalConfig.webSocketLoaders.volumeLoader = false;
              $scope.list($scope.paginationObject.currentPage);
          });
          $scope.$on(appService.globalConfig.webSocketEvents.volumeEvents.recurringSnapshot, function() {
+             appService.globalConfig.webSocketLoaders.volumeLoader = false;
              $scope.list($scope.paginationObject.currentPage);
          });
          $scope.$on(appService.globalConfig.webSocketEvents.volumeEvents.volumedelete, function() {
+             appService.globalConfig.webSocketLoaders.volumeLoader = false;
              $scope.list($scope.paginationObject.currentPage);
          });
 
