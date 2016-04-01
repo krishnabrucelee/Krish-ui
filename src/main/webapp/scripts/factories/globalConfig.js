@@ -284,6 +284,7 @@ function globalConfig($window) {
         HTTP_DELETE : 'DELETE',
         APP_URL : "http://localhost:8080/api/",
         SOCKET_URL : "http://localhost:8080/",
+        PING_APP_URL: "http://localhost:8081/api/",
         CONTENT_LIMIT : 10,
         VIEW_URL : 'app/views/',
         NOTIFICATION_TEMPLATE : 'app/views/notification/notify.jsp',
