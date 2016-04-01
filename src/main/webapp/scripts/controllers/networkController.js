@@ -1381,6 +1381,7 @@ if (!angular.isUndefined($stateParams.id1)) {
     $scope.addVM = function(form) {
         $scope.portFormSubmitted = true;
         if (form.$valid) {
+
             $scope.global.rulesPF[0].privateStartPort = $scope.portForward.privateStartPort;
             $scope.global.rulesPF[0].privateEndPort = $scope.portForward.privateEndPort;
             $scope.global.rulesPF[0].publicStartPort = $scope.portForward.publicStartPort;
@@ -1437,7 +1438,7 @@ if (!angular.isUndefined($stateParams.id1)) {
                     hasPortForward.then(function(result) {
                         appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.portforwardSave, result.uuid, $scope.global.sessionValues.id);
 			$scope.portForward = {};
-                        $scope.formSubmitted = false;
+       			 $scope.portFormSubmitted = false;
                         $modalInstance.close();
                         $scope.showLoader = false;
                     }).catch(function(result) {
