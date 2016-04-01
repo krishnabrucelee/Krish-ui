@@ -38,5 +38,11 @@ function billingCtrl($scope, promiseAjax, globalConfig, localStorageService, $wi
         }
     };
 
+    $scope.usageStatistics = [];
+    var hasServer = promiseAjax.httpRequest("GET", "http://localhost:8081/api/usage/listUsageByPeriod?fromDate=25-03-2016&toDate=31-03-2016&groupingType=service");
+    hasServer.then(function (result) {  // this is only run after $http completes
+        $scope.usageStatistics = result;
+    });
+
 
 }

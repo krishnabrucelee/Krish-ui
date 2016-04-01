@@ -284,6 +284,14 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider, $compile
                 }
             })
 
+            .state('billing.usageStatistics', {
+                url : "/usageStatistics",
+                templateUrl : VIEW_URL + "views/billing/usageStatistics.jsp",
+                data : {
+                    pageTitle : 'Usage statistics'
+                }
+            })
+
             .state('billing.payments', {
                 url : "/payments",
                 templateUrl : VIEW_URL + "views/billing/payments.jsp",
