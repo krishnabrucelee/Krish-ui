@@ -66,7 +66,7 @@ function secondaryIpCtrl($scope, $modal, $state, $window, $stateParams, appServi
         $scope.showLoader = true;
         $scope.nic = {};
         var instanceId = $stateParams.id;
-        $scope.nicip = $stateParams.id1;   
+        $scope.nicip = $stateParams.id1;
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasNicIP = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbyinstanceid?instanceid=" + instanceId + "&lang=" + appService.localStorageService.cookie.get('language') + "&sortBy=" + appService.globalConfig.sort.sortOrder + appService.globalConfig.sort.sortBy);
 
@@ -89,6 +89,7 @@ function secondaryIpCtrl($scope, $modal, $state, $window, $stateParams, appServi
             $scope.saveIP = function(form, nic) {
                     $scope.formSubmitted = true;
                     if (form.$valid) {
+                        appService.globalConfig.webSocketLoaders.vmsecondaryip = true;
                         $scope.showLoader = true;
                         var hasServer = appService.crudService.add("nics/acquire/" + $scope.nic.id, nic);
                         hasServer.then(function(result) {
@@ -108,6 +109,7 @@ function secondaryIpCtrl($scope, $modal, $state, $window, $stateParams, appServi
                                     });
                                 }
                             }
+                            appService.globalConfig.webSocketLoaders.vmsecondaryip = false;
                         });
                     }
                 },
@@ -120,6 +122,7 @@ function secondaryIpCtrl($scope, $modal, $state, $window, $stateParams, appServi
     $scope.deleteIP = function(size, nic) {
         appService.dialogService.openDialog($scope.global.VIEW_URL + "cloud/instance/deleteIP.jsp", size, $scope, ['$scope', '$modalInstance', function($scope, $modalInstance) {
             $scope.ok = function(deleteObject) {
+                appService.globalConfig.webSocketLoaders.vmsecondaryip = true;
                     $scope.deleteObject = nic;
                     $scope.showLoader = true;
                     nic.isActive = false;
@@ -128,7 +131,9 @@ function secondaryIpCtrl($scope, $modal, $state, $window, $stateParams, appServi
                         appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.deleteIP, result.uuid, $scope.global.sessionValues.id);
                         $scope.showLoader = false;
 			           $scope.nicIPList();
-                    }).catch(function(result) {});
+                    }).catch(function(result) {
+                        appService.globalConfig.webSocketLoaders.vmsecondaryip = false;
+                    });
                     $modalInstance.close();
                 },
                 $scope.cancel = function() {
@@ -137,9 +142,11 @@ function secondaryIpCtrl($scope, $modal, $state, $window, $stateParams, appServi
         }]);
     };
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.acquireNewIP, function() {
+        appService.globalConfig.webSocketLoaders.vmsecondaryip = false;
         $scope.nicIPList();
     });
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.deleteIP, function() {
+        appService.globalConfig.webSocketLoaders.vmsecondaryip = false;
         $scope.nicIPList();
     });
 };
