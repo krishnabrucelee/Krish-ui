@@ -160,7 +160,7 @@ $scope.vmPortId = instance;
         $scope.showLoader = true;
         $scope.templateCategory = 'port-forward';
         $scope.firewallRules = {};
-	$scope.portForward = {};
+			$scope.portForward = {};
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasFirewallRuless = appService.crudService.listAllByQuery("portforwarding/list?ipaddress=" + $stateParams.id1, $scope.global.paginationHeaders(pageNumber, limit), {
             "limit": limit
@@ -1379,7 +1379,6 @@ if (!angular.isUndefined($stateParams.id1)) {
 
 
     $scope.addVM = function(form) {
-        $scope.portFormSubmitted = true;
         if (form.$valid) {
 
             $scope.global.rulesPF[0].privateStartPort = $scope.portForward.privateStartPort;
@@ -1437,8 +1436,7 @@ if (!angular.isUndefined($stateParams.id1)) {
                     var hasPortForward = appService.crudService.add("portforwarding", $scope.portForward);
                     hasPortForward.then(function(result) {
                         appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.portforwardSave, result.uuid, $scope.global.sessionValues.id);
-			$scope.portForward = {};
-       			 $scope.portFormSubmitted = false;
+                    $scope.formSubmitted = false;
                         $modalInstance.close();
                         $scope.showLoader = false;
                     }).catch(function(result) {
@@ -1634,7 +1632,6 @@ if (!angular.isUndefined($stateParams.id1)) {
                     };
                     $scope.portvmLists();
                     $scope.enableStaticNatSave = function(natInstance) {
-                        console.log(natInstance[0]);
                         $scope.staticNat = $scope.global.rulesPF[0];
                         $scope.formSubmitted = true;
                         $scope.showLoader = true;
@@ -1654,7 +1651,6 @@ if (!angular.isUndefined($stateParams.id1)) {
 	     }
             		if(!angular.isUndefined(obj.port) && !angular.isUndefined(obj.ipAddress)) {
             			$scope.vmId = obj.id;
-				console.log($scope.vmId);
             			$scope.vmIpAddress = obj.ipAddress;
             			assignedVmIpCount = 1;
             		   }
