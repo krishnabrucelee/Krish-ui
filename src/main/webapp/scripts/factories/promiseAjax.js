@@ -59,7 +59,20 @@ function promiseAjax($http, $window, globalConfig, notify) {
             return result.data;
         });
     };
-    return { httpRequest: httpRequest, httpTokenRequest: httpTokenRequest };
+
+    var httpRequestPing = function(method, url, data) {
+    	var config = {
+                "method": method,
+                "data": data,
+                "url": url,
+                "headers": {'Content-Type': 'application/json', 'Range': "items=0-9"}
+            };
+        return $http(config).then(function(result){
+            return result.data;
+        });
+    };
+
+    return { httpRequest: httpRequest, httpTokenRequest: httpTokenRequest, httpRequestPing: httpRequestPing };
 }
 
 /**
