@@ -136,11 +136,19 @@ if (!angular.isUndefined($stateParams.id1)) {
 }
     };
 
-       $scope.portIPList = function(instance) {
+       $scope.portIPList = function(instance, portvmList, index) {
+	angular.forEach(portvmList, function(obj, key) {
+		if(key == index) {
+		    	obj.port = true;
+		} else {
+			obj.port = false;
+                 }
+	})
         var instanceId = instance;
 $scope.vmPortId = instance;
         $scope.selected = instanceId;
         $scope.instances = instance;
+	
         var hasPortIP = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbynicandinstances?instanceid=" + instanceId + "&lang=" + appService.localStorageService.cookie.get('language') + "&sortBy=-id");
         hasPortIP.then(function(result) {
             $scope.portIPLists = result;
@@ -195,7 +203,6 @@ $scope.vmPortId = instance;
 	$scope.nic.instance = instanceId;
         var networkId = $stateParams.id;
 	$scope.nic.network = $stateParams.id;
-	console.log($scope.nic);
         $scope.instances = instance;
 
  /**var hasStaticNat = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "ipAddresses/nat?ipaddress=" + $scope.staticNat.ipAddressId +
@@ -1084,10 +1091,12 @@ $scope.ipCostList();
         $scope.loadBalancer = {};
         $scope.loadFormSubmitted = false;
         var ipAddressId = $stateParams.id1;
+if (!angular.isUndefined($stateParams.id1)) {
         var hasloadBalancer = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "loadBalancer/list?ipAddressId=" + $stateParams.id1 + "&lang=" + appService.localStorageService.cookie.get('language') + "&sortBy=-id");
         hasloadBalancer.then(function(result) {
             $scope.rulesList = result;
         });
+}
     };
     if (!angular.isUndefined($stateParams.id1)) {
         $scope.LBlist(1);
@@ -1124,7 +1133,6 @@ $scope.ipCostList();
 	var assignedVmIpCount = 0;
 	var selectedVmCount = 0;
                             angular.forEach(loadBalancer, function(obj, key) {
-console.log("obj",obj.lbvm);
 	  if(!angular.isUndefined(obj.lbvm))
 		selectedVmCount++;
 		if(angular.isArray(obj.ipAddress)) {
@@ -1368,9 +1376,12 @@ console.log("obj",obj.lbvm);
             $state.reload();
         }
     }
+
+
     $scope.addVM = function(form) {
         $scope.portFormSubmitted = true;
         if (form.$valid) {
+
             $scope.global.rulesPF[0].privateStartPort = $scope.portForward.privateStartPort;
             $scope.global.rulesPF[0].privateEndPort = $scope.portForward.privateEndPort;
             $scope.global.rulesPF[0].publicStartPort = $scope.portForward.publicStartPort;
@@ -1388,7 +1399,6 @@ console.log("obj",obj.lbvm);
                 };
                 $scope.portvmLists();
                 $scope.portforwardSave = function(portinstance) {
-	 console.log(portinstance);
                     $scope.instances = portinstance;
                     $scope.portForward = $scope.global.rulesPF[0];
                     $scope.formSubmitted = true;
@@ -1399,9 +1409,8 @@ console.log("obj",obj.lbvm);
                   	var hasError = true;
 	var assignedVmIpCount = 0;
 	var selectedVmCount = 0;
-
    	angular.forEach(portinstance, function(obj, key) {
-	  if(!angular.isUndefined(obj.port)) {
+	  if(obj.port== true) {
 		selectedVmCount++;
 	     }
 		if(!angular.isUndefined(obj.port) && !angular.isUndefined(obj.ipAddress.guestIpAddress)) {
@@ -1425,14 +1434,13 @@ console.log("obj",obj.lbvm);
                         $scope.portForward.vmInstanceId = $scope.vmPortId;
                     $scope.portForward.ipAddressId = $stateParams.id1;
                     $scope.portForward.protocolType = $scope.portForward.protocolType.name;
-			console.log("port",$scope.portforward);
                     var hasPortForward = appService.crudService.add("portforwarding", $scope.portForward);
                     hasPortForward.then(function(result) {
                         appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.portforwardSave, result.uuid, $scope.global.sessionValues.id);
-                        $scope.formSubmitted = false;
+			$scope.portForward = {};
+       			 $scope.portFormSubmitted = false;
                         $modalInstance.close();
                         $scope.showLoader = false;
-			$scope.portRulesLists(1);
                     }).catch(function(result) {
                         $scope.showLoader = false;
                         if (!angular.isUndefined(result.data)) {
@@ -1641,12 +1649,12 @@ console.log("obj",obj.lbvm);
             	var selectedVmCount = 0;
 
                	angular.forEach(natInstance, function(obj, key) {
-            	  if(!angular.isUndefined(obj.port)) {
-            		selectedVmCount++;
-            	     }
-
+            	   if(obj.port== true) {
+		selectedVmCount++;
+	     }
             		if(!angular.isUndefined(obj.port) && !angular.isUndefined(obj.ipAddress)) {
             			$scope.vmId = obj.id;
+				console.log($scope.vmId);
             			$scope.vmIpAddress = obj.ipAddress;
             			assignedVmIpCount = 1;
             		   }
@@ -1663,8 +1671,8 @@ console.log("obj",obj.lbvm);
             		}
             		else {
                         $scope.staticNat.ipAddressId = $stateParams.id1;
-                        var hasStaticNat = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "ipAddresses/nat?ipaddress=" + $scope.staticNat.ipAddressId +
-                        	"&vm=" + natInstance.id + "&guestip=" + $scope.vmIpAddress + "&type=" + "enable" + "&lang=" + appService.localStorageService.cookie.get('language') + "&sortBy=-id");
+                       var hasStaticNat = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "ipAddresses/nat?ipaddress=" + $scope.staticNat.ipAddressId +
+                        	"&vm=" + $scope.vmId + "&guestip=" + $scope.vmIpAddress + "&type=" + "enable" + "&lang=" + appService.localStorageService.cookie.get('language') + "&sortBy=-id");
                         hasStaticNat.then(function(result) {
                             appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.enableStaticNat, result.uuid, $scope.global.sessionValues.id);
                             $scope.formSubmitted = false;
