@@ -15,7 +15,7 @@ function addSnapshotCtrl($scope, appService, crudService, dialogService, globalC
 }
 
 function addVMSnapshotCtrl($scope, globalConfig, $window, appService, notify) {
-    $scope.global = globalConfig;
+   $scope.global = appService.globalConfig;
     // Form Field Decleration
     $scope.vmsnapshot = {};
     $scope.formSubmitted = false;
@@ -67,6 +67,7 @@ function snapshotListCtrl($scope, crudService, $state, $timeout, promiseAjax, gl
     $scope.paginationObject = {};
     $scope.paginationObjects = {};
     $scope.global = globalConfig;
+    $scope.global = crudService.globalConfig;
     $scope.global = crudService.globalConfig;
     $scope.snapshotList = {};
     $scope.vmSnapshotList = {};
@@ -196,6 +197,7 @@ $scope.vmCostList();
                     $scope.formSubmitted = true;
                     if (form.$valid) {
                         $scope.showLoader = true;
+			appService.globalConfig.webSocketLoaders.snapshotLoader = true;
                         $scope.vmsnapshot.domainId = $scope.vmsnapshot.vm.domainId;
                         $scope.vmsnapshot.vmId = $scope.vmsnapshot.vm.id;
                         if(angular.isUndefined($scope.vmsnapshot.snapshotMemory)){
@@ -209,7 +211,9 @@ $scope.vmCostList();
                         }).catch(function(result) {
                             $scope.showLoader = false;
                             $scope.cancel();
+			appService.globalConfig.webSocketLoaders.snapshotLoader = false;
                         });
+
                     }
                 },
                 $scope.cancel = function() {
@@ -241,6 +245,7 @@ $scope.vmCostList();
             $scope.deleteObject = snapshot;
             $scope.ok = function() {
                     $scope.showLoader = true;
+		  appService.globalConfig.webSocketLoaders.snapshotLoader = true;
                     var event = "VMSNAPSHOT.DELETE";
                     var hasServer = crudService.vmUpdate("vmsnapshot/event", snapshot.uuid, event);
                     hasServer.then(function(result) {
@@ -250,6 +255,7 @@ $scope.vmCostList();
                     }).catch(function(result) {
                         $scope.showLoader = false;
                         $scope.cancel();
+			appService.globalConfig.webSocketLoaders.snapshotLoader = false;
                     });
                 },
                 $scope.cancel = function() {
@@ -261,10 +267,13 @@ $scope.vmCostList();
         dialogService.openDialog("app/views/common/confirm-delete.jsp", size, $scope, ['$scope', '$modalInstance', function($scope, $modalInstance) {
             $scope.deleteObject = snapshot;
             $scope.ok = function(deleteObject) {
+appService.globalConfig.webSocketLoaders.volumeBackupLoader = true;
                     var hasServer = crudService.softDelete("snapshots", deleteObject);
                     hasServer.then(function(result) {
-                        appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.snapshotEvents.deleteVolumeSnapshot, result.uuid, $scope.global.sessionValues.id);
-                    });
+                        appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.snapshotEvents.deleteVolumeSnapshot, snapshot.uuid, $scope.global.sessionValues.id);
+                    }).catch(function(){
+appService.globalConfig.webSocketLoaders.volumeBackupLoader = false;
+});
                     $scope.cancel();
                 },
                 $scope.cancel = function() {
@@ -276,6 +285,7 @@ $scope.vmCostList();
         dialogService.openDialog("app/views/cloud/snapshot/revert-vmsnapshot.jsp", 'sm', $scope, ['$scope', '$modalInstance', '$rootScope', function($scope, $modalInstance, $rootScope) {
             $scope.ok = function() {
                     $scope.showLoader = true;
+			appService.globalConfig.webSocketLoaders.snapshotLoader = true;
                     var event = "VMSNAPSHOT.REVERTTO";
                     var hasVm = crudService.vmUpdate("vmsnapshot/event", vmsnapshot.uuid, event);
                     hasVm.then(function(result) {
@@ -285,6 +295,7 @@ $scope.vmCostList();
                     }).catch(function(result) {
                         $scope.showLoader = false;
                         $scope.cancel();
+			appService.globalConfig.webSocketLoaders.snapshotLoader = false;
                     });
                 },
                 $scope.cancel = function() {
@@ -318,6 +329,7 @@ $scope.vmCostList();
             $scope.validateConfirmSnapshot = function(form) {
                 $scope.formSubmitted = true;
                 if (form.$valid) {
+appService.globalConfig.webSocketLoaders.volumeBackupLoader = true;
                     var snapshot = $scope.snapshot;
                     snapshot.volume = $scope.volume;
                     snapshot.zone = crudService.globalConfig.zone;
@@ -332,6 +344,8 @@ $scope.vmCostList();
                                 form[key].errorMessage = errorMessage;
                             });
                         }
+
+appService.globalConfig.webSocketLoaders.volumeBackupLoader = false;
                     });
                     $scope.cancel = function() {
                         $modalInstance.close();
@@ -354,6 +368,7 @@ $scope.vmCostList();
             function($scope, $modalInstance, $rootScope) {
                 $scope.deleteObject = snapshot;
                 $scope.save = function(form, deleteObject) {
+appService.globalConfig.webSocketLoaders.volumeBackupLoader = true;
                         if (!angular.isUndefined($scope.deleteObject.domain)) {
                             deleteObject.domainId = $scope.deleteObject.domain.id;
                             delete deleteObject.domain;
@@ -385,6 +400,7 @@ $scope.vmCostList();
                             }).catch(function(result) {
                                 $scope.showLoader = false;
                                 $modalInstance.close();
+appService.globalConfig.webSocketLoaders.volumeBackupLoader = false;
                             });
                         }
                     },
@@ -398,8 +414,10 @@ $scope.vmCostList();
         appService.dialogService.openDialog("app/views/cloud/snapshot/revert-snapshot.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope',
             function($scope, $modalInstance, $rootScope) {
                 $scope.revertSnapshot = snapshot;
+console.log($scope.revertSnapshot);
                 $scope.okrevert = function(form, revertSnapshot) {
-                        if (!angular.isUndefined($scope.revertSnapshot.domain)) {
+                        if (!angular.isUndefined($scope.revertSnapshot.domain) && $scope.revertSnapshot.domain != null) {
+console.log($scope.revertSnapshot.domain);
                             revertSnapshot.domainId = $scope.revertSnapshot.domain.id;
                             delete revertSnapshot.domain;
                         }
@@ -422,6 +440,7 @@ $scope.vmCostList();
                         $scope.formSubmitted = true;
                         if (form.$valid) {
                             $scope.showLoader = true;
+appService.globalConfig.webSocketLoaders.volumeBackupLoader = true;
                             console.log($scope.revertSnapshot);
                             var hasVolume = appService.crudService.add("snapshots/revertsnap", revertSnapshot);
                             hasVolume.then(function(result) {
@@ -442,6 +461,8 @@ $scope.vmCostList();
                                         });
                                     }
                                 }
+
+appService.globalConfig.webSocketLoaders.volumeBackupLoader = false;
                             });
                         }
                     },
@@ -452,22 +473,15 @@ $scope.vmCostList();
         ]);
     };
     $scope.$on(appService.globalConfig.webSocketEvents.snapshotEvents.createvmsnapshot, function() {
+	 appService.globalConfig.webSocketLoaders.snapshotLoader = false;
         $scope.lists($scope.paginationObjects.currentPage);
-        notify({
-            message: "VM snapshot created successfully",
-            classes: 'alert-success',
-            templateUrl: $scope.global.NOTIFICATION_TEMPLATE
-        });
     });
     $scope.$on(appService.globalConfig.webSocketEvents.snapshotEvents.deleteSnapshots, function() {
+	appService.globalConfig.webSocketLoaders.snapshotLoader = false;
         $scope.lists($scope.paginationObjects.currentPage);
-        notify({
-            message: 'VM snapshot deleted successfully',
-            classes: 'alert-success',
-            templateUrl: $scope.global.NOTIFICATION_TEMPLATE
-        });
     });
     $scope.$on(appService.globalConfig.webSocketEvents.snapshotEvents.deleteVolumeSnapshot, function() {
+appService.globalConfig.webSocketLoaders.volumeBackupLoader = false;
         $scope.list($scope.paginationObject.currentPage);
         notify({
             message: 'Volume snapshot deleted successfully ',
@@ -476,14 +490,12 @@ $scope.vmCostList();
         });
     });
     $scope.$on(appService.globalConfig.webSocketEvents.snapshotEvents.restoresnapshot, function() {
-        $scope.lists($scope.paginationObjects.currentPage);
-        notify({
-            message: 'VM snapshot reverted successfully',
-            classes: 'alert-success',
-            templateUrl: $scope.global.NOTIFICATION_TEMPLATE
-        });
+	appService.globalConfig.webSocketLoaders.snapshotLoader = false;
+	        $scope.lists($scope.paginationObjects.currentPage);
+
     });
     $scope.$on(appService.globalConfig.webSocketEvents.snapshotEvents.createsnapshot, function() {
+appService.globalConfig.webSocketLoaders.volumeBackupLoader = false;
         $scope.list($scope.paginationObject.currentPage);
         notify({
             message: 'Volume backedup successfully ',
@@ -492,6 +504,7 @@ $scope.vmCostList();
         });
     });
     $scope.$on(appService.globalConfig.webSocketEvents.snapshotEvents.createsnapshotvolume, function() {
+appService.globalConfig.webSocketLoaders.volumeBackupLoader = false;
         $scope.list($scope.paginationObject.currentPage);
         appService.notify({
             message: 'Volume created successfully',
@@ -500,6 +513,7 @@ $scope.vmCostList();
         });
     });
     $scope.$on(appService.globalConfig.webSocketEvents.snapshotEvents.revertSnapshot, function() {
+appService.globalConfig.webSocketLoaders.volumeBackupLoader = false;
         $scope.list($scope.paginationObject.currentPage);
     });
 }

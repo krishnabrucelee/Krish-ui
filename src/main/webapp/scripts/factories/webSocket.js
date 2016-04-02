@@ -56,7 +56,10 @@ function webSocket($rootScope, $timeout, webSockets, globalConfig, notify) {
             if (message.body.indexOf("completed") > -1 && (message.body.indexOf("ISO") > -1 || message.body
                     .indexOf("secondary ip") > -1 || message.body.indexOf("Snapshot") > -1 || message.body
                     .indexOf("Nic") > -1 || message.body.indexOf("uploading volume") > -1 || message.body
-                    .indexOf("vm snapshots") > -1 || message.body.indexOf("static nat") > -1)) {
+                    .indexOf("VM snapshot") > -1 || message.body.indexOf("vm snapshots") > -1 || message.body
+                    .indexOf("deleting snapshot") > -1 || message.body.indexOf("static nat") > -1) || message.body
+                    .indexOf("remote access vpn") > -1 || message.body.indexOf("VPN user") > -1 || message.body
+                    .indexOf("secondary ip rules") > -1) {
                 notify({
                     message : message.body,
                     classes : 'alert-success',
@@ -66,8 +69,10 @@ function webSocket($rootScope, $timeout, webSockets, globalConfig, notify) {
             }
             if (message.body.indexOf("Error") > -1 && (message.body.indexOf("ISO") > -1 || message.body
                     .indexOf("secondary ip") > -1 || message.body.indexOf("Nic") > -1 || message.body
-                    .indexOf("uploading volume") > -1 || message.body.indexOf("vm snapshots") > -1 || message.body
-                    .indexOf("static nat") > -1)) {
+                    .indexOf("uploading volume") > -1 || message.body.indexOf("VM snapshot") > -1 || message.body
+                    .indexOf("deleting snapshot") > -1 || message.body.indexOf("vm snapshots") > -1 || message.body
+                    .indexOf("static nat") > -1) || message.body.indexOf("remote access vpn") > -1 || message.body
+                    .indexOf("VPN user") > -1 || message.body.indexOf("secondary ip rules") > -1) {
                 notify({
                     message : message.body,
                     classes : 'alert-danger',
@@ -98,15 +103,24 @@ function webSocket($rootScope, $timeout, webSockets, globalConfig, notify) {
                 }
             }
         });
-        webSockets.subscribe("/topic/async.event/" + msg + "/" + userId + "/" + id, function(message) {
-            $rootScope.$broadcast(msg, 'async.event', 'success', id, userId);
-        });
+        webSockets
+                .subscribe("/topic/async.event/" + msg + "/" + userId + "/" + id, function(message) {
+                    if (msg.indexOf("FIREWALL.EGRESS") > -1 || msg.indexOf("NET.IP") > -1 || msg
+                            .indexOf("FIREWALL.OPEN") > -1 || msg.indexOf("FIREWALL.CLOSE") > -1 || msg
+                            .indexOf("NET.RULEADD") > -1 || msg.indexOf("NET.RULEDELETE") > -1 || msg
+                            .indexOf("VM.RESETPASSWORD") > -1 || msg.indexOf("NIC.SECONDARY") > -1) {
+
+                    } else {
+                        $rootScope.$broadcast(msg, 'async.event', 'success', id, userId);
+                    }
+                });
         webSockets.subscribe("/topic/error.event/" + msg + "/" + userId + "/" + id, function(message) {
             notify({
                 message : message.body,
                 classes : 'alert-danger',
                 templateUrl : globalConfig.NOTIFICATION_TEMPLATE
             });
+            $rootScope.$broadcast(msg, 'resource.event', 'success', id, userId);
         });
         webSockets.subscribe("/topic/resource.event/" + id, function(message) {
             $rootScope.$broadcast(msg, 'resource.event', 'success', id, userId);

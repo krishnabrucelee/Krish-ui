@@ -5,6 +5,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <div ui-view ng-controller="networksCtrl">
 	<div data-ng-hide="viewContent" data-ng-init="list(1)">
+	<div data-ng-if="global.webSocketLoaders.networkLoader" class="overlay-wrapper">
+                		            <img data-ng-if="global.webSocketLoaders.networkLoader" src="images/loading-bars.svg" class="inner-loading" width="64" height="64" style="margin: 10%"/>
+            		            </div>
 		<div class="hpanel">
 			<div class="panel-heading no-padding">
 				<div class="row">
@@ -85,6 +88,9 @@
 					<div class="white-content">
 							<div
 								data-ng-show="network.networkView.name == 'Guest Networks' || network.networkView.name == null">
+
+
+
 								<div data-ng-show="showLoader" style="margin: 1%">
 									<get-loader-image data-ng-show="showLoader"></get-loader-image>
 								</div>

@@ -4,6 +4,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <div class="" >
 	<get-loader-image data-ng-show="showLoader"></get-loader-image>
+	 <div data-ng-if="global.webSocketLoaders.volumeBackupLoader" class="overlay-wrapper">
+          <img data-ng-if="global.webSocketLoaders.volumeBackupLoader" src="images/loading-bars.svg" class="inner-loading" width="64" height="64" />
+     </div>
 	<div class="col-md-12 col-sm-12" data-ng-hide="showLoader">
         <div class="hpanel">
             <div class="panel-heading">
@@ -18,7 +21,7 @@
                                 </div>
                             </div>
                             <a class="btn btn-info"  has-permission= "DISK_SNAPSHOT" ng-click="openAddSnapshotContainer()"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span>Create Snapshot</a>
-                                <a class="btn btn-info" title="Refresh" ><span class="fa fa-refresh fa-lg"></span></a>
+                                <a class="btn btn-info" title="Refresh"  data-ng-click="lists(1)"><span class="fa fa-refresh fa-lg"></span></a>
                         </div>
                         <div class="pull-right">
 					        <panda-quick-search></panda-quick-search>

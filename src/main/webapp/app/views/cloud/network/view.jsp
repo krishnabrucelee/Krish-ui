@@ -4,6 +4,9 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <div class="hpanel" ui-view>
+<div data-ng-if="global.webSocketLoaders.networkLoader" class="overlay-wrapper">
+                		            <img data-ng-if="global.webSocketLoaders.networkLoader" src="images/loading-bars.svg" class="inner-loading" width="64" height="64" />
+ </div>
 <div class="row m-l-sm m-r-sm panel-body" data-ng-controller="networksCtrl">
      <ul class="nav nav-tabs" data-ng-init="templateCategory = 'details'">
         <li data-ng-class="{'active' : tabview != 'egress'}"><a href="javascript:void(0)" data-ng-click="templateCategory = 'details'" data-toggle="tab">  <i class="fa fa-list"></i> <fmt:message key="common.details" bundle="${msg}" /></a></li>

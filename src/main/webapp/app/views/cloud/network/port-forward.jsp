@@ -4,6 +4,9 @@ pageEncoding="UTF-8"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <div class="white-content">
+<div data-ng-if="global.webSocketLoaders.portForwardLoader" class="overlay-wrapper">
+    <img data-ng-if="global.webSocketLoaders.portForwardLoader" src="images/loading-bars.svg" class="inner-loading" width="64" height="64" style="margin: 10%"/>
+</div>
     <form name="portform" method="POST" novalidate data-ng-submit="addVM(portform, portForward)">
 
         <table   cellspacing="1" cellpadding="1" class="table table-bordered table-striped">

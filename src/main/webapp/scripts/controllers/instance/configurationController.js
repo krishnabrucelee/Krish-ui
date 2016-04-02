@@ -233,6 +233,7 @@ function configurationCtrl($scope, $stateParams, appService, localStorageService
                          $scope.viewInstance(result.id);
                          if ($scope.instances.passwordEnabled == true) {
                              $scope.resetPassword($scope.instances);
+                             $scope.global.webSocketLoaders.viewLoader = true;
                          }
 
    			}).catch(function (result) {

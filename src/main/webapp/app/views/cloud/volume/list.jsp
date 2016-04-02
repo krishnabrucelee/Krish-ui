@@ -14,7 +14,6 @@ pageEncoding="UTF-8"%>
 	                            <div class="instance-border-content-normal">
 	                            	<span class="pull-left"><img src="images/volume-icon.png"></span>
 	                                <span class="pull-left m-t-xs m-l-xs m-r-xs"><fmt:message key="total.volume" bundle="${msg}" /></span>
-
 	                                <b class="pull-left">{{volumeList.Count}}</b>
 	                                <div class="clearfix"></div>
                                 </div>
@@ -66,6 +65,9 @@ pageEncoding="UTF-8"%>
             <div class="row">
                 <div class="col-md-12 col-sm-12 col-xs-12 ">
                     <div class="white-content">
+                     <div data-ng-if="global.webSocketLoaders.volumeLoader" class="overlay-wrapper">
+                		<img data-ng-if="global.webSocketLoaders.volumeLoader" src="images/loading-bars.svg" class="inner-loading" width="64" height="64" />
+            		</div>
                     <div data-ng-show = "showLoader" style="margin: 1%">
     				  		<get-loader-image data-ng-show="showLoader"></get-loader-image>
       						</div>
