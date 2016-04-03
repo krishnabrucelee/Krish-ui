@@ -14,6 +14,12 @@
             <a ui-sref="billing.current-usage" href="#/billing/usage"><span class="pe-7s-graph pe-2x nav-menu-icons"></span> <span class="nav-label">Current Usage</span> </a>
 
         </li> -->
+        <li ng-class="{active: $state.includes('billing.usageStatistics')}">
+            <a ui-sref="billing.usageStatistics" href="#/billing/usageStatistics" >
+                <span class="pe-7s-news-paper pe-2x nav-menu-icons"></span>
+                <span class="nav-label">Usage statistics</span>
+            </a>
+        </li>
         <li ng-class="{active: $state.includes('billing.invoice')}">
             <a ui-sref="billing.invoice" href="#/billing/invoice" >
                 <span class="pe-7s-news-paper pe-2x nav-menu-icons"></span>
