@@ -35,6 +35,7 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
     appService.globalConfig.webSocketLoaders.portForwardLoader = false;
     appService.globalConfig.webSocketLoaders.loadBalancerLoader = false;
     appService.globalConfig.webSocketLoaders.networkLoader = false;
+    appService.globalConfig.webSocketLoaders.vpnLoader = false;
     $scope.sort = appService.globalConfig.sort;
     $scope.changeSorting = appService.utilService.changeSorting;
     $scope.showLoader = false;
@@ -699,7 +700,7 @@ $scope.ipCostList();
     $scope.addVpnUser = function(form, user) {
         $scope.vpnFormSubmitted = true;
         if (form.$valid) {
-            appService.globalConfig.webSocketLoaders.vpnLoader = true;
+            appService.globalConfig.webSocketLoaders.vpnLoader = false;
             var newUser = user;
             var oldUser;
             if (newUser) { //This will avoid empty data
@@ -728,6 +729,8 @@ $scope.ipCostList();
                         user.password = "";
                         $scope.vpnFormSubmitted = false;
                         $scope.showLoader = false;
+			$scope.editIpaddress($stateParams.id1);
+        		appService.localStorageService.set('view', 'vpn-details');
                     }).catch(function(result) {
                         appService.globalConfig.webSocketLoaders.vpnLoader = false;
                     });
@@ -740,12 +743,14 @@ $scope.ipCostList();
         appService.dialogService.openDialog("app/views/cloud/network/confirm-delete.jsp", size, $scope, ['$scope', '$modalInstance', function($scope, $modalInstance) {
             $scope.ok = function(deleteVpnUser) {
                     var deleteId = user.id;
-                    appService.globalConfig.webSocketLoaders.vpnLoader = true;
+                    appService.globalConfig.webSocketLoaders.vpnLoader = false;
                     $scope.showLoader = true;
                     var hasUser = appService.crudService.delete("vpnUser", user.id);
                     hasUser.then(function(result) {
                         appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.vpnUserDelete, user.uuid, $scope.global.sessionValues.id);
                         $scope.showLoader = false;
+			$scope.editIpaddress($stateParams.id1);
+        		appService.localStorageService.set('view', 'vpn-details');
                         $modalInstance.close();
                     }).catch(function(result) {
                         appService.globalConfig.webSocketLoaders.vpnLoader = false;
