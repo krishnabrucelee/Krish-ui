@@ -7,6 +7,7 @@ angular.module('homer').controller('storageCtrl', storageCtrl)
 
 function storageCtrl($scope, $state, $stateParams, appService, $window, volumeService) {
     $scope.global = appService.globalConfig;
+        appService.globalConfig.webSocketLoaders.vmstorageLoader = false;
     $scope.formSubmitted = false;
     // Form Field Decleration
     $scope.volume = {};
@@ -71,7 +72,6 @@ function storageCtrl($scope, $state, $stateParams, appService, $window, volumeSe
                 volume.vmInstanceId = $stateParams.id;
                 $scope.formSubmitted = true;
                 if (form.$valid) {
-                    appService.globalConfig.webSocketLoaders.vmstorageLoader = true;
                     $scope.showLoader = true;
                     if (!angular.isUndefined(volume.vmInstance) && volume.vmInstance != null) {
                         volume.vmInstanceId = volume.vmInstance.id;
@@ -98,6 +98,7 @@ function storageCtrl($scope, $state, $stateParams, appService, $window, volumeSe
                         appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.attachVolume, result.uuid, $scope.global.sessionValues.id);
                         $scope.showLoader = false;
                         $modalInstance.close();
+                    appService.globalConfig.webSocketLoaders.vmstorageLoader = true;
                     }).catch(function(result) {
                         if (!angular.isUndefined(result.data)) {
                             if (result.data.fieldErrors != null) {
@@ -129,7 +130,6 @@ function storageCtrl($scope, $state, $stateParams, appService, $window, volumeSe
             $scope.instanceList();
             $scope.detachVolume = function(volume) {
                 $scope.showLoader = true;
-                appService.globalConfig.webSocketLoaders.vmstorageLoader = false;
                 if (!angular.isUndefined(volume.vmInstance) && volume.vmInstance != null) {
                     volume.vmInstanceId = volume.vmInstance.id;
                     delete volume.vmInstance;
@@ -155,6 +155,7 @@ function storageCtrl($scope, $state, $stateParams, appService, $window, volumeSe
                     appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.detachVolume, result.uuid, $scope.global.sessionValues.id);
                     $scope.showLoader = false;
                     $modalInstance.close();
+                appService.globalConfig.webSocketLoaders.vmstorageLoader = true;
                 }).catch(function(result) {
                     if (!angular.isUndefined(result.data)) {
                         if (result.data.fieldErrors != null) {
@@ -329,7 +330,6 @@ function storageCtrl($scope, $state, $stateParams, appService, $window, volumeSe
                 $scope.save = function(form, volume) {
                         $scope.formSubmitted = true;
                         if (form.$valid) {
-                            appService.globalConfig.webSocketLoaders.vmstorageLoader = true;
                             $scope.showLoader = true;
                             $scope.volume.zone = $scope.global.zone;
                             var volume = angular.copy($scope.volume);
@@ -357,6 +357,7 @@ function storageCtrl($scope, $state, $stateParams, appService, $window, volumeSe
                                 appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.volumesave, result.uuid, $scope.global.sessionValues.id);
                                 $scope.showLoader = false;
                                 $modalInstance.close();
+                            appService.globalConfig.webSocketLoaders.vmstorageLoader = true;
                             }).catch(function(result) {
                                 $scope.showLoader = false;
                                 if (!angular.isUndefined(result.data)) {

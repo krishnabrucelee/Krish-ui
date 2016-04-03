@@ -19,8 +19,8 @@ function configurationCtrl($scope, $stateParams, appService, localStorageService
     $scope.instances = [];
     $scope.instances.computeOffering ={};
     $scope.resetForm = [];
-    $scope.vmsshkeyLoader = $scope.global.webSocketLoaders.vmsshKey;
-    $scope.computeOfferLoader = $scope.global.webSocketLoaders.computeOffer;
+    $scope.global.webSocketLoaders.vmsshKey = false;
+   $scope.global.webSocketLoaders.computeOffer = false;
     // Form Field Decleration
     $scope.computeOffer = {
 //        type: {id:1, name:"Basic"}
@@ -120,10 +120,9 @@ function configurationCtrl($scope, $stateParams, appService, localStorageService
 
           		$scope.save = function (form, instance) {
           		$scope.formSubmitted = true;
-          		$scope.global.webSocketLoaders.computeOffer = true;
-          		$scope.computeOfferLoader = $scope.global.webSocketLoaders.computeOffer;
           		if (form.$valid) {
           		        $scope.formSubmitted = false;
+				$scope.global.webSocketLoaders.computeOffer = true;
           			$scope.instances.computeOfferingId = $scope.instance.computeOffering.id;
           			$scope.instances.computeOffering = $scope.instance.computeOffering;
           			var hasServer =crudService.updates("virtualmachine/resize", $scope.instances);
@@ -139,7 +138,6 @@ function configurationCtrl($scope, $stateParams, appService, localStorageService
 	                            }
                         }
                         $scope.global.webSocketLoaders.computeOffer = false;
-                        $scope.computeOfferLoader = $scope.global.webSocketLoaders.computeOffer;
                         });
           			}
           		},
@@ -222,10 +220,9 @@ function configurationCtrl($scope, $stateParams, appService, localStorageService
     $scope.resetKey = function (form, resetSSH) {
    		$scope.formSubmitted = true;
    		if (form.$valid) {
-                        $scope.global.webSocketLoaders.vmsshKey = true;
-                        $scope.vmsshkeyLoader = $scope.global.webSocketLoaders.vmsshKey;
                         $scope.formSubmitted = false;
                         $scope.instances.keypairId = $scope.resetSSH.keypairName.id;
+			$scope.global.webSocketLoaders.vmsshKey = true;
    			var hasServer = appService.crudService.updates("virtualmachine/reset", $scope.instances);
    			hasServer.then(function (result) {
                          $scope.instances = result;
@@ -233,11 +230,9 @@ function configurationCtrl($scope, $stateParams, appService, localStorageService
                          $scope.viewInstance(result.id);
                          if ($scope.instances.passwordEnabled == true) {
                              $scope.resetPassword($scope.instances);
-                             $scope.global.webSocketLoaders.viewLoader = true;
                          }
-
    			}).catch(function (result) {
-                 if (!angular.isUndefined(result) && result.data != null) {
+                		 if (!angular.isUndefined(result) && result.data != null) {
                      if (result.data.fieldErrors != '') {
                          angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
                          $scope.resetForm[key].$invalid = true;
@@ -246,7 +241,6 @@ function configurationCtrl($scope, $stateParams, appService, localStorageService
                          }
                  }
                  $scope.global.webSocketLoaders.vmsshKey = false;
-                 $scope.vmsshkeyLoader = $scope.global.webSocketLoaders.vmsshKey;
                  });
    			}
    		};
@@ -273,13 +267,10 @@ function configurationCtrl($scope, $stateParams, appService, localStorageService
 
      $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.vmresize, function() {
          $scope.global.webSocketLoaders.computeOffer = false;
-         $scope.computeOfferLoader = $scope.global.webSocketLoaders.computeOffer;
          $scope.viewInstance($scope.instances.id);
      });
      $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.vmSSHKEY, function() {
          $scope.global.webSocketLoaders.vmsshKey = false;
-         $scope.vmsshkeyLoader = $scope.global.webSocketLoaders.vmsshKey;
-         $scope.viewInstance($scope.instances.id);
        });
 
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.rebootVm, function() {
