@@ -5,7 +5,7 @@
  */
 angular.module('homer').controller('networksCtrl', networksCtrl)
 
-function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $stateParams, $timeout, $window, appService, localStorageService, globalConfig) {
+function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $stateParams, $timeout, $window, appService, localStorageService, globalConfig,$location) {
     $scope.global = appService.globalConfig;
     $scope.rulesList = [];
     $scope.rules = [];
@@ -31,6 +31,10 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
     $scope.portForward = {};
     $scope.stickiness = {};
     $scope.global = appService.globalConfig;
+    appService.globalConfig.webSocketLoaders.ipLoader = false;
+    appService.globalConfig.webSocketLoaders.portForwardLoader = false;
+    appService.globalConfig.webSocketLoaders.loadBalancerLoader = false;
+    appService.globalConfig.webSocketLoaders.networkLoader = false;
     $scope.sort = appService.globalConfig.sort;
     $scope.changeSorting = appService.utilService.changeSorting;
     $scope.showLoader = false;
@@ -258,7 +262,6 @@ $scope.ipCostList();
         $scope.firewallRules.networkId = $stateParams.id;
         $scope.formSubmitted = true;
         if (form.$valid) {
-            appService.globalConfig.webSocketLoaders.egressLoader = true;
             $scope.showLoader = true;
             var CheckIP = /^([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\/([0-9]|[12][0-9]|3[012])$/;
             if ($scope.firewallRules.sourceCIDR && $scope.firewallRules.protocol) {
@@ -272,6 +275,7 @@ $scope.ipCostList();
                                     $scope.firewallRules = {};
                                     $scope.formSubmitted = false;
                                     $scope.showLoader = false;
+                                appService.globalConfig.webSocketLoaders.egressLoader = true;
                                     $scope.templateCategory = 'egress';
                                 }).catch(function(result) {
                                     $scope.showLoader = false;
@@ -295,6 +299,7 @@ $scope.ipCostList();
                                     $scope.firewallRules = {};
                                     $scope.formSubmitted = false;
                                     $scope.showLoader = false;
+				    appService.globalConfig.webSocketLoaders.egressLoader = true;
                                     $scope.templateCategory = 'egress';
                                 }).catch(function(result) {
                                     $scope.showLoader = false;
@@ -340,7 +345,6 @@ $scope.ipCostList();
         $scope.formSubmitted = true;
         if (form.$valid) {
             $scope.showLoader = true;
-            appService.globalConfig.webSocketLoaders.ingressLoader = true;
             var CheckIP = /^([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\/([0-9]|[12][0-9]|3[012])$/;
             if ($scope.firewallRuleIngress.sourceCIDR && $scope.firewallRuleIngress.protocol) {
                 if (CheckIP.test($scope.firewallRuleIngress.sourceCIDR)) {
@@ -355,6 +359,7 @@ $scope.ipCostList();
                                     $scope.firewallRuleIngress = {};
                                     $scope.formSubmitted = false;
                                     $scope.showLoader = false;
+				    appService.globalConfig.webSocketLoaders.ingressLoader = true;
                                     $scope.templateCategory = 'firewall';
                                 }).catch(function(result) {
                                     $scope.showLoader = false;
@@ -423,11 +428,12 @@ $scope.ipCostList();
             $scope.deleteObject = firewallRules;
             $scope.ok = function(deleteObject) {
                     $scope.showLoader = true;
-                    appService.globalConfig.webSocketLoaders.ingressLoader = true;
                     firewallRules.isActive = false;
                     var hasServer = appService.crudService.softDelete("egress/ingress", deleteObject);
                     hasServer.then(function(result) {
                         appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.deleteIngress, deleteObject.uuid, $scope.global.sessionValues.id);
+                    $scope.showLoader = false;
+	          appService.globalConfig.webSocketLoaders.ingressLoader = true;
                         $scope.templateCategory = 'firewall';
                     }).catch(function(result) {
                         $modalInstance.close();
@@ -445,13 +451,14 @@ $scope.ipCostList();
         appService.dialogService.openDialog($scope.global.VIEW_URL + "cloud/network/delete-egress.jsp", size, $scope, ['$scope', '$modalInstance', function($scope, $modalInstance) {
             $scope.deleteObject = firewallRules;
             $scope.ok = function(deleteObject) {
-                appService.globalConfig.webSocketLoaders.egressLoader = true;
                     $scope.showLoader = true;
                     firewallRules.isActive = false;
                     var hasServer = appService.crudService.softDelete("egress", deleteObject);
                     hasServer.then(function(result) {
                         appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.deleteEgress, deleteObject.uuid, $scope.global.sessionValues.id);
                         $modalInstance.close();
+                    $scope.showLoader = false;
+		     appService.globalConfig.webSocketLoaders.egressLoader = true;
                     }).catch(function(result) {
                         appService.globalConfig.webSocketLoaders.egressLoader = false;
                         $modalInstance.close();
@@ -476,7 +483,6 @@ $scope.ipCostList();
             $scope.save = function(form, network) {
                     $scope.formSubmitted = true;
                     if (form.$valid) {
-                        appService.globalConfig.webSocketLoaders.networkLoader = true;
                         var network = angular.copy($scope.network);
                         if (!angular.isUndefined($scope.network.domain) && $scope.network.domain != null) {
                             network.domainId = $scope.network.domain.id;
@@ -497,6 +503,7 @@ $scope.ipCostList();
                         hasguestNetworks.then(function(result) {
                             appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.createnetwork, result.uuid, $scope.global.sessionValues.id);
                             $scope.showLoader = false;
+			 appService.globalConfig.webSocketLoaders.networkLoader = true;
                             $modalInstance.close();
                         }).catch(function(result) {
                             if (!angular.isUndefined(result) && result.data != null) {
@@ -584,12 +591,12 @@ $scope.ipCostList();
         appService.dialogService.openDialog("app/views/cloud/network/confirm-delete.jsp", size, $scope, ['$scope', '$modalInstance', function($scope, $modalInstance) {
             $scope.deleteId = network.id;
             $scope.ok = function(networkId) {
-                appService.globalConfig.webSocketLoaders.networkLoader = true;
                     $scope.showLoader = true;
                     var hasNetworks = appService.crudService.softDelete("guestnetwork", network);
                     hasNetworks.then(function(result) {
                         appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.deletenetwork, network.uuid, $scope.global.sessionValues.id);
                         $scope.showLoader = false;
+			 appService.globalConfig.webSocketLoaders.networkLoader = true;
                         $modalInstance.close();
                     }).catch(function(result) {
                         if (!angular.isUndefined(result.data) && result.data.fieldErrors != null) {
@@ -615,11 +622,11 @@ $scope.ipCostList();
             $scope.ok = function(restart) {
                     $scope.networkRestart = restart;
                     $scope.showLoader = true;
-                    appService.globalConfig.webSocketLoaders.networkLoader = true;
                     var hasServer = appService.crudService.add("guestnetwork/restart/" + network.id, network);
                     hasServer.then(function(result) { // this is only run after $http completes
                         appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.restartnetwork, result.uuid, $scope.global.sessionValues.id);
                         $scope.showLoader = false;
+			 appService.globalConfig.webSocketLoaders.networkLoader = true;
                         $modalInstance.close();
                     }).catch(function(result) {
                         if (!angular.isUndefined(result.data)) {
@@ -750,7 +757,6 @@ $scope.ipCostList();
         $scope.formSubmitted = true;
         if (form.$valid) {
             var network = $scope.network;
-            appService.globalConfig.webSocketLoaders.networkLoader = true;
             $scope.showLoader = true;
             if (!angular.isUndefined($scope.network.domain)) {
                 network.domainId = $scope.network.domain.id;
@@ -773,6 +779,7 @@ $scope.ipCostList();
                 appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.updatenetwork, result.uuid, $scope.global.sessionValues.id);
                 $scope.showLoader = false;
                 $scope.formSubmitted = false;
+		 appService.globalConfig.webSocketLoaders.networkLoader = true;
             }).catch(function(result) {
                 if (!angular.isUndefined(result.data) && result.data.fieldErrors != null) {
                     angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
@@ -1133,9 +1140,7 @@ if (!angular.isUndefined($stateParams.id1)) {
         });
 }
     };
-    if (!angular.isUndefined($stateParams.id1)) {
-        $scope.LBlist(1);
-    }
+   
     $scope.openAddVM = function(form) {
         $scope.loadFormSubmitted = true;
         if (form.$valid) {
@@ -1159,7 +1164,6 @@ if (!angular.isUndefined($stateParams.id1)) {
                         loadBalancer.vmIpAddress = [];
                         $scope.loadBalancer = $scope.global.rulesLB[0];
                         $scope.showLoader = true;
-                        appService.globalConfig.webSocketLoaders.loadBalancerLoader = true;
                         $scope.loadBalancer.ipAddressId = $stateParams.id1;
                         // var loadBalancer = angular.copy($scope.loadBalancer);
                         $scope.loadBalancer.protocol = $scope.loadBalancer.protocol.toUpperCase();
@@ -1214,6 +1218,7 @@ if (!angular.isUndefined($stateParams.id1)) {
                                 appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.loadbalancerSave, result.uuid, $scope.global.sessionValues.id);
                                 $scope.formSubmitted = false;
                                 $scope.showLoader = false;
+			        appService.globalConfig.webSocketLoaders.loadBalancerLoader = true;
                                 $modalInstance.close();
                             }).catch(function(result) {
                                 $scope.showLoader = false;
@@ -1325,12 +1330,12 @@ if (!angular.isUndefined($stateParams.id1)) {
                     $scope.formSubmitted = true;
                     if (form.$valid) {
                         $scope.showLoader = true;
-                        appService.globalConfig.webSocketLoaders.loadBalancerLoader = true;
                         var hasServer = appService.crudService.update("loadBalancer", loadBalancer);
                         hasServer.then(function(result) {
                             appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.editrule, result.uuid, $scope.global.sessionValues.id);
                             $modalInstance.close();
                             $scope.showLoader = false;
+                            appService.globalConfig.webSocketLoaders.loadBalancerLoader = true;
                         }).catch(function(result) {
                             if (!angular.isUndefined(result) && result.data != null) {
                                 $scope.showLoader = false;
@@ -1353,10 +1358,10 @@ if (!angular.isUndefined($stateParams.id1)) {
         appService.dialogService.openDialog("app/views/cloud/network/delete-rule.jsp", 'sm', $scope, ['$scope', '$modalInstance', function($scope, $modalInstance) {
             $scope.deleteObject = loadBalancer;
             $scope.delete = function(deleteObject) {
-                    appService.globalConfig.webSocketLoaders.loadBalancerLoader = true;
                     var hasServer = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_DELETE, appService.globalConfig.APP_URL + "loadBalancer/delete/" + loadBalancer.id + "?lang=" + appService.localStorageService.cookie.get('language'), '', loadBalancer);
                     hasServer.then(function(result) {
                         appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.deleteRules, loadBalancer.uuid, $scope.global.sessionValues.id);
+		     appService.globalConfig.webSocketLoaders.loadBalancerLoader = true;
                    }).catch(function(result) {
                         if (!angular.isUndefined(result) && result.data != null) {
 
@@ -1439,7 +1444,6 @@ if (!angular.isUndefined($stateParams.id1)) {
                 };
                 $scope.portvmLists();
                 $scope.portforwardSave = function(portinstance) {
-                    appService.globalConfig.webSocketLoaders.portForwardLoader = true;
                     $scope.instances = portinstance;
                     $scope.portForward = $scope.global.rulesPF[0];
                     $scope.formSubmitted = true;
@@ -1481,6 +1485,7 @@ if (!angular.isUndefined($stateParams.id1)) {
                     $scope.formSubmitted = false;
                         $modalInstance.close();
                         $scope.showLoader = false;
+                    appService.globalConfig.webSocketLoaders.portForwardLoader = true;
                     }).catch(function(result) {
                         $scope.showLoader = false;
                         if (!angular.isUndefined(result.data)) {
@@ -1509,11 +1514,11 @@ if (!angular.isUndefined($stateParams.id1)) {
             $scope.deleteId = portForward.id;
             $scope.ok = function(deleteId) {
                     $scope.showLoader = true;
-                    appService.globalConfig.webSocketLoaders.portForwardLoader = true;
                     var hasStorage = appService.crudService.delete("portforwarding", portForward.id);
                     hasStorage.then(function(result) {
                         appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.deletePortRules, portForward.uuid, $scope.global.sessionValues.id);
                         $scope.showLoader = false;
+                    appService.globalConfig.webSocketLoaders.portForwardLoader = true;
                     }).catch(function(result) {
                         if (!angular.isUndefined(result.data)) {
                             if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
@@ -1642,12 +1647,12 @@ if (!angular.isUndefined($stateParams.id1)) {
             $scope.acquire = function(network) {
                     $scope.actionAcquire = true;
                     if ($scope.agree == true) {
-                        appService.globalConfig.webSocketLoaders.ipLoader = true;
                         $scope.acquiringIP = true;
                         var hasIP = appService.crudService.listByQuery("ipAddresses/acquireip?network=" + $stateParams.id);
                         hasIP.then(function(result) {
                             appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.ipAquire, result[0].uuid, $scope.global.sessionValues.id);
                             $scope.acquiringIP = false;
+			     appService.globalConfig.webSocketLoaders.ipLoader = true;
                             $scope.cancel();
                         }).catch(function(result) {
                             $scope.acquiringIP = false;
@@ -1681,7 +1686,6 @@ if (!angular.isUndefined($stateParams.id1)) {
                     $scope.enableStaticNatSave = function(natInstance) {
                         $scope.staticNat = $scope.global.rulesPF[0];
                         $scope.formSubmitted = true;
-                        appService.globalConfig.webSocketLoaders.ipLoader = true;
                         $scope.showLoader = true;
                         $scope.staticNat.vmInstanceId = $scope.natInstance.id;
                         $scope.staticNat.networkId = $stateParams.id;
@@ -1723,6 +1727,7 @@ if (!angular.isUndefined($stateParams.id1)) {
                             $modalInstance.close();
                             $scope.cancelInst();
                             $scope.showLoader = false;
+                        appService.globalConfig.webSocketLoaders.ipLoader = true;
                         }).catch(function(result) {
                             $scope.showLoader = false;
                             if (!angular.isUndefined(result.data)) {
@@ -1760,7 +1765,6 @@ if (!angular.isUndefined($stateParams.id1)) {
                     $scope.staticNat = $scope.global.rulesPF[0];
                     $scope.formSubmitted = true;
                     $scope.showLoader = true;
-                    appService.globalConfig.webSocketLoaders.ipLoader = true;
                     $scope.staticNat.vmInstanceId = $scope.natInstance.id;
                     $scope.staticNat.networkId = $stateParams.id;
                     if (angular.isUndefined($scope.instanceLists.ipAddress.guestIpAddress)) {
@@ -1775,6 +1779,7 @@ if (!angular.isUndefined($stateParams.id1)) {
                         $scope.formSubmitted = false;
                         $modalInstance.close();
                         $scope.showLoader = false;
+                    appService.globalConfig.webSocketLoaders.ipLoader = true;
                     }).catch(function(result) {
                         $scope.showLoader = false;
                         if (!angular.isUndefined(result.data)) {
@@ -1803,11 +1808,11 @@ if (!angular.isUndefined($stateParams.id1)) {
         appService.dialogService.openDialog("app/views/cloud/network/release-ip.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function($scope, $modalInstance, $rootScope) {
             $scope.release = function(network) {
                     $scope.showLoader = true;
-                    appService.globalConfig.webSocketLoaders.ipLoader = true;
                     var hasIP = appService.crudService.listByQuery("ipAddresses/dissociate?ipuuid=" + $scope.ipAddress.uuid);
                     hasIP.then(function(result) {
                         appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.ipRelease, result.uuid, $scope.global.sessionValues.id);
                         $scope.showLoader = false;
+                    appService.globalConfig.webSocketLoaders.ipLoader = true;
                             $scope.cancel();
                     }).catch(function(result) {
                         $scope.cancel();
@@ -1823,16 +1828,19 @@ if (!angular.isUndefined($stateParams.id1)) {
         $scope.ipAddress = angular.copy(ipAddress);
         appService.dialogService.openDialog("app/views/cloud/network/enable-vpn.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function($scope, $modalInstance, $rootScope) {
             $scope.enableVpnAccess = function(network) {
-                appService.globalConfig.webSocketLoaders.ipLoader = true;
                     $scope.showLoader = true;
                     var hasVpn = appService.crudService.listByQuery("ipAddresses/enablevpn?uuid=" + $scope.ipAddress.uuid);
                     hasVpn.then(function(result) {
                         appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.vpnCreate, result.uuid, $scope.global.sessionValues.id);
                         $scope.ipDetails = result;
-			 appService.localStorageService.set('view', 'vpn-details');
-    $window.location.href = '#network/list/view/' + $stateParams.id + '/ip-address/' + $scope.ipDetails.id;
                         $scope.showLoader = false;
+	if(($location.path() == '/network/list/view/' + $stateParams.id)&&($scope.templateCategory=='ip'))
+			{
+			appService.localStorageService.set('view', 'vpn-details');
+    			$window.location.href = '#network/list/view/' + $stateParams.id + '/ip-address/' + $scope.ipDetails.id;
+			}
                         $scope.cancel();
+                appService.globalConfig.webSocketLoaders.ipLoader = true;
                     }).catch(function(result) {
                         $scope.showLoader = false;
                         appService.globalConfig.webSocketLoaders.ipLoader = false;
@@ -1849,15 +1857,14 @@ if (!angular.isUndefined($stateParams.id1)) {
         appService.dialogService.openDialog("app/views/cloud/network/disable-vpn.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function($scope, $modalInstance, $rootScope) {
             $scope.enableVpnAccess = function(network) {
                     $scope.showLoader = true;
-                    appService.globalConfig.webSocketLoaders.ipLoader = true;
                     var hasVpn = appService.crudService.listByQuery("ipAddresses/disablevpn?uuid=" + $scope.ipAddress.uuid);
                     hasVpn.then(function(result) {
                         appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.vpnDestroy, $scope.ipAddress.uuid, $scope.global.sessionValues.id);
                         $scope.ipDetails = result;
-		 appService.localStorageService.set('view', 'details');
-  		  $window.location.href = '#network/list/view/' + $stateParams.id + '/ip-address/' + $scope.ipDetails.id;
                         $scope.showLoader = false;
+                    appService.globalConfig.webSocketLoaders.ipLoader = true;
                         $scope.cancel();
+
                     }).catch(function(result) {
                         appService.globalConfig.webSocketLoaders.ipLoader = false;
                         $scope.cancel();
@@ -1944,7 +1951,6 @@ if (!angular.isUndefined($stateParams.id1)) {
             $scope.stickyLoadBalancer = loadBalancer;
             //Assign loadbalancer stickiness in object
             $scope.addStickiness = function(form, stickiness) {
-                appService.globalConfig.webSocketLoaders.loadBalancerLoader = true;
                     $scope.stickyLoadBalancer.lbPolicy = {};
                     $scope.formSubmitted = true;
                     if (!angular.isUndefined($scope.stickyLoadBalancer.id) && $scope.stickyLoadBalancer.id != null) {
@@ -1973,6 +1979,7 @@ if (!angular.isUndefined($stateParams.id1)) {
                                     $modalInstance.close();
                                     $scope.showLoader = false;
                                     $scope.stickiness = {};
+				    appService.globalConfig.webSocketLoaders.loadBalancerLoader = true;
                                 }).catch(function(result) {
                                     appService.globalConfig.webSocketLoaders.loadBalancerLoader = false;
                                 });
@@ -2014,7 +2021,6 @@ if (!angular.isUndefined($stateParams.id1)) {
                     }
                 });
                 $scope.editStickinessPolicy = function(form, loadBalancer) {
-                    appService.globalConfig.webSocketLoaders.loadBalancerLoader = true;
                     $scope.showLoader = true;
                     $scope.formSubmitted = true;
                     if ($scope.stickiness.stickinessMethod == $scope.global.STICKINESS.NONE) {
@@ -2043,6 +2049,7 @@ if (!angular.isUndefined($stateParams.id1)) {
                             $scope.stickiness = {};
                             $modalInstance.close();
                             $scope.showLoader = false;
+                    appService.globalConfig.webSocketLoaders.loadBalancerLoader = true;
                         }).catch(function(result) {
                             $modalInstance.close();
                             $scope.showLoader = false;
@@ -2078,12 +2085,12 @@ if (!angular.isUndefined($stateParams.id1)) {
                     loadBalancer.vmIpAddress.push(vmIpAddress);
                     $scope.deleteObject = loadBalancer;
                     $scope.showLoader = true;
-                    appService.globalConfig.webSocketLoaders.networkLoader = true;
                     var hasNic = appService.crudService.updates("loadBalancer/removerule/", $scope.deleteObject);
                     hasNic.then(function(result) {
                         appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.deleteRules, $scope.deleteObject.uuid, $scope.global.sessionValues.id);
                         $scope.showLoader = false;
                         $modalInstance.close();
+                    appService.globalConfig.webSocketLoaders.networkLoader = true;
                     }).catch(function(result) {
                             if (result.data.fieldErrors != null) {
                                 angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
@@ -2202,14 +2209,13 @@ $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.ipRelease, func
 });
 $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.vpnCreate, function() {
     appService.globalConfig.webSocketLoaders.vpnLoader = false;
-    appService.localStorageService.set('view', 'vpn-details');
-    $window.location.href = '#network/list/view/' + $stateParams.id + '/ip-address/' + $scope.ipDetails.id;
+    appService.globalConfig.webSocketLoaders.ipLoader = false;
+    $scope.ipLists(1);
 });
 $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.vpnDestroy, function() {
-    appService.globalConfig.webSocketLoaders.vpnLoader = false;
+   // appService.globalConfig.webSocketLoaders.vpnLoader = false;
     appService.globalConfig.webSocketLoaders.ipLoader = false;
-    appService.localStorageService.set('view', 'details');
-    $window.location.href = '#network/list/view/' + $stateParams.id + '/ip-address/' + $scope.ipDetails.id;
+    $scope.ipLists(1);
 });
 $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.vpnUserAdd, function() {
     appService.globalConfig.webSocketLoaders.vpnLoader = false;
