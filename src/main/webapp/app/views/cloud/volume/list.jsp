@@ -104,7 +104,7 @@ pageEncoding="UTF-8"%>
                                     <td>{{ volume.vmInstance.name || " - " }}</td>
                                     <td><span data-ng-if="volume.volumeType == 'ROOT'"> {{ volume.diskSize / global.Math.pow(2, 30)}}</span>
                                     <span data-ng-if="volume.volumeType == 'DATADISK' && volume.storageOffering.isCustomDisk">{{ volume.diskSize / global.Math.pow(2, 30)}}</span>
-                                     <span data-ng-if="volume.volumeType == 'DATADISK' && !volume.storageOffering.isCustomDisk">{{ volume.diskSize / global.Math.pow(2, 30)}}</span></td>
+                                     <span data-ng-if="volume.volumeType == 'DATADISK' && !volume.storageOffering.isCustomDisk">{{volume.storageOffering.diskSize}}</span></td>
                                     <td>{{ volume.createdDateTime*1000 | date:'yyyy-MM-dd HH:mm:ss'}}</td>
                                     <td>
                                         <div class="btn-group action-menu">

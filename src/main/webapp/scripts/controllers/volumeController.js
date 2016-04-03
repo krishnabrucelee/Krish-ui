@@ -57,7 +57,7 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
             	// completes0
             	$scope.volumeList = result;
             	$scope.volumeList.Count = result.totalItems;
-
+            	console.log(globalConfig.sessionValues.token);
             	// For pagination
             	$scope.paginationObject.limit = limit;
             	$scope.paginationObject.currentPage = pageNumber;
@@ -931,7 +931,7 @@ $scope.delete = function (size, volume) {
                 });
 
             },
-                    $scope.cancels= function () {
+                    $scope.cancel= function () {
                         $modalInstance.close();
                     };
         }]);

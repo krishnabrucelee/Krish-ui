@@ -9,37 +9,6 @@ function webSocket($rootScope, $timeout, webSockets, globalConfig, notify) {
         webSockets.init(globalConfig.SOCKET_URL + 'socket/ws');
         headers['x-auth-token'] = globalConfig.sessionValues.token;
         webSockets.connect(function(frame) {
-            webSockets.subscribe("/topic/action.event/", function(message) {
-
-            });
-
-            webSockets.subscribe("/topic/async.event/", function(message) {
-                var parsed = JSON.parse(message.body);
-                parsed.priv = true;
-                $rootScope.messages.unshift(parsed);
-            });
-
-            webSockets.subscribe("/topic/error.event/", function(message) {
-                notify({
-                    message : message.body,
-                    classes : 'alert-danger',
-                    templateUrl : globalConfig.NOTIFICATION_TEMPLATE
-                });
-            });
-
-            webSockets.subscribe("/topic/resource.event/", function(message) {
-                var parsed = JSON.parse(message.body);
-                parsed.priv = true;
-                $rootScope.messages.unshift(parsed);
-            });
-
-            webSockets.subscribe("/topic/alert.event/", function(message) {
-                notify({
-                    message : message.body,
-                    classes : 'alert-success',
-                    templateUrl : globalConfig.NOTIFICATION_TEMPLATE
-                });
-            });
 
         }, function(error) {
             console.log(error);
@@ -53,31 +22,32 @@ function webSocket($rootScope, $timeout, webSockets, globalConfig, notify) {
         this.userId = userId;
         webSockets.subscribe("/topic/action.event/" + globalConfig.sessionValues.id, function(message) {
             globalConfig.events = parseInt(globalConfig.events) + 1;
-            if (message.body.indexOf("completed") > -1 && (message.body.indexOf("ISO") > -1 || message.body
+            if ((message.body.indexOf("completed") > -1 || message.body.indexOf("Remote Access") > -1 ) && (message.body.indexOf("ISO") > -1 || message.body
                     .indexOf("secondary ip") > -1 || message.body.indexOf("Snapshot") > -1 || message.body
                     .indexOf("Nic") > -1 || message.body.indexOf("uploading volume") > -1 || message.body
                     .indexOf("VM snapshot") > -1 || message.body.indexOf("vm snapshots") > -1 || message.body
-                    .indexOf("deleting snapshot") > -1 || message.body.indexOf("static nat") > -1) || message.body
+                    .indexOf("deleting snapshot") > -1 || message.body.indexOf("static nat") > -1 || message.body
                     .indexOf("remote access vpn") > -1 || message.body.indexOf("VPN user") > -1 || message.body
-                    .indexOf("secondary ip rules") > -1) {
+                    .indexOf("secondary ip rules") > -1)) {
                 notify({
                     message : message.body,
                     classes : 'alert-success',
                     templateUrl : globalConfig.NOTIFICATION_TEMPLATE
                 });
-                $rootScope.$broadcast(msg, 'action.event', 'error', id, userId);
+                $rootScope.$broadcast(msg, 'action.event', 'sucess', id, userId);
             }
             if (message.body.indexOf("Error") > -1 && (message.body.indexOf("ISO") > -1 || message.body
                     .indexOf("secondary ip") > -1 || message.body.indexOf("Nic") > -1 || message.body
                     .indexOf("uploading volume") > -1 || message.body.indexOf("VM snapshot") > -1 || message.body
                     .indexOf("deleting snapshot") > -1 || message.body.indexOf("vm snapshots") > -1 || message.body
-                    .indexOf("static nat") > -1) || message.body.indexOf("remote access vpn") > -1 || message.body
-                    .indexOf("VPN user") > -1 || message.body.indexOf("secondary ip rules") > -1) {
+                    .indexOf("static nat") > -1 || message.body.indexOf("remote access vpn") > -1 || message.body
+                    .indexOf("VPN user") > -1 || message.body.indexOf("secondary ip rules") > -1)) {
                 notify({
                     message : message.body,
                     classes : 'alert-danger',
                     templateUrl : globalConfig.NOTIFICATION_TEMPLATE
                 });
+                alert("hi");
                 $rootScope.$broadcast(msg, 'action.event', 'error', id, userId);
             }
         });

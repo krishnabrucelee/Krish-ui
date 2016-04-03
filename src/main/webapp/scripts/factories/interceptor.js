@@ -29,7 +29,7 @@ function interceptorAPI($q, globalConfig, $injector) {
 	                        classes : 'alert-info',
 	                        templateUrl : global.NOTIFICATION_TEMPLATE
 	                    });
-                    } else {     
+                    } else {
                     var errorList = msg.split(global.TOKEN_SEPARATOR);
                     if(errorList[0] != global.PAGE_ERROR_SEPARATOR) {
 	                    var appService = $injector.get('appService');
