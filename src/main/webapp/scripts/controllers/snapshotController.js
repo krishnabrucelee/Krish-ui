@@ -16,6 +16,7 @@ function addSnapshotCtrl($scope, appService, crudService, dialogService, globalC
 
 function addVMSnapshotCtrl($scope, globalConfig, $window, appService, notify) {
    $scope.global = appService.globalConfig;
+	 appService.globalConfig.webSocketLoaders.snapshotLoader = false;
     // Form Field Decleration
     $scope.vmsnapshot = {};
     $scope.formSubmitted = false;
@@ -68,7 +69,8 @@ function snapshotListCtrl($scope, crudService, $state, $timeout, promiseAjax, gl
     $scope.paginationObjects = {};
     $scope.global = globalConfig;
     $scope.global = crudService.globalConfig;
-    $scope.global = crudService.globalConfig;
+    $scope.global = appService.globalConfig;
+	appService.globalConfig.webSocketLoaders.snapshotLoader = false;
     $scope.snapshotList = {};
     $scope.vmSnapshotList = {};
     $scope.instanceList = {};
@@ -107,7 +109,7 @@ function snapshotListCtrl($scope, crudService, $state, $timeout, promiseAjax, gl
             $scope.showLoader = false;
         });
     };
-  
+
 
     $scope.list = function(pageNumber) {
         appService.globalConfig.sort.sortOrder = $scope.paginationObject.sortOrder;
@@ -176,6 +178,7 @@ function snapshotListCtrl($scope, crudService, $state, $timeout, promiseAjax, gl
         hasUsers.then(function(result) { // this is only run after $http
             // completes0
             $scope.instanceList = result;
+$scope.showLoader = false;
         });
     };
 
@@ -191,13 +194,13 @@ function snapshotListCtrl($scope, crudService, $state, $timeout, promiseAjax, gl
 $scope.vmCostList();
 
     $scope.openAddVMSnapshotContainer = function() {
+    	$scope.showLoader = true;
         dialogService.openDialog("app/views/cloud/snapshot/createVm.jsp", 'md', $scope, ['$scope', '$modalInstance', '$rootScope', function($scope, $modalInstance, $rootScope) {
             $scope.instanceId(1);
             $scope.validateVMSnapshot = function(form) {
                     $scope.formSubmitted = true;
                     if (form.$valid) {
-                        $scope.showLoader = true;
-			appService.globalConfig.webSocketLoaders.snapshotLoader = true;
+                        $scope.showLoaders = true;
                         $scope.vmsnapshot.domainId = $scope.vmsnapshot.vm.domainId;
                         $scope.vmsnapshot.vmId = $scope.vmsnapshot.vm.id;
                         if(angular.isUndefined($scope.vmsnapshot.snapshotMemory)){
@@ -206,10 +209,11 @@ $scope.vmCostList();
                         var hasVm = crudService.add("vmsnapshot", $scope.vmsnapshot);
                         hasVm.then(function(result) {
                             appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.snapshotEvents.createvmsnapshot, result.uuid, $scope.global.sessionValues.id);
-                            $scope.showLoader = false;
+                            $scope.showLoaders = false;
+			    appService.globalConfig.webSocketLoaders.snapshotLoader = true;
                             $scope.cancel();
                         }).catch(function(result) {
-                            $scope.showLoader = false;
+                            $scope.showLoaders = false;
                             $scope.cancel();
 			appService.globalConfig.webSocketLoaders.snapshotLoader = false;
                         });
@@ -245,12 +249,12 @@ $scope.vmCostList();
             $scope.deleteObject = snapshot;
             $scope.ok = function() {
                     $scope.showLoader = true;
-		  appService.globalConfig.webSocketLoaders.snapshotLoader = true;
                     var event = "VMSNAPSHOT.DELETE";
                     var hasServer = crudService.vmUpdate("vmsnapshot/event", snapshot.uuid, event);
                     hasServer.then(function(result) {
                         appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.snapshotEvents.deleteSnapshots, result.uuid, $scope.global.sessionValues.id);
                         $scope.showLoader = false;
+			appService.globalConfig.webSocketLoaders.snapshotLoader = true;
                         $scope.cancel();
                     }).catch(function(result) {
                         $scope.showLoader = false;
@@ -285,12 +289,12 @@ appService.globalConfig.webSocketLoaders.volumeBackupLoader = false;
         dialogService.openDialog("app/views/cloud/snapshot/revert-vmsnapshot.jsp", 'sm', $scope, ['$scope', '$modalInstance', '$rootScope', function($scope, $modalInstance, $rootScope) {
             $scope.ok = function() {
                     $scope.showLoader = true;
-			appService.globalConfig.webSocketLoaders.snapshotLoader = true;
                     var event = "VMSNAPSHOT.REVERTTO";
                     var hasVm = crudService.vmUpdate("vmsnapshot/event", vmsnapshot.uuid, event);
                     hasVm.then(function(result) {
                         appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.snapshotEvents.restoresnapshot, result.uuid, $scope.global.sessionValues.id);
                         $scope.showLoader = false;
+			appService.globalConfig.webSocketLoaders.snapshotLoader = true;
                         $scope.cancel();
                     }).catch(function(result) {
                         $scope.showLoader = false;

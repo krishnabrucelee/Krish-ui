@@ -55,7 +55,8 @@
                                                         <div class="pull-left">
                                                             <i class="pe-7s-server pe-4x"></i> <h3 class="pull-right text-danger m-l-md"><span data-ng-if="volume.volumeType == 'ROOT'"> {{ volume.diskSize / global.Math.pow(2, 30)}}</span>
                                                              <span data-ng-if="volume.volumeType == 'DATADISK' && volume.storageOffering.isCustomDisk">{{ volume.diskSize / global.Math.pow(2, 30)}} </span>
-                                                             <span data-ng-if="volume.volumeType == 'DATADISK' && !volume.storageOffering.isCustomDisk ">{{ volume.storageOffering.diskSize}}</span> GB</h3>
+                                                             <span data-ng-if="volume.volumeType == 'DATADISK' && !volume.storageOffering.isCustomDisk ">{{ volume.storageOffering.diskSize}}</span>
+                                                             <span data-ng-if="volume.volumeType == 'DATADISK' && volume.storageOffering == null ">{{ volume.diskSize / global.Math.pow(2, 30)}}</span> GB</h3>
                                                             <h5>{{ volume.name }}</h5>
                                                         </div>
                                                         <div class="pull-right">

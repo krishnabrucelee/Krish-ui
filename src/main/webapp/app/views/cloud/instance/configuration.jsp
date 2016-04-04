@@ -17,8 +17,8 @@
         <div class="col-md-7 col-sm-7 col-xs-12">
             <div class="row m-t-md">
                 <div class="col-md-10 col-sm-10 col-xs-10">
- 				<div data-ng-if="computeOfferLoader" class="overlay-wrapper">
-                	<img data-ng-if="computeOfferLoader" src="images/loading-bars.svg" class="inner-loading" width="64" height="64" />
+ 				<div data-ng-if="global.webSocketLoaders.computeOffer" class="overlay-wrapper">
+                	<img data-ng-if="global.webSocketLoaders.computeOffer" src="images/loading-bars.svg" class="inner-loading" width="64" height="64" />
             	</div>
                     <form name="instanceForm" method="POST" data-ng-submit="save(instanceForm, instance)" novalidate class="form-horizontal">
                          <div class="form-group" ng-class="{ 'text-danger' : instanceForm.computeoffer.$invalid && OfferingSubmitted}">
@@ -242,8 +242,8 @@
 
             <div class="row m-t-md">
                 <div class="col-md-10 col-sm-10 col-xs-10">
-                <div data-ng-if="vmsshkeyLoader" class="overlay-wrapper">
-                <img data-ng-if="vmsshkeyLoader" src="images/loading-bars.svg" class="inner-loading" width="64" height="64" />
+                <div data-ng-if="global.webSocketLoaders.vmsshKey" class="overlay-wrapper">
+                <img data-ng-if="global.webSocketLoaders.vmsshKey" src="images/loading-bars.svg" class="inner-loading" width="64" height="64" />
             </div>
                    <form name="resetForm" data-ng-submit="resetKey(resetForm, resetSSH)" method="post" novalidate class="form-horizontal">
                         <div class="form-group" ng-class="{ 'text-danger' : resetForm.keypairName.$invalid && formSubmitted}">
