@@ -9,6 +9,7 @@ angular.module('homer').factory('webSockets', [ '$rootScope', 'globalConfig', fu
 
         init : function(url) {
             stompClient = Stomp.over(new SockJS(url));
+            stompClient.debug = null;
             headers['x-auth-token'] = globalConfig.sessionValues.token;
         },
         connect : function(successCallback, errorCallback) {
@@ -19,7 +20,6 @@ angular.module('homer').factory('webSockets', [ '$rootScope', 'globalConfig', fu
             }, function(error) {
                 $rootScope.$apply(function() {
                     errorCallback(error);
-                    console.log(headers)
                 });
             });
         },
