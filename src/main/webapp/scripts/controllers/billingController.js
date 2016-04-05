@@ -91,7 +91,6 @@ function billingCtrl($scope, appService, globalConfig, localStorageService, $win
     }
 
     $scope.getUsageStatistics = function() {
-        console.log($scope.usageStatisticsObj.domain);
         if(angular.isUndefined($scope.usageStatisticsObj.startDate)
                 || $scope.usageStatisticsObj.startDate == ""
                 || (angular.isUndefined($scope.usageStatisticsObj.endDate)
