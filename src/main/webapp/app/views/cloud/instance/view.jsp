@@ -11,10 +11,11 @@ pageEncoding="UTF-8"%>
             <li data-ng-class="{'active' : templateCategory == 'config'}"><a has-permission="RESIZE" data-ng-click="selectab()"  data-toggle="tab"> <i class="fa fa-cogs"></i> <fmt:message key="configuration" bundle="${msg}" /></a></li>
             <li class=""><a  data-ng-click="list();" data-toggle="tab"><i class="fa fa-database"></i> <fmt:message key="storage" bundle="${msg}" /></a></li>
             <li class=""><a  data-ng-click="networkTab()" data-toggle="tab"> <!--<i class="fa fa-sitemap"></i>--><i class="custom-icon custom-icon-network"></i> <fmt:message key="networking" bundle="${msg}" /></a></li>
-            <li class=""><a has-permission="MONITOR_VM_PERFORMANCE" href="javascript:void(0)" data-ng-class="{'active': templateCategory == 'monitor'}" data-ng-click="templateCategory = 'monitor'" data-toggle="tab"> <i class="fa fa-desktop"></i> <fmt:message key="monitor" bundle="${msg}" /></a></li>
+            <li class="" data-ng-hide="instance.template.osCategory.name == osCategory.Windows"><a has-permission="MONITOR_VM_PERFORMANCE" href="javascript:void(0)" data-ng-class="{'active': templateCategory == 'monitor'}" data-ng-click="templateCategory = 'monitor'" data-toggle="tab"> <i class="fa fa-desktop"></i> <fmt:message key="monitor" bundle="${msg}" /></a></li>
+            <li class="" data-ng-show="instance.template.osCategory.name == osCategory.Windows"><a has-permission="MONITOR_VM_PERFORMANCE" href="javascript:void(0)" data-ng-class="{'active': templateCategory == 'monitor-windows'}" data-ng-click="templateCategory = 'monitor-windows'" data-toggle="tab"> <i class="fa fa-desktop"></i> <fmt:message key="monitor" bundle="${msg}" /></a></li>
 
             <div class="pull-right">
-            	<button type="button" data-ng-hide="templateCategory == 'monitor'" title="<fmt:message key="common.refresh" bundle="${msg}" />"  class="btn btn-info" ui-sref="cloud.list-instance.view-instance"  ui-sref-opts="{reload: true}" ><span class="fa fa-refresh fa-lg "></span></button>
+            	<button type="button" data-ng-hide="templateCategory == 'monitor' || templateCategory == 'monitor-windows'" title="<fmt:message key="common.refresh" bundle="${msg}" />"  class="btn btn-info" ui-sref="cloud.list-instance.view-instance"  ui-sref-opts="{reload: true}" ><span class="fa fa-refresh fa-lg "></span></button>
             </div>
         </ul>
 
@@ -539,6 +540,9 @@ pageEncoding="UTF-8"%>
             </div>
             <div class="tab-pane"  data-ng-class="{'active' : templateCategory == 'monitor'}" id="step1-monitor">
                 <div data-ng-include src="'app/views/cloud/instance/monitor.jsp'"></div>
+            </div>
+            <div class="tab-pane"  data-ng-class="{'active' : templateCategory == 'monitor-windows'}" id="step1-monitor-windows">
+                <div data-ng-include src="'app/views/cloud/instance/monitor-windows.jsp'"></div>
             </div>
         </div>
     </div>
