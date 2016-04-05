@@ -1063,11 +1063,11 @@ $scope.delete = function (size, volume) {
     };
         $scope.$on(appService.globalConfig.webSocketEvents.volumeEvents.attachVolume, function() {
             appService.globalConfig.webSocketLoaders.volumeLoader = false;
-            $scope.list($scope.paginationObject.currentPage);
+            $scope.list(1);
         });
          $scope.$on(appService.globalConfig.webSocketEvents.volumeEvents.detachVolume, function() {
              appService.globalConfig.webSocketLoaders.volumeLoader = false;
-             $scope.list($scope.paginationObject.currentPage);
+             $scope.list(1);
          });
          $scope.$on(appService.globalConfig.webSocketEvents.volumeEvents.createSnapshot, function() {
              appService.globalConfig.webSocketLoaders.volumeLoader = false;
@@ -1075,23 +1075,23 @@ $scope.delete = function (size, volume) {
         });
          $scope.$on(appService.globalConfig.webSocketEvents.volumeEvents.volumeresize, function() {
              appService.globalConfig.webSocketLoaders.volumeLoader = false;
-             $scope.list($scope.paginationObject.currentPage);
+             $scope.list(1);
          });
          $scope.$on(appService.globalConfig.webSocketEvents.volumeEvents.volumesave, function() {
              appService.globalConfig.webSocketLoaders.volumeLoader = false;
-             $scope.list($scope.paginationObject.currentPage);
+             $scope.list(1);
          });
          $scope.$on(appService.globalConfig.webSocketEvents.volumeEvents.uploadVolume, function() {
              appService.globalConfig.webSocketLoaders.volumeLoader = false;
-             $scope.list($scope.paginationObject.currentPage);
+             $scope.list(1);
          });
          $scope.$on(appService.globalConfig.webSocketEvents.volumeEvents.recurringSnapshot, function() {
              appService.globalConfig.webSocketLoaders.volumeLoader = false;
-             $scope.list($scope.paginationObject.currentPage);
+             $scope.list(1);
          });
          $scope.$on(appService.globalConfig.webSocketEvents.volumeEvents.volumedelete, function() {
              appService.globalConfig.webSocketLoaders.volumeLoader = false;
-             $scope.list($scope.paginationObject.currentPage);
+             $scope.list(1);
          });
 
 };
