@@ -17,7 +17,7 @@ function promiseAjax($http, $window, globalConfig, notify) {
         };
         var loginSession = globalConfig.sessionValues;
         if(loginSession == null) {
-        	window.location.href = "login";
+            window.location.href = "login";
         }
 
         var config = {

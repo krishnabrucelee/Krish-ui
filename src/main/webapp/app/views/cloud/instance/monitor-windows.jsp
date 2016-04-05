@@ -4,7 +4,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
-<div class="m-l-sm m-r-sm " ng-controller="instanceMonitorCtrl">
+<div class="m-l-sm m-r-sm " ng-controller="instanceMonitorWindowsCtrl">
 
     <div class="row clearfix ">
 
@@ -77,7 +77,7 @@
                                 </div></td>
                             <td class="legendLabel"
                                 data-ng-click="togglePlot($index, cpuData.length)"><a
-                                class="m-l-sm">{{ $index == 4 ? "AVERAGE" : "CPU " + $index }} </a></td>
+                                class="m-l-sm">{{ $index == 4 ? "AVERAGE" : "CPU " }} Total </a></td>
                         </tr>
                     </tbody>
                 </table>
@@ -205,7 +205,7 @@
                     <div class="pull-left">
                         <h4 class="m-b-sm ng-binding pull-left">
                             <fmt:message key="network.performance" bundle="${msg}" />
-                             (Bps)
+                            (Bps)
                         </h4>
 
 
@@ -215,7 +215,7 @@
         </div>
     </div>
 
-    <div class="row" id="network-chart-container">
+    <div class="row" id="network-chart-container-windows">
         <div class="col-md-offset-1 col-md-11">
             <div class="hide-left"></div>
             <div class="hide-right"></div>
@@ -228,7 +228,7 @@
 
     <div class="row">
         <div class="col-md-12">
-            <div id="networkLegendContent" class="flotchart-legend-content">
+            <div id="networkLegendContentWindows" class="flotchart-legend-content">
                 <table style="font-size: smaller; color: #545454"
                     class="flotchart-legend-content-table">
                     <tbody>

@@ -290,8 +290,8 @@ table.dataTable thead .sorting_desc::after {content: "\f0dd";}
 .quick-search .input-group { padding: 0px 0 4px;}
 .dashboard-box-pad{padding:16px 16px 17px 16px;}
 
-.hide-right{position:absolute; z-index:10000; width:75px; background-color:#fff; height:300px;}
- .hide-left{position:absolute; z-index:1004; width:100px; background-color:#fff; height:300px; margin-left:-90px;}
+.hide-right{position:absolute; z-index:1; width:75px; background-color:#fff; height:300px;}
+ .hide-left{position:absolute; z-index:1; width:100px; background-color:#fff; height:300px; margin-left:-90px;}
 .hide-left{left:0;}
 .hide-right{right:0;}
 .flot-y-axis {
@@ -312,7 +312,7 @@ table.dataTable thead .sorting_desc::after {content: "\f0dd";}
 .flotchart-legend-content{
      line-height: 20px;
     margin-bottom: 10px;
-    position: relative;
+	clear:both;
     top: 64px;
     z-index: 10001;
 }
@@ -343,7 +343,14 @@ table.dataTable thead .sorting_desc::after {content: "\f0dd";}
     background: rgba(0, 0, 0, 0) url("../images/ip-icon.png") no-repeat scroll center top !important;
 }
 
+table.flotchart-legend-content-table{ margin-left: 133px; margin-top: 20px;}
+table.flotchart-legend-content-table tr{display:block; float:left; padding:0px 5px;}
+
 #side-menu li a {
   color: #6a6c6f;
   padding: 15px 15px;
+}
+
+.flot-y-axis {
+    z-index: 9999 !important;
 }
