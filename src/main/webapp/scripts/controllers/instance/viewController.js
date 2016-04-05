@@ -9,9 +9,8 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
     $scope.instanceList = [];
     $scope.testvar = "test";
     $scope.global = appService.globalConfig;
+    appService.globalConfig.webSocketLoaders.viewLoader = false;
     $scope.formElements = {};
-    $scope.viewLoader = $scope.global.webSocketLoaders.viewLoader;
-
     $scope.viewInstances = function(id) {
         if (id == '0') {
             id = $stateParams.id;
@@ -118,7 +117,6 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
             var event = "VM.START";
             $scope.update = function(form) {
                     vms.event = event;
-                    appService.globalConfig.webSocketLoaders.viewLoader = true;
                     $scope.formSubmitted = true;
                     if (form.$valid) {
                         if ($scope.instance.host != null) {
@@ -127,6 +125,7 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
                         var hasVm = appService.crudService.updates("virtualmachine/handleevent/vm", vms);
                         hasVm.then(function(result) {
                             appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.startVm, result.uuid, $scope.global.sessionValues.id);
+			      appService.globalConfig.webSocketLoaders.viewLoader = true;
                             $scope.cancel();
                         }).catch(function(result) {
                             appService.globalConfig.webSocketLoaders.viewLoader = false;
@@ -160,6 +159,7 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
                     hasVm.then(function(result) {
                         appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.rebootVm, result.uuid, $scope.global.sessionValues.id);
                         $scope.cancel();
+                        appService.globalConfig.webSocketLoaders.viewLoader = true;
                     }).catch(function(result) {
                         $scope.cancel();
                         appService.globalConfig.webSocketLoaders.viewLoader = false;
@@ -176,11 +176,11 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
             $scope.item = item;
             $scope.vmRestart = function(item) {
                     var event = "VM.RESTORE";
-                    appService.globalConfig.webSocketLoaders.viewLoader = true;
                     var hasVm = appService.crudService.vmUpdate("virtualmachine/handlevmevent", item.uuid, event);
                     hasVm.then(function(result) {
                         appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.reInstallVm, result.uuid, $scope.global.sessionValues.id);
                         $scope.cancel();
+                    appService.globalConfig.webSocketLoaders.viewLoader = true;
                     }).catch(function(result) {
                         $scope.cancel();
                         appService.globalConfig.webSocketLoaders.viewLoader = false;
@@ -202,12 +202,12 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
                     $scope.actionExpunge = true;
                     if ($scope.agree.value1) {
                         var event = "VM.EXPUNGE";
-                        appService.globalConfig.webSocketLoaders.viewLoader = true;
                         var hasVm = appService.crudService.vmUpdate("virtualmachine/handlevmevent", item.uuid, event);
                         hasVm.then(function(result) {
                             appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.expungeVM, result.uuid, $scope.global.sessionValues.id);
                             window.location.href = "index#/instance/list";
                             $scope.cancel();
+                            appService.globalConfig.webSocketLoaders.viewLoader = true;
                         }).catch(function(result) {
                             $scope.cancel();
                             appService.globalConfig.webSocketLoaders.viewLoader = false;
@@ -220,6 +220,7 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
                             appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.reDestroyVm, result.uuid, $scope.global.sessionValues.id);
                             window.location.href = "index#/instance/list";
                             $scope.cancel();
+                            appService.globalConfig.webSocketLoaders.viewLoader = true;
                         }).catch(function(result) {
                             $scope.cancel();
                             appService.globalConfig.webSocketLoaders.viewLoader = false;
@@ -241,14 +242,15 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
                     if ($scope.agree.value1) {
                         item.transForcedStop = $scope.agree.value1;
                         item.event = event;
-                        appService.globalConfig.webSocketLoaders.viewLoader = true;
                         var hasVm = appService.crudService.updates("virtualmachine/handleevent/vm", item);
                         hasVm.then(function(result) {
                             appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.stopVm, result.uuid, $scope.global.sessionValues.id);
+                        appService.globalConfig.webSocketLoaders.viewLoader = true;
                             $scope.cancel();
+
                         }).catch(function(result) {
                             $scope.cancel();
-                            appService.globalConfig.webSocketLoaders.viewLoader = false;
+                            appService.globalConfig.webSocketLoaders.viewLoader = true;
                         });
                     } else {
                         var event = "VM.STOP";
@@ -273,11 +275,11 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
             $scope.item = item;
             $scope.vmRecover = function(item) {
                     var event = "VM.CREATE";
-                    appService.globalConfig.webSocketLoaders.viewLoader = true;
                     var hasVm = appService.crudService.vmUpdate("virtualmachine/handlevmevent", item.uuid, event);
                     hasVm.then(function(result) {
                         appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.recoverVm, result.uuid, $scope.global.sessionValues.id);
                         $scope.cancel();
+                    appService.globalConfig.webSocketLoaders.viewLoader = true;
                     }).catch(function(result) {
                         $scope.cancel();
                         appService.globalConfig.webSocketLoaders.viewLoader = false;
@@ -307,10 +309,10 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
         $scope.vm = vm;
         if ($scope.vm.transDisplayName != "") {
             $scope.vm.transDisplayName = $scope.vm.transDisplayName;
-            appService.globalConfig.webSocketLoaders.viewLoader = true;
             var hasVm = appService.crudService.update("virtualmachine", $scope.vm);
             hasVm.then(function(result) {
                 appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.updateVM, result.uuid, $scope.global.sessionValues.id);
+            appService.globalConfig.webSocketLoaders.viewLoader = true;
             }).catch(function(result) {
                 appService.globalConfig.webSocketLoaders.viewLoader = false;
             });    }
@@ -338,7 +340,6 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
             $scope.attachISotoVM = function(form) {
                     $scope.formSubmitted = true;
                     if (form.$valid) {
-                        appService.globalConfig.webSocketLoaders.viewLoader = true;
                         $scope.viewLoader = appService.globalConfig.webSocketLoaders.viewLoader;
                         tempVm.iso = $scope.isos.uuid;
                         tempVm.event = event;
@@ -346,6 +347,7 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
                         hasVm.then(function(result) {
                             appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.attachISO, result.uuid, $scope.global.sessionValues.id);
                             $scope.cancel();
+                        appService.globalConfig.webSocketLoaders.viewLoader = true;
                         }).catch(function(result) {
                             appService.globalConfig.webSocketLoaders.viewLoader = false;
                             $scope.cancel();
@@ -364,11 +366,11 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
             var event = "ISO.DETACH";
             $scope.update = function() {
                     $scope.vm.event = event;
-                    appService.globalConfig.webSocketLoaders.viewLoader = true;
                     var hasVm = appService.crudService.updates("virtualmachine/handleevent/vm", $scope.vm);
                     hasVm.then(function(result) {
                         appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.detachISO, result.uuid, $scope.global.sessionValues.id);
                         $scope.cancel();
+                    appService.globalConfig.webSocketLoaders.viewLoader = true;
                     }).catch(function(result) {
                         $scope.cancel();
                         appService.globalConfig.webSocketLoaders.viewLoader = false;
@@ -388,7 +390,6 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
                         $scope.showLoader = true;
                         $scope.vmsnapshot.domainId = $scope.instance.domainId;
                         $scope.vmsnapshot.vmId = $scope.instance.id;
-                        appService.globalConfig.webSocketLoaders.viewLoader = true;
                         if (angular.isUndefined($scope.vmsnapshot.snapshotMemory) || $scope.vmsnapshot.snapshotMemory === null || $scope.vmsnapshot.snapshotMemory === '') {
                             $scope.vmsnapshot.snapshotMemory = false;
                         }
@@ -398,6 +399,7 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
                             $modalInstance.close();
                             window.location.href = "index#/snapshot/list";
                             $scope.showLoader = false;
+                        appService.globalConfig.webSocketLoaders.viewLoader = true;
                         }).catch(function(result) {
                             $scope.showLoader = false;
                             $scope.cancel();
@@ -417,7 +419,6 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
             var event = "VM.MIGRATE";
             $scope.update = function(form) {
                     vms.event = event;
-                    appService.globalConfig.webSocketLoaders.viewLoader = true;
                     $scope.formSubmitted = true;
                     if (form.$valid) {
                         vms.hostUuid = $scope.host.uuid;
@@ -425,6 +426,7 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
                         hasVm.then(function(result) {
                             appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.hostMigrate, result.uuid, $scope.global.sessionValues.id);
                             $scope.cancel();
+                    appService.globalConfig.webSocketLoaders.viewLoader = true;
                         }).catch(function(result) {
                             $scope.cancel();
                             appService.globalConfig.webSocketLoaders.viewLoader = false;
@@ -458,7 +460,6 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
         $scope.instance = vm;
          appService.dialogService.openDialog("app/views/cloud/instance/reset-password.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function($scope, $modalInstance, $rootScope) {
           $scope.reset = function (vm) {
-          appService.globalConfig.webSocketLoaders.viewLoader = true;
           $scope.cancel();
           var event = "VM.RESETPASSWORD";
           $scope.vm = vm;
@@ -469,6 +470,7 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
           hasVm.then(function(result) {
               appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.resetPassword, result.uuid, $scope.global.sessionValues.id);
               $scope.cancel();
+          appService.globalConfig.webSocketLoaders.viewLoader = true;
           }).catch(function(result) {
               appService.globalConfig.webSocketLoaders.viewLoader = false;
           });
@@ -609,7 +611,7 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
             legend: true
         };
     }
-    $scope.viewLoader = appService.globalConfig.webSocketLoaders.viewLoader;
+    //$scope.viewLoader = appService.globalConfig.webSocketLoaders.viewLoader;
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.startVm, function() {
         $scope.global.webSocketLoaders.viewLoader = false;
         if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {

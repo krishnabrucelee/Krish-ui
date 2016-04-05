@@ -38,6 +38,7 @@ function storageCtrl($scope, $state, $stateParams, appService, $window, volumeSe
     });
 
     $scope.global = appService.globalConfig;
+        appService.globalConfig.webSocketLoaders.vmstorageLoader = false;
     $scope.formSubmitted = false;
     // Form Field Decleration
     $scope.volume = {};
@@ -152,6 +153,7 @@ function storageCtrl($scope, $state, $stateParams, appService, $window, volumeSe
                         //$window.location.href = '#/instance/list/view/';
                         $scope.list(1);
                         $modalInstance.close();
+                    appService.globalConfig.webSocketLoaders.vmstorageLoader = true;
                     }).catch(function(result) {
                         if (!angular.isUndefined(result.data)) {
                              if (result.data.fieldErrors != null) {
@@ -216,6 +218,7 @@ function storageCtrl($scope, $state, $stateParams, appService, $window, volumeSe
                     });
                     $scope.list(1);
                     $modalInstance.close();
+                appService.globalConfig.webSocketLoaders.vmstorageLoader = true;
                 }).catch(function(result) {
                     if (!angular.isUndefined(result.data)) {
                          if (result.data.fieldErrors != null) {
@@ -466,6 +469,7 @@ function storageCtrl($scope, $state, $stateParams, appService, $window, volumeSe
                                     templateUrl: $scope.global.NOTIFICATION_TEMPLATE
                                 });
                                 $modalInstance.close();
+                            appService.globalConfig.webSocketLoaders.vmstorageLoader = true;
                             }).catch(function(result) {
                                 $scope.showLoader = false;
                                 if (!angular.isUndefined(result.data)) {

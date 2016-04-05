@@ -27,8 +27,11 @@
 
         <div class="modal-body">
             <div class="row"  >
+<div data-ng-show="showLoader" style="margin: 20%">
+			    <get-loader-image data-ng-show="showLoader"></get-loader-image>
+			</div>
+       		<div data-ng-hide="showLoader">
                 <div class="col-md-12">
-
                     <div class="form-group" ng-class="{'text-danger': vmsnapshotForm.name.$invalid && formSubmitted}">
                         <div class="row" >
                             <label class="col-md-3 col-sm-3 control-label" ><fmt:message key="common.name" bundle="${msg}" />
@@ -93,6 +96,7 @@
                         </div>
                     </div>
                 </div>
+                </div>
             </div>
         </div>
 
@@ -105,9 +109,9 @@
                             <app-currency></app-currency>{{miscellaneousList[0].costperGB }} <span>/GB/day</span>
                         </h4>
                     </span>
-            <get-loader-image data-ng-show="showLoader"></get-loader-image>
-            <button type="button" data-ng-hide="showLoader" class="btn btn-default " ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.cancel" bundle="${msg}" /></button>
-            <button class="btn btn-info" data-ng-hide="showLoader" type="submit"><fmt:message key="common.create" bundle="${msg}" /></button>
+            <img src="images/loading-bars.svg" data-ng-if="showLoaders" width="30" height="30" />
+            <button type="button" data-ng-hide="showLoaders" class="btn btn-default " ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.cancel" bundle="${msg}" /></button>
+            <button class="btn btn-info" data-ng-hide="showLoaders" type="submit"><fmt:message key="common.create" bundle="${msg}" /></button>
 </div>
 </div>
         </div></div>

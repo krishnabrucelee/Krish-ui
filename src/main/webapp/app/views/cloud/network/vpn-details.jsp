@@ -25,8 +25,8 @@ pageEncoding="UTF-8"%>
          <table cellspacing="1" cellpadding="1"
                 class="table table-bordered table-striped">
              <thead>
-                 <tr>
-                     <th class="col-md-3 col-xs-3"><fmt:message key="common.username" bundle="${msg}" /></th>
+            <tr>
+            <th class="col-md-3 col-xs-3"><fmt:message key="common.username" bundle="${msg}" /></th>
 		    <th class="col-md-3 col-xs-3"><fmt:message key="password" bundle="${msg}" /></th>
 		    <th class="col-md-3 col-xs-3"><fmt:message key="common.action" bundle="${msg}" /></th>
                  </tr>
@@ -55,13 +55,15 @@ pageEncoding="UTF-8"%>
                 class="table table-bordered table-striped">
              <thead>
                  <tr>
-                     <th class="col-md-6 col-xs-6"></th>
+            <th class="col-md-3 col-xs-3"></th>
+            <th class="col-md-3 col-xs-3"></th>
 		    <th class="col-md-3 col-xs-3"></th>
                  </tr>
              </thead>
              <tbody>
                  <tr data-ng-repeat="vpnUser in vpnUsersList" class="font-bold text-center">
                      <td>{{vpnUser.userName}}</td>
+                     <td>*****************</td>
                      <td><a class="icon-button"
                                  title="<fmt:message key="common.delete" bundle="${msg}" /> "
                                  data-ng-click="deleteVpnUser('sm', vpnUser)"><span

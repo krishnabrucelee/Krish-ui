@@ -194,19 +194,19 @@ border-color: #e74c3c !important;}
 }
 
 .instance-border-content-normal.instance-border-content {
-	background-color: #157db0;
+    background-color: #157db0;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
-	padding:3px 5px;
+    padding:3px 5px;
 }
 
 .instance-border-content-normal {
-	background-color: #48a9da;
+    background-color: #48a9da;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
-	padding:3px 5px;
+    padding:3px 5px;
 }
 
 .username{
@@ -345,6 +345,11 @@ table.dataTable thead .sorting_desc::after {content: "\f0dd";}
 
 table.flotchart-legend-content-table{ margin-left: 133px; margin-top: 20px;}
 table.flotchart-legend-content-table tr{display:block; float:left; padding:0px 5px;}
+
+#side-menu li a {
+  color: #6a6c6f;
+  padding: 15px 15px;
+}
 
 .flot-y-axis {
     z-index: 9999 !important;
