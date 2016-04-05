@@ -194,19 +194,19 @@ border-color: #e74c3c !important;}
 }
 
 .instance-border-content-normal.instance-border-content {
-	background-color: #157db0;
+    background-color: #157db0;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
-	padding:3px 5px;
+    padding:3px 5px;
 }
 
 .instance-border-content-normal {
-	background-color: #48a9da;
+    background-color: #48a9da;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
-	padding:3px 5px;
+    padding:3px 5px;
 }
 
 .username{
@@ -341,4 +341,9 @@ table.dataTable thead .sorting_desc::after {content: "\f0dd";}
 
 .custom-icon-ip-disabled {
     background: rgba(0, 0, 0, 0) url("../images/ip-icon.png") no-repeat scroll center top !important;
+}
+
+#side-menu li a {
+  color: #6a6c6f;
+  padding: 15px 15px;
 }

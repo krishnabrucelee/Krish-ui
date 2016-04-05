@@ -10,7 +10,7 @@ angular
     .controller('billingInvoiceCtrl', billingInvoiceCtrl)
     .controller('billingPaymentsCtrl', billingPaymentsCtrl)
 
-function billingCtrl($scope, promiseAjax, globalConfig, localStorageService, $window, notify) {
+function billingCtrl($scope, appService, globalConfig, localStorageService, $window, notify) {
 
     $scope.global = globalConfig;
     $scope.invoiceList = [];
@@ -26,7 +26,7 @@ function billingCtrl($scope, promiseAjax, globalConfig, localStorageService, $wi
     };
     localStorageService.set("invoiceList",null);
     if (localStorageService.get("invoiceList") == null) {
-        var hasServer = promiseAjax.httpRequest("GET", "api/invoice.json");
+        var hasServer = appService.promiseAjax.httpRequest("GET", "api/invoice.json");
         hasServer.then(function (result) {  // this is only run after $http completes
             $scope.invoiceList = result;
             localStorageService.set("invoiceList", result);
@@ -34,6 +34,12 @@ function billingCtrl($scope, promiseAjax, globalConfig, localStorageService, $wi
     } else {
         $scope.invoiceList = localStorageService.get("invoiceList");
     }
+
+    // Domain List
+    var hasDomains = appService.crudService.listAll("domains/list");
+    hasDomains.then(function (result) {  // this is only run after $http completes0
+        $scope.domainList = result;
+    });
 
     $scope.save = function(form) {
         $scope.formSubmitted = true;
@@ -85,21 +91,28 @@ function billingCtrl($scope, promiseAjax, globalConfig, localStorageService, $wi
     }
 
     $scope.getUsageStatistics = function() {
-
         if(angular.isUndefined($scope.usageStatisticsObj.startDate)
                 || $scope.usageStatisticsObj.startDate == ""
                 || (angular.isUndefined($scope.usageStatisticsObj.endDate)
-                        || $scope.usageStatisticsObj.endDate == "")) {
+                        || $scope.usageStatisticsObj.endDate == ""
+                        || $scope.usageStatisticsObj.domain == "" || $scope.usageStatisticsObj.domain == null)) {
             alert("Please select all the mandatory fields")
-
+            return false;
         }
+
 
         var groupBy = $scope.groupBy;
         $scope.showLoader = false;
         $scope.usageStatisticsType = groupBy;
             var startDate = $scope.usageStatisticsObj.startDate.ddmmyyyy();
             var endDate = $scope.usageStatisticsObj.endDate.ddmmyyyy();
-            var hasServer = promiseAjax.httpRequest("GET", "http://localhost:8081/api/usage/listUsageByPeriod?fromDate="+ startDate +"&toDate=" + endDate + "&groupingType=" + groupBy);
+            var domainUuid = $scope.usageStatisticsObj.domain.companyNameAbbreviation;
+            if($scope.global.sessionValues.type != 'ROOT_ADMIN') {
+                domainUuid = appService.globalConfig.sessionValues.domainAbbreviationName;
+            }
+
+            var hasServer = appService.promiseAjax.httpRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.PING_APP_URL
+                    + "usage/listUsageByPeriod?fromDate="+ startDate +"&toDate=" + endDate + "&groupingType=" + groupBy + "&domainUuid=" + domainUuid);
             hasServer.then(function (result) {  // this is only run after $http completes
                 $scope.usageStatistics = result;
                 $scope.showLoader = true;
