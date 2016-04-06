@@ -9,11 +9,6 @@ angular
 
 function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter, appService, $window, sweetAlert) {
 
-    $scope.minSlider = {
-        value: 1000
-    };
-
-
     $scope.customdiskSize = function(input) {
 
         if (input === undefined || input === null) {
@@ -695,7 +690,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
             });
             $modalInstance.close();
             $window.location.href = '#/instance/list';
-            $state.reload();
+           // $state.reload();
 
         }).catch(function(result) {
             $scope.showLoader = false;
@@ -841,7 +836,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
                         }
                         $scope.networkLists = appService.localStorageService.get("instanceNetworkList");
                         appService.localStorageService.set('instanceViewTab', 'network');
-                        $state.reload();
+                       // $state.reload();
                     }
                 },
                 $scope.cancel = function() {
