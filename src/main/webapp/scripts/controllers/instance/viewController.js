@@ -11,6 +11,10 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
     $scope.global = appService.globalConfig;
     appService.globalConfig.webSocketLoaders.viewLoader = false;
     $scope.formElements = {};
+    $scope.osCategory = {
+        Linux : "CentOS",
+        Windows : "Windows"
+    }
     $scope.viewInstances = function(id) {
         if (id == '0') {
             id = $stateParams.id;
@@ -66,7 +70,6 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
                 $scope.chart(0);
             }
         });
-        $scope.templateCategory = 'dashboard';
     };
     if ($stateParams.id > 0) {
         $scope.viewInstances($stateParams.id);
@@ -159,7 +162,6 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
                     hasVm.then(function(result) {
                         appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.rebootVm, result.uuid, $scope.global.sessionValues.id);
                         $scope.cancel();
-                        appService.globalConfig.webSocketLoaders.viewLoader = true;
                     }).catch(function(result) {
                         $scope.cancel();
                         appService.globalConfig.webSocketLoaders.viewLoader = false;
@@ -479,7 +481,7 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
              $modalInstance.close();
          };
 
-  }]);
+         }]);
     }
     $scope.templateCategory = 'dashboard';
     var instanceViewTab = appService.localStorageService.get("instanceViewTab");
@@ -618,7 +620,7 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
             $scope.viewInstance($stateParams.id);
         }
     });
-    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.stopVm, function(msg,event,status) {console.log(msg+''+event+''+status);
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.stopVm, function(msg,event,status) {
         $scope.global.webSocketLoaders.viewLoader = false;
         if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
             $scope.viewInstance($stateParams.id);

@@ -17,7 +17,7 @@ function promiseAjax($http, $window, globalConfig, notify) {
         };
         var loginSession = globalConfig.sessionValues;
         if(loginSession == null) {
-        	window.location.href = "login";
+            window.location.href = "login";
         }
 
         var config = {
@@ -65,7 +65,7 @@ function promiseAjax($http, $window, globalConfig, notify) {
                 "method": method,
                 "data": data,
                 "url": url,
-                "headers": {'Content-Type': 'application/json', 'Range': "items=0-9"}
+                "headers": {'x-auth-token': globalConfig.sessionValues.token, 'x-requested-with': '', 'Content-Type': 'application/json', 'Range': "items=0-9"}
             };
         return $http(config).then(function(result){
             return result.data;

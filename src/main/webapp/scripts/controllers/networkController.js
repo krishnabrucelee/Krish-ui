@@ -1150,7 +1150,7 @@ if (!angular.isUndefined($stateParams.id1)) {
         });
 }
     };
-   
+
     $scope.openAddVM = function(form) {
         $scope.loadFormSubmitted = true;
         if (form.$valid) {
@@ -2143,7 +2143,7 @@ $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.deleteIngress, 
 });
 $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.createnetwork, function() {
     appService.globalConfig.webSocketLoaders.networkLoader = false;
-    $scope.list($scope.paginationObject.currentPage);
+    $scope.list(1);
 });
 $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.deletenetwork, function() {
     appService.globalConfig.webSocketLoaders.networkLoader = false;

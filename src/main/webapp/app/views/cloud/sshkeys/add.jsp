@@ -25,7 +25,9 @@
 						<div class="row">
 							<label class="col-md-3 col-xs-12 col-sm-3 control-label"><fmt:message key="common.name" bundle="${msg}" /> <span class="text-danger">*</span></label>
 							<div class="col-md-6 col-xs-12 col-sm-6">
-								<input required="true" type="text" name="name" data-ng-model="sshkey.name" class="form-control" data-ng-class="{'error': sshkeyForm.name.$invalid && formSubmitted}">
+								<input required="true" ng-minlength="4" ng-maxlength= "30" type="text" name="name" data-ng-model="sshkey.name" class="form-control" data-ng-class="{'error': sshkeyForm.name.$invalid && formSubmitted}">
+								<span style="color:red" ng-show="sshkeyForm.name.$error.minlength "><fmt:message key="your.name.should.contain.atleast.4.characters" bundle="${msg}" /></span>
+       							<span style="color:red" ng-show="sshkeyForm.name.$error.maxlength "><fmt:message key="your.name.must.be.less.than.30.characters" bundle="${msg}" /> </span>
 								<i tooltip="<fmt:message key="name.of.the.ssh.key" bundle="${msg}" />" class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
 								<div class="error-area" data-ng-show="sshkeyForm.name.$invalid && formSubmitted">
 									<i ng-attr-tooltip="{{ sshkeyForm.name.errorMessage || '<fmt:message key="ssh.key.name.is.required" bundle="${msg}" />' }}" class="fa fa-warning error-icon"></i>

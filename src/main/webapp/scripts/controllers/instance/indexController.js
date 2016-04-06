@@ -689,9 +689,6 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
                 templateUrl: $scope.global.NOTIFICATION_TEMPLATE
             });
             $modalInstance.close();
-            $window.location.href = '#/instance/list';
-           // $state.reload();
-
         }).catch(function(result) {
             $scope.showLoader = false;
             if (result.data.fieldErrors !== null && !angular.isUndefined(result.data.fieldErrors[0])) {
@@ -1095,7 +1092,6 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
                 } else {
                     $scope.listNetworks($scope.instance.project.id, 'project');
                 }
-
                 appService.notify({
                     message: 'Added successfully',
                     classes: 'alert-success',
