@@ -9,11 +9,6 @@ angular
 
 function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter, appService, $window, sweetAlert) {
 
-    $scope.minSlider = {
-        value: 1000
-    };
-
-
     $scope.customdiskSize = function(input) {
 
         if (input === undefined || input === null) {
@@ -636,8 +631,8 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
 
         if (!angular.isUndefined($scope.instance.storageOffering) && $scope.instance.storageOffering != null) {
             if (instance.storageOffering.isCustomDisk) {
-                if (!angular.isUndefined($scope.instance.diskSize)) {
-                    instance.diskSize = $scope.instance.diskSize;
+                if (!angular.isUndefined($scope.instance.diskOffer.diskSize.value)) {
+                    instance.diskSize = $scope.instance.diskOffer.diskSize.value;
                 }
                 if (!angular.isUndefined($scope.instance.diskMaxIops)) {
                     instance.diskMaxIops = $scope.instance.diskMaxIops;
@@ -838,7 +833,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
                         }
                         $scope.networkLists = appService.localStorageService.get("instanceNetworkList");
                         appService.localStorageService.set('instanceViewTab', 'network');
-                        $state.reload();
+                       // $state.reload();
                     }
                 },
                 $scope.cancel = function() {

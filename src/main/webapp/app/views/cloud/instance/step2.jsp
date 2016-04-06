@@ -97,7 +97,7 @@
 				data-ng-class="{ 'text-danger' : instanceForm.cpuSpeed.$modelValue < 500 && OfferingSubmitted}">
 				<label class="col-md-3 col-sm-3 control-label"><fmt:message key="cpu.speed" bundle="${msg}" /> :</label>
 				<div class="col-md-5 col-sm-5">
-					<rzslider rz-slider-model="instance.computeOffer.cpuSpeed.value" data-ng-init="instance.computeOffer.cpuSpeed.value = 500"
+					<rzslider rz-slider-model="instance.computeOffer.cpuSpeed.value" 
 						rz-slider-floor="instance.computeOffer.cpuSpeed.floor"
 						rz-slider-ceil="instance.computeOffer.cpuSpeed.ceil"
 						rz-slider-always-show-bar="true">
@@ -172,19 +172,18 @@
 					<label class="col-md-3 col-xs-12 col-sm-2 control-label"><fmt:message key="common.size" bundle="${msg}" /> <fmt:message key="common.gb" bundle="${msg}" /> <span class="text-danger">*</span>
 					</label>
 					<div class="col-md-6 col-xs-12 col-sm-6">
-						<rzslider rz-slider-model="instance.diskSize"
-							data-ng-init="instance.diskSize=1"
+						<rzslider rz-slider-model="instance.diskOffer.diskSize.value"
 							rz-slider-floor="instance.diskOffer.diskSize.floor"
 							rz-slider-ceil="instance.diskOffer.diskSize.ceil"
 							rz-slider-always-show-bar="true">
 						</rzslider>
 					</div>
 					<div class="col-md-2 col-xs-12 col-sm-3">
-						<input type="number" required="true" id="create_instance_disk_size" required="true" data-ng-change="customdiskSize(instance.diskSize)"
+						<input type="number" required="true" id="create_instance_disk_size" required="true" data-ng-change="customdiskSize(instance.diskOffer.diskSize.value)"
 							min="{{ instance.diskOffer.diskSize.floor }}"
 							max="{{ instance.diskOffer.diskSize.ceil}}"
 							class="form-control " name="diskSize"
-							data-ng-model="instance.diskSize" >
+							data-ng-model="instance.diskOffer.diskSize.value" >
 					</div>
 				</div>
 			</div>
