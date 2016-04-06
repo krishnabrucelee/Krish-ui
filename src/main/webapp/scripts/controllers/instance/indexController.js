@@ -631,8 +631,8 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
 
         if (!angular.isUndefined($scope.instance.storageOffering) && $scope.instance.storageOffering != null) {
             if (instance.storageOffering.isCustomDisk) {
-                if (!angular.isUndefined($scope.instance.diskSize)) {
-                    instance.diskSize = $scope.instance.diskSize;
+                if (!angular.isUndefined($scope.instance.diskOffer.diskSize.value)) {
+                    instance.diskSize = $scope.instance.diskOffer.diskSize.value;
                 }
                 if (!angular.isUndefined($scope.instance.diskMaxIops)) {
                     instance.diskMaxIops = $scope.instance.diskMaxIops;
