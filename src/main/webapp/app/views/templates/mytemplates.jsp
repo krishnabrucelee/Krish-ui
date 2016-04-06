@@ -55,8 +55,10 @@
                     <div class="col-md-3 col-sm-3">
                         <div class="row m-t-md">
                             <div class="col-md-12 col-sm-12 ">
-                                <span data-ng-show="miscellaneousList[0].costperGB > 0" class="font-bold text-danger pricing-text pull-right" data-ng-model="miscellaneousList[0].costperGB">{{ miscellaneousList[0].costperGB | currency: global.settings.currency }} / <fmt:message key="common.day" bundle="${msg}" /></span>
-                                <span data-ng-hide="miscellaneousList[0].costperGB > 0" class="font-bold text-success pricing-text pull-right" data-ng-model="miscellaneousList[0].costperGB"><fmt:message key="free" bundle="${msg}" /></span>
+                                <span data-ng-if ="templateObj.templateCreationType == false" data-ng-show="templateObj.templateCost[0].cost > 0" class="font-bold text-danger pricing-text pull-right">{{ templateObj.templateCost[0].cost | currency: global.settings.currency }} / <fmt:message key="common.day" bundle="${msg}" /></span>
+                                <span data-ng-if ="templateObj.templateCreationType == true" data-ng-show="miscellaneousList[0].costperGB > 0" class="font-bold text-danger pricing-text pull-right" data-ng-model="miscellaneousList[0].costperGB">{{ miscellaneousList[0].costperGB | currency: global.settings.currency }} / <fmt:message key="common.day" bundle="${msg}" /></span>
+                                <span data-ng-if ="templateObj.templateCreationType == false" data-ng-hide="templateObj.templateCost[0].cost > 0" class="font-bold text-success pricing-text pull-right" data-ng-model="templateObj.templateCost[0].cost"><fmt:message key="free" bundle="${msg}" /></span>
+                                <span data-ng-if ="templateObj.templateCreationType == true" data-ng-hide="miscellaneousList[0].costperGB > 0" class="font-bold text-success pricing-text pull-right" data-ng-model="miscellaneousList[0].costperGB"><fmt:message key="free" bundle="${msg}" /></span>
                             </div>
                         </div>
 
