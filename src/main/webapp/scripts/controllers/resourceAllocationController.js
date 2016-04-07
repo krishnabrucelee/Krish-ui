@@ -42,7 +42,7 @@ function resourceAllocationCtrl($scope, crudService, globalConfig, notify, $stat
         $scope.global = crudService.globalConfig;
         $scope.sort = appService.globalConfig.sort;
 	$scope.domainList = {};
-	
+
 
     // Domain List
     $scope.departmentList = {};
@@ -220,6 +220,40 @@ function resourceAllocationCtrl($scope, crudService, globalConfig, notify, $stat
 	$scope.isDisabledDepartment = false;
 	$scope.isDisabledProject = false;
 
+	$scope.resourceAllocationField = {};
+	$scope.validateRange = function(resource, valueObj, key) {
+
+		var value = valueObj[key];
+		var min=0;
+		var max = 0;
+		switch(resource) {
+		case "domain":
+			min = $scope.hasSumOfDomainMin[key];
+			max = value;
+			break;
+		case "department":
+			min = $scope.hasSumOfDepartmentMin[key];
+			max = $scope.hasSumOfDepartmentMax[key];
+			break;
+		case "project":
+			min = $scope.hasSumOfProjectMin[key];
+			max = $scope.hasSumOfProjectMax[key];
+			break;
+
+		}
+
+		if(angular.isUndefined($scope.resourceAllocationField[key])) {
+			$scope.resourceAllocationField[key] = {};
+		}
+
+		if(min > value || max < value) {
+			$scope.resourceAllocationField[key].$invalid = true;
+			$scope.resourceAllocationForm[key].errorMessage= key + " Limit should be between minimum and maximum";
+		} else {
+			$scope.resourceAllocationField[key].$invalid = false;
+		}
+	}
+
 	// Get the departments by domain.
 
 	$scope.loadEditOption = function(list, scopeObject, object) {
@@ -242,6 +276,14 @@ function resourceAllocationCtrl($scope, crudService, globalConfig, notify, $stat
 		}
 
 		var hasResource = promiseAjax.httpTokenRequest( globalConfig.HTTP_GET , globalConfig.APP_URL + "resourceDepartments/department/"+$stateParams.id);
+		var hasSumOfDepartmentMin = promiseAjax.httpTokenRequest( globalConfig.HTTP_GET , globalConfig.APP_URL + "resourceDepartments/departmentmin/"+$stateParams.id);
+		hasSumOfDepartmentMin.then(function (result) {  // this is only run after $http completes
+			$scope.hasSumOfDepartmentMin = result;
+        });
+		var hasSumOfDepartmentMax = promiseAjax.httpTokenRequest( globalConfig.HTTP_GET , globalConfig.APP_URL + "resourceDepartments/departmentmax/"+$stateParams.id);
+		hasSumOfDepartmentMax.then(function (result) {  // this is only run after $http completes
+			$scope.hasSumOfDepartmentMax = result;
+        });
 		hasResource.then(function (result) {
 
 			var i=0;
@@ -282,6 +324,14 @@ function resourceAllocationCtrl($scope, crudService, globalConfig, notify, $stat
 		}
 		$scope.showLoader = true;
 		var hasResource = promiseAjax.httpTokenRequest( globalConfig.HTTP_GET , globalConfig.APP_URL + "resourceProjects/project/"+$stateParams.id);
+		var hasSumOfProjectMin = promiseAjax.httpTokenRequest( globalConfig.HTTP_GET , globalConfig.APP_URL + "resourceProjects/projectmin/"+$stateParams.id);
+		hasSumOfProjectMin.then(function (result) {  // this is only run after $http completes
+			$scope.hasSumOfProjectMin = result;
+        });
+		var hasSumOfProjectMax = promiseAjax.httpTokenRequest( globalConfig.HTTP_GET , globalConfig.APP_URL + "resourceProjects/projectmax/"+$stateParams.id);
+		hasSumOfProjectMax.then(function (result) {  // this is only run after $http completes
+			$scope.hasSumOfProjectMax = result;
+        });
 		hasResource.then(function (result) {
 			$scope.resourceQuota.project = result[0].project;
 			var i=0;
