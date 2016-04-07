@@ -50,6 +50,8 @@ function billingCtrl($scope, appService, globalConfig, localStorageService, $win
         }
     };
 
+    $scope.monthList = appService.utilService.getMonthList();
+
     Date.prototype.ddmmyyyy= function() {
        var yyyy = this.getFullYear().toString();
        var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based
@@ -117,18 +119,8 @@ function billingCtrl($scope, appService, globalConfig, localStorageService, $win
                 $scope.usageStatistics = result;
                 $scope.showLoader = true;
                 if(groupBy == "service") {
-                    angular.forEach($scope.usageStatistics, function(obj, key) {
-                        var planName = obj.usageid.replace('[ "', '');
-                        planName = planName.replace('"]', '');
-                        planName = planName.replace(/"/g, '');
-                        obj.usageid = planName;
-
-                        obj.billableType = obj.billableType.replace('[ "', '');
-                        obj.billableType = obj.billableType.replace('"]', '');
-                        obj.billableType = obj.billableType.replace(/"/g, '');
-                        $scope.usageStatistics[key] = obj;
-
-                    });
+                    usageList = $scope.getUsageListByGroup("usageid");
+                    $scope.groupItemByUsageList(usageList);
             } else if(groupBy == "project") {
                 usageList = $scope.getUsageListByGroup("project");
                 $scope.groupItemByUsageList(usageList);
@@ -148,11 +140,9 @@ function billingCtrl($scope, appService, globalConfig, localStorageService, $win
             if(angular.isUndefined(groupItemList[groupItem])) {
                 groupItemList[groupItem] = [];
             }
-
             if(angular.isUndefined(groupItemList[groupItem][obj.usagetype])) {
                 groupItemList[groupItem][obj.usagetype] = {};
             }
-
             if(angular.isUndefined(groupItemList[groupItem][obj.usagetype].usageUnits)) {
                 groupItemList[groupItem][obj.usagetype].usageUnits = 0;
             }
@@ -160,12 +150,13 @@ function billingCtrl($scope, appService, globalConfig, localStorageService, $win
             if(angular.isUndefined(groupItemList[groupItem][obj.usagetype].planTotal)) {
                 groupItemList[groupItem][obj.usagetype].planTotal = 0;
             }
-
             var rawusage = (obj.rawusage > 0) ? 1 : 0;
-            if(obj.rawusage != 24 && obj.usagetype == 2) {
+            if(obj.rawusage < 24 && obj.usagetype == 2) {
                 rawusage = 0;
             }
-            groupItemList[groupItem][obj.usagetype].usageUnits =  groupItemList[groupItem][obj.usagetype].usageUnits + rawusage;
+            if(!angular.isUndefined(obj.templateid) && obj.usagetype == 6) {
+                rawusage = 0;
+            }
 
             if(angular.isUndefined(obj.planCost))
                 obj.planCost = 0;
@@ -174,17 +165,74 @@ function billingCtrl($scope, appService, globalConfig, localStorageService, $win
                 obj.usageUnits = 0;
             }
 
-            groupItemList[groupItem][obj.usagetype].planTotal =  parseFloat(groupItemList[groupItem][obj.usagetype].planTotal) + (parseFloat(obj.usageUnits) * parseFloat(obj.planCost));
-            groupItemList[groupItem][obj.usagetype].billableType = $scope.getBillableTypeByUsageType(obj.usagetype);
-            groupItemList[groupItem][obj.usagetype].usageType = obj.usagetype;
 
+            // For template
+            if(!angular.isUndefined(obj.templateid)) {
+                var tempGroupItem = obj.templateid;
+                if(group != "usageid")
+                    tempGroupItem = obj[group];
+                if(angular.isUndefined(groupItemList[tempGroupItem])) {
+                    groupItemList[tempGroupItem] = [];
+                }
+                if(angular.isUndefined(groupItemList[tempGroupItem][obj.usagetype])) {
+                    groupItemList[tempGroupItem][obj.usagetype] = {};
+                }
+                if(angular.isUndefined(groupItemList[tempGroupItem][7])) {
+                    groupItemList[tempGroupItem][7] = {};
+                }
+                if(angular.isUndefined(groupItemList[tempGroupItem][7].usageUnits)) {
+                    groupItemList[tempGroupItem][7].usageUnits = 0;
+                }
+                if(angular.isUndefined(groupItemList[tempGroupItem][obj.usagetype])) {
+                    groupItemList[tempGroupItem][7][obj.usagetype] = {};
+                }
+
+                if(angular.isUndefined(groupItemList[tempGroupItem][7].planTotal)) {
+                    groupItemList[tempGroupItem][7].planTotal = 0;
+                }
+
+            }
+
+            if(rawusage > 0) {
+                if((group == "project" && !angular.isUndefined(obj.projectid))
+                        || (group == "account" && !angular.isUndefined(obj.accountid))
+                        || group == "usageid") {
+
+                    if(obj.usagetype == 2
+                        && !angular.isUndefined(obj.templatecost)
+                        && parseFloat(obj.templatecost) > 0) {
+
+
+                        if(obj.templateonetimechargeable) {
+                            groupItemList[tempGroupItem][7].planTotal =  parseFloat(obj.templatecost);
+                        } else {
+                            groupItemList[tempGroupItem][7].planTotal =  parseFloat(groupItemList[tempGroupItem][7].planTotal) + (parseFloat(obj.usageUnits) * parseFloat(obj.templatecost));
+                        }
+
+                        groupItemList[tempGroupItem][7].usageUnits =  groupItemList[tempGroupItem][7].usageUnits + rawusage;
+                        groupItemList[tempGroupItem][7].billableType = $scope.getBillableTypeByUsageType(7);
+                        groupItemList[tempGroupItem][7].usageType = 7;
+                        groupItemList[tempGroupItem][7].usageid = obj.templateid;
+                        if(!angular.isUndefined(obj.templateusagename))
+                        groupItemList[tempGroupItem][7].usageName = obj.templateusagename;
+                    }
+
+                    if(parseFloat(obj.planCost) > 0) {
+                        groupItemList[groupItem][obj.usagetype].usageUnits =  groupItemList[groupItem][obj.usagetype].usageUnits + rawusage;
+                        groupItemList[groupItem][obj.usagetype].planTotal =  parseFloat(groupItemList[groupItem][obj.usagetype].planTotal) + (parseFloat(obj.usageUnits) * parseFloat(obj.planCost));
+                        groupItemList[groupItem][obj.usagetype].billableType = $scope.getBillableTypeByUsageType(obj.usagetype);
+                        groupItemList[groupItem][obj.usagetype].usageType = obj.usagetype;
+                        if(!angular.isUndefined(obj.usagename))
+                            groupItemList[groupItem][obj.usagetype].usageName = obj.usagename;
+                    }
+                }
+            }
         }
         });
         return groupItemList;
     }
 
     $scope.groupItemByUsageList = function(usageList) {
-
         $scope.usageList= [];
         $scope.usageTotal = {};
         $scope.usageTotal = [];
@@ -196,20 +244,22 @@ function billingCtrl($scope, appService, globalConfig, localStorageService, $win
                         planCost: 0,
                         usageUnits: 0
                 };
-
             }
-
             var usageTotal = {};
             for(var i=0; i< usageList[j].length; i++) {
                 if(!angular.isUndefined(usageList[j][i])) {
                     var usageItem = {};
                     if(usageList[j][i].planTotal > 0) {
                         usageItem.name = j;
-                        usageItem.usageUnits = usageList[j][i].usageUnits;
-                        usageItem.planCost = parseFloat(usageList[j][i].planTotal).toFixed(2);
-                        usageItem.billableType = usageList[j][i].billableType;
-                        $scope.usageList.push(usageItem);
-                        $scope.usageTotal[inc].total = $scope.usageTotal[inc].total + usageItem.planCost;
+                        if(usageList[j][i].usageUnits > 0) {
+                            usageItem.usageUnits = usageList[j][i].usageUnits;
+                            usageItem.planCost = parseFloat(usageList[j][i].planTotal).toFixed(2);
+                            usageItem.billableType = usageList[j][i].billableType;
+                            usageItem.usageType = usageList[j][i].usageType;
+                            usageItem.usageName = usageList[j][i].usageName;
+                            $scope.usageList.push(usageItem);
+                            $scope.usageTotal[inc].total = $scope.usageTotal[inc].total + usageItem.planCost;
+                        }
                     }
 
                 }
