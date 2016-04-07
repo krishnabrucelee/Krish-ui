@@ -18,9 +18,7 @@
                             <div class="col-md-6 col-sm-6">
 
                                  <div class="form-group m-l-md"
-                                    ng-class="{
-                                            'text-danger'
-                                           : !usageStatisticsObj.startDate && formSubmitted}">
+                                    ng-class="{'text-danger' : !usageStatisticsObj.startDate && formSubmitted}">
 
                                     <div class="row">
                                         <label class="col-md-3 col-sm-3 control-label">From
@@ -63,7 +61,7 @@
                                     <select class="form-control input-group col-xs-5" name="groupBy"
                                         data-ng-model="groupBy"
                                         data-ng-init="groupBy='project';">
-                                        <!-- <option value="service">Service</option> -->
+                                        <option value="service">Service</option>
                                         <option value="project">Project</option>
                                         <option value="department">Department</option>
                                     </select>
@@ -140,19 +138,10 @@
                             </span>
 
                         </div>
-
-
-
                     </div>
                 </div>
-
-
             </div>
-
             <hr>
-
-
-
         </div>
         <div class="row">
             <div class="col-md-10 col-sm-10 col-xs-10 col-md-offset-1">
@@ -167,23 +156,31 @@
                             class="table table-bordered white-content">
                             <thead>
                                 <tr class="bg-primary">
-                                    <th width="65%">Services</th>
+                                    <th width="5%">S.no.</th>
+                                    <th width="45%">Services</th>
                                     <th width="20%" class="text-center">Usage (Days)</th>
                                     <th width="15%" class="text-center">Bill</th>
                                 </tr>
                             </thead>
-                            <tbody
-                                ng-repeat="(key, value) in usageStatistics | groupBy: 'billableType'">
+                            <tbody data-ng-show="usageList.length > 0"
+                                ng-repeat="(key, value) in usageList | groupBy: 'billableType'">
                                 <tr>
-                                    <td colspan="3" class="text-primary font-bold bg-info">{{
-                                        key }}</td>
+                                    <td colspan="4" class="text-primary font-bold bg-info">
+                                        {{ key }}
+                                    </td>
                                 </tr>
                                 <tr ng-repeat="usage in value">
-                                    <td><span class="m-l-lg">{{ usage.usageid }} - {{
-                                            usage.usagetype}}</span></td>
+                                    <td>{{ $index + 1 }}</td>
+                                    <td>
+                                        <span class="m-l-lg" data-ng-if="!usage.usageName">-</span>
+                                        <span class="m-l-lg" data-ng-if="usage.usageName">{{ usage.usageName}}</span>
+                                        </td>
                                     <td class="text-center">{{ usage.usageUnits }}</td>
                                     <td class="text-right">{{ usage.planCost }}</td>
                                 </tr>
+                            </tbody>
+                            <tbody data-ng-show="usageList.length == '0'">
+                                <tr><td colspan="4"> No records found!! </td></tr>
                             </tbody>
                         </table>
 
@@ -195,18 +192,20 @@
                             class="table table-bordered white-content">
                             <thead>
                                 <tr class="bg-primary">
-                                    <th width="65%">Name</th>
+                                    <th width="5%">S.no.</th>
+                                    <th width="45%">Name</th>
                                     <th width="20%" class="text-center">Usage (Days)</th>
                                     <th width="15%" class="text-center">Bill</th>
                                 </tr>
                             </thead>
                             <tbody data-ng-if="usageList.length > 0" ng-repeat="(key, value) in usageList | groupBy: 'name'">
                                 <tr>
-                                    <td colspan="3" class="text-primary font-bold bg-info">
+                                    <td colspan="4" class="text-primary font-bold bg-info">
                                     {{ key }}
                                     </td>
                                 </tr>
                                 <tr ng-repeat="usage in value">
+                                    <td>{{ $index + 1}} </td>
                                     <td><span class="m-l-lg">{{ usage.billableType }}</span></td>
                                     <td class="text-center">{{ usage.usageUnits }}</td>
                                     <td class="text-right">{{ usage.planCost }}</td>
@@ -214,7 +213,7 @@
 
                             </tbody >
                             <tbody data-ng-show="usageList.length == '0'">
-                                <tr><td colspan="3"> No records found!! </td></tr>
+                                <tr><td colspan="4"> No records found!! </td></tr>
                             </tbody>
 
                         </table>
