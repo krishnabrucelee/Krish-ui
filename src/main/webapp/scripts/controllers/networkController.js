@@ -730,9 +730,9 @@ $scope.ipCostList();
                         user.password = "";
                         $scope.vpnFormSubmitted = false;
                         $scope.showLoader = false;
-                        $scope.editIpaddress($stateParams.id1);  
-                        appService.globalConfig.webSocketLoaders.vpnLoader = true;
-   		appService.localStorageService.set('view', 'vpn-details');
+                        $scope.vpnUserList($scope.ipDetails);
+                        appService.globalConfig.webSocketLoaders.vpnLoader = false;
+   		        appService.localStorageService.set('view', 'vpn-details');
                     }).catch(function(result) {
                         appService.globalConfig.webSocketLoaders.vpnLoader = false;
                     });
@@ -1875,9 +1875,8 @@ if (!angular.isUndefined($stateParams.id1)) {
                         appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.vpnDestroy, $scope.ipAddress.uuid, $scope.global.sessionValues.id);
                         $scope.ipDetails = result;
                         $scope.showLoader = false;
-                    appService.globalConfig.webSocketLoaders.ipLoader = true;
                         $scope.cancel();
-
+			$scope.ipLists(1);
                     }).catch(function(result) {
                         appService.globalConfig.webSocketLoaders.ipLoader = false;
                         $scope.cancel();
@@ -2223,7 +2222,6 @@ $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.ipRelease, func
 $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.vpnCreate, function() {
     appService.globalConfig.webSocketLoaders.vpnLoader = false;
     appService.globalConfig.webSocketLoaders.ipLoader = false;
-    $scope.ipLists(1);
 });
 $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.vpnDestroy, function() {
     appService.globalConfig.webSocketLoaders.vpnLoader = false;
@@ -2232,11 +2230,12 @@ $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.vpnDestroy, fun
 });
 $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.vpnUserAdd, function() {
     appService.globalConfig.webSocketLoaders.vpnLoader = false;
-   appService.localStorageService.set('view', 'vpn-details');
-   if (!angular.isUndefined($stateParams.id1) && $stateParams.id1 > 0) {
-      $scope.editIpaddress($stateParams.id1);
-       appService.localStorageService.set('view', 'vpn-details');
-   }
+    appService.localStorageService.set('view', 'vpn-details');
+  // appService.localStorageService.set('view', 'vpn-details');
+  // if (!angular.isUndefined($stateParams.id1) && $stateParams.id1 > 0) {
+     // $scope.editIpaddress($stateParams.id1);
+      // appService.localStorageService.set('view', 'vpn-details');
+  // }
 });
 $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.vpnUserDelete, function() {
    appService.globalConfig.webSocketLoaders.vpnLoader = false;
