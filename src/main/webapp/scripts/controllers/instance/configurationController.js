@@ -228,8 +228,10 @@ function configurationCtrl($scope, $stateParams, appService, localStorageService
                          $scope.instances = result;
                          appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.vmSSHKEY,result.uuid,$scope.global.sessionValues.id);
                          $scope.viewInstance(result.id);
-                         if ($scope.instances.passwordEnabled == true) {
-                             $scope.resetPassword($scope.instances);
+                         if(result.keypairId == resetSSH.id){
+                            if ($scope.instances.passwordEnabled == true) {
+                                $scope.resetPassword($scope.instances);
+                            }
                          }
    			}).catch(function (result) {
                 		 if (!angular.isUndefined(result) && result.data != null) {
@@ -239,6 +241,7 @@ function configurationCtrl($scope, $stateParams, appService, localStorageService
                          $scope.resetForm[key].errorMessage = errorMessage;
                          });
                          }
+                     $scope.global.webSocketLoaders.vmsshKey = false;
                  }
                  $scope.global.webSocketLoaders.vmsshKey = false;
                  });
@@ -267,11 +270,19 @@ function configurationCtrl($scope, $stateParams, appService, localStorageService
 
      $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.vmresize, function() {
          $scope.global.webSocketLoaders.computeOffer = false;
-         $scope.viewInstance($scope.instances.id);
+         var hasServers = crudService.read("virtualmachine", instanceId);
+         hasServers.then(function (result) {
+             $scope.instances = result;
+             $scope.computeList();
+         });
      });
      $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.vmSSHKEY, function() {
          $scope.global.webSocketLoaders.vmsshKey = false;
-       });
+     });
+
+     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.vmSSHKEY+"/ERROR", function() {
+         $scope.global.webSocketLoaders.vmsshKey = false;
+     });
 
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.rebootVm, function() {
         $scope.viewInstance($scope.instances.id);
