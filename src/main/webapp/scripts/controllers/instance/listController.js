@@ -141,6 +141,7 @@ function instanceListCtrl($scope, $sce, $log, $filter, dialogService, $timeout, 
         }]);
     };
     $scope.rebootVm = function(size, item) {
+        $scope.item = item;
         dialogService.openDialog("app/views/cloud/instance/reboot.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function($scope, $modalInstance, $rootScope) {
             $scope.vmRestart = function(item) {
                     var event = "VM.REBOOT";
@@ -386,25 +387,25 @@ function instanceListCtrl($scope, $sce, $log, $filter, dialogService, $timeout, 
 
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.vmCreate, function() {
         $scope.global.webSocketLoaders.viewLoader = false;
-        $scope.list($scope.paginationObject.currentPage, "Expunging");
+        $scope.list(1, "Expunging");
         $scope.borderContent = "Expunging";
     });
 
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.startVm, function() {
         $scope.global.webSocketLoaders.viewLoader = false;
-        $scope.list($scope.paginationObject.currentPage, "Expunging");
+        $scope.list(1, "Expunging");
         $scope.borderContent = "Expunging";
     });
 
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.stopVm, function() {
         $scope.global.webSocketLoaders.viewLoader = false;
-        $scope.list($scope.paginationObject.currentPage, "Expunging");
+        $scope.list(1, "Expunging");
         $scope.borderContent = "Expunging";
     });
 
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.rebootVm, function() {
         $scope.global.webSocketLoaders.viewLoader = false;
-        $scope.list($scope.paginationObject.currentPage, "Running");
+        $scope.list(1, "Expunging");
         $scope.borderContent = "Running";
     });
 

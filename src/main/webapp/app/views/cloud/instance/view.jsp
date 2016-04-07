@@ -7,14 +7,15 @@ pageEncoding="UTF-8"%>
 <div class="hpanel">
     <div class="row m-l-sm m-r-sm panel-body" ng-controller="instanceViewCtrl">
         <ul class="nav nav-tabs" data-ng-init="templateCategory = 'dashboard'">
-            <li data-ng-class="{'active' : templateCategory == 'dashboard'}"><a href="javascript:void(0)" data-ng-click="viewInstance('0');" data-toggle="tab">  <i class="fa fa-laptop"></i> <fmt:message key="dashboard" bundle="${msg}" /></a></li>
+            <li data-ng-class="{'active' : templateCategory == 'dashboard'}"><a href="javascript:void(0)" data-ng-click="viewInstances('0');" data-toggle="tab">  <i class="fa fa-laptop"></i> <fmt:message key="dashboard" bundle="${msg}" /></a></li>
             <li data-ng-class="{'active' : templateCategory == 'config'}"><a has-permission="RESIZE" data-ng-click="selectab()"  data-toggle="tab"> <i class="fa fa-cogs"></i> <fmt:message key="configuration" bundle="${msg}" /></a></li>
             <li class=""><a  data-ng-click="list();" data-toggle="tab"><i class="fa fa-database"></i> <fmt:message key="storage" bundle="${msg}" /></a></li>
             <li class=""><a  data-ng-click="networkTab()" data-toggle="tab"> <!--<i class="fa fa-sitemap"></i>--><i class="custom-icon custom-icon-network"></i> <fmt:message key="networking" bundle="${msg}" /></a></li>
-            <li class=""><a has-permission="MONITOR_VM_PERFORMANCE" href="javascript:void(0)" data-ng-class="{'active': templateCategory == 'monitor'}" data-ng-click="templateCategory = 'monitor'" data-toggle="tab"> <i class="fa fa-desktop"></i> <fmt:message key="monitor" bundle="${msg}" /></a></li>
+            <li class="" data-ng-hide="instance.template.osCategory.name == osCategory.Windows"><a has-permission="MONITOR_VM_PERFORMANCE" href="javascript:void(0)" data-ng-class="{'active': templateCategory == 'monitor'}" data-ng-click="templateCategory = 'monitor'" data-toggle="tab"> <i class="fa fa-desktop"></i> <fmt:message key="monitor" bundle="${msg}" /></a></li>
+            <li class="" data-ng-show="instance.template.osCategory.name == osCategory.Windows"><a has-permission="MONITOR_VM_PERFORMANCE" href="javascript:void(0)" data-ng-class="{'active': templateCategory == 'monitor-windows'}" data-ng-click="templateCategory = 'monitor-windows'" data-toggle="tab"> <i class="fa fa-desktop"></i> <fmt:message key="monitor" bundle="${msg}" /></a></li>
 
             <div class="pull-right">
-            	<button type="button" data-ng-hide="templateCategory == 'monitor'" title="<fmt:message key="common.refresh" bundle="${msg}" />"  class="btn btn-info" ui-sref="cloud.list-instance.view-instance"  ui-sref-opts="{reload: true}" ><span class="fa fa-refresh fa-lg "></span></button>
+            	<button type="button" data-ng-hide="templateCategory == 'monitor' || templateCategory == 'monitor-windows'" title="<fmt:message key="common.refresh" bundle="${msg}" />"  class="btn btn-info" ui-sref="cloud.list-instance.view-instance"  ui-sref-opts="{reload: true}" ><span class="fa fa-refresh fa-lg "></span></button>
             </div>
         </ul>
 
@@ -486,27 +487,15 @@ pageEncoding="UTF-8"%>
                                                 </td>
                                                 <td class="col-md-8 col-sm-8"><span class="text-danger"
 														data-ng-if="!instance.computeOffering.customized"
-													> <app-currency></app-currency> {{(instance.computeOffering.computeCost[0].instanceRunningCostIops +
-															instance.computeOffering.computeCost[0].instanceRunningCostMemory +
-															instance.computeOffering.computeCost[0].instanceRunningCostVcpu +
-															(instance.computeOffering.computeCost[0].instanceRunningCostPerMB > 0 ?
-															(instance.computeOffer.memory.value * instance.computeOffering.computeCost[0].instanceRunningCostPerMB) :
-															0) + (instance.computeOffering.computeCost[0].instanceRunningCostPerVcpu > 0 ?
-															(instance.computeOffer.cpuCore.value *
-															instance.computeOffering.computeCost[0].instanceRunningCostPerVcpu) : 0) +
-															(instance.computeOffering.computeCost[0].instanceRunningCostPerMhz > 0 ?
-															(instance.computeOffer.cpuSpeed.value *
-															instance.computeOffering.computeCost[0].instanceRunningCostPerMhz) : 0))/30 | number:4 }}
+													> <app-currency></app-currency> {{(instance.computeOffering.computeCost[0].instanceRunningCostIops + instance.computeOffering.computeCost[0].instanceRunningCostMemory
+														    + instance.computeOffering.computeCost[0].instanceRunningCostVcpu + (instance.computeOffering.computeCost[0].instanceRunningCostPerMB > 0 ? (instance.computeOffer.memory.value * instance.computeOffering.computeCost[0].instanceRunningCostPerMB) : 0)
+														    + (instance.computeOffering.computeCost[0].instanceRunningCostPerVcpu > 0 ? (instance.computeOffer.cpuCore.value * instance.computeOffering.computeCost[0].instanceRunningCostPerVcpu) : 0)
+														    + (instance.computeOffering.computeCost[0].instanceRunningCostPerMhz > 0 ? (instance.computeOffer.cpuSpeed.value * instance.computeOffering.computeCost[0].instanceRunningCostPerMhz) : 0)) | number:4 }}
 													</span> <span class="text-danger" data-ng-if="instance.computeOffering.customized"> <app-currency></app-currency>
-															{{(instance.computeOffering.computeCost[0].instanceRunningCostIops +
-															instance.computeOffering.computeCost[0].instanceRunningCostMemory +
-															instance.computeOffering.computeCost[0].instanceRunningCostVcpu +
-															(instance.computeOffering.computeCost[0].instanceRunningCostPerMB > 0 ? (instance.memory*
-															instance.computeOffering.computeCost[0].instanceRunningCostPerMB) : 0) +
-															(instance.computeOffering.computeCost[0].instanceRunningCostPerVcpu > 0 ? (instance.cpuCore *
-															instance.computeOffering.computeCost[0].instanceRunningCostPerVcpu) : 0) +
-															(instance.computeOffering.computeCost[0].instanceRunningCostPerMhz > 0 ? (instance.cpuSpeed *
-															instance.computeOffering.computeCost[0].instanceRunningCostPerMhz) : 0))/30 | number:4 }}
+															{{(instance.computeOffering.computeCost[0].instanceRunningCostIops + instance.computeOffering.computeCost[0].instanceRunningCostMemory
+														    + instance.computeOffering.computeCost[0].instanceRunningCostVcpu + (instance.computeOffering.computeCost[0].instanceRunningCostPerMB > 0 ? (instance.computeOffer.memory.value * instance.computeOffering.computeCost[0].instanceRunningCostPerMB) : 0)
+														    + (instance.computeOffering.computeCost[0].instanceRunningCostPerVcpu > 0 ? (instance.computeOffer.cpuCore.value * instance.computeOffering.computeCost[0].instanceRunningCostPerVcpu) : 0)
+														    + (instance.computeOffering.computeCost[0].instanceRunningCostPerMhz > 0 ? (instance.computeOffer.cpuSpeed.value * instance.computeOffering.computeCost[0].instanceRunningCostPerMhz) : 0)) | number:4 }}
 													</span> /
                                             <fmt:message key="common.day" bundle="${msg}" />
                                             </td>
@@ -539,6 +528,9 @@ pageEncoding="UTF-8"%>
             </div>
             <div class="tab-pane"  data-ng-class="{'active' : templateCategory == 'monitor'}" id="step1-monitor">
                 <div data-ng-include src="'app/views/cloud/instance/monitor.jsp'"></div>
+            </div>
+            <div class="tab-pane"  data-ng-class="{'active' : templateCategory == 'monitor-windows'}" id="step1-monitor-windows">
+                <div data-ng-include src="'app/views/cloud/instance/monitor-windows.jsp'"></div>
             </div>
         </div>
     </div>

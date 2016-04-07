@@ -200,7 +200,6 @@ function sshkeyListCtrl($scope,appService,$state,localStorageService, globalConf
                    }
                    var hasServer = appService.crudService.add("sshkeys", sshkey);
                    hasServer.then(function (result) {
-			   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.sshKeyEvents.createSSHKey,result.id,$scope.global.sessionValues.id);
                 	   $scope.sshkeyss = $scope.sshkeyList[$scope.sshkeyList.length];
     			       $scope.sshkeyss = result;
     			           var departments = [];
@@ -280,7 +279,6 @@ function sshkeyListCtrl($scope,appService,$state,localStorageService, globalConf
                }
                var hasServer = appService.crudService.add("sshkeys", sshkey);
                hasServer.then(function (result) {
-		   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.sshKeyEvents.createSSHKey,result.id,$scope.global.sessionValues.id);
             	   $scope.sshkeyss = $scope.sshkeyList[$scope.sshkeyList.length];
 			       $scope.sshkeyss = result;
 			       if ($scope.global.sessionValues.type === 'USER') {
@@ -318,6 +316,8 @@ function sshkeyListCtrl($scope,appService,$state,localStorageService, globalConf
 			                $scope.formSubmitted = false;
 			                $modalInstance.close();
 			                $scope.showLoader = false;
+                                        appService.notify({message: 'SSH key created successfully', classes: 'alert-success',
+    			                	templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
 			                $scope.list(1);
 			                $scope.sshkey.name = "";
 			                $scope.sshkey.publicKey = "";
@@ -362,7 +362,6 @@ function sshkeyListCtrl($scope,appService,$state,localStorageService, globalConf
                 sshkey.isActive = false;
                 var hasServer = appService.crudService.softDelete("sshkeys", sshkey);
                 hasServer.then(function (result) {
-			   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.sshKeyEvents.deleteSSHKey,result.id,$scope.global.sessionValues.id);
                     $scope.list(1);
                     $scope.showLoader = false;
                     appService.notify({message: 'SSH key deleted successfully', classes: 'alert-success',
@@ -382,11 +381,4 @@ function sshkeyListCtrl($scope,appService,$state,localStorageService, globalConf
             }]);
     };
 
-
-    $scope.$on(appService.globalConfig.webSocketEvents.sshKeyEvents.createSSHKey, function() {
-    	$scope.list($scope.paginationObject.currentPage);
-    });
-    $scope.$on(appService.globalConfig.webSocketEvents.sshKeyEvents.deleteSSHKey, function() {
-    	$scope.list($scope.paginationObject.currentPage);
-    });
 };

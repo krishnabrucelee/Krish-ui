@@ -76,6 +76,11 @@ function monitorService() {
                             rangeConfig.iterationCountCount = 24;
                             rangeConfig.tickSize = [2, "minute"];
                             break;
+                        case "45m":
+                            rangeConfig.dataIndexCount = 180;
+                            rangeConfig.iterationCountCount = 48;
+                            rangeConfig.tickSize = [4, "minute"];
+                            break;
                         case "1h":
                             rangeConfig.dataIndexCount = 240;
                             rangeConfig.iterationCountCount = 60;
@@ -120,6 +125,10 @@ function monitorService() {
                             return pandaChart.getTimeLabels(2,
                                     pandaChart.delayType.Minutes, date);
                             break;
+                        case "45m":
+                            return pandaChart.getTimeLabels(2,
+                                    pandaChart.delayType.Minutes, date);
+                            break;
                         case "1h":
                             return pandaChart.getTimeLabels(5,
                                     pandaChart.delayType.Minutes, date);
@@ -148,10 +157,11 @@ function monitorService() {
                     var selector = jQuery('#' + chartContainer).find('.flot-base, .flot-x-axis, .flot-overlay');
                     switch(rangeId) {
                         case "5m":
+
                             if(chartIteration == 1 && indexValue==0) {
 //                                var fifteenMinMargin = chartIteration * 30;
 //                                selector.css({"margin-left": -fifteenMinMargin});
-
+            
                                 var fifteenMinMargin = chartIteration * 30;
                                 //selector.addClass('m-l-n-lg');
                                 selector.css({"margin-left": -30});
@@ -169,13 +179,19 @@ function monitorService() {
                             break;
                         case "30m":
                             if(chartIteration < 30 && indexValue==0) {
-                                var thirtyMinMargin = chartIteration * 2.4;
+                                var thirtyMinMargin = chartIteration * 3.6;
                                 selector.css({"margin-left": -thirtyMinMargin});
+                            }
+                            break;
+                        case "45m":
+                            if(chartIteration < 45 && indexValue==0) {
+                                var fourtyfiveMinMargin = chartIteration * 2.4;
+                                selector.css({"margin-left": -fourtyfiveMinMargin});
                             }
                             break;
                         case "1h":
                             if(chartIteration <  60 && indexValue==0) {
-                                var hourlyMargin = chartIteration * 1.2;
+                                var hourlyMargin = chartIteration * 2.4;
                                 selector.css({"margin-left": -hourlyMargin});
                             }
                             break;

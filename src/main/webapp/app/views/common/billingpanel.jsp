@@ -16,7 +16,7 @@
         </li> -->
         <li ng-class="{active: $state.includes('billing.usageStatistics')}">
             <a ui-sref="billing.usageStatistics" href="#/billing/usageStatistics" >
-                <span class="pe-7s-news-paper pe-2x nav-menu-icons"></span>
+                <span class="pe-7s-graph1 pe-2x nav-menu-icons"></span>
                 <span class="nav-label">Usage statistics</span>
             </a>
         </li>

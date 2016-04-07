@@ -4,11 +4,13 @@
  *
  */
 
-angular.module('homer').controller('instanceMonitorCtrl', instanceMonitorCtrl)
+angular.module('homer').controller('instanceMonitorWindowsCtrl', instanceMonitorWindowsCtrl)
 
-function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService) {
+function instanceMonitorWindowsCtrl($scope, $rootScope, $http, $stateParams, appService) {
 
     var cpuData = [];
+
+    $scope.global = appService.globalConfig;
 
     $scope.cpuIndex = "";
 
@@ -16,9 +18,11 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
 
     $scope.storageIndex = "";
 
+    $scope.networkIndex = "";
+
     $scope.OpenTsdbIp = appService.globalConfig.MONITOR_URL;
 
-    $scope.hostName = "az-monitor-centos";
+    $scope.hostName = "az-monitor-windows";
 
     $scope.cpuCount = 4;
 
@@ -29,6 +33,8 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
             name : 'Last 5 minutes'
         }
     };
+    $scope.cpu.dataset = [];
+    $scope.cpu.altdataset = [];
 
     var graphTooltip = {
 
@@ -83,9 +89,6 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
         }
 
     }
-
-    $scope.cpu.dataset = [];
-    $scope.cpu.altdataset = [];
 
     $scope.instanceElements = {
         actions : [ {
@@ -312,19 +315,22 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
         chartIterationCount = 3;
         forAdditionalIterations = [];
         var displayName = $scope.hostName;
-        for (var cpuCores = 0; cpuCores < $scope.cpuCount; cpuCores++) {
-            getPerformanceByFilters("query?start=" + $scope.range.actions.id + "-ago&m=avg:rate:linux.cpu.percpu{host=" + displayName + ",type=user,cpu=" + cpuCores + "}", cpuCores, displayName, -1, pandaChart.chartTypes.CPU);
-        }
-        getPerformanceByFilters("query?start=" + $scope.range.actions.id + "-ago&m=avg:rate:linux.cpu{host=" + displayName + ",type=user}", cpuCores, displayName, -1, pandaChart.chartTypes.CPU);
+        //for(var cpuCores = 0; cpuCores < $scope.cpuCount; cpuCores++) {
+        //getPerformanceByFilters("query?start=" + $scope.range.actions.id + "-ago&m=p75:rate:linux.cpu.percpu{host="+ displayName +",cpu=" + cpuCores + "}", cpuCores, displayName, -1, pandaChart.chartTypes.CPU);
+        //getPerformanceByFilters("query?start=" + $scope.range.actions.id + "-ago&m=p75:rate:win.cpu{host="+ displayName + "}", cpuCores, displayName, -1, pandaChart.chartTypes.CPU);
+        //}
+
+        getPerformanceByFilters("query?start=" + $scope.range.actions.id + "-ago&m=avg:rate:win.cpu{host=" + displayName + ",type=user}", 0, displayName, -1, pandaChart.chartTypes.CPU);
 
         if (updatePerformance == 1) {
             setInterval(function() {
                 $scope
                         .$apply(function() {
-                            for (var cpuCores = 0; cpuCores < $scope.cpuCount; cpuCores++) {
-                                getPerformanceByFilters("query?start=" + $scope.range.actions.id + "-ago&m=avg:rate:linux.cpu.percpu{host=" + displayName + ",type=user,cpu=" + cpuCores + "}", cpuCores, displayName, 3, pandaChart.chartTypes.CPU);
-                            }
-                            getPerformanceByFilters("query?start=" + $scope.range.actions.id + "-ago&m=avg:rate:linux.cpu{host=" + displayName + ",type=user}", cpuCores, displayName, -1, pandaChart.chartTypes.CPU);
+                            //for(var cpuCores=0; cpuCores < $scope.cpuCount; cpuCores++) {
+                            //getPerformanceByFilters("query?start=" + $scope.range.actions.id + "-ago&m=p75:rate:linux.cpu.percpu{host="+ displayName +",cpu=" + cpuCores + "}", cpuCores, displayName, 3, pandaChart.chartTypes.CPU);
+                            // getPerformanceByFilters("query?start=" + $scope.range.actions.id + "-ago&m=p75:rate:win.cpu{host="+ displayName + "}", cpuCores, displayName, -1, pandaChart.chartTypes.CPU);
+                            //}
+                            getPerformanceByFilters("query?start=" + $scope.range.actions.id + "-ago&m=avg:rate:win.cpu{host=" + displayName + ",type=user}", 0, displayName, -1, pandaChart.chartTypes.CPU);
 
                         });
             }, 5000);
@@ -517,6 +523,7 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
         memoryChartIterationCount = 3;
         memoryForAdditionalIterations = [];
         var displayName = $scope.hostName;
+        http: //192.168.2.22:4242/api/query?start=1m-ago&m=avg:win.disk.fs.space_total{host=azbpmlap4}
 
         getMemoryPerformanceByFilters("query?start=" + $scope.range.actions.id + "-ago&m=avg:os.mem.total{host=" + displayName + "}", 0, displayName
                 .toLowerCase(), -1, pandaChart.chartTypes.MEMORY, "Total");
@@ -708,9 +715,10 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
         storageChartIterationCount = 3;
         storageForAdditionalIterations = [];
         var displayName = $scope.hostName;
-        getStoragePerformanceByFilters("query?start=" + $scope.range.actions.id + "-ago&m=avg:rate:linux.disk.write_requests{host=" + displayName + "}", 0, displayName
+        http: //192.168.2.22:4242/api/query?start=1m-ago&m=avg:rate:win.disk.ops{host=azbpmlap4,type=read}
+        getStoragePerformanceByFilters("query?start=" + $scope.range.actions.id + "-ago&m=avg:rate:win.disk.ops{host=" + displayName + ",type=write}", 0, displayName
                 .toLowerCase(), -1, pandaChart.chartTypes.DISK, "Write");
-        getStoragePerformanceByFilters("query?start=" + $scope.range.actions.id + "-ago&m=avg:rate:linux.disk.read_requests{host=" + displayName + "}", 1, displayName
+        getStoragePerformanceByFilters("query?start=" + $scope.range.actions.id + "-ago&m=avg:rate:win.disk.ops{host=" + displayName + ",type=read}", 1, displayName
                 .toLowerCase(), -1, pandaChart.chartTypes.DISK, "Read");
         //getStoragePerformanceByFilters("query?start=" + $scope.range.actions.id + "-ago&m=sum:os.mem.used{host="+ displayName +"}", 2,  displayName.toLowerCase(), -1);
 
@@ -718,9 +726,9 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
             setInterval(function() {
                 $scope
                         .$apply(function() {
-                            getStoragePerformanceByFilters("query?start=" + $scope.storage.actions.id + "-ago&m=avg:rate:linux.disk.write_requests{host=" + displayName + "}", 0, displayName
+                            getStoragePerformanceByFilters("query?start=" + $scope.storage.actions.id + "-ago&m=avg:rate:win.disk.ops{host=" + displayName + ",type=write}", 0, displayName
                                     .toLowerCase(), 1, pandaChart.chartTypes.DISK, "Write");
-                            getStoragePerformanceByFilters("query?start=" + $scope.storage.actions.id + "-ago&m=avg:rate:linux.disk.read_requests{host=" + displayName + "}", 1, displayName
+                            getStoragePerformanceByFilters("query?start=" + $scope.storage.actions.id + "-ago&m=avg:rate:win.disk.ops{host=" + displayName + ",type=read}", 1, displayName
                                     .toLowerCase(), 1, pandaChart.chartTypes.DISK, "Read");
                             //getStoragePerformanceByFilters("query?start=" + $scope.storage.actions.id + "-ago&m=sum:os.mem.used{host="+ displayName +"}", 2,  displayName.toLowerCase(), 3);
                         });
@@ -799,7 +807,7 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
         },
         legend : {
             noColumns : 8,
-            container : "#networkLegendContainer",
+            container : "#networkLegendContainerWindows",
             show : true,
             position : "nw",
             labelFormatter : function(label, series) {
@@ -835,7 +843,6 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
         },
         tooltip : {
             show : true,
-            // content: "%s | x: %x; y: %y"
             content : graphTooltip.getNetworkToolTipContent()
         },
         colors : [],
@@ -917,12 +924,12 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
         }
 
         if (indexValue == 0) {
-            jQuery('.network-chart-container').find('.flot-base, .flot-x-axis, .flot-overlay').css({
+            jQuery('.network-chart-container-windows').find('.flot-base, .flot-x-axis, .flot-overlay').css({
                 "margin-left" : 0
             });
         }
         pandaChart
-                .updateChartMarginByRangeAndIndex($scope.range.actions.id, indexValue, storageChartIteration, 'network-chart-container');
+                .updateChartMarginByRangeAndIndex($scope.range.actions.id, indexValue, storageChartIteration, 'network-chart-container-windows');
 
         if ($scope.networkIndex) {
             $scope.toggleNetworkPlot($scope.networkIndex, $scope.networkData.length);
@@ -941,20 +948,20 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
         networkForAdditionalIterations = [];
         var displayName = $scope.hostName;
 
-        getNetworkPerformanceByFilters("query?start=" + $scope.range.actions.id + "-ago&m=avg:rate:os.net.bytes{direction=in,host=" + displayName + ",iface=eth0}", 0, displayName
+        getNetworkPerformanceByFilters("query?start=" + $scope.range.actions.id + "-ago&m=avg:rate:win.net.bytes{host=" + displayName + ",direction=in}", 0, displayName
                 .toLowerCase(), -1, pandaChart.chartTypes.NETWORK, "In");
-        getNetworkPerformanceByFilters("query?start=" + $scope.range.actions.id + "-ago&m=avg:rate:os.net.bytes{direction=out,host=" + displayName + ",iface=eth0}", 1, displayName
+        getNetworkPerformanceByFilters("query?start=" + $scope.range.actions.id + "-ago&m=avg:rate:win.net.bytes{host=" + displayName + ",direction=out}", 1, displayName
                 .toLowerCase(), -1, pandaChart.chartTypes.NETWORK, "Out");
 
         if (updateNetworkPerformance == 1) {
             setInterval(function() {
                 $scope
                         .$apply(function() {
-                            getNetworkPerformanceByFilters("query?start=" + $scope.range.actions.id + "-ago&m=avg:rate:os.net.bytes{direction=in,host=" + displayName + ",iface=eth0}", 0, displayName
+                            getNetworkPerformanceByFilters("query?start=" + $scope.range.actions.id + "-ago&m=avg:rate:win.net.bytes{host=" + displayName + ",direction=in}", 0, displayName
                                     .toLowerCase(), -1, pandaChart.chartTypes.NETWORK, "In");
-                            getNetworkPerformanceByFilters("query?start=" + $scope.range.actions.id + "-ago&m=avg:rate:os.net.bytes{direction=out,host=" + displayName + ",iface=eth0}", 1, displayName
+                            getNetworkPerformanceByFilters("query?start=" + $scope.range.actions.id + "-ago&m=avg:rate:win.net.bytes{host=" + displayName + ",direction=out}", 1, displayName
                                     .toLowerCase(), -1, pandaChart.chartTypes.NETWORK, "Out");
-                        });
+                        })
             }, 1000);
         }
     }

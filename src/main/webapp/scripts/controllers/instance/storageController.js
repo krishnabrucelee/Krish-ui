@@ -597,4 +597,77 @@ function storageCtrl($scope, $state, $stateParams, appService, $window, volumeSe
         appService.globalConfig.webSocketLoaders.vmstorageLoader = false;
         $scope.list(1);
     });
+
+
+    // API for storage
+
+    /**
+     * Data for Line chart
+     */
+    function getDateByTime(unixTimeStamp) {
+        var date = new Date(unixTimeStamp*1000);
+        return date;
+    }
+
+
+
+    function updateStorageProgeress(volumeList) {
+        //angular.forEach(volumeList, function(obj, key) {
+            //getStoragePerformanceByFilters(obj.vmInstance.displayName, obj, 0, "/");
+            //getStoragePerformanceByFilters(obj.vmInstance.displayName, obj, 1, "/home2");
+           // setInterval(function() {
+                //$scope.$apply(function () {
+                    //getStoragePerformanceByFilters(obj.vmInstance.displayName, obj, 0, "/");
+                    //getStoragePerformanceByFilters(obj.vmInstance.displayName, obj, 1, "/home2");
+                //});
+           // }, 5000);
+       // });
+
+    }
+    $scope.memoryStyle = [];
+    $scope.rootUsage = [];
+
+
+    function getStoragePerformanceByFilters(vmName, volume, index, mountPoint) {
+
+        vmName = 'monitor-vm';
+        var diskSize = 0;
+        if(volume.volumeType == 'ROOT' || (volume.volumeType == 'DATADISK' && volume.storageOffering.isCustomDisk)) {
+            diskSize = volume.diskSize /  $scope.global.Math.pow(2, 30);
+        } else {
+            diskSize = volume.storageOffering.diskSize;
+        }
+
+        $scope.homeUsage = "";
+        var bytesFormulaValue = 1073741824;
+
+        var hasServer = appService.promiseAjax.httpRequest("GET", "http://192.168.1.137:4242/api/query?start=1m-ago&m=sum:linux.disk.fs.space_used{host=" + vmName + ",mount=" + mountPoint + "}");
+        hasServer.then(function (result) {
+            /*for(var i=0; i < result.length; i++ ) {
+                var dataPoints = result[i].dps;
+                var dataIndex = 0;
+                var currentValue = dataPoints[Object.keys(dataPoints)[Object.keys(dataPoints).length - 1]];
+                if(!angular.isUndefined(currentValue) && currentValue != 0) {
+                    currentValue = currentValue / (1024 * 1024 * 1024);
+                    var usedTotal = (currentValue.toFixed(2) / 3.9) * 100;
+                    $scope.memoryStyle = {
+                        width : parseInt(usedTotal) + "%"
+                    };
+                    $scope.usedSpace = usedTotal.toFixed(2);
+
+                }
+            }*/
+
+            var usedMemory = "";
+            angular.forEach(result[0].dps, function(val, index) {
+                usedMemory = val;
+            });
+
+            $scope.rootUsage[index] = ((usedMemory / bytesFormulaValue) / 3.9 * 100).toFixed(2);
+            $scope.memoryStyle[index] = {
+                width : parseInt($scope.rootUsage[index]) + "%"
+            };
+
+        });
+    }
 };
