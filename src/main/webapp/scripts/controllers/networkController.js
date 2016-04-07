@@ -700,7 +700,7 @@ $scope.ipCostList();
     $scope.addVpnUser = function(form, user) {
         $scope.vpnFormSubmitted = true;
         if (form.$valid) {
-            appService.globalConfig.webSocketLoaders.vpnLoader = false;
+            appService.globalConfig.webSocketLoaders.vpnLoader = true;
             var newUser = user;
             var oldUser;
             if (newUser) { //This will avoid empty data
@@ -718,6 +718,7 @@ $scope.ipCostList();
                 if (!oldUser) {
                     $scope.showLoader = true;
                     user.domainId = $scope.ipDetails.domainId;
+		console.log(user.domainId);
                     user.departmentId = $scope.ipDetails.network.departmentId;
                     user.networkId = $scope.ipDetails.network.id;
                     console.log($scope.ipDetails.network);
@@ -729,8 +730,9 @@ $scope.ipCostList();
                         user.password = "";
                         $scope.vpnFormSubmitted = false;
                         $scope.showLoader = false;
-			$scope.editIpaddress($stateParams.id1);
-        		appService.localStorageService.set('view', 'vpn-details');
+                        $scope.editIpaddress($stateParams.id1);  
+                        appService.globalConfig.webSocketLoaders.vpnLoader = true;
+   		appService.localStorageService.set('view', 'vpn-details');
                     }).catch(function(result) {
                         appService.globalConfig.webSocketLoaders.vpnLoader = false;
                     });
@@ -743,7 +745,6 @@ $scope.ipCostList();
         appService.dialogService.openDialog("app/views/cloud/network/confirm-delete.jsp", size, $scope, ['$scope', '$modalInstance', function($scope, $modalInstance) {
             $scope.ok = function(deleteVpnUser) {
                     var deleteId = user.id;
-                    appService.globalConfig.webSocketLoaders.vpnLoader = false;
                     $scope.showLoader = true;
                     var hasUser = appService.crudService.delete("vpnUser", user.id);
                     hasUser.then(function(result) {
@@ -752,6 +753,7 @@ $scope.ipCostList();
 			$scope.editIpaddress($stateParams.id1);
         		appService.localStorageService.set('view', 'vpn-details');
                         $modalInstance.close();
+   			//appService.globalConfig.webSocketLoaders.vpnLoader = true;
                     }).catch(function(result) {
                         appService.globalConfig.webSocketLoaders.vpnLoader = false;
                         $modalInstance.close();
@@ -1148,8 +1150,9 @@ if (!angular.isUndefined($stateParams.id1)) {
         hasloadBalancer.then(function(result) {
             $scope.rulesList = result;
         });
-}
     };
+}
+ $scope.LBlist();
 
     $scope.openAddVM = function(form) {
         $scope.loadFormSubmitted = true;
@@ -1342,10 +1345,10 @@ if (!angular.isUndefined($stateParams.id1)) {
                         $scope.showLoader = true;
                         var hasServer = appService.crudService.update("loadBalancer", loadBalancer);
                         hasServer.then(function(result) {
-                            appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.editrule, result.uuid, $scope.global.sessionValues.id);
+                           // appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.networkEvents.editrule, result.uuid, $scope.global.sessionValues.id);
                             $modalInstance.close();
                             $scope.showLoader = false;
-                            appService.globalConfig.webSocketLoaders.loadBalancerLoader = true;
+                           appService.globalConfig.webSocketLoaders.loadBalancerLoader = true;
                         }).catch(function(result) {
                             if (!angular.isUndefined(result) && result.data != null) {
                                 $scope.showLoader = false;
@@ -2223,26 +2226,24 @@ $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.vpnCreate, func
     $scope.ipLists(1);
 });
 $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.vpnDestroy, function() {
-   // appService.globalConfig.webSocketLoaders.vpnLoader = false;
+    appService.globalConfig.webSocketLoaders.vpnLoader = false;
     appService.globalConfig.webSocketLoaders.ipLoader = false;
     $scope.ipLists(1);
 });
 $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.vpnUserAdd, function() {
     appService.globalConfig.webSocketLoaders.vpnLoader = false;
-    appService.localStorageService.set('view', 'vpn-details');
-    if (!angular.isUndefined($stateParams.id1) && $stateParams.id1 > 0) {
-        $scope.editIpaddress($stateParams.id1);
-        $scope.editIpaddress($stateParams.id1);
-        appService.localStorageService.set('view', 'vpn-details');
-    }
+   appService.localStorageService.set('view', 'vpn-details');
+   if (!angular.isUndefined($stateParams.id1) && $stateParams.id1 > 0) {
+      $scope.editIpaddress($stateParams.id1);
+       appService.localStorageService.set('view', 'vpn-details');
+   }
 });
 $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.vpnUserDelete, function() {
-    appService.globalConfig.webSocketLoaders.vpnLoader = false;
+   appService.globalConfig.webSocketLoaders.vpnLoader = false;
     appService.localStorageService.set('view', 'vpn-details');
-    if (!angular.isUndefined($stateParams.id1) && $stateParams.id1 > 0) {
-        $scope.editIpaddress($stateParams.id1);
-        $scope.editIpaddress($stateParams.id1);
-        appService.localStorageService.set('view', 'vpn-details');
+ 	if (!angular.isUndefined($stateParams.id1) && $stateParams.id1 > 0) {
+       $scope.editIpaddress($stateParams.id1);
+       appService.localStorageService.set('view', 'vpn-details');
     }
 });
 };
