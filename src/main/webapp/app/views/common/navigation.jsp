@@ -5,7 +5,7 @@
 <div id="navigation">
     <ul side-navigation class="nav" id="side-menu">
         <li class="" ng-class="{active: $state.includes('home')}">
-            <a ui-sref="dashboard">
+            <a ui-sref="dashboard" id="home_navigation_button">
                 <span class="pe-7s-home pe-2x nav-menu-icons"></span>
                 <span class="nav-label"><fmt:message key="common.home" bundle="${msg}" /> </span>
             </a>

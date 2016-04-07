@@ -200,7 +200,7 @@ pageEncoding="UTF-8"%>
                                             <a href="javascript:void(0);" title="<fmt:message key="reinstall.vm" bundle="${msg}" />" data-ng-click="reInstallVm('md',instance)"><span class="fa fa-history m-xs"></span> <fmt:message key="reinstall.vm" bundle="${msg}" /></a>
                                         </li>
                                         <li has-permission="DESTROY_VM" class="list-group-item" data-ng-if="instance.status == 'RUNNING' || instance.status == 'STOPPED' || instance.status == 'ERROR' || instance.status == 'DESTROYED'">
-                                            <a href="javascript:void(0);" data-ng-click="reDestroyVm('sm', instance)" title="<fmt:message key="destroy.vm" bundle="${msg}" />"><span class="fa-times-circle fa font-bold m-xs"></span> <fmt:message key="destroy.vm" bundle="${msg}" /></a>
+                                            <a href="javascript:void(0);" id="view_instance_destroy_vm" data-ng-click="reDestroyVm('sm', instance)" title="<fmt:message key="destroy.vm" bundle="${msg}" />"><span class="fa-times-circle fa font-bold m-xs"></span> <fmt:message key="destroy.vm" bundle="${msg}" /></a>
                                         </li>
                                         <li data-ng-if="instance.status == 'DESTROYED'" class="list-group-item ">
                                             <a href="javascript:void(0);" data-ng-if="instance.status == 'DESTROYED'" data-ng-click="recoverVm('sm', instance)" title="<fmt:message key="recover.vm" bundle="${msg}" />"><span class="fa-history fa font-bold m-xs"></span> <fmt:message key="recover.vm" bundle="${msg}" /></a>

@@ -44,7 +44,7 @@
 								</div>
 							</div>
 							<a
-								class="btn btn-info" has-permission="ADD_ISOLATED_NETWORK"
+								class="btn btn-info" has-permission="ADD_ISOLATED_NETWORK" id="network_add_isolated_network_button"
 								data-ng-click="openAddIsolatedNetwork('md')"><span
 									class="pe-7s-plus pe-lg font-bold m-r-xs"></span> <fmt:message
 										key="add.isolated.network" bundle="${msg}" /></a> <a
@@ -61,6 +61,7 @@
 							<span class="pull-right m-t-xs">
 									<select
 										class="form-control input-group col-xs-5" name="networkView"
+										id="network_network_view"
 										data-ng-init="network.networkView = dropnetworkLists.views[0]"
 										data-ng-model="network.networkView"
 										data-ng-change="selectView(network.networkView.name)"
@@ -70,7 +71,7 @@
 							<span class="pull-right m-r-sm m-t-xs" data-ng-show="global.sessionValues.type == 'ROOT_ADMIN'">
 								<select
 									class="form-control input-group col-xs-5" name="domainView"
-									data-ng-model="domainView"
+									data-ng-model="domainView" id="network_domain_filter"
 									data-ng-change="selectDomainView(1, domainView.id)"
 									data-ng-options="domainView.name for domainView in domainList">
 									<option value="">All Domain</option>
@@ -83,8 +84,8 @@
 				</div>
 				<div class="clearfix"></div>
 			</div>
-			<div class="row">
-				<div class="col-md-12 col-sm-12 col-xs-12 ">
+			<div class="row" id="network_pagination_container">
+				<div class="col-md-12 col-sm-12 col-xs-12 " >
 					<div class="white-content">
 							<div
 								data-ng-show="network.networkView.name == 'Guest Networks' || network.networkView.name == null">
@@ -96,7 +97,7 @@
 								</div>
 								<div data-ng-hide="showLoader"
 									class="table-responsive col-12-table">
-									<table cellspacing="1" cellpadding="1"
+									<table cellspacing="1" cellpadding="1" id="network_table"
 										class="table table-bordered dataTable table-striped">
 										<thead>
 											<tr>
@@ -135,16 +136,23 @@
 												<td>{{ network.networkType }}</td>
 												<td>{{ network.cIDR }}</td>
 												<td>{{ network.gateway}}</td>
-												<td><a class="icon-button"
+												<td>
+												<input type="hidden" id="network_unique_{{network.id}}" data-unique-field="{{network.domain.name}}-{{network.department.userName}}-{{network.name}}" class="test_network_unique">
+												<a class="icon-button test_network_edit_button" id="network_edit_button_{{network.id}}"
+												    data-unique-field="{{network.domain.name}}-{{network.department.userName}}-{{network.name}}"
 													has-permission="EDIT_NETWORK"
 													title="<fmt:message key="common.edit" bundle="${msg}" />"
 													ui-sref="cloud.list-network.view-network({id: {{ network.id }}, view: 'edit'})">
 														<span class="fa fa-edit m-r"> </span>
-												</a> <a class="icon-button" has-permission="RESTART_NETWORK"
+												</a> <a class="icon-button test_network_restart_button" id="network_restart_button_{{network.id}}"
+												    data-unique-field="{{network.domain.name}}-{{network.department.userName}}-{{network.name}}"
+												    has-permission="RESTART_NETWORK"
 													title="<fmt:message key="common.restart" bundle="${msg}" /> "
 													data-ng-click="restart('sm', network)"><span
 														class="fa fa-rotate-left m-r"></span></a> <a
-													class="icon-button" has-permission="DELETE_NETWORK"
+													class="icon-button test_network_delete_button" id="network_delete_button_{{network.id}}"
+													data-unique-field="{{network.domain.name}}-{{network.department.userName}}-{{network.name}}"
+													has-permission="DELETE_NETWORK"
 													title="<fmt:message key="common.delete" bundle="${msg}" /> "
 													data-ng-click="delete('sm', network)"><span
 														class="fa fa-trash"></span></a></td>

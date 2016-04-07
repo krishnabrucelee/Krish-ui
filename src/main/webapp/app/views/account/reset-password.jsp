@@ -7,7 +7,7 @@
 <form name="profileForm" data-ng-submit="updatePassword(profileForm, profile)" method="post" novalidate="">
     <div class="inmodal" >
         <div class="modal-header">
-            <panda-modal-header page-icon="fa fa-user" hide-zone="false"  page-title="<fmt:message key="reset.password" bundle="${msg}" />"></panda-modal-header>
+            <panda-modal-header id="reset_password_page_title" page-icon="fa fa-user" hide-zone="false"  page-title="<fmt:message key="reset.password" bundle="${msg}" />"></panda-modal-header>
         </div>
         <div class="modal-body">
             <div class="row"  >
@@ -20,7 +20,7 @@
 										bundle="${msg}" /><span class="text-danger">*</span></span>
 							</label>
 							<div class="col-md-6 col-sm-6 col-xs-6">
-								<input required="true" type="password" name="newpassword"
+								<input required="true" id="reset_password_password" type="password" name="newpassword"
 									data-ng-model="profile.newPassword" class="form-control"
 									data-ng-class="{'error': profileForm.newpassword.$invalid && formSubmitted}" />
 								<div class="error-area"
@@ -40,7 +40,7 @@
 										bundle="${msg}" /><span class="text-danger">*</span></span>
 							</label>
 							<div class="col-md-6 col-sm-6 col-xs-6">
-								<input required="true" type="password" name="confirmPassword"
+								<input required="true" type="password" id="reset_password_confirm_password" name="confirmPassword"
 									data-ng-model="profile.confirmPassword" class="form-control"
 									data-ng-class="{'error': profileForm.confirmPassword.$invalid && formSubmitted}" />
 								<div class="error-area"
@@ -58,8 +58,8 @@
         <div class="modal-footer">
         	                       									<get-loader-image data-ng-show="showLoader"></get-loader-image>
 
-            <a class="btn btn-default"  data-ng-hide="showLoader" data-ng-click="cancel()"><fmt:message key="common.cancel" bundle="${msg}" /></a>
-            <button class="btn btn-info"data-ng-hide="showLoader"  type="submit"><fmt:message key="common.update" bundle="${msg}" /></button>
+            <a class="btn btn-default" id="reset_password_cancel_button" data-ng-hide="showLoader" data-ng-click="cancel()"><fmt:message key="common.cancel" bundle="${msg}" /></a>
+            <button class="btn btn-info" id="reset_password_update_button" data-ng-hide="showLoader"  type="submit"><fmt:message key="common.update" bundle="${msg}" /></button>
         </div>
     </div>
 

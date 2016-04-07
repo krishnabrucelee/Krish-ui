@@ -5,7 +5,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <div class="inmodal" data-ng-contoller="accountListCtrl">
     <div class="modal-header">
-        <panda-modal-header hide-zone="false" page-icon="fa fa-user-secret" page-title="<fmt:message key="disable.user" bundle="${msg}" />"></panda-modal-header>
+        <panda-modal-header hide-zone="false" id="disable_user_page_title" page-icon="fa fa-user-secret" page-title="<fmt:message key="disable.user" bundle="${msg}" />"></panda-modal-header>
     </div>
 
     <div class="modal-body">
@@ -25,8 +25,8 @@
     <div class="modal-footer">
         <get-loader-image data-ng-show="showLoader"></get-loader-image>
 
-        <button type="button" data-ng-hide="showLoader" class="btn btn-default "  ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.cancel" bundle="${msg}" /></button>
-        <button type="button" data-ng-hide="showLoader" class="btn btn-info"   ng-click="ok(user)" data-dismiss="modal"><fmt:message key="common.disable" bundle="${msg}" /></button>
+        <button type="button" id="disable_user_cancel_button" data-ng-hide="showLoader" class="btn btn-default "  ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.cancel" bundle="${msg}" /></button>
+        <button type="button" id="disable_user_ok_button" data-ng-hide="showLoader" class="btn btn-info"   ng-click="ok(user)" data-dismiss="modal"><fmt:message key="common.disable" bundle="${msg}" /></button>
 
     </div>
 </div>
