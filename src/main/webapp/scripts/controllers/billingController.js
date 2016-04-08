@@ -579,11 +579,9 @@ function billingPaymentsCtrl($scope, $http, $window, $modal, $log, $state, $stat
                    makePay.then(function (result) {
                        $scope.showLoader = false;
                        $modalInstance.close();
-                       console.log(result);
                        appService.localStorageService.set("payments",result);
                        $window.location.href = '#/alipayments';
-
-                 }).catch(function (result) {$modalInstance.close();});
+                 }).catch(function (result) {$modalInstance.close();$scope.showLoader = false;});
                },
                $scope.cancel = function () {
                    $modalInstance.close();
