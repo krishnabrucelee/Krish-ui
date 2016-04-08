@@ -568,6 +568,29 @@ function billingPaymentsCtrl($scope, $http, $window, $modal, $log, $state, $stat
           $scope.configList(1);
    };
 
+   $scope.PayNow = function (size, invoice) {
+       $scope.invoice = invoice;
+       appService.dialogService.openDialog("app/views/common/confirm-payment.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+              $scope.ok = function (invoice) {
+                   $scope.showLoader = true;
+                   var makePay = appService.promiseAjax.httpTokenRequest(globalConfig.HTTP_GET, globalConfig.APP_URL + "payment/pay"
+                           +"?lang=" +appService.localStorageService.cookie.get('language')
+                           + "&invoice="+invoice.invoiceNumber+"&totalfee="+invoice.totalCost+"&client="+invoice.domain.uuid);
+                   makePay.then(function (result) {
+                       $scope.showLoader = false;
+                       $modalInstance.close();
+                       console.log(result);
+                       appService.localStorageService.set("payments",result);
+                       $window.location.href = '#/alipayments';
+
+                 }).catch(function (result) {$modalInstance.close();});
+               },
+               $scope.cancel = function () {
+                   $modalInstance.close();
+               };
+           }]);
+   };
+
     $scope.validateInvoice = function (form) {
         $scope.formSubmitted = true;
         if (form.$valid) {

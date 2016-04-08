@@ -248,6 +248,15 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider, $compile
                 }
             })
 
+            // payment
+            .state('alipayments', {
+                url : "/alipayments",
+                templateUrl : VIEW_URL + "views/common/payment-confirm.jsp",
+                data : {
+                    pageTitle : 'Payment'
+                }
+            })
+
             // Accounts
             .state('accounts', {
                 url : "/accounts",
