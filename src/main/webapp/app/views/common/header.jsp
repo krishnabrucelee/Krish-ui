@@ -25,7 +25,7 @@
 				class="label-menu-corner" ui-sref="billing.current-usage"><fmt:message
 						key="common.billing" bundle="${msg}" /><span
 					class="label label-danger">4</span></a></li>
-			<li class="dropdown active-round"><a data-toggle="dropdown"
+			<li class="dropdown active-round"><a data-toggle="dropdown" id="zone_name"
 				class="dropdown-toggle " href="javascript:void(0)"
 				title="{{global.zone.name}}"
 				ng-init="global.zone = global.zoneList[0]"> <i
@@ -33,27 +33,27 @@
 					class="caret"></span>
 			</a>
 				<ul class="dropdown-menu hdropdown">
-					<li data-ng-repeat="zone in global.zoneList"><a
+					<li data-ng-repeat="zone in global.zoneList"><a id="zone"
 						href="javascript:void(0)" ng-click="global.zone = zone">{{zone.name}}</a></li>
 				</ul></li>
 			<li class="dropdown" dropdown><a
-				class="dropdown-toggle icon-content username-area" href="#"
+				class="dropdown-toggle icon-content username-area" id="user_name" href="#"
 				dropdown-toggle> <i class="pe-7s-user"></i> <label
 					class=" m-l-sm username">{{global.sessionValues.userName}}
 				</label> <span class="caret"></span>
 			</a>
 				<ul class="dropdown-menu hdropdown flipInX">
 					<li data-ng-show="appLanguage == 'en'"><a
-						data-ng-click="updateLanguage( appLanguage )"><fmt:message
+						id ="language" data-ng-click="updateLanguage( appLanguage )"><fmt:message
 								key="common.language.name" bundle="${msg}" /></a></li>
-					<li data-ng-hide="appLanguage == 'en'"><a
+					<li data-ng-hide="appLanguage == 'en'"><a id="language"
 						data-ng-click="updateLanguage( appLanguage )"><fmt:message
 								key="common.language.name" bundle="${msg}" /> </a></li>
-					<li><a ui-sref="profile"> <fmt:message
+					<li><a ui-sref="profile" id="profile"> <fmt:message
 								key="common.profile" bundle="${msg}" />
 					</a></li>
 					<li><a>{{ "v" + global.sessionValues.buildNumber }}</<a></li>
-					<li><a href="javascript:void(0)" data-ng-click="logout()"><fmt:message
+					<li><a href="javascript:void(0)" id="logout" data-ng-click="logout()"><fmt:message
 								key="common.logout" bundle="${msg}" /> </a></li>
 				</ul></li>
 		</ul>

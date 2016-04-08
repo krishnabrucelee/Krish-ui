@@ -61,25 +61,26 @@
 		                                <div class="clearfix"></div>
 		                                </div>
 		                            </div>
-		                            <a has-permission="CREATE_PROJECT"
+		                            <input type="hidden" id="projects_unique_{{projectObj.id}}"  data-unique-field="{{ projectObj.domain.name }}-{{ projectObj.department.userName }}-{{ projectObj.projectOwner.userName }}-{{projectObj.name}}" class="test_projects_unique">
+		                            <a has-permission="CREATE_PROJECT" id="projects_create_button"
 										class="btn btn-info" data-ng-click="createProject('md')"><span
-											class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="common.create" bundle="${msg}" /></a> <a has-permission="EDIT_PROJECT" class="btn btn-info"
+											class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="common.create" bundle="${msg}" /></a> <a has-permission="EDIT_PROJECT" id="projects_edit_button" class="btn btn-info"
 										data-ng-click="editProject('md')"
 										data-ng-disabled="!oneChecked"><span
 											class="fa fa-edit fa-lg m-r-xs"></span><fmt:message key="common.edit" bundle="${msg}" /></a>
-											 <a has-permission="DELETE_PROJECT"
+											 <a has-permission="DELETE_PROJECT" id="projects_delete_button"
 										class="btn btn-danger"
 										data-ng-click="projectDeleteConfirmation('sm', project.totalCheckedCount)"
 										data-ng-disabled="!oneChecked"><span
 											class="fa fa-times-circle-o fa-lg m-r-xs"></span><fmt:message key="common.delete" bundle="${msg}" /></a>
-									    <a class="btn btn-info" ui-sref="projects" title="<fmt:message key="common.refresh" bundle="${msg}" />" ui-sref-opts="{reload: true}"><span
+									    <a class="btn btn-info" id="projects_refresh_button" ui-sref="projects" title="<fmt:message key="common.refresh" bundle="${msg}" />" ui-sref-opts="{reload: true}"><span
 											class="fa fa-refresh fa-lg "></span></a>
 								</div>
 								<div class="pull-right">
 									<panda-quick-search></panda-quick-search>
 									<span class="pull-right m-r-sm" data-ng-show="global.sessionValues.type == 'ROOT_ADMIN'">
 										<select
-											class="form-control input-group col-xs-5" name="domainView"
+											id="projects_domain_filter" class="form-control input-group col-xs-5" name="domainView"
 											data-ng-model="domainView"
 											data-ng-change="selectDomainView(1)"
 											data-ng-options="domainView.name for domainView in formElements.domainList">
@@ -94,13 +95,13 @@
 						<div class="clearfix"></div>
 					</div>
 					<div class="row" >
-						<div class="col-md-12 col-sm-12 col-xs-12 ">
+						<div class="col-md-12 col-sm-12 col-xs-12 " id="projects_pagination_container">
 							<div class="table-responsive">
 							<div class="white-content">
 					<div data-ng-show = "showLoader" style="margin: 10%">
     				  <get-loader-image data-ng-show="showLoader"></get-loader-image>
       				</div>
-									<table data-ng-hide="showLoader" cellspacing="1" cellpadding="1"
+									<table data-ng-hide="showLoader" cellspacing="1" cellpadding="1" id="projects_table"
 										class="table dataTable table-bordered table-striped">
 										<thead>
 											<tr>
@@ -125,8 +126,8 @@
 												data-ng-class="isSingle === projectObj.id ? 'bg-row text-white' : ''">
 												<td class="">
 													<div class="radio radio-single radio-info">
-														<input type="radio" value="{{projectObj.id}}"
-															data-ng-model="isSingle"
+														<input type="radio" value="{{projectObj.id}}" id="projects_radio_button_{{projectObj.id}}" class="test_projects_radio_button"
+															data-unique-field="{{ projectObj.domain.name }}-{{ projectObj.department.userName }}-{{ projectObj.projectOwner.userName }}-{{projectObj.name}}" data-ng-model="isSingle"
 															name = "projects" data-ng-click="viewProjectd(projectObj)"> <label></label>
 													</div>
 												</td>
@@ -141,7 +142,9 @@
 												<td>{{ projectObj.projectOwner.userName }}</td>
 												<td>{{ projectObj.department.userName }}</td>
 												<td>{{ projectObj.createdDateTime*1000 | date:'yyyy-MM-dd HH:mm:ss'}}</td>
-												<td><a has-permission="PROJECT_RESOURCE_QUOTA_MODIFICATION" class="icon-button" ui-sref="projects.quotalimit({id: {{projectObj.id}}, quotaType: 'project-quota'})" title="<fmt:message key="common.edit.quota" bundle="${msg}" />">
+												<td>
+												<input type="hidden" id="projects_unique_{{projectObj.id}}"  data-unique-field="{{ projectObj.domain.name }}-{{ projectObj.department.userName }}-{{ projectObj.projectOwner.userName }}-{{projectObj.name}}" class="test_projects_unique">
+												<a id="projects_quota_button_{{projectObj.id}}" data-unique-field="{{ projectObj.domain.name }}-{{ projectObj.department.userName }}-{{ projectObj.projectOwner.userName }}-{{projectObj.name}}" has-permission="PROJECT_RESOURCE_QUOTA_MODIFICATION" class="icon-button test_projects_quota_button" ui-sref="projects.quotalimit({id: {{projectObj.id}}, quotaType: 'project-quota'})" title="<fmt:message key="common.edit.quota" bundle="${msg}" />">
                                                     <span class="fa font-bold pe-7s-edit"> </span>
                                                 </a>
                                                 </td>

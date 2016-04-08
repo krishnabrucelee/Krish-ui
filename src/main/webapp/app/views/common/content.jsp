@@ -81,34 +81,34 @@
                     </ol>
                 </div>
                 <h2 class="font-light m-b-xs">
-                    <span data-ng-if="$state.current.data.pageTitle === 'common.instances'"><fmt:message key="common.instances" bundle="${msg}" /></span>
+                    <span id="instances_page_title" data-ng-if="$state.current.data.pageTitle === 'common.instances'"><fmt:message key="common.instances" bundle="${msg}" /></span>
                 </h2>
                 <h2 class="font-light m-b-xs">
-                    <span data-ng-if="$state.current.data.pageTitle === 'common.projects'"><fmt:message key="common.projects" bundle="${msg}" /></span>
+                    <span id="projects_page_title" data-ng-if="$state.current.data.pageTitle === 'common.projects'"><fmt:message key="common.projects" bundle="${msg}" /></span>
                 </h2>
                 <h2 class="font-light m-b-xs">
-                    <span data-ng-if="$state.current.data.pageTitle === 'common.volume'"><fmt:message key="common.volume" bundle="${msg}" /></span>
+                    <span id="volume_page_title" data-ng-if="$state.current.data.pageTitle === 'common.volume'"><fmt:message key="common.volume" bundle="${msg}" /></span>
                 </h2>
                 <h2 class="font-light m-b-xs">
-                    <span data-ng-if="$state.current.data.pageTitle === 'common.network'"><fmt:message key="common.network" bundle="${msg}" /></span>
+                    <span id="network_page_title" data-ng-if="$state.current.data.pageTitle === 'common.network'"><fmt:message key="common.network" bundle="${msg}" /></span>
                 </h2>
                 <h2 class="font-light m-b-xs">
-                    <span data-ng-if="$state.current.data.pageTitle === 'common.snapshot'"><fmt:message key="common.snapshot" bundle="${msg}" /></span>
+                    <span id="snapshot_page_title" data-ng-if="$state.current.data.pageTitle === 'common.snapshot'"><fmt:message key="common.snapshot" bundle="${msg}" /></span>
                 </h2>
                 <h2 class="font-light m-b-xs">
-                    <span data-ng-if="$state.current.data.pageTitle === 'common.ssh.keys'"><fmt:message key="common.ssh.keys" bundle="${msg}" /></span>
+                    <span id="ssh_key_page_title" data-ng-if="$state.current.data.pageTitle === 'common.ssh.keys'"><fmt:message key="common.ssh.keys" bundle="${msg}" /></span>
                 </h2>
                 <h2 class="font-light m-b-xs">
-                    <span data-ng-if="$state.current.data.pageTitle === 'common.quota.limit'"><fmt:message key="common.quota.limit" bundle="${msg}" /></span>
+                    <span id="quota_limit_page_title" data-ng-if="$state.current.data.pageTitle === 'common.quota.limit'"><fmt:message key="common.quota.limit" bundle="${msg}" /></span>
                 </h2>
                 <h2 class="font-light m-b-xs">
-                    <span data-ng-if="$state.current.data.pageTitle === 'view.instance'">{{ $state.current.data.pageName }}</span>
+                    <span id="view_instance_page_title" data-ng-if="$state.current.data.pageTitle === 'view.instance'">{{ $state.current.data.pageName }}</span>
                 </h2>
                 <h2 class="font-light m-b-xs">
-                    <span data-ng-if="$state.current.data.pageTitle === 'ip.address'"><fmt:message key="ip.address" bundle="${msg}" /></span>
+                    <span id="ip_address_page_title" data-ng-if="$state.current.data.pageTitle === 'ip.address'"><fmt:message key="ip.address" bundle="${msg}" /></span>
                 </h2>
                 <h2 class="font-light m-b-xs">
-                    <span data-ng-if="$state.current.data.pageTitle === 'view.network'">{{ $state.current.data.pageName }}</span>
+                    <span id="view_network_page_title" data-ng-if="$state.current.data.pageTitle === 'view.network'">{{ $state.current.data.pageName }}</span>
                 </h2>
                 <small>{{ $state.current.data.pageDesc}}</small>
             </div>
