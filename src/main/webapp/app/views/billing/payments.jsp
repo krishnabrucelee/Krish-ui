@@ -53,7 +53,7 @@
                                     	<th class="col-md-1 col-sm-1" data-ng-click="changeSort('transactionReference',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='transactionReference'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.transaction.reference" bundle="${msg}" /></th>
                                     	<th class="col-md-1 col-sm-1" data-ng-click="changeSort('paymentMethod',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='paymentMethod'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.payment.method" bundle="${msg}" /></th>
                                     	<th class="col-md-1 col-sm-1" data-ng-click="changeSort('status',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='status'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.status" bundle="${msg}" /></th>
-                                    	<%-- <th class="col-md-2 col-sm-2"><fmt:message key="common.action" bundle="${msg}" /></th> --%>
+                                    	<th class="col-md-2 col-sm-2"><fmt:message key="common.action" bundle="${msg}" /></th>
                                     </tr>
                                 </thead>
                                 <tbody data-ng-hide="invoiceList.length > 0">
@@ -69,11 +69,10 @@
                                         <td>{{ invoice.totalCost}}</td>
                                         <td>{{ invoice.dueDate | date:'yyyy-MM-dd HH:mm:ss'}}</td>
                                         <td>{{ invoice.paidOn | date:'yyyy-MM-dd HH:mm:ss'}}</td>
-                                        <td>-</td>
+                                        <td>{{invoice.transactionReference}}</td>
                                         <td>{{ invoice.paymentMethod}}</td>
                                         <td>{{ invoice.status}}</td>
-                                        <!-- <td></td> -->
-                                    </tr>
+                                        <td><a data-ng-show="invoice.status != 'PAID'" class="btn btn-info btn-sm m-l-sm m-t-xs" title="Mark as Paid" data-ng-click="PayNow('sm', invoice)">Mark as Paid</a></td>
                                 </tbody>
                             </table>
                         </div>

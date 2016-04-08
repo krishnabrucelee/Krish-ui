@@ -290,7 +290,7 @@ function globalConfig($window) {
         HTTP_DELETE : 'DELETE',
         APP_URL : "http://localhost:8080/api/",
         SOCKET_URL : "http://localhost:8080/",
-        PING_APP_URL : "http://localhost:8086/api/",
+        PING_APP_URL : "http://192.168.1.153:8086/api/",
         MONITOR_URL : "http://211.156.49.15:4242/api/",
         CONTENT_LIMIT : 10,
         VIEW_URL : 'app/views/',
