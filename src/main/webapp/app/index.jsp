@@ -222,6 +222,7 @@
     <script src="scripts/controllers/projectController.js"></script>
     <script src="scripts/controllers/accountController.js"></script>
     <script src="scripts/controllers/applicationController.js"></script>
+    <script src="scripts/controllers/paymentController.js"></script>
     <script src="scripts/factories/appService.js"></script>
     <script src="scripts/factories/utilService.js"></script>
     <script src="scripts/factories/loginService.js"></script>
