@@ -57,8 +57,8 @@
                             <input type="password" title="Please enter your password" placeholder="******" required="" data-ng-model="user_password" name="user_password" id="user_password" class="form-control">
                         </div>
                         <div class="form-group">
-                            <label class="control-label" for="domain">Domain</label>
-                            <input type="text" placeholder="domain" title="Please enter you domain" required="" data-ng-model="user_domain" name="user_domain" id="user_domain" class="form-control">
+                            <label class="control-label" for="domain">Company</label>
+                            <input type="text" placeholder="Company" title="Please enter you domain" required="" data-ng-model="user_domain" name="user_domain" id="user_domain" class="form-control">
                         </div>
                         <div class="checkboxs">
                             <input data-ng-click="rememberMe()" id="user_remember" data-ng-model="user_remember" name="user_remember" type="checkbox">
