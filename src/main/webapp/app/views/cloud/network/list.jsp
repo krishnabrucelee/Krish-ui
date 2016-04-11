@@ -16,70 +16,69 @@
 							<div class="dashboard-box pull-left">
 								<div class="instance-border-content-normal">
 									<span class="pull-left"><img
-										src="images/network-icon.png"></span>
-									<span class="pull-left m-t-xs m-l-xs m-r-xs"><fmt:message key="total.network"
-											bundle="${msg}" /></span>
-									 <b class="pull-left">{{networkList.Count}}</b>
+										src="images/network-icon.png"></span> <span
+										class="pull-left m-t-xs m-l-xs m-r-xs"><fmt:message
+											key="total.network" bundle="${msg}" /></span> <b class="pull-left">{{networkList.Count}}</b>
 									<div class="clearfix"></div>
 								</div>
 							</div>
 							<div class="dashboard-box pull-left">
 								<div class="instance-border-content-normal">
 									<span class="pull-left"><img
-										src="images/network-icon.png"></span>
-									<span class="pull-left m-t-xs m-l-xs m-r-xs"><fmt:message
-											key="isolated.network" bundle="${msg}" /></span>
-									 <b class="pull-left">{{networkList.Count}}</b>
+										src="images/network-icon.png"></span> <span
+										class="pull-left m-t-xs m-l-xs m-r-xs"><fmt:message
+											key="isolated.network" bundle="${msg}" /></span> <b
+										class="pull-left">{{networkList.Count}}</b>
 									<div class="clearfix"></div>
 								</div>
 							</div>
 							<div class="dashboard-box pull-left">
 								<div class="instance-border-content-normal">
 									<span class="pull-left"><img
-										src="images/network-icon.png"></span>
-									<span class="pull-left m-t-xs m-l-xs m-r-xs"><fmt:message
-											key="shared.network" bundle="${msg}" /></span>
-									 <b class="pull-left">0</b>
+										src="images/network-icon.png"></span> <span
+										class="pull-left m-t-xs m-l-xs m-r-xs"><fmt:message
+											key="shared.network" bundle="${msg}" /></span> <b class="pull-left">0</b>
 									<div class="clearfix"></div>
 								</div>
 							</div>
-							<a
-								class="btn btn-info" has-permission="ADD_ISOLATED_NETWORK" id="network_add_isolated_network_button"
+							<a class="btn btn-info" has-permission="ADD_ISOLATED_NETWORK"
+								id="network_add_isolated_network_button"
 								data-ng-click="openAddIsolatedNetwork('md')"><span
-									class="pe-7s-plus pe-lg font-bold m-r-xs"></span> <fmt:message
-										key="add.isolated.network" bundle="${msg}" /></a> <a
+								class="pe-7s-plus pe-lg font-bold m-r-xs"></span> <fmt:message
+									key="add.isolated.network" bundle="${msg}" /></a> <a
 								class="btn btn-info" ui-sref="cloud.list-network"
 								title="<fmt:message key="common.refresh" bundle="${msg}" /> "
 								ui-sref-opts="{reload: true}"><span
-									class="fa fa-refresh fa-lg"></span></a>
-						</div>
-						<div class="pull-right">
+								class="fa fa-refresh fa-lg"></span>
+							</a>
+							</div>
+							<div class="pull-right">
 							<panda-quick-search></panda-quick-search>
 						</div>
-							<div class="clearfix"></div>
-							<div>
-							<span class="pull-right m-t-xs">
-									<select
-										class="form-control input-group col-xs-5" name="networkView"
-										id="network_network_view"
-										data-ng-init="network.networkView = dropnetworkLists.views[0]"
-										data-ng-model="network.networkView"
-										data-ng-change="selectView(network.networkView.name)"
-										data-ng-options="networkView.name for networkView in dropnetworkLists.views">
-									</select>
+							<div class=""> 
+							<span
+								class=" m-l-sm m-r-sm  pull-right"> <select
+								class="form-control input-group col-xs-5" name="networkView"
+								id="network_network_view"
+								data-ng-init="network.networkView = dropnetworkLists.views[0]"
+								data-ng-model="network.networkView"
+								data-ng-change="selectView(network.networkView.name)"
+								data-ng-options="networkView.name for networkView in dropnetworkLists.views">
+							</select>
 							</span>
-							<span class="pull-right m-r-sm m-t-xs" data-ng-show="global.sessionValues.type == 'ROOT_ADMIN'">
-								<select
-									class="form-control input-group col-xs-5" name="domainView"
-									data-ng-model="domainView" id="network_domain_filter"
-									data-ng-change="selectDomainView(1, domainView.id)"
-									data-ng-options="domainView.name for domainView in domainList">
-									<option value="">All Domain</option>
-								</select>
+							<span class="m-l-sm pull-right"
+								data-ng-show="global.sessionValues.type == 'ROOT_ADMIN'">
+								<select class="form-control input-group col-xs-5"
+								name="domainView" data-ng-model="domainView"
+								id="network_domain_filter"
+								data-ng-change="selectDomainView(1, domainView.id)"
+								data-ng-options="domainView.name for domainView in domainList">
+									<option value=""> <fmt:message key="common.domain.filter" bundle="${msg}" /></option>
+							</select>
 							</span>
-							<div class="clearfix"></div>
-							<span class="pull-right m-l-sm m-t-sm"></span>
-						</div>
+							</div>
+							
+						<div class="clearfix"></div>
 					</div>
 				</div>
 				<div class="clearfix"></div>
