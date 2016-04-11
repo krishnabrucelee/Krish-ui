@@ -22,7 +22,7 @@ pageEncoding="UTF-8"%>
 									data-ng-model="domainView"
 									data-ng-change="selectDomainView()"
 									data-ng-options="domainView.name for domainView in domainList">
-									<option value="">All Domain</option>
+									<option value=""> <fmt:message key="common.domain.filter" bundle="${msg}" /></option>
 								</select>
 							</span>
                     </div>

@@ -75,7 +75,7 @@
 											data-ng-model="domainView" id = "accounts_domain_filter"
 											data-ng-change="selectDomainView(1)"
 											data-ng-options="domainView.name for domainView in accountElements.domainList">
-											<option value="">All Domain</option>
+											<option value=""> <fmt:message key="common.domain.filter" bundle="${msg}" /></option>
 										</select>
 		                    </span>
 
