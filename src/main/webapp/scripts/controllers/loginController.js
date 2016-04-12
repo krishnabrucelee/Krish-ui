@@ -22,11 +22,11 @@ angular.module('homer', []).controller("loginCtrl", function ($scope, $http, glo
 
         $http({method: 'POST', url: globalConfig.APP_URL + 'authenticate', headers: headers})
             .success(function (result) {
-                console.log("User", result.userStatus);
-               //$window.sessionStorage.token = result.token;
+                console.log("User", result);
+               $window.sessionStorage.token = result.token;
                $window.sessionStorage.setItem("loginSession", JSON.stringify(result));
                if(result.userStatus == "SUSPENDED") {
-                   window.location.href = "index#/billing/invoice";
+                   window.location.href = "index#/billing/usage";
                } else {
                    window.location.href = "index#/dashboard";
                }
