@@ -7,9 +7,11 @@ function webSocket($rootScope, $timeout, webSockets, globalConfig, notify) {
 
     var initStompClient = function() {
         webSockets.init(globalConfig.SOCKET_URL + 'socket/ws');
-        headers['x-auth-token'] = globalConfig.sessionValues.token;
         webSockets.connect(function(frame) {
             console.log(frame);
+            webSockets.subscribe("/topic/test", function(message) {
+                console.log(message.body);
+            });
         }, function(error) {
             console.log(error);
         });
