@@ -9,10 +9,11 @@ angular.module('homer').factory('webSockets', [ '$rootScope', 'globalConfig', fu
 
         init : function(url) {
             stompClient = Stomp.over(new SockJS(url));
+            headers['x-auth-token'] = globalConfig.sessionValues.token;
             // stompClient.debug = null;
         },
         connect : function(successCallback, errorCallback) {
-            stompClient.connect({}, function(frame) {
+            stompClient.connect(headers, function(frame) {
                 $rootScope.$apply(function() {
                     successCallback(frame);
                 });
