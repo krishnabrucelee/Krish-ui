@@ -894,14 +894,6 @@ $scope.delete = function (size, volume) {
                 	volume.domainId = volume.domain.id;
                 	delete volume.domain;
                 }
-                if(!angular.isUndefined(volume.storageOffering) && volume.storageOffering != null) {
-                	volume.storageOfferingId = volume.storageOffering.id;
-                	delete volume.storageOffering;
-                }
-                if(!angular.isUndefined(volume.department) && volume.department != null) {
-                	volume.departmentId = volume.department.id;
-                	delete volume.department;
-                }
                 if(!angular.isUndefined(volume.project) && volume.project != null) {
                 	volume.projectId = volume.project.id;
                 	delete volume.project;

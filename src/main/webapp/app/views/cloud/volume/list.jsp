@@ -134,8 +134,7 @@ pageEncoding="UTF-8"%>
                                 </tr>
                             </tbody>
                         </table>
-
-                        </div>
+                       </div>
                     </div>
                 </div>
             </div>
