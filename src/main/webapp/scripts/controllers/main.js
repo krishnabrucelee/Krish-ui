@@ -14,10 +14,10 @@ function appCtrl($http, $scope, $window, $timeout, globalConfig, crudService, pr
 
     $scope.checkOne = true;
     $scope.appLanguage = function() {
-    	if(localStorageService.cookie.get('language') == null) {
-    		localStorageService.cookie.set('language', 'en');
-    	}
-    	return localStorageService.cookie.get('language');
+        if(localStorageService.cookie.get('language') == null) {
+            localStorageService.cookie.set('language', 'en');
+        }
+        return localStorageService.cookie.get('language');
     }();
 
     /**
@@ -321,29 +321,29 @@ function appCtrl($http, $scope, $window, $timeout, globalConfig, crudService, pr
 
 
     $scope.updateLanguage = function(language) {
-    	if(localStorageService.cookie.get('language') == 'en') {
-    		localStorageService.cookie.set('language', 'zh');
-    	} else {
-    		localStorageService.cookie.set('language', 'en');
-    	}
-    	$window.location.reload();
+        if(localStorageService.cookie.get('language') == 'en') {
+            localStorageService.cookie.set('language', 'zh');
+        } else {
+            localStorageService.cookie.set('language', 'en');
+        }
+        $window.location.reload();
     }
 
     /**
      *  Logout a user.
      */
     $scope.logout = function() {
-    	$window.sessionStorage.removeItem("loginSession")
-	    window.location.href = "login";
+        $window.sessionStorage.removeItem("loginSession")
+        window.location.href = "login";
     }
 
     $scope.getZoneList = function (pageNumber) {
-    	$scope.paginationObject = {};
+        $scope.paginationObject = {};
       var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
       var hasZones = crudService.list("zones", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
       hasZones.then(function (result) {  // this is only run after $http completes0
 
-    	  $scope.global.zoneList = result;
+          $scope.global.zoneList = result;
 
           // For pagination
           $scope.paginationObject.limit  = limit;

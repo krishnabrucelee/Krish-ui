@@ -7,7 +7,7 @@ angular.module('homer', []).controller("loginCtrl", function ($scope, $http, glo
 
     $scope.loginForm = function () {
 
-    	if ($scope.user_remember) {
+        if ($scope.user_remember) {
             $remember('user_name', $scope.user_name);
             $remember('user_password', $scope.user_password);
             $remember('user_domain', $scope.user_domain);
@@ -22,13 +22,18 @@ angular.module('homer', []).controller("loginCtrl", function ($scope, $http, glo
 
         $http({method: 'POST', url: globalConfig.APP_URL + 'authenticate', headers: headers})
             .success(function (result) {
-               //$window.sessionStorage.token = result.token;
+                console.log("User", result);
+               $window.sessionStorage.token = result.token;
                $window.sessionStorage.setItem("loginSession", JSON.stringify(result));
-               window.location.href = "index#/dashboard";
+               if(result.userStatus == "SUSPENDED") {
+                   window.location.href = "index#/billing/usage";
+               } else {
+                   window.location.href = "index#/dashboard";
+               }
            }).catch(function (result) {
-        	   $window.sessionStorage.removeItem("loginSession")
+               $window.sessionStorage.removeItem("loginSession")
                   if (!angular.isUndefined(result.data)) {
-        	          var target = document.getElementById("errorMsg");
+                      var target = document.getElementById("errorMsg");
                       target.innerHTML = result.data.message;
                       target.style.display = 'block';
                       target.style["margin-bottom"] = '10px';
@@ -53,7 +58,7 @@ angular.module('homer', []).controller("loginCtrl", function ($scope, $http, glo
     //Load cookie user name and password
     $scope.user_remember = false;
     if ($remember('user_name') && $remember('user_password') ) {
-    	$scope.user_remember = true;
+        $scope.user_remember = true;
         $scope.user_name = $remember('user_name');
         $scope.user_password = $remember('user_password');
         $scope.user_domain = $remember('user_domain');
