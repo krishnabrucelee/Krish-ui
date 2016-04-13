@@ -46,7 +46,7 @@ function accountListCtrl($scope,$state, $log,$timeout,$stateParams, appService, 
     };
     $scope.activeUsers = [];
     $scope.active = {};
-	$scope.inActive = {};
+    $scope.inActive = {};
     $scope.oneChecked = false;
     $scope.default_option = true;
     $scope.revokes = false;
@@ -592,5 +592,3 @@ function editCtrl($scope, account, notify, $modalInstance) {
         }
     }
 }
-
-
