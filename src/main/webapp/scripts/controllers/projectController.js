@@ -324,17 +324,6 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams, localStor
         $scope.checkOne(project);
     };
 
-    //$scope.viewProjectd = function(project) {
-   // 	$scope.editProjects = angular.copy(project);
-   // 	$scope.projectInfo = angular.copy(project);
-   // 	if(!angular.isUndefined($scope.projectInfo.department) && $scope.projectInfo.department != null ){
-   // 		$scope.userLists($scope.projectInfo);
-//	}
-   //	 	$scope.project = $scope.editProjects;
-   // 	$scope.oneChecked = true;
-  //  };
-
-
     $scope.projectForm = {};
     $scope.createProject = function (size) {
     	$scope.newProject = {};

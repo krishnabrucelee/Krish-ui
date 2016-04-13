@@ -7,7 +7,7 @@
 <div class="row" ng-controller="billingCtrl">
     <div class="hpanel">
         <div class="panel-heading">
-            <div class="row">
+            <div class="">
                 <div class="col-lg-10 col-md-10 col-sm-10 col-md-offset-1">
                     <div class="panel-info panel ">
                         <div class="panel-heading">
@@ -68,9 +68,6 @@
                                 </div>
                                 </div>
                                 </div>
-
-
-
                             </div>
                             <div class="col-md-6  col-sm-6" data-ng-show="global.sessionValues.type == 'ROOT_ADMIN'">
 
@@ -143,8 +140,8 @@
             </div>
             <hr>
         </div>
-        <div class="row">
-            <div class="col-md-10 col-sm-10 col-xs-10 col-md-offset-1">
+        <div class="">
+            <div class="col-md-10 col-sm-12 col-xs-10 col-md-offset-1">
                 <div class="white-content">
 
                     <div data-ng-hide="showLoader" style="margin: 1%">

@@ -10,13 +10,9 @@ pageEncoding="UTF-8"%>
                 <div class="row">
                     <div class="col-md-12 col-sm-12 col-xs-12">
                         <div class="pull-right ">
-                        <panda-quick-search></panda-quick-search>
-                        	<div class="clearfix"></div>
-                                <span class="pull-right m-l-sm m-t-sm">
-                                	<a class="btn btn-info" ui-sref="cloud.quota-limit" title="<fmt:message key="common.refresh" bundle="${msg}" /> " ui-sref-opts="{reload: true}" ><span class="fa fa-refresh fa-lg"></span></a>
-                                </span>
-                        </div>
-                        	<span class="pull-right m-r-sm" data-ng-show="global.sessionValues.type == 'ROOT_ADMIN'">
+	                        
+	                        <panda-quick-search></panda-quick-search>
+	                        <span class="pull-right m-r-sm" data-ng-show="global.sessionValues.type == 'ROOT_ADMIN'">
 								<select
 									class="form-control input-group col-xs-5" name="domainView"
 									data-ng-model="domainView"
@@ -25,6 +21,13 @@ pageEncoding="UTF-8"%>
 									<option value=""> <fmt:message key="common.domain.filter" bundle="${msg}" /></option>
 								</select>
 							</span>
+							<span class="pull-right m-r-sm">
+	                        	<a class="btn btn-info" ui-sref="cloud.quota-limit" title="<fmt:message key="common.refresh" bundle="${msg}" /> " ui-sref-opts="{reload: true}" ><span class="fa fa-refresh fa-lg"></span></a>
+	                        </span>
+                        	<div class="clearfix"></div>
+                                
+                        </div>
+                        	
                     </div>
                 </div>
             </div>
@@ -86,7 +89,7 @@ pageEncoding="UTF-8"%>
 
                                             </div>
 
-                                            <div class="col-md-12 col-sm-6 col-xs-12">
+                                            <div class="col-md-12 col-sm-12 col-xs-12">
                                                 <div class="row">
                                                     <div class="col-md-6 col-sm-6 col-xs-6">
 

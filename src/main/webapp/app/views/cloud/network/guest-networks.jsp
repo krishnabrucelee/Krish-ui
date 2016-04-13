@@ -11,7 +11,7 @@
 		<get-loader-image data-ng-show="showLoader"></get-loader-image>
 	</div>
 
-	<div data-ng-hide="showLoader" class="table-responsive col-12-table">
+	<div data-ng-hide="showLoader" class="table-responsive">
 		<table cellspacing="1" cellpadding="1"
 			class="table dataTable table-bordered table-striped">
 			<thead>

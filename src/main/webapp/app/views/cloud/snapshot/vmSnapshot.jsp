@@ -17,7 +17,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12 col-sm-12 col-xs-12 ">
-                    	<div class="pull-left">
+                    	<div class="pull-left dashboard-btn-area">
                             <div class="dashboard-box pull-left">
      							<div class="instance-border-content-normal">
                                 <span class="pull-left m-t-xs m-l-xs m-r-xs"><fmt:message key="total.vm.snapshot" bundle="${msg}" /></span>
@@ -28,7 +28,7 @@
                             <a class="btn btn-info"  ng-click="openAddVMSnapshotContainer()"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="create.vm.snapshot" bundle="${msg}" /></a>
                             <a class="btn btn-info" ui-sref="cloud.list-snapshot" title="<fmt:message key="common.refresh" bundle="${msg}" />"  ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
                         </div>
-                        <div class="pull-right">
+                        <div class="pull-right dashboard-filters-area">
 					        <panda-quick-search></panda-quick-search>
 					        <span class="pull-right m-r-sm" data-ng-show="global.sessionValues.type == 'ROOT_ADMIN'">
 								<select
@@ -48,7 +48,7 @@
               </div>
             <div class="white-content">
 				<div data-ng-show = "showLoaderOffer" style="margin: 1%"><get-loader-image-offer data-ng-show="showLoaderOffer"></get-loader-image-offer></div>
-      					<div  data-ng-hide="showLoaderOffer" class="table-responsive col-12-table">
+      					<div  data-ng-hide="showLoaderOffer" class="table-responsive">
                         <table cellspacing="1" cellpadding="1" class="table dataTable table-bordered table-striped">
                             <thead>
                             <tr>

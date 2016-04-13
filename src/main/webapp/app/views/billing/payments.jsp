@@ -18,7 +18,7 @@
 									<option value="">All Status</option>
 								</select>
 							</span>
-							<span data-ng-show="global.sessionValues.type == 'ROOT_ADMIN'" class="pull-right m-r-sm">
+							<span data-ng-show="global.sessionValues.type == 'ROOT_ADMIN'" class="pull-right m-r-sm ">
 								<select
 									class="form-control input-group col-xs-5" name="domainView"
 									data-ng-model="domainView"

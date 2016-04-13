@@ -8,7 +8,7 @@
         <div class="panel-heading">
             <div class="row">
                 <div class="col-md-12 col-sm-12 col-xs-12">
-                    <div class="pull-left">
+                    <div class="pull-left dashboard-btn-area">
                     	<div class="dashboard-box pull-left">
   							<div class="instance-border-content-normal">
                              <span class="pull-left m-t-xs m-l-xs m-r-xs"><fmt:message key="common.total" bundle="${msg}" /></span>
@@ -19,7 +19,7 @@
                          <a has-permission="CREATE_SSH_KEY" class="btn btn-info"  ng-click="createSSHKey('md')"  data-backdrop="static" data-keyboard="false"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="create.ssh.key.pair" bundle="${msg}" /></a>
                          <a class="btn btn-info" data-ng-click="list(1)"  title="<fmt:message key="common.refresh" bundle="${msg}"/>"><span class="fa fa-refresh fa-lg "></span></a>
                     </div>
-                    <div class="pull-right">
+                    <div class="pull-right dashboard-filters-area">
                         <div class="quick-search pull-right m-r-sm">
 							<div class="input-group">
 								<input data-ng-model="sshkeySearch" type="text" class="form-control input-medium" placeholder="<fmt:message key="common.quick.search" bundle="${msg}" />" aria-describedby="quicksearch-go">
