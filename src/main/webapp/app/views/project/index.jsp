@@ -142,7 +142,7 @@
 												<a
 													has-permission="DELETE_PROJECT" id="projects_delete_button"
 													class="icon-button"
-													data-ng-click="projectDeleteConfirmation('sm', project.totalCheckedCount)"
+													data-ng-click="projectDeleteConfirmation('sm', projectObj)"
 												 title="<fmt:message key="common.delete" bundle="${msg}" />"><span
 														class="fa fa-trash  m-r-xs"></span>
 												</a>

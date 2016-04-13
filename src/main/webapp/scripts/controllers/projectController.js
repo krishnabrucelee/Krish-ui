@@ -510,9 +510,9 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams, localStor
 
 
     // Delete the department
-    $scope.projectDeleteConfirmation = function (size) {
+    $scope.projectDeleteConfirmation = function (size,projectObj) {
         appService.dialogService.openDialog("app/views/project/delete.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
-                var deleteObject = $scope.editProjects;
+                var deleteObject = angular.copy(projectObj);
                 $scope.deleteProject = function () {
                     var hasServer = appService.crudService.softDelete("projects", deleteObject);
                     hasServer.then(function (result) {
