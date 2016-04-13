@@ -113,7 +113,7 @@ function billingCtrl($scope, appService, globalConfig, localStorageService, $win
                 domainUuid = appService.globalConfig.sessionValues.domainAbbreviationName;
             }
 
-            var hasServer = appService.promiseAjax.httpRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.PING_APP_URL
+            var hasServer = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL
                     + "usage/listUsageByPeriod?fromDate="+ startDate +"&toDate=" + endDate + "&groupingType=" + groupBy + "&domainUuid=" + domainUuid);
             hasServer.then(function (result) {  // this is only run after $http completes
                 $scope.usageStatistics = result;
@@ -300,11 +300,11 @@ function billingInvoiceCtrl($scope, $http, $window, $modal, $log, $state, $state
             if (($scope.domainView == null || angular.isUndefined($scope.domainView))
                     && ($scope.statusView == null || angular.isUndefined($scope.statusView))) {
                 if (appService.globalConfig.sessionValues.type !== 'ROOT_ADMIN') {
-                    hasConfigList =  appService.promiseAjax.httpRequestPing(appService.globalConfig.HTTP_GET, appService.globalConfig.PING_APP_URL + "invoice/listByDomain"
+                    hasConfigList =  appService.promiseAjax.httpRequestPing(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "usage/invoice/listByDomain"
                             +"?lang=" +appService.localStorageService.cookie.get('language')
                             + "&domainUuid="+appService.globalConfig.sessionValues.domainAbbreviationName+"&status=null&sortBy="+$scope.paginationObject.sortOrder+$scope.paginationObject.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
                 } else {
-                    hasConfigList = appService.promiseAjax.httpRequestPing(appService.globalConfig.HTTP_GET, appService.globalConfig.PING_APP_URL + "invoice?lang="+ appService.localStorageService.cookie.get('language')
+                    hasConfigList = appService.promiseAjax.httpRequestPing(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "usage/invoice?lang="+ appService.localStorageService.cookie.get('language')
                             +"&sortBy="+sortOrder+sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
                 }
             } else {
@@ -318,7 +318,7 @@ function billingInvoiceCtrl($scope, $http, $window, $modal, $log, $state, $state
                    if (appService.globalConfig.sessionValues.type !== 'ROOT_ADMIN') {
                       domainViewAbbr = appService.globalConfig.sessionValues.domainAbbreviationName;
                   }
-                hasConfigList =  appService.promiseAjax.httpRequestPing(appService.globalConfig.HTTP_GET, appService.globalConfig.PING_APP_URL + "invoice/listByDomain"
+                hasConfigList =  appService.promiseAjax.httpRequestPing(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "usage/invoice/listByDomain"
                     +"?lang=" +appService.localStorageService.cookie.get('language')
                     + "&domainUuid="+domainViewAbbr+"&status="+$scope.statusView+"&sortBy="+$scope.paginationObject.sortOrder+$scope.paginationObject.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
             }
@@ -353,11 +353,11 @@ function billingInvoiceCtrl($scope, $http, $window, $modal, $log, $state, $state
       if (($scope.domainView == null || angular.isUndefined($scope.domainView))
               && ($scope.statusView == null || angular.isUndefined($scope.statusView))) {
           if (appService.globalConfig.sessionValues.type !== 'ROOT_ADMIN') {
-              hasConfigList =  appService.promiseAjax.httpRequestPing(appService.globalConfig.HTTP_GET, appService.globalConfig.PING_APP_URL + "invoice/listByDomain"
+              hasConfigList =  appService.promiseAjax.httpRequestPing(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "usage/invoice/listByDomain"
                         +"?lang=" +appService.localStorageService.cookie.get('language')
                         + "&domainUuid="+appService.globalConfig.sessionValues.domainAbbreviationName+"&status=null&sortBy="+$scope.paginationObject.sortOrder+$scope.paginationObject.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
           } else {
-              hasConfigList = appService.promiseAjax.httpRequestPing(appService.globalConfig.HTTP_GET, appService.globalConfig.PING_APP_URL + "invoice?lang="+ appService.localStorageService.cookie.get('language')
+              hasConfigList = appService.promiseAjax.httpRequestPing(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "usage/invoice?lang="+ appService.localStorageService.cookie.get('language')
                           +"&sortBy="+$scope.paginationObject.sortOrder+$scope.paginationObject.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
           }
       } else {
@@ -372,7 +372,7 @@ function billingInvoiceCtrl($scope, $http, $window, $modal, $log, $state, $state
                domainViewAbbr = appService.globalConfig.sessionValues.domainAbbreviationName;
              }
 
-           hasConfigList =  appService.promiseAjax.httpRequestPing(appService.globalConfig.HTTP_GET, appService.globalConfig.PING_APP_URL + "invoice/listByDomain"
+           hasConfigList =  appService.promiseAjax.httpRequestPing(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "usage/invoice/listByDomain"
                 +"?lang=" +appService.localStorageService.cookie.get('language')
                 + "&domainUuid="+domainViewAbbr+"&status="+$scope.statusView+"&sortBy="+$scope.paginationObject.sortOrder+$scope.paginationObject.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
       }
@@ -397,36 +397,36 @@ function billingInvoiceCtrl($scope, $http, $window, $modal, $log, $state, $state
           $scope.configList(1);
    };
 
-    $scope.validateInvoice = function (form) {
-        $scope.formSubmitted = true;
-        if (form.$valid) {
-            var config = $scope.config;
-            config.dateFormatType = config.dateFormatType.id;
-            $scope.showLoader = true;
-            var hasConfig = appService.promiseAjax.httpRequestPing(globalConfig.HTTP_POST, globalConfig.PING_APP_URL + "configuration", config);
-            hasConfig.then(function (result) {  // this is only run after $http
-                $scope.showLoader = false;
-                $scope.homerTemplate = 'app/views/notification/notify.jsp';
-                appService.notify({message: 'Updated successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
-                $scope.configList();
-
-            }).catch(function (result) {
-                $scope.showLoader = false;
-                if (!angular.isUndefined(result.data)) {
-                    if (result.data.globalError != '' && !angular.isUndefined(result.data.globalError)) {
-                        var msg = result.data.globalError[0];
-                        $scope.showLoader = false;
-                        appService.notify({message: msg, classes: 'alert-danger', templateUrl: appService.globalConfig.NOTIFICATION_TEMPLATE});
-                    } else if (result.data.fieldErrors != null) {
-                        angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
-                            $scope.configForm[key].$invalid = true;
-                            $scope.configForm[key].errorMessage = errorMessage;
-                        });
-                    }
-                }
-            });
-        }
-    };
+//    $scope.validateInvoice = function (form) {
+//        $scope.formSubmitted = true;
+//        if (form.$valid) {
+//            var config = $scope.config;
+//            config.dateFormatType = config.dateFormatType.id;
+//            $scope.showLoader = true;
+//            var hasConfig = appService.promiseAjax.httpRequestPing(globalConfig.HTTP_POST, globalConfig.PING_APP_URL + "configuration", config);
+//            hasConfig.then(function (result) {  // this is only run after $http
+//                $scope.showLoader = false;
+//                $scope.homerTemplate = 'app/views/notification/notify.jsp';
+//                appService.notify({message: 'Updated successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
+//                $scope.configList();
+//
+//            }).catch(function (result) {
+//                $scope.showLoader = false;
+//                if (!angular.isUndefined(result.data)) {
+//                    if (result.data.globalError != '' && !angular.isUndefined(result.data.globalError)) {
+//                        var msg = result.data.globalError[0];
+//                        $scope.showLoader = false;
+//                        appService.notify({message: msg, classes: 'alert-danger', templateUrl: appService.globalConfig.NOTIFICATION_TEMPLATE});
+//                    } else if (result.data.fieldErrors != null) {
+//                        angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
+//                            $scope.configForm[key].$invalid = true;
+//                            $scope.configForm[key].errorMessage = errorMessage;
+//                        });
+//                    }
+//                }
+//            });
+//        }
+//    };
 
     $scope.formElements = {
             invoiceStatusList: {
@@ -470,11 +470,11 @@ function billingPaymentsCtrl($scope, $http, $window, $modal, $log, $state, $stat
             if (($scope.domainView == null || angular.isUndefined($scope.domainView))
                     && ($scope.statusView == null || angular.isUndefined($scope.statusView))) {
                 if (appService.globalConfig.sessionValues.type !== 'ROOT_ADMIN') {
-                    hasConfigList =  appService.promiseAjax.httpRequestPing(appService.globalConfig.HTTP_GET, appService.globalConfig.PING_APP_URL + "invoice/listByDomain"
+                    hasConfigList =  appService.promiseAjax.httpRequestPing(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "usage/invoice/listByDomain"
                             +"?lang=" +appService.localStorageService.cookie.get('language')
                             + "&domainUuid="+appService.globalConfig.sessionValues.domainAbbreviationName+"&status=null&sortBy="+$scope.paginationObject.sortOrder+$scope.paginationObject.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
                 } else {
-                    hasConfigList = appService.promiseAjax.httpRequestPing(appService.globalConfig.HTTP_GET, appService.globalConfig.PING_APP_URL + "invoice?lang="+ appService.localStorageService.cookie.get('language')
+                    hasConfigList = appService.promiseAjax.httpRequestPing(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "usage/invoice?lang="+ appService.localStorageService.cookie.get('language')
                             +"&sortBy="+sortOrder+sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
                 }
 
@@ -489,7 +489,7 @@ function billingPaymentsCtrl($scope, $http, $window, $modal, $log, $state, $stat
                    if (appService.globalConfig.sessionValues.type !== 'ROOT_ADMIN') {
                       domainViewAbbr = appService.globalConfig.sessionValues.domainAbbreviationName;
                   }
-                hasConfigList =  appService.promiseAjax.httpRequestPing(appService.globalConfig.HTTP_GET, appService.globalConfig.PING_APP_URL + "invoice/listByDomain"
+                hasConfigList =  appService.promiseAjax.httpRequestPing(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "usage/invoice/listByDomain"
                     +"?lang=" +appService.localStorageService.cookie.get('language')
                     + "&domainUuid="+domainViewAbbr+"&status="+$scope.statusView+"&sortBy="+$scope.paginationObject.sortOrder+$scope.paginationObject.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
             }
@@ -525,11 +525,11 @@ function billingPaymentsCtrl($scope, $http, $window, $modal, $log, $state, $stat
       if (($scope.domainView == null || angular.isUndefined($scope.domainView))
               && ($scope.statusView == null || angular.isUndefined($scope.statusView))) {
           if (appService.globalConfig.sessionValues.type !== 'ROOT_ADMIN') {
-              hasConfigList =  appService.promiseAjax.httpRequestPing(appService.globalConfig.HTTP_GET, appService.globalConfig.PING_APP_URL + "invoice/listByDomain"
+              hasConfigList =  appService.promiseAjax.httpRequestPing(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "usage/invoice/listByDomain"
                         +"?lang=" +appService.localStorageService.cookie.get('language')
                         + "&domainUuid="+appService.globalConfig.sessionValues.domainAbbreviationName+"&status=null&sortBy="+$scope.paginationObject.sortOrder+$scope.paginationObject.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
           } else {
-             hasConfigList = appService.promiseAjax.httpRequestPing(appService.globalConfig.HTTP_GET, appService.globalConfig.PING_APP_URL + "invoice?lang="+ appService.localStorageService.cookie.get('language')
+             hasConfigList = appService.promiseAjax.httpRequestPing(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "usage/invoice?lang="+ appService.localStorageService.cookie.get('language')
                   +"&sortBy="+$scope.paginationObject.sortOrder+$scope.paginationObject.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
           }
       } else {
@@ -543,7 +543,7 @@ function billingPaymentsCtrl($scope, $http, $window, $modal, $log, $state, $stat
             if (appService.globalConfig.sessionValues.type !== 'ROOT_ADMIN') {
               domainViewAbbr = appService.globalConfig.sessionValues.domainAbbreviationName;
              }
-          hasConfigList =  appService.promiseAjax.httpRequestPing(appService.globalConfig.HTTP_GET, appService.globalConfig.PING_APP_URL + "invoice/listByDomain"
+          hasConfigList =  appService.promiseAjax.httpRequestPing(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "usage/invoice/listByDomain"
                 +"?lang=" +appService.localStorageService.cookie.get('language')
                 + "&domainUuid="+domainViewAbbr+"&status="+$scope.statusView+"&sortBy="+$scope.paginationObject.sortOrder+$scope.paginationObject.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
       }
@@ -589,36 +589,36 @@ function billingPaymentsCtrl($scope, $http, $window, $modal, $log, $state, $stat
            }]);
    };
 
-    $scope.validateInvoice = function (form) {
-        $scope.formSubmitted = true;
-        if (form.$valid) {
-            var config = $scope.config;
-            config.dateFormatType = config.dateFormatType.id;
-            $scope.showLoader = true;
-            var hasConfig = appService.promiseAjax.httpRequestPing(globalConfig.HTTP_POST, globalConfig.PING_APP_URL + "configuration", config);
-            hasConfig.then(function (result) {  // this is only run after $http
-                $scope.showLoader = false;
-                $scope.homerTemplate = 'app/views/notification/notify.jsp';
-                appService.notify({message: 'Updated successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
-                $scope.configList();
-
-            }).catch(function (result) {
-                $scope.showLoader = false;
-                if (!angular.isUndefined(result.data)) {
-                    if (result.data.globalError != '' && !angular.isUndefined(result.data.globalError)) {
-                        var msg = result.data.globalError[0];
-                        $scope.showLoader = false;
-                        appService.notify({message: msg, classes: 'alert-danger', templateUrl: appService.globalConfig.NOTIFICATION_TEMPLATE});
-                    } else if (result.data.fieldErrors != null) {
-                        angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
-                            $scope.configForm[key].$invalid = true;
-                            $scope.configForm[key].errorMessage = errorMessage;
-                        });
-                    }
-                }
-            });
-        }
-    };
+//    $scope.validateInvoice = function (form) {
+//        $scope.formSubmitted = true;
+//        if (form.$valid) {
+//            var config = $scope.config;
+//            config.dateFormatType = config.dateFormatType.id;
+//            $scope.showLoader = true;
+//            var hasConfig = appService.promiseAjax.httpRequestPing(globalConfig.HTTP_POST, globalConfig.PING_APP_URL + "configuration", config);
+//            hasConfig.then(function (result) {  // this is only run after $http
+//                $scope.showLoader = false;
+//                $scope.homerTemplate = 'app/views/notification/notify.jsp';
+//                appService.notify({message: 'Updated successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
+//                $scope.configList();
+//
+//            }).catch(function (result) {
+//                $scope.showLoader = false;
+//                if (!angular.isUndefined(result.data)) {
+//                    if (result.data.globalError != '' && !angular.isUndefined(result.data.globalError)) {
+//                        var msg = result.data.globalError[0];
+//                        $scope.showLoader = false;
+//                        appService.notify({message: msg, classes: 'alert-danger', templateUrl: appService.globalConfig.NOTIFICATION_TEMPLATE});
+//                    } else if (result.data.fieldErrors != null) {
+//                        angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
+//                            $scope.configForm[key].$invalid = true;
+//                            $scope.configForm[key].errorMessage = errorMessage;
+//                        });
+//                    }
+//                }
+//            });
+//        }
+//    };
 
     $scope.formElements = {
             invoiceStatusList: {
