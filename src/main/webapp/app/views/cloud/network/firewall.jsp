@@ -31,8 +31,8 @@ pageEncoding="UTF-8"%>
 													bundle="${msg}" /></option></select> <span class="text-center text-danger" data-ng-show="ingressForm.protocol.$invalid && formSubmitted"> *Required</span></td>
                     <td><input required="true" valid-number  data-ng-if="(firewallRuleIngress.protocol == 'TCP') || (firewallRuleIngress.protocol == 'UDP')"  placeholder="1" data-ng-min="1" data-ng-max="65535"   type="text" name="startPort" data-ng-model="firewallRuleIngress.startPort" class="form-control " autofocus ><span class="text-center text-danger" data-ng-show="ingressForm.startPort.$invalid && formSubmitted"> *Required</span> </td>
                     <td><input required="true" valid-number  data-ng-if="(firewallRuleIngress.protocol == 'TCP') || (firewallRuleIngress.protocol == 'UDP')" placeholder="65535" data-ng-min="1" data-ng-max="65535"   type="text" name="endPort" data-ng-model="firewallRuleIngress.endPort" class="form-control " autofocus ><span class="text-center text-danger" data-ng-show="ingressForm.endPort.$invalid && formSubmitted"> *Required</span> </td>
-                    <td><input required="true"   data-ng-if="(firewallRuleIngress.protocol == 'ICMP') " valid-number   name="icmpType" data-ng-model="firewallRuleIngress.icmpType" class="form-control " autofocus type="text"><span class="text-center text-danger" data-ng-show="ingressForm.icmpType.$invalid && formSubmitted"> *Required</span> </td>
-                    <td ><input required="true" valid-number data-ng-if= "firewallRuleIngress.protocol == 'ICMP'"  name="icmpCode" data-ng-model="firewallRuleIngress.icmpCode" class="form-control " autofocus type="text"><span class="text-center text-danger" data-ng-show="ingressForm.icmpCode.$invalid && formSubmitted"> *Required</span> </td>
+                    <td><input required="true"   data-ng-if="(firewallRuleIngress.protocol == 'ICMP') " valid-integer name="icmpType" data-ng-model="firewallRuleIngress.icmpType" class="form-control " autofocus type="text"><span class="text-center text-danger" data-ng-show="ingressForm.icmpType.$invalid && formSubmitted"> *Required</span> </td>
+                    <td ><input required="true" valid-integer data-ng-if= "firewallRuleIngress.protocol == 'ICMP'"  name="icmpCode" data-ng-model="firewallRuleIngress.icmpCode" class="form-control " autofocus type="text"><span class="text-center text-danger" data-ng-show="ingressForm.icmpCode.$invalid && formSubmitted"> *Required</span> </td>
                     <td>
 
                       <get-loader-image data-ng-show="showLoader"></get-loader-image>
@@ -64,9 +64,9 @@ pageEncoding="UTF-8"%>
                <tr ng-repeat="firewallRules in firewallRulesList" class="font-bold text-center">
              	<td>{{firewallRules.sourceCIDR}}</td>
 		        <td>{{firewallRules.protocol}}</td>
-                <td><div  data-ng-show = " (firewallRules.startPort == '' || firewallRules.startPort!='') ">{{firewallRules.startPort}}</div> <div  data-ng-show=" (firewallRules.icmpType=='' || firewallRules.icmpType!='') ">{{firewallRules.icmpType}}</div></td>
-                <td><div data-ng-show= " (firewallRules.endPort =='' || firewallRules.endPort!='')">{{firewallRules.endPort}} </div> <div data-ng-show="(firewallRules.icmpCode=='' || firewallRules.icmpCode!='')" >{{firewallRules.icmpCode}}</div></td>
-                <td> <div  data-ng-show=" (firewallRules.icmpType=='' || firewallRules.icmpType!='') ">{{firewallRules.icmpType}}</div></td>
+                <td><div  data-ng-show = " (firewallRules.startPort == '' || firewallRules.startPort!='') ">{{firewallRules.startPort}}</div></td>
+                <td><div data-ng-show= " (firewallRules.endPort =='' || firewallRules.endPort!='')">{{firewallRules.endPort}} </div></td>
+                <td> <div  data-ng-show=" (firewallRules.icmpMessage=='' || firewallRules.icmpMessage!='') ">{{firewallRules.icmpMessage}}</div></td>
                 <td> <div data-ng-show="(firewallRules.icmpCode=='' || firewallRules.icmpCode!='')" >{{firewallRules.icmpCode}}</div></td>
        			<td><div style="width:107px;"></div></td>
                 <td><span ng-if = "firewallRules.isActive">Active</span></td>
