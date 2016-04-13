@@ -8,7 +8,7 @@
 			<div class="panel-heading no-padding">
 				<div class="row">
 					<div class="col-md-12 col-sm-12 col-xs-12 ">
-						<div class="pull-left">
+						<div class="pull-left dashboard-btn-area">
 							<div class="dashboard-box pull-left" data-ng-click="list(1, 'Expunging')">
 								<div class="instance-border-content-normal"
 									data-ng-class="{'instance-border-content' : borderContent=='Expunging'}"
@@ -47,9 +47,9 @@
 								id="instances_refresh_button" title="<fmt:message key="common.refresh" bundle="${msg}" />" ui-sref-opts="{reload: true}"
 							><span class="fa fa-refresh fa-lg "></span></a>
 						</div>
-						<div class="pull-right" id="instances_quick_search">
+						<div class="pull-right dashboard-filters-area" id="instances_quick_search">
 						<form data-ng-submit="searchList(vmSearch)">
-							<div class="quick-search pull-right m-r-sm">
+							<div class="quick-search pull-right">
 								<div class="input-group">
 									<input data-ng-model="vmSearch" type="text" class="form-control input-medium" placeholder="<fmt:message key="common.quick.search" bundle="${msg}" />" aria-describedby="quicksearch-go">
 								   	<span class="input-group-addon" id="quicksearch-go"><span class="pe-7s-search pe-lg font-bold"></span></span>
@@ -79,7 +79,7 @@
 						<div data-ng-show="showLoader" style="margin: 1%">
 							<get-loader-image data-ng-show="showLoader"></get-loader-image>
 						</div>
-						<div data-ng-hide="showLoader" class="table-responsive col-12-table">
+						<div data-ng-hide="showLoader" class="table-responsive">
 							<table cellspacing="1" cellpadding="1" id="instances_table" class="table dataTable table-bordered table-striped ">
 								<thead>
 									<tr>

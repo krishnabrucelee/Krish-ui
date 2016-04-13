@@ -53,7 +53,7 @@
 					<div class="panel-heading">
 						<div class="row">
 							<div class="col-md-12 col-sm-12 col-xs-12 ">
-								<div class="pull-left">
+								<div class="pull-left dashboard-btn-area">
 									<div class="dashboard-box pull-left">
 		     							<div class="instance-border-content-normal">
 		                                <span class="pull-left m-t-xs m-l-xs m-r-xs"><fmt:message key="common.total" bundle="${msg}" /></span>
@@ -64,19 +64,12 @@
 		                            <input type="hidden" id="projects_unique_{{projectObj.id}}"  data-unique-field="{{ projectObj.domain.name }}-{{ projectObj.department.userName }}-{{ projectObj.projectOwner.userName }}-{{projectObj.name}}" class="test_projects_unique">
 		                            <a has-permission="CREATE_PROJECT" id="projects_create_button"
 										class="btn btn-info" data-ng-click="createProject('md')"><span
-											class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="common.create" bundle="${msg}" /></a> <a has-permission="EDIT_PROJECT" id="projects_edit_button" class="btn btn-info"
-										data-ng-click="editProject('md')"
-										data-ng-disabled="!oneChecked"><span
-											class="fa fa-edit fa-lg m-r-xs"></span><fmt:message key="common.edit" bundle="${msg}" /></a>
-											 <a has-permission="DELETE_PROJECT" id="projects_delete_button"
-										class="btn btn-danger"
-										data-ng-click="projectDeleteConfirmation('sm', project.totalCheckedCount)"
-										data-ng-disabled="!oneChecked"><span
-											class="fa fa-times-circle-o fa-lg m-r-xs"></span><fmt:message key="common.delete" bundle="${msg}" /></a>
+											class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="common.create" bundle="${msg}" />
+											</a>
 									    <a class="btn btn-info" id="projects_refresh_button" ui-sref="projects" title="<fmt:message key="common.refresh" bundle="${msg}" />" ui-sref-opts="{reload: true}"><span
 											class="fa fa-refresh fa-lg "></span></a>
 								</div>
-								<div class="pull-right">
+								<div class="pull-right dashboard-filters-area">
 									<panda-quick-search></panda-quick-search>
 									<span class="pull-right m-r-sm" data-ng-show="global.sessionValues.type == 'ROOT_ADMIN'">
 										<select
@@ -105,7 +98,7 @@
 										class="table dataTable table-bordered table-striped">
 										<thead>
 											<tr>
-												<th class="w-5"></th>
+												<!-- <th class="w-5"></th> -->
 												<th ng-click="changeSort('name',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.name" bundle="${msg}" /></th>
 												<th ng-click="changeSort('status',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='status'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="common.status" bundle="${msg}" /></th>
 												<th><fmt:message key="project.owner" bundle="${msg}" /></th>
@@ -124,13 +117,6 @@
 											<tr
 												data-ng-repeat="projectObj in filteredCount = (projectList| filter: quickSearch |orderBy:sort.column:sort.descending)"
 												data-ng-class="isSingle === projectObj.id ? 'bg-row text-white' : ''">
-												<td class="">
-													<div class="radio radio-single radio-info">
-														<input type="radio" value="{{projectObj.id}}" id="projects_radio_button_{{projectObj.id}}" class="test_projects_radio_button"
-															data-unique-field="{{ projectObj.domain.name }}-{{ projectObj.department.userName }}-{{ projectObj.projectOwner.userName }}-{{projectObj.name}}" data-ng-model="isSingle"
-															name = "projects" data-ng-click="viewProjectd(projectObj)"> <label></label>
-													</div>
-												</td>
 												<td><a class="text-info" ui-sref="projects.view({id: {{ projectObj.id}}})"  title="View Instance" >{{ projectObj.name}}</a></td>
 												<td><label class="badge badge-success p-xs" data-ng-show="projectObj.isActive"
 													data-ng-class="isSingle === projectObj.id  ? 'text-white' : ''"
@@ -147,8 +133,20 @@
 												<a id="projects_quota_button_{{projectObj.id}}" data-unique-field="{{ projectObj.domain.name }}-{{ projectObj.department.userName }}-{{ projectObj.projectOwner.userName }}-{{projectObj.name}}" has-permission="PROJECT_RESOURCE_QUOTA_MODIFICATION" class="icon-button test_projects_quota_button" ui-sref="projects.quotalimit({id: {{projectObj.id}}, quotaType: 'project-quota'})" title="<fmt:message key="common.edit.quota" bundle="${msg}" />">
                                                     <span class="fa font-bold pe-7s-edit"> </span>
                                                 </a>
-                                                </td>
-
+                                                <a
+													has-permission="EDIT_PROJECT" id="projects_edit_button"
+													class="icon-button" data-ng-click="editProject('md',projectObj)"
+													 title="<fmt:message key="common.edit" bundle="${msg}" />"><span
+														class="fa fa-edit m-r-xs"></span>
+												</a>
+												<a
+													has-permission="DELETE_PROJECT" id="projects_delete_button"
+													class="icon-button"
+													data-ng-click="projectDeleteConfirmation('sm', project.totalCheckedCount)"
+												 title="<fmt:message key="common.delete" bundle="${msg}" />"><span
+														class="fa fa-trash  m-r-xs"></span>
+												</a>
+												</td>
 											</tr>
 										</tbody>
 									</table>
@@ -158,7 +156,6 @@
 						</div>
 					</div>
 				</div>
-
 			</div>
 		</div>
 	</div>

@@ -55,7 +55,7 @@
 
                             <div class="row">
                                 <div class="col-md-12 col-sm-12 col-xs-12 ">
-                                    <div class="pull-left">
+                                    <div class="pull-left dashboard-btn-area">
                                         <div class="dashboard-box pull-left">
 			     							<div class="instance-border-content-normal">
 			                                <span class="pull-left m-t-xs m-l-xs m-r-xs"><fmt:message key="common.total" bundle="${msg}" /></span>
@@ -66,7 +66,7 @@
 			                            <a has-permission="ADD_DEPARTMENT" id="departments_add_button" class="btn btn-info"  ng-click="createDepartment('md')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="common.add" bundle="${msg}" /> </a>
                                         <a class="btn btn-info" id="departments_refresh_button" ui-sref="department" title="<fmt:message key="common.refresh" bundle="${msg}" /> " ui-sref-opts="{reload: true}" ><span class="fa fa-refresh fa-lg"></span></a>
                                     </div>
-                                    <div class="pull-right">
+                                    <div class="pull-right dashboard-filters-area">
                                         <panda-quick-search></panda-quick-search>
                                         <span class="pull-right m-r-sm" data-ng-show="global.sessionValues.type == 'ROOT_ADMIN'">
 											<select

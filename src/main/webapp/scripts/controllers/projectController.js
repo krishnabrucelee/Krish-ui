@@ -324,17 +324,6 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams, localStor
         $scope.checkOne(project);
     };
 
-    $scope.viewProjectd = function(project) {
-    	$scope.editProjects = angular.copy(project);
-    	$scope.projectInfo = angular.copy(project);
-    	if(!angular.isUndefined($scope.projectInfo.department) && $scope.projectInfo.department != null ){
-    		$scope.userLists($scope.projectInfo);
-	}
-   	 	$scope.project = $scope.editProjects;
-    	$scope.oneChecked = true;
-    };
-
-
     $scope.projectForm = {};
     $scope.createProject = function (size) {
     	$scope.newProject = {};
@@ -440,7 +429,16 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams, localStor
     };
 
     // Edit the project
-    $scope.editProject = function (size) {
+    $scope.editProject = function (size,project) {
+
+   	$scope.editProjects = angular.copy(project);
+   	$scope.projectInfo = angular.copy(project);
+    	if(!angular.isUndefined($scope.projectInfo.department) && $scope.projectInfo.department != null ){
+    		$scope.userLists($scope.projectInfo);
+	}
+   	
+
+
          $scope.project = $scope.editProjects;
          angular.forEach($scope.formElements.departmenttypeList, function(obj, key) {
   			if (!angular.isUndefined($scope.project.department) && $scope.project.department != null) {

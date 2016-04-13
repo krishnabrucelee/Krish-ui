@@ -9,7 +9,7 @@ pageEncoding="UTF-8"%>
             <div class="panel-heading no-padding">
                 <div class="row">
                     <div class="col-md-12 col-sm-12 col-xs-12 ">
-                        <div class="pull-left">
+                        <div class="pull-left dashboard-btn-area">
                             <div class="dashboard-box pull-left">
 	                            <div class="instance-border-content-normal">
 	                            	<span class="pull-left"><img src="images/volume-icon.png"></span>
@@ -40,7 +40,7 @@ pageEncoding="UTF-8"%>
                                 <a class="btn btn-info" has-permission="ADD_VOLUME" data-ng-click="addVolume('md')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span>  <fmt:message key="common.add" bundle="${msg}" /></a>
                                 <a class="btn btn-info" ui-sref="cloud.list-volume" title="<fmt:message key="common.refresh" bundle="${msg}" />" ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
                         </div>
-                        <div class="pull-right">
+                        <div class="pull-right dashboard-filters-area">
                             <panda-quick-search></panda-quick-search>
                             <span class="pull-right m-r-sm" data-ng-show="global.sessionValues.type == 'ROOT_ADMIN'">
 								<select
@@ -71,7 +71,7 @@ pageEncoding="UTF-8"%>
                     <div data-ng-show = "showLoader" style="margin: 1%">
     				  		<get-loader-image data-ng-show="showLoader"></get-loader-image>
       						</div>
-      						<div  data-ng-hide="showLoader" class="table-responsive col-12-table">
+      						<div  data-ng-hide="showLoader" class="table-responsive">
                         <table cellspacing="1" cellpadding="1" class="table dataTable table-bordered table-striped">
                             <thead>
                                <tr>

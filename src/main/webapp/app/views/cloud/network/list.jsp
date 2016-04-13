@@ -12,7 +12,7 @@
 			<div class="panel-heading no-padding">
 				<div class="row">
 					<div class="col-md-12 col-sm-12 col-xs-12 ">
-						<div class="pull-left">
+						<div class="pull-left dashboard-btn-area">
 							<div class="dashboard-box pull-left">
 								<div class="instance-border-content-normal">
 									<span class="pull-left"><img
@@ -52,10 +52,9 @@
 								class="fa fa-refresh fa-lg"></span>
 							</a>
 							</div>
-							<div class="pull-right">
+							
+							<div class="pull-right dashboard-filters-area"> 
 							<panda-quick-search></panda-quick-search>
-						</div>
-							<div class=""> 
 							<span
 								class=" m-l-sm m-r-sm  pull-right"> <select
 								class="form-control input-group col-xs-5" name="networkView"
@@ -95,7 +94,7 @@
 									<get-loader-image data-ng-show="showLoader"></get-loader-image>
 								</div>
 								<div data-ng-hide="showLoader"
-									class="table-responsive col-12-table">
+									class="table-responsive ">
 									<table cellspacing="1" cellpadding="1" id="network_table"
 										class="table table-bordered dataTable table-striped">
 										<thead>

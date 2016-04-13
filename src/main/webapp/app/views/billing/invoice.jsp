@@ -8,9 +8,9 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-md-12 col-sm-12 col-xs-12 ">
-                        <div class="pull-right">
+                        <div class="pull-right dashboard-btn-area">
 					        <panda-quick-search></panda-quick-search>
-							<span class="pull-right m-r-sm">
+							<span class="pull-right m-r-sm ">
 								<select class="form-control input-group col-xs-5" name="statusView"
 									data-ng-model="statusView"
 									data-ng-change="selectDomainView(1)"
@@ -66,7 +66,6 @@
                                         <td>{{ invoice.totalCost}}</td>
                                         <td>{{ invoice.dueDate | date:'yyyy-MM-dd HH:mm:ss'}}</td>
                                         <td>{{ invoice.status}}</td>
-                                        <!-- <td></td> -->
                                     </tr>
                                 </tbody>
                             </table>
