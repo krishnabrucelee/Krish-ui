@@ -16,7 +16,7 @@
                             <div class="row">
                                 <label class="col-md-3 col-sm-3 control-label"><fmt:message key="common.name" bundle="${msg}" /><span class="text-danger">*</span></label>
                                 <div class="col-md-7  col-sm-7 col-xs-7">
-                                  	<input required="true" id="add_role_name" type="text" name="name" data-ng-model="role.name" ng-minlength="4" ng-maxlength= "30" class="form-control" data-ng-class="{'error': RoleForm.name.$invalid && formSubmitted}" >
+                                  	<input required="true" id="add_role_name" type="text" name="name" data-ng-model="role.name" ng-minlength="1" ng-maxlength= "30" class="form-control" data-ng-class="{'error': RoleForm.name.$invalid && formSubmitted}" >
        								<span style="color:red" ng-show="RoleForm.name.$error.minlength "><fmt:message key="your.name.should.contain.atleast.4.characters" bundle="${msg}" /></span>
        								<span style="color:red" ng-show="RoleForm.name.$error.maxlength "><fmt:message key="your.name.must.be.less.than.30.characters" bundle="${msg}" /> </span>
                                 	<i  tooltip="<fmt:message key="role.name" bundle="${msg}" />" class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
