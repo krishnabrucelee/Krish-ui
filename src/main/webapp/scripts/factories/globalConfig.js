@@ -48,7 +48,7 @@ function globalConfig($window) {
             currencyLabel : "CNY"
         },
         networks : {
-            name : ''
+            name : 'http://localhost:9090/pandaui/index#/billing/payments'
         },
         sort : {
             column : '',

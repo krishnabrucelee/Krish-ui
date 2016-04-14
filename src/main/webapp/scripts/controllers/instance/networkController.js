@@ -12,19 +12,6 @@ angular
 
 function networkCtrl($scope, $modal, $state, $window, $stateParams,appService) {
 
-   $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.addNicToVm, function() {
-  appService.globalConfig.webSocketLoaders.vmnicLoader = false;
-	        $scope.instanceNicList();
-    });
-    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.removeNicToVM, function() {
-   appService.globalConfig.webSocketLoaders.vmnicLoader = false;
-	        $scope.instanceNicList();
-    });
-    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.updateNicToVM, function() {
-   appService.globalConfig.webSocketLoaders.vmnicLoader = false;
-	        $scope.instanceNicList();
-    });
-
     $scope.nicIPLists = {};
     $scope.nicForm = {};
     $scope.global = appService.globalConfig;
@@ -123,11 +110,10 @@ function networkCtrl($scope, $modal, $state, $window, $stateParams,appService) {
                     delete $scope.nic.network;
                         $scope.showLoader = true;
                         var hasServer = appService.crudService.add("nics", $scope.nic);
-                        hasServer.then(function (result) {  // this is only run after $http completes
-                               appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.addNicToVm, result.id, $scope.global.sessionValues.id);
-                        $scope.showLoader = false;
                         $modalInstance.close();
-                appService.globalConfig.webSocketLoaders.vmnicLoader = true;
+                        appService.globalConfig.webSocketLoaders.vmnicLoader = true;
+                        hasServer.then(function (result) {  // this is only run after $http completes
+                        $scope.showLoader = false;
                }).catch(function (result) {
                         if (!angular.isUndefined(result.data)) {
 				  $scope.showLoader = false;
@@ -165,12 +151,11 @@ function networkCtrl($scope, $modal, $state, $window, $stateParams,appService) {
       		 $scope.deleteId = nic.id;
              $scope.ok = function (nicId) {
 		     $scope.showLoader = true;
-		     var hasNic = appService.crudService.softDelete("nics", nic);
-             hasNic.then(function (result) {
-                        appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.removeNicToVM, result.uuid, $scope.global.sessionValues.id);
-		       $scope.showLoader = false;
                $modalInstance.close();
                appService.globalConfig.webSocketLoaders.vmnicLoader = true;
+		     var hasNic = appService.crudService.softDelete("nics", nic);
+             hasNic.then(function (result) {
+		       $scope.showLoader = false;
              }).catch(function (result) {
                  if (!angular.isUndefined(result.data)) {
                      if (result.data.globalError != '' && !angular.isUndefined(result.data.globalError)) {
@@ -198,12 +183,11 @@ function networkCtrl($scope, $modal, $state, $window, $stateParams,appService) {
           	var instanceId = $stateParams.id;
                    $scope.ok = function (instanceId) {
                 	$scope.showLoader = true;
-                    var hasServer = appService.crudService.update("nics", nic);
-                    hasServer.then(function (result) {
-                        appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.updateNicToVM, result.uuid, $scope.global.sessionValues.id);
-                       $scope.showLoader = false;
                $modalInstance.close();
                appService.globalConfig.webSocketLoaders.vmnicLoader = true;
+                    var hasServer = appService.crudService.update("nics", nic);
+                    hasServer.then(function (result) {
+                       $scope.showLoader = false;
                     }).catch(function (result) {
                  if (!angular.isUndefined(result.data)) {
                      if (result.data.globalError != '' && !angular.isUndefined(result.data.globalError)) {
@@ -236,6 +220,21 @@ function networkCtrl($scope, $modal, $state, $window, $stateParams,appService) {
                 };
             }]);
        };
+
+
+   $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.addNicToVm, function(event, args) {
+  		appService.globalConfig.webSocketLoaders.vmnicLoader = false;
+	        $scope.instanceNicList();
+    });
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.removeNicToVM, function(event, args) {
+   		appService.globalConfig.webSocketLoaders.vmnicLoader = false;
+	        $scope.instanceNicList();
+    });
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.updateNicToVM, function(event, args) {
+   		appService.globalConfig.webSocketLoaders.vmnicLoader = false;
+	        $scope.instanceNicList();
+    });
+
      }
 
 

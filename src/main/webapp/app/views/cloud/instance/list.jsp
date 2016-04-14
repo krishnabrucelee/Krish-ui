@@ -116,7 +116,7 @@
 								</tbody>
 								<tbody data-ng-show="instanceList.length > 0">
 									<tr
-										data-ng-repeat="instance in filteredCount = (instanceList | filter: quickSearch  |orderBy:sort.column:sort.descending) ">
+										data-ng-repeat="instance in filteredCount = (instanceList | filter: quickSearch  |orderBy:sort.column:sort.descending) " data-ng-class = "(instance.status != 'STOPPED' && instance.status != 'RUNNING' && instance.status != 'DESTROYED' && instance.status != 'ERROR')? 'overlay-wrapper-tr' : ''">
 
 										<td><a class="text-info" id="instances_display_name_button" ui-sref="cloud.list-instance.view-instance({id: {{ instance.id}}})"
 											title="View Instance">
@@ -183,7 +183,9 @@
 		   							    </div>
 		   							    </td>
 		   							    <td>
-										<div class="">
+		   							    <div class="loading-bar-tr"><img src="images/loading-bars.svg" title="{{instance.status}}" data-ng-if="(instance.status != 'STOPPED' && instance.status != 'RUNNING' && instance.status != 'DESTROYED' && instance.status != 'ERROR')" width="30" height="30" /></div>
+
+										<div class="pointer-not">
 													<div has-permission="START_VM"
 														data-ng-if="instance.status != 'ERROR' || instance.status != 'EXPUNGING' || instance.status != 'STARTING' || instance.status != 'STOPPING' || instance.status != 'DESTROYING'  ">
 													<a class="icon-button text-center test_instances_start_vm_button" id="instances_start_vm_button_{{instance.id}}" title="<fmt:message key="start" bundle="${msg}" />"

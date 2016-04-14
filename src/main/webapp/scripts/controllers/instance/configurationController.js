@@ -127,7 +127,6 @@ function configurationCtrl($scope, $stateParams, appService, localStorageService
           			$scope.instances.computeOffering = $scope.instance.computeOffering;
           			var hasServer =crudService.updates("virtualmachine/resize", $scope.instances);
           			hasServer.then(function (result) {
-			   	appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.vmresize,result.uuid,$scope.global.sessionValues.id);
           			}).catch(function (result) {
                         if (!angular.isUndefined(result) && result.data != null) {
 	                        if (result.data.fieldErrors != '') {
@@ -226,13 +225,7 @@ function configurationCtrl($scope, $stateParams, appService, localStorageService
    			var hasServer = appService.crudService.updates("virtualmachine/reset", $scope.instances);
    			hasServer.then(function (result) {
                          $scope.instances = result;
-                         appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.vmSSHKEY,result.uuid,$scope.global.sessionValues.id);
-                         $scope.viewInstance(result.id);
-                         if(result.keypairId == resetSSH.id){
-                            if ($scope.instances.passwordEnabled == true) {
-                                $scope.resetPassword($scope.instances);
-                            }
-                         }
+			 $scope.viewInstance(result.id);
    			}).catch(function (result) {
                 		 if (!angular.isUndefined(result) && result.data != null) {
                      if (result.data.fieldErrors != '') {
@@ -255,48 +248,34 @@ function configurationCtrl($scope, $stateParams, appService, localStorageService
 	  $scope.formSubmitted = true;
           var hasVm = appService.crudService.updates("virtualmachine/handleevent/vm", $scope.vm);
 	  hasVm.then(function(result) {
-	      appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.resetPassword, result.uuid, $scope.global.sessionValues.id);
-	  }).catch(function (result) {
+	   }).catch(function (result) {
      });
      };
 
-    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.startVm, function() {
-        $scope.viewInstance($scope.instances.id);
-    });
-
-    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.stopVm, function() {
-        $scope.viewInstance($scope.instances.id);
-    });
-
-     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.vmresize, function() {
-         $scope.global.webSocketLoaders.computeOffer = false;
-         var hasServers = crudService.read("virtualmachine", instanceId);
-         hasServers.then(function (result) {
-             $scope.instances = result;
-             $scope.computeList();
-         });
+     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.vmresize, function(event, args) {
+         if(args.status == 'FAILED'){
+	    $scope.global.webSocketLoaders.computeOffer = false;
+	 } else {
+         	$scope.global.webSocketLoaders.computeOffer = false;
+         	var hasServers = crudService.read("virtualmachine", instanceId);
+        	hasServers.then(function (result) {
+             	$scope.instances = result;
+             	$scope.computeList();
+         	});
+	}
      });
-     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.vmSSHKEY, function() {
-         $scope.global.webSocketLoaders.vmsshKey = false;
+     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.vmSSHKEY, function(event, args) {
+         if(args.status == 'FAILED'){
+	    $scope.global.webSocketLoaders.vmsshKey = false;
+	 } else if(args.status === 'SUCCEEDED') {
+	    $scope.global.webSocketLoaders.vmsshKey = false;
+            $scope.resetSSHKey();
+            if ($scope.instances.passwordEnabled == true) {
+               $scope.resetPassword($scope.instances);
+            }
+	}
      });
-
-     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.vmSSHKEY+"/ERROR", function() {
-         $scope.global.webSocketLoaders.vmsshKey = false;
-     });
-
-    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.rebootVm, function() {
-        $scope.viewInstance($scope.instances.id);
-    });
-    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.reInstallVm, function() {
-        $scope.viewInstance($scope.instances.id);
-    });
-    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.reDestroyVm, function() {
-        $scope.viewInstance($scope.instances.id);
-    });
-    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.expungeVM, function() {
-        $scope.viewInstance($scope.instances.id);
-    });
-    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.resetPassword, function() {
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.resetPassword, function(event, args) {
     });
 
 }

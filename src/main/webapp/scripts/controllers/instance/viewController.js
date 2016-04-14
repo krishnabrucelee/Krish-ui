@@ -8,12 +8,13 @@ angular.module('homer').controller('instanceViewCtrl', instanceViewCtrl).control
 function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $window) {
     $scope.instanceList = [];
     $scope.testvar = "test";
+    $scope.persistinstance = "";
     $scope.global = appService.globalConfig;
     appService.globalConfig.webSocketLoaders.viewLoader = false;
     $scope.formElements = {};
     $scope.osCategory = {
-        Linux : "CentOS",
-        Windows : "Windows"
+        Linux: "CentOS",
+        Windows: "Windows"
     }
     $scope.viewInstances = function(id) {
         if (id == '0') {
@@ -24,6 +25,7 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
         var hasServer = appService.crudService.read("virtualmachine", id);
         hasServer.then(function(result) {
             $scope.instance = result;
+            $scope.persistinstance = result;
             setTimeout(function() {
                 $state.current.data.pageName = result.name;
                 $state.current.data.id = result.id;
@@ -43,16 +45,15 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
             $scope.templateCategory = 'dashboard';
         });
     };
-
     $scope.viewInstance = function(id) {
         if (id == '0') {
             id = $stateParams.id;
         }
-        $scope.showLoader = true;
-        $scope.showLoaderOffer = true;
         var hasServer = appService.crudService.read("virtualmachine", id);
         hasServer.then(function(result) {
             $scope.instance = result;
+            console.log("ddd" + result);
+            $scope.persistinstance = result;
             setTimeout(function() {
                 $state.current.data.pageName = result.name;
                 $state.current.data.id = result.id;
@@ -61,17 +62,13 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
             if (str != null) {
                 var newString = str.replace(/^_+|_+$/g, '');
                 var num = parseFloat(newString).toFixed(2);
-                $scope.showLoaderOffer = false;
-                $scope.showLoader = false;
                 $scope.chart(num);
             } else {
-                $scope.showLoaderOffer = false;
-                $scope.showLoader = false;
                 $scope.chart(0);
             }
         });
     };
-    if ($stateParams.id > 0) {
+    if ($stateParams.id > 0 && !angular.isUndefined($stateParams.id)) {
         $scope.viewInstances($stateParams.id);
     }
     $scope.vmList = function() {
@@ -125,10 +122,9 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
                         if ($scope.instance.host != null) {
                             vms.hostUuid = $scope.instance.host.uuid;
                         }
+                        appService.globalConfig.webSocketLoaders.viewLoader = true;
                         var hasVm = appService.crudService.updates("virtualmachine/handleevent/vm", vms);
                         hasVm.then(function(result) {
-                            appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.startVm, result.uuid, $scope.global.sessionValues.id);
-			      appService.globalConfig.webSocketLoaders.viewLoader = true;
                             $scope.cancel();
                         }).catch(function(result) {
                             appService.globalConfig.webSocketLoaders.viewLoader = false;
@@ -159,8 +155,8 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
             $scope.vmRestart = function(item) {
                     var event = "VM.REBOOT";
                     var hasVm = appService.crudService.vmUpdate("virtualmachine/handlevmevent", item.uuid, event);
+                    appService.globalConfig.webSocketLoaders.viewLoader = true;
                     hasVm.then(function(result) {
-                        appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.rebootVm, result.uuid, $scope.global.sessionValues.id);
                         $scope.cancel();
                     }).catch(function(result) {
                         $scope.cancel();
@@ -179,10 +175,9 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
             $scope.vmRestart = function(item) {
                     var event = "VM.RESTORE";
                     var hasVm = appService.crudService.vmUpdate("virtualmachine/handlevmevent", item.uuid, event);
-                    hasVm.then(function(result) {
-                        appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.reInstallVm, result.uuid, $scope.global.sessionValues.id);
-                        $scope.cancel();
                     appService.globalConfig.webSocketLoaders.viewLoader = true;
+                    hasVm.then(function(result) {
+                        $scope.cancel();
                     }).catch(function(result) {
                         $scope.cancel();
                         appService.globalConfig.webSocketLoaders.viewLoader = false;
@@ -205,11 +200,10 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
                     if ($scope.agree.value1) {
                         var event = "VM.EXPUNGE";
                         var hasVm = appService.crudService.vmUpdate("virtualmachine/handlevmevent", item.uuid, event);
+                        appService.globalConfig.webSocketLoaders.viewLoader = true;
                         hasVm.then(function(result) {
-                            appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.expungeVM, result.uuid, $scope.global.sessionValues.id);
                             window.location.href = "index#/instance/list";
                             $scope.cancel();
-                            appService.globalConfig.webSocketLoaders.viewLoader = true;
                         }).catch(function(result) {
                             $scope.cancel();
                             appService.globalConfig.webSocketLoaders.viewLoader = false;
@@ -219,10 +213,8 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
                         appService.globalConfig.webSocketLoaders.viewLoader = true;
                         var hasVm = appService.crudService.vmUpdate("virtualmachine/handlevmevent", item.uuid, event);
                         hasVm.then(function(result) {
-                            appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.reDestroyVm, result.uuid, $scope.global.sessionValues.id);
                             window.location.href = "index#/instance/list";
                             $scope.cancel();
-                            appService.globalConfig.webSocketLoaders.viewLoader = true;
                         }).catch(function(result) {
                             $scope.cancel();
                             appService.globalConfig.webSocketLoaders.viewLoader = false;
@@ -244,22 +236,19 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
                     if ($scope.agree.value1) {
                         item.transForcedStop = $scope.agree.value1;
                         item.event = event;
+                        appService.globalConfig.webSocketLoaders.viewLoader = true;
                         var hasVm = appService.crudService.updates("virtualmachine/handleevent/vm", item);
                         hasVm.then(function(result) {
-                            appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.stopVm, result.uuid, $scope.global.sessionValues.id);
-                        appService.globalConfig.webSocketLoaders.viewLoader = true;
                             $scope.cancel();
-
                         }).catch(function(result) {
                             $scope.cancel();
-                            appService.globalConfig.webSocketLoaders.viewLoader = true;
+                            appService.globalConfig.webSocketLoaders.viewLoader = false;
                         });
                     } else {
                         var event = "VM.STOP";
                         appService.globalConfig.webSocketLoaders.viewLoader = true;
                         var hasVm = appService.crudService.vmUpdate("virtualmachine/handlevmevent", item.uuid, event);
                         hasVm.then(function(result) {
-                            appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.stopVm, result.uuid, $scope.global.sessionValues.id);
                             $scope.cancel();
                         }).catch(function(result) {
                             $scope.cancel();
@@ -277,11 +266,10 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
             $scope.item = item;
             $scope.vmRecover = function(item) {
                     var event = "VM.CREATE";
+                    appService.globalConfig.webSocketLoaders.viewLoader = true;
                     var hasVm = appService.crudService.vmUpdate("virtualmachine/handlevmevent", item.uuid, event);
                     hasVm.then(function(result) {
-                        appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.recoverVm, result.uuid, $scope.global.sessionValues.id);
                         $scope.cancel();
-                    appService.globalConfig.webSocketLoaders.viewLoader = true;
                     }).catch(function(result) {
                         $scope.cancel();
                         appService.globalConfig.webSocketLoaders.viewLoader = false;
@@ -311,13 +299,12 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
         $scope.vm = vm;
         if ($scope.vm.transDisplayName != "") {
             $scope.vm.transDisplayName = $scope.vm.transDisplayName;
-            var hasVm = appService.crudService.update("virtualmachine", $scope.vm);
-            hasVm.then(function(result) {
-                appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.updateVM, result.uuid, $scope.global.sessionValues.id);
             appService.globalConfig.webSocketLoaders.viewLoader = true;
-            }).catch(function(result) {
+            var hasVm = appService.crudService.update("virtualmachine", $scope.vm);
+            hasVm.then(function(result) {}).catch(function(result) {
                 appService.globalConfig.webSocketLoaders.viewLoader = false;
-            });    }
+            });
+        }
     };
     $scope.showDescription = function(vm) {
         $scope.instance = vm;
@@ -345,11 +332,10 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
                         $scope.viewLoader = appService.globalConfig.webSocketLoaders.viewLoader;
                         tempVm.iso = $scope.isos.uuid;
                         tempVm.event = event;
+                        appService.globalConfig.webSocketLoaders.viewLoader = true;
                         var hasVm = appService.crudService.updates("virtualmachine/handleevent/vm", tempVm);
                         hasVm.then(function(result) {
-                            appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.attachISO, result.uuid, $scope.global.sessionValues.id);
                             $scope.cancel();
-                        appService.globalConfig.webSocketLoaders.viewLoader = true;
                         }).catch(function(result) {
                             appService.globalConfig.webSocketLoaders.viewLoader = false;
                             $scope.cancel();
@@ -368,13 +354,13 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
             var event = "ISO.DETACH";
             $scope.update = function() {
                     $scope.vm.event = event;
+                    appService.globalConfig.webSocketLoaders.viewLoader = true;
                     var hasVm = appService.crudService.updates("virtualmachine/handleevent/vm", $scope.vm);
                     hasVm.then(function(result) {
-                        appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.detachISO, result.uuid, $scope.global.sessionValues.id);
                         $scope.cancel();
-                    appService.globalConfig.webSocketLoaders.viewLoader = true;
                     }).catch(function(result) {
                         $scope.cancel();
+			alert("hi");
                         appService.globalConfig.webSocketLoaders.viewLoader = false;
                     });
                 },
@@ -395,13 +381,12 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
                         if (angular.isUndefined($scope.vmsnapshot.snapshotMemory) || $scope.vmsnapshot.snapshotMemory === null || $scope.vmsnapshot.snapshotMemory === '') {
                             $scope.vmsnapshot.snapshotMemory = false;
                         }
+                        appService.globalConfig.webSocketLoaders.viewLoader = true;
                         var hasVm = appService.crudService.add("vmsnapshot", $scope.vmsnapshot);
                         hasVm.then(function(result) {
-                            appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.takeSnapshot, result.uuid, $scope.global.sessionValues.id);
                             $modalInstance.close();
                             window.location.href = "index#/snapshot/list";
                             $scope.showLoader = false;
-                        appService.globalConfig.webSocketLoaders.viewLoader = true;
                         }).catch(function(result) {
                             $scope.showLoader = false;
                             $scope.cancel();
@@ -424,11 +409,10 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
                     $scope.formSubmitted = true;
                     if (form.$valid) {
                         vms.hostUuid = $scope.host.uuid;
+                        appService.globalConfig.webSocketLoaders.viewLoader = true;
                         var hasVm = appService.crudService.updates("virtualmachine/handleevent/vm", vms);
                         hasVm.then(function(result) {
-                            appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.hostMigrate, result.uuid, $scope.global.sessionValues.id);
                             $scope.cancel();
-                    appService.globalConfig.webSocketLoaders.viewLoader = true;
                         }).catch(function(result) {
                             $scope.cancel();
                             appService.globalConfig.webSocketLoaders.viewLoader = false;
@@ -460,28 +444,26 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
     };
     $scope.resetPassword = function(size, vm) {
         $scope.instance = vm;
-         appService.dialogService.openDialog("app/views/cloud/instance/reset-password.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function($scope, $modalInstance, $rootScope) {
-          $scope.reset = function (vm) {
-          $scope.cancel();
-          var event = "VM.RESETPASSWORD";
-          $scope.vm = vm;
-          $scope.vm.event = event;
-          $scope.vm.password = "reset";
-          $scope.formSubmitted = true;
-          var hasVm = appService.crudService.updates("virtualmachine/handleevent/vm", $scope.vm);
-          hasVm.then(function(result) {
-              appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.resetPassword, result.uuid, $scope.global.sessionValues.id);
-              $scope.cancel();
-          appService.globalConfig.webSocketLoaders.viewLoader = true;
-          }).catch(function(result) {
-              appService.globalConfig.webSocketLoaders.viewLoader = false;
-          });
-         }
-         $scope.cancel = function() {
-             $modalInstance.close();
-         };
-
-         }]);
+        appService.dialogService.openDialog("app/views/cloud/instance/reset-password.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function($scope, $modalInstance, $rootScope) {
+            $scope.reset = function(vm) {
+                $scope.cancel();
+                var event = "VM.RESETPASSWORD";
+                $scope.vm = vm;
+                $scope.vm.event = event;
+                $scope.vm.password = "reset";
+                $scope.formSubmitted = true;
+                appService.globalConfig.webSocketLoaders.viewLoader = true;
+                var hasVm = appService.crudService.updates("virtualmachine/handleevent/vm", $scope.vm);
+                hasVm.then(function(result) {
+                    $scope.cancel();
+                }).catch(function(result) {
+                    appService.globalConfig.webSocketLoaders.viewLoader = false;
+                });
+            }
+            $scope.cancel = function() {
+                $modalInstance.close();
+            };
+        }]);
     }
     $scope.templateCategory = 'dashboard';
     var instanceViewTab = appService.localStorageService.get("instanceViewTab");
@@ -570,155 +552,262 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
         // maintainAspectRatio: true
     };
     $scope.chart = function(used) {
-        var available = parseFloat(100 - used).toFixed(2);
-        var instanceLimit = {
-            "title": "Instance",
-            "options": [{
-                value: parseFloat(available),
-                color: "#d6ebf5",
-                highlight: "#57b32c",
-                label: "Available",
-                showLabels: "true",
-            }, {
-                value: parseFloat(used),
-                color: "#3399FF",
-                highlight: "#e74c3c",
-                label: "Used",
-                showLabels: "true",
-            }]
-        };
-        /**
-         * Data for Doughnut chart
-         */
-        $scope.quotaLimitData = [
-            instanceLimit
-        ];
-        /**
-         * Options for Doughnut chart
-         */
-        $scope.quotaChartOptions = {
-            segmentShowStroke: true,
-            segmentStrokeColor: "#fff",
-            segmentStrokeWidth: 1,
-            percentageInnerCutout: 50, // This is 0 for Pie charts
-            animationSteps: 100,
-            animationEasing: false,
-            animateRotate: false,
-            animateScale: false,
-            showTooltips: true,
-            tooltipCaretSize: 12,
-            tooltipFontSize: 12,
-            tooltipYPadding: 6,
-            tooltipXPadding: 6,
-            legend: true
-        };
-    }
-    //$scope.viewLoader = appService.globalConfig.webSocketLoaders.viewLoader;
-    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.startVm, function() {
-        $scope.global.webSocketLoaders.viewLoader = false;
-        if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
-            $scope.viewInstance($stateParams.id);
+            var available = parseFloat(100 - used).toFixed(2);
+            var instanceLimit = {
+                "title": "Instance",
+                "options": [{
+                    value: parseFloat(available),
+                    color: "#d6ebf5",
+                    highlight: "#57b32c",
+                    label: "Available",
+                    showLabels: "true",
+                }, {
+                    value: parseFloat(used),
+                    color: "#3399FF",
+                    highlight: "#e74c3c",
+                    label: "Used",
+                    showLabels: "true",
+                }]
+            };
+            /**
+             * Data for Doughnut chart
+             */
+            $scope.quotaLimitData = [
+                instanceLimit
+            ];
+            /**
+             * Options for Doughnut chart
+             */
+            $scope.quotaChartOptions = {
+                segmentShowStroke: true,
+                segmentStrokeColor: "#fff",
+                segmentStrokeWidth: 1,
+                percentageInnerCutout: 50, // This is 0 for Pie charts
+                animationSteps: 100,
+                animationEasing: false,
+                animateRotate: false,
+                animateScale: false,
+                showTooltips: true,
+                tooltipCaretSize: 12,
+                tooltipFontSize: 12,
+                tooltipYPadding: 6,
+                tooltipXPadding: 6,
+                legend: true
+            };
+        }
+        //$scope.viewLoader = appService.globalConfig.webSocketLoaders.viewLoader;
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.startVm, function(event, args) {
+	if(args.status == 'FAILED' && $scope.persistinstance.uuid === args.resourceUuid){
+	    $scope.global.webSocketLoaders.viewLoader = false;
+	    if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
+                $scope.viewInstance($stateParams.id);
+            }
+	} 
+        if ($scope.persistinstance.uuid === args.resourceUuid) {
+            $scope.global.webSocketLoaders.viewLoader = false;
+            if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
+                $scope.viewInstance($stateParams.id);
+            }
         }
     });
-    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.stopVm, function(msg,event,status) {
-        $scope.global.webSocketLoaders.viewLoader = false;
-        if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
-            $scope.viewInstance($stateParams.id);
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.stopVm, function(event, args) {
+	if(args.status == 'FAILED' && $scope.persistinstance.uuid === args.resourceUuid){
+	    $scope.global.webSocketLoaders.viewLoader = false;
+	    if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
+                $scope.viewInstance($stateParams.id);
+            }
+	} 
+        if ($scope.persistinstance.uuid === args.resourceUuid) {
+            $scope.global.webSocketLoaders.viewLoader = false;
+            if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
+                $scope.viewInstance($stateParams.id);
+            }
         }
     });
-    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.rebootVm, function() {
-        $scope.global.webSocketLoaders.viewLoader = false;
-        if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
-            $scope.viewInstance($stateParams.id);
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.rebootVm, function(event, args) {
+	if(args.status == 'FAILED' && $scope.persistinstance.uuid === args.resourceUuid){
+	    $scope.global.webSocketLoaders.viewLoader = false;
+	    if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
+                $scope.viewInstance($stateParams.id);
+            }
+	} 
+        if ($scope.persistinstance.uuid === args.resourceUuid) {
+            $scope.global.webSocketLoaders.viewLoader = false;
+            if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
+                $scope.viewInstance($stateParams.id);
+            }
         }
     });
-    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.reInstallVm, function() {
-        if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
-            $scope.viewInstance($stateParams.id);
-        }
-        $scope.global.webSocketLoaders.viewLoader = false;
-    });
-    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.reDestroyVm, function() {
-        $scope.global.webSocketLoaders.viewLoader = false;
-        if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
-            $scope.viewInstance($stateParams.id);
-        }
-    });
-    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.expungeVM, function() {
-        $scope.global.webSocketLoaders.viewLoader = false;
-        if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
-            $scope.viewInstance($stateParams.id);
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.reInstallVm, function(event, args) {
+        if(args.status == 'FAILED' && $scope.persistinstance.uuid === args.resourceUuid){
+	    $scope.global.webSocketLoaders.viewLoader = false;
+	    if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
+                $scope.viewInstance($stateParams.id);
+            }
+	} 
+        if ($scope.persistinstance.uuid === args.resourceUuid) {
+            if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
+                $scope.viewInstance($stateParams.id);
+            }
+            $scope.global.webSocketLoaders.viewLoader = false;
         }
     });
-    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.recoverVm, function() {
-        if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
-            $scope.viewInstance($stateParams.id);
-        }
-        $scope.global.webSocketLoaders.viewLoader = false;
-    });
-    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.attachISO, function() {
-        $scope.global.webSocketLoaders.viewLoader = false;
-        if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
-            $scope.viewInstance($stateParams.id);
-        }
-    });
-    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.detachISO, function() {
-        $scope.global.webSocketLoaders.viewLoader = false;
-        if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
-            $scope.viewInstance($stateParams.id);
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.reDestroyVm, function(event, args) {
+	if(args.status == 'FAILED' && $scope.persistinstance.uuid === args.resourceUuid){
+	    $scope.global.webSocketLoaders.viewLoader = false;
+	    if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
+                $scope.viewInstance($stateParams.id);
+            }
+	} 
+        if ($scope.persistinstance.uuid === args.resourceUuid) {
+            $scope.global.webSocketLoaders.viewLoader = false;
+            if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
+                $scope.viewInstance($stateParams.id);
+            }
         }
     });
-    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.takeSnapshot, function() {
-        $scope.global.webSocketLoaders.viewLoader = false;
-        if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
-            $scope.viewInstance($stateParams.id);
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.expungeVM, function(event, args) {
+        if(args.status == 'FAILED' && $scope.persistinstance.uuid === args.resourceUuid){
+	    $scope.global.webSocketLoaders.viewLoader = false;
+	    if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
+                $scope.viewInstance($stateParams.id);
+            }
+	} 
+        if ($scope.persistinstance.uuid === args.resourceUuid) {
+            $scope.global.webSocketLoaders.viewLoader = false;
+            if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
+                $scope.viewInstance($stateParams.id);
+            }
         }
     });
-    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.hostMigrate, function() {
-        $scope.global.webSocketLoaders.viewLoader = false;
-        if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
-            $scope.viewInstance($stateParams.id);
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.recoverVm, function(event, args) {
+        if(args.status == 'FAILED' && $scope.persistinstance.uuid === args.resourceUuid){
+	    $scope.global.webSocketLoaders.viewLoader = false;
+	    if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
+                $scope.viewInstance($stateParams.id);
+            }
+	} 
+        if ($scope.persistinstance.uuid === args.resourceUuid) {
+            if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
+                $scope.viewInstance($stateParams.id);
+            }
+            $scope.global.webSocketLoaders.viewLoader = false;
         }
     });
-    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.resetPassword, function() {
-        $scope.global.webSocketLoaders.viewLoader = false;
-        if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
-            $scope.viewInstance($stateParams.id);
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.attachISO, function(event, args) {
+        if(args.status == 'FAILED'){
+	    $scope.global.webSocketLoaders.viewLoader = false;
+	} 
+            $scope.global.webSocketLoaders.viewLoader = false;
+            if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
+                $scope.viewInstance($stateParams.id);
+            }
+    });
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.detachISO, function(event, args) {
+        if(args.status == 'FAILED'){
+	    $scope.global.webSocketLoaders.viewLoader = false;
+	} 
+            $scope.global.webSocketLoaders.viewLoader = false;
+            if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
+                $scope.viewInstance($stateParams.id);
+            }
+    });
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.takeSnapshot, function(event, args) {
+        if(args.status == 'FAILED' && $scope.persistinstance.uuid === args.resourceUuid){
+	    $scope.global.webSocketLoaders.viewLoader = false;
+	    if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
+                $scope.viewInstance($stateParams.id);
+            }
+	} 
+        if ($scope.persistinstance.uuid === args.resourceUuid) {
+            $scope.global.webSocketLoaders.viewLoader = false;
+            if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
+                $scope.viewInstance($stateParams.id);
+            }
         }
     });
-    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.updateVM, function() {
-        $scope.global.webSocketLoaders.viewLoader = false;
-        if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
-            $scope.viewInstance($stateParams.id);
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.hostMigrate, function(event, args) {
+        if(args.status == 'FAILED' && $scope.persistinstance.uuid === args.resourceUuid){
+	    $scope.global.webSocketLoaders.viewLoader = false;
+	    if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
+                $scope.viewInstance($stateParams.id);
+            }
+	} 
+        if ($scope.persistinstance.uuid === args.resourceUuid) {
+            $scope.global.webSocketLoaders.viewLoader = false;
+            if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
+                $scope.viewInstance($stateParams.id);
+            }
         }
-        $scope.instnaceEdit = false;
     });
-}
-
-function instanceDetailsCtrl($scope, $log, $sce, dialogService, $modal, $http, $state, $stateParams, promiseAjax, localStorageService, globalConfig, crudService, notify, $window) {
-    $scope.instanceList = [];
-    $scope.testvar = "test";
-    $scope.global = crudService.globalConfig;
-    if ($stateParams.id > 0) {
-        $scope.showLoader = true;
-        $scope.showLoaderOffer = true;
-        var hasServer = crudService.read("virtualmachine", $stateParams.id);
-        hasServer.then(function(result) { // this is only run after $http                                                                                       // completes
-            $scope.instance = result;
-            $scope.instanceList = result;
-            var str = $scope.instance.cpuUsage;
-            if (str != null) {
-                var newString = str.replace(/^_+|_+$/g, '');
-                var num = parseFloat(newString).toFixed(2);
-                $state.current.data.pageName = result.name;
-                $scope.showLoaderOffer = false;
-                $scope.showLoader = false;
-                $scope.chart(num);
-            } else {
-                $scope.showLoaderOffer = false;
-                $scope.showLoader = false;
-                $scope.chart(0);
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.resetPassword, function(event, args) {
+        if(args.status == 'FAILED' && $scope.persistinstance.uuid === args.resourceUuid){
+	    $scope.global.webSocketLoaders.viewLoader = false;
+	    if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
+                $scope.viewInstance($stateParams.id);
+            }
+	} 
+        if ($scope.persistinstance.uuid === args.resourceUuid && args.status === 'SUCCEEDED') {
+            $scope.global.webSocketLoaders.viewLoader = false;
+            if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
+                $scope.viewInstance($stateParams.id);
+            }
+        }
+    });
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.updateVM, function(event, args) {
+            if(args.status == 'FAILED' && $scope.persistinstance.uuid === args.resourceUuid){
+	    $scope.global.webSocketLoaders.viewLoader = false;
+	    if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
+                $scope.viewInstance($stateParams.id);
+            }
+	    } 
+            if ($scope.persistinstance.uuid === args.resourceUuid) {
+                $scope.global.webSocketLoaders.viewLoader = false;
+                if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
+                    $scope.viewInstance($stateParams.id);
+                }
+                $scope.instnaceEdit = false;
+            }
+        }); $scope.$on("VirtualMachine", function(event, args) {
+            if(args.status == 'FAILED' && $scope.persistinstance.uuid === args.resourceUuid){
+	    $scope.global.webSocketLoaders.viewLoader = false;
+	    if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
+                $scope.viewInstance($stateParams.id);
+            }
+	    } 
+            if ($scope.persistinstance.uuid === args.resourceUuid) {
+                $scope.global.webSocketLoaders.viewLoader = false;
+                if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
+                    $scope.viewInstance($stateParams.id);
+                }
             }
         });
     }
-};
+
+    function instanceDetailsCtrl($scope, $log, $sce, dialogService, $modal, $http, $state, $stateParams, promiseAjax, localStorageService, globalConfig, crudService, notify, $window) {
+        $scope.instanceList = [];
+        $scope.testvar = "test";
+        $scope.global = crudService.globalConfig;
+        if ($stateParams.id > 0) {
+            $scope.showLoader = true;
+            $scope.showLoaderOffer = true;
+            var hasServer = crudService.read("virtualmachine", $stateParams.id);
+            hasServer.then(function(result) { // this is only run after $http                                                                                       // completes
+                $scope.instance = result;
+                $scope.instanceList = result;
+                var str = $scope.instance.cpuUsage;
+                if (str != null) {
+                    var newString = str.replace(/^_+|_+$/g, '');
+                    var num = parseFloat(newString).toFixed(2);
+                    $state.current.data.pageName = result.name;
+                    $scope.showLoaderOffer = false;
+                    $scope.showLoader = false;
+                    $scope.chart(num);
+                } else {
+                    $scope.showLoaderOffer = false;
+                    $scope.showLoader = false;
+                    $scope.chart(0);
+                }
+            });
+        }
+    };

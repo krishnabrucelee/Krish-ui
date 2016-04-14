@@ -232,11 +232,10 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
                         	volume.zoneId = volume.zone.id;
                         	delete volume.zone;
                         }
+                        $modalInstance.close();
                         var hasServer = appService.crudService.add("volumes/attach/" + volume.id, volume);
-                        hasServer.then(function (result) {  // this is only run after $http completes
-			   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.volumeEvents.attachVolume,result.uuid,$scope.global.sessionValues.id);
+                        hasServer.then(function (result) {  // this is only run after $http completes			   
                             $scope.showLoader = false;
-                            $modalInstance.close();
                         }).catch(function (result) {
                             if (!angular.isUndefined(result.data)) {
                                  if (result.data.fieldErrors != null) {
@@ -290,12 +289,11 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
                     	volume.zoneId = volume.zone.id;
                     	delete volume.zone;
                     }
-                    var hasServer = appService.crudService.add("volumes/detach/" + volume.id, volume);
-                    hasServer.then(function (result) {  // this is only run after $http completes
-			   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.volumeEvents.detachVolume,result.uuid,$scope.global.sessionValues.id);
-                    	$scope.showLoader = false;
-                        $modalInstance.close();
+		    $modalInstance.close();
                     appService.globalConfig.webSocketLoaders.volumeLoader = true;
+                    var hasServer = appService.crudService.add("volumes/detach/" + volume.id, volume);
+                    hasServer.then(function (result) {  // this is only run after $http completes			
+                    	$scope.showLoader = false;
                     }).catch(function (result) {
                         if (!angular.isUndefined(result.data)) {
                              if (result.data.fieldErrors != null) {
@@ -327,11 +325,10 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
                             var snapshot = $scope.snapshot;
                             snapshot.volume = $scope.volume;
                             snapshot.zone = appService.crudService.globalConfig.zone;
+                            appService.globalConfig.webSocketLoaders.volumeLoader = true;
+                            $modalInstance.close();
                             var hasServer = appService.crudService.add("snapshots", snapshot);
                             hasServer.then(function (result) {
-			   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.volumeEvents.createSnapshot,result.uuid,$scope.global.sessionValues.id);
-                            appService.globalConfig.webSocketLoaders.volumeLoader = true;
-                            	$modalInstance.close();
                             }).catch(function (result) {
                                 if (!angular.isUndefined(result) && result.data != null) {
                                     if (result.data.globalError[0] != '') {
@@ -384,12 +381,11 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
                     	$scope.showLoader = true;
                         $scope.volume.zone = $scope.global.zone;
                         var volume = $scope.volume;
+                    	 appService.globalConfig.webSocketLoaders.volumeLoader = true;
+                         $modalInstance.close();
                         var hasVolume = appService.crudService.add("volumes/resize/" + volume.id, volume);
                         hasVolume.then(function (result) {
-			   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.volumeEvents.volumeresize,result.uuid,$scope.global.sessionValues.id);
                            $scope.showLoader = false;
-                    	 appService.globalConfig.webSocketLoaders.volumeLoader = true;
-                           $modalInstance.close();
                         }).catch(function (result) {
                             if (!angular.isUndefined(result.data)) {
                                if (result.data.fieldErrors != null) {
@@ -502,15 +498,11 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
 
                 // Create a new application
                 $scope.save = function (form, volume) {
-
                     $scope.formSubmitted = true;
                     if (form.$valid) {
                     	$scope.showLoader = true;
                         $scope.volume.zone = $scope.global.zone;
                         var volume = angular.copy($scope.volume);
-
-
-
                         if(!angular.isUndefined($scope.volume.storageOffering) && volume.storageOffering != null) {
                         	volume.storageOfferingId = volume.storageOffering.id;
                         	if(!volume.storageOffering.isCustomDisk){
@@ -530,13 +522,11 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
                         	volume.zoneId = volume.zone.id;
                         	delete volume.zone;
                         }
-
+ 			$modalInstance.close();
+                        appService.globalConfig.webSocketLoaders.volumeLoader = true;
                         var hasVolume = appService.crudService.add("volumes", volume);
                         hasVolume.then(function (result) {
-			   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.volumeEvents.volumesave,result.uuid,$scope.global.sessionValues.id);
                         	$scope.showLoader = false;
-                        	$modalInstance.close();
-                        appService.globalConfig.webSocketLoaders.volumeLoader = true;
                         }).catch(function (result) {
                         	$scope.showLoader = false;
                 		    if (!angular.isUndefined(result.data)) {
@@ -683,14 +673,12 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
               	volume.domainId = volume.domain.id;
               	delete volume.domain;
               }
-
+		$modalInstance.close();
+        	appService.globalConfig.webSocketLoaders.volumeLoader = true;
 
              var hasUploadVolume = appService.crudService.add("volumes/upload", volume);
              hasUploadVolume.then(function (result) {
-		 appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.volumeEvents.uploadVolume,result.transJobId,$scope.global.sessionValues.id);
             	 $scope.showLoader = false;
-            	 $modalInstance.close();
-        	 appService.globalConfig.webSocketLoaders.volumeLoader = true;
             	}).catch(function (result) {
              	$scope.showLoader = false;
              	 appService.globalConfig.webSocketLoaders.volumeLoader = false;
@@ -730,8 +718,7 @@ $scope.validateVolume = function (form, volume) {
          var volume = $scope.volume;
          var hasUploadVolume = appService.crudService.add("volumes", volume);
          hasUploadVolume.then(function (result) {
-             appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.volumeEvents.validateVolume,result.id,$scope.global.sessionValues.id);
-             $scope.list(1);
+	     $scope.list(1);
              $scope.homerTemplate = 'app/views/notification/notify.jsp';
              appService.notify({message: 'Uploaded successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
              $modalInstance.close();
@@ -862,7 +849,6 @@ if(obj.scheduleType== 6)
 			recurringSnapshot.intervalType = recurringSnapshot.intervalType.toUpperCase();
                 var hasVolume = appService.crudService.add("snapshotpolicies",  recurringSnapshot);
                 hasVolume.then(function (result) {
-                    appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.volumeEvents.recurringSnapshot,result.uuid,$scope.global.sessionValues.id);
                 	$scope.showLoader = false;
                 	$modalInstance.close();
                 }).catch(function (result) {
@@ -905,12 +891,11 @@ $scope.delete = function (size, volume) {
 
                 //volume.id = deleteObject.id;
 
+                $modalInstance.close();
+            	appService.globalConfig.webSocketLoaders.volumeLoader = true;
                 var hasServer = appService.crudService.softDelete("volumes", volume);
                 hasServer.then(function (result) {
-             appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.volumeEvents.volumedelete,volume.uuid,$scope.global.sessionValues.id);
-                     $scope.showLoader = false;
-                     $modalInstance.close();
-            	 appService.globalConfig.webSocketLoaders.volumeLoader = true;
+		$scope.showLoader = false;
                 }).catch(function (result) {
                     if (!angular.isUndefined(result) && result.data != null) {
                     	$scope.showLoader = false;
@@ -1053,38 +1038,44 @@ $scope.delete = function (size, volume) {
             $scope.snapshotList.push($scope.recurringSnapshot);
         }
     };
-        $scope.$on(appService.globalConfig.webSocketEvents.volumeEvents.attachVolume, function() {
+        $scope.$on(appService.globalConfig.webSocketEvents.volumeEvents.attachVolume, function(event, args) {
             appService.globalConfig.webSocketLoaders.volumeLoader = false;
             $scope.list(1);
         });
-         $scope.$on(appService.globalConfig.webSocketEvents.volumeEvents.detachVolume, function() {
+         $scope.$on(appService.globalConfig.webSocketEvents.volumeEvents.detachVolume, function(event, args) {
              appService.globalConfig.webSocketLoaders.volumeLoader = false;
              $scope.list(1);
          });
-         $scope.$on(appService.globalConfig.webSocketEvents.volumeEvents.createSnapshot, function() {
-             appService.globalConfig.webSocketLoaders.volumeLoader = false;
-             $window.location = "#/snapshot/list";
+         $scope.$on(appService.globalConfig.webSocketEvents.volumeEvents.createSnapshot, function(event, args) {
+        appService.globalConfig.webSocketLoaders.volumeLoader = false;
+	if(args.status !== 'FAILED' || args.status !== 'ERROR') {             
+		$window.location = "#/snapshot/list";
+	}
         });
-         $scope.$on(appService.globalConfig.webSocketEvents.volumeEvents.volumeresize, function() {
+         $scope.$on(appService.globalConfig.webSocketEvents.volumeEvents.volumeresize, function(event, args) {
              appService.globalConfig.webSocketLoaders.volumeLoader = false;
              $scope.list(1);
          });
-         $scope.$on(appService.globalConfig.webSocketEvents.volumeEvents.volumesave, function() {
+         $scope.$on(appService.globalConfig.webSocketEvents.volumeEvents.volumesave, function(event, args) {
              appService.globalConfig.webSocketLoaders.volumeLoader = false;
              $scope.list(1);
          });
-         $scope.$on(appService.globalConfig.webSocketEvents.volumeEvents.uploadVolume, function() {
+         $scope.$on(appService.globalConfig.webSocketEvents.volumeEvents.uploadVolume, function(event, args) {
              appService.globalConfig.webSocketLoaders.volumeLoader = false;
              $scope.list(1);
          });
-         $scope.$on(appService.globalConfig.webSocketEvents.volumeEvents.recurringSnapshot, function() {
+         $scope.$on(appService.globalConfig.webSocketEvents.volumeEvents.recurringSnapshot, function(event, args) {
              appService.globalConfig.webSocketLoaders.volumeLoader = false;
              $scope.list(1);
          });
-         $scope.$on(appService.globalConfig.webSocketEvents.volumeEvents.volumedelete, function() {
+         $scope.$on(appService.globalConfig.webSocketEvents.volumeEvents.volumedelete, function(event, args) {
              appService.globalConfig.webSocketLoaders.volumeLoader = false;
              $scope.list(1);
          });
+        $scope.$on("Volume", function(event, args) { 
+            appService.globalConfig.webSocketLoaders.volumeLoader = false;
+            $scope.list(1);
+        });
 
 };
 

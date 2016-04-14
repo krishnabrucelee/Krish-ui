@@ -93,12 +93,11 @@ function storageCtrl($scope, $state, $stateParams, appService, $window, volumeSe
                         volume.zoneId = volume.zone.id;
                         delete volume.zone;
                     }
+                    appService.globalConfig.webSocketLoaders.vmstorageLoader = true;
+		    $modalInstance.close(); 
                     var hasServer = appService.crudService.add("volumes/attach/" + volume.id, volume);
                     hasServer.then(function(result) { // this is only run after $http completes
-                        appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.attachVolume, result.uuid, $scope.global.sessionValues.id);
                         $scope.showLoader = false;
-                        $modalInstance.close();
-                    appService.globalConfig.webSocketLoaders.vmstorageLoader = true;
                     }).catch(function(result) {
                         if (!angular.isUndefined(result.data)) {
                             if (result.data.fieldErrors != null) {
@@ -150,12 +149,11 @@ function storageCtrl($scope, $state, $stateParams, appService, $window, volumeSe
                     volume.zoneId = volume.zone.id;
                     delete volume.zone;
                 }
+ 		$modalInstance.close();
+                appService.globalConfig.webSocketLoaders.vmstorageLoader = true;
                 var hasServer = appService.crudService.add("volumes/detach/" + volume.id, volume);
                 hasServer.then(function(result) { // this is only run after $http completes
-                    appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.detachVolume, result.uuid, $scope.global.sessionValues.id);
                     $scope.showLoader = false;
-                    $modalInstance.close();
-                appService.globalConfig.webSocketLoaders.vmstorageLoader = true;
                 }).catch(function(result) {
                     if (!angular.isUndefined(result.data)) {
                         if (result.data.fieldErrors != null) {
@@ -187,7 +185,6 @@ function storageCtrl($scope, $state, $stateParams, appService, $window, volumeSe
                         snapshot.zone = appService.crudService.globalConfig.zone;
                         var hasServer = appService.crudService.add("snapshots", snapshot);
                         hasServer.then(function(result) {
-                            appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.createSnapshot, result.uuid, $scope.global.sessionValues.id);
                             $modalInstance.close();
                         }).catch(function(result) {
                             if (!angular.isUndefined(result.data) && result.data.fieldErrors != null) {
@@ -236,7 +233,6 @@ function storageCtrl($scope, $state, $stateParams, appService, $window, volumeSe
                         var volume = $scope.volume;
                         var hasVolume = appService.crudService.add("volumes/resize/" + volume.id, volume);
                         hasVolume.then(function(result) {
-                            appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.volumeresize, result.uuid, $scope.global.sessionValues.id);
                             $scope.showLoader = false;
                             $modalInstance.close();
                         }).catch(function(result) {
@@ -352,12 +348,12 @@ function storageCtrl($scope, $state, $stateParams, appService, $window, volumeSe
                                 volume.zoneId = volume.zone.id;
                                 delete volume.zone;
                             }
+			    
+                            appService.globalConfig.webSocketLoaders.vmstorageLoader = true;
+                            $modalInstance.close();	
                             var hasVolume = appService.crudService.add("volumes", volume);
                             hasVolume.then(function(result) {
-                                appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.volumesave, result.uuid, $scope.global.sessionValues.id);
                                 $scope.showLoader = false;
-                                $modalInstance.close();
-                            appService.globalConfig.webSocketLoaders.vmstorageLoader = true;
                             }).catch(function(result) {
                                 $scope.showLoader = false;
                                 if (!angular.isUndefined(result.data)) {
@@ -473,7 +469,6 @@ function storageCtrl($scope, $state, $stateParams, appService, $window, volumeSe
                             var hasUploadVolume = appService.crudService.add("volumes/upload", volume);
                             hasUploadVolume.then(function(result) {
                                 $scope.showLoader = false;
-                                appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.uploadVolume, result.uuid, $scope.global.sessionValues.id);
                                 $modalInstance.close();
                             }).catch(function(result) {
                                 if (!angular.isUndefined(result) && result.data != null) {
@@ -558,9 +553,11 @@ function storageCtrl($scope, $state, $stateParams, appService, $window, volumeSe
                     volume.id = deleteObject.id;
                     var hasServer = appService.crudService.softDelete("volumes", volume);
                     hasServer.then(function(result) {
-                        appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.volumedelete, result.uuid, $scope.global.sessionValues.id);
                         $scope.showLoader = false;
-                    });
+                    }).catch(function(){
+			appService.globalConfig.webSocketLoaders.vmstorageLoader = false;
+			$scope.showLoader = false;
+        	    });
                     $modalInstance.close();
                 },
                 $scope.cancel = function() {
@@ -568,35 +565,44 @@ function storageCtrl($scope, $state, $stateParams, appService, $window, volumeSe
                 };
         }]);
     };
-    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.attachVolume, function() {
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.attachVolume, function(event, args) {
         appService.globalConfig.webSocketLoaders.vmstorageLoader = false;
         $scope.list(1);
     });
-    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.detachVolume, function() {
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.detachVolume, function(event, args) {
         appService.globalConfig.webSocketLoaders.vmstorageLoader = false;
         $scope.list(1);
     });
-    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.createSnapshot, function() {
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.createSnapshot, function(event, args) {
         appService.globalConfig.webSocketLoaders.vmstorageLoader = false;
         $scope.list(1);
         $window.location = "#/snapshot/list";
     });
-    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.volumeresize, function() {
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.volumeresize, function(event, args) {
         appService.globalConfig.webSocketLoaders.vmstorageLoader = false;
         $scope.list(1);
     });
-    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.volumesave, function() {
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.volumesave, function(event, args) {
         appService.globalConfig.webSocketLoaders.vmstorageLoader = false;
         $scope.list(1);
     });
-    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.uploadVolume, function() {
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.uploadVolume, function(event, args) {
         appService.globalConfig.webSocketLoaders.vmstorageLoader = false;
         $scope.list(1);
      });
-    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.volumedelete, function() {
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.volumedelete, function(event, args) {
         appService.globalConfig.webSocketLoaders.vmstorageLoader = false;
         $scope.list(1);
     });
+    $scope.$on("Volume", function(event, args) {
+            if(args.status == 'FAILED'){
+	    	appService.globalConfig.webSocketLoaders.vmstorageLoader = false;
+        	$scope.list(1);
+	    } else {
+                appService.globalConfig.webSocketLoaders.vmstorageLoader = false;
+        	$scope.list(1);
+            }
+        });
 
 
     // API for storage
