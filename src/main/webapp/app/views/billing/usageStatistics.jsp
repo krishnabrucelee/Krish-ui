@@ -69,7 +69,7 @@
                                 </div>
                                 </div>
                             </div>
-                            <div class="col-md-6  col-sm-6" data-ng-show="global.sessionValues.type == 'ROOT_ADMIN'">
+                            <div class="col-md-6  col-sm-6" >
 
 
                                 <div class="form-group m-l-md"
@@ -109,7 +109,7 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group m-l-md">
+                                <div class="form-group m-l-md" data-ng-show="global.sessionValues.type == 'ROOT_ADMIN'">
                                 <div class="row">
                                 <label class="col-md-3 col-sm-3 control-label">Domain:
                                     <span class="text-danger">*</span>
