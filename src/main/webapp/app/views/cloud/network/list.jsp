@@ -6,7 +6,7 @@
 <div ui-view ng-controller="networksCtrl">
 	<div data-ng-hide="viewContent" data-ng-init="list(1)">
 	<div data-ng-if="global.webSocketLoaders.networkLoader" class="overlay-wrapper">
-                		            <img data-ng-if="global.webSocketLoaders.networkLoader" src="images/loading-bars.svg" class="inner-loading" width="64" height="64" style="margin: 10%"/>
+                		            <img data-ng-if="global.webSocketLoaders.networkLoader" src="images/loading-bars.svg" class="inner-loading" width="64" height="64" />
             		            </div>
 		<div class="hpanel">
 			<div class="panel-heading no-padding">
@@ -52,8 +52,8 @@
 								class="fa fa-refresh fa-lg"></span>
 							</a>
 							</div>
-							
-							<div class="pull-right dashboard-filters-area"> 
+
+							<div class="pull-right dashboard-filters-area">
 							<panda-quick-search></panda-quick-search>
 							<span
 								class=" m-l-sm m-r-sm  pull-right"> <select
@@ -76,7 +76,7 @@
 							</select>
 							</span>
 							</div>
-							
+
 						<div class="clearfix"></div>
 					</div>
 				</div>

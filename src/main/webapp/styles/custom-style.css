@@ -323,6 +323,12 @@ table.dataTable thead .sorting_desc::after {content: "\f0dd";}
 .dashboard-box .instance-border-content-normal.instance-border-content b{ color:#fff; text-shadow:none;}
 .table > thead > tr > th{vertical-align:top;}
 
+.overlay-wrapper{background: rgba(255, 255, 255, .5); text-align: center; position: absolute; width: 100%; height: 100%; z-index: 9999;}
+.inner-loading{display: table-cell; width: 64px; position: relative; vertical-align: middle; margin: 10% 0% 0% 50%;}
+.overlay-wrapper-tr{background: #fff; opacity:0.4; filter:alpha(opacity=40);}
+.overlay-wrapper-tr .pointer-not{ pointer-events: none;}
+.overlay-wrapper-tr .loading-bar-tr{background-color: #fff; position:absolute; left:40%; }
+
 @media (min-width: 600px) and (max-width: 767px) {
 .dashboard-filters-area{ clear:both;}
 .dashboard-btn-area{float:right !important; clear:both;}

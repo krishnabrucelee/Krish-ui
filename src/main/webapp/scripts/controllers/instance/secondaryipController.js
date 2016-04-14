@@ -91,11 +91,10 @@ function secondaryIpCtrl($scope, $modal, $state, $window, $stateParams, appServi
                     if (form.$valid) {
                         appService.globalConfig.webSocketLoaders.vmsecondaryip = true;
                         $scope.showLoader = true;
+		        $modalInstance.close();
                         var hasServer = appService.crudService.add("nics/acquire/" + $scope.nic.id, nic);
                         hasServer.then(function(result) {
-                            appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.acquireNewIP, result.uuid, $scope.global.sessionValues.id);
                             $scope.formSubmitted = false;
-                            $modalInstance.close();
 			           $scope.nicIPList();
                             $scope.showLoader = false;
                         }).catch(function(result) {
@@ -128,9 +127,8 @@ function secondaryIpCtrl($scope, $modal, $state, $window, $stateParams, appServi
                     nic.isActive = false;
                     var hasServer = appService.crudService.add("nics/release/" + nic.id, nic);
                     hasServer.then(function(result) {
-                        appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.deleteIP, result.uuid, $scope.global.sessionValues.id);
                         $scope.showLoader = false;
-			           $scope.nicIPList();
+			$scope.nicIPList();
                     }).catch(function(result) {
                         appService.globalConfig.webSocketLoaders.vmsecondaryip = false;
                     });
@@ -141,11 +139,11 @@ function secondaryIpCtrl($scope, $modal, $state, $window, $stateParams, appServi
                 };
         }]);
     };
-    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.acquireNewIP, function() {
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.acquireNewIP, function(event, args) {
         appService.globalConfig.webSocketLoaders.vmsecondaryip = false;
         $scope.nicIPList();
     });
-    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.deleteIP, function() {
+    $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.deleteIP, function(event, args) {
         appService.globalConfig.webSocketLoaders.vmsecondaryip = false;
         $scope.nicIPList();
     });
