@@ -122,14 +122,7 @@ function accountListCtrl($scope,$state, $log,$timeout,$stateParams, appService, 
     }
     $scope.userList();
 
-    // Department list load based on the domain
-    $scope.domainChange = function() {
-        $scope.domains = {};
-        var hasDepartmentList = appService.crudService.listAllByFilter("departments/search", $scope.user.domain);
-        hasDepartmentList.then(function (result) {
-    	    $scope.accountElements.departmentList = result;
-        });
-    };
+  
 
     // Load department
     $scope.department = {};
@@ -290,6 +283,17 @@ function accountListCtrl($scope,$state, $log,$timeout,$stateParams, appService, 
     $scope.addUser = function (size) {
 	    $scope.user = {};
         appService.dialogService.openDialog("app/views/account/add-user.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
+  // Department list loads based on the domain
+    $scope.domainChange = function() {
+        $scope.domains = {};
+$scope.options = [];
+	$scope.accountElements.roleList = [];
+        var hasDepartmentList = appService.crudService.listAllByFilter("departments/search", $scope.user.domain);
+        hasDepartmentList.then(function (result) {
+    	    $scope.accountElements.departmentList = result;
+        });
+    };
+
             $scope.save = function (form) {
                 $scope.formSubmitted = true;
                 if (form.$valid) {
@@ -339,11 +343,12 @@ function accountListCtrl($scope,$state, $log,$timeout,$stateParams, appService, 
 
             // Getting list of roles and projects by department
             $scope.getRolesAndProjectsByDepartment = function(department) {
+alert("test");
             	 var hasRoles =  appService.promiseAjax.httpTokenRequest( appService.crudService.globalConfig.HTTP_GET, appService.crudService.globalConfig.APP_URL + "roles"  +"/department/"+department.id);
             	 hasRoles.then(function (result) {  // this is only run after $http completes0
             		 $scope.accountElements.roleList = result;
             	 });
-
+		
 		    var hasProjects =  appService.promiseAjax.httpTokenRequest( appService.crudService.globalConfig.HTTP_GET, appService.crudService.globalConfig.APP_URL + "projects"  +"/department/"+department.id);
 		    hasProjects.then(function (result) {  // this is only run after $http completes0
                 $scope.options = result;
@@ -359,7 +364,7 @@ function accountListCtrl($scope,$state, $log,$timeout,$stateParams, appService, 
 
 		    var hasProjects =  appService.promiseAjax.httpTokenRequest( appService.crudService.globalConfig.HTTP_GET, appService.crudService.globalConfig.APP_URL + "projects"  +"/department/"+$scope.global.sessionValues.departmentId);
 		    hasProjects.then(function (result) {  // this is only run after $http completes0
-                $scope.options = result;
+               $scope.options = result;
             });
 }
 

@@ -40,7 +40,7 @@
 	                        <div class="row">
 	                            <label class="col-md-3 col-xs-12 col-sm-3 control-label control-normal"><fmt:message key="common.domain" bundle="${msg}" /><span class="text-danger">*</span></label>
 	                            <div class="col-md-7  col-sm-7 col-xs-12">
-	                                <select required="true" id="add_project_domain" class="form-control input-group" name="domain" data-ng-model="newProject.domain" ng-options="domain.name for domain in formElements.domainList" data-ng-class="{'error': projectForm.domain.$invalid && formSubmitted}" >
+	                                <select required="true" id="add_project_domain" class="form-control input-group" name="domain" data-ng-model="newProject.domain" data-ng-change="changedomain(newProject.domain)" ng-options="domain.name for domain in formElements.domainList" data-ng-class="{'error': projectForm.domain.$invalid && formSubmitted}" >
 	                                    <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
 	                                </select>
 	                                <i  tooltip="<fmt:message key="choose.domain" bundle="${msg}" /> " class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>

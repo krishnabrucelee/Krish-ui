@@ -471,7 +471,6 @@ $scope.ipCostList();
         }]);
     };
     $scope.openAddIsolatedNetwork = function(size) {
-        $scope.projectList = "";
         appService.dialogService.openDialog("app/views/cloud/network/add.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function($scope, $modalInstance, $rootScope) {
             $scope.network = {};
             if ($scope.global.sessionValues.type === 'USER') {
@@ -530,12 +529,19 @@ $scope.ipCostList();
                         };
                     }
                 },
-                $scope.$watch('network.domain', function(obj) {
-                    if (!angular.isUndefined(obj)) {
-                        $scope.departmentList(obj);
-                    }
-                }),
-                $scope.$watch('network.department', function(obj) {
+	
+
+
+
+        $scope.changedomain = function(obj) {
+        $scope.network.project = {};
+        if (!angular.isUndefined(obj)) {
+            $scope.departmentList(obj);
+	//$scope.projectList = [];
+        }
+    },
+               $scope.$watch('network.department', function(obj) {
+        $scope.network.project = null;
                     if (!angular.isUndefined(obj)) {
                         $scope.getProjectList(obj);
                     }
@@ -837,12 +843,13 @@ $scope.ipCostList();
     $scope.domainList();
     $scope.departmentList = function(domain) {
         var hasDepartments = appService.crudService.listAllByFilter("departments/search", domain);
+
         hasDepartments.then(function(result) { // this is only run after
             // $http completes0
             $scope.formElements.departmenttypeList = result;
         });
     };
-    $scope.projectList = {};
+
     $scope.getProjectList = function(department) {
         if ($scope.global.sessionValues.type != "USER") {
             var hasProjects = appService.crudService.listAllByObject("projects/department", department);
@@ -851,7 +858,7 @@ $scope.ipCostList();
                 $scope.projectList = result;
             });
         }
-        if ($scope.global.sessionValues.type == "USER") {
+         if ($scope.global.sessionValues.type == "USER") {
             var hasProjects = appService.crudService.listAllByObject("projects/user", $scope.global.sessionValues);
             hasProjects.then(function(result) { // this is only run after $http
                 // completes0
@@ -859,6 +866,7 @@ $scope.ipCostList();
             });
         }
     };
+
     if ($scope.global.sessionValues.type != "ROOT_ADMIN") {
         var department = {};
         department.id = $scope.global.sessionValues.departmentId;

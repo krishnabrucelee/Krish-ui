@@ -258,13 +258,22 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams, localStor
     	 }
          });
 
-     $scope.$watch('newProject.domain', function (obj) {
+     /**$scope.$watch('newProject.domain', function (obj) {
     	 if($scope.global.sessionValues.type !== 'USER') {
    	  	if (!angular.isUndefined(obj)) {
        	 	$scope.departmentList(obj);
    	  	}
     	 }
-     });
+     });**/
+ $scope.changedomain = function(obj) {
+        $scope.newProject.projectOwner = {};
+        if($scope.global.sessionValues.type !== 'USER') {
+   	  	if (!angular.isUndefined(obj)) {
+       	 	$scope.departmentList(obj);
+		$scope.projectElements.projectOwnerList = [];
+   	  	}
+    	 }
+    },
 
      $scope.$watch('project.department', function (obj) {
    	  if (!angular.isUndefined(obj)) {
