@@ -135,8 +135,7 @@ function departmentCtrl($scope, $sce, appService, localStorageService, globalCon
                         var hasServer = appService.crudService.add("departments", department);
                         hasServer.then(function (result) {  // this is only run after $http completes
                         	//$rootScope.department={};
-			   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.departmentEvents.createDepartment,result.id,$scope.global.sessionValues.id);
-                        	$scope.formSubmitted = false;
+			    $scope.formSubmitted = false;
                             $modalInstance.close();
                             $scope.showLoader = false;
                             appService.notify({message: 'Department added successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
@@ -174,8 +173,7 @@ function departmentCtrl($scope, $sce, appService, localStorageService, globalCon
                     	delete department.domain;
                         var hasServer = appService.crudService.update("departments", department);
                         hasServer.then(function (result) {
-			   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.departmentEvents.editDepartment,result.id,$scope.global.sessionValues.id);
-                            $scope.list(1);
+			    $scope.list(1);
                             $scope.showLoader = false;
                             appService.notify({message: 'Department updated successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                             $modalInstance.close();
@@ -209,8 +207,7 @@ function departmentCtrl($scope, $sce, appService, localStorageService, globalCon
                 	delete deleteObject.domain;
                     var hasServer = appService.crudService.softDelete("departments", deleteObject);
                     hasServer.then(function (result) {
-			   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.departmentEvents.deleteDepartment,result.id,$scope.global.sessionValues.id);
-                        $scope.list(1);
+			$scope.list(1);
                         appService.notify({message: 'Department deleted successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                     }).catch(function (result) {
 

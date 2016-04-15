@@ -196,8 +196,7 @@ angular
             }
             var hasServer = appService.crudService.add("roles", role);
             hasServer.then(function (result) {  // this is only run after $http
-			   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.roleEvents.createRole,result.id,$scope.global.sessionValues.id);
-            	$scope.showLoader = false;
+		 $scope.showLoader = false;
             	$scope.list(1);
             	appService.notify({message: 'Added successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
                 $window.location.href = '#/roles';
@@ -271,8 +270,7 @@ angular
             }
             var hasServer = appService.crudService.update("roles", role);
             hasServer.then(function (result) {
-	    appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.roleEvents.updateRole,result.id,$scope.global.sessionValues.id);
-            	$scope.showLoader = false;
+	     $scope.showLoader = false;
             $scope.homerTemplate = 'app/views/notification/notify.jsp';
             appService.notify({message: 'Updated successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
             $window.location.href = '#/roles';
@@ -309,8 +307,7 @@ angular
 
                     var hasRole = appService.crudService.softDelete("roles", role);
                     hasRole.then(function (result) {
-	    appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.roleEvents.deleteRole,result.id,$scope.global.sessionValues.id);
-                    	$scope.showLoader = false;
+	                 $scope.showLoader = false;
                         $scope.list(1);
                         $scope.homerTemplate = 'app/views/notification/notify.jsp';
                         appService.notify({message: 'Deleted successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
@@ -494,8 +491,7 @@ angular
         	if (form.$valid && assignedUsers.length > 0) {
         		var hasServer = appService.crudService.add("users/assignRole", assignedUsers);
         		hasServer.then(function (result) {  // this is only run after
-	    appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.roleEvents.assignRole,result.id,$scope.global.sessionValues.id);
-        			$scope.list(1);
+	                        $scope.list(1);
         			appService.notify({message: 'Assigned successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
         			$scope.role.department = "";
             		$scope.role.domain = "";
