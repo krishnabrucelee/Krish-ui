@@ -135,8 +135,7 @@ function applicationListCtrl($scope, appService, localStorageService, globalConf
                         }
                         var hasServer = appService.crudService.add("applications", application);
                         hasServer.then(function (result) {  // this is only run after $http completes
-			   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.applicationEvents.createApplication,result.id,$scope.global.sessionValues.id);
-                            $scope.formSubmitted = false;
+			    $scope.formSubmitted = false;
                             $modalInstance.close();
                             $scope.showLoader = false;
                             appService.notify({message: 'Application added successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
@@ -180,8 +179,7 @@ function applicationListCtrl($scope, appService, localStorageService, globalConf
                     	delete application.domain;
                         var hasServer = appService.crudService.update("applications", application);
                         hasServer.then(function (result) {
-			   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.applicationEvents.editApplication,result.id,$scope.global.sessionValues.id);
-                            $scope.list(1);
+			    $scope.list(1);
                             $scope.showLoader = false;
                             appService.notify({message: 'Application updated successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                             $modalInstance.close();
@@ -221,8 +219,7 @@ function applicationListCtrl($scope, appService, localStorageService, globalConf
                     application.isActive = false;
                     var hasServer = appService.crudService.softDelete("applications", deleteObject);
                     hasServer.then(function (result) {
-			   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.applicationEvents.deleteApplication,result.id,$scope.global.sessionValues.id);
-                        $scope.list(1);
+			$scope.list(1);
                         $scope.showLoader = false;
                         appService.notify({message: 'Application deleted successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                     }).catch(function (result) {

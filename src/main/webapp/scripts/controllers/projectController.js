@@ -364,8 +364,7 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams, localStor
     		            $scope.formSubmitted = false;
     		            var hasProject = appService.crudService.add("projects", project);
     		            hasProject.then(function (result) {  // this is only run after $http completes
-			   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.projectEvents.createProject,result.id,$scope.global.sessionValues.id);
-    		            	$scope.formSubmitted = false;
+			    $scope.formSubmitted = false;
     		            	$scope.projectLoader = false;
     		           	    $scope.cancel();
     		                $scope.homerTemplate = 'app/views/notification/notify.jsp';
@@ -402,8 +401,7 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams, localStor
         	 $scope.projectInfo.userList.push(user);
         	 var hasServer = appService.crudService.update("projects", $scope.projectInfo);
              hasServer.then(function (result) {
-			   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.projectEvents.addUser,result.id,$scope.global.sessionValues.id);
-                 $scope.project.user = {};
+		$scope.project.user = {};
 		         $scope.userLists($scope.projectInfo);
                  appService.notify({message: 'User updated successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                  $state.reload();
@@ -420,8 +418,7 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams, localStor
     	});
     	var hasUser = appService.crudService.updates("projects/remove/user", $scope.projectInfo);
     	hasUser.then(function(result) {
-	   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.projectEvents.removeUser,result.id,$scope.global.sessionValues.id);
-            $scope.project.user = {};
+	     $scope.project.user = {};
             $scope.userLists($scope.projectInfo);
             appService.notify({message: 'User removed successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
             $state.reload();
@@ -479,8 +476,7 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams, localStor
     		            delete project.projectOwner;
                         var hasServer = appService.crudService.update("projects", project);
                         hasServer.then(function (result) {
-	   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.projectEvents.editProject,result.id,$scope.global.sessionValues.id);
-                       	 $scope.projectLoader = false;
+				$scope.projectLoader = false;
                         	$scope.oneChecked = false;
                         	$scope.formSubmitted = false;
                             appService.notify({message: 'Project Updated successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
@@ -516,8 +512,7 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams, localStor
                 $scope.deleteProject = function () {
                     var hasServer = appService.crudService.softDelete("projects", deleteObject);
                     hasServer.then(function (result) {
-	   appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.projectEvents.deleteProject,result.id,$scope.global.sessionValues.id);
-                    	$scope.oneChecked = false;
+	   		$scope.oneChecked = false;
                         $scope.list(1);
                         appService.notify({message: 'Project deleted successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
 
