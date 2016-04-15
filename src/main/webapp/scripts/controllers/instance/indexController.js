@@ -682,7 +682,6 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
         var hasServer = appService.crudService.add("virtualmachine", instance);
         hasServer.then(function(result) { // this is only run after $http completes
             $scope.showLoader = false;
-            appService.webSocket.prepForBroadcast(appService.globalConfig.webSocketEvents.vmEvents.vmCreate, result.uuid, $scope.global.sessionValues.id);
             appService.notify({
                 message: "Instance creation started",
                 classes: 'alert-success',
