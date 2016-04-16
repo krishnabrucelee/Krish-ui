@@ -39,7 +39,7 @@
                         </div>
                             <div class="row">
                             <div class="small  m-b-sm  "  data-ng-hide="templateObj.openDescription">
-                                {{ templateObj.templateOwnerId }}.
+                                {{ templateObj.description }}
                             </div>
                             <div class="small text-justify"    data-ng-show="templateObj.openDescription">
                                 <div  class="animate-panel slimScroll" data-child="hpanel" data-effect="fadeInUp">
