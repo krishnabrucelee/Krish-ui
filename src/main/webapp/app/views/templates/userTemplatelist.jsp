@@ -27,7 +27,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                                <tr  data-ng-repeat="template in filteredCount = (userTemplateList| filter:quickSearch | orderBy:sort.column:sort.descending)">
+                            <tr data-ng-repeat="template in filteredCount = (userTemplateList| filter:quickSearch | orderBy:sort.column:sort.descending)">
                                     <td>
                                         <a data-ng-click="showDescription(template)">
                                           <img data-ng-show="template.osCategory.name.indexOf('Windows') > -1" src="images/os/windows_logo.png" alt="" height="35" width="35" class="m-r-5" >
