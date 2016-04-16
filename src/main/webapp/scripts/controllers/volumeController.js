@@ -101,7 +101,6 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
             $scope.departmentList = result;
         });
     };
-
     if ($scope.global.sessionValues.type != "ROOT_ADMIN") {
         var domain = {};
         domain.id = $scope.global.sessionValues.domainId;
@@ -234,7 +233,7 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
                         }
                         $modalInstance.close();
                         var hasServer = appService.crudService.add("volumes/attach/" + volume.id, volume);
-                        hasServer.then(function (result) {  // this is only run after $http completes			   
+                        hasServer.then(function (result) {  // this is only run after $http completes
                             $scope.showLoader = false;
                         }).catch(function (result) {
                             if (!angular.isUndefined(result.data)) {
@@ -292,7 +291,7 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
 		    $modalInstance.close();
                     appService.globalConfig.webSocketLoaders.volumeLoader = true;
                     var hasServer = appService.crudService.add("volumes/detach/" + volume.id, volume);
-                    hasServer.then(function (result) {  // this is only run after $http completes			
+                    hasServer.then(function (result) {  // this is only run after $http completes
                     	$scope.showLoader = false;
                     }).catch(function (result) {
                         if (!angular.isUndefined(result.data)) {
@@ -1048,7 +1047,7 @@ $scope.delete = function (size, volume) {
          });
          $scope.$on(appService.globalConfig.webSocketEvents.volumeEvents.createSnapshot, function(event, args) {
         appService.globalConfig.webSocketLoaders.volumeLoader = false;
-	if(args.status !== 'FAILED' || args.status !== 'ERROR') {             
+	if(args.status !== 'FAILED' || args.status !== 'ERROR') {
 		$window.location = "#/snapshot/list";
 	}
         });
@@ -1072,7 +1071,7 @@ $scope.delete = function (size, volume) {
              appService.globalConfig.webSocketLoaders.volumeLoader = false;
              $scope.list(1);
          });
-        $scope.$on("Volume", function(event, args) { 
+        $scope.$on("Volume", function(event, args) {
             appService.globalConfig.webSocketLoaders.volumeLoader = false;
             $scope.list(1);
         });

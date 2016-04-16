@@ -7,14 +7,14 @@
 <html ng-app="homer">
 <head>
 <!-- Redirect to login when passing the wrong URL -->
-<script>
+<%-- <script>
     var pageUrl = window.location.href;
     if(pageUrl.indexOf("index#/login") > -1 || pageUrl.endsWith("index#/")) {
         var contextPath = '<%= request.getContextPath() %>';
         var baseUrl = window.location.protocol + "//" + window.location.host + contextPath + '/login';
         window.location = baseUrl;
     }
-</script>
+</script> --%>
 
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -108,6 +108,7 @@
     <script src="bower_components/jquery-ui/jquery-ui.min.js"></script>
     <script src="bower_components/slimScroll/jquery.slimscroll.min.js"></script>
     <script src="bower_components/angular/angular.min.js"></script>
+    <script src="bower_components/angular/angular-cookies.js"></script>
     <script src="bower_components/angular-sanitize/angular-sanitize.min.js"></script>
     <script src="bower_components/angular-animate/angular-animate.min.js"></script>
     <script
@@ -237,6 +238,7 @@
     <script src="scripts/factories/Search.js"></script>
     <script src="scripts/factories/webSocket.js"></script>
     <script src="scripts/factories/webSocketService.js"></script>
+    <script src="scripts/factories/rememberMeService.js"></script>
     <script>
     <!-- endbuild -->
         $('html').addClass("page-scroll");

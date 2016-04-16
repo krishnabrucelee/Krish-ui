@@ -814,7 +814,6 @@ function hasPermission() {
     return {
         restrict: 'A',
         link: function (scope, element, attrs) {
-
         	var permission=false;
         	for(var i=0;i<scope.global.sessionValues.permissionList.length;i++){
         	    if(scope.global.sessionValues.permissionList[i].action_key === attrs["hasPermission"]){
@@ -822,6 +821,7 @@ function hasPermission() {
         	    	break;
         	    }
         	}
+
         	if(!permission) {
     	    	element.hide();
         	}

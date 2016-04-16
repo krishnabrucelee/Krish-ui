@@ -496,7 +496,24 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider, $compile
 
 angular.module('homer').constant("PANDA_CONFIG", {
     "VIEW_URL" : "app/views/",
-}).config(configState).run(function($rootScope, $state, editableOptions) {
+}).config(configState).factory('myFactory', function($http, globalConfig, $cookies, $window) {
+	var loginSession = globalConfig.sessionValues;
+    if(loginSession == null || angular.isUndefined(globalConfig.sessionValues)) {
+    	if (angular.isUndefined($cookies.rememberMe) || $cookies.rememberMe == "false") {
+    			window.location.href = "login";
+    	} else {
+        $http({method:'GET', url:'http://localhost:8080/api/users/usersessiondetails/'+$cookies.id,
+			"headers": {'x-auth-token': $cookies.token, 'x-requested-with': '', 'Content-Type': 'application/json', 'Range': "items=0-9", 'x-auth-login-token': $cookies.loginToken, 'x-auth-remember': $cookies.rememberMe, 'x-auth-user-id': $cookies.id, 'x-auth-login-time': $cookies.loginTime}})
+			.success(function(result){
+             globalConfig.sessionValues = result;
+             loginSession = globalConfig.sessionValues;
+          });
+    	}
+    }
+    return {
+        foo: function() { return 'bar' }
+    };
+}).run(function($rootScope, $state, editableOptions, myFactory) {
     $rootScope.$state = $state;
     editableOptions.theme = 'bs3';
 });
