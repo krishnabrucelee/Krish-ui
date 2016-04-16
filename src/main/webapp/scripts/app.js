@@ -26,6 +26,8 @@
         'LocalStorageModule',       // AngularJs LocalStorage
         'rzModule',                 // RZ
         'angular.filter',		    // Angular filters
-        'angular-momentjs'          // AngularJS moment
+        'angular-momentjs',         // AngularJS moment
+        'ngCookies'					// Angular cookie
+
     ])
 })();

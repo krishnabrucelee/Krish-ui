@@ -297,6 +297,7 @@ function globalConfig($window) {
         NOTIFICATION_TEMPLATE : 'app/views/notification/notify.jsp',
         TOKEN_SEPARATOR : "@@",
         PAGE_ERROR_SEPARATOR : "PAGE_ERROR",
+        USER_SESSION : "remember_me",
         paginationHeaders : function(pageNumber, limit) {
             var headers = {};
             var rangeStart = (pageNumber - 1) * limit;

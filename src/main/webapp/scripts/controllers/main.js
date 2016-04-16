@@ -8,7 +8,7 @@ angular
         .module('homer')
         .controller('appCtrl', appCtrl);
 
-function appCtrl($http, $scope, $window, $timeout, globalConfig, crudService, promiseAjax, localStorageService) {
+function appCtrl($http, $scope, $window, $timeout, globalConfig, crudService, promiseAjax, localStorageService, $cookies) {
 
     // For iCheck purpose only
 
@@ -333,8 +333,15 @@ function appCtrl($http, $scope, $window, $timeout, globalConfig, crudService, pr
      *  Logout a user.
      */
     $scope.logout = function() {
-        $window.sessionStorage.removeItem("loginSession")
-        window.location.href = "login";
+    	$http({method:'GET', url:'http://localhost:8080/api/logout/'+$cookies.id,
+			"headers": {'x-auth-token': $cookies.token, 'x-requested-with': '', 'Content-Type': 'application/json', 'Range': "items=0-9", 'x-auth-login-token': $cookies.loginToken, 'x-auth-remember': $cookies.rememberMe, 'x-auth-user-id': $cookies.id, 'x-auth-login-time': $cookies.loginTime}})
+			.success(function(result){
+				$window.sessionStorage.removeItem("loginSession")
+		        $cookies.rememberMe = "false";
+		        $cookies.loginToken = '0';
+		        $cookies.loginTime = '0';
+		        window.location.href = "login";
+          });
     }
 
     $scope.getZoneList = function (pageNumber) {

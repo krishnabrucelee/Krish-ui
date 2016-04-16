@@ -16,7 +16,7 @@ function webSocket($rootScope, $timeout, webSockets, globalConfig, notify) {
     };
     var eventSubscribe = function() {
         webSockets.subscribe("/topic/action.event/" + globalConfig.sessionValues.id, function(message) {
-		if(JSON.parse(message.body).resourceUuid !== null){            
+		if(JSON.parse(message.body).resourceUuid !== null){
 			notify({
                    	 	message : JSON.parse(message.body).message,
                     		classes : 'alert-success',
@@ -90,14 +90,14 @@ function webSocket($rootScope, $timeout, webSockets, globalConfig, notify) {
 	webSockets.subscribe("/topic/async.event/TEMPLATE/" + globalConfig.sessionValues.id, function(message) {
              $rootScope.$broadcast(JSON.parse(message.body).event, JSON.parse(message.body));
         });
-        webSockets.subscribe("/topic/error.event/" + globalConfig.sessionValues.id, function(message) {             		
+        webSockets.subscribe("/topic/error.event/" + globalConfig.sessionValues.id, function(message) {
 	     notify({
                message : JSON.parse(message.body).message,
                classes : 'alert-danger',
                templateUrl : globalConfig.NOTIFICATION_TEMPLATE
             });
            $rootScope.$broadcast(JSON.parse(message.body).event, JSON.parse(message.body));
-		
+
         });
         webSockets.subscribe("/topic/resource.event/Volume", function(message) {
              $rootScope.$broadcast(JSON.parse(message.body).event, JSON.parse(message.body));
@@ -109,7 +109,7 @@ function webSocket($rootScope, $timeout, webSockets, globalConfig, notify) {
              $rootScope.$broadcast(JSON.parse(message.body).event, JSON.parse(message.body));
         });
     }
-    initStompClient();    
+    initStompClient();
     return webSocket;
 };
 

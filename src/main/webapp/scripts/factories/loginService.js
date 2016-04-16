@@ -17,7 +17,11 @@ function loginSession(globalConfig, $window, $http, $injector, $moment) {
 	                window.location.href = "login";
 	            } else if (updateSessionTime <= currentTimeStamp) {
 	                var currentSession = JSON.parse($window.sessionStorage.getItem("loginSession"));
-	                currentSession.loginTime = currentTimeStamp;
+	                if (currentSession != null) {
+	                	currentSession.loginTime = currentTimeStamp;
+	                } else {
+	                	window.location.href = "login";
+	                }
 	                $window.sessionStorage.setItem("loginSession", JSON.stringify(currentSession));
 	                globalConfig.sessionValues = JSON.parse($window.sessionStorage.getItem("loginSession"));
 	                return config;

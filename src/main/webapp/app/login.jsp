@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html data-ng-app="homer">
 <head>
-    <!-- Redirect to login when passing the wrong URL -->
+   <%--  <!-- Redirect to login when passing the wrong URL -->
     <script>
         var pageUrl = window.location.href;
         if(pageUrl.indexOf("index#/login") > -1 || pageUrl.endsWith("index#/")) {
@@ -13,7 +13,7 @@
             var baseUrl = window.location.protocol + "//" + window.location.host + contextPath + '/login';
             window.location = baseUrl;
         }
-    </script>
+    </script> --%>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -86,6 +86,7 @@
 <script src="scripts/controllers/loginController.js"></script>
 <script src="scripts/factories/rememberMeService.js"></script>
 <script src="scripts/factories/globalConfig.js"></script>
+<script src="bower_components/angular/angular-cookies.js"></script>
 <script type="text/javascript">
     function loginForm() {
         var username = document.getElementById("username").value;
