@@ -153,7 +153,7 @@
 								class="text-danger">*</span></label>
 							<div class="col-md-6  col-sm-6 col-xs-12">
 								<select required="true" class="form-control input-group" name="domain"
-									data-ng-model="network.domain" data-ng-class="{'error': addnetworkForm.domain.$invalid && formSubmitted}"
+									data-ng-model="network.domain" data-ng-change="changedomain(network.domain)" data-ng-class="{'error': addnetworkForm.domain.$invalid && formSubmitted}"
 
 									ng-options="domain.name for domain in domainList">
 									<option value=""><fmt:message key="common.select"
