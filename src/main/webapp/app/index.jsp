@@ -4,7 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
 <!DOCTYPE html>
-<html ng-app="homer">
+<html>
 <head>
 <!-- Redirect to login when passing the wrong URL -->
 <%-- <script>
