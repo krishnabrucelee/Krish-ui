@@ -11,7 +11,8 @@ function webSocket($rootScope, $timeout, webSockets, globalConfig, notify) {
         webSockets.connect(function(frame) {
 	    eventSubscribe();
         }, function(error) {
-            initStompClient();
+        	alert("The websocket server could be temporarily unavailable or too busy. Try again in a few moments.");
+            window.location.href = "login";
         });
     };
     var eventSubscribe = function() {
