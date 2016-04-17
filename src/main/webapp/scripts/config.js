@@ -502,7 +502,7 @@ angular.module('homer').constant("PANDA_CONFIG", {
     	if (angular.isUndefined($cookies.rememberMe) || $cookies.rememberMe == "false") {
     			window.location.href = "login";
     	} else {
-        $http({method:'GET', url:'http://localhost:8080/api/users/usersessiondetails/'+$cookies.id,
+        $http({method:globalConfig.HTTP_GET, url:globalConfig.APP_URL + 'users/usersessiondetails/'+$cookies.id,
 			"headers": {'x-auth-token': $cookies.token, 'x-requested-with': '', 'Content-Type': 'application/json', 'Range': "items=0-9", 'x-auth-login-token': $cookies.loginToken, 'x-auth-remember': $cookies.rememberMe, 'x-auth-user-id': $cookies.id, 'x-auth-login-time': $cookies.loginTime}})
 			.success(function(result){
              globalConfig.sessionValues = result;
