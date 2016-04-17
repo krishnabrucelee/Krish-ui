@@ -333,7 +333,7 @@ function appCtrl($http, $scope, $window, $timeout, globalConfig, crudService, pr
      *  Logout a user.
      */
     $scope.logout = function() {
-    	$http({method:'GET', url:'http://localhost:8080/api/logout/'+$cookies.id,
+    	$http({method:'GET', url:'http://localhost:8080/api/loginHistory/'+$cookies.id,
 			"headers": {'x-auth-token': $cookies.token, 'x-requested-with': '', 'Content-Type': 'application/json', 'Range': "items=0-9", 'x-auth-login-token': $cookies.loginToken, 'x-auth-remember': $cookies.rememberMe, 'x-auth-user-id': $cookies.id, 'x-auth-login-time': $cookies.loginTime}})
 			.success(function(result){
 				$window.sessionStorage.removeItem("loginSession")
