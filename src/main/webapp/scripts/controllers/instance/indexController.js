@@ -80,6 +80,9 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
         $scope.instance.template = $scope.templateVM;
     }
 
+    $scope.instance.networkOfferinglist = {};
+    $scope.instance.networkOfferinglist.value = 'all';
+
     // Form Field Declaration
     $scope.instance.computeOffer = $scope.global.instanceCustomPlan.computeOffer;
     $scope.instance.diskOffer = $scope.global.instanceCustomPlan.diskOffer;
@@ -312,6 +315,16 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
         if (item == '') {
             $scope.networks = false;
         } else {
+        	if(item == 'all') {
+        		$scope.networks = true;
+        		$scope.instance.networkOfferinglist.value = item;
+        		$scope.instance.networkOfferinglist = $scope.instanceElements.networkOfferingList[0];
+        	}
+        	if(item == 'new'){
+        		$scope.networks = true;
+        		$scope.instance.networkOfferinglist.value = item;
+        		$scope.instance.networkOfferinglist = $scope.instanceElements.networkOfferingList[2];
+        	}
             $scope.networks = true;
             $scope.compute = false;
             $scope.disk = false;
@@ -1010,6 +1023,15 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
         }
         hasGuestNetworks.then(function(result) { // this is only run after $http
             $scope.instance.networks.networkList = result;
+            if(result.length > 0) {
+                $scope.instance.networkOfferinglist.value = 'all';
+                $scope.instance.networkOfferinglist = $scope.instanceElements.networkOfferingList[0];
+                $scope.networks = true;
+            } else {
+                $scope.instance.networkOfferinglist.value = 'new';
+                $scope.instance.networkOfferinglist = $scope.instanceElements.networkOfferingList[2];
+                $scope.networks = true;
+            }
             $scope.showLoaderOffer = false;
         });
 

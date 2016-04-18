@@ -48,7 +48,7 @@ function globalConfig($window) {
             currencyLabel : "CNY"
         },
         networks : {
-            name : 'http://localhost:9090/pandaui/index#/billing/payments'
+            name : "http://"+ window.location.hostname +":9090/pandaui/index#/billing/payments"
         },
         sort : {
             column : '',
@@ -288,11 +288,11 @@ function globalConfig($window) {
         HTTP_POST : 'POST',
         HTTP_PUT : 'PUT',
         HTTP_DELETE : 'DELETE',
-        APP_URL : "http://localhost:8080/api/",
-        SOCKET_URL : "http://localhost:8080/",
-        PING_APP_URL : "http://192.168.1.153:8086/api/",
+        APP_URL : "http://"+ window.location.hostname +":8080/api/",
+        SOCKET_URL : "http://"+ window.location.hostname +":8080/",
+        PING_APP_URL : "http://"+ window.location.hostname +":8086/api/",
         MONITOR_URL : "http://211.156.49.15:4242/api/",
-        BASE_UI_URL : "http://"+ window.location.hostname +":9090/pandauser/login",
+        BASE_UI_URL : "http://"+ window.location.hostname +":9090/pandauser/",
         CONTENT_LIMIT : 10,
         VIEW_URL : 'app/views/',
         NOTIFICATION_TEMPLATE : 'app/views/notification/notify.jsp',

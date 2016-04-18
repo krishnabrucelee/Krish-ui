@@ -97,7 +97,7 @@
 				data-ng-class="{ 'text-danger' : instanceForm.cpuSpeed.$modelValue < 500 && OfferingSubmitted}">
 				<label class="col-md-3 col-sm-3 control-label"><fmt:message key="cpu.speed" bundle="${msg}" /> :</label>
 				<div class="col-md-5 col-sm-5">
-					<rzslider rz-slider-model="instance.computeOffer.cpuSpeed.value" 
+					<rzslider rz-slider-model="instance.computeOffer.cpuSpeed.value"
 						rz-slider-floor="instance.computeOffer.cpuSpeed.floor"
 						rz-slider-ceil="instance.computeOffer.cpuSpeed.ceil"
 						rz-slider-always-show-bar="true">
@@ -329,6 +329,7 @@
 								<thead>
 									<tr>
 										<th><fmt:message key="common.network" bundle="${msg}" /></th>
+										<th><fmt:message key="common.description" bundle="${msg}" /></th>
 										<th><fmt:message key="common.type" bundle="${msg}" /></th>
 										<th><fmt:message key="common.action" bundle="${msg}" /></th>
 									</tr>
@@ -342,12 +343,14 @@
 													{{ networks.name}}
 											</label>
 										</td>
+										<td>
+											<label>
+													{{ networks.displayText}}
+											</label>
+										</td>
 										<td>{{ networks.networkType}}</td>
 										<td>
 											<a title="<fmt:message key="ip.address" bundle="${msg}" />"></a>
-											<input type="text" valid-cidr required="true" id="create_instance_network_ip_addess_{{networks.id}}"
-											class="test_create_instance_network_ip_addess" data-unique-field="{{networks.name}}-{{networks.networkOffering.displayText}}" placeholder="<fmt:message key="ip.address" bundle="${msg}" />"
-												class="input-small" data-ng-model="networks.ipaddress" />
 											<span>
 												<label>
 													<input type="radio" id="create_instance_network_default_radio_button_{{networks.id}}" class="test_create_instance_network_default_radio_button" data-unique-field="{{networks.name}}-{{networks.networkOffering.displayText}}" name="instance.networks.default" data-ng-model="instance.networkc" value="{{networks}}">
