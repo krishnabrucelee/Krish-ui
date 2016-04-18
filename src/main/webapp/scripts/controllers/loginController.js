@@ -23,19 +23,11 @@ angular.module('homer', ['ngCookies']).controller("loginCtrl", function ($scope,
             .success(function (result) {
                $window.sessionStorage.token = result.token;
                $window.sessionStorage.setItem("loginSession", JSON.stringify(result));
-           	   if (result.rememberMe == "true") {
-           	       $cookies.token = result.token;
-           	       $cookies.loginToken = result.loginToken;
-           	       $cookies.id = result.id;
-           	       $cookies.loginTime = result.loginTime;
-           	       $cookies.rememberMe = result.rememberMe;
-               } else {
-            	   $cookies.token = result.token;
-            	   $cookies.loginToken = result.loginToken;
-            	   $cookies.id = result.id;
-            	   $cookies.loginTime = result.loginTime;
-            	   $cookies.rememberMe = result.rememberMe;
-               }
+        	   $cookies.token = result.token;
+        	   $cookies.loginToken = result.loginToken;
+        	   $cookies.id = result.id;
+        	   $cookies.loginTime = result.loginTime;
+        	   $cookies.rememberMe = result.rememberMe;
                if(result.userStatus == "SUSPENDED") {
                    window.location.href = globalConfig.BASE_UI_URL + "index#/billing/usage";
                } else {
@@ -58,19 +50,11 @@ angular.module('homer', ['ngCookies']).controller("loginCtrl", function ($scope,
             		              .success(function (result) {
             		            	  $window.sessionStorage.token = result.token;
             		                  $window.sessionStorage.setItem("loginSession", JSON.stringify(result));
-            		              	   if (result.rememberMe == "true") {
-            		              	       $cookies.token = result.token;
-            		              	       $cookies.loginToken = result.loginToken;
-            		              	       $cookies.id = result.id;
-            		              	       $cookies.loginTime = result.loginTime;
-            		              	       $cookies.rememberMe = result.rememberMe;
-            		                  } else {
-            		               	       $cookies.token = result.token;
-            		               	       $cookies.loginToken = result.loginToken;
-            		               	       $cookies.id = result.id;
-            		               	       $cookies.loginTime = result.loginTime;
-            		               	       $cookies.rememberMe = result.rememberMe;
-            		                  }
+        		               	      $cookies.token = result.token;
+        		               	      $cookies.loginToken = result.loginToken;
+        		               	      $cookies.id = result.id;
+        		               	      $cookies.loginTime = result.loginTime;
+        		               	      $cookies.rememberMe = result.rememberMe;
             		                  if(result.userStatus == "SUSPENDED") {
             		                      window.location.href = globalConfig.BASE_UI_URL + "index#/billing/usage";
             		                  } else {
