@@ -2,17 +2,26 @@ function webSocket($rootScope, $timeout, webSockets, globalConfig, notify) {
     var webSocket = {};
 
     $rootScope.messages = '';
+    $rootScope.initiateConnection = 0;
 
     var headers = {};
 
     var initStompClient = function() {
         webSockets.init(globalConfig.SOCKET_URL + 'socket/ws');
         headers['x-auth-token'] = globalConfig.sessionValues.token;
+        $rootScope.initiateConnection ++;
         webSockets.connect(function(frame) {
-	    eventSubscribe();
+        	$rootScope.initiateConnection = 0;
+	        eventSubscribe();
         }, function(error) {
-        	alert("The websocket server could be temporarily unavailable or too busy. Try again in a few moments.");
-            window.location.href = "login";
+        	if ($rootScope.initiateConnection < 5){
+        		$timeout(function() {
+        			initStompClient();
+                }, 5000);
+        	} else {
+        	    alert("The websocket server could be temporarily unavailable or too busy. Try again in a few moments.");
+                window.location.href = "login";
+        	}
         });
     };
     var eventSubscribe = function() {
