@@ -37,9 +37,9 @@ angular.module('homer', ['ngCookies']).controller("loginCtrl", function ($scope,
             	   $cookies.rememberMe = result.rememberMe;
                }
                if(result.userStatus == "SUSPENDED") {
-                   window.location.href = "index#/billing/usage";
+                   window.location.href = globalConfig.BASE_UI_URL + "index#/billing/usage";
                } else {
-                   window.location.href = "index#/dashboard";
+                   window.location.href = globalConfig.BASE_UI_URL + "index#/dashboard";
                }
            }).catch(function (result) {
                   if (!angular.isUndefined(result.data)) {
@@ -72,9 +72,9 @@ angular.module('homer', ['ngCookies']).controller("loginCtrl", function ($scope,
             		               	       $cookies.rememberMe = result.rememberMe;
             		                  }
             		                  if(result.userStatus == "SUSPENDED") {
-            		                      window.location.href = "index#/billing/usage";
+            		                      window.location.href = globalConfig.BASE_UI_URL + "index#/billing/usage";
             		                  } else {
-            		                      window.location.href = "index#/dashboard";
+            		                      window.location.href = globalConfig.BASE_UI_URL + "index#/dashboard";
             		                  }
             		          }).catch(function (result) {
             		        	  $window.sessionStorage.removeItem("loginSession")

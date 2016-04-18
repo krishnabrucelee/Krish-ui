@@ -498,7 +498,7 @@ angular.module('homer').constant("PANDA_CONFIG", {
     "VIEW_URL" : "app/views/",
 }).factory('myFactory', function($http, globalConfig, $cookies, $window, tokens) {
 	var loginSession = globalConfig.sessionValues;
-    if(loginSession == null || angular.isUndefined(globalConfig.sessionValues)) {
+    if((loginSession == null || angular.isUndefined(globalConfig.sessionValues)) && tokens != null) {
     	globalConfig.sessionValues = tokens;
     	if (angular.isUndefined($cookies.rememberMe) || $cookies.rememberMe == "false") {
     	    window.location.href = "login";
