@@ -341,6 +341,12 @@ function appCtrl($http, $scope, $window, $timeout, globalConfig, crudService, pr
 		        $cookies.loginToken = '0';
 		        $cookies.loginTime = '0';
 		        window.location.href = "login";
+          }).catch(function (result) {
+      	        $window.sessionStorage.removeItem("loginSession")
+	    	    $cookies.rememberMe = "false";
+	            $cookies.loginToken = '0';
+	            $cookies.loginTime = '0';
+		        window.location.href = "login";
           });
     }
 

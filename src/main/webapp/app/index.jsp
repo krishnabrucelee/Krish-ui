@@ -7,14 +7,14 @@
 <html>
 <head>
 <!-- Redirect to login when passing the wrong URL -->
-<%-- <script>
+<script>
     var pageUrl = window.location.href;
     if(pageUrl.indexOf("index#/login") > -1 || pageUrl.endsWith("index#/")) {
         var contextPath = '<%= request.getContextPath() %>';
         var baseUrl = window.location.protocol + "//" + window.location.host + contextPath + '/login';
         window.location = baseUrl;
     }
-</script> --%>
+</script>
 
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
