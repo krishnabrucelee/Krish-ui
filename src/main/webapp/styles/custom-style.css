@@ -337,7 +337,7 @@ table.dataTable thead .sorting_desc::after {content: "\f0dd";}
 .quick-view-count small{font-size:14px;}
 .quick-view-title{background-color:#f4f6f7; padding:3px 0px; clear:both; margin-bottom:15px;}
 
-.quick-view-icon{width:26px; height:26px; display:block; margin: 17px 0 0 7px; background: url("/pandaui/styles/img/dashboard-icons.png") no-repeat !important;}
+.quick-view-icon{width:26px; height:26px; display:block; margin: 17px 0 0 7px; background: url("img/dashboard-icons.png") no-repeat !important;}
 .running-vm .quick-view-icon{background-position:0px 0px !important;}
 .stopped-vm .quick-view-icon{background-position:-26px 0px !important;}
 .total-vm .quick-view-icon{background-position:-52px 0px !important;}
@@ -345,19 +345,27 @@ table.dataTable thead .sorting_desc::after {content: "\f0dd";}
 .networks .quick-view-icon{background-position:0px -26px !important;}
 .private-template .quick-view-icon{background-position:-52px -26px !important;}
 
+.dashboard-quota-section, .dashboard-infrastructure-section{min-height:420px;}
+
 .dashboard-quota-area{font-weight:800; text-align:center;}
 .dashboard-quota-area span{display:block; color:#9fa0a2; font-weight:normal;}
-.dashboard-quota{margin:28px 0 28px 0;}
+.dashboard-quota{margin:28px 0 28px 0; min-height: 124px;}
 .dashboard-quota canvas{margin-left:-15px !important; margin-bottom:5px;}
-.doughnutchart-value{position:absolute; z-index:0; color:#73919e; font-size:21px; font-weight:600; margin: 22px 0 0 45px;}
+.doughnutchart-value{position:absolute; z-index:0; color:#73919e; font-size:21px; font-weight:600; margin: 14% 0 0 28%;}
 
-.dashboard-tab .nav > li > a{padding: 10px;}
+.dashboard-tab{min-height:360px;}
+.dashboard-tab .panel-body{padding:0px;}
+.dashboard-tab ul{margin:0px; padding:0px; background-color:#e7edf1;}
+.dashboard-tab ul li{list-style:none; display:inline-block;}
+.dashboard-tab ul li a{display:block; padding:12px; text-transform:uppercase;}
+.dashboard-tab ul li a.active{background-color:#ffffff;}
+.dashboard-application-cost, .dashboard-project-cost, .dashboard-department-cost{padding:20px;}
 
 .user-service-first-level, .user-service-second-level{border-right:#c6d7e2 1px solid;}
 .user-service-first-level ul, .user-service-second-level ul{margin:0px; padding:0px; list-style:none;}
 .user-service-first-level ul li, .user-service-second-level ul li{list-style:none;}
 .user-service-first-level ul li a, .user-service-second-level ul li a{display:block;background-color:#e7edf1; padding:10px 15px; margin-bottom:2px;}
-.user-service-first-level ul li a:hover, .user-service-second-level ul li a:hover{background-color:#dadfe3;}
+.user-service-first-level ul li a:hover, .user-service-second-level ul li a:hover{background-color:#f5f8fa;}
 .user-service-first-level ul li a.selected, .user-service-second-level ul li a.selected{background-color:#f5f8fa; }
 
 .select-any{position:absolute; width:100%; text-align:center;}
