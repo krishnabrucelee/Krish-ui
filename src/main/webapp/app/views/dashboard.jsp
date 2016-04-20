@@ -17,206 +17,428 @@
 
         <div class="row">
             <div class="col-md-12">
-                <div class="alert alert-danger">The billing owner of this project is overdue, please contact billing ownerï¼»amalï¼½at your convenience.</div>
+                <div class="alert alert-danger no-border-radious">This system will go for maintenance on May 1st</div>
             </div>
         </div>
         <div class="row">
-            <div class="col-md-3 col-sm-6">
-                <div class="panel widget dashbox-maincolor3">
-                    <div class="row row-table">
-                        <div class="col-xs-4 h-115 text-center dashboxdark-maincolor3 left-radious"><app-currency class="fa-4x"></app-currency></div>
-                        <div class="col-xs-8 p-xs">
-                            <div class="h3">150.00 </div>
-                            <div>Current Month Cost</div>
-                        </div>
+            <div class="col-md-5">
+                <div class="panel panel-white no-border-radious">
+                    <div class="panel-body p-sm">
+                        <h5 class="no-margins text-primary">
+                            Infrastructure
+                        </h5>
+                        <div class="row">
+            				<div class="col-md-4 col-sm-4 col-xs-6">
+            					<div class="quick-view-details running-vm">
+            						<div class="quick-view-icon pull-right"></div>
+            						<div class="quick-view-count pull-right">09</div>
+            					</div>
+            					<div class="quick-view-title text-center">Running VM</div>
+            				</div>
+            				<div class="col-md-4 col-sm-4 col-xs-6">
+            					<div class="quick-view-details stopped-vm">
+            						<div class="quick-view-icon pull-right"></div>
+            						<div class="quick-view-count pull-right">06</div>
+            					</div>
+            					<div class="quick-view-title text-center">Stopped VM</div>
+            				</div>
+            				<div class="col-md-4 col-sm-4 col-xs-6">
+            					<div class="quick-view-details total-vm">
+            						<div class="quick-view-icon pull-right"></div>
+            						<div class="quick-view-count pull-right">15</div>
+            					</div>
+            					<div class="quick-view-title text-center">Total VM</div>
+            				</div>
+            				<div class="col-md-4 col-sm-4 col-xs-6">
+            					<div class="quick-view-details vcpu">
+            						<div class="quick-view-icon pull-right"></div>
+            						<div class="quick-view-count pull-right">03</div>
+            					</div>
+            					<div class="quick-view-title text-center">vCpu</div>
+            				</div>
+            				<div class="col-md-4 col-sm-4 col-xs-6">
+            					<div class="quick-view-details vcpu">
+            						<div class="quick-view-icon pull-right"></div>
+            						<div class="quick-view-count pull-right">15<small>(GB)</small></div>
+            					</div>
+            					<div class="quick-view-title text-center">RAM</div>
+            				</div>
+            				<div class="col-md-4 col-sm-4 col-xs-6">
+            					<div class="quick-view-details vcpu">
+            						<div class="quick-view-icon pull-right"></div>
+            						<div class="quick-view-count pull-right">18<small>(GB)</small></div>
+            					</div>
+            					<div class="quick-view-title text-center">Storage Allocation</div>
+            				</div>
+            				<div class="col-md-4 col-sm-4 col-xs-6">
+            					<div class="quick-view-details networks">
+            						<div class="quick-view-icon pull-right"></div>
+            						<div class="quick-view-count pull-right">12</div>
+            					</div>
+            					<div class="quick-view-title text-center">Public IP</div>
+            				</div>
+            				<div class="col-md-4 col-sm-4 col-xs-6">
+            					<div class="quick-view-details networks">
+            						<div class="quick-view-icon pull-right"></div>
+            						<div class="quick-view-count pull-right">04</div>
+            					</div>
+            					<div class="quick-view-title text-center">Networks</div>
+            				</div>
+            				<div class="col-md-4 col-sm-4 col-xs-6">
+            					<div class="quick-view-details private-template">
+            						<div class="quick-view-icon pull-right"></div>
+            						<div class="quick-view-count pull-right">07</div>
+            					</div>
+            					<div class="quick-view-title text-center">Private Template</div>
+            				</div>
+           				</div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3 col-sm-6">
-                <div class="panel widget dashbox-maincolor2">
-                    <div class="row row-table">
-                        <div class="col-xs-4 h-115 text-center dashboxdark-maincolor2 left-radious"><app-currency class="fa-4x"></app-currency></div>
-                        <div class="col-xs-8 p-xs">
-                            <div class="h3">250.00 </div>
-                            <div>Estimated Month Cost</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 col-sm-6">
-                <a href="#/usage/report">
-                    <div class="panel widget dashbox-maincolor1">
-                        <div class="row row-table">
-                            <div class="col-xs-4 h-115 text-center dashboxdark-maincolor1 left-radious"><app-currency class="fa-4x"></app-currency></div>
-                            <div class="col-xs-8 p-xs">
-                                <div class="h3"> 4000.00 </div>
-                                <div>Last 12 Months Cost</div>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-md-3 col-sm-6">
-                <div class="panel widget panel-primary">
-                    <div class="panel-heading">
-                        Budget - Monthly
-                    </div>
-                    <div class="row row-table">
-                        <div class="col-xs-12 p-xs">
-                            <div class="">
-                                <progressbar value="55" type="success" class="m-t-xs  full progress" max="100" type="success"><i><span count-to="20" duration="1" count-from="1"></span> 40/ 100</i></progressbar>
-                                <!--<progressbar class="progress-striped active" animate="true" max="100" value="40" type="success"><i><span count-to="20" duration="1" count-from="1"></span> 40/ 100</i></progressbar>-->
-                            </div>
-                            <a href="#" class="text-info">Set Budget</a> |
-                            <a href="#" class="text-info">Manage Alert</a>
-                        </div>
+            <div class="col-md-7">
+                <div class="panel panel-white no-border-radious">
+                    <div class="panel-body p-sm">
+                        <h5 class="no-margins text-primary">
+                            Quota
+                        </h5>
+                        <div class="row dashboard-quota-area" ng-controller="appCtrl">
+            				<div class="col-md-3 col-sm-4 col-xs-6 dashboard-quota">
+            					<div class="doughnutchart-value">42%</div>
+            					<canvas doughnutchart options="doughnutOptions" data="doughnutData1" height="140" responsive=true></canvas>
+            					vCpu<span>Using 4 of 10</span>
+            				</div>
+            				<div class="col-md-3 col-sm-4 col-xs-6 dashboard-quota">
+            					<div class="doughnutchart-value">73%</div>
+            					<canvas doughnutchart options="doughnutOptions" data="doughnutData2" height="140" responsive=true></canvas>
+            					Memory<span>Using 730 of 1000</span>
+            				</div>
+            				<div class="col-md-3 col-sm-4 col-xs-6 dashboard-quota">
+            					<div class="doughnutchart-value">22%</div>
+            					<canvas doughnutchart options="doughnutOptions" data="doughnutData3" height="140" responsive=true></canvas>
+            					Volume<span>Using 2 of 10</span>
+            				</div>
+            				<div class="col-md-3 col-sm-4 col-xs-6 dashboard-quota">
+            					<div class="doughnutchart-value">88%</div>
+            					<canvas doughnutchart options="doughnutOptions" data="doughnutData4" height="140" responsive=true></canvas>
+            					Network<span>Using 8 of 10</span>
+            				</div>
+            				<div class="col-md-3 col-sm-4 col-xs-6 dashboard-quota">
+            					<div class="doughnutchart-value">88%</div>
+            					<canvas doughnutchart options="doughnutOptions" data="doughnutData4" height="140" responsive=true></canvas>
+            					IP Address<span>Using 8 of 10</span>
+            				</div>
+            				<div class="col-md-3 col-sm-4 col-xs-6 dashboard-quota">
+            					<div class="doughnutchart-value">73%</div>
+            					<canvas doughnutchart options="doughnutOptions" data="doughnutData2" height="140" responsive=true></canvas>
+            					Primary Storage<span>Using 73 of 100</span>
+            				</div>
+            				<div class="col-md-3 col-sm-4 col-xs-6 dashboard-quota">
+            					<div class="doughnutchart-value">22%</div>
+            					<canvas doughnutchart options="doughnutOptions" data="doughnutData3" height="140" responsive=true></canvas>
+            					Secondary Storage<span>Using 22 of 100</span>
+            				</div>
+            				<div class="col-md-3 col-sm-4 col-xs-6 dashboard-quota">
+            					<div class="doughnutchart-value">42%</div>
+            					<canvas doughnutchart options="doughnutOptions" data="doughnutData1" height="140" responsive=true></canvas>
+            					Snapshots<span>Using 4 of 10</span>
+            				</div>
+           				</div>
                     </div>
                 </div>
             </div>
         </div>
-
         <div class="row">
             <div class="col-md-4">
-                <div class="panel panel-white">
-
+                <div class="panel panel-white no-border-radious dashboard-tab">
                     <div class="panel-body p-sm">
-                        <div class="row">
-                        <span class="pull-right p-xs">
-                                <select class="form-control" data-ng-init="filters = criteria[6]" data-ng-model="filters" data-ng-change="filterBy()" data-ng-options="filters.name for filters in criteria" >
-
-                                </select>
-                        </span>
-                        </div>
-                        <h5 class="no-margins text-primary">
-                            Top 5 Projects by Cost in {{filters.value | lowercase}}
-                        </h5>
-                        <div class="m-t-md">
-
-                            <table cellspacing="1" cellpadding="1" class="top-projects no-margins table table-bordered table-striped">
-                                <thead>
-                                    <tr>
-                                        <th class="col-md-3"><small>Project</small></th>
-
-                                        <th class="col-md-3"><small class="pull-right">Cost (<app-currency></app-currency>)</small></th>
-                                    </tr>
-                                </thead>
-                            </table>
-                        </div>
-                        <div class="slimScroll-220">
-                               <div class="text-center m-t-xxxl" data-ng-show="showLoader">
-                            <img src="images/loading-bars.svg" />
-                        </div>
-                        <div data-ng-hide="showLoader">
-                            <table cellspacing="1" cellpadding="3" class="top-projects table table-bordered table-striped">
-                                <tbody >
-                                    <tr data-ng-repeat="project in projectList">
-                                        <td  class="col-md-3">{{ project.name}}</td>
-                                        <td  class="col-md-3">
-                                            <label class="badge badge-info p-xxs font-bold pull-right">{{  567.035 - (($index + 1) * 32 ) | number:2}}</label>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        </div>
-
+						<tabset>
+			                <tab>
+			                    <tab-heading>
+			                        Department
+			                    </tab-heading>
+			                    <div class="panel-body">
+			                        <h5 class="no-margins text-primary">
+			                            Top 5 Departments by Cost in {{filterdept.value | lowercase}}
+			                        </h5>
+			                        <div class="m-t-md">
+			
+			                            <table cellspacing="1" cellpadding="1" class="top-projects no-margins table table-bordered table-striped">
+			                                <thead>
+			                                    <tr>
+			                                        <th class="col-md-3"><small>Department</small></th>
+			
+			                                        <th class="col-md-3"><small class="pull-right">Cost (<app-currency></app-currency>)</small></th>
+			                                    </tr>
+			                                </thead>
+			                            </table>
+			                        </div>
+			                        <div class="slimScroll-175">
+		                            	<div class="text-center m-t-xxxl" data-ng-show="showDeptLoader">
+		                            		<img src="images/loading-bars.svg" />
+		                        		</div>
+				                        <div data-ng-hide="showDeptLoader">
+				                            <table cellspacing="1" cellpadding="3" class="top-projects table table-bordered table-striped">
+				                                <tbody >
+				                                    <tr data-ng-repeat="department in departmentList">
+				                                        <td  class="col-md-3">{{ department.name}}</td>
+				                                        <td  class="col-md-3">
+				                                            <label class="badge badge-info p-xxs font-bold pull-right">{{ 430 - (($index + 1) * 54.035) | number:2}}</label>
+				                                        </td>
+				                                    </tr>
+				                                </tbody>
+				                            </table>
+				                        </div>
+		                        	</div>
+			                    </div>
+			                </tab>
+			                <tab>
+			                    <tab-heading>
+			                        Project
+			                    </tab-heading>
+			                    <div class="panel-body">
+			                        <h5 class="no-margins text-primary">
+			                            Top 5 Projects by Cost in {{filters.value | lowercase}}
+			                        </h5>
+			                        <div class="m-t-md">
+			                            <table cellspacing="1" cellpadding="1" class="top-projects no-margins table table-bordered table-striped">
+			                                <thead>
+			                                    <tr>
+			                                        <th class="col-md-3"><small>Project</small></th>
+			
+			                                        <th class="col-md-3"><small class="pull-right">Cost (<app-currency></app-currency>)</small></th>
+			                                    </tr>
+			                                </thead>
+			                            </table>
+			                        </div>
+			                        <div class="slimScroll-175">
+	                               		<div class="text-center m-t-xxxl" data-ng-show="showLoader">
+				                            <img src="images/loading-bars.svg" />
+			                        	</div>
+				                        <div data-ng-hide="showLoader">
+				                            <table cellspacing="1" cellpadding="3" class="top-projects table table-bordered table-striped">
+				                                <tbody >
+				                                    <tr data-ng-repeat="project in projectList">
+				                                        <td  class="col-md-3">{{ project.name}}</td>
+				                                        <td  class="col-md-3">
+				                                            <label class="badge badge-info p-xxs font-bold pull-right">{{  567.035 - (($index + 1) * 32 ) | number:2}}</label>
+				                                        </td>
+				                                    </tr>
+				                                </tbody>
+				                            </table>
+				                        </div>
+			                        </div>
+			                    </div>
+			                </tab>
+			                <tab>
+			                    <tab-heading>
+			                        Application
+			                    </tab-heading>
+			                    <div class="panel-body">
+			                        <h5 class="no-margins text-primary">
+			                            Top 5 Applications by Cost in {{filterapp.value | lowercase}}
+			                        </h5>
+			                        <div class="m-t-md">
+			
+			                            <table cellspacing="1" cellpadding="1" class="top-projects no-margins table table-bordered table-striped">
+			                                <thead>
+			                                    <tr>
+			                                        <th class="col-md-3"><small>Application</small></th>
+			
+			                                        <th class="col-md-3"><small class="pull-right">Cost (<app-currency></app-currency>)</small></th>
+			                                    </tr>
+			                                </thead>
+			                            </table>
+			                        </div>
+			                        <div class="slimScroll-175">
+			                               <div class="text-center m-t-xxxl" data-ng-show="showAppLoader">
+					                            <img src="images/loading-bars.svg" />
+					                        </div>
+				                        <div data-ng-hide="showAppLoader">
+				                            <table cellspacing="1" cellpadding="3" class="top-projects table table-bordered table-striped">
+				                                <tbody >
+				                                    <tr data-ng-repeat="application in applicationList">
+				                                        <td  class="col-md-3">{{ application.name}}</td>
+				                                        <td  class="col-md-3">
+				                                            <label class="badge badge-info p-xxs font-bold pull-right">{{ 330 - (($index + 1) * 35.035) | number:2}}</label>
+				                                        </td>
+				                                    </tr>
+				                                </tbody>
+				                            </table>
+				                        </div>
+			                        </div>
+			                    </div>
+			                </tab>
+			            </tabset>
                     </div>
                 </div>
             </div>
-             <div class="col-md-4">
-                <div class="panel panel-white">
-
+            <div class="col-md-8">
+                <div class="panel panel-white no-border-radious">
                     <div class="panel-body p-sm">
-                        <div class="row">
-                        <span class="pull-right p-xs">
-                                <select class="form-control" data-ng-init="filterapp = criteria[6]" data-ng-model="filterapp" data-ng-change="filterByApplication()" data-ng-options="filters.name for filters in criteria" >
-
-                                </select>
-                        </span>
-                        </div>
                         <h5 class="no-margins text-primary">
-                            Top 5 Applications by Cost in {{filterapp.value | lowercase}}
+                            Cost ny Month
                         </h5>
-                        <div class="m-t-md">
-
-                            <table cellspacing="1" cellpadding="1" class="top-projects no-margins table table-bordered table-striped">
-                                <thead>
-                                    <tr>
-                                        <th class="col-md-3"><small>Application</small></th>
-
-                                        <th class="col-md-3"><small class="pull-right">Cost (<app-currency></app-currency>)</small></th>
-                                    </tr>
-                                </thead>
-                            </table>
-                        </div>
-                        <div class="slimScroll-220">
-                               <div class="text-center m-t-xxxl" data-ng-show="showAppLoader">
-                            <img src="images/loading-bars.svg" />
-                        </div>
-                        <div data-ng-hide="showAppLoader">
-                            <table cellspacing="1" cellpadding="3" class="top-projects table table-bordered table-striped">
-                                <tbody >
-                                    <tr data-ng-repeat="application in applicationList">
-                                        <td  class="col-md-3">{{ application.name}}</td>
-                                        <td  class="col-md-3">
-                                            <label class="badge badge-info p-xxs font-bold pull-right">{{ 330 - (($index + 1) * 35.035) | number:2}}</label>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        </div>
-
+                        <p>
+                        	<img src="images/sample-graph.jpg" />
+                        </p>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="panel panel-white">
-
-                    <div class="panel-body p-sm">
-                        <div class="row">
-                        <span class="pull-right p-xs">
-                                <select class="form-control" data-ng-init="filterdept = criteria[6]" data-ng-model="filterdept" data-ng-change="filterByDepartment()" data-ng-options="filters.name for filters in criteria" >
-
-                                </select>
-                        </span>
-                        </div>
-                        <h5 class="no-margins text-primary">
-                            Top 5 Departments by Cost in {{filterdept.value | lowercase}}
-                        </h5>
-                        <div class="m-t-md">
-
-                            <table cellspacing="1" cellpadding="1" class="top-projects no-margins table table-bordered table-striped">
-                                <thead>
-                                    <tr>
-                                        <th class="col-md-3"><small>Department</small></th>
-
-                                        <th class="col-md-3"><small class="pull-right">Cost (<app-currency></app-currency>)</small></th>
-                                    </tr>
-                                </thead>
-                            </table>
-                        </div>
-                        <div class="slimScroll-220">
-                               <div class="text-center m-t-xxxl" data-ng-show="showDeptLoader">
-                            <img src="images/loading-bars.svg" />
-                        </div>
-                        <div data-ng-hide="showDeptLoader">
-                            <table cellspacing="1" cellpadding="3" class="top-projects table table-bordered table-striped">
-                                <tbody >
-                                    <tr data-ng-repeat="department in departmentList">
-                                        <td  class="col-md-3">{{ department.name}}</td>
-                                        <td  class="col-md-3">
-                                            <label class="badge badge-info p-xxs font-bold pull-right">{{ 430 - (($index + 1) * 54.035) | number:2}}</label>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        </div>
-
+        </div>
+        
+        <div class="row">
+        	<div class="col-md-12">
+        		<div class="panel panel-white no-border-radious dashboard-accordian">
+                    <div class="panel-body">
+                    	<div class="col-md-3 no-padding">
+                    		<div class="user-service-first-level slimScroll-220">
+                    			<ul>
+                    				<li><a href="javascript:void(0)">Department <span class="fa  fa-chevron-right pull-right"></span></a></li>
+                    				<li><a href="javascript:void(0)">Application <span class="fa  fa-chevron-right pull-right"></span></a></li>
+                    				<li><a href="javascript:void(0)">Users <span class="fa  fa-chevron-right pull-right"></span></a></li>
+                    			</ul>
+                    		</div>
+                    	</div>
+                    	<div class="col-md-3 no-padding">
+                    		<div class="select-any">
+                   				<span class="fa fa-hand-o-left fa-3x"></span>
+                    			<br> Select any <br> service or user
+                    		</div>
+                    		<div class="user-service-second-level slimScroll-220">
+                    			<div>
+                    				<ul>
+	                    				<li><a >Department 1 <span class="fa  fa-chevron-right pull-right"></span></a></li>
+	                    				<li><a >Department 2 <span class="fa  fa-chevron-right pull-right"></span></a></li>
+	                    				<li><a  href="javascript:void(0)">Department 3 <span class="fa  fa-chevron-right pull-right"></span></a></li>
+	                    				<li><a  href="javascript:void(0)">Department 4 <span class="fa  fa-chevron-right pull-right"></span></a></li>
+	                    				<li><a  href="javascript:void(0)">Department 5 <span class="fa  fa-chevron-right pull-right"></span></a></li>
+	                    				<li><a  href="javascript:void(0)">Department 6 <span class="fa  fa-chevron-right pull-right"></span></a></li>
+	                    				<li><a  href="javascript:void(0)">Department 7 <span class="fa  fa-chevron-right pull-right"></span></a></li>
+	                    				<li><a  href="javascript:void(0)">Department 8 <span class="fa  fa-chevron-right pull-right"></span></a></li>
+	                    				<li><a  href="javascript:void(0)">Department 9 <span class="fa  fa-chevron-right pull-right"></span></a></li>
+	                    			</ul>
+                    			</div>
+                    			<div class="user-service-list">
+                    				<ul>
+	                    				<li><a  href="javascript:void(0)">Application 1 <span class="fa  fa-chevron-right pull-right"></span></a></li>
+	                    				<li><a  href="javascript:void(0)">Application 2 <span class="fa  fa-chevron-right pull-right"></span></a></li>
+	                    				<li><a  href="javascript:void(0)">Application 3 <span class="fa  fa-chevron-right pull-right"></span></a></li>
+	                    				<li><a  href="javascript:void(0)">Application 4 <span class="fa  fa-chevron-right pull-right"></span></a></li>
+	                    				<li><a  href="javascript:void(0)">Application 5 <span class="fa  fa-chevron-right pull-right"></span></a></li>
+	                    				<li><a  href="javascript:void(0)">Application 6 <span class="fa  fa-chevron-right pull-right"></span></a></li>
+	                    				<li><a  href="javascript:void(0)">Application 7 <span class="fa  fa-chevron-right pull-right"></span></a></li>
+	                    				<li><a  href="javascript:void(0)">Application 8 <span class="fa  fa-chevron-right pull-right"></span></a></li>
+	                    				<li><a  href="javascript:void(0)">Application 9 <span class="fa  fa-chevron-right pull-right"></span></a></li>
+	                    			</ul>
+                    			</div>
+                    			<div class="user-service-list">
+                    				<ul>
+	                    				<li><a  href="javascript:void(0)">User 1 <span class="fa  fa-chevron-right pull-right"></span></a></li>
+	                    				<li><a  href="javascript:void(0)">User 2 <span class="fa  fa-chevron-right pull-right"></span></a></li>
+	                    				<li><a  href="javascript:void(0)">User 3 <span class="fa  fa-chevron-right pull-right"></span></a></li>
+	                    				<li><a  href="javascript:void(0)">User 4 <span class="fa  fa-chevron-right pull-right"></span></a></li>
+	                    				<li><a  href="javascript:void(0)">User 5 <span class="fa  fa-chevron-right pull-right"></span></a></li>
+	                    				<li><a  href="javascript:void(0)">User 6 <span class="fa  fa-chevron-right pull-right"></span></a></li>
+	                    				<li><a  href="javascript:void(0)">User 7 <span class="fa  fa-chevron-right pull-right"></span></a></li>
+	                    				<li><a  href="javascript:void(0)">User 8 <span class="fa  fa-chevron-right pull-right"></span></a></li>
+	                    				<li><a  href="javascript:void(0)">User 9 <span class="fa  fa-chevron-right pull-right"></span></a></li>
+	                    			</ul>
+                    			</div>
+                    		</div>
+                    	</div>
+                    	<div class="col-md-6">
+                    		<div class="user-service-detail">
+                    			<!-- <div class="select-any">
+                    				<span class="fa fa-hand-o-left fa-3x"></span>
+	                    			<br> Select any <br> service or user
+	                    		</div> -->
+                    			<div class="user-service-single-detail">
+                    				<div class="table-responsive">
+						                <table cellspacing="1" cellpadding="1" class="table table-condensed table-striped">
+						                    <thead>
+						                    <tr>
+						                        <th>Department</th>
+						                        <th>Owner</th>
+						                    </tr>
+						                    </thead>
+						                    <tbody>
+						                    <tr>
+						                        <td>Department Name 1 </td>
+						                        <td>Owner of the Department</td>
+						                    </tr>
+						                    <tr>
+						                        <td>Department Name 2</td>
+						                        <td>Owner of the Department</td>
+						                    </tr>
+						                    <tr>
+						                        <td>Department Name 3</td>
+						                        <td>Owner of the Department</td>
+						                    </tr>
+						                    </tbody>
+						                </table>
+									</div>
+                    			</div>
+                    			<div class="user-service-single-detail">
+                    				<div class="table-responsive">
+						                <table cellspacing="1" cellpadding="1" class="table table-condensed table-striped">
+						                    <thead>
+						                    <tr>
+						                        <th>Application</th>
+						                        <th>Owner</th>
+						                    </tr>
+						                    </thead>
+						                    <tbody>
+						                    <tr>
+						                        <td>Application Name 1 </td>
+						                        <td>Owner of the Department</td>
+						                    </tr>
+						                    <tr>
+						                        <td>Application Name 2</td>
+						                        <td>Owner of the Department</td>
+						                    </tr>
+						                    <tr>
+						                        <td>Application Name 3</td>
+						                        <td>Owner of the Department</td>
+						                    </tr>
+						                    </tbody>
+						                </table>
+									</div>
+                    			</div>
+                    			<div class="user-service-single-detail">
+                    				<div class="table-responsive">
+						                <table cellspacing="1" cellpadding="1" class="table table-condensed table-striped">
+						                    <thead>
+						                    <tr>
+						                        <th>Users</th>
+						                        <th>Owner</th>
+						                    </tr>
+						                    </thead>
+						                    <tbody>
+						                    <tr>
+						                        <td>User Name 1 </td>
+						                        <td>Owner of the Department</td>
+						                    </tr>
+						                    <tr>
+						                        <td>User Name 2</td>
+						                        <td>Owner of the Department</td>
+						                    </tr>
+						                    <tr>
+						                        <td>User Name 3</td>
+						                        <td>Owner of the Department</td>
+						                    </tr>
+						                    </tbody>
+						                </table>
+									</div>
+                    			</div>
+                    		</div>
+                    	</div>
                     </div>
-                </div>
-            </div>
+               	</div>
+        	</div>
+        </div>
+
+        <div class="row">
+            
 <!--            <div class="col-md-8">
                 <div class="panel panel-white">
                     <div class="panel-body p-sm">
@@ -268,144 +490,7 @@
                     </div>
                 </div>
             </div>-->
-
         </div>
-
-        <div class="row">
-
-            <div class="col-md-4  col-sm-12">
-                <div class="panel panel-white">
-
-                    <div class="panel-body p-sm">
-                        <h4 class="no-margins text-primary">
-                            Projected cost by project
-                        </h4>
-                        <div class="m-t-md">
-                            <table cellspacing="1" cellpadding="1" class="projects-by-cost no-margins table table-bordered table-striped">
-                                <thead>
-                                    <tr>
-                                        <th class="col-md-3"><small>Project</small></th>
-                                        <th class="col-md-3 text-center"><small >Current<br>(<app-currency></app-currency>)</small></th>
-                                        <th class="col-md-3 text-center"  ><small>Last<br>(<app-currency></app-currency>)</small></th>
-                                        <th class="col-md-3 text-center"><small>Projected<br>(<app-currency></app-currency>)</small></th>
-                                    </tr>
-                                </thead>
-                            </table>
-                        </div>
-                        <div class="slimScroll-175">
-                            <table cellspacing="1" cellpadding="1" class="projects-by-cost table table-bordered table-striped">
-                                <tbody >
-                                    <tr data-ng-repeat="project in projectList">
-                                        <td  class="col-md-3">{{ project.name}}</td>
-                                        <td  class="col-md-3">
-                                            {{ ($index + 1) * 115 | number:2}}
-                                        </td>
-                                        <td class="col-md-3">
-                                            {{ ($index + 1) * 115 | number:2}}
-                                        </td>
-                                        <td  class="col-md-3">
-                                            <span class="text-danger font-extra-bold">{{ ($index + 2.5) * 115 | number:2}}</span>
-                                        </td>
-                                    </tr>
-                                    <tr data-ng-repeat="project in projectList">
-                                        <td>{{ project.name}}</td>
-                                        <td>
-                                            {{ ($index + 1) * 115 | number:2}}
-                                        </td>
-                                        <td>
-                                            {{ ($index + 1) * 115 | number:2}}
-                                        </td>
-                                        <td>
-                                            <span class="text-danger font-extra-bold">{{ ($index + 2.5) * 115 | number:2}}</span>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-5 col-sm-12">
-                <div class="panel panel-white">
-                    <div class="panel-body p-sm">
-                        <h4  class="no-margins text-primary">Support Tickets</h4>
-                        <div class="m-t-md slimScroll">
-                            <table cellspacing="1" cellpadding="1" class="table table-bordered table-striped">
-                                <tbody>
-                                    <tr data-ng-repeat="ticket in ticketList">
-                                        <td>
-                                            <a href="#">
-                                                <div class="col-md-3 col-sm-3">
-                                                    Priority<br>
-                                                    <span class="badge badge-danger p-xs m-t-sm" data-ng-show="ticket.priority == 'High'">{{ ticket.priority}}</span>
-                                                    <span class="badge badge-warning p-xs m-t-sm" data-ng-show="ticket.priority == 'Medium'">{{ ticket.priority}}</span>
-                                                    <span class="badge badge-success p-xs m-t-sm" data-ng-show="ticket.priority == 'Low'">{{ ticket.priority}}</span>
-                                                </div>
-                                                <div class="col-md-6  col-sm-6">
-                                                    <h5 class="no-margins">{{ ticket.subject}}</h5>
-                                                    <small>{{ ticket.description | limitTo:70}}..</small>
-                                                </div>
-                                                <div class="col-md-3  col-sm-3">
-                                                    <span class="text-info font-bold">4h 20min before</span>
-                                                </div>
-                                            </a>
-                                        </td>
-                                    </tr>
-
-
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-
-            </div>
-
-            <div class="col-md-3  col-sm-12">
-                <div class="panel hblue panel-white">
-                    <div class="panel-body list p-sm">
-                        <h4 class="no-margins  text-primary">Latest Events - Projects</h4>
-
-                        <!--<div class="list-item-container scroll-div h-100" ng-slimscroll>-->
-                        <div class="table slimScroll m-t-sm">
-                            <div class="list-item" data-ng-repeat="event in recentActivityList">
-                                <!--<h5 class="no-margins font-bold text-color3">{{ event.description }}</h5>-->
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <span class="badge badge-info event-date">
-                                            <b>{{ $index + 26}}</b>Aug
-                                        </span>
-                                    </div>
-                                    <div class="event-des text-primary col-md-9">
-                                        <a href="#">{{ event.description}}</a>
-                                    </div>
-                                </div>
-                                <!--<span class="badge badge-info"><small >{{ event.date}}</small></span>-->
-                            </div>
-                            <div class="list-item" data-ng-repeat="event in recentActivityList">
-                                <!--<h5 class="no-margins font-bold text-color3">{{ event.description }}</h5>-->
-                                <div class="row">
-                                <div class="col-md-3">
-                                    <span class="badge badge-info event-date">
-                                        <b>{{ $index + 26}}</b>Aug
-                                    </span>
-                                </div>
-                                <div class="event-des text-primary col-md-9">
-                                    <a href="#">{{ event.description}}</a>
-                                </div>
-                                </div>
-                                <!--<span class="badge badge-info"><small >{{ event.date}}</small></span>-->
-                            </div>
-                        </div>
-                        <!--</div>-->
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </div>
     <div id="footer" ng-include="'app/views/common/footer.jsp'"></div>
 
