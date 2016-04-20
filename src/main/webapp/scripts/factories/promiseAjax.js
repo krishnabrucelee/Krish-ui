@@ -68,7 +68,7 @@ function promiseAjax($http, $window, globalConfig, notify, $remember, $cookies) 
                 "method": method,
                 "data": data,
                 "url": url,
-                "headers": {'x-auth-token': globalConfig.sessionValues.token, 'x-requested-with': '', 'Content-Type': 'application/json', 'Range': "items=0-9"}
+                "headers": {'Content-Type': 'application/json', 'Range': "items=0-9"}
             };
         return $http(config).then(function(result){
             return result.data;
