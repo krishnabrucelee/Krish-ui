@@ -12,7 +12,6 @@ angular.module('homer', ['ngCookies']).controller("loginCtrl", function ($scope,
 			.then(function(result){
 				$window.location.href = "index#/dashboard";
           }, function(errorResponse) {
-        	  console.log(errorResponse);
         	  $cookies.rememberMe = "false";
         	  $window.location.reload();
         });
