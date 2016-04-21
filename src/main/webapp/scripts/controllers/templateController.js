@@ -57,18 +57,34 @@ $scope.template.listAllTemplate = {};
 	};
 
     $scope.templateList = function () {
+
         $scope.showLoader = true;
-        var hastemplateList = appService.crudService.listAll("templates/list");
-        hastemplateList.then(function (result) {  // this is only run after $http completes0
-            $scope.template.templateList = result;
+   var hastemplatesList= appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "templates/listalltemplateByType?type="+ "community"+"&sortBy=-id");
+        hastemplatesList.then(function (result) {  // this is only run after $http completes0
+            $scope.template.listCommunityTemplate = result;
             $scope.showLoader = false;
         });
-
     };
     $scope.templateList();
 
+
+ $scope.featuredTemplateList = function () {
+
+        $scope.showLoader = true;
+   var hasfeaturetemplatesList= appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "templates/listalltemplateByType?type="+ "featured"+"&sortBy=-id");
+        hasfeaturetemplatesList.then(function (result) {  // this is only run after $http completes0
+            $scope.template.listFeaturedTemplate = result;
+            $scope.showLoader = false;
+        });
+    };
+    $scope.featuredTemplateList();
+
+
     $scope.communitylist = function () {
     $scope.formElements.category = 'community';
+ 
+
+
     //community List
     $scope.list = function (pageNumber) {
         appService.globalConfig.sort.sortOrder = $scope.paginationObject.sortOrder;
@@ -229,6 +245,30 @@ $scope.template.listAllTemplate = {};
             $scope.listView = !$scope.listView;
         }, 800);
     $scope.usertemplatelist();
+    };
+
+ $scope.showCommunityRefresh = function () {
+        $scope.showLoader = true;
+        $timeout(function () {
+            $scope.showLoader = false;
+            $scope.listView = $scope.listView;
+        }, 800);
+    };
+
+ $scope.showFeaturedRefresh = function () {
+        $scope.showLoader = true;
+        $timeout(function () {
+            $scope.showLoader = false;
+            $scope.listView = $scope.listView;
+        }, 800);
+    };
+
+ $scope.showuserTemplateRefresh = function () {
+        $scope.showLoader = true;
+        $timeout(function () {
+            $scope.showLoader = false;
+            $scope.listView = $scope.listView;
+        }, 800);
     };
 
 	 // OS Categorys list from server

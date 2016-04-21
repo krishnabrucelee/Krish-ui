@@ -4,7 +4,7 @@ pageEncoding="UTF-8"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <div class="m-t-sm">
-    <div  data-ng-if="templateObj.share && templateObj.featured" class="col-md-4 col-lg-4 col-xs-12 col-sm-12 template-panel-area" data-ng-repeat="templateObj in template.templateList|orderBy:template.name | filter: quickSearch">
+    <div  class="col-md-4 col-lg-4 col-xs-12 col-sm-12 template-panel-area" data-ng-repeat="templateObj in template.listFeaturedTemplate|orderBy:template.name | filter: quickSearch">
         <div class="hpanel">
             <div  class="panel-body p-xs template-panel" data-ng-class="templateObj.openDescription ? 'template-panel-active': ''">
                 <div class="row">
@@ -58,7 +58,7 @@ pageEncoding="UTF-8"%>
                         </div>
                         <div class="row m-t-md" >
                             <div class="col-md-12 col-sm-12 col-xs-12 ">
-                                <button class="btn btn-info btn-sm pull-right" title="<fmt:message key="common.launch" bundle="${msg}" />" data-ng-click="openAddInstance(templateObj)"><i class="fa fa-power-off"></i> <fmt:message key="common.launch" bundle="${msg}" /></button>
+                                <button data-ng-if="templateObj.status == 'ACTIVE'" class="btn btn-info btn-sm pull-right" title="<fmt:message key="common.launch" bundle="${msg}" />" data-ng-click="openAddInstance(templateObj)"><i class="fa fa-power-off"></i> <fmt:message key="common.launch" bundle="${msg}" /></button>
                             </div>
                         </div>
                     </div>
