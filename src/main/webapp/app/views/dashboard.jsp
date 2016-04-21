@@ -22,7 +22,7 @@
         </div>
         <div class="row">
             <div class="col-md-5">
-                <div class="panel panel-white no-border-radious">
+                <div class="panel panel-white no-border-radious dashboard-infrastructure-section">
                     <div class="panel-body p-sm">
                         <h5 class="no-margins text-primary">
                             Infrastructure
@@ -96,7 +96,7 @@
                 </div>
             </div>
             <div class="col-md-7">
-                <div class="panel panel-white no-border-radious">
+                <div class="panel panel-white no-border-radious dashboard-quota-section">
                     <div class="panel-body p-sm">
                         <h5 class="no-margins text-primary">
                             Quota
@@ -150,125 +150,119 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="panel panel-white no-border-radious dashboard-tab">
-                    <div class="panel-body p-sm">
-						<tabset>
-			                <tab>
-			                    <tab-heading>
-			                        Department
-			                    </tab-heading>
-			                    <div class="panel-body">
-			                        <h5 class="no-margins text-primary">
-			                            Top 5 Departments by Cost in {{filterdept.value | lowercase}}
-			                        </h5>
-			                        <div class="m-t-md">
-			
-			                            <table cellspacing="1" cellpadding="1" class="top-projects no-margins table table-bordered table-striped">
-			                                <thead>
-			                                    <tr>
-			                                        <th class="col-md-3"><small>Department</small></th>
-			
-			                                        <th class="col-md-3"><small class="pull-right">Cost (<app-currency></app-currency>)</small></th>
-			                                    </tr>
-			                                </thead>
-			                            </table>
+                    <div class="panel-body">
+                    <ul>
+                    	<li><a href="javascript:void(0)" class="active">Department</a></li>
+                    	<li><a href="javascript:void(0)">Project</a></li>
+                    	<li><a href="javascript:void(0)">Application</a></li>
+                    </ul>
+					<div class="dashboard-department-cost">
+						<div class="panel-body">
+	                        <h5 class="no-margins text-primary">
+	                            Top 5 Departments by Cost <br>(Current Month) {{filterdept.value | lowercase}}
+	                        </h5>
+	                        <div class="m-t-md">
+	
+	                            <table cellspacing="1" cellpadding="1" class="top-projects no-margins table table-condensed table-striped">
+	                                <thead>
+	                                    <tr>
+	                                        <th class="col-md-3"><small>Department</small></th>
+	
+	                                        <th class="col-md-3"><small class="pull-right">Cost (<app-currency></app-currency>)</small></th>
+	                                    </tr>
+	                                </thead>
+	                            </table>
+	                        </div>
+	                        <div class="slimScroll-175">
+                            	<div class="text-center m-t-xxxl" data-ng-show="showDeptLoader">
+                            		<img src="images/loading-bars.svg" />
+                        		</div>
+		                        <div data-ng-hide="showDeptLoader">
+		                            <table cellspacing="1" cellpadding="3" class="top-projects table table-condensed table-striped">
+		                                <tbody >
+		                                    <tr data-ng-repeat="department in departmentList">
+		                                        <td  class="col-md-3">{{ department.name}}</td>
+		                                        <td  class="col-md-3">
+		                                            <label class="badge badge-info p-xxs font-bold pull-right">{{ 430 - (($index + 1) * 54.035) | number:2}}</label>
+		                                        </td>
+		                                    </tr>
+		                                </tbody>
+		                            </table>
+		                        </div>
+                        	</div>
+	                    </div>
+					</div>
+			        <div class="dashboard-project-cost" ng-hide="true">
+			        	<div class="panel-body">
+	                        <h5 class="no-margins text-primary">
+	                            Top 5 Projects by Cost <br>(Current Month) {{filters.value | lowercase}}
+	                        </h5>
+	                        <div class="m-t-md">
+	                            <table cellspacing="1" cellpadding="1" class="top-projects no-margins table table-condensed table-striped">
+	                                <thead>
+	                                    <tr>
+	                                        <th class="col-md-3"><small>Project</small></th>
+	
+	                                        <th class="col-md-3"><small class="pull-right">Cost (<app-currency></app-currency>)</small></th>
+	                                    </tr>
+	                                </thead>
+	                            </table>
+	                        </div>
+	                        <div class="slimScroll-175">
+                              		<div class="text-center m-t-xxxl" data-ng-show="showLoader">
+		                            <img src="images/loading-bars.svg" />
+	                        	</div>
+		                        <div data-ng-hide="showLoader">
+		                            <table cellspacing="1" cellpadding="3" class="top-projects table table-condensed table-striped">
+		                                <tbody >
+		                                    <tr data-ng-repeat="project in projectList">
+		                                        <td  class="col-md-3">{{ project.name}}</td>
+		                                        <td  class="col-md-3">
+		                                            <label class="badge badge-info p-xxs font-bold pull-right">{{  567.035 - (($index + 1) * 32 ) | number:2}}</label>
+		                                        </td>
+		                                    </tr>
+		                                </tbody>
+		                            </table>
+		                        </div>
+	                        </div>
+	                    </div>
+			        </div>
+			        <div class="dashboard-application-cost" ng-hide="true">
+			        	<div class="panel-body">
+	                        <h5 class="no-margins text-primary">
+	                            Top 5 Applications by Cost (Current Month) {{filterapp.value | lowercase}}
+	                        </h5>
+	                        <div class="m-t-md">
+	
+	                            <table cellspacing="1" cellpadding="1" class="top-projects no-margins table table-condensed table-striped">
+	                                <thead>
+	                                    <tr>
+	                                        <th class="col-md-3"><small>Application</small></th>
+	
+	                                        <th class="col-md-3"><small class="pull-right">Cost (<app-currency></app-currency>)</small></th>
+	                                    </tr>
+	                                </thead>
+	                            </table>
+	                        </div>
+	                        <div class="slimScroll-175">
+	                               <div class="text-center m-t-xxxl" data-ng-show="showAppLoader">
+			                            <img src="images/loading-bars.svg" />
 			                        </div>
-			                        <div class="slimScroll-175">
-		                            	<div class="text-center m-t-xxxl" data-ng-show="showDeptLoader">
-		                            		<img src="images/loading-bars.svg" />
-		                        		</div>
-				                        <div data-ng-hide="showDeptLoader">
-				                            <table cellspacing="1" cellpadding="3" class="top-projects table table-bordered table-striped">
-				                                <tbody >
-				                                    <tr data-ng-repeat="department in departmentList">
-				                                        <td  class="col-md-3">{{ department.name}}</td>
-				                                        <td  class="col-md-3">
-				                                            <label class="badge badge-info p-xxs font-bold pull-right">{{ 430 - (($index + 1) * 54.035) | number:2}}</label>
-				                                        </td>
-				                                    </tr>
-				                                </tbody>
-				                            </table>
-				                        </div>
-		                        	</div>
-			                    </div>
-			                </tab>
-			                <tab>
-			                    <tab-heading>
-			                        Project
-			                    </tab-heading>
-			                    <div class="panel-body">
-			                        <h5 class="no-margins text-primary">
-			                            Top 5 Projects by Cost in {{filters.value | lowercase}}
-			                        </h5>
-			                        <div class="m-t-md">
-			                            <table cellspacing="1" cellpadding="1" class="top-projects no-margins table table-bordered table-striped">
-			                                <thead>
-			                                    <tr>
-			                                        <th class="col-md-3"><small>Project</small></th>
-			
-			                                        <th class="col-md-3"><small class="pull-right">Cost (<app-currency></app-currency>)</small></th>
-			                                    </tr>
-			                                </thead>
-			                            </table>
-			                        </div>
-			                        <div class="slimScroll-175">
-	                               		<div class="text-center m-t-xxxl" data-ng-show="showLoader">
-				                            <img src="images/loading-bars.svg" />
-			                        	</div>
-				                        <div data-ng-hide="showLoader">
-				                            <table cellspacing="1" cellpadding="3" class="top-projects table table-bordered table-striped">
-				                                <tbody >
-				                                    <tr data-ng-repeat="project in projectList">
-				                                        <td  class="col-md-3">{{ project.name}}</td>
-				                                        <td  class="col-md-3">
-				                                            <label class="badge badge-info p-xxs font-bold pull-right">{{  567.035 - (($index + 1) * 32 ) | number:2}}</label>
-				                                        </td>
-				                                    </tr>
-				                                </tbody>
-				                            </table>
-				                        </div>
-			                        </div>
-			                    </div>
-			                </tab>
-			                <tab>
-			                    <tab-heading>
-			                        Application
-			                    </tab-heading>
-			                    <div class="panel-body">
-			                        <h5 class="no-margins text-primary">
-			                            Top 5 Applications by Cost in {{filterapp.value | lowercase}}
-			                        </h5>
-			                        <div class="m-t-md">
-			
-			                            <table cellspacing="1" cellpadding="1" class="top-projects no-margins table table-bordered table-striped">
-			                                <thead>
-			                                    <tr>
-			                                        <th class="col-md-3"><small>Application</small></th>
-			
-			                                        <th class="col-md-3"><small class="pull-right">Cost (<app-currency></app-currency>)</small></th>
-			                                    </tr>
-			                                </thead>
-			                            </table>
-			                        </div>
-			                        <div class="slimScroll-175">
-			                               <div class="text-center m-t-xxxl" data-ng-show="showAppLoader">
-					                            <img src="images/loading-bars.svg" />
-					                        </div>
-				                        <div data-ng-hide="showAppLoader">
-				                            <table cellspacing="1" cellpadding="3" class="top-projects table table-bordered table-striped">
-				                                <tbody >
-				                                    <tr data-ng-repeat="application in applicationList">
-				                                        <td  class="col-md-3">{{ application.name}}</td>
-				                                        <td  class="col-md-3">
-				                                            <label class="badge badge-info p-xxs font-bold pull-right">{{ 330 - (($index + 1) * 35.035) | number:2}}</label>
-				                                        </td>
-				                                    </tr>
-				                                </tbody>
-				                            </table>
-				                        </div>
-			                        </div>
-			                    </div>
-			                </tab>
-			            </tabset>
+		                        <div data-ng-hide="showAppLoader">
+		                            <table cellspacing="1" cellpadding="3" class="top-projects table table-condensed table-striped">
+		                                <tbody >
+		                                    <tr data-ng-repeat="application in applicationList">
+		                                        <td  class="col-md-3">{{ application.name}}</td>
+		                                        <td  class="col-md-3">
+		                                            <label class="badge badge-info p-xxs font-bold pull-right">{{ 330 - (($index + 1) * 35.035) | number:2}}</label>
+		                                        </td>
+		                                    </tr>
+		                                </tbody>
+		                            </table>
+		                        </div>
+	                        </div>
+	                    </div>
+			        </div>
                     </div>
                 </div>
             </div>
@@ -278,9 +272,7 @@
                         <h5 class="no-margins text-primary">
                             Cost ny Month
                         </h5>
-                        <p>
-                        	<img src="images/sample-graph.jpg" />
-                        </p>
+                       	<img src="images/sample-graph.jpg" />
                     </div>
                 </div>
             </div>
@@ -318,7 +310,7 @@
 	                    				<li><a  href="javascript:void(0)">Department 9 <span class="fa  fa-chevron-right pull-right"></span></a></li>
 	                    			</ul>
                     			</div>
-                    			<div class="user-service-list">
+                    			<div class="user-service-list"  ng-hide="true">
                     				<ul>
 	                    				<li><a  href="javascript:void(0)">Application 1 <span class="fa  fa-chevron-right pull-right"></span></a></li>
 	                    				<li><a  href="javascript:void(0)">Application 2 <span class="fa  fa-chevron-right pull-right"></span></a></li>
@@ -331,7 +323,7 @@
 	                    				<li><a  href="javascript:void(0)">Application 9 <span class="fa  fa-chevron-right pull-right"></span></a></li>
 	                    			</ul>
                     			</div>
-                    			<div class="user-service-list">
+                    			<div class="user-service-list"  ng-hide="true">
                     				<ul>
 	                    				<li><a  href="javascript:void(0)">User 1 <span class="fa  fa-chevron-right pull-right"></span></a></li>
 	                    				<li><a  href="javascript:void(0)">User 2 <span class="fa  fa-chevron-right pull-right"></span></a></li>
@@ -378,7 +370,7 @@
 						                </table>
 									</div>
                     			</div>
-                    			<div class="user-service-single-detail">
+                    			<div class="user-service-single-detail"  ng-hide="true">
                     				<div class="table-responsive">
 						                <table cellspacing="1" cellpadding="1" class="table table-condensed table-striped">
 						                    <thead>
@@ -404,7 +396,7 @@
 						                </table>
 									</div>
                     			</div>
-                    			<div class="user-service-single-detail">
+                    			<div class="user-service-single-detail"  ng-hide="true">
                     				<div class="table-responsive">
 						                <table cellspacing="1" cellpadding="1" class="table table-condensed table-striped">
 						                    <thead>
