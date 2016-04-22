@@ -46,7 +46,7 @@
                                         <div class="pull-left">
                                             <a title="Grid View" class="btn btn-info" data-ng-click="showCommunityTemplateContent()"  data-ng-class="!listView ? 'disabled' : ''" > <i class="fa fa-th-large" /></a>
                                             <a title="List View"  class="btn btn-info" data-ng-click="showCommunityTemplateContent()" data-ng-class="listView ? 'disabled' : ''" > <i class="fa fa-list" /></a>
-                                            <a class="btn btn-info" data-ng-click="showCommunityTemplateContent()"
+                                            <a class="btn btn-info" data-ng-click="showCommunityRefresh()"
 											id="community_refresh_button" title="<fmt:message key="common.refresh" bundle="${msg}" />"
 											ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
                                         </div>
@@ -83,7 +83,7 @@
                                         <div class="pull-left">
                                             <a title="Grid View" class="btn btn-info" data-ng-click="showFeaturedTemplateContent()"  data-ng-class="!listView ? 'disabled' : ''" > <i class="fa fa-th-large" /></a>
                                             <a title="List View"  class="btn btn-info" data-ng-click="showFeaturedTemplateContent()"  data-ng-class="listView ? 'disabled' : ''" > <i class="fa fa-list" /></a>
-			                                <a class="btn btn-info" data-ng-click="showFeaturedTemplateContent()"
+			                                <a class="btn btn-info" data-ng-click="showFeaturedRefresh()"
 											id="featured_refresh_button" title="<fmt:message key="common.refresh" bundle="${msg}" />"
 											ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
                                         </div>
@@ -124,8 +124,8 @@
                                         <panda-quick-search></panda-quick-search>
                                         <div class="clearfix"></div>
                                         <span class="pull-right m-l-sm m-t-sm">
-                                            <a  class="btn btn-info" has-permission = "REGISTER_TEMPLATE" data-ng-click="uploadTemplateContainer(size)"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span> Register Template</a>
-                                         <a class="btn btn-info" data-ng-click="showUserTemplateContent()"
+                                            <a  class="btn btn-info" data-ng-hide="global.sessionValues.type =='ROOT_ADMIN'" has-permission = "REGISTER_TEMPLATE" data-ng-click="uploadTemplateContainer(size)"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span> Register Template</a>
+                                         <a class="btn btn-info" data-ng-click="showuserTemplateRefresh()"
 											id="featured_refresh_button" title="<fmt:message key="common.refresh" bundle="${msg}" />"
 											ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
                                         </span>
