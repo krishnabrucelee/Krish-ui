@@ -147,7 +147,11 @@
                     <div data-ng-hide="showLoader" style="margin: 1%">
                         <get-loader-image data-ng-show="showLoader"></get-loader-image>
                     </div>
-                    <div data-ng-show="showLoader" data-ng-if="usageStatisticsType=='service'"
+					<div class="row" data-ng-show="myframe">
+						<iframe width="400" height="700" id="myframe" name="myframe"
+							class="embed-responsive-item col-md-12 client-usage-report-iframe"></iframe>
+					</div>
+					<div data-ng-show="showLoader" data-ng-if="usageStatisticsType=='service'"
                         class="table-responsive">
                         <table cellspacing="1" cellpadding="1"
                             class="table table-bordered white-content">
