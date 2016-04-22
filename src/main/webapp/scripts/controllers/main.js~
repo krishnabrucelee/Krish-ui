@@ -433,6 +433,7 @@ $scope.doughnutData4 = [
 	costList: {}
 };
   $scope.toggleCostList = function(type) {
+alert("teste");
 	  $scope.dashboard.costList.department = false;
 $scope.dashboard.costList.project = false;
 $scope.dashboard.costList.application = false;

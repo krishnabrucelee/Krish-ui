@@ -133,6 +133,10 @@ function billingCtrl($scope, appService, globalConfig, localStorageService, $win
                 $scope.groupItemByUsageList(usageList);
             }
         });
+            
+        $scope.myframe = true;
+    	$scope.reportUrl =  appService.globalConfig.PING_APP_URL + "usage/statistics?fromDate="+ startDate +"&toDate=" + endDate + "&groupingType=" + groupBy + "&domainUuid=" + domainUuid;
+    	document.getElementById('myframe').setAttribute('src', $scope.reportUrl + "&type=html");
     }
 
     $scope.getUsageListByGroup = function(group) {
