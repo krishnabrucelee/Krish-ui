@@ -49,7 +49,6 @@
                         </div>
 
                     </div>
-				<get-loader-image data-ng-show="showLoader"></get-loader-image>
 
 				<div class="row" data-ng-if="resource=='domain'|| type == 'domain-quota' || resource=='department' || resource=='project'" >
 						<div class="col-md-8 col-sm-8">
