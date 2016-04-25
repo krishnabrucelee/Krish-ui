@@ -180,6 +180,13 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider, $compile
                     pageTitle : 'common.ssh.keys'
                 }
             })
+            .state('cloud.list-affinity', {
+                url : "affinitygroup/list",
+                templateUrl : VIEW_URL + "views/cloud/affinitygroup/list.jsp",
+                data : {
+                    pageTitle : 'common.affinity.group'
+                }
+            })
             .state('cloud.list-snapshot', {
                 url : "snapshot/list",
                 templateUrl : VIEW_URL + "views/cloud/snapshot/list.jsp",
