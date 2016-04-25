@@ -19,8 +19,9 @@ function configurationCtrl($scope, $stateParams, appService, localStorageService
     $scope.instances = [];
     $scope.instances.computeOffering ={};
     $scope.resetForm = [];
+    $scope.affinityForm = [];
     $scope.global.webSocketLoaders.vmsshKey = false;
-   $scope.global.webSocketLoaders.computeOffer = false;
+    $scope.global.webSocketLoaders.computeOffer = false;
     // Form Field Decleration
     $scope.computeOffer = {
 //        type: {id:1, name:"Basic"}
@@ -31,8 +32,9 @@ function configurationCtrl($scope, $stateParams, appService, localStorageService
             var hasServers = crudService.read("virtualmachine", instanceId);
             hasServers.then(function (result) {
                 $scope.instances = result;
-                $scope.computeList();
+            	$scope.computeList();
                 $scope.resetSSHKey();
+                $scope.affinityGrouplist();
             });
         };
         $scope.viewInstance(instanceId);
@@ -147,50 +149,95 @@ function configurationCtrl($scope, $stateParams, appService, localStorageService
 
 
 
-    $scope.affinity = {
-//        type: {id:1, name:"Basic"}
-    };
+  	    // Load affinity group type
+  	    $scope.affinityGroupType = {};
+  	    var hasAffinityGroupType = appService.crudService.listAll("affinityGroupType/list");
+  	    hasAffinityGroupType.then(function (result) {
+  	    	$scope.formElements.affinityGroupTypeList = result;
+  	    });
+  	    $scope.affinity = {
+  	    		groupList: []
+  	    };
+  	    // Affinity group List
+  	    $scope.affinityGrouplist = function () {
+  	    	$scope.affinityGroup = {};
+  	  	    var hasAffinityGroup =  appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "affinityGroup/groupList/" + $scope.instances.departmentId);
+  	  	    hasAffinityGroup.then(function (result) {
+  	  	    	$scope.formElements.affinityGroupList = result;
+  	  	    	angular.forEach($scope.formElements.affinityGroupList, function(formObj, formKey) {
+	  	  	    	angular.forEach($scope.instances.affinityGroupList, function(obj, key) {
+	  	  	    		if(formObj.name == obj.name)
+	  	  	    			$scope.affinity.groupList.push(formObj);
+		  	    	})
+  	  	    	});
+  	  	    });
+  	    };
 
-    $scope.affinityElements = {
-        groupList: [
-            {id: 1, name: 'VM1', price: 0.5},
-            {id: 2, name: 'Data1', price: 0.10},
-            {id: 3, name: 'Network1', price: 0.15},
-        ],
-    };
+  	   $scope.createAffinityGroup = function (size) {
+          appService.dialogService.openDialog($scope.global.VIEW_URL + "cloud/instance/affinity.jsp", size, $scope, ['$scope',
+                    '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
+          // Create a new affinity group
+          $scope.save = function (affinityGroupForm, affinityGroup) {
+       	   $scope.formSubmitted = true;
+       		   if (affinityGroupForm.$valid) {
+       			   $scope.showLoader = true;
+       			    affinityGroup.affinityGroupTypeId = affinityGroup.affinityGroupType.id;
+       			    affinityGroup.domainId = $scope.instances.domainId;
+       			    affinityGroup.departmentId = $scope.instances.departmentId;
+       			    affinityGroup.transAffinityGroupAccessFlag = "INSTANCE";
+                      var hasServer = appService.crudService.add("affinityGroup", affinityGroup);
+                      hasServer.then(function (result) {
+                    	  $scope.affinityGrouplist();
+                          $scope.showLoader = false;
+                          $modalInstance.close();
+                          appService.notify({message: 'Affinity group added successfully', classes: 'alert-success',
+                          templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                   	}).catch(function (result) {
+                   		if(result.data.globalError[0] != ''){
+                   			var msg = result.data.globalError[0];
+                   			appService.notify({message: msg, classes: 'alert-danger',
+                   				templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+                   			$modalInstance.close();
+                          }
+                   	});
+       		   }
 
-    $scope.affinity.group = $scope.affinityElements.groupList[0];
+       	},
+       	$scope.cancel = function () {
+               $modalInstance.close();
+       	};
+          }]);
+       };
 
-    $scope.saveAffinity = function(form) {
-        $scope.affinitySubmitted = true;
-        if (form.$valid) {
-            $scope.homerTemplate = 'app/views/notification/notify.jsp';
-            notify({message: 'Updated successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
-        }
-    };
+       $scope.saveAffinity = function (form, affinity) {
+      		$scope.formSubmitted = true;
+      		if (form.$valid) {
+      			$scope.showLoader = true;
+                $scope.formSubmitted = false;
+                $scope.instances.affinityGroupList = $scope.affinity.groupList;
+      			var hasServer = appService.crudService.updates("virtualmachine/affinityGroup", $scope.instances);
+      			hasServer.then(function (result) {
+      				    $scope.showLoader = false;
+                        $scope.instances = result;
+   			            $scope.viewInstance(result.id);
+   			            appService.notify({message: 'Affinity group updated successfully', classes: 'alert-success',
+                         templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+      			}).catch(function (result) {
+      				     $scope.showLoader = false;
+                   		 if (!angular.isUndefined(result) && result.data != null) {
+                         if (result.data.fieldErrors != '') {
+                            angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
+                            $scope.affinityForm[key].$invalid = true;
+                            $scope.affinityForm[key].errorMessage = errorMessage;
+                            });
+                        }
+                        }
+                    });
+      			}
+      		};
 
 
-    $scope.addAffinityGroup = function (size) {
 
-        var modalInstance = $modal.open({
-            templateUrl: 'app/views/cloud/instance/affinity.jsp',
-            controller: 'affinityCtrl',
-              size: size,
-            backdrop : 'static',
-             windowClass: "hmodal-info",
-            resolve: {
-                items: function () {
-                    return $scope.items;
-                }
-            }
-        });
-
-        modalInstance.result.then(function (selectedItem) {
-            $scope.selected = selectedItem;
-        }, function () {
-        });
-
-    };
   $scope.resetSSHKey = function() {
     $scope.formElements.sshKeyList = [];
      if (!angular.isUndefined($scope.instances.project) && $scope.instances.project != null) {
