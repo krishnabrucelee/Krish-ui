@@ -110,6 +110,9 @@ function billingCtrl($scope, appService, globalConfig, localStorageService, $win
             var startDate = $scope.usageStatisticsObj.startDate.ddmmyyyy();
             var endDate = $scope.usageStatisticsObj.endDate.ddmmyyyy();
 
+	    $scope.reportStartDate = $scope.usageStatisticsObj.startDate.ddmmyyyy();
+            $scope.reportEndDate = $scope.usageStatisticsObj.endDate.ddmmyyyy();
+
             if($scope.global.sessionValues.type != 'ROOT_ADMIN') {
                 domainUuid = appService.globalConfig.sessionValues.domainAbbreviationName;
             } else {

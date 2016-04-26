@@ -370,6 +370,18 @@ table.dataTable thead .sorting_desc::after {content: "\f0dd";}
 
 .select-any{position:absolute; width:100%; text-align:center;}
 
+.report-wrapper{float: none; margin: 0 auto; width: 1030px;}
+.client-usage-report-iframe{border:none;display: block; float: none; margin: 0 auto; width: 1058px; padding:0px;}
+.client-usage-report-iframe table{width:100% !important;}
+#__BIRT_ROOT table{width:100% !important;}
+
+#footer {
+    clear: both;
+    height: auto;
+    margin-top: 50px;
+    overflow: hidden;
+}
+
 @media (min-width: 600px) and (max-width: 767px) {
 .dashboard-filters-area{ clear:both;}
 .dashboard-btn-area{float:right !important; clear:both;}
