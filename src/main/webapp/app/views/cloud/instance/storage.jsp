@@ -51,9 +51,9 @@
                                             <div class="col-md-12">
 
                                                 <div class="p-sm">
-                                                    <div class="row p-sm">
+
                                                         <div class="pull-left">
-                                                            <i class="pe-7s-server pe-4x"></i> <h3 class="pull-right text-danger m-l-md"><span data-ng-if="volume.volumeType == 'ROOT'"> {{ volume.diskSize / global.Math.pow(2, 30)}}</span>
+                                                            <i class="pe-7s-server pe-3x"></i> <h3 class="pull-right text-danger m-l-md"><span data-ng-if="volume.volumeType == 'ROOT'"> {{ volume.diskSize / global.Math.pow(2, 30)}}</span>
                                                              <span data-ng-if="volume.volumeType == 'DATADISK' && volume.storageOffering.isCustomDisk">{{ volume.diskSize / global.Math.pow(2, 30)}} </span>
                                                              <span data-ng-if="volume.volumeType == 'DATADISK' && !volume.storageOffering.isCustomDisk ">{{ volume.storageOffering.diskSize}}</span>
                                                              <span data-ng-if="volume.volumeType == 'DATADISK' && volume.storageOffering == null ">{{ volume.diskSize / global.Math.pow(2, 30)}}</span> GB</h3>
@@ -67,7 +67,7 @@
                                                             <div class="clearfix"></div>
                                                             <div class="btn-group">
                                                                 <span data-ng-if="volume.volumeType == 'DATADISK'">
-                                                                    <button class="btn btn-sm m-t-md dropdown-toggle" data-ng-class="$index == 0 ? 'btn-info' : 'btn-default'" data-toggle="dropdown"><i class="fa fa-cog"></i> <fmt:message key="configure" bundle="${msg}" /> </button>
+                                                                    <button class="btn btn-sm m-t-xs dropdown-toggle" data-ng-class="$index == 0 ? 'btn-info' : 'btn-default'" data-toggle="dropdown"><i class="fa fa-cog"></i> <fmt:message key="configure" bundle="${msg}" /> </button>
                                                                     <ul class="dropdown-menu pull-right">
     <%--                                                                     <li><a href="javascript:void(0);" title="<fmt:message key="common.snapshot" bundle="${msg}" />" data-ng-click="downloadSnapshot($event)"><span class="pe-7s-camera font-bold m-xs"></span> <fmt:message key="common.snapshot" bundle="${msg}" /></a></li>
                                                                         <li><a href="javascript:void(0);" data-ng-click="openReccuringSnapshot(volume)" title="<fmt:message key="recurring.snapshot" bundle="${msg}" />"><span class="pe-7s-repeat font-bold m-xs"></span> <fmt:message key="recurring.snapshot" bundle="${msg}" /></a></li>
@@ -88,15 +88,15 @@
                                                                 </span> --%>
                                                             </div>
                                                         </div>
-                                                     </div>
-                                                    <div class="row p-sm m-b-n-xl" data-ng-init="getStoragePerformanceByFilters(volume.vmInstance.name, volume.storageOffering.diskSize)">
+                                                     <div class="clearfix"></div>
+                                                    <div class="m-t-sm" data-ng-init="getStoragePerformanceByFilters(volume.vmInstance.name, volume.storageOffering.diskSize)">
 
-                                                        <div class="progress full" style="height: 50px;">
+                                                        <div class="progress full" style="height: 30px;">
                                                             <div
                                                             data-ng-class="rootUsage[$index] > 85 ? 'progress-bar-danger' : 'progress-bar-success'"
                                                              class="progress-bar"
                                                                 role="progressbar" data-ng-style="memoryStyle[$index]">
-                                                                <span style="top: 13px; position: relative">
+                                                                <span style="top: 4px; position: relative">
                                                                 {{ rootUsage[$index] }} % </span>
                                                             </div>
                                                         </div>

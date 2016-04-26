@@ -53,15 +53,16 @@
                                 <thead>
                                     <tr>
 								    	<th class="col-md-2 col-sm-2" data-ng-click="changeSort('name',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.name" bundle="${msg}" /> </th>
-										<th class="col-md-2 col-sm-3" data-ng-click="changeSort('department.domain.name',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='department.domain.name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.company" bundle="${msg}" /></th>
-										<th class="col-md-2 col-sm-5" data-ng-click="changeSort('department.userName',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='department.userName'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.account" bundle="${msg}" /></th>
-										<th class="col-md-3 col-sm-2"><fmt:message key="common.private.key" bundle="${msg}" /></th>
+										<th class="col-md-2 col-sm-2" data-ng-click="changeSort('department.domain.name',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='department.domain.name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.company" bundle="${msg}" /></th>
+										<th class="col-md-2 col-sm-2" data-ng-click="changeSort('department.userName',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='department.userName'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.account" bundle="${msg}" /></th>
+										<th class="col-md-2 col-sm-2"><fmt:message key="common.project" bundle="${msg}" /></th>
+										<th class="col-md-3 col-sm-3"><fmt:message key="common.private.key" bundle="${msg}" /></th>
 										<th class="col-md-1 col-sm-2"><fmt:message key="common.action" bundle="${msg}" /></th>
 									</tr>
                                 </thead>
                                 <tbody data-ng-hide="sshkeyList.length > 0">
                                         <tr>
-                                            <td class="col-md-6 col-sm-6" colspan="5"><fmt:message key="common.no.records.found" bundle="${msg}" />!!</td>
+                                            <td class="col-md-6 col-sm-6" colspan="6"><fmt:message key="common.no.records.found" bundle="${msg}" />!!</td>
                                         </tr>
                                 </tbody>
                                 <tbody data-ng-show="sshkeyList.length > 0">
@@ -74,6 +75,9 @@
                                         </td>
                                         <td>
                                             {{ sshkey.department.userName }}
+                                        </td>
+                                        <td>
+                                            {{ sshkey.project.name }}
                                         </td>
                                         <td>
                                         	{{ sshkey.privateKey}}

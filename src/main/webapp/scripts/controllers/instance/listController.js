@@ -22,8 +22,13 @@ function instanceListCtrl($scope, $sce, $log, $filter, dialogService, $timeout, 
         hasServer.then(function(result) { // this is only run after $http
             $scope.instance = result;
             $scope.networkList = result.network;
-            $state.current.data.pageName = result.name;
-            $state.current.data.id = result.id;
+            if ($state.current.data.pageTitle === "view.instance") {
+                $state.current.data.pageName = result.name;             	
+            	$state.current.data.id = result.id;
+            } else {
+               $state.$current.parent.data.pageName = result.name;
+               $state.current.data.id = result.id;
+            }
         });
     }
     $scope.hostList = function() {

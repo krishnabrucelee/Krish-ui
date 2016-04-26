@@ -370,6 +370,16 @@ table.dataTable thead .sorting_desc::after {content: "\f0dd";}
 
 .select-any{position:absolute; width:100%; text-align:center;}
 
+.storage-manager-area{width:50%;}
+.storage{width:150px;}
+.storage .panel-body{height:auto;}
+.storage-manager .vertical-timeline-content{padding-bottom:0px;}
+.storage-manager .vertical-timeline-content .notification .label{right:38px; top:7px;}
+.storage-manager .vertical-timeline-content .progress{margin-bottom:0px;}
+.storage-manager .v-timeline::before{left:-10px;}
+.storage-manager .vertical-timeline-block:first-child .h-timeline::before{left:-80px;}
+.storage-manager .h-timeline::before{left:-7px;}
+
 @media (min-width: 600px) and (max-width: 767px) {
 .dashboard-filters-area{ clear:both;}
 .dashboard-btn-area{float:right !important; clear:both;}
