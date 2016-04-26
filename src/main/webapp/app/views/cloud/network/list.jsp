@@ -55,16 +55,6 @@
 
 							<div class="pull-right dashboard-filters-area">
 							<panda-quick-search></panda-quick-search>
-							<span
-								class=" m-l-sm m-r-sm  pull-right"> <select
-								class="form-control input-group col-xs-5" name="networkView"
-								id="network_network_view"
-								data-ng-init="network.networkView = dropnetworkLists.views[0]"
-								data-ng-model="network.networkView"
-								data-ng-change="selectView(network.networkView.name)"
-								data-ng-options="networkView.name for networkView in dropnetworkLists.views">
-							</select>
-							</span>
 							<span class="m-l-sm pull-right"
 								data-ng-show="global.sessionValues.type == 'ROOT_ADMIN'">
 								<select class="form-control input-group col-xs-5"
@@ -85,10 +75,6 @@
 			<div class="row" id="network_pagination_container">
 				<div class="col-md-12 col-sm-12 col-xs-12 " >
 					<div class="white-content">
-							<div
-								data-ng-show="network.networkView.name == 'Guest Networks' || network.networkView.name == null">
-
-
 
 								<div data-ng-show="showLoader" style="margin: 1%">
 									<get-loader-image data-ng-show="showLoader"></get-loader-image>
@@ -157,8 +143,7 @@
 											</tr>
 										</tbody>
 									</table>
-								</div>
-							</div>
+							</div><!--
 							<div data-ng-show="network.networkView.name == 'Security Groups'"
 								data-ng-include
 								src="'app/views/cloud/network/security-groups.jsp'"></div>
@@ -167,7 +152,7 @@
 								data-ng-include src="'app/views/cloud/network/vpc.jsp'"></div>
 							<div
 								data-ng-show="network.networkView.name == 'VPN Customer Gateway'"
-								data-ng-include src="'app/views/cloud/network/vpn.jsp'"></div>
+								data-ng-include src="'app/views/cloud/network/vpn.jsp'"></div> -->
 						</div>
 						<pagination-content></pagination-content>
 					</div>
