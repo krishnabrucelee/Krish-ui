@@ -315,7 +315,6 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
         if (item == '') {
             $scope.networks = false;
         } else {
-            console.log(item);
         	if(item == 'all') {
         		$scope.instance.networkOfferinglist.value = item;
         		$scope.instance.networkOfferinglist = $scope.instanceElements.networkOfferingList[0];
@@ -546,7 +545,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
 
                     }
                     $scope.instance.networkUuid = $scope.instance.networkUuid+allNetworks;
-console.log($scope.instance.networkc);
+
                     if (!networkSelected && $scope.isEmpty($scope.instance.networkc)) {
                         submitError = true;
                         $scope.networks = true;
