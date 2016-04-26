@@ -448,4 +448,7 @@ table.flotchart-legend-content-table tr{display:block; float:left; padding:0px 5
 .flot-y-axis {
     z-index: 9999 !important;
 }
+.affinity-text-info {
+	color: #48a9da !important;
+}
 

@@ -152,11 +152,11 @@
                 <div class="panel panel-white no-border-radious dashboard-tab">
                     <div class="panel-body">
                     <ul>
-                    	<li><a href="javascript:void(0)" class="active">Department</a></li>
-                    	<li><a href="javascript:void(0)">Project</a></li>
-                    	<li><a href="javascript:void(0)">Application</a></li>
+                    	<li><a href="javascript:void(0)" data-ng-init="toggleCostList('department');" data-ng-class="{'active' : dashboard.costList.department}" data-ng-click="toggleCostList('department')" >Department</a></li>
+                    	<li><a href="javascript:void(0)" data-ng-class="{'active' : dashboard.costList.project}" data-ng-click="toggleCostList('project')">Project</a></li>
+                    	<li><a href="javascript:void(0)" data-ng-class="{'active' : dashboard.costList.application}" data-ng-click="toggleCostList('application')">Application</a></li>
                     </ul>
-					<div class="dashboard-department-cost">
+					<div class="dashboard-department-cost" data-ng-show="dashboard.costList.department">
 						<div class="panel-body">
 	                        <h5 class="no-margins text-primary">
 	                            Top 5 Departments by Cost <br>(Current Month) {{filterdept.value | lowercase}}
@@ -167,7 +167,6 @@
 	                                <thead>
 	                                    <tr>
 	                                        <th class="col-md-3"><small>Department</small></th>
-	
 	                                        <th class="col-md-3"><small class="pull-right">Cost (<app-currency></app-currency>)</small></th>
 	                                    </tr>
 	                                </thead>
@@ -192,7 +191,7 @@
                         	</div>
 	                    </div>
 					</div>
-			        <div class="dashboard-project-cost" ng-hide="true">
+			        <div class="dashboard-project-cost" data-ng-show="dashboard.costList.project">
 			        	<div class="panel-body">
 	                        <h5 class="no-margins text-primary">
 	                            Top 5 Projects by Cost <br>(Current Month) {{filters.value | lowercase}}
@@ -227,7 +226,7 @@
 	                        </div>
 	                    </div>
 			        </div>
-			        <div class="dashboard-application-cost" ng-hide="true">
+			        <div class="dashboard-application-cost" data-ng-show="dashboard.costList.application">
 			        	<div class="panel-body">
 	                        <h5 class="no-margins text-primary">
 	                            Top 5 Applications by Cost (Current Month) {{filterapp.value | lowercase}}

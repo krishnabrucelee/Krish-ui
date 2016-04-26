@@ -5,6 +5,17 @@
  */
 angular.module('homer', ['ngCookies']).controller("loginCtrl", function ($scope, $http, globalConfig, $window, $remember, $cookies) {
 
+	//For remember login functionality.
+    if (($cookies.rememberMe == "true")) {
+		return $http({method:'get', url: 'http://'+ $window.location.hostname +':8080/api/'  + 'users/usersessiondetails/'+$cookies.id,
+			"headers": {'x-auth-token': $cookies.token, 'x-requested-with': '', 'Content-Type': 'application/json', 'Range': "items=0-9", 'x-auth-login-token': $cookies.loginToken, 'x-auth-remember': $cookies.rememberMe, 'x-auth-user-id': $cookies.id, 'x-auth-login-time': $cookies.loginTime}})
+			.then(function(result){
+				$window.location.href = "index#/dashboard";
+          }, function(errorResponse) {
+        	  $cookies.rememberMe = "false";
+        	  $window.location.reload();
+        });
+	}
         $scope.loginForm = function () {
     	if (angular.isUndefined($scope.user_remember)) {
     		$scope.user_remember = "false";
@@ -83,5 +94,4 @@ angular.module('homer', ['ngCookies']).controller("loginCtrl", function ($scope,
            });
 
     }
-
 });

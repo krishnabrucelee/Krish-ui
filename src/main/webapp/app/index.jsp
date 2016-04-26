@@ -216,6 +216,7 @@
     <script src="scripts/controllers/quotaLimitController.js"></script>
     <script src="scripts/controllers/templateController.js"></script>
     <script src="scripts/controllers/sshkeyController.js"></script>
+    <script src="scripts/controllers/affinityGroupController.js"></script>
     <script src="scripts/controllers/networkController.js"></script>
     <script src="scripts/controllers/supportController.js"></script>
     <script src="scripts/controllers/snapshotController.js"></script>

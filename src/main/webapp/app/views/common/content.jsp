@@ -69,6 +69,10 @@
 	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.ssh.keys" bundle="${msg}" /></a>
 	                            <span ng-switch-when="true"><fmt:message key="common.ssh.keys" bundle="${msg}" /></span>
                             </span>
+                            <span data-ng-if="state.data.pageTitle === 'common.affinity.group'">
+	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.affinity.group" bundle="${msg}" /></a>
+	                            <span ng-switch-when="true"><fmt:message key="common.affinity.group" bundle="${msg}" /></span>
+                            </span>
                             <span data-ng-if="state.data.pageTitle === 'common.departments'">
 	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.department" bundle="${msg}" /></a>
 	                            <span ng-switch-when="true"><fmt:message key="common.departments" bundle="${msg}" /></span>
@@ -101,6 +105,9 @@
                 </h2>
                 <h2 class="font-light m-b-xs">
                     <span id="ssh_key_page_title" data-ng-if="$state.current.data.pageTitle === 'common.ssh.keys'"><fmt:message key="common.ssh.keys" bundle="${msg}" /></span>
+                </h2>
+                <h2 class="font-light m-b-xs">
+                    <span id="affinity_group_page_title" data-ng-if="$state.current.data.pageTitle === 'common.affinity.group'"><fmt:message key="common.affinity.group" bundle="${msg}" /></span>
                 </h2>
                 <h2 class="font-light m-b-xs">
                     <span id="quota_limit_page_title" data-ng-if="$state.current.data.pageTitle === 'common.quota.limit'"><fmt:message key="common.quota.limit" bundle="${msg}" /></span>
