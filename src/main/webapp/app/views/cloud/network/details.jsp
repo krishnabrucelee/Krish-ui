@@ -11,7 +11,7 @@
 				<div class="pull-right">
 					<a ui-sref-opts="{reload: true}"
 						title="<fmt:message key="common.refresh" bundle="${msg}" />"
-						ui-sref="cloud.list-network" class="btn btn-info" href="#"><span
+						ui-sref="cloud.list-network.view-network" class="btn btn-info" href="#"><span
 						class="fa fa-refresh fa-lg "></span></a>
 				</div>
 				<div class="pull-right m-r-sm">

@@ -131,7 +131,7 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider, $compile
                 url : "/ip-address/:id1",
                 templateUrl : VIEW_URL + "views/cloud/instance/listIPAddress.jsp",
                 data : {
-                    pageTitle : 'ip.address'
+                    pageTitle : 'Secondary IP Address'
                 }
             })
 

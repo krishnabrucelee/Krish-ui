@@ -92,15 +92,22 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
         $scope.showLoaderOffer = true;
         $state.current.data.pageName = "";
         $state.current.data.id = "";
+        console.log($stateParams.id);
         var hasServer = appService.crudService.read("guestnetwork", $stateParams.id);
         hasServer.then(function(result) {
+
             $scope.showLoader = false;
             $scope.showLoaderOffer = false;
             $scope.networkBreadCrumb = result;
             $scope.networkBreadCrumbList = result;
             $scope.persistNetwork = result;
-            $state.current.data.pageName = result.name;
-            $state.current.data.id = result.id;
+            if ($state.current.data.pageTitle === "view.network") {
+                $state.current.data.pageName = result.name;             	
+            	$state.current.data.id = result.id;
+            } else {
+               $state.$current.parent.data.pageName = result.name;
+               $state.current.data.id = result.id;
+            }
         });
     }
     // Egress Rule List
@@ -259,8 +266,14 @@ $scope.vmPortId = instance;
         value1: false,
         value2: true
     };
+
+    $scope.ipTab = function() {
+            $scope.templateCategory = 'ip';
+        }
+
     $scope.ipLists = function(pageNumber) {
         $scope.templateCategory = 'ip';
+        $scope.active = true;
 	//var networkId = $stateParams.id;
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
 if (!angular.isUndefined($stateParams.id)) {
@@ -270,6 +283,9 @@ if (!angular.isUndefined($stateParams.id)) {
         hasFirewallRuless.then(function(result) { // this is only run after
             // $http completes0
             $scope.ipList = result;
+            /*$state.current.data.publicIpAddress = result[0].publicIpAddress;
+            console.log($state.current.data.publicIpAddress);
+            console.log(result[0].publicIpAddress);*/
             // For pagination
             $scope.paginationObject.limit = limit;
             $scope.paginationObject.currentPage = pageNumber;
@@ -466,7 +482,7 @@ $scope.ipCostList();
 	            appService.globalConfig.webSocketLoaders.ingressLoader = true;
                     $modalInstance.close();
                     var hasServer = appService.crudService.softDelete("egress/ingress", deleteObject);
-                    hasServer.then(function(result) { 
+                    hasServer.then(function(result) {
                     $scope.showLoader = false;
                     $scope.templateCategory = 'firewall';
                     }).catch(function(result) {
@@ -490,7 +506,7 @@ $scope.ipCostList();
 		    $modalInstance.close();
 		    appService.globalConfig.webSocketLoaders.egressLoader = true;
                     var hasServer = appService.crudService.softDelete("egress", deleteObject);
-                    hasServer.then(function(result) {                    
+                    hasServer.then(function(result) {
                     $scope.showLoader = false;
                     }).catch(function(result) {
                         appService.globalConfig.webSocketLoaders.egressLoader = false;
@@ -560,7 +576,7 @@ $scope.ipCostList();
                         };
                     }
                 },
-	
+
 
 
 
@@ -663,7 +679,7 @@ $scope.ipCostList();
                     $modalInstance.close();
                     var hasServer = appService.crudService.add("guestnetwork/restart/" + network.id, network);
                     hasServer.then(function(result) { // this is only run after $http completes
-                        $scope.showLoader = false;			
+                        $scope.showLoader = false;
                     }).catch(function(result) {
                         if (!angular.isUndefined(result.data)) {
                             if (result.data.fieldErrors != null) {
@@ -2275,7 +2291,7 @@ $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.vpnUserDelete, 
        appService.localStorageService.set('view', 'vpn-details');
     }
 });
- $scope.$on("Network", function(event, args) { 
+ $scope.$on("Network", function(event, args) {
     appService.globalConfig.webSocketLoaders.networkLoader = false;
     $scope.list(1);
     if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
@@ -2283,7 +2299,7 @@ $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.vpnUserDelete, 
         appService.globalConfig.webSocketLoaders.networkLoader = false;
         $scope.edit($stateParams.id);
       }
-    } 
+    }
   });
 
 };
