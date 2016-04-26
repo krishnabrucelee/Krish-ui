@@ -131,7 +131,7 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider, $compile
                 url : "/ip-address/:id1",
                 templateUrl : VIEW_URL + "views/cloud/instance/listIPAddress.jsp",
                 data : {
-                    pageTitle : 'ip.address'
+                    pageTitle : 'Secondary IP Address'
                 }
             })
 
@@ -178,6 +178,13 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider, $compile
                 templateUrl : VIEW_URL + "views/cloud/sshkeys/list.jsp",
                 data : {
                     pageTitle : 'common.ssh.keys'
+                }
+            })
+            .state('cloud.list-affinity', {
+                url : "affinitygroup/list",
+                templateUrl : VIEW_URL + "views/cloud/affinitygroup/list.jsp",
+                data : {
+                    pageTitle : 'common.affinity.group'
                 }
             })
             .state('cloud.list-snapshot', {

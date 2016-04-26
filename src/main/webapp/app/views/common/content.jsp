@@ -40,7 +40,7 @@
                             <span data-ng-if="state.data.pageTitle === 'common.monitor'">
 	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.monitor" bundle="${msg}" /></a>
 	                            <span ng-switch-when="true"><fmt:message key="common.monitor" bundle="${msg}" /></span>
-	                    </span>
+	                    	</span>
                             <span data-ng-if="state.data.pageTitle === 'common.volume'">
 	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.volume" bundle="${msg}" /></a>
 	                            <span ng-switch-when="true"><fmt:message key="common.volume" bundle="${msg}" /></span>
@@ -57,6 +57,10 @@
 	                            <a ng-switch-when="false" ng-href="{{'#/instance/list/view/'+state.data.id}}">{{ state.data.pageName }}</a>
 	                            <span ng-switch-when="true">{{ state.data.pageName }}</span>
 	                        </span>
+	                        <span data-ng-if="state.data.pageTitle === 'Secondary IP Address'">
+	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="secondary.ip.address" bundle="${msg}" /></a>
+	                            <span ng-switch-when="true"><fmt:message key="secondary.ip.address" bundle="${msg}" /></span>
+	                   		</span>
 	                    	<span data-ng-if="state.data.pageTitle === 'ip.address'">
 	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="ip.address" bundle="${msg}" /></a>
 	                            <span ng-switch-when="true"><fmt:message key="ip.address" bundle="${msg}" /></span>
@@ -64,6 +68,10 @@
                             <span data-ng-if="state.data.pageTitle === 'common.ssh.keys'">
 	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.ssh.keys" bundle="${msg}" /></a>
 	                            <span ng-switch-when="true"><fmt:message key="common.ssh.keys" bundle="${msg}" /></span>
+                            </span>
+                            <span data-ng-if="state.data.pageTitle === 'common.affinity.group'">
+	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.affinity.group" bundle="${msg}" /></a>
+	                            <span ng-switch-when="true"><fmt:message key="common.affinity.group" bundle="${msg}" /></span>
                             </span>
                             <span data-ng-if="state.data.pageTitle === 'common.departments'">
 	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.department" bundle="${msg}" /></a>
@@ -99,16 +107,22 @@
                     <span id="ssh_key_page_title" data-ng-if="$state.current.data.pageTitle === 'common.ssh.keys'"><fmt:message key="common.ssh.keys" bundle="${msg}" /></span>
                 </h2>
                 <h2 class="font-light m-b-xs">
+                    <span id="affinity_group_page_title" data-ng-if="$state.current.data.pageTitle === 'common.affinity.group'"><fmt:message key="common.affinity.group" bundle="${msg}" /></span>
+                </h2>
+                <h2 class="font-light m-b-xs">
                     <span id="quota_limit_page_title" data-ng-if="$state.current.data.pageTitle === 'common.quota.limit'"><fmt:message key="common.quota.limit" bundle="${msg}" /></span>
                 </h2>
                 <h2 class="font-light m-b-xs">
                     <span id="view_instance_page_title" data-ng-if="$state.current.data.pageTitle === 'view.instance'">{{ $state.current.data.pageName }}</span>
                 </h2>
                 <h2 class="font-light m-b-xs">
-                    <span id="ip_address_page_title" data-ng-if="$state.current.data.pageTitle === 'ip.address'"><fmt:message key="ip.address" bundle="${msg}" /></span>
+                    <span id="secondary_ip_address_page_title" data-ng-if="$state.current.data.pageTitle === 'Secondary IP Address'"><fmt:message key="secondary.ip.address" bundle="${msg}" /></span>
                 </h2>
                 <h2 class="font-light m-b-xs">
                     <span id="view_network_page_title" data-ng-if="$state.current.data.pageTitle === 'view.network'">{{ $state.current.data.pageName }}</span>
+                </h2>
+                <h2 class="font-light m-b-xs">
+                    <span id="ip_address_page_title" data-ng-if="$state.current.data.pageTitle === 'ip.address'"><fmt:message key="ip.address" bundle="${msg}" /></span>
                 </h2>
                 <small>{{ $state.current.data.pageDesc}}</small>
             </div>

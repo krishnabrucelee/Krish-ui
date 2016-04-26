@@ -2,7 +2,7 @@ angular
         .module('homer')
         .controller('rolesListCtrl', rolesListCtrl)
 
- function rolesListCtrl($scope, appService, $window, $stateParams, localStorageService, globalConfig) {
+ function rolesListCtrl($scope, $state, appService, $window, $stateParams, localStorageService, globalConfig) {
 
 
 
@@ -217,11 +217,13 @@ angular
         }
     };
 
+
     $scope.edit = function (roleId) {
     	$scope.permissionGroupCount = [];
         var hasRole = appService.crudService.read("roles", roleId);
         hasRole.then(function (result) {
             $scope.role = result;
+            $state.current.data.pageName = result.name;
             var permissionGroupCount = [];
             angular.forEach($scope.role.permissionList, function(permission, key) {
             	$scope.permissionList[permission.id] = true;

@@ -18,6 +18,7 @@
                 <li ui-sref-active="active"><a ui-sref="cloud.list-snapshot" id="snapshots_navigation_button"><fmt:message key="common.snapshot" bundle="${msg}" /> </a></li>
                 <li ui-sref-active="active"><a ui-sref="cloud.list-network" id="networks_navigation_button"><fmt:message key="common.network" bundle="${msg}" /> </a></li>
                 <li ui-sref-active="active"><a ui-sref="cloud.list-ssh" id="ssh_keys_navigation_button"><fmt:message key="common.ssh.keys" bundle="${msg}" /> </a></li>
+                <li ui-sref-active="active"><a ui-sref="cloud.list-affinity" id="affinity_keys_navigation_button"><fmt:message key="common.affinity.group" bundle="${msg}" /> </a></li>
                 <li ui-sref-active="active" ui-sref="cloud.quota-limit" id="quota_limits_navigation_button"><a href="#"><fmt:message key="common.quota.limit" bundle="${msg}" /> </a></li>
             </ul>
         </li>

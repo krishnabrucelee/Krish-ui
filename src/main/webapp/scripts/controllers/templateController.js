@@ -24,6 +24,15 @@ $scope.template.listAllTemplate = {};
     $scope.paginationObject.sortOrder = '+';
     $scope.paginationObject.sortBy = 'name';
 
+    Math.round = (function() {
+    	  var originalRound = Math.round;
+    	  return function(number, precision) {
+    	    precision = Math.abs(parseInt(precision)) || 0;
+    	    var multiplier = Math.pow(10, precision);
+    	    return (originalRound(number * multiplier) / multiplier);
+    	  };
+    	})();
+
         $scope.changeSort = function(sortBy, pageNumber) {
 		var sort = appService.globalConfig.sort;
 		if (sort.column == sortBy) {
@@ -460,7 +469,7 @@ $scope.template.listAllTemplate = {};
         $scope.edit($stateParams.id)
     }
 
- 
+
  $scope.editTemplateContainer = function (size, templateObj){
 	$scope.templates = templateObj;
            appService.dialogService.openDialog("app/views/templates/edit-template.jsp", 'lg', $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {

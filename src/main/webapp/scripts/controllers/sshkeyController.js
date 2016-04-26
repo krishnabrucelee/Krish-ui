@@ -159,7 +159,6 @@ function sshkeyListCtrl($scope,appService,$state,localStorageService, globalConf
         hasUsers.then(function (result) {
             if (!angular.isUndefined(result)) {
             	$scope.userElement = result;
-            	console.log(result);
     	        var hasProjects =  appService.crudService.listAllByObject("projects/user", $scope.userElement);
     			hasProjects.then(function (result) {  // this is only run after $http completes0
     	   		    $scope.options = result;
@@ -182,13 +181,13 @@ function sshkeyListCtrl($scope,appService,$state,localStorageService, globalConf
     			   var departmentObj = {};
                    var sshkey = angular.copy($scope.sshkey);
                    if (!angular.isUndefined($scope.sshkey.domain) && $scope.sshkey.domain != null) {
-                	   sshkey.domainId = sshkey.domain.id;
-    				   domainObj = sshkey.domain;
+                       sshkey.domainId = sshkey.domain.id;
+    		       domainObj = sshkey.domain;
                        delete sshkey.domain;
                    }
                    if (!angular.isUndefined($scope.sshkey.department) && $scope.sshkey.department != null) {
-                	   sshkey.departmentId = sshkey.department.id;
-    				   departmentObj = sshkey.department;
+                       sshkey.departmentId = sshkey.department.id;
+    		       departmentObj = sshkey.department;
                        delete sshkey.department;
                    }
                    if (angular.isUndefined($scope.sshkey.publicKey) || $scope.sshkey.publicKey == "") {
@@ -196,6 +195,7 @@ function sshkeyListCtrl($scope,appService,$state,localStorageService, globalConf
                    }
                    if (!angular.isUndefined($scope.sshkey.project) && $scope.sshkey.project != null) {
                        sshkey.projectId = sshkey.project.id;
+                       projectObj = sshkey.project;
                        delete sshkey.project;
                    }
                    var hasServer = appService.crudService.add("sshkeys", sshkey);
@@ -204,17 +204,20 @@ function sshkeyListCtrl($scope,appService,$state,localStorageService, globalConf
     			       $scope.sshkeyss = result;
     			           var departments = [];
     			           var hasDepartments = appService.crudService.read("departments",
-    			        		   $scope.global.sessionValues.departmentId);
+    			           $scope.global.sessionValues.departmentId);
     			           hasDepartments.then(function (result) {
     			               $scope.sshkeyss.department = result;
     			           });
-                           var domains = [];
+                                   var domains = [];
     			           var hasDomains = appService.crudService.read("domains", $scope.global.sessionValues.domainId);
     			           hasDomains.then(function (result) {
     			               $scope.sshkeyss.domain = result;
     			           });
     			       $scope.sshkeyss.domain = domainObj;
-    				   $scope.sshkeyss.department = departmentObj;
+    			       $scope.sshkeyss.department = departmentObj;
+                               if (!angular.isUndefined($scope.sshkey.project) && $scope.sshkey.project != null) {
+                                   $scope.sshkeyss.project = projectObj;
+                               } 
     			       $scope.sshkeyList[$scope.sshkeyList.length] = $scope.sshkeyss;
     			       $scope.sshkey.privateKey = result.privateKey;
     			       $scope.list = function (pageNumber) {
@@ -262,12 +265,12 @@ function sshkeyListCtrl($scope,appService,$state,localStorageService, globalConf
                var sshkey = angular.copy($scope.sshkey);
                if (!angular.isUndefined($scope.sshkey.domain) && $scope.sshkey.domain != null) {
             	   sshkey.domainId = sshkey.domain.id;
-				   domainObj = sshkey.domain;
+		   domainObj = sshkey.domain;
                    delete sshkey.domain;
                }
                if (!angular.isUndefined($scope.sshkey.department) && $scope.sshkey.department != null) {
             	   sshkey.departmentId = sshkey.department.id;
-				   departmentObj = sshkey.department;
+		   departmentObj = sshkey.department;
                    delete sshkey.department;
                }
                if (angular.isUndefined($scope.sshkey.publicKey) || $scope.sshkey.publicKey == "") {
@@ -275,6 +278,7 @@ function sshkeyListCtrl($scope,appService,$state,localStorageService, globalConf
                }
                if (!angular.isUndefined($scope.sshkey.project) && $scope.sshkey.project != null) {
                    sshkey.projectId = sshkey.project.id;
+                   projectObj = sshkey.project;
                    delete sshkey.project;
                }
                var hasServer = appService.crudService.add("sshkeys", sshkey);
@@ -288,14 +292,17 @@ function sshkeyListCtrl($scope,appService,$state,localStorageService, globalConf
 			           hasDepartments.then(function (result) {
 			               $scope.sshkeyss.department = result;
 			           });
-                       var domains = [];
+                                   var domains = [];
 			           var hasDomains = appService.crudService.read("domains", $scope.global.sessionValues.domainId);
 			           hasDomains.then(function (result) {
 			               $scope.sshkeyss.domain = result;
 			           });
 			       }
 			       $scope.sshkeyss.domain = domainObj;
-				   $scope.sshkeyss.department = departmentObj;
+			       $scope.sshkeyss.department = departmentObj;
+                               if (!angular.isUndefined($scope.sshkey.project) && $scope.sshkey.project != null) {
+                                   $scope.sshkeyss.project = projectObj;
+                               }
 			       $scope.sshkeyList[$scope.sshkeyList.length] = $scope.sshkeyss;
 			       $scope.sshkey.privateKey = result.privateKey;
 			       $scope.list = function (pageNumber) {
