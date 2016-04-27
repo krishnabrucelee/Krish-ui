@@ -39,7 +39,7 @@ pageEncoding="UTF-8"%>
           <tbody>
               <tr ng-repeat="ipaddress in ipList">
                       <td>
-                      	<a class="text-info"  ui-sref="cloud.list-network.view-network.view-ipaddress({id1:ipaddress.id})"  title="View IP"> {{ ipaddress.publicIpAddress }} <span ng-if="ipaddress.isSourcenat">[Source NAT]</span></a>
+                      	<a class="text-info" ui-sref="cloud.list-network.view-network.view-ipaddress({id1:ipaddress.id})"  title="View IP"> {{ ipaddress.publicIpAddress }} <span ng-if="ipaddress.isSourcenat">[Source NAT]</span></a>
                       </td>
                       <td>{{ipaddress.zone.name}} </td>
                       <td>{{ipaddress.vmInstance.name}}</td>

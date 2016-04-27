@@ -399,8 +399,8 @@ pageEncoding="UTF-8"%>
                                                 </td>
                                                 <td class="col-md-8 col-sm-8">
                                                     {{ instance.computeOffering.name}}
-                                                    <a has-permission="RESIZE" data-ng-click="selectab()"  class="fa fa-edit m-l-lg">
-                                                        <fmt:message key="common.edit" bundle="${msg}" />
+                                                    <a has-permission="RESIZE" data-ng-click="selectab()">
+                                                       <i class="fa fa-edit m-l-lg"></i> <fmt:message key="common.resize" bundle="${msg}" />
                                                     </a>
                                                 </td>
                                             </tr>
@@ -467,8 +467,8 @@ pageEncoding="UTF-8"%>
                                                     </b>
                                                 </td>
                                                 <td class="col-md-8 col-sm-8">{{instance.keypair.name}}
-                                                <a data-ng-click="selectab()"  class="fa fa-exchange m-l-lg">
-                                                        <fmt:message key="common.change" bundle="${msg}" />
+                                                <a data-ng-click="selectab()" >
+                                                       <i class="fa fa-exchange m-l-lg"></i> <fmt:message key="common.change" bundle="${msg}" />
                                                     </a>
                                                  </td>
                                             </tr>

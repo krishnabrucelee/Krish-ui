@@ -41,7 +41,7 @@
 									<div class="clearfix"></div>
 								</div>
 							</div>
-							<a class="btn btn-info" has-permission="ADD_ISOLATED_NETWORK"
+							<a class="btn btn-info font-bold" has-permission="ADD_ISOLATED_NETWORK"
 								id="network_add_isolated_network_button"
 								data-ng-click="openAddIsolatedNetwork('md')"><span
 								class="pe-7s-plus pe-lg font-bold m-r-xs"></span> <fmt:message

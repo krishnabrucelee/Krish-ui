@@ -384,7 +384,8 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider, $compile
                 url : "/:view/:id",
                 templateUrl : VIEW_URL + "views/cloud/network/view.jsp",
                 data : {
-                    pageTitle : 'view.network'
+                    pageTitle : 'view.network',
+                    networkTab : 'details'
                 }
             })
 
@@ -392,7 +393,8 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider, $compile
                 url : "/ip-address/:id1",
                 templateUrl : VIEW_URL + "views/cloud/network/ip-view.jsp",
                 data : {
-                    pageTitle : 'ip.address'
+                    pageTitle : 'ip.address',
+                    networkTabs : 'ipdetails'
                 }
             })
 
