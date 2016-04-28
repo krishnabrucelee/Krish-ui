@@ -167,7 +167,7 @@ pageEncoding="UTF-8"%>
                                             <button ng-class = "(instance.status == 'RUNNING' && global.sessionValues.type === 'ROOT_ADMIN') ? 'resizelink enable' : 'resizelink disable'" data-ng-disabled = "(instance.status !== 'RUNNING' || global.sessionValues.type !== 'ROOT_ADMIN')" href="javascript:void(0);" title="<fmt:message key="migrate.to.another.host" bundle="${msg}" />" data-ng-click="hostMigrate(instance)"><span class="fa-arrows fa font-bold m-xs pull-left"></span> <span class="pull-left m-l-xs"><fmt:message key="migrate.to.another.host" bundle="${msg}" /></span><div class="clearfix"></div></button>
                                         </li>
                                         <li has-permission="HOST_INFORMATION" data-ng-if="instance.status == 'RUNNING'" class="list-group-item">
-                                            <a href="javascript:void(0);" title="<fmt:message key="host.information" bundle="${msg}" />" data-ng-click="hostInformation(instance)" ><span class="fa-square fa font-bold m-xs"></span> <fmt:message key="host.information" bundle="${msg}" /></a>
+                                            <a href="javascript:void(0);" title="<fmt:message key="host.information" bundle="${msg}" />" data-ng-click="hostInformation(instance)" ><span class="fa-server fa m-xs"></span> <fmt:message key="host.information" bundle="${msg}" /></a>
                                         </li>
                                          <li data-ng-if="instance.status == 'RUNNING' || instance.status == 'STOPPED' " class="list-group-item">
                                             <button data-ng-class = "(instance.passwordEnabled == true  && instance.vncPassword !== null) ? 'resizelink enable' : 'resizelink disable'" data-ng-disabled="(instance.vncPassword == null || !instance.passwordEnabled) && (instance.status == 'RUNNING' || instance.status == 'STOPPED')" href="javascript:void(0);" title="<fmt:message key="show.password" bundle="${msg}" />" data-ng-click="showPassword(instance)"><span class="fa-key fa font-bold m-xs"></span> <fmt:message key="show.password" bundle="${msg}" /></button>
@@ -399,8 +399,8 @@ pageEncoding="UTF-8"%>
                                                 </td>
                                                 <td class="col-md-8 col-sm-8">
                                                     {{ instance.computeOffering.name}}
-                                                    <a has-permission="RESIZE" data-ng-click="selectab()"  class="fa fa-edit m-l-lg">
-                                                        <fmt:message key="common.edit" bundle="${msg}" />
+                                                    <a has-permission="RESIZE" data-ng-click="selectab()">
+                                                       <i class="fa fa-edit m-l-lg"></i> <fmt:message key="common.resize" bundle="${msg}" />
                                                     </a>
                                                 </td>
                                             </tr>
@@ -467,8 +467,8 @@ pageEncoding="UTF-8"%>
                                                     </b>
                                                 </td>
                                                 <td class="col-md-8 col-sm-8">{{instance.keypair.name}}
-                                                <a data-ng-click="selectab()"  class="fa fa-exchange m-l-lg">
-                                                        <fmt:message key="common.change" bundle="${msg}" />
+                                                <a data-ng-click="selectab()" >
+                                                       <i class="fa fa-exchange m-l-lg"></i> <fmt:message key="common.change" bundle="${msg}" />
                                                     </a>
                                                  </td>
                                             </tr>

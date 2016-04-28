@@ -8,26 +8,26 @@
                 		            <img data-ng-if="global.webSocketLoaders.networkLoader" src="images/loading-bars.svg" class="inner-loading" width="64" height="64" />
  </div>
 <div class="row m-l-sm m-r-sm panel-body" data-ng-controller="networksCtrl">
-     <ul class="nav nav-tabs" data-ng-init="templateCategory = 'details'">
-        <li data-ng-class="{'active' : tabview != 'egress'}"><a href="javascript:void(0)" data-ng-click="templateCategory = 'details'" data-toggle="tab">  <i class="fa fa-list"></i> <fmt:message key="common.details" bundle="${msg}" /></a></li>
-        <li data-ng-class="{'active' : tabview == 'egress'}"><a  data-ng-click="firewallRulesLists(1)" data-toggle="tab"><!--<i class="fa fa-sign-in"></i>--> <i class="custom-icon custom-icon-egress"></i><fmt:message key="common.egressrule" bundle="${msg}" /></a></li>
-        <li ><a  data-ng-click="ipLists(1)" data-toggle="tab"> <!--<i class="fa fa-sitemap"></i>--> <i class="custom-icon custom-icon-ip"></i><fmt:message key="ip.address" bundle="${msg}" /></a></li>
-        <li ><a data-ng-click="vmLists(1)" data-toggle="tab"> <i class="fa fa-cloud"></i> <fmt:message key="common.instance" bundle="${msg}" /></a></li>
+     <ul class="nav nav-tabs" data-ng-init="templateCategorys = tabviews">
+        <li data-ng-class="{'active' : tabviews == 'details'}"><a href="javascript:void(0)" data-ng-click="edit($state.params.id)" data-toggle="tab">  <i class="fa fa-list"></i> <fmt:message key="common.details" bundle="${msg}" /></a></li>
+        <li data-ng-class="{'active' : tabviews == 'egress'}"><a  data-ng-click="firewallRulesLists(1)" data-toggle="tab"><!--<i class="fa fa-sign-in"></i>--> <i class="custom-icon custom-icon-egress"></i><fmt:message key="common.egressrule" bundle="${msg}" /></a></li>
+        <li data-ng-class="{'active' : tabviews == 'ip'}"><a  data-ng-click="ipLists(1)" data-toggle="tab"> <!--<i class="fa fa-sitemap"></i>--> <i class="custom-icon custom-icon-ip"></i><fmt:message key="ip.address" bundle="${msg}" /></a></li>
+        <li data-ng-class="{'active' : tabviews == 'instance'}"><a data-ng-click="vmLists(1)" data-toggle="tab"> <i class="fa fa-cloud"></i> <fmt:message key="common.instance" bundle="${msg}" /></a></li>
     </ul>
      <div class="tab-content">
      <div data-ng-if = "showLoaderOffer" style="margin: 20%">
                 <get-loader-image data-ng-if="showLoaderOffer"></get-loader-image>
             </div>
-        <div class="tab-pane" data-ng-class="{'active' : templateCategory == 'details'}" id="step1-dashboard">
+        <div class="tab-pane" data-ng-class="{'active' : templateCategorys == 'details'}" id="step1-dashboard">
             <div data-ng-include src="'app/views/cloud/network/details.jsp'"></div>
         </div>
-        <div class="tab-pane"  data-ng-class="{'active' : templateCategory == 'egress'}" id="step1-config">
+        <div class="tab-pane"  data-ng-class="{'active' : templateCategorys == 'egress'}" id="step1-config">
             <div data-ng-include src="'app/views/cloud/network/egress.jsp'"></div>
         </div>
-        <div class="tab-pane"  data-ng-class="{'active' : templateCategory == 'ip'}" id="step1-storage">
+        <div class="tab-pane"  data-ng-class="{'active' : templateCategorys == 'ip'}" id="step1-storage">
             <div data-ng-include src="'app/views/cloud/network/ip-address.jsp'"></div>
         </div>
-        <div class="tab-pane"  data-ng-class="{'active' : templateCategory == 'instance'}" id="step1-network">
+        <div class="tab-pane"  data-ng-class="{'active' : templateCategorys == 'instance'}" id="step1-network">
        		 <div data-ng-include src="'app/views/cloud/network/instance.jsp'"></div>
         </div>
      </div>

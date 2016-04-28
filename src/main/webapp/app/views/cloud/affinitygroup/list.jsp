@@ -16,7 +16,7 @@
                              <div class="clearfix"></div>
                              </div>
                          </div>
-                         <a class="btn btn-info"  ng-click="createAffinityGroup('md')"  data-backdrop="static" data-keyboard="false"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="add.new.affinity.group" bundle="${msg}" /></a>
+                         <a class="btn btn-info font-bold"  ng-click="createAffinityGroup('md')"  data-backdrop="static" data-keyboard="false"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="add.new.affinity.group" bundle="${msg}" /></a>
                          <a class="btn btn-info" data-ng-click="list(1)"  title="<fmt:message key="common.refresh" bundle="${msg}"/>"><span class="fa fa-refresh fa-lg "></span></a>
                     </div>
                     <div class="pull-right dashboard-filters-area">

@@ -65,7 +65,7 @@
 	                                <div class="clearfix"></div>
 	                                </div>
 	                            </div>
-	                            <a has-permission="CREATE_USER" id="accounts_add_button" class="btn btn-info" data-ng-click="addUser('lg')"><span class="pe-7s-add-user pe-lg font-bold m-r-xs"></span><fmt:message key="add.user" bundle="${msg}" /></a>
+	                            <a has-permission="CREATE_USER" id="accounts_add_button" class="btn btn-info font-bold" data-ng-click="addUser('lg')"><span class="pe-7s-add-user pe-lg font-bold m-r-xs"></span><fmt:message key="add.user" bundle="${msg}" /></a>
 	                            <a class="btn btn-info " ui-sref="accounts" id="accounts_refresh_button" title="Refresh"  ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
 							</div>
                                 <div class="pull-right dashboard-filters-area">

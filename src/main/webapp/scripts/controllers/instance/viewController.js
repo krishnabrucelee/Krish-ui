@@ -349,7 +349,7 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
         $scope.viewLoader = $scope.global.webSocketLoaders.viewLoader;
     };
     $scope.detachISO = function(vm) {
-        appService.dialogService.openDialog("app/views/cloud/instance/detach-ISO.jsp", 'md', $scope, ['$scope', '$modalInstance', '$rootScope', function($scope, $modalInstance, $rootScope) {
+        appService.dialogService.openDialog("app/views/cloud/instance/detach-ISO.jsp", 'sm', $scope, ['$scope', '$modalInstance', '$rootScope', function($scope, $modalInstance, $rootScope) {
             $scope.vm = vm;
             var event = "ISO.DETACH";
             $scope.update = function() {
