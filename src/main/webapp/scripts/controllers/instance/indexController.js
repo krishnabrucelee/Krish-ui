@@ -316,12 +316,10 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
             $scope.networks = false;
         } else {
         	if(item == 'all') {
-        		$scope.networks = true;
         		$scope.instance.networkOfferinglist.value = item;
         		$scope.instance.networkOfferinglist = $scope.instanceElements.networkOfferingList[0];
         	}
         	if(item == 'new'){
-        		$scope.networks = true;
         		$scope.instance.networkOfferinglist.value = item;
         		$scope.instance.networkOfferinglist = $scope.instanceElements.networkOfferingList[2];
         	}
@@ -511,7 +509,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
                         $scope.disk = false;
                         $scope.homerTemplate = 'app/views/notification/notify.jsp';
                         appService.notify({
-                            message: 'Enter network name  ',
+                            message: 'Enter network name',
                             classes: 'alert-danger',
                             templateUrl: $scope.homerTemplate
                         });
@@ -547,13 +545,24 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
 
                     }
                     $scope.instance.networkUuid = $scope.instance.networkUuid+allNetworks;
-                    if (!networkSelected) {
+
+                    if (!networkSelected && $scope.isEmpty($scope.instance.networkc)) {
                         submitError = true;
                         $scope.networks = true;
                         $scope.disk = false;
                         $scope.homerTemplate = 'app/views/notification/notify.jsp';
                         appService.notify({
-                            message: 'Select network offering ',
+                            message: 'Select one default network',
+                            classes: 'alert-danger',
+                            templateUrl: $scope.homerTemplate
+                        });
+                    } else if (!networkSelected) {
+                        submitError = true;
+                        $scope.networks = true;
+                        $scope.disk = false;
+                        $scope.homerTemplate = 'app/views/notification/notify.jsp';
+                        appService.notify({
+                            message: 'Select atleast one network',
                             classes: 'alert-danger',
                             templateUrl: $scope.homerTemplate
                         });
@@ -597,7 +606,10 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
             }
         }
     };
-
+    $scope.isEmpty = function (obj) {
+        for (var i in obj) if (obj.hasOwnProperty(i)) return false;
+        return true;
+    };
     $scope.validateTemplate = function(form) {
         $scope.templateFormSubmitted = true;
         appService.notify.closeAll();
@@ -1024,11 +1036,10 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
         hasGuestNetworks.then(function(result) { // this is only run after $http
             $scope.instance.networks.networkList = result;
             if(result.length > 0) {
-                $scope.instance.networkOfferinglist.value = 'all';
                 $scope.instance.networkOfferinglist = $scope.instanceElements.networkOfferingList[0];
                 $scope.networks = true;
             } else {
-                $scope.instance.networkOfferinglist.value = 'new';
+                $scope.listNetworkOffer();
                 $scope.instance.networkOfferinglist = $scope.instanceElements.networkOfferingList[2];
                 $scope.networks = true;
             }
@@ -1121,6 +1132,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
                 $scope.instance.networkOfferinglist = $scope.instanceElements.networkOfferingList[0];
                 networkError = false;
                 $scope.showLoaderOffer = false;
+                $scope.guestnetwork = {};
             }).catch(function(result) {
                 $scope.showLoaderOffer = false;
                 if (!angular.isUndefined(result) && result.data != null) {
@@ -1131,6 +1143,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
                         });
                     }
                 }
+                $scope.guestnetwork = {};
             });
         }
     }
