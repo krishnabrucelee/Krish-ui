@@ -4,7 +4,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
-<div class="m-l-sm m-r-sm " ng-controller="instanceMonitorCtrl">
+<div class="m-l-sm m-r-sm monitor-charts" ng-controller="instanceMonitorCtrl">
 
     <div class="row clearfix ">
 
