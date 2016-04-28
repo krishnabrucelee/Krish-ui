@@ -11,10 +11,10 @@
     <div class="modal-body">
         <div class=" row">
             <div class="form-group has-error col-md-3 col-sm-3  col-xs-3">
-               <span class="fa fa-3x fa-warning text-warning"></span>
+                <span class="fa fa-3x fa-warning text-warning"></span>
             </div>
             <div class="form-group has-error col-md-9 col-sm-9  col-xs-9">
-                <p ><fmt:message key="common.are.you.sure.do.you.want.to.delete" bundle="${msg}" /></p>
+                <p ><fmt:message key="common.are.you.sure.do.you.want.to.delete" bundle="${msg}" />?</p>
             </div>
         </div>
     </div>

@@ -46,6 +46,55 @@ function utilService(crudService, promiseAjax, globalConfig) {
         });
     }
 
+    object.getFlotBarData = function() {
+      return [
+          {
+              label: "bar",
+              data: []
+          }
+      ];
+    }
+
+    /**
+     * Bar Chart Options
+     */
+    object.getFlotBarOptions = function() {
+
+      return {
+          series: {
+              bars: {
+                  show: true,
+                  barWidth: 0.8,
+                  fill: true,
+                  fillColor: {
+                      colors: [ { opacity: 0.6 }, { opacity: 0.6 } ]
+                  },
+                  lineWidth: 1
+              }
+          },
+          xaxis: {
+              tickDecimals: 0,
+              ticks: []
+          },
+          colors: ["#c3d1db"],
+          grid: {
+              color: "#c3d1db",
+              hoverable: true,
+              clickable: true,
+              tickColor: "#D4D4D4",
+              borderWidth: 0,
+              borderColor: 'e4e5e7',
+          },
+          legend: {
+              show: false
+          },
+          tooltip: true,
+          tooltipOpts: {
+              content: "x: %x, y: %y"
+          }
+      };
+    }
+
     object.getMonthList = function() {
         return [ {
             'id' : 1,

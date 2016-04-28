@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -27,71 +27,74 @@
                         <h5 class="no-margins text-primary">
                             Infrastructure
                         </h5>
-                        <div class="row">
-            				<div class="col-md-4 col-sm-4 col-xs-6">
-            					<div class="quick-view-details running-vm">
-            						<div class="quick-view-icon pull-right"></div>
-            						<div class="quick-view-count pull-right">09</div>
-            					</div>
-            					<div class="quick-view-title text-center">Running VM</div>
-            				</div>
-            				<div class="col-md-4 col-sm-4 col-xs-6">
-            					<div class="quick-view-details stopped-vm">
-            						<div class="quick-view-icon pull-right"></div>
-            						<div class="quick-view-count pull-right">06</div>
-            					</div>
-            					<div class="quick-view-title text-center">Stopped VM</div>
-            				</div>
-            				<div class="col-md-4 col-sm-4 col-xs-6">
-            					<div class="quick-view-details total-vm">
-            						<div class="quick-view-icon pull-right"></div>
-            						<div class="quick-view-count pull-right">15</div>
-            					</div>
-            					<div class="quick-view-title text-center">Total VM</div>
-            				</div>
-            				<div class="col-md-4 col-sm-4 col-xs-6">
-            					<div class="quick-view-details vcpu">
-            						<div class="quick-view-icon pull-right"></div>
-            						<div class="quick-view-count pull-right">03</div>
-            					</div>
-            					<div class="quick-view-title text-center">vCpu</div>
-            				</div>
-            				<div class="col-md-4 col-sm-4 col-xs-6">
-            					<div class="quick-view-details vcpu">
-            						<div class="quick-view-icon pull-right"></div>
-            						<div class="quick-view-count pull-right">15<small>(GB)</small></div>
-            					</div>
-            					<div class="quick-view-title text-center">RAM</div>
-            				</div>
-            				<div class="col-md-4 col-sm-4 col-xs-6">
-            					<div class="quick-view-details vcpu">
-            						<div class="quick-view-icon pull-right"></div>
-            						<div class="quick-view-count pull-right">18<small>(GB)</small></div>
-            					</div>
-            					<div class="quick-view-title text-center">Storage Allocation</div>
-            				</div>
-            				<div class="col-md-4 col-sm-4 col-xs-6">
-            					<div class="quick-view-details networks">
-            						<div class="quick-view-icon pull-right"></div>
-            						<div class="quick-view-count pull-right">12</div>
-            					</div>
-            					<div class="quick-view-title text-center">Public IP</div>
-            				</div>
-            				<div class="col-md-4 col-sm-4 col-xs-6">
-            					<div class="quick-view-details networks">
-            						<div class="quick-view-icon pull-right"></div>
-            						<div class="quick-view-count pull-right">04</div>
-            					</div>
-            					<div class="quick-view-title text-center">Networks</div>
-            				</div>
-            				<div class="col-md-4 col-sm-4 col-xs-6">
-            					<div class="quick-view-details private-template">
-            						<div class="quick-view-icon pull-right"></div>
-            						<div class="quick-view-count pull-right">07</div>
-            					</div>
-            					<div class="quick-view-title text-center">Private Template</div>
-            				</div>
-           				</div>
+                        <div class="text-center m-t-xxxl" data-ng-show="showInfrastructureLoader">
+                             <img src="images/loading-bars.svg" />
+                         </div>
+                        <div class="row" data-ng-hide="showInfrastructureLoader">
+                            <div class="col-md-4 col-sm-4 col-xs-6">
+                                <div class="quick-view-details running-vm">
+                                    <div class="quick-view-icon pull-right"></div>
+                                    <div class="quick-view-count pull-right">{{ infrastructure.runningVmCount }}</div>
+                                </div>
+                                <div class="quick-view-title text-center">Running VM</div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-6">
+                                <div class="quick-view-details stopped-vm">
+                                    <div class="quick-view-icon pull-right"></div>
+                                    <div class="quick-view-count pull-right">{{ infrastructure.stoppedVmCount }}</div>
+                                </div>
+                                <div class="quick-view-title text-center">Stopped VM</div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-6">
+                                <div class="quick-view-details total-vm">
+                                    <div class="quick-view-icon pull-right"></div>
+                                    <div class="quick-view-count pull-right">{{ infrastructure.totalCount }}</div>
+                                </div>
+                                <div class="quick-view-title text-center">Total VM</div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-6">
+                                <div class="quick-view-details vcpu">
+                                    <div class="quick-view-icon pull-right"></div>
+                                    <div class="quick-view-count pull-right">{{ infrastructure.vcpu }}</div>
+                                </div>
+                                <div class="quick-view-title text-center">vCpu</div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-6">
+                                <div class="quick-view-details vcpu">
+                                    <div class="quick-view-icon pull-right"></div>
+                                    <div class="quick-view-count pull-right">{{ infrastructure.ram }}<small>(GB)</small></div>
+                                </div>
+                                <div class="quick-view-title text-center">RAM</div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-6">
+                                <div class="quick-view-details vcpu">
+                                    <div class="quick-view-icon pull-right"></div>
+                                    <div class="quick-view-count pull-right">{{ infrastructure.storage }}<small>(GB)</small></div>
+                                </div>
+                                <div class="quick-view-title text-center">Storage Allocation</div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-6">
+                                <div class="quick-view-details networks">
+                                    <div class="quick-view-icon pull-right"></div>
+                                    <div class="quick-view-count pull-right">{{ infrastructure.publicIp }}</div>
+                                </div>
+                                <div class="quick-view-title text-center">Public IP</div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-6">
+                                <div class="quick-view-details networks">
+                                    <div class="quick-view-icon pull-right"></div>
+                                    <div class="quick-view-count pull-right">{{ infrastructure.networks }}</div>
+                                </div>
+                                <div class="quick-view-title text-center">Networks</div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-6">
+                                <div class="quick-view-details private-template">
+                                    <div class="quick-view-icon pull-right"></div>
+                                    <div class="quick-view-count pull-right">{{ infrastructure.template }}</div>
+                                </div>
+                                <div class="quick-view-title text-center">Private Template</div>
+                            </div>
+                           </div>
                     </div>
                 </div>
             </div>
@@ -101,48 +104,17 @@
                         <h5 class="no-margins text-primary">
                             Quota
                         </h5>
-                        <div class="row dashboard-quota-area" ng-controller="appCtrl">
-            				<div class="col-md-3 col-sm-4 col-xs-6 dashboard-quota">
-            					<div class="doughnutchart-value">42%</div>
-            					<canvas doughnutchart options="doughnutOptions" data="doughnutData1" height="140" responsive=true></canvas>
-            					vCpu<span>Using 4 of 10</span>
-            				</div>
-            				<div class="col-md-3 col-sm-4 col-xs-6 dashboard-quota">
-            					<div class="doughnutchart-value">73%</div>
-            					<canvas doughnutchart options="doughnutOptions" data="doughnutData2" height="140" responsive=true></canvas>
-            					Memory<span>Using 730 of 1000</span>
-            				</div>
-            				<div class="col-md-3 col-sm-4 col-xs-6 dashboard-quota">
-            					<div class="doughnutchart-value">22%</div>
-            					<canvas doughnutchart options="doughnutOptions" data="doughnutData3" height="140" responsive=true></canvas>
-            					Volume<span>Using 2 of 10</span>
-            				</div>
-            				<div class="col-md-3 col-sm-4 col-xs-6 dashboard-quota">
-            					<div class="doughnutchart-value">88%</div>
-            					<canvas doughnutchart options="doughnutOptions" data="doughnutData4" height="140" responsive=true></canvas>
-            					Network<span>Using 8 of 10</span>
-            				</div>
-            				<div class="col-md-3 col-sm-4 col-xs-6 dashboard-quota">
-            					<div class="doughnutchart-value">88%</div>
-            					<canvas doughnutchart options="doughnutOptions" data="doughnutData4" height="140" responsive=true></canvas>
-            					IP Address<span>Using 8 of 10</span>
-            				</div>
-            				<div class="col-md-3 col-sm-4 col-xs-6 dashboard-quota">
-            					<div class="doughnutchart-value">73%</div>
-            					<canvas doughnutchart options="doughnutOptions" data="doughnutData2" height="140" responsive=true></canvas>
-            					Primary Storage<span>Using 73 of 100</span>
-            				</div>
-            				<div class="col-md-3 col-sm-4 col-xs-6 dashboard-quota">
-            					<div class="doughnutchart-value">22%</div>
-            					<canvas doughnutchart options="doughnutOptions" data="doughnutData3" height="140" responsive=true></canvas>
-            					Secondary Storage<span>Using 22 of 100</span>
-            				</div>
-            				<div class="col-md-3 col-sm-4 col-xs-6 dashboard-quota">
-            					<div class="doughnutchart-value">42%</div>
-            					<canvas doughnutchart options="doughnutOptions" data="doughnutData1" height="140" responsive=true></canvas>
-            					Snapshots<span>Using 4 of 10</span>
-            				</div>
-           				</div>
+                        <div class="text-center m-t-xxxl" data-ng-show="showQuotaLoader">
+                             <img src="images/loading-bars.svg" />
+                         </div>
+                        <div class="row dashboard-quota-area" data-ng-hide="showQuotaLoader">
+                            <div class="col-md-3 col-sm-4 col-xs-6 dashboard-quota" data-ng-repeat="quotaLimit in quotaLimits">
+                                <div class="doughnutchart-value">{{ quotaLimit.percentage }}%</div>
+                                <canvas doughnutchart options="doughnutOptions" data="quotaLimit.doughnutData" height="140" responsive=true></canvas>
+                                {{ quotaLimit.label }} <span>Using {{quotaLimit.usedLimit}} of {{quotaLimit.max}}</span>
+                            </div>
+
+                           </div>
                     </div>
                 </div>
             </div>
@@ -152,117 +124,115 @@
                 <div class="panel panel-white no-border-radious dashboard-tab">
                     <div class="panel-body">
                     <ul>
-                    	<li><a href="javascript:void(0)" class="active">Department</a></li>
-                    	<li><a href="javascript:void(0)">Project</a></li>
-                    	<li><a href="javascript:void(0)">Application</a></li>
+                        <li><a href="javascript:void(0)" data-ng-init="toggleCostList('department');" data-ng-class="{'active' : dashboard.costList.department}" data-ng-click="toggleCostList('department')" >Department</a></li>
+                        <li><a href="javascript:void(0)" data-ng-class="{'active' : dashboard.costList.project}" data-ng-click="toggleCostList('project')">Project</a></li>
+                        <!-- <li><a href="javascript:void(0)" data-ng-class="{'active' : dashboard.costList.application}" data-ng-click="toggleCostList('application')">Application</a></li> -->
                     </ul>
-					<div class="dashboard-department-cost">
-						<div class="panel-body">
-	                        <h5 class="no-margins text-primary">
-	                            Top 5 Departments by Cost <br>(Current Month) {{filterdept.value | lowercase}}
-	                        </h5>
-	                        <div class="m-t-md">
-	
-	                            <table cellspacing="1" cellpadding="1" class="top-projects no-margins table table-condensed table-striped">
-	                                <thead>
-	                                    <tr>
-	                                        <th class="col-md-3"><small>Department</small></th>
-	
-	                                        <th class="col-md-3"><small class="pull-right">Cost (<app-currency></app-currency>)</small></th>
-	                                    </tr>
-	                                </thead>
-	                            </table>
-	                        </div>
-	                        <div class="slimScroll-175">
-                            	<div class="text-center m-t-xxxl" data-ng-show="showDeptLoader">
-                            		<img src="images/loading-bars.svg" />
-                        		</div>
-		                        <div data-ng-hide="showDeptLoader">
-		                            <table cellspacing="1" cellpadding="3" class="top-projects table table-condensed table-striped">
-		                                <tbody >
-		                                    <tr data-ng-repeat="department in departmentList">
-		                                        <td  class="col-md-3">{{ department.name}}</td>
-		                                        <td  class="col-md-3">
-		                                            <label class="badge badge-info p-xxs font-bold pull-right">{{ 430 - (($index + 1) * 54.035) | number:2}}</label>
-		                                        </td>
-		                                    </tr>
-		                                </tbody>
-		                            </table>
-		                        </div>
-                        	</div>
-	                    </div>
-					</div>
-			        <div class="dashboard-project-cost" ng-hide="true">
-			        	<div class="panel-body">
-	                        <h5 class="no-margins text-primary">
-	                            Top 5 Projects by Cost <br>(Current Month) {{filters.value | lowercase}}
-	                        </h5>
-	                        <div class="m-t-md">
-	                            <table cellspacing="1" cellpadding="1" class="top-projects no-margins table table-condensed table-striped">
-	                                <thead>
-	                                    <tr>
-	                                        <th class="col-md-3"><small>Project</small></th>
-	
-	                                        <th class="col-md-3"><small class="pull-right">Cost (<app-currency></app-currency>)</small></th>
-	                                    </tr>
-	                                </thead>
-	                            </table>
-	                        </div>
-	                        <div class="slimScroll-175">
-                              		<div class="text-center m-t-xxxl" data-ng-show="showLoader">
-		                            <img src="images/loading-bars.svg" />
-	                        	</div>
-		                        <div data-ng-hide="showLoader">
-		                            <table cellspacing="1" cellpadding="3" class="top-projects table table-condensed table-striped">
-		                                <tbody >
-		                                    <tr data-ng-repeat="project in projectList">
-		                                        <td  class="col-md-3">{{ project.name}}</td>
-		                                        <td  class="col-md-3">
-		                                            <label class="badge badge-info p-xxs font-bold pull-right">{{  567.035 - (($index + 1) * 32 ) | number:2}}</label>
-		                                        </td>
-		                                    </tr>
-		                                </tbody>
-		                            </table>
-		                        </div>
-	                        </div>
-	                    </div>
-			        </div>
-			        <div class="dashboard-application-cost" ng-hide="true">
-			        	<div class="panel-body">
-	                        <h5 class="no-margins text-primary">
-	                            Top 5 Applications by Cost (Current Month) {{filterapp.value | lowercase}}
-	                        </h5>
-	                        <div class="m-t-md">
-	
-	                            <table cellspacing="1" cellpadding="1" class="top-projects no-margins table table-condensed table-striped">
-	                                <thead>
-	                                    <tr>
-	                                        <th class="col-md-3"><small>Application</small></th>
-	
-	                                        <th class="col-md-3"><small class="pull-right">Cost (<app-currency></app-currency>)</small></th>
-	                                    </tr>
-	                                </thead>
-	                            </table>
-	                        </div>
-	                        <div class="slimScroll-175">
-	                               <div class="text-center m-t-xxxl" data-ng-show="showAppLoader">
-			                            <img src="images/loading-bars.svg" />
-			                        </div>
-		                        <div data-ng-hide="showAppLoader">
-		                            <table cellspacing="1" cellpadding="3" class="top-projects table table-condensed table-striped">
-		                                <tbody >
-		                                    <tr data-ng-repeat="application in applicationList">
-		                                        <td  class="col-md-3">{{ application.name}}</td>
-		                                        <td  class="col-md-3">
-		                                            <label class="badge badge-info p-xxs font-bold pull-right">{{ 330 - (($index + 1) * 35.035) | number:2}}</label>
-		                                        </td>
-		                                    </tr>
-		                                </tbody>
-		                            </table>
-		                        </div>
-	                        </div>
-	                    </div>
-			        </div>
+                    <div class="dashboard-department-cost" data-ng-show="dashboard.costList.department">
+                        <div class="panel-body">
+                            <h5 class="no-margins text-primary">
+                                Top 5 Departments by Cost <br>(Current Month) {{filterdept.value | lowercase}}
+                            </h5>
+                            
+                            <div class="m-t-md">
+
+                                <table cellspacing="1" cellpadding="1" class="top-projects no-margins table table-condensed table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="col-md-3"><small>Department</small></th>
+                                            <th class="col-md-3"><small class="pull-right">Cost (<app-currency></app-currency>)</small></th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                             <div class="text-center m-t-xxxl" data-ng-show="showTopDeptLoader">
+                                 <img src="images/loading-bars.svg" />
+                             </div>
+                             <div data-ng-hide="showDeptLoader">
+								<table cellspacing="1" cellpadding="3" class="top-projects table table-condensed table-striped">
+                                     <tbody >
+                                         <tr data-ng-repeat="department in top5DepartmentList | limitTo:5">
+                                             <td  class="col-md-3">{{ department.account }}</td>
+                                             <td  class="col-md-3">
+                                                 <label class="badge badge-info p-xxs font-bold pull-right">{{  department.grandTotalCost | number:2}}</label>
+                                             </td>
+                                         </tr>
+                                     </tbody>
+                                 </table>                                    
+                             </div>
+                        </div>
+                    </div>
+                    <div class="dashboard-project-cost" data-ng-show="dashboard.costList.project">
+                        <div class="panel-body">
+                            <h5 class="no-margins text-primary">
+                                Top 5 Projects by Cost <br>(Current Month) {{filters.value | lowercase}}
+                            </h5>
+                            
+                            <div class="m-t-md">
+                                <table cellspacing="1" cellpadding="1" class="top-projects no-margins table table-condensed table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="col-md-3"><small>Project</small></th>
+
+                                            <th class="col-md-3"><small class="pull-right">Cost (<app-currency></app-currency>)</small></th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                            
+                             <div class="text-center m-t-xxxl" data-ng-show="showTopProjectLoader">
+                                 <img src="images/loading-bars.svg" />
+                             </div>
+                             <div data-ng-hide="showTopProjectLoader">
+                                 <table cellspacing="1" cellpadding="3" class="top-projects table table-condensed table-striped">
+                                     <tbody >
+                                         <tr data-ng-repeat="project in top5ProjectList | limitTo:5">
+                                             <td  class="col-md-3">{{ project.project }}</td>
+                                             <td  class="col-md-3">
+                                                 <label class="badge badge-info p-xxs font-bold pull-right">{{  project.grandTotalCost | number:2 }}</label>
+                                             </td>
+                                         </tr>
+                                     </tbody>
+                                 </table>
+                             </div>
+                        </div>
+                    </div>
+                    <div class="dashboard-application-cost" data-ng-show="dashboard.costList.application">
+                        <div class="panel-body">
+                            <h5 class="no-margins text-primary">
+                                Top 5 Applications by Cost (Current Month) {{filterapp.value | lowercase}}
+                            </h5>
+                            <div class="m-t-md">
+
+                                <table cellspacing="1" cellpadding="1" class="top-projects no-margins table table-condensed table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="col-md-3"><small>Application</small></th>
+
+                                            <th class="col-md-3"><small class="pull-right">Cost (<app-currency></app-currency>)</small></th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                            <div class="slimScroll-175">
+                                   <div class="text-center m-t-xxxl" data-ng-show="showAppLoader">
+                                        <img src="images/loading-bars.svg" />
+                                    </div>
+                                <div data-ng-hide="showAppLoader">
+                                    <table cellspacing="1" cellpadding="3" class="top-projects table table-condensed table-striped">
+                                        <tbody >
+                                            <tr data-ng-repeat="application in applicationList">
+                                                <td  class="col-md-3">{{ application.name}}</td>
+                                                <td  class="col-md-3">
+                                                    <label class="badge badge-info p-xxs font-bold pull-right">{{ 330 - (($index + 1) * 35.035) | number:2}}</label>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     </div>
                 </div>
             </div>
@@ -270,218 +240,94 @@
                 <div class="panel panel-white no-border-radious">
                     <div class="panel-body p-sm">
                         <h5 class="no-margins text-primary">
-                            Cost ny Month
+                            Cost by Month
                         </h5>
-                       	<img src="images/sample-graph.jpg" />
+                        <div class="col-md-12">
+				            <div class="p-xxs">
+								<div class="row" data-ng-show="showCostByMonthLoader">
+									<div class="col-md-12 text-center">
+										<img src="images/loading-bars.svg" width="64" height="64" />
+									</div>
+								</div>
+								<div class="flot-chart" data-ng-hide="showCostByMontLoader">
+				                    <div flot class="flot-chart-content" dataset="costCharData" options="costChartOptions"></div>
+				                </div>
+				            </div>
+				        </div>
                     </div>
                 </div>
             </div>
         </div>
-        
+
         <div class="row">
-        	<div class="col-md-12">
-        		<div class="panel panel-white no-border-radious dashboard-accordian">
+            <div class="col-md-12">
+                <div class="panel panel-white no-border-radious dashboard-accordian">
                     <div class="panel-body">
-                    	<div class="col-md-3 no-padding">
-                    		<div class="user-service-first-level slimScroll-220">
-                    			<ul>
-                    				<li><a href="javascript:void(0)">Department <span class="fa  fa-chevron-right pull-right"></span></a></li>
-                    				<li><a href="javascript:void(0)">Application <span class="fa  fa-chevron-right pull-right"></span></a></li>
-                    				<li><a href="javascript:void(0)">Users <span class="fa  fa-chevron-right pull-right"></span></a></li>
-                    			</ul>
-                    		</div>
-                    	</div>
-                    	<div class="col-md-3 no-padding">
-                    		<div class="select-any">
-                   				<span class="fa fa-hand-o-left fa-3x"></span>
-                    			<br> Select any <br> service or user
-                    		</div>
-                    		<div class="user-service-second-level slimScroll-220">
-                    			<div>
-                    				<ul>
-	                    				<li><a >Department 1 <span class="fa  fa-chevron-right pull-right"></span></a></li>
-	                    				<li><a >Department 2 <span class="fa  fa-chevron-right pull-right"></span></a></li>
-	                    				<li><a  href="javascript:void(0)">Department 3 <span class="fa  fa-chevron-right pull-right"></span></a></li>
-	                    				<li><a  href="javascript:void(0)">Department 4 <span class="fa  fa-chevron-right pull-right"></span></a></li>
-	                    				<li><a  href="javascript:void(0)">Department 5 <span class="fa  fa-chevron-right pull-right"></span></a></li>
-	                    				<li><a  href="javascript:void(0)">Department 6 <span class="fa  fa-chevron-right pull-right"></span></a></li>
-	                    				<li><a  href="javascript:void(0)">Department 7 <span class="fa  fa-chevron-right pull-right"></span></a></li>
-	                    				<li><a  href="javascript:void(0)">Department 8 <span class="fa  fa-chevron-right pull-right"></span></a></li>
-	                    				<li><a  href="javascript:void(0)">Department 9 <span class="fa  fa-chevron-right pull-right"></span></a></li>
-	                    			</ul>
-                    			</div>
-                    			<div class="user-service-list"  ng-hide="true">
-                    				<ul>
-	                    				<li><a  href="javascript:void(0)">Application 1 <span class="fa  fa-chevron-right pull-right"></span></a></li>
-	                    				<li><a  href="javascript:void(0)">Application 2 <span class="fa  fa-chevron-right pull-right"></span></a></li>
-	                    				<li><a  href="javascript:void(0)">Application 3 <span class="fa  fa-chevron-right pull-right"></span></a></li>
-	                    				<li><a  href="javascript:void(0)">Application 4 <span class="fa  fa-chevron-right pull-right"></span></a></li>
-	                    				<li><a  href="javascript:void(0)">Application 5 <span class="fa  fa-chevron-right pull-right"></span></a></li>
-	                    				<li><a  href="javascript:void(0)">Application 6 <span class="fa  fa-chevron-right pull-right"></span></a></li>
-	                    				<li><a  href="javascript:void(0)">Application 7 <span class="fa  fa-chevron-right pull-right"></span></a></li>
-	                    				<li><a  href="javascript:void(0)">Application 8 <span class="fa  fa-chevron-right pull-right"></span></a></li>
-	                    				<li><a  href="javascript:void(0)">Application 9 <span class="fa  fa-chevron-right pull-right"></span></a></li>
-	                    			</ul>
-                    			</div>
-                    			<div class="user-service-list"  ng-hide="true">
-                    				<ul>
-	                    				<li><a  href="javascript:void(0)">User 1 <span class="fa  fa-chevron-right pull-right"></span></a></li>
-	                    				<li><a  href="javascript:void(0)">User 2 <span class="fa  fa-chevron-right pull-right"></span></a></li>
-	                    				<li><a  href="javascript:void(0)">User 3 <span class="fa  fa-chevron-right pull-right"></span></a></li>
-	                    				<li><a  href="javascript:void(0)">User 4 <span class="fa  fa-chevron-right pull-right"></span></a></li>
-	                    				<li><a  href="javascript:void(0)">User 5 <span class="fa  fa-chevron-right pull-right"></span></a></li>
-	                    				<li><a  href="javascript:void(0)">User 6 <span class="fa  fa-chevron-right pull-right"></span></a></li>
-	                    				<li><a  href="javascript:void(0)">User 7 <span class="fa  fa-chevron-right pull-right"></span></a></li>
-	                    				<li><a  href="javascript:void(0)">User 8 <span class="fa  fa-chevron-right pull-right"></span></a></li>
-	                    				<li><a  href="javascript:void(0)">User 9 <span class="fa  fa-chevron-right pull-right"></span></a></li>
-	                    			</ul>
-                    			</div>
-                    		</div>
-                    	</div>
-                    	<div class="col-md-6">
-                    		<div class="user-service-detail">
-                    			<!-- <div class="select-any">
-                    				<span class="fa fa-hand-o-left fa-3x"></span>
-	                    			<br> Select any <br> service or user
-	                    		</div> -->
-                    			<div class="user-service-single-detail">
-                    				<div class="table-responsive">
-						                <table cellspacing="1" cellpadding="1" class="table table-condensed table-striped">
-						                    <thead>
-						                    <tr>
-						                        <th>Department</th>
-						                        <th>Owner</th>
-						                    </tr>
-						                    </thead>
-						                    <tbody>
-						                    <tr>
-						                        <td>Department Name 1 </td>
-						                        <td>Owner of the Department</td>
-						                    </tr>
-						                    <tr>
-						                        <td>Department Name 2</td>
-						                        <td>Owner of the Department</td>
-						                    </tr>
-						                    <tr>
-						                        <td>Department Name 3</td>
-						                        <td>Owner of the Department</td>
-						                    </tr>
-						                    </tbody>
-						                </table>
-									</div>
-                    			</div>
-                    			<div class="user-service-single-detail"  ng-hide="true">
-                    				<div class="table-responsive">
-						                <table cellspacing="1" cellpadding="1" class="table table-condensed table-striped">
-						                    <thead>
-						                    <tr>
-						                        <th>Application</th>
-						                        <th>Owner</th>
-						                    </tr>
-						                    </thead>
-						                    <tbody>
-						                    <tr>
-						                        <td>Application Name 1 </td>
-						                        <td>Owner of the Department</td>
-						                    </tr>
-						                    <tr>
-						                        <td>Application Name 2</td>
-						                        <td>Owner of the Department</td>
-						                    </tr>
-						                    <tr>
-						                        <td>Application Name 3</td>
-						                        <td>Owner of the Department</td>
-						                    </tr>
-						                    </tbody>
-						                </table>
-									</div>
-                    			</div>
-                    			<div class="user-service-single-detail"  ng-hide="true">
-                    				<div class="table-responsive">
-						                <table cellspacing="1" cellpadding="1" class="table table-condensed table-striped">
-						                    <thead>
-						                    <tr>
-						                        <th>Users</th>
-						                        <th>Owner</th>
-						                    </tr>
-						                    </thead>
-						                    <tbody>
-						                    <tr>
-						                        <td>User Name 1 </td>
-						                        <td>Owner of the Department</td>
-						                    </tr>
-						                    <tr>
-						                        <td>User Name 2</td>
-						                        <td>Owner of the Department</td>
-						                    </tr>
-						                    <tr>
-						                        <td>User Name 3</td>
-						                        <td>Owner of the Department</td>
-						                    </tr>
-						                    </tbody>
-						                </table>
-									</div>
-                    			</div>
-                    		</div>
-                    	</div>
+                        <div class="col-md-3 no-padding">
+                            <div class="user-service-first-level slimScroll-220">
+                                <ul>
+                                    <li><a href="javascript:void(0)" data-ng-click="getDepartmentList('department');">Department <span class="fa  fa-chevron-right pull-right"></span></a></li>
+                                    <li><a href="javascript:void(0)" data-ng-click="getApplicationList();">Application <span class="fa  fa-chevron-right pull-right"></span></a></li>
+                                    <li><a href="javascript:void(0)" data-ng-click="getDepartmentList('user');">Users <span class="fa  fa-chevron-right pull-right"></span></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-3 no-padding">
+                            <div class="select-any" data-ng-hide="listing.department || listing.application">
+                                   <span class="fa fa-hand-o-left fa-3x"></span>
+                                <br> Select any <br> Department, Application or User
+                            </div>
+                            <div class="user-service-second-level slimScroll-220">
+                                <div data-ng-show="listing.department">
+                                    <ul>
+                                        <li data-ng-repeat="department in listing.departmentList">
+                                            <a href="javascript:void(0)" data-ng-class="{'selected' : listing.activeDepartment == department.id }" data-ng-click="findSubCategoryByDepartment(listing.groupType, department.id);">{{ department.userName }}<span class="fa  fa-chevron-right pull-right"></span></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="user-service-list"  data-ng-show="listing.application">
+                                    <ul>
+                                        <li  data-ng-repeat="application in listing.applicationList">
+                                            <a  href="javascript:void(0)">{{ application.type }}</a>
+                                          </li>
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6" data-ng-hide="listing.application">
+                            <div class="user-service-detail">
+                                <div  data-ng-show="listing.userList.length == 0">
+                                    <br> No records found
+                                </div>
+                                <div class="user-service-single-detail" data-ng-show="listing.userList.length > 0">
+                                    <div class="table-responsive">
+                                        <table cellspacing="1" cellpadding="1" class="table table-condensed table-striped">
+                                            <thead>
+                                            <tr>
+                                                <th>User Name</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr data-ng-repeat="user in listing.userList">
+                                                <td>{{ user.userName }}</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
                     </div>
-               	</div>
-        	</div>
+                   </div>
+            </div>
         </div>
 
         <div class="row">
-            
-<!--            <div class="col-md-8">
-                <div class="panel panel-white">
-                    <div class="panel-body p-sm">
-                        <div class="text-center m-t-xxxl" data-ng-show="showProjectLoader">
-                            <img src="images/loading-bars.svg" />
-                        </div>
-                        <div data-ng-hide="showProjectLoader">
-                            <div data-ng-hide="currentProject">
-                                <h4 class="no-margins text-primary">Projects Cost (Current month)</h4>
-                                <div class="row">
-                                    <div class="col-md-1">
-                                        <app-currency class="m-t-xxxl text-big pull-left"></app-currency>
-                                    </div>
-                                    <div class="col-md-10 m-t-md">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <span class="pull-right">
-                                                    <select class="form-control" data-ng-model="currentProject" data-ng-change="getProjectDetails()" data-ng-options="project.name for project in projectList" >
-                                                        <option value="">All Project</option>
-                                                    </select>
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <canvas barchart options="singleBarChartOptions" data="projectSummaryData" height="120"  responsive="true" ></canvas>
-                                    </div>
-                                </div>
-                            </div>
-                            <div data-ng-show="currentProject">
-                                <h4 class="no-margins text-primary">Project daily consumption ({{ currentProject.name}}) </h4>
-                                <div class="row">
-                                    <div class="col-md-1">
-                                        <app-currency class="m-t-xxxl text-big pull-left"></app-currency>
-                                    </div>
-                                    <div class="col-md-10 m-t-md">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <span class="pull-right">
-                                                    <select class="form-control" data-ng-model="currentProject" data-ng-change="getProjectDetails()" data-ng-options="project.name for project in projectList" >
-                                                        <option value="">All Project</option>
-                                                    </select>
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <canvas barchart options="singleBarChartOptions" data="dahboardSummaryData" height="120"  responsive="true" ></canvas>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>-->
+
+
         </div>
     </div>
     <div id="footer" ng-include="'app/views/common/footer.jsp'"></div>

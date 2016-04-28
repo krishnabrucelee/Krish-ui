@@ -294,7 +294,7 @@ table.dataTable thead .sorting_desc::after {content: "\f0dd";}
  .hide-left{position:absolute; z-index:1; width:100px; background-color:#fff; height:300px; margin-left:-90px;}
 .hide-left{left:0;}
 .hide-right{right:0;}
-.flot-y-axis {
+.monitor-charts .flot-y-axis {
     background-color:#FFF;
     width:72px;
     left:-28px!important;
@@ -372,6 +372,29 @@ table.dataTable thead .sorting_desc::after {content: "\f0dd";}
 .user-service-first-level ul li a.selected span.fa, .user-service-second-level ul li a.selected span.fa{color:#4c6986;}
 
 .select-any{position:absolute; width:100%; text-align:center;}
+.cost-detail-iframe{border:none !important;}
+
+.report-wrapper{float: none; margin: 0 auto; width: 1030px;}
+.client-usage-report-iframe{border:none;display: block; float: none; margin: 0 auto; width: 1058px; padding:0px;}
+.client-usage-report-iframe table{width:100% !important;}
+#__BIRT_ROOT table{width:100% !important;}
+
+#footer {
+    clear: both;
+    height: auto;
+    margin-top: 50px;
+    overflow: hidden;
+}
+
+.storage-manager-area{width:50%;}
+.storage{width:150px;}
+.storage .panel-body{height:auto;}
+.storage-manager .vertical-timeline-content{padding-bottom:0px;}
+.storage-manager .vertical-timeline-content .notification .label{right:38px; top:7px;}
+.storage-manager .vertical-timeline-content .progress{margin-bottom:0px;}
+.storage-manager .v-timeline::before{left:-10px;}
+.storage-manager .vertical-timeline-block:first-child .h-timeline::before{left:-80px;}
+.storage-manager .h-timeline::before{left:-7px;}
 
 .vpc-manager{width:45%;}
 .vertical-timeline-content{margin-left:0px;}
@@ -464,7 +487,10 @@ table.flotchart-legend-content-table tr{display:block; float:left; padding:0px 5
   padding: 15px 15px;
 }
 
-.flot-y-axis {
+.monitor-charts .flot-y-axis {
     z-index: 9999 !important;
+}
+.affinity-text-info {
+	color: #48a9da !important;
 }
 

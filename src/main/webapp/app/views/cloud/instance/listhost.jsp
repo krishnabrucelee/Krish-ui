@@ -11,48 +11,12 @@
         </div>
         <div class="modal-body">
                         <div class="white-content">
-    			
+
 			 <div class="row">
                                     <div class="col-md-12">
                                         <table class="table table-bordered table-striped" cellspacing="0" cellpadding="0">
                                             <tbody>
 											<tbody>
-												<tr>
-													<td><label
-														class="col-md-8 col-sm-7 col-xs-4 control-label ">
-														<fmt:message key="common.name" bundle="${msg}" />
-														</label></td>
-														<td>{{ instance.host.name}}</td>
-												</tr>
-											  <tr>
-													<td><label
-														class="col-md-8 col-sm-7 col-xs-4 control-label ">
-														<fmt:message key="common.id" bundle="${msg}" />
-														</label></td>
-														<td>{{ instance.host.uuid}}</td>
-												</tr>
-											 <tr>
-													<td><label
-														class="col-md-8 col-sm-7 col-xs-4 control-label ">
-														<fmt:message key="common.state" bundle="${msg}" />
-														</label></td>
-															<td>{{ instance.host.status}}</td>
-												</tr>
-											<tr>
-													<td><label
-														class="col-md-8 col-sm- col-xs-4 control-label ">
-														<fmt:message key="host.ip.address" bundle="${msg}" />
-														</label></td>
-															<td>{{ instance.host.hostIpaddress}}</td>
-												</tr>
-												<tr>
-													<td><label
-														class="col-md-8 col-sm-7 col-xs-4 control-label ">
-														<fmt:message key="common.hypervisor" bundle="${msg}" />
-														</label></td>
-												<td>{{ instance.host.hypervisor}}</td>
-
-												</tr>
 												<tr>
 													<td><label
 														class="col-md-8 col-sm-7 col-xs-4 control-label ">
@@ -72,7 +36,43 @@
 														class="col-md-8 col-sm-7 col-xs-4 control-label ">
 														<fmt:message key="common.cluster" bundle="${msg}" />
 														</label></td>
-													<td>{{ instance.host.cluster.name }}</td>	 
+													<td>{{ instance.host.cluster.name }}</td>
+
+												</tr>
+												<tr>
+													<td><label
+														class="col-md-8 col-sm-7 col-xs-4 control-label ">
+														<fmt:message key="common.name" bundle="${msg}" />
+														</label></td>
+														<td>{{ instance.host.name}}</td>
+												</tr>
+												 <tr>
+													<td><label
+														class="col-md-8 col-sm-7 col-xs-4 control-label ">
+														<fmt:message key="common.id" bundle="${msg}" />
+														</label></td>
+														<td>{{ instance.host.uuid}}</td>
+												</tr>
+												<tr>
+													<td><label
+														class="col-md-8 col-sm-7 col-xs-4 control-label ">
+														<fmt:message key="common.state" bundle="${msg}" />
+														</label></td>
+															<td>{{ instance.host.status}}</td>
+												</tr>
+												<tr>
+													<td><label
+														class="col-md-8 col-sm- col-xs-4 control-label ">
+														<fmt:message key="host.ip.address" bundle="${msg}" />
+														</label></td>
+															<td>{{ instance.host.hostIpaddress}}</td>
+												</tr>
+												<tr>
+													<td><label
+														class="col-md-8 col-sm-7 col-xs-4 control-label ">
+														<fmt:message key="common.hypervisor" bundle="${msg}" />
+														</label></td>
+												<td>{{ instance.host.hypervisor}}</td>
 
 												</tr>
 											   	<tr>
@@ -85,9 +85,9 @@
 												</tr>
 											</tbody>
 											</table>
-											
-												
-												
+
+
+
 		</div>
 </div>
 
@@ -96,7 +96,7 @@
  <div class="modal-footer">
             <get-loader-image data-ng-show="showLoader"></get-loader-image>
              <button type="button" data-ng-hide="showLoader" class="btn btn-default " ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.cancel" bundle="${msg}" /></button>
-          
+
         </div>
 </div>
 </div>

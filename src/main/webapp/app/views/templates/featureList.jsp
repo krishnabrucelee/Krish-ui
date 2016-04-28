@@ -42,7 +42,7 @@
                        					    {{ template.name }}
                                         </a>
                                     </td>
-                                    <td>{{ template.size / global.Math.pow(2, 30)}}</td>
+                                    <td>{{ global.Math.round((template.size / global.Math.pow(2, 30)),1) }}</td>
                                     <td>{{ template.status }}</td>
                                     <td>{{ template.templateOwner.userName || " - " }}</td>
                                     <td>{{ template.createdDateTime *1000 | date:'yyyy-MM-dd HH:mm:ss'}}</td>
@@ -51,7 +51,7 @@
                                     <td>{{ (template.passwordEnabled) ? "Yes" : "No"}}</td>
                                     <td>{{ (template.dynamicallyScalable) ? "Yes" : "No" }}</td>
                                     <td>
-                                        <button title="Launch" class="btn btn-info btn-sm pull-right" data-ng-click="openAddInstance(template)"><i class="fa fa-power-off"></i> <fmt:message key="common.launch" bundle="${msg}" /></button>
+                                        <button data-ng-if="template.status == 'ACTIVE'" title="Launch" class="btn btn-info btn-sm pull-right" data-ng-click="openAddInstance(template)"><i class="fa fa-power-off"></i> <fmt:message key="common.launch" bundle="${msg}" /></button>
                                     </td>
                                 </tr>
                             </tbody>

@@ -30,7 +30,7 @@
                             </span>
                             <span data-ng-if="state.data.pageTitle === 'edit.role'">
 	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="edit.role" bundle="${msg}" /></a>
-	                            <span ng-switch-when="true"><fmt:message key="edit.role" bundle="${msg}" /></span>
+	                            <span ng-switch-when="true">{{ state.data.pageName }}</span>
                             </span>
                         </li>
                     </ol>
@@ -62,8 +62,8 @@
 	                                <div class="clearfix"></div>
 	                                </div>
 	                            </div>
-                                <a class="btn btn-info" id="roles_add_role_button" has-permission="CREATE_ROLE"  ui-sref="roles.list-add"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="common.add" bundle="${msg}" /></a>
-                                <a class="btn btn-info" id="roles_assign_user_role_button" has-permission="ASSIGN_ROLE" data-ng-click="assignRole('lg')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="assign.user.role" bundle="${msg}" /></a>
+                                <a class="btn btn-info font-bold" id="roles_add_role_button" has-permission="CREATE_ROLE"  ui-sref="roles.list-add"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="common.add" bundle="${msg}" /></a>
+                                <a class="btn btn-info font-bold" id="roles_assign_user_role_button" has-permission="ASSIGN_ROLE" data-ng-click="assignRole('lg')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="assign.user.role" bundle="${msg}" /></a>
                                 <a class="btn btn-info" id="roles_refresh_button" ui-sref="roles" title="<fmt:message key="common.refresh" bundle="${msg}" />"  ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
                             </div>
                             <div class="pull-right dashboard-filters-area">

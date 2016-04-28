@@ -7,16 +7,16 @@
 
     <div class="inmodal" >
         <div class="modal-header">
-            <panda-modal-header hide-zone="false" page-icon="fa fa-trash pe-lg" page-title="<fmt:message key="delete.snapshot" bundle="${msg}" />"></panda-modal-header>
+            <panda-modal-header hide-zone="false" page-icon="fa fa-trash" page-title="<fmt:message key="delete.snapshot" bundle="${msg}" />"></panda-modal-header>
 
         </div>
         <div class="modal-body">
             <div class=" row">
                 <div class="form-group has-error col-md-3 col-sm-3  col-xs-3">
 
-                    <img src="images/warning.png" alt="">
+                    <span class="fa fa-3x fa-warning text-warning"></span>
                 </div>
-                <div class="form-group has-error col-md-9 col-sm-9  col-xs-9 m-t-md">
+                <div class="form-group has-error col-md-9 col-sm-9  col-xs-9">
                     <p><fmt:message key="please.confirm.that.you.want.to.delete.this.snapshot" bundle="${msg}" /> </p>
                 </div>
 

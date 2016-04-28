@@ -4,7 +4,7 @@ pageEncoding="UTF-8"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <div data-ng-if="global.webSocketLoaders.ipLoader" class="overlay-wrapper">
-    <img data-ng-if="global.webSocketLoaders.ipLoader" src="images/loading-bars.svg" class="inner-loading" width="64" height="64" class = "inner-loading"/>
+    <img data-ng-if="global.webSocketLoaders.ipLoader" src="images/loading-bars.svg" class="inner-loading" />
 </div>
 <div class="panel-heading">
                 <div class="row">
@@ -39,7 +39,7 @@ pageEncoding="UTF-8"%>
           <tbody>
               <tr ng-repeat="ipaddress in ipList">
                       <td>
-                      	<a class="text-info"  ui-sref="cloud.list-network.view-network.view-ipaddress({id1:ipaddress.id})"  title="View IP"> {{ ipaddress.publicIpAddress }} <span ng-if="ipaddress.isSourcenat">[Source NAT]</span></a>
+                      	<a class="text-info" ui-sref="cloud.list-network.view-network.view-ipaddress({id1:ipaddress.id})"  title="View IP"> {{ ipaddress.publicIpAddress }} <span ng-if="ipaddress.isSourcenat">[Source NAT]</span></a>
                       </td>
                       <td>{{ipaddress.zone.name}} </td>
                       <td>{{ipaddress.vmInstance.name}}</td>

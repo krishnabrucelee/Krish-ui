@@ -63,7 +63,7 @@
 			                                <div class="clearfix"></div>
 			                                </div>
 			                            </div>
-			                            <a has-permission="ADD_DEPARTMENT" id="departments_add_button" class="btn btn-info"  ng-click="createDepartment('md')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="common.add" bundle="${msg}" /> </a>
+			                            <a has-permission="ADD_DEPARTMENT" id="departments_add_button" class="btn btn-info font-bold"  ng-click="createDepartment('md')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="common.add" bundle="${msg}" /> </a>
                                         <a class="btn btn-info" id="departments_refresh_button" ui-sref="department" title="<fmt:message key="common.refresh" bundle="${msg}" /> " ui-sref-opts="{reload: true}" ><span class="fa fa-refresh fa-lg"></span></a>
                                     </div>
                                     <div class="pull-right dashboard-filters-area">

@@ -95,7 +95,7 @@ function quotaLimitCtrl($scope, $state, $stateParams, globalConfig, appService, 
 						if (object.max != -1) {
 							object.max = Math.round(object.max / 1024);
 						}
-						object.resourceType = object.resourceType + " " + "(GiB)";
+						object.resourceType = object.resourceType + " " + "(GB)";
 					}
 //					if (object.resourceType == "PrimaryStorage" || object.resourceType == "SecondaryStorage") {
 //					    object.usedLimit = Math.round( object.usedLimit / (1024 * 1024 * 1024));
@@ -107,10 +107,10 @@ function quotaLimitCtrl($scope, $state, $stateParams, globalConfig, appService, 
 //				    }
 					if (object.max == -1 && object.resourceType == "PrimaryStorage" || object.max == -1 && object.resourceType == "SecondaryStorage") {
 						object.usedLimit = Math.round( object.usedLimit / (1024 * 1024 * 1024));
-					    object.resourceType = object.resourceType + " " + "(GiB)";
+					    object.resourceType = object.resourceType + " " + "(GB)";
  				    }
 					if (object.resourceType == "PrimaryStorage" || object.resourceType == "SecondaryStorage") {
-					    object.resourceType = object.resourceType + " " + "(GiB)";
+					    object.resourceType = object.resourceType + " " + "(GB)";
  				    }
 					if (object.usedLimit == null) {
 						object.usedLimit = 0;

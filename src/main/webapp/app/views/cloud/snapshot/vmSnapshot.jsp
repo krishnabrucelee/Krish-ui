@@ -9,7 +9,7 @@
             <div class="panel-heading">
                 <div class="row" >
                 <div data-ng-if="global.webSocketLoaders.snapshotLoader" class="overlay-wrapper">
-                		            <img data-ng-if="global.webSocketLoaders.snapshotLoader" src="images/loading-bars.svg" class="inner-loading" width="64" height="64" />
+                		            <img data-ng-if="global.webSocketLoaders.snapshotLoader" src="images/loading-bars.svg" class="inner-loading" />
             		            </div>
                     <div class="col-md-12 col-sm-12 pull-left m-b-sm"><fmt:message key="note" bundle="${msg}" />:
                         <span class="text-danger "><fmt:message key="you.cannot.attach.or.detach.the.storage.volume" bundle="${msg}" />, <fmt:message key="when.the.particular.instance.have.vm.snapshots" bundle="${msg}" />. </span>
@@ -25,7 +25,7 @@
                                 <div class="clearfix"></div>
                                 </div>
                             </div>
-                            <a class="btn btn-info"  ng-click="openAddVMSnapshotContainer()"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="create.vm.snapshot" bundle="${msg}" /></a>
+                            <a class="btn btn-info font-bold"  ng-click="openAddVMSnapshotContainer()"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="create.vm.snapshot" bundle="${msg}" /></a>
                             <a class="btn btn-info" ui-sref="cloud.list-snapshot" title="<fmt:message key="common.refresh" bundle="${msg}" />"  ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
                         </div>
                         <div class="pull-right dashboard-filters-area">

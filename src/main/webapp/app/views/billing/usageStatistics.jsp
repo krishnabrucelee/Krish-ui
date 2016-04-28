@@ -7,19 +7,16 @@
 <div class="row" ng-controller="billingCtrl">
     <div class="hpanel">
         <div class="panel-heading">
-            <div class="">
+            <div class="row">
                 <div class="col-lg-10 col-md-10 col-sm-10 col-md-offset-1">
                     <div class="panel-info panel ">
                         <div class="panel-heading">
                             <h3 class="panel-title">Generate {{ $state.current.data.pageTitle}}</h3>
                         </div>
-
                         <div class="row m-t-md">
                             <div class="col-md-6 col-sm-6">
-
                                  <div class="form-group m-l-md"
                                     ng-class="{'text-danger' : !usageStatisticsObj.startDate && formSubmitted}">
-
                                     <div class="row">
                                         <label class="col-md-3 col-sm-3 control-label">From
                                             Date: <span class="text-danger">*</span>
@@ -27,7 +24,6 @@
                                         <div class="col-md-7 col-sm-7 ">
                                             <div class="input-group">
                                                 <input type="text" readonly
-
                                                     data-ng-class="{'error': !usageStatisticsObj.startDate && formSubmitted}"
                                                     class="form-control"
                                                     datepicker-popup="{{global.date.format}}"
@@ -47,11 +43,9 @@
                                                 data-ng-show="!usageStatisticsObj.startDate && formSubmitted">
                                                 <i tooltip="From date is Required" class=""></i>
                                             </div>
-
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="form-group m-l-md">
                                 <div class="row">
                                 <label class="col-md-3 col-sm-3 control-label">Group By:
@@ -70,8 +64,6 @@
                                 </div>
                             </div>
                             <div class="col-md-6  col-sm-6" >
-
-
                                 <div class="form-group m-l-md"
                                     ng-class="{
                                             'text-danger'
@@ -104,11 +96,9 @@
                                                 data-ng-show="!usageStatisticsObj.endDate && formSubmitted">
                                                 <i tooltip="To date is Required" class=""></i>
                                             </div>
-
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="form-group m-l-md" data-ng-show="global.sessionValues.type == 'ROOT_ADMIN'">
                                 <div class="row">
                                 <label class="col-md-3 col-sm-3 control-label">Domain:
@@ -124,7 +114,6 @@
                                 </div>
                                 </div>
                                 </div>
-
                             </div>
                         </div>
                         <div class="row ">
@@ -133,95 +122,37 @@
                                 <button type="submit" data-ng-click="getUsageStatistics()" class="btn btn-info">Generate</button>
                                 <!-- <a class="btn btn-default" data-ng-click="reset()"> Cancel </a> -->
                             </span>
-
                         </div>
                     </div>
                 </div>
             </div>
             <hr>
-        </div>
-        <div class="">
-            <div class="col-md-10 col-sm-12 col-xs-10 col-md-offset-1">
-                <div class="white-content">
-
+         
                     <div data-ng-hide="showLoader" style="margin: 1%">
                         <get-loader-image data-ng-show="showLoader"></get-loader-image>
                     </div>
-                    <div data-ng-show="showLoader" data-ng-if="usageStatisticsType=='service'"
-                        class="table-responsive">
-                        <table cellspacing="1" cellpadding="1"
-                            class="table table-bordered white-content">
-                            <thead>
-                                <tr class="bg-primary">
-                                    <th width="5%">S.no.</th>
-                                    <th width="45%">Services</th>
-                                    <th width="20%" class="text-center">Usage (Days)</th>
-                                    <th width="15%" class="text-center">Bill</th>
-                                </tr>
-                            </thead>
-                            <tbody data-ng-show="usageList.length > 0"
-                                ng-repeat="(key, value) in usageList | groupBy: 'billableType'">
-                                <tr>
-                                    <td colspan="4" class="text-primary font-bold bg-info">
-                                        {{ key }}
-                                    </td>
-                                </tr>
-                                <tr ng-repeat="usage in value">
-                                    <td>{{ $index + 1 }}</td>
-                                    <td>
-                                        <span class="m-l-lg" data-ng-if="!usage.usageName">-</span>
-                                        <span class="m-l-lg" data-ng-if="usage.usageName">{{ usage.usageName}}</span>
-                                        </td>
-                                    <td class="text-center">{{ usage.usageUnits }}</td>
-                                    <td class="text-right">{{ usage.planCost }}</td>
-                                </tr>
-                            </tbody>
-                            <tbody data-ng-show="usageList.length == '0'">
-                                <tr><td colspan="4"> No records found!! </td></tr>
-                            </tbody>
-                        </table>
-
+                    <div class="row">
+                      <div class="report-wrapper white-content" data-ng-show="myframe">
+		            <div class="label-primary p-sm h6 text-white fa-bold">
+		                <span  data-ng-show="groupBy">Group By : {{groupBy}}</span><span data-ng-show="usageStatisticsObj.domain"> | Domain : {{usageStatisticsObj.domain.name}} </span><span data-ng-show= "usageStatisticsObj.startDate"> | Start Date :<em>{{usageStatisticsObj.startDate| date:'dd-MMM-yyyy' }}</em></span><span data-ng-show="usageStatisticsObj.endDate"> | To Date :<em>{{usageStatisticsObj.endDate| date:'dd-MMM-yyyy' }}</em> 
+		                	</span><a
+										href="{{ global.PING_APP_URL }}usage/statistics/report?fromDate={{reportStartDate}}&toDate={{reportEndDate}}&groupingType={{groupBy}}&domainUuid={{usageStatisticsObj.domain.name}}&type=pdf"
+										class="btn btn-default  pull-right m-l-xs"><span
+										class="fa fa-file-pdf-o text-danger"></span> PDF</a>
+							<a			href="{{ global.PING_APP_URL }}usage/statistics/report?fromDate={{reportStartDate}}&toDate={{reportEndDate}}&groupingType={{groupBy}}&domainUuid={{usageStatisticsObj.domain.name}}&type=xlsx"
+										class="btn btn-default  pull-right m-l-xs"><span
+										class=" fa fa-file-excel-o text-success"></span> XLSX</a>
+										<div class="clearfix"></div>
+		                </div>
+       				</div>
                     </div>
-
-
-                    <div class="table-responsive" data-ng-if="usageStatisticsType!='service'">
-                        <table cellspacing="1" cellpadding="1"
-                            class="table table-bordered white-content">
-                            <thead>
-                                <tr class="bg-primary">
-                                    <th width="5%">S.no.</th>
-                                    <th width="45%">Name</th>
-                                    <th width="20%" class="text-center">Usage (Days)</th>
-                                    <th width="15%" class="text-center">Bill</th>
-                                </tr>
-                            </thead>
-                            <tbody data-ng-if="usageList.length > 0" ng-repeat="(key, value) in usageList | groupBy: 'name'">
-                                <tr>
-                                    <td colspan="4" class="text-primary font-bold bg-info">
-                                    {{ key }}
-                                    </td>
-                                </tr>
-                                <tr ng-repeat="usage in value">
-                                    <td>{{ $index + 1}} </td>
-                                    <td><span class="m-l-lg">{{ usage.billableType }}</span></td>
-                                    <td class="text-center">{{ usage.usageUnits }}</td>
-                                    <td class="text-right">{{ usage.planCost }}</td>
-                                </tr>
-
-                            </tbody >
-                            <tbody data-ng-show="usageList.length == '0'">
-                                <tr><td colspan="4"> No records found!! </td></tr>
-                            </tbody>
-
-                        </table>
-                    </div>
-
-                </div>
-                <br />
-                <br />
-
-                <pagination-content></pagination-content>
-            </div>
+                     
+					<div class="report-wrapper white-content" data-ng-show="myframe">
+					
+						<iframe width="400" height="700" id="myframe" name="myframe"
+							class="embed-responsive-item col-md-12 client-usage-report-iframe"></iframe>
+					</div>
+          </div>
         </div>
-    </div>
 </div>
+

@@ -63,7 +63,7 @@
 		                            </div>
 		                            <input type="hidden" id="projects_unique_{{projectObj.id}}"  data-unique-field="{{ projectObj.domain.name }}-{{ projectObj.department.userName }}-{{ projectObj.projectOwner.userName }}-{{projectObj.name}}" class="test_projects_unique">
 		                            <a has-permission="CREATE_PROJECT" id="projects_create_button"
-										class="btn btn-info" data-ng-click="createProject('md')"><span
+										class="btn btn-info font-bold" data-ng-click="createProject('md')"><span
 											class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="common.create" bundle="${msg}" />
 											</a>
 									    <a class="btn btn-info" id="projects_refresh_button" ui-sref="projects" title="<fmt:message key="common.refresh" bundle="${msg}" />" ui-sref-opts="{reload: true}"><span
