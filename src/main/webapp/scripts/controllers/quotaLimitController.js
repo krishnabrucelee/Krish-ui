@@ -183,6 +183,20 @@ function quotaLimitCtrl($scope, $state, $stateParams, globalConfig, appService, 
 	}
 
 	/**
+     * Options for Doughnut chart
+     */
+    $scope.doughnutOptions = {
+        segmentShowStroke: true,
+        segmentStrokeColor: "#fff",
+        segmentStrokeWidth: 0,
+        percentageInnerCutout: 85, // This is 0 for Pie charts
+        animationSteps: 100,
+        animationEasing: "easeOutBounce",
+        animateRotate: false,
+        animateScale: false,
+    };
+
+	/**
 	 * Options for Doughnut chart
 	 */
 	$scope.quotaChartOptions = {

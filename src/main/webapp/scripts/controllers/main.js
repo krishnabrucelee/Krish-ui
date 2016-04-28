@@ -1,4 +1,4 @@
-﻿/**
+/**
  *
  * appCtrl
  *
@@ -8,9 +8,80 @@ angular
         .module('homer')
         .controller('appCtrl', appCtrl);
 
-function appCtrl($http, $scope, $window, $timeout, globalConfig, crudService, promiseAjax, localStorageService, $cookies) {
+function appCtrl($http, $scope, $window, $timeout, appService, globalConfig, crudService, promiseAjax, localStorageService, $cookies) {
 
     // For iCheck purpose only
+    $scope.infrastructure = {};
+    $scope.showInfrastructureLoader = true;
+    var hasResult = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "dashboard/infrastructure");
+    hasResult.then(function(result) {  // this is only run after;
+        $scope.infrastructure  = result;
+        $scope.showInfrastructureLoader = false;
+    });
+
+    $scope.quotaLimits = {
+      "CPU": {label: "vCPU"}, "Memory": {label: "Memory"}, "Volume": {label: "Volume"}, "Network": {label: "Network"},
+      "IP": {label: "IP"}, "PrimaryStorage": {label: "PrimaryStorage"}, "SecondaryStorage": {label: "SecondaryStorage"},
+      "Snapshot": {label: "Snapshot"}
+    };
+
+    $scope.showQuotaLoader = true;
+    var resourceArr = ["CPU", "Memory", "Volume", "Network", "IP", "PrimaryStorage", "SecondaryStorage", "Snapshot"];
+    var hasResourceDomainId = promiseAjax.httpTokenRequest( globalConfig.HTTP_GET , globalConfig.APP_URL + "dashboard/quota");
+    hasResourceDomainId.then(function (result) {  // this is only run after $http completes
+      $scope.showQuotaLoader = false;
+        angular.forEach(result, function(obj, key) {
+            if(resourceArr.indexOf(obj.resourceType) > -1) {
+              if(angular.isUndefined($scope.quotaLimits[obj.resourceType])) {
+                  $scope.quotaLimits[obj.resourceType] = {};
+              }
+
+              if(obj.resourceType == "Memory") {
+                obj.usedLimit = Math.round( obj.usedLimit / 1024);
+    						if (obj.max != -1) {
+    							obj.max = Math.round(obj.max / 1024);
+                  $scope.quotaLimits[obj.resourceType].label = $scope.quotaLimits[obj.resourceType].label + " " + "(GiB)";
+    						}
+              }
+
+              if (obj.max == -1 && obj.resourceType == "PrimaryStorage" || obj.max == -1 && obj.resourceType == "SecondaryStorage") {
+					        obj.usedLimit = Math.round( obj.usedLimit / (1024 * 1024 * 1024));
+                  $scope.quotaLimits[obj.resourceType].label = $scope.quotaLimits[obj.resourceType].label + " " + "(GiB)";
+   				    }
+              if (obj.resourceType == "PrimaryStorage" || obj.resourceType == "SecondaryStorage") {
+                  $scope.quotaLimits[obj.resourceType].label = $scope.quotaLimits[obj.resourceType].label + " " + "(GiB)";
+   				    }
+
+              $scope.quotaLimits[obj.resourceType].max = parseInt(obj.max);
+              $scope.quotaLimits[obj.resourceType].usedLimit = parseInt(obj.usedLimit);
+              $scope.quotaLimits[obj.resourceType].percentage = parseFloat(parseInt(obj.usedLimit) / parseInt(obj.max) * 100).toFixed(2);
+              var unUsed = $scope.quotaLimits[obj.resourceType].max - $scope.quotaLimits[obj.resourceType].usedLimit;
+
+
+              var usedColor = "#48a9da";
+              if($scope.quotaLimits[obj.resourceType].percentage > 79 && $scope.quotaLimits[obj.resourceType].percentage < 90) {
+                  usedColor = "#f0ad4e";
+              } else if($scope.quotaLimits[obj.resourceType].percentage > 89){
+                  usedColor = "#df6457";
+              }
+              $scope.quotaLimits[obj.resourceType].doughnutData = [
+                  {
+                      value: parseInt(obj.usedLimit),
+                      color: usedColor,
+                      highlight: usedColor,
+                      label: "Used"
+
+                  },
+                  {
+                      value: unUsed,
+                      color: "#ebf1f4",
+                      highlight: "#ebf1f4",
+                      label: "UnUsed"
+                  }
+              ];
+            }
+        });
+    });
 
     $scope.checkOne = true;
     $scope.appLanguage = function() {
@@ -33,88 +104,7 @@ function appCtrl($http, $scope, $window, $timeout, globalConfig, crudService, pr
         negBarColor: '#157db0'
     };
 
-    /**
-     * Data for Doughnut chart
-     */
-    $scope.doughnutData = [
-        {
-            value: 20,
-            color: "#eee",
-            highlight: "#ccc",
-            label: "UnUsed"
-        },
-        {
-            value: 80,
-            color: "#48a9da",
-            highlight: "#157db0",
-            label: "Used"
-        }
-    ];
-
-$scope.doughnutData1 = [
-        {
-            value: 42,
-            color: "#f0ad4e",
-            highlight: "#f0ad4e",
-            label: "Used"
-
-        },
-        {
-            value: 58,
-            color: "#ebf1f4",
-            highlight: "#ebf1f4",
-            label: "UnUsed"
-        }
-    ];
-
-$scope.doughnutData2 = [
-	{
-            value: 73,
-            color: "#f0ad4e",
-            highlight: "#f0ad4e",
-            label: "Used"
-        },
-        {
-            value: 17,
-            color: "#ebf1f4",
-            highlight: "#ebf1f4",
-            label: "UnUsed"
-        }
-
-    ];
-$scope.doughnutData3 = [
-	{
-            value: 22,
-            color: "#48a9da",
-            highlight: "#48a9da",
-            label: "Used"
-        },
-        {
-            value: 78,
-            color: "#ebf1f4",
-            highlight: "#ebf1f4",
-            label: "UnUsed"
-        }
-
-    ];
-$scope.doughnutData4 = [
-	{
-            value: 88,
-            color: "#df6457",
-            highlight: "#df6457",
-            label: "Used"
-        },
-        {
-            value: 12,
-            color: "#ebf1f4",
-            highlight: "#ebf1f4",
-            label: "UnUsed"
-        }
-
-    ];
-
-
-    /**
+        /**
      * Options for Doughnut chart
      */
     $scope.doughnutOptions = {
@@ -232,138 +222,12 @@ $scope.doughnutData4 = [
         }
     };
 
-    /**
-     * Tooltips and Popover - used for tooltips in components view
-     */
-    $scope.dynamicTooltip = 'Hello, World!';
-    $scope.htmlTooltip = "I\'ve been made <b>bold</b>!";
-    $scope.dynamicTooltipText = 'Dynamic';
-    $scope.dynamicPopover = 'Hello, World!';
-    $scope.dynamicPopoverTitle = 'Title';
-
-    /**
-     * Pagination - used for pagination in components view
-     */
-    $scope.totalItems = 64;
-    $scope.currentPage = 4;
-
-    $scope.setPage = function (pageNo) {
-        $scope.currentPage = pageNo;
-    };
-
-    /**
-     * Typehead - used for typehead in components view
-     */
-    $scope.states = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'North Dakota', 'North Carolina', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'];
-    // Any function returning a promise object can be used to load values asynchronously
-    $scope.getLocation = function (val) {
-        return $http.get('http://maps.googleapis.com/maps/api/geocode/json', {
-            params: {
-                address: val,
-                sensor: false
-            }
-        }).then(function (response) {
-            return response.data.results.map(function (item) {
-                return item.formatted_address;
-            });
-        });
-    };
-
-    /**
-     * Rating - used for rating in components view
-     */
-    $scope.rate = 7;
-    $scope.max = 10;
-
-    $scope.hoveringOver = function (value) {
-        $scope.overStar = value;
-        $scope.percent = 100 * Project(value / this.max);
-    };
-
-    /**
-     * groups - used for Collapse panels in Tabs and Panels view
-     */
-    $scope.groups = [
-        {
-            title: 'Dynamic Group Header - 1',
-            content: 'A wonderful serenity has taken possession of my entire soul, like these sweet mornings of spring which I enjoy with my whole heart. I am alone, and feel the charm of existence in this spot, which was created for the bliss of souls like mine. '
-        },
-        {
-            title: 'Dynamic Group Header - 2',
-            content: 'A wonderful serenity has taken possession of my entire soul, like these sweet mornings of spring which I enjoy with my whole heart. I am alone, and feel the charm of existence in this spot, which was created for the bliss of souls like mine. '
-        }
-    ];
-
-    $scope.oneAtATime = true;
-
-    $scope.criteria = [
-        {id: 1, name: 'This Month', value: "Current Month"},
-        {id: 2, name: 'Last Month', value: "Last Month"},
-        {id: 3, name: 'Last 3 Months', value: "Last 3 Months"},
-        {id: 4, name: 'Last 6 Months', value: "Last 6 Months"},
-        {id: 5, name: "Last 9 Months", value: "Last 9 Months"},
-        {id: 6, name: "Last 12 Months", value: "Last 12 Months"},
-        {id: 7, name: "All", value: "All Time"}
-    ];
-
-    /**
-     * Some Flot chart data and options used in Home
-     */
-
-    var data1 = [[0, 55], [1, 48], [2, 40], [3, 36], [4, 40], [5, 60], [6, 50], [7, 51]];
-    var data2 = [[0, 56], [1, 49], [2, 41], [3, 38], [4, 46], [5, 67], [6, 57], [7, 59]];
-
-    $scope.chartUsersData = [data1, data2];
-    $scope.chartUsersOptions = {
-        series: {
-            splines: {
-                show: true,
-                tension: 0.4,
-                lineWidth: 1,
-                fill: 0.4
-            },
-        },
-        grid: {
-            tickColor: "#f0f0f0",
-            borderWidth: 1,
-            borderColor: 'f0f0f0',
-            color: '#6a6c6f'
-        },
-        colors: ["#62cb31", "#efefef"],
-    };
-
-    $scope.stanimation = 'bounceIn';
-    $scope.runIt = true;
-    $scope.runAnimation = function () {
-
-        $scope.runIt = false;
-        $timeout(function () {
-            $scope.runIt = true;
-        }, 100)
-
-    };
 
     /**
      *  Global configuration goes here
      */
     $scope.global = globalConfig;
     $scope.date = new Date();
-
-    // Dashboard Activity
-    $scope.recentActivityList = {};
-    var hasServer = promiseAjax.httpRequest("GET", "api/activity-events.json");
-    hasServer.then(function (result) {  // this is only run after $http completes
-        $scope.recentActivityList = result;
-
-    });
-
-    // Dashboard Activity
-    $scope.ticketList = {};
-    var hasServer = promiseAjax.httpRequest("GET", "api/tickets.json");
-    hasServer.then(function (result) {  // this is only run after $http completes
-        $scope.ticketList = result;
-
-    });
 
     // Dashboard Projects
     $scope.projectList = {};
@@ -373,14 +237,112 @@ $scope.doughnutData4 = [
 
     });
 
+
+    $scope.applicationList = {};
+    $scope.listing = {
+      department: true,
+      departmentList: [],
+      applicaiton: false,
+      applicationList: [],
+      userList:[]
+    };
+
     $scope.departmentList = {};
-    var hasServer = promiseAjax.httpRequest("GET", "api/department.json");
-    hasServer.then(function (result) {  // this is only run after $http completes
-        $scope.departmentList = result;
+    $scope.getDepartmentList = function(type) {
+      $scope.listing.groupType = type;
+      $scope.listing.application = false;
+      $scope.listing.department = true;
+      var hasDepartments = promiseAjax.httpTokenRequest( globalConfig.HTTP_GET , globalConfig.APP_URL + "dashboard/departmentByDomain");
+      hasDepartments.then(function (result) {  // this is only run after $http completes
+          $scope.listing.departmentList = result;
+      });
+    };
+    $scope.getDepartmentList();
 
-    });
+    $scope.showTopDeptLoader = false;
+    $scope.getTopDepartmentCostList = function(type) {
+      $scope.showTopDeptLoader = true;
+      var hasDepartments = promiseAjax.httpTokenRequest( globalConfig.HTTP_GET , globalConfig.APP_URL + "usage/usageByAccount");
+      hasDepartments.then(function (result) {  // this is only run after $http completes
+          $scope.showTopDeptLoader = false;
+          $scope.top5DepartmentList = result;
+      });
+    }
+    $scope.getTopDepartmentCostList();
 
-    $scope.applicationList = [{'name': 'Prod.', 'id': 1}, {'name': 'QAS', 'id': 2}, {'name': 'DEV', 'id': 3}, {'name': 'Backup', 'id': 4}, {'name': 'DR', 'id': 5}, {'name': 'Other', 'id': 6}];
+    $scope.showTopProjectLoader = false;
+    $scope.getTopProjectCostList = function(type) {
+      $scope.showTopProjectLoader = true;
+      var hasProjects = promiseAjax.httpTokenRequest( globalConfig.HTTP_GET , globalConfig.APP_URL + "usage/usageByProject");
+      hasProjects.then(function (result) {  // this is only run after $http completes
+          $scope.showTopProjectLoader = false;
+          $scope.top5ProjectList = result;
+      });
+    }
+    $scope.getTopProjectCostList();
+
+
+    $scope.findSubCategoryByDepartment = function(groupType, id) {
+      $scope.listing.activeDepartment = id;
+      var hasUsers = promiseAjax.httpTokenRequest( globalConfig.HTTP_GET , globalConfig.APP_URL + "users/department/"+ id);
+      hasUsers.then(function (result) {  // this is only run after $http completes
+          $scope.listing.userList = result;
+      });
+    };
+
+    $scope.getApplicationList = function() {
+      $scope.listing.department = false;
+      $scope.listing.application = true;
+
+      var hasApplicaitons = promiseAjax.httpTokenRequest( globalConfig.HTTP_GET , globalConfig.APP_URL + "dashboard/applicationByDomain");
+      hasApplicaitons.then(function (result) {  // this is only run after $http completes
+          $scope.listing.applicationList = result;
+      });
+    };
+
+    $scope.flotChartData = [
+        {
+            label: "bar",
+            data: []
+        }
+    ];
+
+    $scope.costChartOptions = appService.utilService.getFlotBarOptions();
+    $scope.costCharData = appService.utilService.getFlotBarData();
+    $scope.showCostByMonthLoader = false;
+    $scope.getCostByMonthGraph = function() {
+        $scope.showCostByMonthLoader = true;
+        var hasProjects = promiseAjax.httpTokenRequest( globalConfig.HTTP_GET , globalConfig.APP_URL + "usage/usageTotalByDomain");
+        hasProjects.then(function (result) {  // this is only run after $http completes
+          $scope.domainUsateCost = result;
+          $scope.showCostByMonthLoader = false;
+          var usageData = [];
+          var ticks = [];
+          var i=0;
+          angular.forEach($scope.domainUsateCost, function(obj, key) {
+              i++;
+              usageData.push([i, obj.cost]);
+              ticks.push([i, obj.month]);
+          });
+
+          $scope.costChartOptions.xaxis.ticks = ticks;
+
+          /**
+           * Bar Chart data
+           */
+          $scope.costCharData = [
+              {
+                  label: "bar",
+                  data: usageData
+              }
+          ];
+        });
+    }
+    $scope.getCostByMonthGraph();
+
+
+
+    //$scope.applicationList = [{'name': 'Prod.', 'id': 1}, {'name': 'QAS', 'id': 2}, {'name': 'DEV', 'id': 3}, {'name': 'Backup', 'id': 4}, {'name': 'DR', 'id': 5}, {'name': 'Other', 'id': 6}];
 
 
     $scope.updateLanguage = function(language) {
@@ -413,22 +375,24 @@ $scope.doughnutData4 = [
           });
     }
 
-   $scope.getZoneList = function () {
+
+
+  $scope.dashboard = {
+  	costList: {}
+  };
+  $scope.toggleCostList = function(type) {
+	  $scope.dashboard.costList.department = false;
+    $scope.dashboard.costList.project = false;
+    $scope.dashboard.costList.application = false;
+	   $scope.dashboard.costList[type] = true;
+  }
+
+$scope.getZoneList = function () {
       var hasZones = crudService.listAll("zones/list");
       hasZones.then(function (result) {  // this is only run after $http completes0
           $scope.global.zoneList = result;
       });
   };
   $scope.getZoneList();
-
-  $scope.dashboard = {
-	costList: {}
-};
-  $scope.toggleCostList = function(type) {
-	  $scope.dashboard.costList.department = false;
-$scope.dashboard.costList.project = false;
-$scope.dashboard.costList.application = false;
-	$scope.dashboard.costList[type] = true;
-  }
 
 }
