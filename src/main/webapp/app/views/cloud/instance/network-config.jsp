@@ -4,7 +4,8 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<div ui-view data-ng-controller="networkCtrl">
+<div ui-view data-ng-controller="networkCtrl"> 
+
 <div data-ng-if="global.webSocketLoaders.vmnicLoader" class="overlay-wrapper">
                 <img data-ng-if="global.webSocketLoaders.vmnicLoader" src="images/loading-bars.svg" class="inner-loading" width="64" height="64" />
             </div>
@@ -14,7 +15,6 @@
             <div class="row">
                 <div class="col-md-12 col-sm-12">
                       <span class="pull-right">
-
                             <a class="btn btn-info" has-permission="ADD_NETWORK_TO_VM" data-ng-click="addNetworkToVM(instance)"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="add.network.to.vm" bundle="${msg}" /></a>
                       </span>
                       <h4>
@@ -23,10 +23,10 @@
                       <hr class="m-t-xs">
                   </div>
                 </div>
-
-            <div class="network-manager-area">
+			<div class="row">
+            <div class="col-md-8 col-md-offset-2 col-sm-12 network-diagram-area">
                 <div class="clearfix"></div>
-                <div class="network pull-left">
+                <div class="col-md-4 col-sm-4 pull-left network-diagram-icon">
                     <div class="panel panel-info">
                         <div class="panel-body  text-info text-center">
                             <img src="images/network_icon.jpg" alt="Storage" />
@@ -35,10 +35,10 @@
                     </div>
                 </div>
 
-                <div class="network-manager pull-right">
+                <div class="col-md-8 col-sm-8 pull-right network-diagram">
                     <div class="hpanel">
                         <div class=" vertical-container" animate-panel child="vertical-timeline-block" delay="3">
-                            <div class="v-timeline  vertical-timeline-block" data-ng-class="{'timeline-primary' : network.isDefault == 'YES'}"  data-ng-repeat="nic in nicList " >
+                            <div class="v-timeline  vertical-timeline-block" data-ng-class="{'timeline-primary' : nic.isDefault}"  data-ng-repeat="nic in nicList " >
                                 <div class="h-timeline">
                                     <div class="vertical-timeline-content">
 
@@ -71,14 +71,17 @@
                                                                         <div class="clearfix"></div>
                                                                     </div>
                                                                     </div>
-                                                                    <div class="span12 field-box p-xxs"><label class="headerLabel m-r-xs"><fmt:message key="network.name" bundle="${msg}" />:</label><a href="#/user/network/view/2">{{nic.network.name}}</a></div>
-                                                                    <div class="span12 field-box p-xxs"><label class="headerLabel m-r-xs"><fmt:message key="id" bundle="${msg}" />:</label><span id="nicId">{{nic.uuid}}</span></div>
-                                                                    <div class="span12 field-box p-xxs"><label class="headerLabel m-r-xs"><fmt:message key="common.type" bundle="${msg}" />:</label><span>{{nic.network.networkType}}</span></div>
-                                                                    <div class="span12 field-box p-xxs"><label class="headerLabel m-r-xs"><fmt:message key="ip.address" bundle="${msg}" />:</label><span>{{nic.ipAddress}}</span></div>
-                                                                    <div class="span12 field-box p-xxs"><label class="headerLabel m-r-xs" ><fmt:message key="secondary.ips" bundle="${msg}" />:</label><span data-ng-if = "ipaddress.ipType == 'secondaryIpAddress'" data-ng-model="ipaddress" data-ng-repeat="ipaddress in nic.vmIpAddress" >{{ipaddress.guestIpAddress}}<font data-ng-show="!$last">, </font></span></div>
-                                                                    <div class="span12 field-box p-xxs"><label class="headerLabel m-r-xs"><fmt:message key="gateway" bundle="${msg}" />:</label><span>{{nic.gateway}}</span></div>
-                                                                    <div class="span12 field-box p-xxs"><label class="headerLabel m-r-xs"><fmt:message key="netmask" bundle="${msg}" />:</label><span>{{nic.netMask}}</span></div>
-                                                                    <div class="span12 field-box p-xxs"><label class="headerLabel m-r-xs"><fmt:message key="is.default" bundle="${msg}" />:</label><span data-ng-class="nic.isDefault== 'true' ? 'text-info' : 'text-default' ">{{nic.isDefault}}</span></div>
+                                                                    <div class="table-responsive">
+                                                                    	
+                                                                    </div>
+                                                                    <div class=""><label class="headerLabel m-r-xs"><fmt:message key="network.name" bundle="${msg}" />:</label><a href="#/user/network/view/2">{{nic.network.name}}</a></div>
+                                                                    <div class=""><label class="headerLabel m-r-xs"><fmt:message key="id" bundle="${msg}" />:</label><span id="nicId">{{nic.uuid}}</span></div>
+                                                                    <div class=""><label class="headerLabel m-r-xs"><fmt:message key="common.type" bundle="${msg}" />:</label><span>{{nic.network.networkType}}</span></div>
+                                                                    <div class=""><label class="headerLabel m-r-xs"><fmt:message key="ip.address" bundle="${msg}" />:</label><span>{{nic.ipAddress}}</span></div>
+                                                                    <div class=""><label class="headerLabel m-r-xs" ><fmt:message key="secondary.ips" bundle="${msg}" />:</label><span data-ng-if = "ipaddress.ipType == 'secondaryIpAddress'" data-ng-model="ipaddress" data-ng-repeat="ipaddress in nic.vmIpAddress" >{{ipaddress.guestIpAddress}}<font data-ng-show="!$last">, </font></span></div>
+                                                                    <div class=""><label class="headerLabel m-r-xs"><fmt:message key="gateway" bundle="${msg}" />:</label><span>{{nic.gateway}}</span></div>
+                                                                    <div class=""><label class="headerLabel m-r-xs"><fmt:message key="netmask" bundle="${msg}" />:</label><span>{{nic.netMask}}</span></div>
+                                                                    <div class=""><label class="headerLabel m-r-xs"><fmt:message key="is.default" bundle="${msg}" />:</label><span data-ng-class="nic.isDefault== 'true' ? 'text-info' : 'text-default' ">{{nic.isDefault}}</span></div>
                                                                     <div class="pull-right">
 										                            <span class="pull-right m-l-sm m-t-sm"> <a class="btn btn-info" ui-sref="cloud.list-instance.view-instance.ipaddress({id1:{{nic.id}}})"><fmt:message key="edit.secondary.ips" bundle="${msg}" /></a></span>
 								                                    </div>
@@ -87,6 +90,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <div class="clearfix"></div>
 						                      </div>
                                             </div>
                                         </div>
@@ -97,6 +101,7 @@
                         </div>
                     </div>
                 </div>
+            </div>
             </div>
         </div>
 </div>
