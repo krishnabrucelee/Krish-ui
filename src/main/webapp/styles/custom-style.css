@@ -294,7 +294,7 @@ table.dataTable thead .sorting_desc::after {content: "\f0dd";}
  .hide-left{position:absolute; z-index:1; width:100px; background-color:#fff; height:300px; margin-left:-90px;}
 .hide-left{left:0;}
 .hide-right{right:0;}
-.flot-y-axis {
+.monitor-charts .flot-y-axis {
     background-color:#FFF;
     width:72px;
     left:-28px!important;
@@ -369,6 +369,7 @@ table.dataTable thead .sorting_desc::after {content: "\f0dd";}
 .user-service-first-level ul li a.selected, .user-service-second-level ul li a.selected{background-color:#f5f8fa; }
 
 .select-any{position:absolute; width:100%; text-align:center;}
+.cost-detail-iframe{border:none !important;}
 
 @media (min-width: 600px) and (max-width: 767px) {
 .dashboard-filters-area{ clear:both;}
@@ -435,7 +436,7 @@ table.flotchart-legend-content-table tr{display:block; float:left; padding:0px 5
   padding: 15px 15px;
 }
 
-.flot-y-axis {
+.monitor-charts .flot-y-axis {
     z-index: 9999 !important;
 }
 
