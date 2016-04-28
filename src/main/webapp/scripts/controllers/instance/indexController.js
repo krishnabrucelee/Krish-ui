@@ -500,6 +500,8 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
                     $scope.compute = true;
                     computeOfferValid = false;
                 }
+            } else {
+                $scope.compute = false;
             }
             if (form.networkoffer.$valid && !$scope.compute) {
                 if ($scope.instance.networkOfferinglist.value == 'new') {
@@ -539,13 +541,12 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
                                 networkSelected = true;
                                 submitError = false;
                             } else {
-                            	allNetworks = allNetworks+","+networks.uuid;
+                            	allNetworks = allNetworks +","+ networks.uuid;
                             }
                         }
 
                     }
-                    $scope.instance.networkUuid = $scope.instance.networkUuid+allNetworks;
-
+                    $scope.instance.networkUuid = $scope.instance.networkUuid + allNetworks;
                     if (!networkSelected && $scope.isEmpty($scope.instance.networkc)) {
                         submitError = true;
                         $scope.networks = true;
@@ -556,7 +557,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
                             classes: 'alert-danger',
                             templateUrl: $scope.homerTemplate
                         });
-                    } else if (!networkSelected) {
+                    } else if (!networkSelected && !$scope.isEmpty($scope.instance.networkc)) {
                         submitError = true;
                         $scope.networks = true;
                         $scope.disk = false;
@@ -713,6 +714,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
                 templateUrl: $scope.global.NOTIFICATION_TEMPLATE
             });
             $modalInstance.close();
+            $state.reload();
         }).catch(function(result) {
             $scope.showLoader = false;
             if (result.data.fieldErrors !== null && !angular.isUndefined(result.data.fieldErrors[0])) {

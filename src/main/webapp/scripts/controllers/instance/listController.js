@@ -101,8 +101,10 @@ function instanceListCtrl($scope, $sce, $log, $filter, dialogService, $timeout, 
                             var hasVm = appService.crudService.updates("virtualmachine/handleevent/vm", item);
                             hasVm.then(function(result) {
                                 $scope.cancel();
+                                $scope.agree.value1 = false;
                             }).catch(function(result) {
                                 $scope.cancel();
+                                $scope.agree.value1 = false;
                             });
                         });
                     } else {
@@ -350,6 +352,8 @@ function instanceListCtrl($scope, $sce, $log, $filter, dialogService, $timeout, 
             $scope.selected = selectedItem;
         }, function() {
             $log.info('Modal dismissed at: ' + new Date());
+            $scope.vmlist(1, "Expunging");
+            $scope.borderContent = "Expunging";
         });
     };
     $scope.showDescription = function(vm) {
@@ -388,7 +392,7 @@ function instanceListCtrl($scope, $sce, $log, $filter, dialogService, $timeout, 
                                     "timeOut": "5000",
                                     templateUrl: $scope.homerTemplate
                                 });
-                                $scope.list($scope.paginationObject.currentPage);
+                                $scope.list(1);
                                 $scope.cancel();
                             }).catch(function(result) {});
                         });

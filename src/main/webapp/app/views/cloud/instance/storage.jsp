@@ -9,7 +9,7 @@
 
         <div class="col-md-12">
         <div data-ng-if="global.webSocketLoaders.vmstorageLoader" class="overlay-wrapper">
-                <img data-ng-if="global.webSocketLoaders.vmstorageLoader" src="images/loading-bars.svg" class="inner-loading" width="64" height="64" />
+                <img data-ng-if="global.webSocketLoaders.vmstorageLoader" src="images/loading-bars.svg" class="inner-loading" />
             </div>
             <div class="row">
                     <div class="col-md-12 col-sm-12">

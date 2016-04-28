@@ -240,9 +240,11 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
                         var hasVm = appService.crudService.updates("virtualmachine/handleevent/vm", item);
                         hasVm.then(function(result) {
                             $scope.cancel();
+                            $scope.agree.value1 = false;
                         }).catch(function(result) {
                             $scope.cancel();
                             appService.globalConfig.webSocketLoaders.viewLoader = false;
+                            $scope.agree.value1 = false;
                         });
                     } else {
                         var event = "VM.STOP";
@@ -602,7 +604,7 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
 	    if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
                 $scope.viewInstance($stateParams.id);
             }
-	} 
+	}
         if ($scope.persistinstance.uuid === args.resourceUuid) {
             $scope.global.webSocketLoaders.viewLoader = false;
             if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
@@ -616,7 +618,7 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
 	    if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
                 $scope.viewInstance($stateParams.id);
             }
-	} 
+	}
         if ($scope.persistinstance.uuid === args.resourceUuid) {
             $scope.global.webSocketLoaders.viewLoader = false;
             if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
@@ -630,7 +632,7 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
 	    if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
                 $scope.viewInstance($stateParams.id);
             }
-	} 
+	}
         if ($scope.persistinstance.uuid === args.resourceUuid) {
             $scope.global.webSocketLoaders.viewLoader = false;
             if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
@@ -644,7 +646,7 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
 	    if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
                 $scope.viewInstance($stateParams.id);
             }
-	} 
+	}
         if ($scope.persistinstance.uuid === args.resourceUuid) {
             if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
                 $scope.viewInstance($stateParams.id);
@@ -658,7 +660,7 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
 	    if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
                 $scope.viewInstance($stateParams.id);
             }
-	} 
+	}
         if ($scope.persistinstance.uuid === args.resourceUuid) {
             $scope.global.webSocketLoaders.viewLoader = false;
             if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
@@ -672,7 +674,7 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
 	    if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
                 $scope.viewInstance($stateParams.id);
             }
-	} 
+	}
         if ($scope.persistinstance.uuid === args.resourceUuid) {
             $scope.global.webSocketLoaders.viewLoader = false;
             if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
@@ -686,7 +688,7 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
 	    if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
                 $scope.viewInstance($stateParams.id);
             }
-	} 
+	}
         if ($scope.persistinstance.uuid === args.resourceUuid) {
             if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
                 $scope.viewInstance($stateParams.id);
@@ -697,7 +699,7 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.attachISO, function(event, args) {
         if(args.status == 'FAILED'){
 	    $scope.global.webSocketLoaders.viewLoader = false;
-	} 
+	}
             $scope.global.webSocketLoaders.viewLoader = false;
             if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
                 $scope.viewInstance($stateParams.id);
@@ -706,7 +708,7 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.detachISO, function(event, args) {
         if(args.status == 'FAILED'){
 	    $scope.global.webSocketLoaders.viewLoader = false;
-	} 
+	}
             $scope.global.webSocketLoaders.viewLoader = false;
             if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
                 $scope.viewInstance($stateParams.id);
@@ -718,7 +720,7 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
 	    if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
                 $scope.viewInstance($stateParams.id);
             }
-	} 
+	}
         if ($scope.persistinstance.uuid === args.resourceUuid) {
             $scope.global.webSocketLoaders.viewLoader = false;
             if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
@@ -732,7 +734,7 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
 	    if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
                 $scope.viewInstance($stateParams.id);
             }
-	} 
+	}
         if ($scope.persistinstance.uuid === args.resourceUuid) {
             $scope.global.webSocketLoaders.viewLoader = false;
             if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
@@ -746,7 +748,7 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
 	    if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
                 $scope.viewInstance($stateParams.id);
             }
-	} 
+	}
         if ($scope.persistinstance.uuid === args.resourceUuid && args.status === 'SUCCEEDED') {
             $scope.global.webSocketLoaders.viewLoader = false;
             if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
@@ -760,7 +762,7 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
 	    if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
                 $scope.viewInstance($stateParams.id);
             }
-	    } 
+	    }
             if ($scope.persistinstance.uuid === args.resourceUuid) {
                 $scope.global.webSocketLoaders.viewLoader = false;
                 if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
@@ -774,7 +776,7 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
 	    if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
                 $scope.viewInstance($stateParams.id);
             }
-	    } 
+	    }
             if ($scope.persistinstance.uuid === args.resourceUuid) {
                 $scope.global.webSocketLoaders.viewLoader = false;
                 if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {

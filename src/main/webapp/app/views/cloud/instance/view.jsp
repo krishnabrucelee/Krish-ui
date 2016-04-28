@@ -25,7 +25,7 @@ pageEncoding="UTF-8"%>
             </div>
             <div data-ng-if="!showLoaderOffer" class="tab-pane" data-ng-class="{'active' : templateCategory == 'dashboard'}" id="step1-dashboard">
                 <div data-ng-if="global.webSocketLoaders.viewLoader" class="overlay-wrapper">
-                <img data-ng-if="global.webSocketLoaders.viewLoader" src="images/loading-bars.svg" class="inner-loading" width="64" height="64" />
+                <img data-ng-if="global.webSocketLoaders.viewLoader" src="images/loading-bars.svg" class="inner-loading" />
             </div>
                 <div  class="row" >
                     <div class="col-lg-9 col-md-8 col-sm-12">
