@@ -6,7 +6,7 @@
 angular.module('homer').controller('networksCtrl', networksCtrl)
 
 function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $stateParams, $timeout, $window, appService, localStorageService, globalConfig,$location) {
-   
+
     $scope.global = appService.globalConfig;
     $scope.rulesList = [];
     $scope.rules = [];
@@ -137,12 +137,14 @@ if (!angular.isUndefined($stateParams.id)) {
             $scope.networkBreadCrumbList = result;
             $scope.network = result;
             $scope.persistNetwork = result;
-            if ($state.current.data.pageTitle === "view.network") {
-                $state.current.data.pageName = result.name;             	
+           // $state.current.data.pageName = result.name;
+            //$state.current.data.id = result.id;
+           if ($state.current.data.pageTitle === "view.network") {
+                $state.current.data.pageName = result.name;
             	$state.current.data.id = result.id;
             } else {
                $state.$current.parent.data.pageName = result.name;
-               $state.current.data.id = result.id;
+               $state.$current.parent.data.id = result.id;
             }
         });
     }
@@ -311,8 +313,8 @@ $scope.vmPortId = instance;
 
     $scope.ipTab = function() {
             $scope.templateCategory = 'ip';
-        }    
-    
+        }
+
 
 
    ipCost : {}
@@ -721,7 +723,7 @@ $scope.ipCostList();
     $scope.edit = function(networkId) {
         appService.localStorageService.set('views', 'details');
         $scope.tabViews = appService.localStorageService.get('views');
-        $scope.templateCategorys = $scope.tabViews; 
+        $scope.templateCategorys = $scope.tabViews;
         var hasnetwork = appService.crudService.read("guestnetwork", networkId);
         hasnetwork.then(function(result) {
             $scope.network = result;

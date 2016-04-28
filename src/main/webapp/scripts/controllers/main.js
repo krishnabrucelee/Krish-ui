@@ -57,7 +57,7 @@ $scope.doughnutData1 = [
             color: "#f0ad4e",
             highlight: "#f0ad4e",
             label: "Used"
-   
+
         },
         {
             value: 58,
@@ -80,7 +80,7 @@ $scope.doughnutData2 = [
             highlight: "#ebf1f4",
             label: "UnUsed"
         }
-        
+
     ];
 $scope.doughnutData3 = [
 	{
@@ -95,7 +95,7 @@ $scope.doughnutData3 = [
             highlight: "#ebf1f4",
             label: "UnUsed"
         }
-        
+
     ];
 $scope.doughnutData4 = [
 	{
@@ -110,8 +110,8 @@ $scope.doughnutData4 = [
             highlight: "#ebf1f4",
             label: "UnUsed"
         }
-        
-    ];	
+
+    ];
 
 
     /**
@@ -413,22 +413,14 @@ $scope.doughnutData4 = [
           });
     }
 
-    $scope.getZoneList = function (pageNumber) {
-        $scope.paginationObject = {};
-      var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
-      var hasZones = crudService.list("zones", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+   $scope.getZoneList = function () {
+      var hasZones = crudService.listAll("zones/list");
       hasZones.then(function (result) {  // this is only run after $http completes0
-
           $scope.global.zoneList = result;
-
-          // For pagination
-          $scope.paginationObject.limit  = limit;
-          $scope.paginationObject.currentPage = pageNumber;
-          $scope.paginationObject.totalItems = result.totalItems;
       });
   };
-  $scope.getZoneList(1);
-  
+  $scope.getZoneList();
+
   $scope.dashboard = {
 	costList: {}
 };
