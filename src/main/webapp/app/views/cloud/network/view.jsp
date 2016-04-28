@@ -5,7 +5,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <div class="hpanel" ui-view>
 <div data-ng-if="global.webSocketLoaders.networkLoader" class="overlay-wrapper">
-                		            <img data-ng-if="global.webSocketLoaders.networkLoader" src="images/loading-bars.svg" class="inner-loading" width="64" height="64" />
+                		            <img data-ng-if="global.webSocketLoaders.networkLoader" src="images/loading-bars.svg" class="inner-loading" />
  </div>
 <div class="row m-l-sm m-r-sm panel-body" data-ng-controller="networksCtrl">
      <ul class="nav nav-tabs" data-ng-init="templateCategorys = tabviews">

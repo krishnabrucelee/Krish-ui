@@ -5,7 +5,7 @@ pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <div class="row"  >
 <div data-ng-if="global.webSocketLoaders.ipLoader" class="overlay-wrapper">
-    <img data-ng-if="global.webSocketLoaders.ipLoader" src="images/loading-bars.svg" class="inner-loading" width="64" height="64" class="inner-loading"/>
+    <img data-ng-if="global.webSocketLoaders.ipLoader" src="images/loading-bars.svg" class="inner-loading" />
 </div>
     <div class="col-lg-6 col-md-6 col-sm-12">
         <div class="row ">

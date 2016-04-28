@@ -5,7 +5,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 			<div  ng-controller="secondaryIpCtrl">
 <div data-ng-if="global.webSocketLoaders.vmsecondaryip" class="overlay-wrapper">
-                <img data-ng-if="global.webSocketLoaders.vmsecondaryip" src="images/loading-bars.svg" class="inner-loading" width="64" height="64" />
+                <img data-ng-if="global.webSocketLoaders.vmsecondaryip" src="images/loading-bars.svg" class="inner-loading" />
             </div>
 					<div class="row">
 							<div class="col-md-12 col-sm-12 col-xs-12 ">
