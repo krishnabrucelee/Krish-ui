@@ -10,9 +10,9 @@
 
                  <div class="form-group has-error col-md-3 col-sm-3  col-xs-3">
 
-                    <img src="images/warning.png" alt="">
+                    <span class="fa fa-3x fa-warning text-warning"></span>
                 </div>
-                <div class="form-group has-error col-md-8 col-sm-8  col-xs-8 m-t-md"><p>Please confirm that you want to download this volume.</p></div>
+                <div class="form-group has-error col-md-8 col-sm-8  col-xs-8"><p>Please confirm that you want to download this volume.</p></div>
             </div>
 
             <div class="text-center" data-ng-show="downloadLoding">
@@ -20,7 +20,7 @@
             </div>
             <div class="text-center" data-ng-show="downloading">
                 Please click <a  ng-click="downloadLink('#/volume/list')">http://localhost:8383/jade-art/app/data-12 </a>to download volume
-            </div> 
+            </div>
 
         </div>
 

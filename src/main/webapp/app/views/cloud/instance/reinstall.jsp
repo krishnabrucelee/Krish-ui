@@ -13,10 +13,9 @@
         <div class="modal-body">
             <div class=" row">
                 <div class="form-group p-sm has-error col-md-2 col-sm-2  col-xs-3">
-
-                    <img class="m-l-sm" src="images/warning.png" alt="">
+                    <span class="fa fa-3x fa-warning text-warning"></span>
                 </div>
-                <div class="form-group has-error col-md-10 col-sm-10  col-xs-9 m-t-md">
+                <div class="form-group has-error col-md-10 col-sm-10  col-xs-9">
                     <p ><fmt:message key="note" bundle="${msg}" />: <fmt:message key="proceed.with.caution.this.will.cause.the.vm.to.be.reinstalled.from.the.template.data.on.the.root.disk.will.be.lost.extra.data.volumes.if.any.will.not.be.touched" bundle="${msg}" />.</p>
                 </div>
 
