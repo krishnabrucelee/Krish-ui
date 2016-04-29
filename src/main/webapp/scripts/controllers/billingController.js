@@ -136,7 +136,7 @@ function billingCtrl($scope, appService, globalConfig, localStorageService, $win
                 $scope.groupItemByUsageList(usageList);
             }
         });
-            
+
         $scope.myframe = true;
     	$scope.reportUrl =  appService.globalConfig.PING_APP_URL + "usage/statistics?fromDate="+ startDate +"&toDate=" + endDate + "&groupingType=" + groupBy + "&domainUuid=" + domainUuid;
     	document.getElementById('myframe').setAttribute('src', $scope.reportUrl + "&type=html");
@@ -362,11 +362,14 @@ function billingInvoiceCtrl($scope, $http, $window, $modal, $log, $state, $state
     });
 
    $scope.global = globalConfig;
+   $scope.defaultView = true;
    $scope.configList = function (pageNumber) {
+	$scope.defaultView = true;
       var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
       var hasConfigList = {};
       if (($scope.domainView == null || angular.isUndefined($scope.domainView))
               && ($scope.statusView == null || angular.isUndefined($scope.statusView))) {
+		
           if (appService.globalConfig.sessionValues.type !== 'ROOT_ADMIN') {
    hasConfigList =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "usage/invoice/listByDomain"
                         +"?type=invoice"+ "&domainUuid="+appService.globalConfig.sessionValues.domainAbbreviationName+"&status=null");
@@ -378,7 +381,7 @@ function billingInvoiceCtrl($scope, $http, $window, $modal, $log, $state, $state
     	//document.getElementById('myReportframe').setAttribute('src', $scope.reportUrl);
           }
       } else {
-
+ $scope.defaultView = false;
           var domainViewAbbr = null;
 	  $scope.domainViewAbbr = null;
           if ($scope.domainView != null && !angular.isUndefined($scope.domainView)) {
@@ -393,7 +396,7 @@ function billingInvoiceCtrl($scope, $http, $window, $modal, $log, $state, $state
 		$scope.domainViewAbbr = appService.globalConfig.sessionValues.domainAbbreviationName;
              }
 
-        
+
 
 
     	//$scope.myframe = true;
@@ -414,7 +417,7 @@ $scope.excel = function()
                 +"?type=invoice"+ "&domainUuid="+domainViewAbbr+"&status="+$scope.statusView);
       }
       hasConfigList.then(function (result) {  // this is only run after $http completes0
-/
+
  $scope.invoiceList = result;
          // For pagination
          $scope.paginationObject.limit = limit;
@@ -422,11 +425,12 @@ $scope.excel = function()
          $scope.paginationObject.totalItems = $scope.invoiceList.totalItems;
          $scope.showLoader = false;
       });
-  
+
        };
    $scope.configList(1);
 
    // Get application list based on domain selection
+   
    $scope.selectDomainView = function(pageNumber) {
           $scope.configList(1);
    };
@@ -482,6 +486,7 @@ function billingPaymentsCtrl($scope, $http, $window, $modal, $log, $state, $stat
                 }
 
             } else {
+ $scope.defaultView = false;
                   var domainViewAbbr = null;
                     if ($scope.domainView != null && !angular.isUndefined($scope.domainView)) {
                       domainViewAbbr = $scope.domainView.companyNameAbbreviation;
@@ -523,8 +528,9 @@ $scope.invoiceList = result;
     });
 
    $scope.global = globalConfig;
-
+ $scope.defaultView = true;
    $scope.configList = function (pageNumber) {
+ $scope.defaultView = true;
       var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
       var hasConfigList = {};
       if (($scope.domainView == null || angular.isUndefined($scope.domainView))
@@ -540,6 +546,7 @@ $scope.invoiceList = result;
     	//document.getElementById('myReportframe').setAttribute('src', $scope.reportUrl);
           }
       } else {
+ $scope.defaultView = false;
           var domainViewAbbr = null;
             if ($scope.domainView != null && !angular.isUndefined($scope.domainView)) {
               domainViewAbbr = $scope.domainView.companyNameAbbreviation;
