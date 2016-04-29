@@ -393,6 +393,8 @@ table.dataTable thead .sorting_desc::after {content: "\f0dd";}
 .storage-manager .vertical-timeline-block:first-child .h-timeline::before{left:-80px;}
 .storage-manager .h-timeline::before{left:-7px;}
 
+.price-text-sm{font-size:16px;}
+
 @media (min-width: 600px) and (max-width: 767px) {
 .dashboard-filters-area{ clear:both;}
 .dashboard-btn-area{float:right !important; clear:both;}

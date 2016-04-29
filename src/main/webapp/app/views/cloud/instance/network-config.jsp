@@ -38,12 +38,12 @@
                 <div class="network-manager pull-right">
                     <div class="hpanel">
                         <div class=" vertical-container" animate-panel child="vertical-timeline-block" delay="3">
-                            <div class="v-timeline  vertical-timeline-block" data-ng-class="{'timeline-primary' : network.isDefault == 'YES'}"  data-ng-repeat="nic in nicList " >
+                            <div class="v-timeline  vertical-timeline-block" data-ng-class="{'timeline-primary' : nic.isDefault}"  data-ng-repeat="nic in nicList " >
                                 <div class="h-timeline">
                                     <div class="vertical-timeline-content">
 
                                         <div class="timeline-title">
-                                            NIC  {{ $index + 1}}  <div class="pull-right" data-ng-if="nic.isDefault">(Default)</div>
+                                            NIC  {{ $index + 1}}  <div class="pull-right" data-ng-if="nic.isDefault" class="timeline-primary">(Default)</div>
                                                                          </div>
                                         <div class="row">
                                             <div class="col-md-12">
