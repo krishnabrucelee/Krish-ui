@@ -1,4 +1,4 @@
-function utilService(crudService, promiseAjax, globalConfig) {
+function utilService(crudService, promiseAjax, globalConfig, $http, $window, $cookies, localStorageService) {
 
     var object = {};
 
@@ -44,6 +44,80 @@ function utilService(crudService, promiseAjax, globalConfig) {
         hasProjects.then(function (result) {  // this is only run after $http completes0
             return result;
         });
+    }
+
+    // Logout application
+    object.logoutApplication = function(type) {
+    	if (localStorageService.get('id') != 'undefined' && !angular.isUndefined(localStorageService.get('id'))
+        		&& localStorageService.get('id') != null && localStorageService.get('id') != 'null') {
+    	    $http({method:globalConfig.HTTP_GET, url:globalConfig.APP_URL + 'loginHistory/logoutSession?id=' + localStorageService.get('id') + '&type=' + type,
+			    "headers": {'x-auth-token': localStorageService.get('token'), 'x-requested-with': '', 'Content-Type': 'application/json', 'Range': "items=0-9", 'x-auth-login-token': '-1',
+				'x-auth-remember': localStorageService.get('rememberMe'), 'x-auth-user-id': localStorageService.get('id'), 'x-auth-login-time': localStorageService.get('loginTime')}})
+			.success(function(result){
+				$window.sessionStorage.removeItem("loginSession")
+				localStorageService.set('rememberMe', "false");
+				$cookies.rememberMe = "false";
+				localStorageService.set('loginToken', "0");
+				localStorageService.set('loginTime', "0");
+		        window.location.href = "login";
+          });
+    	} else {
+    		$window.sessionStorage.removeItem("loginSession")
+			localStorageService.set('rememberMe', "false");
+			$cookies.rememberMe = "false";
+			localStorageService.set('loginToken', "0");
+			localStorageService.set('loginTime', "0");
+	        window.location.href = "login";
+    	}
+    }
+
+    object.getFlotBarData = function() {
+      return [
+          {
+              label: "bar",
+              data: []
+          }
+      ];
+    }
+
+    /**
+     * Bar Chart Options
+     */
+    object.getFlotBarOptions = function() {
+
+      return {
+          series: {
+              bars: {
+                  show: true,
+                  barWidth: 0.8,
+                  fill: true,
+                  fillColor: {
+                      colors: [ { opacity: 0.6 }, { opacity: 0.6 } ]
+                  },
+                  lineWidth: 1
+              }
+          },
+          xaxis: {
+              tickDecimals: 0,
+              ticks: []
+          },
+          colors: ["#c3d1db"],
+          grid: {
+              color: "#c3d1db",
+              hoverable: true,
+              clickable: true,
+              tickColor: "#D4D4D4",
+              borderWidth: 0,
+              borderColor: 'e4e5e7',
+          },
+          legend: {
+              show: false
+          },
+          tooltip: true,
+          tooltipOpts: {
+              content: "x: %x, y: %y"
+          }
+      };
     }
 
     object.getMonthList = function() {

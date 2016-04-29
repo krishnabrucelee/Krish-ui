@@ -15,7 +15,7 @@
             <div class=" row">
                 <div class="form-group p-sm has-error col-md-3 col-sm-3  col-xs-3">
 
-                    <img class="m-l-sm" src="images/warning.png" alt="">
+                    <span class="fa fa-3x fa-warning text-warning"></span>
                 </div>
                 <div data-ng-if="global.sessionValues.type === 'ROOT_ADMIN'" class="form-group p-md col-md-9 col-sm-9  col-xs-9" data-ng-class=" agree != true && actionExpunge  ? 'text-danger' : ''">
 

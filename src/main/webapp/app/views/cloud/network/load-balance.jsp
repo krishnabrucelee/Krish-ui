@@ -5,7 +5,7 @@ pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
     <div class="white-content">
     <div data-ng-if="global.webSocketLoaders.loadBalancerLoader" class="overlay-wrapper">
-                		            <img data-ng-if="global.webSocketLoaders.loadBalancerLoader" src="images/loading-bars.svg" class="inner-loading" width="64" height="64" />
+                		            <img data-ng-if="global.webSocketLoaders.loadBalancerLoader" src="images/loading-bars.svg" class="inner-loading" />
             		            </div>
         <form name="loadform" method="POST" novalidate
               data-ng-submit="openAddVM(loadform,loadBalancer)">

@@ -30,8 +30,8 @@
 	                            <span ng-switch-when="true"><fmt:message key="common.instances" bundle="${msg}" /></span>
                             </span>
                             <span data-ng-if="state.data.pageTitle === 'common.snapshot'">
-	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.snapshot" bundle="${msg}" /></a>
-	                            <span ng-switch-when="true"><fmt:message key="common.snapshot" bundle="${msg}" /></span>
+	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.snapshots" bundle="${msg}" /></a>
+	                            <span ng-switch-when="true"><fmt:message key="common.snapshots" bundle="${msg}" /></span>
                             </span>
                             <span data-ng-if="state.data.pageTitle === 'common.quota.limit'">
 	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.quota.limit" bundle="${msg}" /></a>
@@ -42,15 +42,15 @@
 	                            <span ng-switch-when="true"><fmt:message key="common.monitor" bundle="${msg}" /></span>
 	                    	</span>
                             <span data-ng-if="state.data.pageTitle === 'common.volume'">
-	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.volume" bundle="${msg}" /></a>
-	                            <span ng-switch-when="true"><fmt:message key="common.volume" bundle="${msg}" /></span>
+	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.volumes" bundle="${msg}" /></a>
+	                            <span ng-switch-when="true"><fmt:message key="common.volumes" bundle="${msg}" /></span>
                             </span>
                              <span data-ng-if="state.data.pageTitle === 'common.network'">
-	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.network" bundle="${msg}" /></a>
-	                            <span ng-switch-when="true"><fmt:message key="common.network" bundle="${msg}" /></span>
+	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.networks" bundle="${msg}" /></a>
+	                            <span ng-switch-when="true"><fmt:message key="common.networks" bundle="${msg}" /></span>
                             </span>
                              <span data-ng-if="(state.data.pageTitle === 'view.network')">
-	                            <a ng-switch-when="false" ng-href="{{'#/network/list/view/'+state.data.id}}">{{ state.data.pageName }}</a>
+	                            <a ng-switch-when="false" ng-href="{{'#/network/list/view/'+state.data.id}}" >{{ state.data.pageName }}</a>
 	                            <span ng-switch-when="true">{{ state.data.pageName }}</span>
 	                        </span>
                             <span data-ng-if="(state.data.pageTitle === 'view.instance')">
@@ -95,13 +95,13 @@
                     <span id="projects_page_title" data-ng-if="$state.current.data.pageTitle === 'common.projects'"><fmt:message key="common.projects" bundle="${msg}" /></span>
                 </h2>
                 <h2 class="font-light m-b-xs">
-                    <span id="volume_page_title" data-ng-if="$state.current.data.pageTitle === 'common.volume'"><fmt:message key="common.volume" bundle="${msg}" /></span>
+                    <span id="volume_page_title" data-ng-if="$state.current.data.pageTitle === 'common.volume'"><fmt:message key="common.volumes" bundle="${msg}" /></span>
                 </h2>
                 <h2 class="font-light m-b-xs">
-                    <span id="network_page_title" data-ng-if="$state.current.data.pageTitle === 'common.network'"><fmt:message key="common.network" bundle="${msg}" /></span>
+                    <span id="network_page_title" data-ng-if="$state.current.data.pageTitle === 'common.network'"><fmt:message key="common.networks" bundle="${msg}" /></span>
                 </h2>
                 <h2 class="font-light m-b-xs">
-                    <span id="snapshot_page_title" data-ng-if="$state.current.data.pageTitle === 'common.snapshot'"><fmt:message key="common.snapshot" bundle="${msg}" /></span>
+                    <span id="snapshot_page_title" data-ng-if="$state.current.data.pageTitle === 'common.snapshot'"><fmt:message key="common.snapshots" bundle="${msg}" /></span>
                 </h2>
                 <h2 class="font-light m-b-xs">
                     <span id="ssh_key_page_title" data-ng-if="$state.current.data.pageTitle === 'common.ssh.keys'"><fmt:message key="common.ssh.keys" bundle="${msg}" /></span>

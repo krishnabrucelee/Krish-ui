@@ -5,7 +5,7 @@
 <div class="" >
 	<get-loader-image data-ng-show="showLoader"></get-loader-image>
 	 <div data-ng-if="global.webSocketLoaders.volumeBackupLoader" class="overlay-wrapper">
-          <img data-ng-if="global.webSocketLoaders.volumeBackupLoader" src="images/loading-bars.svg" class="inner-loading" width="64" height="64" />
+          <img data-ng-if="global.webSocketLoaders.volumeBackupLoader" src="images/loading-bars.svg" class="inner-loading" />
      </div>
 	<div class="col-md-12 col-sm-12" data-ng-hide="showLoader">
         <div class="hpanel">
@@ -20,7 +20,7 @@
                                 <div class="clearfix"></div>
                                 </div>
                             </div>
-                            <a class="btn btn-info"  has-permission= "DISK_SNAPSHOT" ng-click="openAddSnapshotContainer()"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span>Create Snapshot</a>
+                            <a class="btn btn-info font-bold"  has-permission= "DISK_SNAPSHOT" ng-click="openAddSnapshotContainer()"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span>Create Snapshot</a>
                                 <a class="btn btn-info" title="Refresh"  data-ng-click="lists(1)"><span class="fa fa-refresh fa-lg"></span></a>
                         </div>
                         <div class="pull-right dashboard-filters-area">

@@ -13,7 +13,7 @@ pageEncoding="UTF-8"%>
             <div class="row text-left indent lh-30" data-ng-hide="enableNat ">
                 <div class="form-group has-error col-md-2 col-sm-2  col-xs-2 " >
 
-                    <img src="images/warning.png" alt="">
+                   <span class="fa fa-3x fa-warning text-warning"></span>
                 </div>
 
                Please confirm that you want to Enable Static Nat.

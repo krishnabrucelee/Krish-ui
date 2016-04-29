@@ -6,7 +6,7 @@
  * @author - Jamseer N
  */
 
-function promiseAjax($http, $window, globalConfig, notify, $remember, $cookies) {
+function promiseAjax($http, $window, globalConfig, notify, $remember, $cookies, localStorageService) {
 
      var global = globalConfig;
      var httpTokenRequest = function (method, url, headers, data) {
@@ -16,16 +16,16 @@ function promiseAjax($http, $window, globalConfig, notify, $remember, $cookies) 
             data.limit = global.CONTENT_LIMIT;
         };
 
-    	if ((angular.isUndefined($cookies.rememberMe) || $cookies.rememberMe == "false") &&
-    			$cookies.loginToken == '0' && $cookies.loginTime == '0') {
-    			window.location.href = "login";
+    	if ((angular.isUndefined(localStorageService.get('rememberMe')) || localStorageService.get('rememberMe') == false) &&
+    			localStorageService.get('loginToken') == 0 && localStorageService.get('loginTime') == 0) {
+            appService.utilService.logoutApplication("SESSION_EXPIRED");
     	}
 
         var config = {
             "method": method,
             "data": data,
             "url": url,
-            "headers": {'x-auth-token': $cookies.token, 'x-requested-with': '', 'Content-Type': 'application/json', 'Range': "items=0-9", 'x-auth-login-token': $cookies.loginToken, 'x-auth-remember': $cookies.rememberMe, 'x-auth-user-id': $cookies.id, 'x-auth-login-time': $cookies.loginTime}
+            "headers": {'x-auth-token': localStorageService.get('token'), 'x-requested-with': '', 'Content-Type': 'application/json', 'Range': "items=0-9", 'x-auth-login-token': localStorageService.get('loginToken'), 'x-auth-remember': localStorageService.get('rememberMe'), 'x-auth-user-id': localStorageService.get('id'), 'x-auth-login-time': localStorageService.get('loginTime')}
         };
 
 
