@@ -15,11 +15,11 @@
 
     <div class="content" >
 
-        <div class="row">
+<!--         <div class="row">
             <div class="col-md-12">
                 <div class="alert alert-danger no-border-radious">This system will go for maintenance on May 1st</div>
             </div>
-        </div>
+        </div> -->
         <div class="row">
             <div class="col-md-5">
                 <div class="panel panel-white no-border-radious dashboard-infrastructure-section">
@@ -108,10 +108,18 @@
                              <img src="images/loading-bars.svg" />
                          </div>
                         <div class="row dashboard-quota-area" data-ng-hide="showQuotaLoader">
-                            <div class="col-md-3 col-sm-4 col-xs-6 dashboard-quota" data-ng-repeat="quotaLimit in quotaLimits">
-                                <div class="doughnutchart-value">{{ quotaLimit.percentage }}%</div>
-                                <canvas doughnutchart options="doughnutOptions" data="quotaLimit.doughnutData" height="140" responsive=true></canvas>
-                                {{ quotaLimit.label }} <span>Using {{quotaLimit.usedLimit}} of {{quotaLimit.max}}</span>
+                            <div data-ng-if="quotaLimit.max != '-1'"class="col-md-3 col-sm-4 col-xs-6 dashboard-quota" data-ng-repeat="quotaLimit in quotaLimits">
+                                <div class="doughnut-fixed-area">
+	                                <div class="doughnutchart-value">{{ quotaLimit.percentage }}%</div>
+	                                <canvas doughnutchart options="doughnutOptions" data="quotaLimit.doughnutData" width="120" height="85"></canvas>
+	                                <div>{{ quotaLimit.label }}</div> <span>Using {{quotaLimit.usedLimit}} of {{quotaLimit.max}}</span>
+                                </div>
+                            </div>
+                            <div data-ng-if="quotaLimit.max == '-1'" class="col-md-3 col-sm-4 col-xs-6 dashboard-quota" data-ng-repeat="quotaLimit in quotaLimits">
+                               <div class="m-b-sm">
+                                <img src="images/unlimited-quota.png" ></div>
+                               <%--  <canvas doughnutchart options="doughnutOptions" data="quotaLimit.doughnutData" height="140" responsive=true></canvas> --%>
+                                {{ quotaLimit.label }} <span>Using {{quotaLimit.usedLimit}} of unlimited</span>
                             </div>
 
                            </div>
@@ -133,7 +141,7 @@
                             <h5 class="no-margins text-primary">
                                 Top 5 Departments by Cost <br>(Current Month) {{filterdept.value | lowercase}}
                             </h5>
-                            
+
                             <div class="m-t-md">
 
                                 <table cellspacing="1" cellpadding="1" class="top-projects no-margins table table-condensed table-striped">
@@ -158,7 +166,7 @@
                                              </td>
                                          </tr>
                                      </tbody>
-                                 </table>                                    
+                                 </table>
                              </div>
                         </div>
                     </div>
@@ -167,7 +175,7 @@
                             <h5 class="no-margins text-primary">
                                 Top 5 Projects by Cost <br>(Current Month) {{filters.value | lowercase}}
                             </h5>
-                            
+
                             <div class="m-t-md">
                                 <table cellspacing="1" cellpadding="1" class="top-projects no-margins table table-condensed table-striped">
                                     <thead>
@@ -179,7 +187,7 @@
                                     </thead>
                                 </table>
                             </div>
-                            
+
                              <div class="text-center m-t-xxxl" data-ng-show="showTopProjectLoader">
                                  <img src="images/loading-bars.svg" />
                              </div>
@@ -264,6 +272,7 @@
                 <div class="panel panel-white no-border-radious dashboard-accordian">
                     <div class="panel-body">
                         <div class="col-md-3 no-padding">
+                        	<div class="bg-info p-xs font-bold text-primary m-b-xxs service-title">Categories</div>
                             <div class="user-service-first-level slimScroll-220">
                                 <ul>
                                     <li><a href="javascript:void(0)" data-ng-click="getDepartmentList('department');">Department <span class="fa  fa-chevron-right pull-right"></span></a></li>
@@ -277,15 +286,19 @@
                                    <span class="fa fa-hand-o-left fa-3x"></span>
                                 <br> Select any <br> Department, Application or User
                             </div>
+                                                        	<div data-ng-show="listing.department" class="bg-info p-xs font-bold text-primary m-b-xxs service-title">Departments</div>
+
                             <div class="user-service-second-level slimScroll-220">
                                 <div data-ng-show="listing.department">
+
                                     <ul>
                                         <li data-ng-repeat="department in listing.departmentList">
                                             <a href="javascript:void(0)" data-ng-class="{'selected' : listing.activeDepartment == department.id }" data-ng-click="findSubCategoryByDepartment(listing.groupType, department.id);">{{ department.userName }}<span class="fa  fa-chevron-right pull-right"></span></a>
                                         </li>
-                                    </ul>
+                                    </ul> <!-- data-ng-class="{'selected' : listing.activeDepartment == department.id }" -->
                                 </div>
                                 <div class="user-service-list"  data-ng-show="listing.application">
+                                <div class="bg-info p-xs font-bold text-primary m-b-xxs service-title">Applications</div>
                                     <ul>
                                         <li  data-ng-repeat="application in listing.applicationList">
                                             <a  href="javascript:void(0)">{{ application.type }}</a>
@@ -296,20 +309,21 @@
                             </div>
                         </div>
                         <div class="col-md-6" data-ng-hide="listing.application">
-                            <div class="user-service-detail">
-                                <div  data-ng-show="listing.userList.length == 0">
+                        	<div  data-ng-if="listing.userList.length > 0 && listing.groupType == 'department' && type == 'Projects'" class="bg-info p-xs font-bold text-primary m-b-xxs service-details-title">{{type}}</div>
+                        		<div  data-ng-if="listing.userList.length > 0 && listing.groupType == 'user' && type == 'Users'" class="bg-info p-xs font-bold text-primary m-b-xxs service-details-title">{{type}}</div>
+                            <div class="user-service-detail slimScroll-220">
+                                <div class="text-center" data-ng-show="listing.userList.length == 0">
                                     <br> No records found
                                 </div>
                                 <div class="user-service-single-detail" data-ng-show="listing.userList.length > 0">
+
                                     <div class="table-responsive">
                                         <table cellspacing="1" cellpadding="1" class="table table-condensed table-striped">
-                                            <thead>
-                                            <tr>
-                                                <th>User Name</th>
-                                            </tr>
-                                            </thead>
                                             <tbody>
-                                            <tr data-ng-repeat="user in listing.userList">
+                                            <tr data-ng-if="listing.groupType == 'department'" data-ng-repeat="project in listing.userList">
+                                                <td>{{ project.name }}</td>
+                                            </tr>
+                                            <tr data-ng-if="listing.groupType == 'user'" data-ng-repeat="user in listing.userList">
                                                 <td>{{ user.userName }}</td>
                                             </tr>
                                             </tbody>
