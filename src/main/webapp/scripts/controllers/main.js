@@ -1,4 +1,4 @@
-﻿/**
+/**
  *
  * appCtrl
  *
@@ -382,5 +382,13 @@ function appCtrl($http, $scope, $window, $timeout, appService, globalConfig, cru
     $scope.dashboard.costList.application = false;
 	   $scope.dashboard.costList[type] = true;
   }
+
+$scope.getZoneList = function () {
+      var hasZones = crudService.listAll("zones/list");
+      hasZones.then(function (result) {  // this is only run after $http completes0
+          $scope.global.zoneList = result;
+      });
+  };
+  $scope.getZoneList();
 
 }

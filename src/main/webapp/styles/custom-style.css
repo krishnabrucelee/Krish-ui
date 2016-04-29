@@ -399,7 +399,7 @@ table.dataTable thead .sorting_desc::after {content: "\f0dd";}
 .storage-manager .v-timeline::before{left:-10px;}
 .storage-manager .vertical-timeline-block:first-child .h-timeline::before{left:-80px;}
 .storage-manager .h-timeline::before{left:-7px;}
-
+.price-text-sm{font-size:16px;}
 .vpc-manager{width:45%;}
 .vertical-timeline-content{margin-left:0px;}
 .vpc-manager-area .vertical-timeline-block:first-child .h-timeline::before{left: -124px;}

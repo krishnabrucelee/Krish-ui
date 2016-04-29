@@ -10,23 +10,15 @@ function loginSession(globalConfig, $window, $http, $injector, $moment) {
 	        } else {
 	   	        var currentDateTime = moment.unix(Math.floor(Date.now() / 1000)).format('YYYY-MM-DD HH:mm:ss');
 	            var currentTimeStamp = moment(moment.tz(currentDateTime, globalConfig.sessionValues.timeZone).format()).unix();
-	            var lastAccessTime = globalConfig.sessionValues.loginTime + 14400;
-	            var updateSessionTime = globalConfig.sessionValues.loginTime + 30;
-	            if (lastAccessTime <= currentTimeStamp) {
-	                $window.sessionStorage.removeItem("loginSession");
-	                window.location.href = "login";
-	            } else if (updateSessionTime <= currentTimeStamp) {
-	                var currentSession = JSON.parse($window.sessionStorage.getItem("loginSession"));
-	                if (currentSession != null) {
-	                	currentSession.loginTime = currentTimeStamp;
-	                } else {
-	                	window.location.href = "login";
-	                }
-	                $window.sessionStorage.setItem("loginSession", JSON.stringify(currentSession));
-	                globalConfig.sessionValues = JSON.parse($window.sessionStorage.getItem("loginSession"));
-	                return config;
-	            }
-	            return config;
+                var currentSession = JSON.parse($window.sessionStorage.getItem("loginSession"));
+                if (currentSession != null) {
+                	currentSession.loginTime = currentTimeStamp;
+                } else {
+                	window.location.href = "login";
+                }
+                $window.sessionStorage.setItem("loginSession", JSON.stringify(currentSession));
+                globalConfig.sessionValues = JSON.parse($window.sessionStorage.getItem("loginSession"));
+                return config;
 	        }
 	    }
     }
