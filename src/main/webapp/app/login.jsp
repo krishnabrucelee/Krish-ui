@@ -65,7 +65,8 @@
                             <label for="remeber_login">Remember login</label>
                             <p class="small">(if this is a private computer)</p>
                         </div>
-                        <button id="login_button" type="submit" class="btn btn-default">Login</button>
+                        <get-login-loader-image data-ng-show="showLoader"></get-login-loader-image>
+                        <button data-ng-hide="showLoader" id="login_button" type="submit" class="btn btn-default">Login</button>
                     </form>
                 </div>
             </div>
@@ -88,6 +89,7 @@
 <script src="scripts/factories/globalConfig.js"></script>
 <script src="bower_components/angular/angular-cookies.js"></script>
 <script src="bower_components/angular-local-storage/dist/angular-local-storage.js"></script>
+<script src="scripts/directives/directives.js"></script>
 <script type="text/javascript">
     function loginForm() {
         var username = document.getElementById("username").value;
