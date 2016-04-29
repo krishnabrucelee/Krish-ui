@@ -3,15 +3,16 @@
  * loginCtrl
  *
  */
-angular.module('homer', ['ngCookies']).controller("loginCtrl", function ($scope, $http, globalConfig, $window, $remember, $cookies) {
+angular.module('homer', ['ngCookies', 'LocalStorageModule']).controller("loginCtrl", function ($scope, $http, globalConfig, $window, $remember, $cookies, localStorageService) {
 
 	//For remember login functionality.
-    if (($cookies.rememberMe == "true")) {
-		return $http({method:'get', url: 'http://'+ $window.location.hostname +':8080/api/'  + 'users/usersessiondetails/'+$cookies.id,
-			"headers": {'x-auth-token': $cookies.token, 'x-requested-with': '', 'Content-Type': 'application/json', 'Range': "items=0-9", 'x-auth-login-token': $cookies.loginToken, 'x-auth-remember': $cookies.rememberMe, 'x-auth-user-id': $cookies.id, 'x-auth-login-time': $cookies.loginTime}})
+    if ((localStorageService.get('rememberMe') == "true" || localStorageService.get('rememberMe') == true)) {
+		return $http({method:'get', url: 'http://'+ $window.location.hostname +':8080/api/'  + 'users/usersessiondetails/'+localStorageService.get('id'),
+			"headers": {'x-auth-token': localStorageService.get('token'), 'x-requested-with': '', 'Content-Type': 'application/json', 'Range': "items=0-9", 'x-auth-login-token': localStorageService.get('loginToken'), 'x-auth-remember': localStorageService.get('rememberMe'), 'x-auth-user-id': localStorageService.get('id'), 'x-auth-login-time': localStorageService.get('loginTime')}})
 			.then(function(result){
 				$window.location.href = "index#/dashboard";
           }, function(errorResponse) {
+        	  localStorageService.set('rememberMe', "false");
         	  $cookies.rememberMe = "false";
         	  $window.location.reload();
         });
@@ -34,11 +35,12 @@ angular.module('homer', ['ngCookies']).controller("loginCtrl", function ($scope,
             .success(function (result) {
                $window.sessionStorage.token = result.token;
                $window.sessionStorage.setItem("loginSession", JSON.stringify(result));
-        	   $cookies.token = result.token;
-        	   $cookies.loginToken = result.loginToken;
-        	   $cookies.id = result.id;
-        	   $cookies.loginTime = result.loginTime;
-        	   $cookies.rememberMe = result.rememberMe;
+               localStorageService.set('token', result.token);
+               localStorageService.set('loginToken', result.loginToken);
+               localStorageService.set('id', result.id);
+               localStorageService.set('loginTime', result.loginTime);
+               localStorageService.set('rememberMe', result.rememberMe);
+               $cookies.rememberMe = result.rememberMe;
                if(result.userStatus == "SUSPENDED") {
                    window.location.href = globalConfig.BASE_UI_URL + "index#/billing/usage";
                } else {
@@ -61,11 +63,12 @@ angular.module('homer', ['ngCookies']).controller("loginCtrl", function ($scope,
             		              .success(function (result) {
             		            	  $window.sessionStorage.token = result.token;
             		                  $window.sessionStorage.setItem("loginSession", JSON.stringify(result));
-        		               	      $cookies.token = result.token;
-        		               	      $cookies.loginToken = result.loginToken;
-        		               	      $cookies.id = result.id;
-        		               	      $cookies.loginTime = result.loginTime;
-        		               	      $cookies.rememberMe = result.rememberMe;
+            		                  localStorageService.set('token', result.token);
+            		                  localStorageService.set('loginToken', result.loginToken);
+            		                  localStorageService.set('id', result.id);
+            		                  localStorageService.set('loginTime', result.loginTime);
+            		                  localStorageService.set('rememberMe', result.rememberMe);
+            		                  $cookies.rememberMe = result.rememberMe;
             		                  if(result.userStatus == "SUSPENDED") {
             		                      window.location.href = globalConfig.BASE_UI_URL + "index#/billing/usage";
             		                  } else {
