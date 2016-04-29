@@ -302,13 +302,11 @@
 
                     <form name="affinityForm" method="POST" data-ng-submit="saveAffinity(affinityForm, affinity)" novalidate class="form-horizontal">
                         <div class="form-group" ng-class="{ 'text-danger' : affinityForm.group.$invalid && affinitySubmitted}">
-                            <label class="col-sm-4 control-label"><fmt:message key="select.group" bundle="${msg}" />
-                                <span class="text-danger">*</span>
-                            </label>
+                            <label class="col-sm-4 control-label"><fmt:message key="select.group" bundle="${msg}" /></label>
                             <div class="col-sm-5">
-                                <select required="true" multiple="multiple" class="form-control input-group" name="groupList"
+                                <select multiple="multiple" class="form-control input-group" name="groupList"
                                         data-ng-model="affinity.groupList" ng-options="groupList.name for groupList in formElements.affinityGroupList"
-                                        data-ng-class="{'error': affinityForm.groupList.$invalid && formSubmitted}" >
+                                        data-ng-class="{'error': affinityForm.groupList.$invalid && affinitySubmitted}" >
 				                        <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
 				                </select>
                                 <div class="error-area" data-ng-show="affinityForm.group.$invalid && affinitySubmitted" ><i  tooltip="Group is required" class="fa fa-warning error-icon"></i></div>

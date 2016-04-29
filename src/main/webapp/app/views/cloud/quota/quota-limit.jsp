@@ -5,7 +5,7 @@ pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <div class="row" data-ng-controller="quotaLimitCtrl">
     <div class="col-lg-12" >
-        <div class="hpanel" >
+         <div class="hpanel" >
             <div class="page-heading">
                 <div class="row">
                     <div class="col-md-12 col-sm-12 col-xs-12">
@@ -31,104 +31,32 @@ pageEncoding="UTF-8"%>
                     </div>
                 </div>
             </div>
-            <div class="panel-body m-t-sm" >
-                <div class="text-center">
-                    <div class="row" >
-
-                        <div class="col-md-6 col-sm-6 col-lg-3 col-xs-6" data-ng-repeat="quota in quotaLimitData | filter: quotaLimitSearch">
-
-                            <div class="panel panel-default">
-                                <div class="panel-body p-xs">
-                                    <div class="row">
-
-                                        <div class="panel-group" data-ng-if="quota.options[1].value > -1">
-                                            <div class="row" >
-                                                <b><p ng-bind="quota.title"></p></b>
-                                            </div>
-                                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <div class="row quota-limit">
-                                                    <canvas  donutchart options="quotaChartOptions" data="quota.options" width="100" height="80">
-                                                    </canvas>
-                                                </div>
-
-                                            </div>
-
-                                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <div class="row">
-                                                    <div class="col-md-5 col-sm-5 col-xs-5">
-
-                                                        Used</div>
-                                                    <div class="col-md-7 col-sm-7 col-xs-7"> : {{quota.options[0].value}} </div>
-                                                </div>
-                                                <div class="row m-b-sm" >
-                                                    <div class="col-md-5 col-sm-5 col-xs-5">
-                                                        Available</div>
-                                                    <div class="col-md-7 col-sm-7 col-xs-7"> : {{quota.options[1].value}} </div>
-                                                </div>
-
-                                             <!--    <div class="row" >
-                                                    <div class="col-md-12">
-                                                        <a href="javascript:void(0);" title="Request" class="btn btn-sm btn-default-focus pull-right" data-toggle="modal" ng-click="showForm(quota)" data-target="#smallModal" data-backdrop="static" data-keyboard="false">Request</a>
-                                                    </div>
-                                                </div> -->
-                                            </div>
-
-                                        </div>
-
-
-
-									   <div class="panel-group" data-ng-if="quota.options[1].value <= -1">
-                                            <div class="row" >
-                                                <b><p ng-bind="quota.title"></p></b>
-                                            </div>
-                                            <div class="col-md-6 col-sm-6 col-xs-12" data-ng-if="quota.options[1].value > -1">
-                                                <div class="row quota-limit" >
-                                                    <canvas  donutchart options="quotaChartOptions" data="quota.options" width="100" height="80">
-                                                    </canvas>
-                                                </div>
-
-                                            </div>
-
-                                            <div class="col-md-12 col-sm-12 col-xs-12">
-                                                <div class="row">
-                                                    <div class="col-md-6 col-sm-6 col-xs-6">
-
-                                                       Used</div>
-                                                    <div class="col-md-4 col-sm-4 col-xs-4"> : {{quota.options[0].value}} </div>
-                                                </div>
-                                                <div class="row m-b-sm" >
-                                                    <div class="col-md-6 col-sm-6 col-xs-6">
-                                                        Available</div>
-                                                    <div class="col-md-4 col-sm-4 col-xs-4"> : {{quota.options[1].value}} </div>
-                                                </div>
-
-
-                                             <!--    <div class="row" >
-                                                    <div class="col-md-12">
-                                                        <a href="javascript:void(0);" title="Request" class="btn btn-sm btn-default-focus pull-right" data-toggle="modal" ng-click="showForm(quota)" data-target="#smallModal" data-backdrop="static" data-keyboard="false">Request</a>
-                                                    </div>
-                                                </div> -->
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-                                </div>
+            <div class="row">
+             <div class="col-md-12 m-t-sm">
+                <div class="panel">
+                    <div class="panel-body p-sm">
+                        <div class="text-center m-t-xxxl" data-ng-show="showQuotaLoader">
+                             <img src="images/loading-bars.svg" />
+                         </div>
+                        <div class="row dashboard-quota-area" data-ng-hide="showQuotaLoader">
+                            <div data-ng-if="quotaLimit.max != '-1'" class="col-md-2 col-sm-4 col-xs-6 dashboard-quota" data-ng-repeat="quotaLimit in quotaLimits">
+                            	<div class="doughnut-fixed-area">
+	                                <div class="doughnutchart-value">{{ quotaLimit.percentage }}%</div>
+	                                <canvas doughnutchart options="doughnutOptions" data="quotaLimit.doughnutData" height="140" ></canvas>
+	                                <div>{{ quotaLimit.label }}</div> <span>Using {{quotaLimit.usedLimit}} of {{quotaLimit.max}}</span>
+                            	</div>
+							</div>
+							 <div data-ng-if="quotaLimit.max == '-1'" class="col-md-2 col-sm-4 col-xs-6 dashboard-quota" data-ng-repeat="quotaLimit in quotaLimits">
+                               <div class="m-b-sm">
+                                <img src="images/unlimited-quota.png" ></div>
+                                {{ quotaLimit.label }} <span>Using {{quotaLimit.usedLimit}} of unlimited</span>
                             </div>
-                        </div>
-
+                           </div>
                     </div>
-
                 </div>
-                <div class="pull-left">
-			<div class="">
-				<span class="text-danger font-bold">*</span> <label class="control-label font-bold"><fmt:message key="note"
-						bundle="${msg}" /> :</label> -1 indicates, Unlimited limit.
-			</div>
-		</div>
+                </div>
             </div>
-
+	</div>
         </div>
 
 	</div>
-</div>

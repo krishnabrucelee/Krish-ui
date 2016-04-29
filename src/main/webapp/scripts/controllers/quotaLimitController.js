@@ -69,69 +69,7 @@ function quotaLimitCtrl($scope, $state, $stateParams, globalConfig, appService, 
     	$scope.domainList = result;
     });
 
-	$scope.getResourceDomain = function() {
-		$scope.quotaLimitData = [];
-    	$scope.showLoader = true;
-    	var hasresourceDomainList = {};
-    	$scope.resourceDomainList = {};
-		if (angular.isUndefined($scope.domainView) || $scope.domainView == null) {
 
-			hasresourceDomainList = appService.crudService
-				.listAll("resourceDomains/listresourcedomains");
-		} else {
-			hasresourceDomainList = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET , globalConfig.APP_URL + "resourceDomains/listByDomain/"+$scope.domainView.id);
-		}
-		hasresourceDomainList.then(function(result) { // this is only run
-
-			$scope.resourceDomainList = result;
-			var i = 0;
-			angular.forEach(result, function(object, key) {
-				i++;
-				$scope.resourceQuota[object.resourceType] = object.usedLimit;
-				$scope.resourceQuota[object.resourceType] = object.max;
-				if (object.resourceType != "Project") {
-					if (object.resourceType == "Memory") {
-						object.usedLimit = Math.round( object.usedLimit / 1024);
-						if (object.max != -1) {
-							object.max = Math.round(object.max / 1024);
-						}
-						object.resourceType = object.resourceType + " " + "(GB)";
-					}
-//					if (object.resourceType == "PrimaryStorage" || object.resourceType == "SecondaryStorage") {
-//					    object.usedLimit = Math.round( object.usedLimit / (1024 * 1024 * 1024));
-//					    if (object.max != -1) {
-//					    	object.max = Math.round( object.max / (1024 * 1024 * 1024));
-//					    	console.log("gdhfvgsh", object.max);
-//					    }
-//					    object.resourceType = object.resourceType + " " + "(GiB)";
-//				    }
-					if (object.max == -1 && object.resourceType == "PrimaryStorage" || object.max == -1 && object.resourceType == "SecondaryStorage") {
-						object.usedLimit = Math.round( object.usedLimit / (1024 * 1024 * 1024));
-					    object.resourceType = object.resourceType + " " + "(GB)";
- 				    }
-					if (object.resourceType == "PrimaryStorage" || object.resourceType == "SecondaryStorage") {
-					    object.resourceType = object.resourceType + " " + "(GB)";
- 				    }
-					if (object.usedLimit == null) {
-						object.usedLimit = 0;
-					}
-//					if (object.available == null || object.available == -1 || object.available == 0) {
-//						object.available = 100 - object.usedLimit;
-//					}
-					if (object.max != -1) {
-					$scope.resourceListMap(object.resourceType,
-							object.usedLimit, object.max - object.usedLimit);
-					} else {
-						$scope.resourceListMap(object.resourceType,
-								object.usedLimit, object.max);
-					}
-				}
-			});
-
-
-		});
-	};
-	$scope.getResourceDomain();
 
 	// Get volume list based on domain selection
     $scope.selectDomainView = function() {
@@ -182,7 +120,7 @@ function quotaLimitCtrl($scope, $state, $stateParams, globalConfig, appService, 
 		$scope.quotaLimitData.push($scope.resource[resourceName + "Limit"]);
 	}
 
-	/**
+    /**
      * Options for Doughnut chart
      */
     $scope.doughnutOptions = {
@@ -215,5 +153,72 @@ function quotaLimitCtrl($scope, $state, $stateParams, globalConfig, appService, 
 		tooltipXPadding : 4,
 		legend : true
 	};
+
+$scope.getResourceDomain = function() {
+	$scope.quotaLimits = {
+		      "CPU": {label: "vCPU"}, "Memory": {label: "Memory"}, "Volume": {label: "Volume"}, "Network": {label: "Network"},
+		      "IP": {label: "IP"}, "PrimaryStorage": {label: "PrimaryStorage"}, "SecondaryStorage": {label: "SecondaryStorage"},
+		      "Snapshot": {label: "Snapshot"}
+		    };
+    $scope.showQuotaLoader = true;
+    var resourceArr = ["CPU", "Memory", "Volume", "Network", "IP", "PrimaryStorage", "SecondaryStorage", "Snapshot"];
+    if (angular.isUndefined($scope.domainView) || $scope.domainView == null) {
+        var hasResourceDomainId = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET , globalConfig.APP_URL + "dashboard/quota");
+   } else {
+       var hasResourceDomainId = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET , globalConfig.APP_URL + "resourceDomains/listByDomain/"+$scope.domainView.id);
+   }
+    hasResourceDomainId.then(function (result) {  // this is only run after $http completes
+      $scope.showQuotaLoader = false;
+        angular.forEach(result, function(obj, key) {
+            if(resourceArr.indexOf(obj.resourceType) > -1) {
+              if(angular.isUndefined($scope.quotaLimits[obj.resourceType])) {
+                  $scope.quotaLimits[obj.resourceType] = {};
+              }
+
+              if(obj.resourceType == "Memory") {
+                obj.usedLimit = Math.round( obj.usedLimit / 1024);
+    						if (obj.max != -1) {
+    							obj.max = Math.round(obj.max / 1024);
+                  $scope.quotaLimits[obj.resourceType].label = $scope.quotaLimits[obj.resourceType].label + " " + "(GB)";
+    						}
+              }
+
+              if (obj.max == -1 && obj.resourceType == "PrimaryStorage" || obj.max == -1 && obj.resourceType == "SecondaryStorage") {
+					        obj.usedLimit = Math.round( obj.usedLimit / (1024 * 1024 * 1024));
+                  $scope.quotaLimits[obj.resourceType].label = $scope.quotaLimits[obj.resourceType].label + " " + "(GB)";
+   				    }
+
+              $scope.quotaLimits[obj.resourceType].max = parseInt(obj.max);
+              $scope.quotaLimits[obj.resourceType].usedLimit = parseInt(obj.usedLimit);
+              $scope.quotaLimits[obj.resourceType].percentage = parseFloat(parseInt(obj.usedLimit) / parseInt(obj.max) * 100).toFixed(2);
+              var unUsed = $scope.quotaLimits[obj.resourceType].max - $scope.quotaLimits[obj.resourceType].usedLimit;
+
+
+              var usedColor = "#48a9da";
+              if($scope.quotaLimits[obj.resourceType].percentage > 79 && $scope.quotaLimits[obj.resourceType].percentage < 90) {
+                  usedColor = "#f0ad4e";
+              } else if($scope.quotaLimits[obj.resourceType].percentage > 89){
+                  usedColor = "#df6457";
+              }
+              $scope.quotaLimits[obj.resourceType].doughnutData = [
+                  {
+                      value: parseInt(obj.usedLimit),
+                      color: usedColor,
+                      highlight: usedColor,
+                      label: "Used"
+
+                  },
+                  {
+                      value: unUsed,
+                      color: "#ebf1f4",
+                      highlight: "#ebf1f4",
+                      label: "UnUsed"
+                  }
+              ];
+            }
+        });
+    });
+};
+$scope.getResourceDomain();
 
 }
