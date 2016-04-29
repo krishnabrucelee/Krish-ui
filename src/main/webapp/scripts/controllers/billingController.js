@@ -309,15 +309,19 @@ function billingInvoiceCtrl($scope, $http, $window, $modal, $log, $state, $state
             var hasConfigList = {};
             if (($scope.domainView == null || angular.isUndefined($scope.domainView))
                     && ($scope.statusView == null || angular.isUndefined($scope.statusView))) {
+
                 if (appService.globalConfig.sessionValues.type !== 'ROOT_ADMIN') {
+
                     hasConfigList =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "usage/invoice/listByDomain"
-                            +"?type=invoice&lang=" +appService.localStorageService.cookie.get('language')
-                            + "&domainUuid="+appService.globalConfig.sessionValues.domainAbbreviationName+"&status=null&sortBy="+$scope.paginationObject.sortOrder+$scope.paginationObject.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+                            +"?type=invoice"+ "&domainUuid="+appService.globalConfig.sessionValues.domainAbbreviationName+"&status=null");
                 } else {
-                    hasConfigList = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "usage/invoice?type=invoice&lang="+ appService.localStorageService.cookie.get('language')
-                            +"&sortBy="+sortOrder+sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+
+                    hasConfigList = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "usage/invoice?type=invoice");
+
+
                 }
             } else {
+
                   var domainViewAbbr = null;
                     if ($scope.domainView != null && !angular.isUndefined($scope.domainView)) {
                       domainViewAbbr = $scope.domainView.companyNameAbbreviation;
@@ -329,8 +333,7 @@ function billingInvoiceCtrl($scope, $http, $window, $modal, $log, $state, $state
                       domainViewAbbr = appService.globalConfig.sessionValues.domainAbbreviationName;
                   }
                 hasConfigList =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "usage/invoice/listByDomain"
-                    +"?type=invoice&lang=" +appService.localStorageService.cookie.get('language')
-                    + "&domainUuid="+domainViewAbbr+"&status="+$scope.statusView+"&sortBy="+$scope.paginationObject.sortOrder+$scope.paginationObject.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+                    +"?type=invoice"+"&domainUuid="+domainViewAbbr+"&status="+$scope.statusView);
             }
 
             hasConfigList.then(function(result) { // this is only run after $http
@@ -340,6 +343,7 @@ function billingInvoiceCtrl($scope, $http, $window, $modal, $log, $state, $state
                         $scope.invoiceList = {};
                     }
 
+
                 // For pagination
                 $scope.paginationObject.limit = limit;
                 $scope.paginationObject.currentPage = pageNumber;
@@ -348,6 +352,7 @@ function billingInvoiceCtrl($scope, $http, $window, $modal, $log, $state, $state
                 $scope.paginationObject.sortBy = sortBy;
                 $scope.showLoader = false;
         });
+
     };
 
     // Domain List
@@ -363,42 +368,61 @@ function billingInvoiceCtrl($scope, $http, $window, $modal, $log, $state, $state
       if (($scope.domainView == null || angular.isUndefined($scope.domainView))
               && ($scope.statusView == null || angular.isUndefined($scope.statusView))) {
           if (appService.globalConfig.sessionValues.type !== 'ROOT_ADMIN') {
-              hasConfigList =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "usage/invoice/listByDomain"
-                        +"?type=invoice&lang=" +appService.localStorageService.cookie.get('language')
-                        + "&domainUuid="+appService.globalConfig.sessionValues.domainAbbreviationName+"&status=null&sortBy="+$scope.paginationObject.sortOrder+$scope.paginationObject.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+   hasConfigList =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "usage/invoice/listByDomain"
+                        +"?type=invoice"+ "&domainUuid="+appService.globalConfig.sessionValues.domainAbbreviationName+"&status=null");
           } else {
-              hasConfigList = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "usage/invoice?type=invoice&lang="+ appService.localStorageService.cookie.get('language')
-                          +"&sortBy="+$scope.paginationObject.sortOrder+$scope.paginationObject.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+              hasConfigList = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "usage/invoice?type=invoice");
+
+	//$scope.myReportframe = true;
+    	//$scope.reportUrl =  appService.globalConfig.PING_APP_URL + "invoice/reportlist?type=invoice";;
+    	//document.getElementById('myReportframe').setAttribute('src', $scope.reportUrl);
           }
       } else {
+
           var domainViewAbbr = null;
+	  $scope.domainViewAbbr = null;
           if ($scope.domainView != null && !angular.isUndefined($scope.domainView)) {
                 domainViewAbbr = $scope.domainView.companyNameAbbreviation;
+		$scope.domainViewAbbr = $scope.domainView.companyNameAbbreviation;
             }
             if ($scope.statusView == null || angular.isUndefined($scope.statusView)) {
                $scope.statusView = null;
             }
             if (appService.globalConfig.sessionValues.type !== 'ROOT_ADMIN') {
                domainViewAbbr = appService.globalConfig.sessionValues.domainAbbreviationName;
+		$scope.domainViewAbbr = appService.globalConfig.sessionValues.domainAbbreviationName;
              }
 
-           hasConfigList =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "usage/invoice/listByDomain"
-                +"?type=invoice&lang=" +appService.localStorageService.cookie.get('language')
-                + "&domainUuid="+domainViewAbbr+"&status="+$scope.statusView+"&sortBy="+$scope.paginationObject.sortOrder+$scope.paginationObject.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+        
+
+
+    	//$scope.myframe = true;
+    	//$scope.reportUrl =  appService.globalConfig.PING_APP_URL + "invoice/statistics?domainUuid="+ $scope.domainViewAbbr +"&status=" + $scope.statusView+"&type=invoice";
+    	//document.getElementById('myframe').setAttribute('src', $scope.reportUrl);
+
+$scope.pdf = function()
+{
+	 $scope.viewpdf =appService.globalConfig.PING_APP_URL +"invoice/statistics/report?domainUuid="+$scope.domainViewAbbr+"&status="+ $scope.statusView+"&type=pdf&method=invoice";
+}
+
+$scope.excel = function()
+{
+	 $scope.viewexcel =appService.globalConfig.PING_APP_URL +"invoice/statistics/report?domainUuid="+$scope.domainViewAbbr+"&status="+ $scope.statusView+"&type=xlsx&method=invoice";
+}
+
+   hasConfigList =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "usage/invoice/listByDomain"
+                +"?type=invoice"+ "&domainUuid="+domainViewAbbr+"&status="+$scope.statusView);
       }
       hasConfigList.then(function (result) {  // this is only run after $http completes0
-         if (!angular.isUndefined(result._embedded)) {
-             $scope.invoiceList = result['_embedded'].invoiceList;
-         } else {
-             $scope.invoiceList = {};
-         }
-
+/
+ $scope.invoiceList = result;
          // For pagination
          $scope.paginationObject.limit = limit;
          $scope.paginationObject.currentPage = pageNumber;
          $scope.paginationObject.totalItems = $scope.invoiceList.totalItems;
          $scope.showLoader = false;
       });
+  
        };
    $scope.configList(1);
 
@@ -406,37 +430,6 @@ function billingInvoiceCtrl($scope, $http, $window, $modal, $log, $state, $state
    $scope.selectDomainView = function(pageNumber) {
           $scope.configList(1);
    };
-
-//    $scope.validateInvoice = function (form) {
-//        $scope.formSubmitted = true;
-//        if (form.$valid) {
-//            var config = $scope.config;
-//            config.dateFormatType = config.dateFormatType.id;
-//            $scope.showLoader = true;
-//            var hasConfig = appService.promiseAjax.httpRequestPing(globalConfig.HTTP_POST, globalConfig.PING_APP_URL + "configuration", config);
-//            hasConfig.then(function (result) {  // this is only run after $http
-//                $scope.showLoader = false;
-//                $scope.homerTemplate = 'app/views/notification/notify.jsp';
-//                appService.notify({message: 'Updated successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
-//                $scope.configList();
-//
-//            }).catch(function (result) {
-//                $scope.showLoader = false;
-//                if (!angular.isUndefined(result.data)) {
-//                    if (result.data.globalError != '' && !angular.isUndefined(result.data.globalError)) {
-//                        var msg = result.data.globalError[0];
-//                        $scope.showLoader = false;
-//                        appService.notify({message: msg, classes: 'alert-danger', templateUrl: appService.globalConfig.NOTIFICATION_TEMPLATE});
-//                    } else if (result.data.fieldErrors != null) {
-//                        angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
-//                            $scope.configForm[key].$invalid = true;
-//                            $scope.configForm[key].errorMessage = errorMessage;
-//                        });
-//                    }
-//                }
-//            });
-//        }
-//    };
 
     $scope.formElements = {
             invoiceStatusList: {
@@ -482,7 +475,7 @@ function billingPaymentsCtrl($scope, $http, $window, $modal, $log, $state, $stat
                 if (appService.globalConfig.sessionValues.type !== 'ROOT_ADMIN') {
                     hasConfigList =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "usage/invoice/listByDomain"
                             +"?type=payment&lang=" +appService.localStorageService.cookie.get('language')
-                            + "&domainUuid="+appService.globalConfig.sessionValues.domainAbbreviationName+"&status=null&sortBy="+$scope.paginationObject.sortOrder+$scope.paginationObject.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+                            + "&domainUuid="+appService.globalConfig.sessionValues.domainAbbreviationName+"&status=null");
                 } else {
                     hasConfigList = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "usage/invoice?type=payment&lang="+ appService.localStorageService.cookie.get('language')
                             +"&sortBy="+sortOrder+sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
@@ -500,16 +493,18 @@ function billingPaymentsCtrl($scope, $http, $window, $modal, $log, $state, $stat
                       domainViewAbbr = appService.globalConfig.sessionValues.domainAbbreviationName;
                   }
                 hasConfigList =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "usage/invoice/listByDomain"
-                    +"?type=payment&lang=" +appService.localStorageService.cookie.get('language')
-                    + "&domainUuid="+domainViewAbbr+"&status="+$scope.statusView+"&sortBy="+$scope.paginationObject.sortOrder+$scope.paginationObject.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+                    +"?type=payment"
+                    + "&domainUuid="+domainViewAbbr+"&status="+$scope.statusView);
             }
 
-            hasConfigList.then(function(result) { // this is only run after $http
-                if (!angular.isUndefined(result._embedded)) {
-                    $scope.invoiceList = result['_embedded'].invoiceList;
-                    } else {
-                        $scope.invoiceList = {};
-                    }
+          hasConfigList.then(function(result) { // this is only run after $http
+//                if (!angular.isUndefined(result._embedded)) {
+//                   $scope.invoiceList = result['_embedded'].invoiceList;
+//                    } else {
+//                        $scope.invoiceList = {};
+ //                   }
+
+$scope.invoiceList = result;
 
                 // For pagination
                 $scope.paginationObject.limit = limit;
@@ -536,33 +531,52 @@ function billingPaymentsCtrl($scope, $http, $window, $modal, $log, $state, $stat
               && ($scope.statusView == null || angular.isUndefined($scope.statusView))) {
           if (appService.globalConfig.sessionValues.type !== 'ROOT_ADMIN') {
               hasConfigList =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "usage/invoice/listByDomain"
-                        +"?type=payment&lang=" +appService.localStorageService.cookie.get('language')
-                        + "&domainUuid="+appService.globalConfig.sessionValues.domainAbbreviationName+"&status=null&sortBy="+$scope.paginationObject.sortOrder+$scope.paginationObject.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+                        +"?type=payment"+ "&domainUuid="+appService.globalConfig.sessionValues.domainAbbreviationName+"&status=null");
           } else {
-             hasConfigList = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "usage/invoice?lang="+ appService.localStorageService.cookie.get('language')
-                  +"&sortBy="+$scope.paginationObject.sortOrder+$scope.paginationObject.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+             hasConfigList = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "usage/invoice?type=payment");
+
+	//$scope.myReportframe = true;
+    	//$scope.reportUrl =  appService.globalConfig.PING_APP_URL + "invoice/reportlist?type=payment&method=payment";
+    	//document.getElementById('myReportframe').setAttribute('src', $scope.reportUrl);
           }
       } else {
           var domainViewAbbr = null;
             if ($scope.domainView != null && !angular.isUndefined($scope.domainView)) {
               domainViewAbbr = $scope.domainView.companyNameAbbreviation;
+	$scope.domainViewAbbr = $scope.domainView.companyNameAbbreviation;
           }
             if ($scope.statusView == null || angular.isUndefined($scope.statusView)) {
                $scope.statusView = null;
             }
             if (appService.globalConfig.sessionValues.type !== 'ROOT_ADMIN') {
               domainViewAbbr = appService.globalConfig.sessionValues.domainAbbreviationName;
+	$scope.domainViewAbbr = appService.globalConfig.sessionValues.domainAbbreviationName;
              }
+
+	  //$scope.myframe = true;
+	 //$scope.reportUrl =  appService.globalConfig.PING_APP_URL + "invoice/statistics?domainUuid="+ $scope.domainViewAbbr +"&status=" + $scope.statusView+"&type=payment";
+    	//document.getElementById('myframe').setAttribute('src', $scope.reportUrl);
+
+$scope.pdf = function()
+{
+	 $scope.viewpdf =appService.globalConfig.PING_APP_URL +"invoice/statistics/report?domainUuid="+$scope.domainViewAbbr+"&status="+ $scope.statusView+"&type=pdf&method=payment";
+}
+
+$scope.excel = function()
+{
+	 $scope.viewexcel =appService.globalConfig.PING_APP_URL +"invoice/statistics/report?domainUuid="+$scope.domainViewAbbr+"&status="+ $scope.statusView+"&type=xlsx&method=payment";
+}
+
           hasConfigList =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "usage/invoice/listByDomain"
-                +"?type=payment&lang=" +appService.localStorageService.cookie.get('language')
-                + "&domainUuid="+domainViewAbbr+"&status="+$scope.statusView+"&sortBy="+$scope.paginationObject.sortOrder+$scope.paginationObject.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+                +"?type=payment"+ "&domainUuid="+domainViewAbbr+"&status="+$scope.statusView);
       }
       hasConfigList.then(function (result) {  // this is only run after $http completes0
-         if (!angular.isUndefined(result._embedded)) {
-             $scope.invoiceList = result['_embedded'].invoiceList;
-         } else {
-             $scope.invoiceList = {};
-         }
+//         if (!angular.isUndefined(result._embedded)) {
+//             $scope.invoiceList = result['_embedded'].invoiceList;
+//         } else {
+//             $scope.invoiceList = {};/
+//         }
+$scope.invoiceList = result;
 
          // For pagination
          $scope.paginationObject.limit = limit;
@@ -599,36 +613,6 @@ function billingPaymentsCtrl($scope, $http, $window, $modal, $log, $state, $stat
            }]);
    };
 
-//    $scope.validateInvoice = function (form) {
-//        $scope.formSubmitted = true;
-//        if (form.$valid) {
-//            var config = $scope.config;
-//            config.dateFormatType = config.dateFormatType.id;
-//            $scope.showLoader = true;
-//            var hasConfig = appService.promiseAjax.httpRequestPing(globalConfig.HTTP_POST, globalConfig.PING_APP_URL + "configuration", config);
-//            hasConfig.then(function (result) {  // this is only run after $http
-//                $scope.showLoader = false;
-//                $scope.homerTemplate = 'app/views/notification/notify.jsp';
-//                appService.notify({message: 'Updated successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
-//                $scope.configList();
-//
-//            }).catch(function (result) {
-//                $scope.showLoader = false;
-//                if (!angular.isUndefined(result.data)) {
-//                    if (result.data.globalError != '' && !angular.isUndefined(result.data.globalError)) {
-//                        var msg = result.data.globalError[0];
-//                        $scope.showLoader = false;
-//                        appService.notify({message: msg, classes: 'alert-danger', templateUrl: appService.globalConfig.NOTIFICATION_TEMPLATE});
-//                    } else if (result.data.fieldErrors != null) {
-//                        angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
-//                            $scope.configForm[key].$invalid = true;
-//                            $scope.configForm[key].errorMessage = errorMessage;
-//                        });
-//                    }
-//                }
-//            });
-//        }
-//    };
 
     $scope.formElements = {
             invoiceStatusList: {

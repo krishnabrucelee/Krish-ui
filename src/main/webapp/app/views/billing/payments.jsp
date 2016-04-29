@@ -77,8 +77,49 @@
                             </table>
                         </div>
                     </div>
-                    <pagination-content></pagination-content>
+              
                 </div>
+                
+                
+                
+                <div class="report-wrapper white-content" >
+            	  <div class="label-primary p-sm h6 text-white fa-bold" >
+		              Change  <span  data-ng-show="groupBy">Group By : {{groupBy}}</span><span data-ng-show="usageStatisticsObj.domain"> | Domain : {{usageStatisticsObj.domain.name}} </span><span data-ng-show= "usageStatisticsObj.startDate"> | Start Date :<em>{{usageStatisticsObj.startDate| date:'dd-MMM-yyyy' }}</em></span><span data-ng-show="usageStatisticsObj.endDate"> | To Date :<em>{{usageStatisticsObj.endDate| date:'dd-MMM-yyyy' }}</em> 
+		                	</span>										
+										<a	href="{{viewpdf}}" class="btn btn-default  pull-right m-l-xs" data-ng-click="pdf()"><span
+										class="fa fa-file-pdf-o text-danger"></span> PDF</a>
+										
+										<a	href="{{viewexcel}}" class="btn btn-default  pull-right m-l-xs" data-ng-click="excel()"><span
+										class=" fa fa-file-excel-o text-success"></span> XLSX</a>
+														
+							
+										<div class="clearfix"></div>
+		                </div>
+					
+						<!-- <iframe width="400" height="700" id="myframe" name="myframe"
+							class="embed-responsive-item col-md-12 client-usage-report-iframe"></iframe> -->
+					</div>
+					
+					<div class="report-wrapper white-content" >
+					
+					  <div class="label-primary p-sm h6 text-white fa-bold" >
+		               default <span  data-ng-show="groupBy">Group By : {{groupBy}}</span><span data-ng-show="usageStatisticsObj.domain"> | Domain : {{usageStatisticsObj.domain.name}} </span><span data-ng-show= "usageStatisticsObj.startDate"> | Start Date :<em>{{usageStatisticsObj.startDate| date:'dd-MMM-yyyy' }}</em></span><span data-ng-show="usageStatisticsObj.endDate"> | To Date :<em>{{usageStatisticsObj.endDate| date:'dd-MMM-yyyy' }}</em> 
+		                	</span><a
+										href="{{ global.PING_APP_URL }}invoice/paymentReport?type=pdf"
+										class="btn btn-default  pull-right m-l-xs"><span
+										class="fa fa-file-pdf-o text-danger"></span> PDF</a>
+							<a			href="{{ global.PING_APP_URL }}invoice/paymentReport?type=xlsx"
+										class="btn btn-default  pull-right m-l-xs"><span
+										class=" fa fa-file-excel-o text-success"></span> XLSX</a>
+										<div class="clearfix"></div>
+		                </div>
+					
+					
+						<!-- <iframe width="400" height="700" id="myReportframe" name="myReportframe"
+							class="embed-responsive-item col-md-12 client-usage-report-iframe"></iframe> -->
+					</div>
+                
+                
             </div>
         </div>
 </div>

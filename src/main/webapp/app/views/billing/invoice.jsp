@@ -41,7 +41,7 @@
     				  		<get-loader-image data-ng-show="showLoader"></get-loader-image>
       						</div>
                         <div data-ng-hide="showLoader" class="table-responsive">
-                            <table cellspacing="1" cellpadding="1" class="table dataTable table-bordered table-striped">
+                            <table cellspacing="1" cellpadding="1" class="table  table-bordered table-striped">
                                 <thead>
                                     <tr>
                                     	<th class="col-md-2 col-sm-2" data-ng-click="changeSort('invoiceNumber',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='invoiceNumber'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.invoice.no" bundle="${msg}" /></th>
@@ -71,9 +71,45 @@
                             </table>
                         </div>
                     </div>
-                    <pagination-content></pagination-content>
                 </div>
             </div>
+            
+            	<div class="report-wrapper white-content" >
+            	  <div class="label-primary p-sm h6 text-white fa-bold" >
+		              Change  <span  data-ng-show="groupBy">Group By : {{groupBy}}</span><span data-ng-show="usageStatisticsObj.domain"> | Domain : {{usageStatisticsObj.domain.name}} </span><span data-ng-show= "usageStatisticsObj.startDate"> | Start Date :<em>{{usageStatisticsObj.startDate| date:'dd-MMM-yyyy' }}</em></span><span data-ng-show="usageStatisticsObj.endDate"> | To Date :<em>{{usageStatisticsObj.endDate| date:'dd-MMM-yyyy' }}</em> 
+		                	</span>										
+										<a	href="{{viewpdf}}" class="btn btn-default  pull-right m-l-xs" data-ng-click="pdf()"><span
+										class="fa fa-file-pdf-o text-danger"></span> PDFchange</a>
+										
+										<a	href="{{viewexcel}}" class="btn btn-default  pull-right m-l-xs" data-ng-click="excel()"><span
+										class=" fa fa-file-excel-o text-success"></span> XLSXchange</a>
+														
+							
+										<div class="clearfix"></div>
+		                </div>
+					
+						<!-- <iframe width="400" height="700" id="myframe" name="myframe"
+							class="embed-responsive-item col-md-12 client-usage-report-iframe"></iframe> -->
+					</div>
+					
+					<div class="report-wrapper white-content" >
+					
+					  <div class="label-primary p-sm h6 text-white fa-bold" >
+		               default <span  data-ng-show="groupBy">Group By : {{groupBy}}</span><span data-ng-show="usageStatisticsObj.domain"> | Domain : {{usageStatisticsObj.domain.name}} </span><span data-ng-show= "usageStatisticsObj.startDate"> | Start Date :<em>{{usageStatisticsObj.startDate| date:'dd-MMM-yyyy' }}</em></span><span data-ng-show="usageStatisticsObj.endDate"> | To Date :<em>{{usageStatisticsObj.endDate| date:'dd-MMM-yyyy' }}</em> 
+		                	</span><a
+										href="{{ global.PING_APP_URL }}invoice/report?type=pdf"
+										class="btn btn-default  pull-right m-l-xs"><span
+										class="fa fa-file-pdf-o text-danger"></span> PDFdefault</a>
+							<a			href="{{ global.PING_APP_URL }}invoice/report?type=xlsx"
+										class="btn btn-default  pull-right m-l-xs"><span
+										class=" fa fa-file-excel-o text-success"></span> XLSXdefault</a>
+										<div class="clearfix"></div>
+		                </div>
+					
+					
+						<!-- <iframe width="400" height="700" id="myReportframe" name="myReportframe"
+							class="embed-responsive-item col-md-12 client-usage-report-iframe"></iframe> -->
+					</div>
         </div>
 </div>
-    .
+    
