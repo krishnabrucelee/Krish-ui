@@ -211,7 +211,7 @@ pageEncoding="UTF-8"%>
 										<fmt:message key="common.department" bundle="${msg}" />
 								</label>
 								<div class="col-md-5 col-xs-12 col-sm-5">
-									<label>{{ instance.instanceOwner.userName }}</label>
+									<label>{{ instance.instanceOwner.department.userName }}</label>
 									<input
 										type="hidden" readonly="readonly"
 										data-ng-model="volume.department"
