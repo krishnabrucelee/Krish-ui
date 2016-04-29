@@ -10,6 +10,7 @@ angular
 
 function configurationCtrl($scope, $stateParams, appService, localStorageService, promiseAjax, $modal, $window, globalConfig, crudService, notify, $state) {
     $scope.formSubmitted = false;
+    $scope.affinitySubmitted = false;
     $scope.instanceList = [];
     $scope.formElements={};
     $scope.global = crudService.globalConfig;
@@ -178,7 +179,7 @@ function configurationCtrl($scope, $stateParams, appService, localStorageService
                     '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
           // Create a new affinity group
           $scope.save = function (affinityGroupForm, affinityGroup) {
-       	   $scope.formSubmitted = true;
+       	   $scope.affinitySubmitted = true;
        		   if (affinityGroupForm.$valid) {
        			   $scope.showLoader = true;
        			    affinityGroup.affinityGroupTypeId = affinityGroup.affinityGroupType.id;
@@ -210,10 +211,10 @@ function configurationCtrl($scope, $stateParams, appService, localStorageService
        };
 
        $scope.saveAffinity = function (form, affinity) {
-      		$scope.formSubmitted = true;
+      		$scope.affinitySubmitted = true;
       		if (form.$valid) {
       			$scope.showLoader = true;
-                $scope.formSubmitted = false;
+                $scope.affinitySubmitted = false;
                 $scope.instances.affinityGroupList = $scope.affinity.groupList;
       			var hasServer = appService.crudService.updates("virtualmachine/affinityGroup", $scope.instances);
       			hasServer.then(function (result) {

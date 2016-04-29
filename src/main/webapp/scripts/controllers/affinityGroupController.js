@@ -182,8 +182,21 @@ function affinityGroupListCtrl($scope, appService, $state, localStorageService, 
   	    var hasInstanceList =  appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL
   	    		+ "virtualmachine/affinityGroupInstance/" + affinityGroup.id);
   	    hasInstanceList.then(function (result) {
-  	    	$scope.formElements.instanceList = result;
-  	    });
+  	    	if (result.length == 0) {
+  	    		appService.notify({message: 'Instance not available for selected affinity group', classes: 'alert-success',
+                	templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+  	    	} else {
+  	    		$scope.formElements.instanceList = result;
+  	    	}
+  	    }).catch(function (result) {
+        	if(result.data.globalError[0] != ''){
+        		var msg = result.data.globalError[0];
+                appService.notify({message: msg, classes: 'alert-danger',
+                	templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+            }
+        	$scope.showLoader = false;
+        	$modalInstance.close();
+        });
     };
 
     // Get instance list by group
