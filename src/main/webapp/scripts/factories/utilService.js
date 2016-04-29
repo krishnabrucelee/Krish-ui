@@ -48,8 +48,10 @@ function utilService(crudService, promiseAjax, globalConfig, $http, $window, $co
 
     // Logout application
     object.logoutApplication = function(type) {
-    	$http({method:globalConfig.HTTP_GET, url:globalConfig.APP_URL + 'loginHistory/logoutSession?id=' + localStorageService.get('id') + '&type=' + type,
-			"headers": {'x-auth-token': localStorageService.get('token'), 'x-requested-with': '', 'Content-Type': 'application/json', 'Range': "items=0-9", 'x-auth-login-token': '-1',
+    	if (localStorageService.get('id') != 'undefined' && !angular.isUndefined(localStorageService.get('id'))
+        		&& localStorageService.get('id') != null && localStorageService.get('id') != 'null') {
+    	    $http({method:globalConfig.HTTP_GET, url:globalConfig.APP_URL + 'loginHistory/logoutSession?id=' + localStorageService.get('id') + '&type=' + type,
+			    "headers": {'x-auth-token': localStorageService.get('token'), 'x-requested-with': '', 'Content-Type': 'application/json', 'Range': "items=0-9", 'x-auth-login-token': '-1',
 				'x-auth-remember': localStorageService.get('rememberMe'), 'x-auth-user-id': localStorageService.get('id'), 'x-auth-login-time': localStorageService.get('loginTime')}})
 			.success(function(result){
 				$window.sessionStorage.removeItem("loginSession")
@@ -59,6 +61,14 @@ function utilService(crudService, promiseAjax, globalConfig, $http, $window, $co
 				localStorageService.set('loginTime', "0");
 		        window.location.href = "login";
           });
+    	} else {
+    		$window.sessionStorage.removeItem("loginSession")
+			localStorageService.set('rememberMe', "false");
+			$cookies.rememberMe = "false";
+			localStorageService.set('loginToken', "0");
+			localStorageService.set('loginTime', "0");
+	        window.location.href = "login";
+    	}
     }
 
     object.getFlotBarData = function() {

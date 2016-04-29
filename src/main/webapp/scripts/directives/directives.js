@@ -32,6 +32,7 @@ angular
     .directive('getLoaderImage', getLoaderImage)
     .directive('getLoaderImageOffer', getLoaderOfferImage)
     .directive('getLoaderImageDetail', getLoaderDetailImage)
+    .directive('getLoginLoaderImage', getLoginLoaderImage)
     .directive('passwordVerify', passwordVerify)
     .directive('validInteger', validInteger)
     .directive('hasPermission', hasPermission)
@@ -731,6 +732,16 @@ function getLoaderOfferImage() {
 
         },
         templateUrl: "app/views/common/loader-image-offer.jsp",
+	}
+}
+
+function getLoginLoaderImage() {
+	return {
+		restrict: 'E',
+        link: function (scope, element, attrs) {
+
+        },
+        templateUrl: "app/views/common/login-loader-image.jsp",
 	}
 }
 

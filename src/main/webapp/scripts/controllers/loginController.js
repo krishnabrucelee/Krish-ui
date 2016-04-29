@@ -31,8 +31,10 @@ angular.module('homer', ['ngCookies', 'LocalStorageModule']).controller("loginCt
             'Content-Type': 'application/json'
         };
 
+        $scope.showLoader = true;
         $http({method: 'POST', url: globalConfig.APP_URL + 'authenticate', headers: headers})
             .success(function (result) {
+               $scope.showLoader = false;
                $window.sessionStorage.token = result.token;
                $window.sessionStorage.setItem("loginSession", JSON.stringify(result));
                localStorageService.set('token', result.token);
@@ -47,6 +49,7 @@ angular.module('homer', ['ngCookies', 'LocalStorageModule']).controller("loginCt
                    window.location.href = globalConfig.BASE_UI_URL + "index#/dashboard";
                }
            }).catch(function (result) {
+        	      $scope.showLoader = false;
                   if (!angular.isUndefined(result.data)) {
             	      if(result.data.message == "error.already.exists") {
             		  $scope.forceLogin = function() {
@@ -59,8 +62,10 @@ angular.module('homer', ['ngCookies', 'LocalStorageModule']).controller("loginCt
             		    	            "x-force-login" : "true",
             		    	            'Content-Type': 'application/json'
             		    	        };
+            		    	  $scope.showLoader = true;
             		          $http({method: 'POST', url: globalConfig.APP_URL + 'authenticate', headers: headers})
             		              .success(function (result) {
+            		            	  $scope.showLoader = false;
             		            	  $window.sessionStorage.token = result.token;
             		                  $window.sessionStorage.setItem("loginSession", JSON.stringify(result));
             		                  localStorageService.set('token', result.token);
@@ -75,6 +80,7 @@ angular.module('homer', ['ngCookies', 'LocalStorageModule']).controller("loginCt
             		                      window.location.href = globalConfig.BASE_UI_URL + "index#/dashboard";
             		                  }
             		          }).catch(function (result) {
+            		        	  $scope.showLoader = false;
             		        	  $window.sessionStorage.removeItem("loginSession")
             		        	  if (!angular.isUndefined(result.data)) {
             		        		  var target = document.getElementById("errorMsg");
