@@ -350,8 +350,9 @@ table.dataTable thead .sorting_desc::after {content: "\f0dd";}
 .dashboard-quota-area{font-weight:800; text-align:center;}
 .dashboard-quota-area span{display:block; color:#9fa0a2; font-weight:normal;}
 .dashboard-quota{margin:28px 0 28px 0; min-height: 124px;}
-.dashboard-quota canvas{margin-left:-15px !important; margin-bottom:5px;}
-.doughnutchart-value{position:absolute; z-index:0; color:#73919e; font-size:16px; font-weight:600; margin: 16% 0 0 24%;}
+.dashboard-quota canvas{ margin-bottom:5px; position:relative; z-index:1; width: 100% !important; height: auto !important;}
+.doughnutchart-value{position:absolute; z-index:0; color:#73919e; font-size:16px; font-weight:600; margin: 16% 0 0 32%;}
+.doughnut-fixed-area{width:150px; position:relative;}
 
 .dashboard-tab{min-height:360px;}
 .dashboard-tab .panel-body{padding:0px;}
