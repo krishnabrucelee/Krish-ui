@@ -14,6 +14,7 @@ function templatesCtrl($scope, $stateParams, appService, $timeout, promiseAjax, 
 
     $scope.global = globalConfig;
     $scope.sort = appService.globalConfig.sort;
+    $scope.paginationObject = {};
     $scope.changeSorting = appService.utilService.changeSorting;
     $scope.template = {
         templateList: {}
@@ -91,7 +92,7 @@ $scope.template.listAllTemplate = {};
 
     $scope.communitylist = function () {
     $scope.formElements.category = 'community';
- 
+
 
 
     //community List
