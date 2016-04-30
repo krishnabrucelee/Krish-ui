@@ -422,7 +422,10 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
         if (!angular.isUndefined(obj)) {
             $scope.listNetworks(obj.id, 'project');
         } else {
-            $scope.listNetworks($scope.depValue, 'department');
+    if ($scope.global.sessionValues.type == "USER") {
+        $scope.depValue = $scope.global.sessionValues.departmentId;
+    }
+	 $scope.listNetworks($scope.depValue, 'department');
         }
 
     };
