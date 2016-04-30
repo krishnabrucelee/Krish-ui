@@ -50,7 +50,7 @@ angular.module('homer', ['ngCookies', 'LocalStorageModule']).controller("loginCt
                }
            }).catch(function (result) {
         	      $scope.showLoader = false;
-                  if (!angular.isUndefined(result.data)) {
+                  if (!angular.isUndefined(result.data) && result.data != null) {
             	      if(result.data.message == "error.already.exists") {
             		  $scope.forceLogin = function() {
             		      if (confirm("Already user is logged In. Are you sure want to do Force Login?") == true) {
@@ -99,6 +99,14 @@ angular.module('homer', ['ngCookies', 'LocalStorageModule']).controller("loginCt
                           target.style.display = 'block';
                           target.style["margin-bottom"] = '10px';
                       }
+                  } else {
+                	  $window.sessionStorage.removeItem("loginSession")
+    	        	  if (!angular.isUndefined(result.data)) {
+    	        		var target = document.getElementById("errorMsg");
+    	                target.innerHTML = "The server could be temporarily unavailable. Try again in a few moments.";
+    	                target.style.display = 'block';
+    	                target.style["margin-bottom"] = '10px';
+    	        	  }
                   }
            });
 
