@@ -311,7 +311,6 @@ function billingInvoiceCtrl($scope, $http, $window, $modal, $log, $state, $state
                     && ($scope.statusView == null || angular.isUndefined($scope.statusView))) {
 
                 if (appService.globalConfig.sessionValues.type !== 'ROOT_ADMIN') {
-
                     hasConfigList =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "usage/invoice/listByDomain"
                             +"?type=invoice"+ "&domainUuid="+appService.globalConfig.sessionValues.domainAbbreviationName+"&status=null");
                 } else {
@@ -371,14 +370,27 @@ function billingInvoiceCtrl($scope, $http, $window, $modal, $log, $state, $state
               && ($scope.statusView == null || angular.isUndefined($scope.statusView))) {
 		
           if (appService.globalConfig.sessionValues.type !== 'ROOT_ADMIN') {
+
+$scope.domainpdf = function()
+{
+	 $scope.viewpdf =appService.globalConfig.PING_APP_URL +"invoice/statistics/report?domainUuid="+appService.globalConfig.sessionValues.domainAbbreviationName+"&status=null&type=pdf&method=invoice";
+}
+
+$scope.domainexcel = function()
+{
+	 $scope.viewexcel =appService.globalConfig.PING_APP_URL +"invoice/statistics/report?domainUuid="+appService.globalConfig.sessionValues.domainAbbreviationName+"&status=null&type=xlsx&method=invoice";
+}
    hasConfigList =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "usage/invoice/listByDomain"
                         +"?type=invoice"+ "&domainUuid="+appService.globalConfig.sessionValues.domainAbbreviationName+"&status=null");
-          } else {
-              hasConfigList = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "usage/invoice?type=invoice");
 
+
+          } else {
+ $scope.showLoader = true;
+              hasConfigList = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "usage/invoice?type=invoice");
 	//$scope.myReportframe = true;
     	//$scope.reportUrl =  appService.globalConfig.PING_APP_URL + "invoice/reportlist?type=invoice";;
     	//document.getElementById('myReportframe').setAttribute('src', $scope.reportUrl);
+ $scope.showLoader = false;
           }
       } else {
  $scope.defaultView = false;
@@ -413,12 +425,16 @@ $scope.excel = function()
 	 $scope.viewexcel =appService.globalConfig.PING_APP_URL +"invoice/statistics/report?domainUuid="+$scope.domainViewAbbr+"&status="+ $scope.statusView+"&type=xlsx&method=invoice";
 }
 
+
+
    hasConfigList =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "usage/invoice/listByDomain"
                 +"?type=invoice"+ "&domainUuid="+domainViewAbbr+"&status="+$scope.statusView);
       }
+ $scope.showLoader = true;
       hasConfigList.then(function (result) {  // this is only run after $http completes0
 
  $scope.invoiceList = result;
+ $scope.showLoader = false;
          // For pagination
          $scope.paginationObject.limit = limit;
          $scope.paginationObject.currentPage = pageNumber;
@@ -535,10 +551,22 @@ $scope.invoiceList = result;
       var hasConfigList = {};
       if (($scope.domainView == null || angular.isUndefined($scope.domainView))
               && ($scope.statusView == null || angular.isUndefined($scope.statusView))) {
+
           if (appService.globalConfig.sessionValues.type !== 'ROOT_ADMIN') {
+
+$scope.domainpdf = function()
+{
+	 $scope.viewpdf =appService.globalConfig.PING_APP_URL +"invoice/statistics/report?domainUuid="+appService.globalConfig.sessionValues.domainAbbreviationName+"&status=null&type=pdf&method=payment";
+}
+
+$scope.domainexcel = function()
+{
+	 $scope.viewexcel =appService.globalConfig.PING_APP_URL +"invoice/statistics/report?domainUuid="+appService.globalConfig.sessionValues.domainAbbreviationName+"&status=null&type=xlsx&method=payment";
+}
               hasConfigList =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "usage/invoice/listByDomain"
                         +"?type=payment"+ "&domainUuid="+appService.globalConfig.sessionValues.domainAbbreviationName+"&status=null");
           } else {
+
              hasConfigList = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "usage/invoice?type=payment");
 
 	//$scope.myReportframe = true;
@@ -546,6 +574,7 @@ $scope.invoiceList = result;
     	//document.getElementById('myReportframe').setAttribute('src', $scope.reportUrl);
           }
       } else {
+
  $scope.defaultView = false;
           var domainViewAbbr = null;
             if ($scope.domainView != null && !angular.isUndefined($scope.domainView)) {
@@ -577,6 +606,7 @@ $scope.excel = function()
           hasConfigList =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "usage/invoice/listByDomain"
                 +"?type=payment"+ "&domainUuid="+domainViewAbbr+"&status="+$scope.statusView);
       }
+ $scope.showLoader = true;
       hasConfigList.then(function (result) {  // this is only run after $http completes0
 //         if (!angular.isUndefined(result._embedded)) {
 //             $scope.invoiceList = result['_embedded'].invoiceList;
@@ -584,7 +614,7 @@ $scope.excel = function()
 //             $scope.invoiceList = {};/
 //         }
 $scope.invoiceList = result;
-
+ $scope.showLoader = false;
          // For pagination
          $scope.paginationObject.limit = limit;
          $scope.paginationObject.currentPage = pageNumber;

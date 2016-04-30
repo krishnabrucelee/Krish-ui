@@ -27,13 +27,20 @@
 
 					<div class="pull-right" data-ng-if="defaultView">
 
-					  <a
+					  <a data-ng-if=" global.sessionValues.type == 'ROOT_ADMIN'"
 										href="{{ global.PING_APP_URL }}invoice/paymentReport?type=pdf"
 										class="btn btn-default  pull-right m-l-xs"><span
 										class="fa fa-file-pdf-o text-danger"></span> PDF</a>
-							<a			href="{{ global.PING_APP_URL }}invoice/paymentReport?type=xlsx"
+
+								<a	data-ng-if=" global.sessionValues.type !== 'ROOT_ADMIN'" href="{{viewpdf}}" class="btn btn-default  pull-right m-l-xs" data-ng-click="domainpdf()"><span
+										class="fa fa-file-pdf-o text-danger"></span> PDF</a>
+
+							<a		data-ng-if=" global.sessionValues.type == 'ROOT_ADMIN'" 	href="{{ global.PING_APP_URL }}invoice/paymentReport?type=xlsx"
 										class="btn btn-default  pull-right m-l-xs"><span
 										class=" fa fa-file-excel-o text-success"></span> XLSX</a>
+
+							<a	data-ng-if=" global.sessionValues.type !== 'ROOT_ADMIN'" href="{{viewexcel}}" class="btn btn-default  pull-right m-l-xs" data-ng-click="domainexcel()"><span
+										class=" fa fa-file-excel-o text-success"></span>  XLSX</a>
 										<div class="clearfix"></div>
 
 						<!-- <iframe width="400" height="700" id="myReportframe" name="myReportframe"
@@ -73,8 +80,8 @@
                             <table cellspacing="1" cellpadding="1" class="table table-bordered ">
                                 <thead>
                                     <tr>
-                                        <th class="label-primary text-white" data-ng-class="sort.descending && sort.column =='invoiceNumber'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.invoice.no" bundle="${msg}" /></th>
-                                        <th class="label-primary text-right text-white"  data-ng-class="sort.descending && sort.column =='domain.name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.domain.name" bundle="${msg}" /></th>
+                                        <th class="label-primary text-white" data-ng-class="sort.descending && sort.column =='invoiceNumber'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.invoice.no" bundle="${msg}" />.</th>
+                                        <th class="label-primary text-right text-white"  data-ng-class="sort.descending && sort.column =='domain.name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.company" bundle="${msg}" /></th>
                                         <th class="label-primary text-right text-white"  data-ng-class="sort.descending && sort.column =='billPeriod'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.billing.period" bundle="${msg}" /></th>
                                         <th class="label-primary text-right text-white"  data-ng-class="sort.descending && sort.column =='totalCost'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.payable" bundle="${msg}" /></th>
                                         <th class="label-primary text-right text-white"  data-ng-class="sort.descending && sort.column =='dueDate'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.due.date" bundle="${msg}" /></th>
@@ -96,8 +103,8 @@
                                         <td class="text-right">{{ invoice.domain.name}}</td>
                                         <td class="text-right">{{ invoice.billPeriod}}</td>
                                         <td class="text-right">{{ invoice.totalCost}}</td>
-                                        <td class="text-right">{{ invoice.dueDate | date:'yyyy-MM-dd HH:mm:ss'}}</td>
-                                        <td class="text-right">{{ invoice.paidOn | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                                        <td class="text-right">{{ invoice.dueDate | date:'yyyy-MM-dd' }}</td>
+                                        <td class="text-right">{{ invoice.paidOn | date:'yyyy-MM-dd' }}</td>
                                         <td class="text-right">{{invoice.transactionReference}}</td>
                                         <td class="text-right">{{ invoice.paymentMethod}}</td>
                                         <td class="text-right">{{ invoice.status}}</td>
