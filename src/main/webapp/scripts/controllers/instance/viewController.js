@@ -202,22 +202,26 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
                         var hasVm = appService.crudService.vmUpdate("virtualmachine/handlevmevent", item.uuid, event);
                         appService.globalConfig.webSocketLoaders.viewLoader = true;
                         hasVm.then(function(result) {
+                            $scope.agree.value1 = false;
                             window.location.href = "index#/instance/list";
                             $scope.cancel();
                         }).catch(function(result) {
                             $scope.cancel();
                             appService.globalConfig.webSocketLoaders.viewLoader = false;
+                            $scope.agree.value1 = false;
                         });
                     } else {
                         var event = "VM.DESTROY";
                         appService.globalConfig.webSocketLoaders.viewLoader = true;
                         var hasVm = appService.crudService.vmUpdate("virtualmachine/handlevmevent", item.uuid, event);
                         hasVm.then(function(result) {
+                            $scope.agree.value1 = false;
                             window.location.href = "index#/instance/list";
                             $scope.cancel();
                         }).catch(function(result) {
                             $scope.cancel();
                             appService.globalConfig.webSocketLoaders.viewLoader = false;
+                            $scope.agree.value1 = false;
                         });
                     }
                 },

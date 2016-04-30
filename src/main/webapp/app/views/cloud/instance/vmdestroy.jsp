@@ -14,18 +14,12 @@
         <div class="modal-body">
             <div class=" row">
                 <div class="form-group p-sm has-error col-md-3 col-sm-3  col-xs-3">
-
                     <span class="fa fa-3x fa-warning text-warning"></span>
                 </div>
-                <div data-ng-if="global.sessionValues.type === 'ROOT_ADMIN'" class="form-group p-md col-md-9 col-sm-9  col-xs-9" data-ng-class=" agree != true && actionExpunge  ? 'text-danger' : ''">
-
+                <div class="form-group p-md col-md-9 col-sm-9  col-xs-9" data-ng-class=" agree != true && actionExpunge  ? 'text-danger' : ''">
                    <input id="agree" icheck type="checkbox" name="agree" class="input-mini p-md"  data-ng-model="agree.value1"/>
                    <label class="m-l-sm font-normal" for="agree"> <fmt:message key="expunge.vm" bundle="${msg}" /></label>
                 </div>
-				<div data-ng-if="global.sessionValues.type !== 'ROOT_ADMIN'" class="form-group p-md col-md-9 col-sm-9  col-xs-9" data-ng-class=" agree != true && actionExpunge  ? 'text-danger' : ''">
-						 <label><fmt:message key="destroy.vm" bundle="${msg}" /></label>
-                </div>
-
             </div>
 
         </div>
