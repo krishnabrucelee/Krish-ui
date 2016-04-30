@@ -186,7 +186,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
             $scope.showLoader = false;
         });
     }
-    $scope.getTemplatesByFilters();
+    /*$scope.getTemplatesByFilters();**/
 
     $scope.getIsoByFilters = function() {
         var templateList = [];
