@@ -41,15 +41,16 @@ pageEncoding="UTF-8"%>
                         <div class="row dashboard-quota-area" data-ng-hide="showQuotaLoader">
                             <div data-ng-if="quotaLimit.max != '-1'" class="col-md-2 col-sm-4 col-xs-6 dashboard-quota" data-ng-repeat="quotaLimit in quotaLimits">
                             	<div class="doughnut-fixed-area">
-	                                <div class="doughnutchart-value">{{ quotaLimit.percentage }}%</div>
-	                                <canvas doughnutchart options="doughnutOptions" data="quotaLimit.doughnutData" height="140" ></canvas>
+	                                <div class="doughnutchart-value">{{ quotaLimit.percentage}}%</div>
+	                                <canvas doughnutchart options="doughnutOptions" data="quotaLimit.doughnutData" width="120" height="85" ></canvas>
 	                                <div>{{ quotaLimit.label }}</div> <span>Using {{quotaLimit.usedLimit}} of {{quotaLimit.max}}</span>
                             	</div>
 							</div>
 							 <div data-ng-if="quotaLimit.max == '-1'" class="col-md-2 col-sm-4 col-xs-6 dashboard-quota" data-ng-repeat="quotaLimit in quotaLimits">
-                               <div class="m-b-sm">
-                                <img src="images/unlimited-quota.png" ></div>
-                                {{ quotaLimit.label }} <span>Using {{quotaLimit.usedLimit}} of unlimited</span>
+                               	<div class="doughnut-fixed-area">
+	                               	<div class="m-b-sm"><img src="images/unlimited-quota.png" ></div>
+	                                <div>{{ quotaLimit.label }}</div> <span>Using {{quotaLimit.usedLimit}} of unlimited</span>
+                                </div>
                             </div>
                            </div>
                     </div>
