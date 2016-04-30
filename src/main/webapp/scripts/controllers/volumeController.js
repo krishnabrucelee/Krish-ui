@@ -46,12 +46,20 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
 		$scope.showLoader = true;
 		var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
             var hasVolumesLists = {};
-            if ($scope.domainView == null) {
+            $scope.filter = "";
+            if ($scope.domainView == null && $scope.quickSearchText == null) {
             	hasVolumesLists =  appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "volumes" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+sortOrder+sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
             } else {
-            	hasVolumesLists =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "volumes/listByDomain"
+            	if ($scope.domainView != null && $scope.quickSearchText == null) {
+                    $scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=";
+                } else if ($scope.domainView == null && $scope.quickSearchText != null) {
+                    $scope.filter = "&domainId=0" + "&searchText=" + $scope.quickSearchText;
+                } else {
+                    $scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=" + $scope.quickSearchText;
+                }
+            	hasVolumesLists =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "volumes/listByFilter"
     				+"?lang=" +appService.localStorageService.cookie.get('language')
-    				+ "&domainId="+$scope.domainView.id+"&sortBy="+$scope.paginationObject.sortOrder+$scope.paginationObject.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+    				+ $scope.filter +"&sortBy="+$scope.paginationObject.sortOrder+$scope.paginationObject.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
             }
             hasVolumesLists.then(function(result) { // this is only run after $http
             	// completes0
@@ -112,6 +120,17 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
     	$scope.list(1);
     };
 
+    // Get volume list based on quick search
+    $scope.quickSearchText = null;
+    $scope.searchList = function(quickSearchText) {
+    	if (quickSearchText != "") {
+            $scope.quickSearchText = quickSearchText;
+    	} else {
+    		$scope.quickSearchText = null;
+    	}
+        $scope.list(1);
+    };
+
     // Volume List
     $scope.list = function (pageNumber) {
         appService.globalConfig.sort.sortOrder = $scope.paginationObject.sortOrder;
@@ -119,12 +138,20 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
     	 $scope.showLoader = true;
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasVolumes = {};
-        if ($scope.domainView == null) {
+        $scope.filter = "";
+        if ($scope.domainView == null && $scope.quickSearchText == null) {
         	hasVolumes = appService.crudService.list("volumes", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
         } else {
-        	hasVolumes =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "volumes/listByDomain"
+        	if ($scope.domainView != null && $scope.quickSearchText == null) {
+                $scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=";
+            } else if ($scope.domainView == null && $scope.quickSearchText != null) {
+                $scope.filter = "&domainId=0" + "&searchText=" + $scope.quickSearchText;
+            } else {
+                $scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=" + $scope.quickSearchText;
+            }
+        	hasVolumes =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "volumes/listByFilter"
 				+"?lang=" +appService.localStorageService.cookie.get('language')
-				+ "&domainId="+$scope.domainView.id+"&sortBy="+globalConfig.sort.sortOrder+globalConfig.sort.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+				+ $scope.filter +"&sortBy="+globalConfig.sort.sortOrder+globalConfig.sort.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
         }
         hasVolumes.then(function (result) {
             $scope.volumeList = result;
@@ -132,16 +159,16 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
 
       		 // Get the count of the listings
             var hasVmCount = {};
-            if ($scope.domainView == null) {
+            if ($scope.domainView == null && $scope.quickSearchText == null) {
        		    hasVmCount = appService.crudService.listAll("volumes/volumeCounts");
             } else {
             	hasVmCount = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL +
-            			"volumes/volumeCountsByDomain?domainId="+$scope.domainView.id +"&lang="+
-            			appService.localStorageService.cookie.get('language')+"&sortBy="+globalConfig.sort.sortOrder+globalConfig.sort.sortBy);
+            			"volumes/volumeCountsByDomain?lang="+
+            			appService.localStorageService.cookie.get('language')+ $scope.filter +"&sortBy="+globalConfig.sort.sortOrder+globalConfig.sort.sortBy);
             }
        		hasVmCount.then(function(result) {
        			$scope.attachedCount = result.attachedCount;
-       			if ($scope.domainView == null) {
+       			if ($scope.domainView == null && $scope.quickSearchText == null) {
        				$scope.detachedCount = result.detachedCount;
                 } else {
                 	$scope.detachedCount = $scope.volumeList.Count - result.attachedCount;
