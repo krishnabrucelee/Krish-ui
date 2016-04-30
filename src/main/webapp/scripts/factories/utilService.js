@@ -60,6 +60,15 @@ function utilService(crudService, promiseAjax, globalConfig, $http, $window, $co
 				localStorageService.set('loginToken', "0");
 				localStorageService.set('loginTime', "0");
 		        window.location.href = "login";
+          }).catch(function (result) {
+              if (type == 'LOGOUT') {
+            	  $window.sessionStorage.removeItem("loginSession")
+  				  localStorageService.set('rememberMe', "false");
+  				  $cookies.rememberMe = "false";
+  				  localStorageService.set('loginToken', "0");
+  				  localStorageService.set('loginTime', "0");
+  		          window.location.href = "login";
+              }
           });
     	} else {
     		$window.sessionStorage.removeItem("loginSession")
