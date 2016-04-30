@@ -117,7 +117,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
         $scope.showLoader = true;
         var hasOsListByFilter = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "oscategorys/os?type=template");
         hasOsListByFilter.then(function(result) {
-            $scope.showLoader = true;
+            $scope.showLoader = false;
             $scope.formElements.osCategoryListByFilter = result;
         });
     };
