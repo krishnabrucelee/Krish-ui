@@ -333,7 +333,7 @@ table.dataTable thead .sorting_desc::after {content: "\f0dd";}
 .no-border-radious{-webkit-border-radius: 0px; -moz-border-radius: 0px; border-radius: 0px; -webkit-appearance: none;}
 
 .quick-view-details{border-right:#f4f6f7 2px solid; padding:10px 5px; margin:10px 0px 0px 0px; clear:both; height:auto; overflow:hidden}
-.quick-view-count{font-size:36px; font-weight:400;}
+.quick-view-count{font-size:24px; font-weight:400;}
 .quick-view-count small{font-size:14px;}
 .quick-view-title{background-color:#f4f6f7; padding:3px 0px; clear:both; margin-bottom:15px;}
 
