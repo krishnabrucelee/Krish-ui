@@ -54,19 +54,22 @@
 									<fmt:message key="common.add" bundle="${msg}" /></a> <a class="btn btn-info" ui-sref="applications" title="<fmt:message key="common.refresh" bundle="${msg}" />" ui-sref-opts="{reload: true}">
 									<span class="fa fa-refresh fa-lg"></span></a>
 								</div>
-								<div class="pull-right dashboard-filters-area">
-									<panda-quick-search></panda-quick-search>
-									<span class="pull-right m-r-sm" data-ng-show="global.sessionValues.type == 'ROOT_ADMIN'">
-										<select
-											class="form-control input-group col-xs-5" name="domainView"
-											data-ng-model="domainView"
-											data-ng-change="selectDomainView(1)"
-											data-ng-options="domainView.name for domainView in formElements.domainList">
-											<option value=""> <fmt:message key="common.domain.filter" bundle="${msg}" /></option>
+								<div class="pull-right dashboard-filters-area" id="application_quick_search">
+									<form data-ng-submit="searchList(applicationSearch)">
+										<div class="quick-search pull-right">
+										<div class="input-group">
+										<input data-ng-model="applicationSearch" type="text" class="form-control input-medium" placeholder="<fmt:message key="common.quick.search" bundle="${msg}" />" aria-describedby="quicksearch-go">
+								   		<span class="input-group-addon" id="quicksearch-go"><span class="pe-7s-search pe-lg font-bold"></span></span>
+										</div>
+										</div>
+										<span class="pull-right m-r-sm" data-ng-show="global.sessionValues.type == 'ROOT_ADMIN'">
+										<select	class="form-control input-group col-xs-5" name="domainView" data-ng-model="domainView" data-ng-change="selectDomainView(1)" data-ng-options="domainView.name for domainView in domainListView">
+										<option value=""> <fmt:message key="common.domain.filter" bundle="${msg}" /></option>
 										</select>
-									</span>
-									<div class="clearfix"></div>
-									<span class="pull-right m-l-sm m-t-sm"></span>
+										</span>
+								<div class="clearfix"></div>
+								<span class="pull-right m-l-sm m-t-sm">	</span>
+									</form>
 								</div>
 							</div>
 							<div class="clearfix"></div>
@@ -100,12 +103,12 @@
 											<tr data-ng-repeat=" application in filteredCount = (applicationList| filter: quickSearch | orderBy:sort.column:sort.descending)">
 
 												<td>{{ application.type}}</td>
-                                                                                                <td>{{ application.domain.name }}</td>
+                                                <td>{{ application.domain.name }}</td>
 												<td>{{ application.description}}</td>
 												<td>
-		                                        	                                  <label class="badge badge-success p-xs" data-ng-if="application.status == 'ENABLED'"> {{ application.status}} </label>
-		                                                                                  <label class="badge badge-danger p-xs" data-ng-if="application.status == 'DISABLED'"> {{ application.status}} </label>
-		                                                                                </td>
+		                                        <label class="badge badge-success p-xs" data-ng-if="application.status == 'ENABLED'"> {{ application.status}} </label>
+		                                        <label class="badge badge-danger p-xs" data-ng-if="application.status == 'DISABLED'"> {{ application.status}} </label>
+		                                        </td>
 												<td>
 												<input type="hidden" id="applications_unique_{{application.id}}"  data-unique-field="{{ application.domain.name }}-{{ application.type}}" class="test_applications_unique">
 												<a has-permission="EDIT_APPLICATION_TYPE" id="applications_edit_button_{{application.id}}" class="icon-button test_applications_edit_button" title="<fmt:message key="common.edit" bundle="${msg}" />" data-ng-click="edit('md', application)"> <span class="fa fa-edit"></span></a>
