@@ -577,6 +577,7 @@ $scope.domainexcel = function()
 
  $scope.defaultView = false;
           var domainViewAbbr = null;
+	  $scope.domainViewAbbr = null;
             if ($scope.domainView != null && !angular.isUndefined($scope.domainView)) {
               domainViewAbbr = $scope.domainView.companyNameAbbreviation;
 	$scope.domainViewAbbr = $scope.domainView.companyNameAbbreviation;
