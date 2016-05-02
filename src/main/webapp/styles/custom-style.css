@@ -333,7 +333,7 @@ table.dataTable thead .sorting_desc::after {content: "\f0dd";}
 .no-border-radious{-webkit-border-radius: 0px; -moz-border-radius: 0px; border-radius: 0px; -webkit-appearance: none;}
 
 .quick-view-details{border-right:#f4f6f7 2px solid; padding:10px 5px; margin:10px 0px 0px 0px; clear:both; height:auto; overflow:hidden}
-.quick-view-count{font-size:36px; font-weight:400;}
+.quick-view-count{font-size:24px; font-weight:400;}
 .quick-view-count small{font-size:14px;}
 .quick-view-title{background-color:#f4f6f7; padding:3px 0px; clear:both; margin-bottom:15px;}
 
@@ -349,7 +349,7 @@ table.dataTable thead .sorting_desc::after {content: "\f0dd";}
 
 .dashboard-quota-area{font-weight:800; text-align:center;}
 .dashboard-quota-area span{display:block; color:#9fa0a2; font-weight:normal;}
-.dashboard-quota{margin:28px 0 28px 0; min-height: 124px;}
+.dashboard-quota{margin:20px 0 20px 0; min-height: 140px;}
 .dashboard-quota canvas{ margin-bottom:5px; position:relative; z-index:1;}
 .doughnutchart-value{position:absolute; z-index:0; color:#73919e; font-size:16px; font-weight:600; margin: 21% 0 0 32%;}
 .doughnut-fixed-area{width:150px; position:relative; z-index:0;}
