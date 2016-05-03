@@ -21,7 +21,7 @@
             </div>
         </div> -->
         <div class="row">
-            <div class="col-md-5">
+            <div class="col-md-5 dashboard-infra-wrapper">
                 <div class="panel panel-white no-border-radious dashboard-infrastructure-section">
                     <div class="panel-body p-sm">
                         <h5 class="no-margins text-primary">
@@ -108,7 +108,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-7">
+            <div class="col-md-7 dashboard-quota-wrapper">
                 <div class="panel panel-white no-border-radious dashboard-quota-section">
                     <div class="panel-body p-sm">
                         <h5 class="no-margins text-primary">
@@ -118,18 +118,20 @@
                              <img src="images/loading-bars.svg" />
                          </div>
                         <div class="row dashboard-quota-area" data-ng-hide="showQuotaLoader">
-                            <div data-ng-if="quotaLimit.max != '-1'"class="col-md-3 col-sm-4 col-xs-6 dashboard-quota" data-ng-repeat="quotaLimit in quotaLimits">
+                            <div data-ng-if="quotaLimit.max != '-1'"class="col-md-3 col-sm-3 col-xs-6 dashboard-quota" data-ng-repeat="quotaLimit in quotaLimits">
                                 <div class="doughnut-fixed-area">
 	                                <div class="doughnutchart-value">{{ quotaLimit.percentage }}%</div>
 	                                <canvas doughnutchart options="doughnutOptions" data="quotaLimit.doughnutData" width="120" height="85"></canvas>
 	                                <div>{{ quotaLimit.label }}</div> <span>Using {{quotaLimit.usedLimit}} of {{quotaLimit.max}}</span>
                                 </div>
                             </div>
-                            <div data-ng-if="quotaLimit.max == '-1'" class="col-md-3 col-sm-4 col-xs-6 dashboard-quota" data-ng-repeat="quotaLimit in quotaLimits">
-                               <div class="m-b-sm">
-                                <img src="images/unlimited-quota.png" ></div>
-                               <%--  <canvas doughnutchart options="doughnutOptions" data="quotaLimit.doughnutData" height="140" responsive=true></canvas> --%>
-                                {{ quotaLimit.label }} <span>Using {{quotaLimit.usedLimit}} of unlimited</span>
+                            <div data-ng-if="quotaLimit.max == '-1'" class="col-md-3 col-sm-3 col-xs-6 dashboard-quota" data-ng-repeat="quotaLimit in quotaLimits">
+                               <div class="doughnut-fixed-area">
+	                               <div class="m-b-sm">
+	                               <img src="images/unlimited-quota.png" ></div>
+	                               <%--  <canvas doughnutchart options="doughnutOptions" data="quotaLimit.doughnutData" height="140" responsive=true></canvas> --%>
+	                                <div>{{ quotaLimit.label }}</div> <span>Using {{quotaLimit.usedLimit}} of unlimited</span>
+                                </div>
                             </div>
 
                            </div>
@@ -138,7 +140,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-4 col-sm-5">
                 <div class="panel panel-white no-border-radious dashboard-tab">
                     <div class="panel-body">
                     <ul>
@@ -254,7 +256,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-8">
+            <div class="col-md-8 col-sm-7">
                 <div class="panel panel-white no-border-radious">
                     <div class="panel-body p-sm">
                         <h5 class="no-margins text-primary">
@@ -281,7 +283,7 @@
             <div class="col-md-12">
                 <div class="panel panel-white no-border-radious dashboard-accordian">
                     <div class="panel-body">
-                        <div class="col-md-3 no-padding">
+                        <div class="col-md-3 col-sm-3 no-padding">
                         	<div class="bg-info p-xs font-bold text-primary m-b-xxs service-title">Categories</div>
                             <div class="user-service-first-level slimScroll-220">
                                 <ul>
@@ -291,7 +293,7 @@
                                 </ul>
                             </div>
                         </div>
-                        <div class="col-md-3 no-padding">
+                        <div class="col-md-3 col-sm-3 no-padding">
                             <div class="select-any" data-ng-hide="listing.department || listing.application">
                                    <span class="fa fa-hand-o-left fa-3x"></span>
                                 <br> Select any <br> Department, Application or User
@@ -318,7 +320,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6" data-ng-hide="listing.application">
+                        <div class="col-md-6 col-sm-6" data-ng-hide="listing.application">
                         	<div  data-ng-if="listing.userList.length > 0 && listing.groupType == 'department' && type == 'Projects'" class="bg-info p-xs font-bold text-primary m-b-xxs service-details-title">{{type}}</div>
                         		<div  data-ng-if="listing.userList.length > 0 && listing.groupType == 'user' && type == 'Users'" class="bg-info p-xs font-bold text-primary m-b-xxs service-details-title">{{type}}</div>
                             <div class="user-service-detail slimScroll-220">

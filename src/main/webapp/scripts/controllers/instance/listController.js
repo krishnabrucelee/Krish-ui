@@ -233,6 +233,7 @@ function instanceListCtrl($scope, $sce, $log, $filter, dialogService, $timeout, 
         $scope.showLoader = true;
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasUsers = {};
+
         $scope.filter = "";
         if ($scope.domainView == null && $scope.vmSearch == null) {
             hasUsers = promiseAjax.httpTokenRequest(globalConfig.HTTP_GET, globalConfig.APP_URL + "virtualmachine/listByStatus" + "?lang=" + localStorageService.cookie.get('language') + "&status=" + $scope.vm.status + "&sortBy=" + $scope.paginationObject.sortOrder + $scope.paginationObject.sortBy + "&limit=" + limit, $scope.global.paginationHeaders(pageNumber, limit), {
@@ -250,6 +251,7 @@ function instanceListCtrl($scope, $sce, $log, $filter, dialogService, $timeout, 
                 "limit": limit
             });
         }
+
         $scope.borderContent = status;
         hasUsers.then(function(result) { // this is only run after $http
             // completes0
