@@ -1,4 +1,4 @@
-﻿/**
+/**
  *
  * appCtrl
  *
@@ -48,9 +48,6 @@ function appCtrl($http, $scope, $window, $timeout, appService, globalConfig, cru
 					        obj.usedLimit = Math.round( obj.usedLimit / (1024 * 1024 * 1024));
                   $scope.quotaLimits[obj.resourceType].label = $scope.quotaLimits[obj.resourceType].label + " " + "(GiB)";
    				    }
-              if (obj.resourceType == "PrimaryStorage" || obj.resourceType == "SecondaryStorage") {
-                  $scope.quotaLimits[obj.resourceType].label = $scope.quotaLimits[obj.resourceType].label + " " + "(GiB)";
-   				    }
 
               $scope.quotaLimits[obj.resourceType].max = parseInt(obj.max);
               $scope.quotaLimits[obj.resourceType].usedLimit = parseInt(obj.usedLimit);
@@ -76,7 +73,8 @@ function appCtrl($http, $scope, $window, $timeout, appService, globalConfig, cru
                       value: unUsed,
                       color: "#ebf1f4",
                       highlight: "#ebf1f4",
-                      label: "UnUsed"
+                      label: "Left"
+
                   }
               ];
             }
@@ -115,7 +113,7 @@ function appCtrl($http, $scope, $window, $timeout, appService, globalConfig, cru
         animationSteps: 100,
         animationEasing: "easeOutBounce",
         animateRotate: false,
-        animateScale: false,
+        animateScale: false
     };
 
 
@@ -249,6 +247,8 @@ function appCtrl($http, $scope, $window, $timeout, appService, globalConfig, cru
 
     $scope.departmentList = {};
     $scope.getDepartmentList = function(type) {
+    	$scope.listing.activeDepartment = false;
+    	$scope.listing.userList = [];
       $scope.listing.groupType = type;
       $scope.listing.application = false;
       $scope.listing.department = true;
@@ -284,10 +284,20 @@ function appCtrl($http, $scope, $window, $timeout, appService, globalConfig, cru
 
     $scope.findSubCategoryByDepartment = function(groupType, id) {
       $scope.listing.activeDepartment = id;
-      var hasUsers = promiseAjax.httpTokenRequest( globalConfig.HTTP_GET , globalConfig.APP_URL + "users/department/"+ id);
-      hasUsers.then(function (result) {  // this is only run after $http completes
-          $scope.listing.userList = result;
-      });
+      if (groupType == "department") {
+          var hasProjects =  appService.promiseAjax.httpTokenRequest(appService.crudService.globalConfig.HTTP_GET,
+    				 appService.crudService.globalConfig.APP_URL + "projects"  +"/department/"+id);
+ 		 hasProjects.then(function (result) {  // this is only run after $http completes0
+	    		$scope.listing.userList = result;
+	    		$scope.type = "Projects";
+	    	 });
+      } else if (groupType == "user") {
+    	  var hasUsers = promiseAjax.httpTokenRequest( globalConfig.HTTP_GET , globalConfig.APP_URL + "users/department/"+ id);
+    	  hasUsers.then(function (result) {  // this is only run after $http completes
+    		  $scope.listing.userList = result;
+    		  $scope.type = "Users";
+    	  });
+      }
     };
 
     $scope.getApplicationList = function() {
@@ -358,21 +368,7 @@ function appCtrl($http, $scope, $window, $timeout, appService, globalConfig, cru
      *  Logout a user.
      */
     $scope.logout = function() {
-    	$http({method:globalConfig.HTTP_GET, url:globalConfig.APP_URL + 'loginHistory/'+$cookies.id,
-			"headers": {'x-auth-token': $cookies.token, 'x-requested-with': '', 'Content-Type': 'application/json', 'Range': "items=0-9", 'x-auth-login-token': $cookies.loginToken, 'x-auth-remember': $cookies.rememberMe, 'x-auth-user-id': $cookies.id, 'x-auth-login-time': $cookies.loginTime}})
-			.success(function(result){
-				$window.sessionStorage.removeItem("loginSession")
-		        $cookies.rememberMe = "false";
-		        $cookies.loginToken = '0';
-		        $cookies.loginTime = '0';
-		        window.location.href = "login";
-          }).catch(function (result) {
-      	        $window.sessionStorage.removeItem("loginSession")
-	    	    $cookies.rememberMe = "false";
-	            $cookies.loginToken = '0';
-	            $cookies.loginTime = '0';
-		        window.location.href = "login";
-          });
+    	appService.utilService.logoutApplication("LOGOUT");
     }
 
 
@@ -386,5 +382,13 @@ function appCtrl($http, $scope, $window, $timeout, appService, globalConfig, cru
     $scope.dashboard.costList.application = false;
 	   $scope.dashboard.costList[type] = true;
   }
+
+$scope.getZoneList = function () {
+      var hasZones = crudService.listAll("zones/list");
+      hasZones.then(function (result) {  // this is only run after $http completes0
+          $scope.global.zoneList = result;
+      });
+  };
+  $scope.getZoneList();
 
 }

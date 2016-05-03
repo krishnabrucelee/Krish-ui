@@ -23,11 +23,11 @@ function instanceListCtrl($scope, $sce, $log, $filter, dialogService, $timeout, 
             $scope.instance = result;
             $scope.networkList = result.network;
             if ($state.current.data.pageTitle === "view.instance") {
-                $state.current.data.pageName = result.name;             	
+                $state.current.data.pageName = result.name;
             	$state.current.data.id = result.id;
             } else {
                $state.$current.parent.data.pageName = result.name;
-               $state.current.data.id = result.id;
+               $state.$current.parent.data.id = result.id;
             }
         });
     }

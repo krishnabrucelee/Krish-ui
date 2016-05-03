@@ -69,69 +69,7 @@ function quotaLimitCtrl($scope, $state, $stateParams, globalConfig, appService, 
     	$scope.domainList = result;
     });
 
-	$scope.getResourceDomain = function() {
-		$scope.quotaLimitData = [];
-    	$scope.showLoader = true;
-    	var hasresourceDomainList = {};
-    	$scope.resourceDomainList = {};
-		if (angular.isUndefined($scope.domainView) || $scope.domainView == null) {
 
-			hasresourceDomainList = appService.crudService
-				.listAll("resourceDomains/listresourcedomains");
-		} else {
-			hasresourceDomainList = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET , globalConfig.APP_URL + "resourceDomains/listByDomain/"+$scope.domainView.id);
-		}
-		hasresourceDomainList.then(function(result) { // this is only run
-
-			$scope.resourceDomainList = result;
-			var i = 0;
-			angular.forEach(result, function(object, key) {
-				i++;
-				$scope.resourceQuota[object.resourceType] = object.usedLimit;
-				$scope.resourceQuota[object.resourceType] = object.max;
-				if (object.resourceType != "Project") {
-					if (object.resourceType == "Memory") {
-						object.usedLimit = Math.round( object.usedLimit / 1024);
-						if (object.max != -1) {
-							object.max = Math.round(object.max / 1024);
-						}
-						object.resourceType = object.resourceType + " " + "(GB)";
-					}
-//					if (object.resourceType == "PrimaryStorage" || object.resourceType == "SecondaryStorage") {
-//					    object.usedLimit = Math.round( object.usedLimit / (1024 * 1024 * 1024));
-//					    if (object.max != -1) {
-//					    	object.max = Math.round( object.max / (1024 * 1024 * 1024));
-//					    	console.log("gdhfvgsh", object.max);
-//					    }
-//					    object.resourceType = object.resourceType + " " + "(GiB)";
-//				    }
-					if (object.max == -1 && object.resourceType == "PrimaryStorage" || object.max == -1 && object.resourceType == "SecondaryStorage") {
-						object.usedLimit = Math.round( object.usedLimit / (1024 * 1024 * 1024));
-					    object.resourceType = object.resourceType + " " + "(GB)";
- 				    }
-					if (object.resourceType == "PrimaryStorage" || object.resourceType == "SecondaryStorage") {
-					    object.resourceType = object.resourceType + " " + "(GB)";
- 				    }
-					if (object.usedLimit == null) {
-						object.usedLimit = 0;
-					}
-//					if (object.available == null || object.available == -1 || object.available == 0) {
-//						object.available = 100 - object.usedLimit;
-//					}
-					if (object.max != -1) {
-					$scope.resourceListMap(object.resourceType,
-							object.usedLimit, object.max - object.usedLimit);
-					} else {
-						$scope.resourceListMap(object.resourceType,
-								object.usedLimit, object.max);
-					}
-				}
-			});
-
-
-		});
-	};
-	$scope.getResourceDomain();
 
 	// Get volume list based on domain selection
     $scope.selectDomainView = function() {
@@ -182,6 +120,80 @@ function quotaLimitCtrl($scope, $state, $stateParams, globalConfig, appService, 
 		$scope.quotaLimitData.push($scope.resource[resourceName + "Limit"]);
 	}
 
+    /**
+     * Options for Doughnut chart
+     */
+    $scope.doughnutOptions = {
+        segmentShowStroke: true,
+        segmentStrokeColor: "#fff",
+        segmentStrokeWidth: 0,
+        percentageInnerCutout: 85, // This is 0 for Pie charts
+        animationSteps: 100,
+        animationEasing: "easeOutBounce",
+        animateRotate: false,
+        animateScale: false,
+
+        customTooltips: function customTooltips(tooltip){
+            // Tooltip Element
+            var tooltipEl = $('#chartjs-customtooltip');
+            // Make the element if not available
+            if (!tooltipEl[0]) {
+                $('body').append('<div id="chartjs-customtooltip"></div>');
+                tooltipEl = $('#chartjs-customtooltip');
+            }
+            // Hide if no tooltip
+            if (!tooltip) {
+                tooltipEl.css({
+                    opacity: 0
+                });
+                return;
+            }
+            // Set caret Position
+            tooltipEl.removeClass('above below no-transform');
+            if (tooltip.yAlign) {
+                tooltipEl.addClass(tooltip.yAlign);
+            } else {
+                tooltipEl.addClass('no-transform');
+            }
+            // Set Text
+            if (tooltip.text) {
+                tooltipEl.html(tooltip.text);
+            } else {
+                var innerHtml = '<div class="title">' + tooltip.title + '</div>';
+                for (var i = 0; i < tooltip.labels.length; i++) {
+                    innerHtml += [
+                        '<div class="section">',
+                        '   <span class="key" style="background-color:' + tooltip.legendColors[i].fill + '"></span>',
+                        '   <span class="value">' + tooltip.labels[i] + '</span>',
+                        '</div>'
+                    ].join('');
+                }
+                tooltipEl.html(innerHtml);
+            }
+            // Find Y Location on page
+            var top = 0;
+            if (tooltip.yAlign) {
+                if (tooltip.yAlign == 'above') {
+                    top = tooltip.y - tooltip.caretHeight - tooltip.caretPadding;
+                } else {
+                    top = tooltip.y + tooltip.caretHeight + tooltip.caretPadding;
+                }
+            }
+            var offset = $(tooltip.chart.canvas).offset();
+
+            // Display, position, and set styles for font
+            tooltipEl.css({
+                opacity: 1,
+                width: tooltip.width ? (tooltip.width + 'px') : 'auto',
+                left: offset.left + tooltip.x + 'px',
+                top: offset.top + top + 'px',
+                fontFamily: tooltip.fontFamily,
+                fontSize: tooltip.fontSize,
+                fontStyle: tooltip.fontStyle,
+            });
+        }
+    };
+
 	/**
 	 * Options for Doughnut chart
 	 */
@@ -201,5 +213,72 @@ function quotaLimitCtrl($scope, $state, $stateParams, globalConfig, appService, 
 		tooltipXPadding : 4,
 		legend : true
 	};
+
+$scope.getResourceDomain = function() {
+	$scope.quotaLimits = {
+		      "CPU": {label: "vCPU"}, "Memory": {label: "Memory"}, "Volume": {label: "Volume"}, "Network": {label: "Network"},
+		      "IP": {label: "IP"}, "PrimaryStorage": {label: "PrimaryStorage"}, "SecondaryStorage": {label: "SecondaryStorage"},
+		      "Snapshot": {label: "Snapshot"}
+		    };
+    $scope.showQuotaLoader = true;
+    var resourceArr = ["CPU", "Memory", "Volume", "Network", "IP", "PrimaryStorage", "SecondaryStorage", "Snapshot"];
+    if (angular.isUndefined($scope.domainView) || $scope.domainView == null) {
+        var hasResourceDomainId = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET , globalConfig.APP_URL + "dashboard/quota");
+   } else {
+       var hasResourceDomainId = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET , globalConfig.APP_URL + "resourceDomains/listByDomain/"+$scope.domainView.id);
+   }
+    hasResourceDomainId.then(function (result) {  // this is only run after $http completes
+      $scope.showQuotaLoader = false;
+        angular.forEach(result, function(obj, key) {
+            if(resourceArr.indexOf(obj.resourceType) > -1) {
+              if(angular.isUndefined($scope.quotaLimits[obj.resourceType])) {
+                  $scope.quotaLimits[obj.resourceType] = {};
+              }
+
+              if(obj.resourceType == "Memory") {
+                obj.usedLimit = Math.round( obj.usedLimit / 1024);
+    						if (obj.max != -1) {
+    							obj.max = Math.round(obj.max / 1024);
+                  $scope.quotaLimits[obj.resourceType].label = $scope.quotaLimits[obj.resourceType].label + " " + "(GB)";
+    						}
+              }
+
+              if (obj.max == -1 && obj.resourceType == "PrimaryStorage" || obj.max == -1 && obj.resourceType == "SecondaryStorage") {
+					        obj.usedLimit = Math.round( obj.usedLimit / (1024 * 1024 * 1024));
+                  $scope.quotaLimits[obj.resourceType].label = $scope.quotaLimits[obj.resourceType].label + " " + "(GB)";
+   				    }
+
+              $scope.quotaLimits[obj.resourceType].max = parseInt(obj.max);
+              $scope.quotaLimits[obj.resourceType].usedLimit = parseInt(obj.usedLimit);
+              $scope.quotaLimits[obj.resourceType].percentage = parseFloat(parseInt(obj.usedLimit) / parseInt(obj.max) * 100).toFixed(2);
+              var unUsed = $scope.quotaLimits[obj.resourceType].max - $scope.quotaLimits[obj.resourceType].usedLimit;
+
+
+              var usedColor = "#48a9da";
+              if($scope.quotaLimits[obj.resourceType].percentage > 79 && $scope.quotaLimits[obj.resourceType].percentage < 90) {
+                  usedColor = "#f0ad4e";
+              } else if($scope.quotaLimits[obj.resourceType].percentage > 89){
+                  usedColor = "#df6457";
+              }
+              $scope.quotaLimits[obj.resourceType].doughnutData = [
+                  {
+                      value: parseInt(obj.usedLimit),
+                      color: usedColor,
+                      highlight: usedColor,
+                      label: "Used"
+
+                  },
+                  {
+                      value: unUsed,
+                      color: "#ebf1f4",
+                      highlight: "#ebf1f4",
+                      label: "UnUsed"
+                  }
+              ];
+            }
+        });
+    });
+};
+$scope.getResourceDomain();
 
 }

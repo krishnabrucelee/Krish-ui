@@ -588,12 +588,14 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider, $compile
 
 angular.module('homer').constant("PANDA_CONFIG", {
     "VIEW_URL" : "app/views/",
-}).factory('myFactory', function($http, globalConfig, $cookies, $window, tokens) {
+}).factory('myFactory', function($http, globalConfig, $cookies, $window, tokens, localStorageService, utilService) {
 	var loginSession = globalConfig.sessionValues;
     if((loginSession == null || angular.isUndefined(globalConfig.sessionValues)) && tokens != null) {
     	globalConfig.sessionValues = tokens;
-    	if (angular.isUndefined($cookies.rememberMe) || $cookies.rememberMe == "false") {
-    	    window.location.href = "login";
+    	localStorageService.set('rememberMe', tokens.rememberMe);
+    	if ((angular.isUndefined(localStorageService.get('rememberMe')) || localStorageService.get('rememberMe') == false || localStorageService.get('rememberMe') == "false")
+    			&& (angular.isUndefined($cookies.rememberMe) || $cookies.rememberMe == undefined || $cookies.rememberMe == "undefined")) {
+    		utilService.logoutApplication("COOKIE_TIME_OUT");
     	}
     }
     return {

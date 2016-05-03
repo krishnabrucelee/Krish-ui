@@ -155,11 +155,14 @@ pageEncoding="UTF-8"%>
                                         <li has-permission="VIEW_CONSOLE" class="list-group-item" data-ng-if="instance.status == 'RUNNING'">
                                             <a href="javascript:void(0);" title="<fmt:message key="view.console" bundle="${msg}" />" data-ng-click="showConsole(instance)"><span class="fa-desktop fa font-bold m-xs"></span> <fmt:message key="view.console" bundle="${msg}" /></a>
                                         </li>
-
                                         <li has-permission="ATTACH_ISO" class="list-group-item">
-                                            <button ng-class = "(instance.status == 'RUNNING' || instance.status == 'STOPPED') && !instance.isoName ? 'resizelink enable' : 'resizelink disable'" data-ng-disabled=" (instance.status == 'RUNNING' || instance.status == 'STOPPED') && instance.isoName " href="javascript:void(0);" title="<fmt:message key="attach.iso" bundle="${msg}" />" data-ng-click="attachISO(instance)"><span class="fa-dot-circle-o fa font-bold m-xs"></span> <fmt:message key="attach.iso" bundle="${msg}" /></button>
+                                            <button ng-class = "(instance.status == 'RUNNING' || instance.status == 'STOPPED') && !instance.isoName ? 'resizelink enable '  : 'resizelink disable icon-disable'" data-ng-disabled=" (instance.status == 'RUNNING' || instance.status == 'STOPPED') && instance.isoName " href="javascript:void(0);" title="<fmt:message key="attach.iso" bundle="${msg}" />" data-ng-click="attachISO(instance)"><span class="m-xs"><img src="images/attach.png" class="img-icon"  border="0"/></span> <fmt:message key="attach.iso" bundle="${msg}" /></button>
                                         </li>
+                                        <li has-permission="ATTACH_ISO" class="list-group-item" >
+                                            <button ng-class = "(instance.status == 'RUNNING' || instance.status == 'STOPPED') && instance.isoName ? 'resizelink enable ' : 'resizelink disable icon-disable'" data-ng-disabled = "(instance.status == 'RUNNING' || instance.status == 'STOPPED') && !instance.isoName" href="javascript:void(0);" title="<fmt:message key="detach.iso" bundle="${msg}" />" data-ng-click="detachISO(instance)"><span class="m-xs"><img src="images/detach.png"  class="img-icon" border="0"/></span> <fmt:message key="detach.iso" bundle="${msg}" /></button>
+                                            <span class="iso-name m-l-lg m-t-xxs">{{instance.isoName}}</span>
 
+                                        </li>
                                         <li has-permission="TAKE_VM_SNAPSHOT" data-ng-if="instance.status == 'RUNNING' || instance.status == 'STOPPED'" class="list-group-item">
                                             <a href="javascript:void(0);" title="<fmt:message key="vm.snapshot" bundle="${msg}" />" data-ng-click="takeSnapshot(instance)"><span class="fa-camera fa font-bold m-xs"></span> <fmt:message key="take.vm.snapshot" bundle="${msg}" /></a>
                                         </li>
@@ -204,9 +207,6 @@ pageEncoding="UTF-8"%>
                                         </li>
                                         <li data-ng-if="instance.status == 'DESTROYED'" class="list-group-item ">
                                             <a href="javascript:void(0);" data-ng-if="instance.status == 'DESTROYED'" data-ng-click="recoverVm('sm', instance)" title="<fmt:message key="recover.vm" bundle="${msg}" />"><span class="fa-history fa font-bold m-xs"></span> <fmt:message key="recover.vm" bundle="${msg}" /></a>
-                                        </li>
-                                        <li has-permission="ATTACH_ISO" class="list-group-item">
-                                            <button ng-class = "(instance.status == 'RUNNING' || instance.status == 'STOPPED') && instance.isoName ? 'resizelink enable' : 'resizelink disable'" data-ng-disabled = "(instance.status == 'RUNNING' || instance.status == 'STOPPED') && !instance.isoName" href="javascript:void(0);" title="<fmt:message key="detach.iso" bundle="${msg}" />" data-ng-click="detachISO(instance)"><span class="fa-compass fa font-bold m-xs"></span> <fmt:message key="detach.iso" bundle="${msg}" /></button>
                                         </li>
                                          <li has-permission = "RESIZE" class="list-group-item " >
                                               <button ng-class = "(instance.status == 'STOPPED') ? 'resizelink enable' : 'resizelink disable'" data-ng-disabled="instance.status !== 'STOPPED'" href="javascript:void(0);"   data-ng-click="selectab()" title="<fmt:message key="resize.vm" bundle="${msg}" />"><span class="fa fa-expand m-xs"></span> <fmt:message key="resize.vm" bundle="${msg}" /></button>
@@ -487,15 +487,12 @@ pageEncoding="UTF-8"%>
                                                 </td>
                                                 <td class="col-md-8 col-sm-8"><span class="text-danger"
 														data-ng-if="!instance.computeOffering.customized"
-													> <app-currency></app-currency> {{(instance.computeOffering.computeCost[0].instanceRunningCostIops + instance.computeOffering.computeCost[0].instanceRunningCostMemory
-														    + instance.computeOffering.computeCost[0].instanceRunningCostVcpu + (instance.computeOffering.computeCost[0].instanceRunningCostPerMB > 0 ? (instance.computeOffer.memory.value * instance.computeOffering.computeCost[0].instanceRunningCostPerMB) : 0)
-														    + (instance.computeOffering.computeCost[0].instanceRunningCostPerVcpu > 0 ? (instance.computeOffer.cpuCore.value * instance.computeOffering.computeCost[0].instanceRunningCostPerVcpu) : 0)
-														    + (instance.computeOffering.computeCost[0].instanceRunningCostPerMhz > 0 ? (instance.computeOffer.cpuSpeed.value * instance.computeOffering.computeCost[0].instanceRunningCostPerMhz) : 0)) | number:4 }}
+													> <app-currency></app-currency> {{(instance.computeOffering.computeCost[0].instanceRunningCostMemory
+														    + instance.computeOffering.computeCost[0].instanceRunningCostVcpu) | number:4 }}
 													</span> <span class="text-danger" data-ng-if="instance.computeOffering.customized"> <app-currency></app-currency>
-															{{(instance.computeOffering.computeCost[0].instanceRunningCostIops + instance.computeOffering.computeCost[0].instanceRunningCostMemory
-														    + instance.computeOffering.computeCost[0].instanceRunningCostVcpu + (instance.computeOffering.computeCost[0].instanceRunningCostPerMB > 0 ? (instance.computeOffer.memory.value * instance.computeOffering.computeCost[0].instanceRunningCostPerMB) : 0)
-														    + (instance.computeOffering.computeCost[0].instanceRunningCostPerVcpu > 0 ? (instance.computeOffer.cpuCore.value * instance.computeOffering.computeCost[0].instanceRunningCostPerVcpu) : 0)
-														    + (instance.computeOffering.computeCost[0].instanceRunningCostPerMhz > 0 ? (instance.computeOffer.cpuSpeed.value * instance.computeOffering.computeCost[0].instanceRunningCostPerMhz) : 0)) | number:4 }}
+															{{((instance.computeOffering.computeCost[0].instanceRunningCostPerMB > 0 ? (instance.memory * instance.computeOffering.computeCost[0].instanceRunningCostPerMB) : 0)
+														    + (instance.computeOffering.computeCost[0].instanceRunningCostPerVcpu > 0 ? (instance.cpuCore * instance.computeOffering.computeCost[0].instanceRunningCostPerVcpu) : 0)
+														    + (instance.computeOffering.computeCost[0].instanceRunningCostPerMhz > 0 ? (instance.cpuSpeed * instance.computeOffering.computeCost[0].instanceRunningCostPerMhz) : 0)) | number:4 }}
 													</span> /
                                             <fmt:message key="common.day" bundle="${msg}" />
                                             </td>

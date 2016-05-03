@@ -40,9 +40,15 @@ pageEncoding="UTF-8"%>
                                 <a class="btn btn-info font-bold" has-permission="ADD_VOLUME" data-ng-click="addVolume('md')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span>  <fmt:message key="common.add" bundle="${msg}" /></a>
                                 <a class="btn btn-info" ui-sref="cloud.list-volume" title="<fmt:message key="common.refresh" bundle="${msg}" />" ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
                         </div>
-                        <div class="pull-right dashboard-filters-area">
-                            <panda-quick-search></panda-quick-search>
-                            <span class="pull-right m-r-sm" data-ng-show="global.sessionValues.type == 'ROOT_ADMIN'">
+                        <div class="pull-right dashboard-filters-area" id="volume_quick_search">
+						<form data-ng-submit="searchList(quickSearchText)">
+							<div class="quick-search pull-right">
+								<div class="input-group">
+									<input data-ng-model="quickSearchText" type="text" class="form-control input-medium" placeholder="<fmt:message key="common.quick.search" bundle="${msg}" />" aria-describedby="quicksearch-go">
+								   	<span class="input-group-addon" id="quicksearch-go"><span class="pe-7s-search pe-lg font-bold"></span></span>
+								</div>
+							</div>
+							<span class="pull-right m-r-sm" data-ng-show="global.sessionValues.type == 'ROOT_ADMIN'">
 								<select
 									class="form-control input-group col-xs-5" name="domainView"
 									data-ng-model="domainView"
@@ -53,11 +59,9 @@ pageEncoding="UTF-8"%>
 							</span>
                             <div class="clearfix"></div>
                             <span class="pull-right m-l-sm m-t-sm">
-<%--                             	<a class="btn btn-info" data-ng-click="uploadVolumeFromLocalCtrl('md')"><span class="pe-7s-cloud-upload pe-lg font-bold m-r-xs"></span> <fmt:message key="upload.volume.from.local" bundle="${msg}" /></a> --%>
-<%-- 								<a class="btn btn-info" ><span class="pe-7s-cloud-upload pe-lg font-bold m-r-xs"></span> <fmt:message key="upload.volume.from.local" bundle="${msg}" /></a>
- --%>
                             </span>
-                        </div>
+						</form>
+						</div>
                     </div>
                 </div>
                 <div class="clearfix"></div>

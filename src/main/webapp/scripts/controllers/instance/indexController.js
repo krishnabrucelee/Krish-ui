@@ -117,7 +117,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
         $scope.showLoader = true;
         var hasOsListByFilter = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "oscategorys/os?type=template");
         hasOsListByFilter.then(function(result) {
-            $scope.showLoader = true;
+            $scope.showLoader = false;
             $scope.formElements.osCategoryListByFilter = result;
         });
     };
@@ -186,7 +186,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
             $scope.showLoader = false;
         });
     }
-    $scope.getTemplatesByFilters();
+    /*$scope.getTemplatesByFilters();**/
 
     $scope.getIsoByFilters = function() {
         var templateList = [];
@@ -422,7 +422,10 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
         if (!angular.isUndefined(obj)) {
             $scope.listNetworks(obj.id, 'project');
         } else {
-            $scope.listNetworks($scope.depValue, 'department');
+    if ($scope.global.sessionValues.type == "USER") {
+        $scope.depValue = $scope.global.sessionValues.departmentId;
+    }
+	 $scope.listNetworks($scope.depValue, 'department');
         }
 
     };

@@ -43,7 +43,7 @@
                                     <div class="vertical-timeline-content">
 
                                         <div class="timeline-title">
-                                            NIC  {{ $index + 1}}  <div class="pull-right" data-ng-if="nic.isDefault">(Default)</div>
+                                            NIC  {{ $index + 1}}  <div class="pull-right" data-ng-if="nic.isDefault" class="timeline-primary">(Default)</div>
                                                                          </div>
                                         <div class="row">
                                             <div class="col-md-12">

@@ -101,7 +101,7 @@
                                 </div>
                                 <div class="form-group m-l-md" data-ng-show="global.sessionValues.type == 'ROOT_ADMIN'">
                                 <div class="row">
-                                <label class="col-md-3 col-sm-3 control-label">Domain:
+                                <label class="col-md-3 col-sm-3 control-label">Company:
                                     <span class="text-danger">*</span>
                                 </label>
                                 <div class="col-md-7 col-sm-7">
@@ -127,28 +127,37 @@
                 </div>
             </div>
             <hr>
-         
                     <div data-ng-hide="showLoader" style="margin: 1%">
                         <get-loader-image data-ng-show="showLoader"></get-loader-image>
                     </div>
                     <div class="row">
                       <div class="report-wrapper white-content" data-ng-show="myframe">
 		            <div class="label-primary p-sm h6 text-white fa-bold">
-		                <span  data-ng-show="groupBy">Group By : {{groupBy}}</span><span data-ng-show="usageStatisticsObj.domain"> | Domain : {{usageStatisticsObj.domain.name}} </span><span data-ng-show= "usageStatisticsObj.startDate"> | Start Date :<em>{{usageStatisticsObj.startDate| date:'dd-MMM-yyyy' }}</em></span><span data-ng-show="usageStatisticsObj.endDate"> | To Date :<em>{{usageStatisticsObj.endDate| date:'dd-MMM-yyyy' }}</em> 
-		                	</span><a
+		                <span  data-ng-show="groupBy">Group By : {{groupBy}}</span><span data-ng-show="usageStatisticsObj.domain"> | Domain : {{usageStatisticsObj.domain.name}} </span><span data-ng-show= "usageStatisticsObj.startDate"> | Start Date :<em>{{usageStatisticsObj.startDate| date:'dd-MMM-yyyy' }}</em></span><span data-ng-show="usageStatisticsObj.endDate"> | To Date :<em>{{usageStatisticsObj.endDate| date:'dd-MMM-yyyy' }}</em>
+		                	</span><a data-ng-if=" global.sessionValues.type == 'ROOT_ADMIN'"
 										href="{{ global.PING_APP_URL }}usage/statistics/report?fromDate={{reportStartDate}}&toDate={{reportEndDate}}&groupingType={{groupBy}}&domainUuid={{usageStatisticsObj.domain.name}}&type=pdf"
 										class="btn btn-default  pull-right m-l-xs"><span
 										class="fa fa-file-pdf-o text-danger"></span> PDF</a>
-							<a			href="{{ global.PING_APP_URL }}usage/statistics/report?fromDate={{reportStartDate}}&toDate={{reportEndDate}}&groupingType={{groupBy}}&domainUuid={{usageStatisticsObj.domain.name}}&type=xlsx"
+
+									<a data-ng-if=" global.sessionValues.type !== 'ROOT_ADMIN'"
+										href="{{ global.PING_APP_URL }}usage/statistics/report?fromDate={{reportStartDate}}&toDate={{reportEndDate}}&groupingType={{groupBy}}&domainUuid={{global.sessionValues.domainAbbreviationName}}&type=pdf"
+										class="btn btn-default  pull-right m-l-xs"><span
+										class="fa fa-file-pdf-o text-danger"></span> PDF</a>
+
+							<a	data-ng-if=" global.sessionValues.type == 'ROOT_ADMIN'"		href="{{ global.PING_APP_URL }}usage/statistics/report?fromDate={{reportStartDate}}&toDate={{reportEndDate}}&groupingType={{groupBy}}&domainUuid={{usageStatisticsObj.domain.name}}&type=xlsx"
+										class="btn btn-default  pull-right m-l-xs"><span
+										class=" fa fa-file-excel-o text-success"></span> XLSX</a>
+
+							<a	data-ng-if=" global.sessionValues.type !== 'ROOT_ADMIN'"		href="{{ global.PING_APP_URL }}usage/statistics/report?fromDate={{reportStartDate}}&toDate={{reportEndDate}}&groupingType={{groupBy}}&domainUuid={{global.sessionValues.domainAbbreviationName}}&type=xlsx"
 										class="btn btn-default  pull-right m-l-xs"><span
 										class=" fa fa-file-excel-o text-success"></span> XLSX</a>
 										<div class="clearfix"></div>
 		                </div>
        				</div>
                     </div>
-                     
+
 					<div class="report-wrapper white-content" data-ng-show="myframe">
-					
+
 						<iframe width="400" height="700" id="myframe" name="myframe"
 							class="embed-responsive-item col-md-12 client-usage-report-iframe"></iframe>
 					</div>

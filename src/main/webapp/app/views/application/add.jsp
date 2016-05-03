@@ -30,7 +30,7 @@
                         <div class="row">
                             <label class="col-md-3 col-xs-12 col-sm-3 control-label control-normal"><fmt:message key="common.domain" bundle="${msg}" /><span class="text-danger">*</span></label>
                             <div class="col-md-6  col-sm-6 col-xs-12">
-                                <select required="true" class="form-control input-group" name="domain" id = "add_application_domain" data-ng-model="application.domain" ng-options="domain.name for domain in formElements.domainList" data-ng-class="{'error': applicationForm.domain.$invalid && formSubmitted}" >
+                                <select required="true" class="form-control input-group" name="domain" id = "add_application_domain" data-ng-model="application.domain" ng-options="domain.name for domain in domainListView" data-ng-class="{'error': applicationForm.domain.$invalid && formSubmitted}" >
                                     <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
 
                                 </select>

@@ -48,14 +48,21 @@ function applicationListCtrl($scope, appService, localStorageService, globalConf
 		$scope.paginationObject.sortBy = sortBy;
 		$scope.showLoader = true;
 		var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
-            var hasApplicationsLists = {};
-            if ($scope.domainView == null) {
-            	hasApplicationsLists =  appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "applications" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+sortOrder+sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
-            } else {
-            	hasApplicationsLists =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "applications/listByDomain"
-    				+"?lang=" +appService.localStorageService.cookie.get('language')
-    				+ "&domainId="+$scope.domainView.id+"&sortBy="+$scope.paginationObject.sortOrder+$scope.paginationObject.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
-            }
+            	var hasApplicationsLists = {};
+           	if ($scope.domainView == null && $scope.applicationSearch == null) {
+            	    hasApplicationsLists = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "applications" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+sortOrder+sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+            	}  else {
+                $scope.filter = "";
+            	if ($scope.domainView != null && $scope.applicationSearch == null) {
+                	$scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=";
+            	} else if ($scope.domainView == null && $scope.applicationSearch != null) {
+                	$scope.filter = "&domainId=0" + "&searchText=" + $scope.applicationSearch;
+            	} else {
+                	$scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=" + $scope.applicationSearch;
+            	}
+            hasApplicationsLists =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "applications/listByFilter"
+				+"?lang=" +appService.localStorageService.cookie.get('language')+ $scope.filter+"&sortBy="+$scope.paginationObject.sortOrder +$scope.paginationObject.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+        }
 
             hasApplicationsLists.then(function(result) { // this is only run after $http
 			// completes0
@@ -80,15 +87,22 @@ function applicationListCtrl($scope, appService, localStorageService, globalConf
         appService.globalConfig.sort.sortBy = $scope.paginationObject.sortBy;
     	$scope.showLoader = true;
         $scope.application = {};
+        $scope.filter = "";
     	var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasApplications = {};
-        if ($scope.domainView == null) {
-        	hasApplications = appService.crudService.list("applications", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
-        } else {
-        	hasApplications =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "applications/listByDomain"
-				+"?lang=" +appService.localStorageService.cookie.get('language')
-				+ "&domainId="+$scope.domainView.id+"&sortBy="+globalConfig.sort.sortOrder+globalConfig.sort.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
-        }
+	if ($scope.domainView == null && $scope.applicationSearch == null) {
+		    hasApplications = appService.crudService.list("applications", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+	} else {
+	    if ($scope.domainView != null && $scope.applicationSearch == null) {
+		$scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=";
+            } else if ($scope.domainView == null && $scope.applicationSearch != null) {
+	    	$scope.filter = "&domainId=0" + "&searchText=" + $scope.applicationSearch;
+            } else {
+		$scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=" + $scope.applicationSearch;
+	    }
+	    hasApplications =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "applications/listByFilter"
+					+"?lang=" +appService.localStorageService.cookie.get('language')+ $scope.filter+"&sortBy="+appService.globalConfig.sort.sortOrder+appService.globalConfig.sort.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+	}
         hasApplications.then(function (result) {  // this is only run after $http completes0
             $scope.applicationList = result;
             $scope.applicationList.Count = 0;
@@ -114,11 +128,19 @@ function applicationListCtrl($scope, appService, localStorageService, globalConf
     	$scope.list(1);
     };
 
-    // Domain List
-	var hasDomains = appService.crudService.listAll("domains/list");
-	hasDomains.then(function (result) {  // this is only run after $http completes0
-	      $scope.formElements.domainList = result;
-	});
+    // Get instance list based on quick search
+    $scope.applicationSearch = null;
+    $scope.searchList = function(applicationSearch) {
+        $scope.applicationSearch = applicationSearch;
+        $scope.list(1);
+    };
+
+    // Get domain list
+    var hasdomainListView = appService.crudService.listAll("domains/list");
+    hasdomainListView.then(function (result) {
+    	$scope.domainListView = result;
+    });
+
 
 	// Add the application
     $scope.createApplication = function (size) {
