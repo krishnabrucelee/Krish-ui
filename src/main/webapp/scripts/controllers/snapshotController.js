@@ -133,11 +133,18 @@ function snapshotListCtrl($scope, crudService, $state, $timeout, promiseAjax, gl
         });
     }
     $scope.list(1);
+
+	 $scope.vmSearch = null;
+    $scope.searchList = function(vmSearch) {
+        $scope.vmSearch = vmSearch;
+        $scope.lists(1);
+    };
+
     $scope.lists = function(pageNumber) {
         $scope.showLoaderOffer = true;
         var limit = (angular.isUndefined($scope.paginationObjects.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObjects.limit;
         var hasSnapshots = {};
-        if ($scope.domainId == null) {
+        /**if ($scope.domainId == null) {
             hasSnapshots = appService.crudService.list("vmsnapshot", $scope.global.paginationHeaders(pageNumber, limit), {
                 "limit": limit
             });
@@ -145,7 +152,20 @@ function snapshotListCtrl($scope, crudService, $state, $timeout, promiseAjax, gl
             hasSnapshots = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "vmsnapshot/listByDomain" + "?lang=" + appService.localStorageService.cookie.get('language') + "&domainId=" + $scope.domainId + "&sortBy=" + globalConfig.sort.sortOrder + globalConfig.sort.sortBy + "&limit=" + limit, $scope.global.paginationHeaders(pageNumber, limit), {
                 "limit": limit
             });
-        }
+        }**/
+if ($scope.domainId == null && $scope.vmSearch == null) {
+            	hasSnapshots = appService.crudService.list("vmsnapshot", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+            } 
+		else {
+if ($scope.domainId != null && $scope.vmSearch == null) {
+                $scope.filter = "&domainId=" + $scope.domainId + "&searchText=";
+            }  else if ($scope.domainId == null && $scope.vmSearch != null) {
+                $scope.filter = "&domainId=0" + "&searchText=" + $scope.vmSearch;
+            } else  {
+                $scope.filter = "&domainId=" + $scope.domainId + "&searchText=" + $scope.vmSearch;
+            }
+    		    hasSnapshots =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "vmsnapshot/listByDomain"+"?lang=" +appService.localStorageService.cookie.get('language')+ $scope.filter +"&sortBy="+globalConfig.sort.sortOrder+globalConfig.sort.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+            }
         hasSnapshots.then(function(result) { // this is only run after
             // $http completes0
             $scope.showLoaderOffer = false;
@@ -168,7 +188,7 @@ function snapshotListCtrl($scope, crudService, $state, $timeout, promiseAjax, gl
     });
     // Get project list based on domain selection
     $scope.domainId = null;
-    $scope.selectDomainView = function(pageNumber, domainId) {
+    $scope.selectDomainView = function(pageNumber,domainId) {
         $scope.domainId = domainId;
         $scope.lists(1);
     };

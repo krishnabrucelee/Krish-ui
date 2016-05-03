@@ -75,14 +75,26 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams, localStor
 		var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
 
             var hasProjectsLists = {};
-            if ($scope.domainView == null) {
+         /**   if ($scope.domainView == null) {
             	var hasProjectsLists =  appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "projects" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+sortOrder+sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
             } else {
             	hasProjectsLists =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "projects/listByDomain"
     				+"?lang=" +appService.localStorageService.cookie.get('language')
     				+ "&domainId="+$scope.domainView.id+"&sortBy="+$scope.paginationObject.sortOrder+$scope.paginationObject.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+            }**/
+ 	 if ($scope.domainView == null && $scope.vmSearch == null) {
+            	hasProjectsLists = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "projects" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+sortOrder+sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+            } 
+		else {
+	  	if ($scope.domainView != null && $scope.vmSearch == null) {
+                $scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=";
+            }  else if ($scope.domainView == null && $scope.vmSearch != null) {
+                $scope.filter = "&domainId=0" + "&searchText=" + $scope.vmSearch;
+            } else  {
+                $scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=" + $scope.vmSearch;
             }
-
+    	 hasProjectsLists = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "projects/listByDomainAndOwner"+"?lang=" +appService.localStorageService.cookie.get('language')+ $scope.filter +"&sortBy="+sortOrder+sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+            }
             hasProjectsLists.then(function(result) { // this is only run after $http
 			// completes0
 			$scope.projectList = result;
@@ -100,19 +112,41 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams, localStor
 		});
 	};
 
+ $scope.vmSearch = null;
+    $scope.searchList = function(vmSearch) {
+        $scope.vmSearch = vmSearch;
+
+        $scope.list(1);
+    };
+
+
     $scope.list = function (pageNumber) {
         appService.globalConfig.sort.sortOrder = $scope.paginationObject.sortOrder;
         appService.globalConfig.sort.sortBy = $scope.paginationObject.sortBy;
     	$scope.showLoader = true;
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasProjects = {};
-        if ($scope.domainView == null) {
+        /**if ($scope.domainView == null) {
         	hasProjects = appService.crudService.list("projects", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
         } else {
         	hasProjects =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "projects/listByDomain"
 				+"?lang=" +appService.localStorageService.cookie.get('language')
 				+ "&domainId="+$scope.domainView.id+"&sortBy="+globalConfig.sort.sortOrder+globalConfig.sort.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
-        }
+        }**/
+   if ($scope.domainView == null && $scope.vmSearch == null) {
+            	hasProjects = appService.crudService.list("projects", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+            } 
+		else {
+if ($scope.domainView != null && $scope.vmSearch == null) {
+                $scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=";
+            }  else if ($scope.domainView == null && $scope.vmSearch != null) {
+                $scope.filter = "&domainId=0" + "&searchText=" + $scope.vmSearch;
+            } else  {
+                $scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=" + $scope.vmSearch;
+            }
+    		    hasProjects = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "projects/listByDomainAndOwner"+"?lang=" +appService.localStorageService.cookie.get('language')
+    				+ $scope.filter + "&sortBy="+globalConfig.sort.sortOrder+globalConfig.sort.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+            }
         hasProjects.then(function (result) {  // this is only run after $http completes0
             $scope.projectList = result;
             $scope.projectList.Count = 0;
@@ -134,10 +168,16 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams, localStor
     	$scope.list(1);
     };
 
-    var hasDomains = appService.crudService.listAll("domains/list");
+   var hasDomains = appService.crudService.listAll("domains/list");
 	hasDomains.then(function (result) {  // this is only run after $http completes0
 	      $scope.formElements.domainList = result;
 	});
+ // Get domain list
+       /** var hasdomainListView = appService.crudService.listAll("domains/list");
+        hasdomainListView.then(function (result) {
+        	$scope.domainListView = result;
+        });
+**/
 
     $scope.changeSorting = function(column) {
 
@@ -525,7 +565,30 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams, localStor
                         $scope.list(1);
                         appService.notify({message: 'Project deleted successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
 
-                    });
+                    }).catch(function (result) {
+
+                  	 if(!angular.isUndefined(result) && result.data != null) {
+				projectObj = deleteObject; 
+      		 		   	if(result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])){
+	                      	 var errorMsgs = result.data.globalError[0];
+	                      	 var errorList = errorMsgs.split("@@");
+	                     	 appService.notify.closeAll();
+	                      		var msg = "You have following resources for this project: <br><ul>" +
+	                  	 		"<li>Instance :"+ errorList[1] +"</li>" +
+	                  	 		"<li>Network :"+ errorList[2] + "</li>" +
+	                  	 		"<li>SSHkey :"+ errorList[3] + "</li>" +
+	                  	 		"<li>Volume :"+ errorList[4] + "</li>" +
+	                  	 		"</ul><br>Kindly delete associated resources and try again";
+	                      		appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
+	                       }
+
+	                       angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
+	                      	$scope.departmentForm[key].$invalid = true;
+	                       	$scope.departmentForm[key].errorMessage = errorMessage;
+	                       });
+           			  }
+
+                   });
                     $modalInstance.close();
                 },
                         $scope.cancel = function () {
