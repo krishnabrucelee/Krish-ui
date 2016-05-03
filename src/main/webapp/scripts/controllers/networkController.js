@@ -2061,12 +2061,12 @@ if (!angular.isUndefined($stateParams.id1)) {
                                 delete $scope.stickyLoadBalancer.domain;
                                 $scope.showLoader = true;
                                 $modalInstance.close();
-				appService.globalConfig.webSocketLoaders.loadBalancerLoader = true;
                                 var hasServer = appService.crudService.update("loadBalancer", $scope.stickyLoadBalancer);
                                 hasServer.then(function(result) {
                                     $scope.formSubmitted = false;
                                     $scope.showLoader = false;
                                     $scope.stickiness = {};
+				    //appService.globalConfig.webSocketLoaders.loadBalancerLoader = true;
                                 }).catch(function(result) {
                                     appService.globalConfig.webSocketLoaders.loadBalancerLoader = false;
                                 });
