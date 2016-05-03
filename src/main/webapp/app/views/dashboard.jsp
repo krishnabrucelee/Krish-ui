@@ -33,64 +33,74 @@
                         <div class="row" data-ng-hide="showInfrastructureLoader">
                             <div class="col-md-4 col-sm-4 col-xs-6">
                                 <div class="quick-view-details running-vm">
-                                    <div class="quick-view-icon pull-right"></div>
-                                    <div class="quick-view-count pull-right">{{ infrastructure.runningVmCount }}</div>
+                                    <div class="quick-view-icon text-right pull-right"></div>
+                                    <div class="clearfix"></div>
+                                    <div class="quick-view-count text-right">{{ infrastructure.runningVmCount }}</div>
                                 </div>
                                 <div class="quick-view-title text-center">Running VM</div>
                             </div>
                             <div class="col-md-4 col-sm-4 col-xs-6">
                                 <div class="quick-view-details stopped-vm">
-                                    <div class="quick-view-icon pull-right"></div>
-                                    <div class="quick-view-count pull-right">{{ infrastructure.stoppedVmCount }}</div>
+                                    <div class="quick-view-icon text-right pull-right"></div>
+                                    <div class="clearfix"></div>
+                                    <div class="quick-view-count text-right">{{ infrastructure.stoppedVmCount }}</div>
                                 </div>
                                 <div class="quick-view-title text-center">Stopped VM</div>
                             </div>
                             <div class="col-md-4 col-sm-4 col-xs-6">
                                 <div class="quick-view-details total-vm">
-                                    <div class="quick-view-icon pull-right"></div>
-                                    <div class="quick-view-count pull-right">{{ infrastructure.totalCount }}</div>
+                                    <div class="quick-view-icon text-right pull-right"></div>
+                                    <div class="clearfix"></div>
+                                    <div class="quick-view-count text-right">{{ infrastructure.totalCount }}</div>
                                 </div>
                                 <div class="quick-view-title text-center">Total VM</div>
                             </div>
                             <div class="col-md-4 col-sm-4 col-xs-6">
                                 <div class="quick-view-details vcpu">
-                                    <div class="quick-view-icon pull-right"></div>
-                                    <div class="quick-view-count pull-right">{{ infrastructure.vcpu }}</div>
+                                    <div class="quick-view-icon text-right pull-right"></div>
+                                    <div class="clearfix"></div>
+                                    <div class="quick-view-count text-right">{{ infrastructure.vcpu }}</div>
                                 </div>
                                 <div class="quick-view-title text-center">vCpu</div>
                             </div>
                             <div class="col-md-4 col-sm-4 col-xs-6">
                                 <div class="quick-view-details vcpu">
-                                    <div class="quick-view-icon pull-right"></div>
-                                    <div class="quick-view-count pull-right">{{ infrastructure.ram }}<small>(GB)</small></div>
+                                    <div class="quick-view-icon text-right pull-right"></div>
+                                    <div class="clearfix"></div>
+                                    <div class="quick-view-count text-right">{{ infrastructure.ram }}<small>(GB)</small></div>
                                 </div>
                                 <div class="quick-view-title text-center">RAM</div>
                             </div>
                             <div class="col-md-4 col-sm-4 col-xs-6">
                                 <div class="quick-view-details vcpu">
-                                    <div class="quick-view-icon pull-right"></div>
-                                    <div class="quick-view-count pull-right">{{ infrastructure.storage }}<small>(GB)</small></div>
+                                	<div class="quick-view-icon text-right pull-right"></div>
+                                	<div class="clearfix"></div>
+                                    <div class="quick-view-count text-right">{{ infrastructure.storage }}<small>(GB)</small></div>
+                                    
                                 </div>
                                 <div class="quick-view-title text-center">Storage Allocation</div>
                             </div>
                             <div class="col-md-4 col-sm-4 col-xs-6">
                                 <div class="quick-view-details networks">
-                                    <div class="quick-view-icon pull-right"></div>
-                                    <div class="quick-view-count pull-right">{{ infrastructure.publicIp }}</div>
+                                    <div class="quick-view-icon text-right pull-right"></div>
+                                    <div class="clearfix"></div>
+                                    <div class="quick-view-count text-right">{{ infrastructure.publicIp }}</div>
                                 </div>
                                 <div class="quick-view-title text-center">Public IP</div>
                             </div>
                             <div class="col-md-4 col-sm-4 col-xs-6">
                                 <div class="quick-view-details networks">
-                                    <div class="quick-view-icon pull-right"></div>
-                                    <div class="quick-view-count pull-right">{{ infrastructure.networks }}</div>
+                                    <div class="quick-view-icon text-right pull-right"></div>
+                                    <div class="clearfix"></div>
+                                    <div class="quick-view-count text-right">{{ infrastructure.networks }}</div>
                                 </div>
                                 <div class="quick-view-title text-center">Networks</div>
                             </div>
                             <div class="col-md-4 col-sm-4 col-xs-6">
                                 <div class="quick-view-details private-template">
-                                    <div class="quick-view-icon pull-right"></div>
-                                    <div class="quick-view-count pull-right">{{ infrastructure.template }}</div>
+                                    <div class="quick-view-icon text-right pull-right"></div>
+                                    <div class="clearfix"></div>
+                                    <div class="quick-view-count text-right">{{ infrastructure.template }}</div>
                                 </div>
                                 <div class="quick-view-title text-center">Private Template</div>
                             </div>
