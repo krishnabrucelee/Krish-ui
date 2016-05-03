@@ -11,6 +11,8 @@ angular
 function affinityGroupListCtrl($scope, appService, $state, localStorageService, globalConfig) {
 
 	$scope.affinityGroupList = {};
+	$scope.affinityGroupElement = {};
+	$scope.affinityGroup = {};
     $scope.paginationObject = {};
     $scope.formElements = [];
     $scope.global = appService.globalConfig;
@@ -100,6 +102,41 @@ function affinityGroupListCtrl($scope, appService, $state, localStorageService, 
     	$scope.formElements.domainList = result;
     });
 
+    //Load department list
+    $scope.departmentList = {};
+    $scope.getDepartmentList = function (domain) {
+        var hasDepartments = appService.crudService.listAllByFilter("departments/search", domain);
+        hasDepartments.then(function (result) {
+            $scope.departmentList = result;
+        });
+    };
+
+    if ($scope.global.sessionValues.type == "DOMAIN_ADMIN") {
+        var domain = {};
+        domain.id = $scope.global.sessionValues.domainId;
+        $scope.getDepartmentList(domain);
+    }
+
+    if($scope.global.sessionValues.type === 'USER') {
+		var hasUsers = appService.crudService.read("users", $scope.global.sessionValues.id);
+        hasUsers.then(function (result) {
+            if (!angular.isUndefined(result)) {
+            	$scope.userElement = result;
+            }
+        });
+	 }
+
+    // Department list load based on the domain
+    $scope.domainChange = function() {
+        $scope.affinityGroupElement.departmentList = {};
+        if (!angular.isUndefined($scope.affinityGroup.domain)) {
+	        var hasDepartmentList = appService.crudService.listAllByFilter("departments/search", $scope.affinityGroup.domain);
+	        hasDepartmentList.then(function (result) {
+	    	    $scope.affinityGroupElement.departmentList = result;
+	        });
+        }
+    };
+
     // Get volume list based on domain selection
     $scope.selectDomainView = function(pageNumber) {
     	$scope.list(1);
@@ -121,7 +158,14 @@ function affinityGroupListCtrl($scope, appService, $state, localStorageService, 
      		   if (affinityGroupForm.$valid) {
      			   $scope.showLoader = true;
      			    affinityGroup.affinityGroupTypeId = affinityGroup.affinityGroupType.id;
-     			   affinityGroup.transAffinityGroupAccessFlag = "CRUD";
+     			    affinityGroup.transAffinityGroupAccessFlag = "CRUD";
+     			    if ($scope.global.sessionValues.type == "ROOT_ADMIN") {
+     				  affinityGroup.domainId = affinityGroup.domain.id;
+     				  affinityGroup.departmentId = affinityGroup.department.id;
+     			    }
+     			    if ($scope.global.sessionValues.type == "DOMAIN_ADMIN") {
+     			    	affinityGroup.departmentId = affinityGroup.department.id;
+      			    }
                     var hasServer = appService.crudService.add("affinityGroup", affinityGroup);
                     hasServer.then(function (result) {
                     	$scope.list(1);

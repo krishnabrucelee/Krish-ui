@@ -40,7 +40,12 @@ pageEncoding="UTF-8"%>
                                 <a class="btn btn-info font-bold" has-permission="ADD_VOLUME" data-ng-click="addVolume('md')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span>  <fmt:message key="common.add" bundle="${msg}" /></a>
                                 <a class="btn btn-info" ui-sref="cloud.list-volume" title="<fmt:message key="common.refresh" bundle="${msg}" />" ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
                         </div>
-                        <div class="pull-right dashboard-filters-area" id="volume_quick_search">
+                        <div class="pull-right dashboard-filters-area" data-ng-show="global.sessionValues.type == 'USER'">
+							<panda-quick-search></panda-quick-search>
+							<div class="clearfix"></div>
+							<span class="pull-right m-l-sm m-t-sm"></span>
+						</div>
+                        <div class="pull-right dashboard-filters-area" id="volume_quick_search" data-ng-show="global.sessionValues.type != 'USER'">
 						<form data-ng-submit="searchList(quickSearchText)">
 							<div class="quick-search pull-right">
 								<div class="input-group">
