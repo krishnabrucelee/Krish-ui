@@ -332,12 +332,12 @@ table.dataTable thead .sorting_desc::after {content: "\f0dd";}
 /*New Dashboard Styles*/
 .no-border-radious{-webkit-border-radius: 0px; -moz-border-radius: 0px; border-radius: 0px; -webkit-appearance: none;}
 
-.quick-view-details{border-right:#f4f6f7 2px solid; padding:10px 5px; margin:10px 0px 0px 0px; clear:both; height:auto; overflow:hidden}
-.quick-view-count{font-size:24px; font-weight:400;}
+.quick-view-details{border-right:#f4f6f7 2px solid; padding:10px 5px; clear:both; height:auto; overflow:hidden}
+.quick-view-count{font-size:20px; font-weight:400;}
 .quick-view-count small{font-size:14px;}
 .quick-view-title{background-color:#f4f6f7; padding:3px 0px; clear:both; margin-bottom:15px;}
 
-.quick-view-icon{width:26px; height:26px; display:block; margin: 17px 0 0 7px; background: url("img/dashboard-icons.png") no-repeat !important;}
+.quick-view-icon{width:26px; height:26px; display:block; margin: 8px 0 0 7px; background: url("img/dashboard-icons.png") no-repeat !important;}
 .running-vm .quick-view-icon{background-position:0px 0px !important;}
 .stopped-vm .quick-view-icon{background-position:-26px 0px !important;}
 .total-vm .quick-view-icon{background-position:-52px 0px !important;}
