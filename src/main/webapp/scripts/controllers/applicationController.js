@@ -142,7 +142,7 @@ function applicationListCtrl($scope, appService, localStorageService, globalConf
     });
 
 
-	// Add the application
+    // Add the application
     $scope.createApplication = function (size) {
         appService.dialogService.openDialog($scope.global.VIEW_URL + "application/add.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
                 // Create a new application
