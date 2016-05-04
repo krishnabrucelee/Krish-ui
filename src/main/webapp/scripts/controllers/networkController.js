@@ -776,7 +776,9 @@ $scope.ipCostList();
     };
 
     if (!angular.isUndefined($stateParams.id1) && $stateParams.id1 != null && $stateParams.id > 0) {
-        appService.localStorageService.set('view', $state.current.data.networkTabs);
+        if(angular.isUndefined(appService.localStorageService.get('view')) || appService.localStorageService.get('view') == null){
+            appService.localStorageService.set('view', $state.current.data.networkTabs);
+        }
         $scope.tabView = appService.localStorageService.get('view');
         $scope.editIpaddress($stateParams.id1);
     }
@@ -1918,16 +1920,19 @@ if (!angular.isUndefined($stateParams.id1)) {
         appService.dialogService.openDialog("app/views/cloud/network/enable-vpn.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function($scope, $modalInstance, $rootScope) {
             $scope.enableVpnAccess = function(network) {
                     $scope.showLoader = true;
-                    $scope.cancel();
-                    appService.globalConfig.webSocketLoaders.ipLoader = true;
                     var hasVpn = appService.crudService.listByQuery("ipAddresses/enablevpn?uuid=" + $scope.ipAddress.uuid);
                     hasVpn.then(function(result) {
                         $scope.ipDetails = result;
                         $scope.showLoader = false;
-	if(($location.path() == '/network/list/view/' + $stateParams.id)&&($scope.templateCategory=='ip'))
+			$scope.cancel();
+                	appService.globalConfig.webSocketLoaders.ipLoader = true;
+		 if(($location.path() == '/network/list/view/' + $stateParams.id)&&($scope.templateCategorys =='ip'))
 			{
 			appService.localStorageService.set('view', 'vpn-details');
+                        $scope.tabview = appService.localStorageService.get('view');
+                        $scope.templateCategory = $scope.tabview;
     			$window.location.href = '#network/list/view/' + $stateParams.id + '/ip-address/' + $scope.ipDetails.id;
+			
 			}
                     }).catch(function(result) {
                         $scope.showLoader = false;
