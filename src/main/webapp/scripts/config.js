@@ -211,7 +211,7 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider, $compile
                     pageDesc : 'Sample Form'
                 }
             })
-
+            
             // VPC
 
             .state('vpc', {
@@ -222,15 +222,17 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider, $compile
                     pageTitle : 'VPC'
                 }
             })
+
+            // VPC
             
             .state('vpc.list', {                
                 url : "/vpc/list",
                 templateUrl : VIEW_URL + "views/vpc/list.jsp",
                 data : {
-                    pageTitle : 'VPC'
+                    pageTitle : 'VPC List'
                 }
             })
-            
+
             // View VPC
             .state('vpc.view-vpc', {
                 url : "/view-vpc/:id",
