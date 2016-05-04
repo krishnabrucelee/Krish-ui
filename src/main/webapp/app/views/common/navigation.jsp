@@ -22,8 +22,8 @@
                 <li ui-sref-active="active" ui-sref="cloud.quota-limit" id="quota_limits_navigation_button"><a href="#"><fmt:message key="common.quota.limit" bundle="${msg}" /> </a></li>
             </ul>
         </li>
-        <li data-ng-if="global.sessionValues.userStatus != 'SUSPENDED'" ng-class="{active: $state.includes('vpc')}">
-            <a ui-sref="vpc" id="vpc_navigation_button">
+        <li data-ng-if="global.sessionValues.userStatus != 'SUSPENDED'" ng-class="{active: $state.includes('vpc.list')}">
+            <a ui-sref="vpc.list" id="vpc_navigation_button">
                 <span class="fa fa-soundcloud fa-2x nav-menu-icons"></span>
                 <span class="nav-label"><fmt:message key="common.vpc" bundle="${msg}" /></span>
             </a>
