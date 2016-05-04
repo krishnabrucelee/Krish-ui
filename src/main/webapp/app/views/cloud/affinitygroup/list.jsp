@@ -20,6 +20,7 @@
                          <a class="btn btn-info" data-ng-click="list(1)"  title="<fmt:message key="common.refresh" bundle="${msg}"/>"><span class="fa fa-refresh fa-lg "></span></a>
                     </div>
                     <div class="pull-right dashboard-filters-area">
+                    <form data-ng-submit="searchList(affinityGroupSearch)">
                             <div class="quick-search pull-right m-r-sm">
 								<div class="input-group">
 									<input data-ng-model="affinityGroupSearch" type="text" class="form-control input-medium" placeholder="<fmt:message key="common.quick.search" bundle="${msg}" />" aria-describedby="quicksearch-go">
@@ -38,6 +39,7 @@
                             <div class="clearfix"></div>
                             <span class="pull-right m-l-sm m-t-sm">
                             </span>
+                            </form>
                         </div>
                 </div>
                 <div class="clearfix"></div>
@@ -65,7 +67,7 @@
                                         </tr>
                                 </tbody>
                                 <tbody data-ng-show="affinityGroupList.length > 0">
-                                    <tr data-ng-repeat="affinityGroup in filteredCount = (affinityGroupList  | filter:affinityGroupSearch | orderBy:sort.column:sort.descending)">
+                                    <tr data-ng-repeat="affinityGroup in filteredCount = (affinityGroupList  | filter:quickSearch | orderBy:sort.column:sort.descending)">
                                         <td>
                                             {{ affinityGroup.name}}
                                         </td>

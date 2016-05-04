@@ -24,6 +24,84 @@
                         </div>
                     </div>
                 </div>
+                <div data-ng-if="global.sessionValues.type != 'ROOT_ADMIN'">
+				<div class="form-group">
+					<div class="row">
+                    	<label class="col-md-4 col-sm-3 col-xs-3 control-label"><fmt:message key="common.domain" bundle="${msg}" /><span class="text-danger">*</span></label>
+                    	<div class="col-md-6  col-sm-7 col-xs-7">
+                        {{ global.sessionValues.domainName }}
+                        <input type="hidden" name="domain"  data-ng-model="affinityGroup.domain" data-ng-init="affinityGroup.domainId=global.sessionValues.domainId" />
+                    	</div>
+                	</div>
+                </div>
+               	</div>
+              	<div data-ng-if="global.sessionValues.type == 'ROOT_ADMIN'">
+                     <div class="form-group" ng-class="{'text-danger':affinityGroupForm.domain.$invalid && formSubmitted}">
+                         <div class="row">
+                             <label class="col-md-4 col-sm-3 col-xs-3 control-label"><fmt:message key="common.company" bundle="${msg}" /><span class="text-danger">*</span>
+                             </label>
+                             <div class="col-md-6  col-sm-7 col-xs-7">
+                                 <select  required="true" class="form-control form-group-lg" name="domain" data-ng-change="domainChange()"
+                                          data-ng-model="affinityGroup.domain"
+                                          data-ng-options="domain.name for domain in formElements.domainList" data-ng-class="{'error': affinityGroupForm.domain.$invalid && formSubmitted}">
+                                     <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
+                                 </select>
+                                	<i  tooltip="<fmt:message key="choose.domain" bundle="${msg}" />" class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
+                                 <div class="error-area" data-ng-show="affinityGroupForm.domain.$invalid && formSubmitted" ><i  tooltip="<fmt:message key="company.is.required" bundle="${msg}" />" class="fa fa-warning error-icon"></i></div>
+                             </div>
+                         </div>
+                     </div>
+                </div>
+
+                <div data-ng-if="global.sessionValues.type == 'ROOT_ADMIN'">
+                <div class="form-group"ng-class="{'text-danger': affinityGroupForm.department.$invalid && formSubmitted}">
+                    <div class="row">
+                        <label class="col-md-4 col-sm-3 col-xs-3 control-label"><fmt:message key="common.department" bundle="${msg}" /><span class="text-danger">*</span></label>
+                        <div class="col-md-6  col-sm-7 col-xs-7">
+                            <select required="true" class="form-control input-group" name="department" data-ng-model="affinityGroup.department"
+                            ng-options="department.userName for department in affinityGroupElement.departmentList" data-ng-class="{'error': affinityGroupForm.department.$invalid && formSubmitted}" >
+                                <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
+                            </select>
+                            <i  tooltip="<fmt:message key="common.department" bundle="${msg}" />" class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
+                            <div class="error-area" data-ng-show="affinityGroupForm.department.$invalid && formSubmitted" >
+                            	<i ng-attr-tooltip="{{ affinityGroupForm.department.errorMessage || '<fmt:message key="department.is.required" bundle="${msg}" />' }}"
+				class="fa fa-warning error-icon"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                <div data-ng-if="global.sessionValues.type == 'DOMAIN_ADMIN'">
+                <div class="form-group"ng-class="{'text-danger': affinityGroupForm.department.$invalid && formSubmitted}">
+                    <div class="row">
+                        <label class="col-md-4 col-sm-3 col-xs-3 control-label"><fmt:message key="common.department" bundle="${msg}" /><span class="text-danger">*</span></label>
+                        <div class="col-md-6  col-sm-7 col-xs-7">
+                            <select required="true" class="form-control input-group" name="department" data-ng-model="affinityGroup.department"
+                            ng-options="department.userName for department in departmentList" data-ng-class="{'error': affinityGroupForm.department.$invalid && formSubmitted}" >
+                                <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
+
+                            </select>
+                            <i  tooltip="<fmt:message key="common.department" bundle="${msg}" />" class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
+                            <div class="error-area" data-ng-show="affinityGroupForm.department.$invalid && formSubmitted" >
+                            	<i ng-attr-tooltip="{{ affinityGroupForm.department.errorMessage || '<fmt:message key="department.is.required" bundle="${msg}" />' }}"
+				class="fa fa-warning error-icon"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                <div data-ng-if="global.sessionValues.type == 'USER'">
+                <div class="form-group">
+                    <div class="row">
+                        <label class="col-md-4 col-sm-3 col-xs-3 control-label"><fmt:message key="common.department" bundle="${msg}" /><span class="text-danger">*</span></label>
+                        <div class="col-md-6  col-sm-7 col-xs-7">
+                        {{ userElement.department.userName }}
+                        <input type="hidden" name="department"  data-ng-model="affinityGroup.department" data-ng-init="affinityGroup.departmentId=global.sessionValues.departmentId" />
+                    	</div>
+                    </div>
+                </div>
+                </div>
+
                 <div class="form-group" >
                     <div class="row">
                         <label class="col-md-4 col-sm-3 control-label"><fmt:message key="common.description" bundle="${msg}" /></label>
