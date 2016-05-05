@@ -40,13 +40,13 @@ function appCtrl($http, $scope, $window, $timeout, appService, globalConfig, cru
                 obj.usedLimit = Math.round( obj.usedLimit / 1024);
     						if (obj.max != -1) {
     							obj.max = Math.round(obj.max / 1024);
-                  $scope.quotaLimits[obj.resourceType].label = $scope.quotaLimits[obj.resourceType].label + " " + "(GiB)";
+                  $scope.quotaLimits[obj.resourceType].label = $scope.quotaLimits[obj.resourceType].label + " " + "(GB)";
     						}
               }
 
               if (obj.max == -1 && obj.resourceType == "PrimaryStorage" || obj.max == -1 && obj.resourceType == "SecondaryStorage") {
 					        obj.usedLimit = Math.round( obj.usedLimit / (1024 * 1024 * 1024));
-                  $scope.quotaLimits[obj.resourceType].label = $scope.quotaLimits[obj.resourceType].label + " " + "(GiB)";
+                  $scope.quotaLimits[obj.resourceType].label = $scope.quotaLimits[obj.resourceType].label + " " + "(GB)";
    				    }
 
               $scope.quotaLimits[obj.resourceType].max = parseInt(obj.max);
