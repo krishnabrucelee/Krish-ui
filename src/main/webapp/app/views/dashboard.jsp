@@ -76,7 +76,7 @@
                                 	<div class="quick-view-icon text-right pull-right"></div>
                                 	<div class="clearfix"></div>
                                     <div class="quick-view-count text-right">{{ infrastructure.storage }}<small>(GB)</small></div>
-                                    
+
                                 </div>
                                 <div class="quick-view-title text-center">Storage Allocation</div>
                             </div>
@@ -120,17 +120,23 @@
                         <div class="row dashboard-quota-area" data-ng-hide="showQuotaLoader">
                             <div data-ng-if="quotaLimit.max != '-1'"class="col-md-3 col-sm-3 col-xs-6 dashboard-quota" data-ng-repeat="quotaLimit in quotaLimits">
                                 <div class="doughnut-fixed-area">
-	                                <div class="doughnutchart-value">{{ quotaLimit.percentage }}%</div>
-	                                <canvas doughnutchart options="doughnutOptions" data="quotaLimit.doughnutData" width="120" height="85"></canvas>
-	                                <div>{{ quotaLimit.label }}</div> <span>Using {{quotaLimit.usedLimit}} of {{quotaLimit.max}}</span>
+                                    <div data-ng-if="quotaLimit.percentage == undefined" class="m-b-sm"><img src="images/unlimited-quota.png" ></div>
+	                                <div data-ng-if="quotaLimit.percentage != undefined" class="doughnutchart-value">{{ quotaLimit.percentage }}%</div>
+	                                <canvas data-ng-if="quotaLimit.percentage != undefined" doughnutchart options="doughnutOptions" data="quotaLimit.doughnutData" width="120" height="85"></canvas>
+	                                <div>{{ quotaLimit.label }}</div>
+	                                <span data-ng-if="quotaLimit.usedLimit != undefined && quotaLimit.usedLimit != NaN && quotaLimit.max != undefined">Using {{quotaLimit.usedLimit}} of {{quotaLimit.max}}</span>
+	                                <span data-ng-if="(quotaLimit.usedLimit == undefined || quotaLimit.usedLimit == NaN) && quotaLimit.max != undefined">Using 0 of {{quotaLimit.max}}</span>
+	                                <span data-ng-if="quotaLimit.usedLimit != undefined && quotaLimit.usedLimit != NaN && quotaLimit.max == undefined">Using {{quotaLimit.usedLimit}} of unlimited</span>
+	                                <span data-ng-if="(quotaLimit.usedLimit == undefined || quotaLimit.usedLimit == NaN) && quotaLimit.max == undefined">Using 0 of unlimited</span>
                                 </div>
                             </div>
                             <div data-ng-if="quotaLimit.max == '-1'" class="col-md-3 col-sm-3 col-xs-6 dashboard-quota" data-ng-repeat="quotaLimit in quotaLimits">
                                <div class="doughnut-fixed-area">
 	                               <div class="m-b-sm">
 	                               <img src="images/unlimited-quota.png" ></div>
-	                               <%--  <canvas doughnutchart options="doughnutOptions" data="quotaLimit.doughnutData" height="140" responsive=true></canvas> --%>
-	                                <div>{{ quotaLimit.label }}</div> <span>Using {{quotaLimit.usedLimit}} of unlimited</span>
+	                                <div>{{ quotaLimit.label }}</div>
+	                                <span data-ng-if="quotaLimit.usedLimit != undefined && quotaLimit.usedLimit != NaN">Using {{quotaLimit.usedLimit}} of unlimited</span>
+	                                <span data-ng-if="quotaLimit.usedLimit == undefined || quotaLimit.usedLimit == NaN">Using 0 of unlimited</span>
                                 </div>
                             </div>
 
