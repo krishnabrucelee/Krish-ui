@@ -35,8 +35,8 @@
                     <div class="row m-l-sm m-r-sm panel-body" ng-controller="activityCtrl">
                         <ul class="nav nav-tabs" >
                             <li data-ng-class="{'active' : activity.category == 'events'}"><a   data-ng-click="getActivityByCategory('events', 1)" data-toggle="tab">  <i class="fa fa-calendar"></i> Events</a></li>
-                            <li data-ng-class="{'active' : activity.category == 'alerts'}"><a   data-ng-click="getActivityByCategory('alerts', 1)" data-toggle="tab"> <i class="fa fa-warning"></i> Alerts</a></li>
-                            <li data-ng-class="{'active' : activity.category == 'notifications'}"><a data-ng-click="getActivityByCategory('events', 1)" data-toggle="tab"> <i class="fa fa-bell"></i> Notifications</a></li>
+                            <li data-ng-if="global.sessionValues.type=='ROOT_ADMIN'" data-ng-class="{'active' : activity.category == 'alerts'}"><a   data-ng-click="getActivityByCategory('alerts', 1)" data-toggle="tab"> <i class="fa fa-warning"></i> Alerts</a></li>
+                            <li data-ng-class="{'active' : activity.category == 'notifications'}"><a data-ng-click="getActivityByCategory('notifications', 1)" data-toggle="tab"> <i class="fa fa-bell"></i> Notifications</a></li>
                			</ul>
                       <div class="tab-content">
                       <div data-ng-show="showLoader" style="margin: 1%">
