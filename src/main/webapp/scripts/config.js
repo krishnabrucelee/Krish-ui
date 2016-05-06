@@ -213,12 +213,94 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider, $compile
             })
 
             // VPC
-
             .state('vpc', {
+                abstract: true,
                 url : "/vpc",
-                templateUrl : VIEW_URL + "views/vpc/vpc.jsp",
+                templateUrl : VIEW_URL + "views/common/vpccontent.jsp",
                 data : {
                     pageTitle : 'VPC'
+                }
+            })
+
+
+            // VPC list
+            .state('vpc.list', {
+                url : "/vpc/list",
+                templateUrl : VIEW_URL + "views/vpc/list.jsp",
+                data : {
+                    pageTitle : 'VPC List'
+                }
+            })
+
+            // View VPC
+            .state('vpc.view-vpc', {
+                url : "/view-vpc/:id",
+                templateUrl : VIEW_URL + "views/vpc/view-vpc.jsp",
+                data : {
+                    pageTitle : 'view VPC'
+                }
+            })
+
+            // Config VPC
+            .state('vpc.config-vpc', {
+                url : "/config-vpc/:id",
+                templateUrl : VIEW_URL + "views/vpc/config-vpc.jsp",
+                data : {
+                    pageTitle : 'config VPC'
+                }
+            })
+
+            // Private Gateway
+            .state('vpc.private-gateway', {
+                url : "/private-gateway/:id",
+                templateUrl : VIEW_URL + "views/vpc/private-gateway.jsp",
+                data : {
+                    pageTitle : 'Private Gateway'
+                }
+            })
+
+            // Public IP
+            .state('vpc.public-ip', {
+                url : "/public-ip/:id",
+                templateUrl : VIEW_URL + "views/vpc/public-ip.jsp",
+                data : {
+                    pageTitle : 'Public IP'
+                }
+            })
+
+            // Network ACL
+            .state('vpc.network-acl', {
+                url : "/network-acl/:id",
+                templateUrl : VIEW_URL + "views/vpc/network-acl.jsp",
+                data : {
+                    pageTitle : 'Network ACL'
+                }
+            })
+
+            // Public LB IP
+            .state('vpc.public-lbip', {
+                url : "/public-lbip/:id",
+                templateUrl : VIEW_URL + "views/vpc/public-lbip.jsp",
+                data : {
+                    pageTitle : 'Public LB IP'
+                }
+            })
+
+            // Static NAT
+            .state('vpc.static-nat', {
+                url : "/static-nat/:id",
+                templateUrl : VIEW_URL + "views/vpc/static-nat.jsp",
+                data : {
+                    pageTitle : 'Static NAT'
+                }
+            })
+
+            // Virtual Machines
+            .state('vpc.virtual-machines', {
+                url : "/virtual-machines/:id",
+                templateUrl : VIEW_URL + "views/vpc/virtual-machines.jsp",
+                data : {
+                    pageTitle : 'Virtual Machines'
                 }
             })
 
@@ -254,6 +336,8 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider, $compile
                     pageTitle : 'common.applications'
                 }
             })
+
+
 
             // payment
             .state('alipayments', {

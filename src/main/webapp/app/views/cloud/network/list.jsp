@@ -110,6 +110,9 @@
 												<th data-ng-click="changeSort('name',paginationObject.currentPage)"
 													data-ng-class="sort.descending && sort.column =='name'? 'sorting_desc' : 'sorting_asc' "><fmt:message
 														key="common.name" bundle="${msg}" /></th>
+												<th data-ng-click="changeSort('domain.name',paginationObject.currentPage)"
+													data-ng-class="sort.descending && sort.column =='domain.name'? 'sorting_desc' : 'sorting_asc' "><fmt:message
+														key="common.company" bundle="${msg}" /></th>
 												<th data-ng-click="changeSort('department.userName',paginationObject.currentPage)"
 													data-ng-class="sort.descending && sort.column =='Account'? 'sorting_desc' : 'sorting_asc' "><fmt:message
 														key="common.department" bundle="${msg}" /></th>
@@ -137,6 +140,7 @@
 												<td><a class="text-info"
 													ui-sref="cloud.list-network.view-network({id: {{ network.id }}, view: 'view'})"
 													title="View Network">{{ network.name }}</a></td>
+											    <td>{{ network.domain.name }}</td>
 												<td>{{ network.department.userName || '-'}}</td>
 												<td>{{ network.project.name || '-'}}</td>
 												<td>{{ network.networkType }}</td>
