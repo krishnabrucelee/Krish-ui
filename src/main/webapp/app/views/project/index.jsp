@@ -111,6 +111,7 @@
 												<th ng-click="changeSort('status',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='status'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="common.status" bundle="${msg}" /></th>
 												<th><fmt:message key="project.owner" bundle="${msg}" /></th>
 												<th><fmt:message key="billing.owner" bundle="${msg}" /></th>
+												<th ng-click="changeSort('domain.name',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='domain.name'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="common.company" bundle="${msg}" /></th>
 												<th ng-click="changeSort('department.userName',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='department.userName'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="common.department" bundle="${msg}" /></th>
 												<th ng-click="changeSort('createdDateTime',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='createdDateTime'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="create.time" bundle="${msg}" /></th>
 												<th><fmt:message key="common.action" bundle="${msg}" /></th>
@@ -134,6 +135,7 @@
 													class="text-danger">In Active</label></td>
 												<td>{{ projectObj.projectOwner.userName }}</td>
 												<td>{{ projectObj.projectOwner.userName }}</td>
+												<td>{{ projectObj.domain.name }}</td>
 												<td>{{ projectObj.department.userName }}</td>
 												<td>{{ projectObj.createdDateTime*1000 | date:'yyyy-MM-dd HH:mm:ss'}}</td>
 												<td>
