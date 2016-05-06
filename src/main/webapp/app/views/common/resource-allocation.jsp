@@ -130,7 +130,7 @@
                                 	</div>
                                  	<div data-ng-if="resource=='department'" >
 										<label>
-											<span>{{hasSumOfDepartmentMax.Volume }}</span>
+											<span>{{hasSumOfDepartmentMax.Volume || '0' }}</span>
 										</label>
                                 	</div>
                                    	<div data-ng-if="resource=='project'" >
@@ -182,7 +182,7 @@
                                 </div>
                                  <div data-ng-if="resource=='department'" >
                                 	<label>
-										<span>{{hasSumOfDepartmentMax.Instance }}</span>
+										<span>{{hasSumOfDepartmentMax.Instance || '0' }}</span>
 									</label>
                                 </div>
                                    <div data-ng-if="resource=='project'" >
@@ -236,7 +236,7 @@
                                 <div data-ng-if="resource=='department'" >
 
                                 	<label>
-										<span>{{hasSumOfDepartmentMax.Template }}</span>
+										<span>{{hasSumOfDepartmentMax.Template || '0' }}</span>
 									</label>
                                 </div>
                                   <div data-ng-if="resource=='project'" >
@@ -288,7 +288,7 @@
                                 </div>
                                  <div data-ng-if="resource=='department'" >
                                 	<label>
-										<span>{{hasSumOfDepartmentMax.Network }}</span>
+										<span>{{hasSumOfDepartmentMax.Network || '0' }}</span>
 									</label>
                                 </div>
                                   <div data-ng-if="resource=='project'" >
@@ -341,7 +341,7 @@
                                 </div>
                                 <div data-ng-if="resource=='department'" >
                                 	<label>
-										<span>{{hasSumOfDepartmentMax.Snapshot }}</span>
+										<span>{{hasSumOfDepartmentMax.Snapshot || '0' }}</span>
 									</label>
                                 </div>
                                 <div data-ng-if="resource=='project'" >
@@ -390,7 +390,7 @@
                                 </div>
                                   <div data-ng-if="resource=='department'" >
                                 	<label>
-									<span>{{hasSumOfDepartmentMax.IP }}</span></b></label>
+									<span>{{hasSumOfDepartmentMax.IP || '0' }}</span></b></label>
                                 </div>
                                  <div data-ng-if="resource=='project'" >
                                 	<label>
@@ -439,7 +439,7 @@
                                 </div>
                                 <div data-ng-if="resource=='department'" >
                                 	<label>
-									<span>{{hasSumOfDepartmentMax.VPC}}</span></b></label>
+									<span>{{hasSumOfDepartmentMax.VPC || '0' }}</span></b></label>
                                 </div>
                                 <div data-ng-if="resource=='project'" >
                                 	<label>
@@ -487,7 +487,7 @@
                                 </div>
                                   <div data-ng-if="resource=='department'" >
                                 	<label>
-									<span>{{hasSumOfDepartmentMax.CPU }}</span></b></label>
+									<span>{{hasSumOfDepartmentMax.CPU || '0' }}</span></b></label>
                                 </div>
                                  <div data-ng-if="resource=='project'" >
                                 	<label>
@@ -497,13 +497,13 @@
 			          	</tr>
 			          	<tr>
 			               	<td>
-                                <label><fmt:message key="max.memory" bundle="${msg}" /> (MiB):
+                                <label><fmt:message key="max.memory" bundle="${msg}" /> (GB):
                                     <span class="text-danger">*</span>
                                 </label>
 							</td>
                             <td>
-                                <div class="col-md-8 col-sm-8">
-                                    <input required="true" type="text" valid-integer name="Memory"
+                                 <div class="col-md-8 col-sm-8">
+                                    <input required="true" type="text" valid-decimal name="Memory"
                                      data-ng-model="resourceQuota.Memory"  class="form-control"
                                      data-ng-class="{'error': (resourceAllocationForm.Memory.$invalid && formSubmitted || resourceAllocationField.Memory.$invalid)}">
                                     <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="<fmt:message key="maximum.memory.to.be.allocated" bundle="${msg}" />" ></i>
@@ -512,19 +512,34 @@
                                 </div>
 							</td>
 			                <td>
-                                  <div data-ng-if="resource=='domain' || type == 'domain-quota'" >
+                                  <div data-ng-if="(resource=='domain' || type == 'domain-quota') && hasSumOfDomainMin.Memory != -1" >
                                 	<label>
-									<span>{{hasSumOfDomainMin.Memory || '0' }}</span>
+									<span>{{ global.Math.round((hasSumOfDomainMin.Memory),1) || '0' }}</span>
+									</b></label>
+                                  </div>
+                                  <div data-ng-if="(resource=='domain' || type == 'domain-quota') && hasSumOfDomainMin.Memory == -1" >
+                                	<label>
+									<span>{{ hasSumOfDomainMin.Memory || '0' }}</span>
+									</b></label>
+                                  </div>
+                                  <div data-ng-if="resource=='department' && hasSumOfDepartmentMin.Memory != -1" >
+                                	<label>
+									<span>{{ global.Math.round((hasSumOfDepartmentMin.Memory),1) || '0' }}</span>
+									</b></label>
+                                 </div>
+                                 <div data-ng-if="resource=='department' && hasSumOfDepartmentMin.Memory == -1" >
+                                	<label>
+									<span>{{ hasSumOfDepartmentMin.Memory || '0' }}</span>
+									</b></label>
+                                 </div>
+                                <div data-ng-if="resource=='project' && hasSumOfProjectMin.Memory != -1" >
+                                	<label>
+									<span>{{ global.Math.round((hasSumOfProjectMin.Memory),1) || '0' }}</span>
 									</b></label>
                                 </div>
-                                  <div data-ng-if="resource=='department'" >
+                                <div data-ng-if="resource=='project' && hasSumOfProjectMin.Memory == -1" >
                                 	<label>
-									<span>{{hasSumOfDepartmentMin.Memory || '0' }}</span>
-									</b></label>
-                                </div>
-                                <div data-ng-if="resource=='project'" >
-                                	<label>
-									<span>{{hasSumOfProjectMin.Memory || '0' }}</span>
+									<span>{{ hasSumOfProjectMin.Memory || '0' }}</span>
 									</b></label>
                                 </div>
 			                </td>
@@ -532,20 +547,28 @@
                                   <div data-ng-if="resource=='domain' || type == 'domain-quota'" >
                                 	<label>
 									<span>{{-1}}</span></b></label>
-                                </div>
-                                  <div data-ng-if="resource=='department'" >
+                                  </div>
+                                  <div data-ng-if="resource=='department' && hasSumOfDepartmentMax.Memory != -1" >
                                 	<label>
-									<span>{{hasSumOfDepartmentMax.Memory }}</span></b></label>
-                                </div>
-                                <div data-ng-if="resource=='project'" >
+									<span>{{ global.Math.round((hasSumOfDepartmentMax.Memory),1) || '0' }}</span></b></label>
+                                  </div>
+                                  <div data-ng-if="resource=='department' && hasSumOfDepartmentMax.Memory == -1" >
                                 	<label>
-									<span>{{hasSumOfProjectMax.Memory || '0' }}</span></b></label>
-                                </div>
+									<span>{{ hasSumOfDepartmentMax.Memory || '0' }}</span></b></label>
+                                  </div>
+                                  <div data-ng-if="resource=='project' && hasSumOfProjectMax.Memory != -1" >
+                                	<label>
+									<span>{{ global.Math.round((hasSumOfProjectMax.Memory),1) || '0' }}</span></b></label>
+                                  </div>
+                                   <div data-ng-if="resource=='project' && hasSumOfProjectMax.Memory == -1" >
+                                	<label>
+									<span>{{ hasSumOfProjectMax.Memory || '0' }}</span></b></label>
+                                  </div>
 							</td>
 			          	</tr>
 			          	<tr>
 			               	<td>
-								<label><fmt:message key="max.primary" bundle="${msg}" /> (GiB):
+								<label><fmt:message key="max.primary" bundle="${msg}" /> (GB):
                                     <span class="text-danger">*</span>
                                 </label>
 							</td>
@@ -584,7 +607,7 @@
                                 </div>
                                 <div data-ng-if="resource=='department'" >
                                 	<label>
-									<span>{{hasSumOfDepartmentMax.PrimaryStorage }}</span></b></label>
+									<span>{{hasSumOfDepartmentMax.PrimaryStorage || '0' }}</span></b></label>
                                 </div>
                                    <div data-ng-if="resource=='project'" >
                                 	<label>
@@ -594,7 +617,7 @@
 			          	</tr>
 			            <tr>
 			               	<td>
-								<label><fmt:message key="max.secondary" bundle="${msg}" /> (GiB):
+								<label><fmt:message key="max.secondary" bundle="${msg}" /> (GB):
                                     <span class="text-danger">*</span>
                                 </label>
 							</td>
@@ -632,7 +655,7 @@
                                 </div>
                                 <div data-ng-if="resource=='department'">
                                 	<label>
-									<span>{{hasSumOfDepartmentMax.SecondaryStorage}}</span></label>
+									<span>{{hasSumOfDepartmentMax.SecondaryStorage || '0'}}</span></label>
                                 </div>
                                  <div data-ng-if="resource=='project'" >
                                 	<label>
