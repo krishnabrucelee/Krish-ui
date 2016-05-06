@@ -3,6 +3,23 @@ pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<div class="row">
+	<div class="col-md-12">
+		<div class="pull-right dashboard-filters-area" id="instances_quick_search">
+						<form data-ng-submit="featureSearchList(featureSearch)">
+							<div class="quick-search pull-right">
+								<div class="input-group">
+									<input data-ng-model="featureSearch" type="text" class="form-control input-medium" placeholder="<fmt:message key="common.quick.search" bundle="${msg}" />" aria-describedby="quicksearch-go">
+								   	<span class="input-group-addon" id="quicksearch-go"><span class="pe-7s-search pe-lg font-bold"></span></span>
+								</div>
+							</div>
+							<div class="clearfix"></div>
+							<span class="pull-right m-l-sm m-t-sm">
+							</span>
+						</form>
+						</div>
+	</div>
+</div>
 <div class="m-t-sm">
     <div  class="col-md-4 col-lg-4 col-xs-12 col-sm-12 template-panel-area" data-ng-repeat="templateObj in template.listFeaturedTemplate|orderBy:template.name | filter: quickSearch">
         <div class="hpanel">

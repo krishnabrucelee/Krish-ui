@@ -3,13 +3,32 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-  <div class="row">
+<div class="">
+	<div class="col-md-12 col-sm-12" >
+		<div class="pull-right dashboard-filters-area" id="instances_quick_search">
+						<form data-ng-submit="searchList(vmSearch)">
+							<div class="quick-search pull-right">
+								<div class="input-group">
+									<input data-ng-model="vmSearch" type="text" class="form-control input-medium" placeholder="<fmt:message key="common.quick.search" bundle="${msg}" />" aria-describedby="quicksearch-go">
+								   	<span class="input-group-addon" id="quicksearch-go"><span class="pe-7s-search pe-lg font-bold"></span></span>
+								</div>
+							</div>
+							<div class="clearfix"></div>
+							<span class="pull-right m-l-sm m-t-sm">
+							</span>
+						</form>
+						</div>
+	</div>
+</div>
+  <div class="">
         <div class="col-md-12 col-sm-12" >
+
             <div class="hpanel">
-                <div class="panel-heading">
-            </div>
+
                 <div class="white-content">
+
                     <div class="table-responsive">
+
                         <table cellspacing="1" cellpadding="1" class="table dataTable table-bordered table-striped">
                             <thead>
                                 <tr>
@@ -25,7 +44,12 @@
 							<th class="col-md-1 col-sm-1"><fmt:message key="common.action" bundle="${msg}" /></th>
                             </tr>
                             </thead>
-                            <tbody>
+ 							<tbody data-ng-hide="communityList.length > 0">
+                               <tr>
+                                   <td class="col-md-6 col-sm-6" colspan="10"><fmt:message key="common.no.records.found" bundle="${msg}" />!!</td>
+                               </tr>
+                           </tbody >
+                            <tbody data-ng-show="communityList.length > 0">
                                 <tr   data-ng-repeat="template in filteredCount = (communityList| filter:quickSearch| orderBy:sort.column:sort.descending)">
                                     <td>
                                         <a data-ng-click="showDescription(template)">

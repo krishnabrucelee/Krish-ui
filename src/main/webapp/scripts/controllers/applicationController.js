@@ -61,7 +61,7 @@ function applicationListCtrl($scope, appService, localStorageService, globalConf
                 	$scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=" + $scope.applicationSearch;
             	}
             hasApplicationsLists =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "applications/listByFilter"
-				+"?lang=" +appService.localStorageService.cookie.get('language')+ $scope.filter+"&sortBy="+$scope.paginationObject.sortOrder +$scope.paginationObject.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+				+"?lang=" +appService.localStorageService.cookie.get('language')+ encodeURI($scope.filter) +"&sortBy="+$scope.paginationObject.sortOrder +$scope.paginationObject.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
         }
 
             hasApplicationsLists.then(function(result) { // this is only run after $http
