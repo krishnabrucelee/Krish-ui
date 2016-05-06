@@ -108,10 +108,8 @@ function accountListCtrl($scope,$state, $log,$timeout,$stateParams, appService, 
 	            }
 	            var hasUserCount = {};
 	            if ($scope.domainView == null && $scope.userSearch == null) {
-	            	alert("gg");
 	            	hasUserCount = appService.crudService.listAll("users/list");
 	            } else {
-	            	alert("hh");
 	            	hasUserCount =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "users/listByUserDomain"
 	        				+"?lang=" +appService.localStorageService.cookie.get('language')+"&flag=pandaUserPanel"
 	        				+ encodeURI($scope.filter)+"&sortBy="+$scope.paginationObject.sortOrder+$scope.paginationObject.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
@@ -282,10 +280,8 @@ function accountListCtrl($scope,$state, $log,$timeout,$stateParams, appService, 
 
             var hasUserCount = {};
             if ($scope.domainView == null && $scope.userSearch == null) {
-            	alert("hdfsefg");
             	hasUserCount = appService.crudService.listAll("users/list");
             } else {
-            	alert("aa");
             	hasUserCount = appService.promiseAjax.httpTokenRequest(appService.crudService.globalConfig.HTTP_GET,
          				 appService.crudService.globalConfig.APP_URL + "users"  +"/listBySearchText?"+$scope.filter);
             }
