@@ -1932,7 +1932,7 @@ if (!angular.isUndefined($stateParams.id1)) {
                         $scope.tabview = appService.localStorageService.get('view');
                         $scope.templateCategory = $scope.tabview;
     			$window.location.href = '#network/list/view/' + $stateParams.id + '/ip-address/' + $scope.ipDetails.id;
-			
+
 			}
                     }).catch(function(result) {
                         $scope.showLoader = false;
