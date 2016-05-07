@@ -86,7 +86,7 @@
 										<thead>
 											<tr>
 												<th data-ng-click="changeSort('name',paginationObject.currentPage)"
-													data-ng-class="sort.descending && sort.column =='name'? 'sorting_desc' : 'sorting_asc' "><fmt:message
+													data-ng-class="sort.descending && sort.column == 'name' ? 'sorting_desc' : 'sorting_asc' "><fmt:message
 														key="common.name" bundle="${msg}" /></th>
 												<th data-ng-click="changeSort('domain.name',paginationObject.currentPage)"
 													data-ng-class="sort.descending && sort.column =='domain.name'? 'sorting_desc' : 'sorting_asc' "><fmt:message
