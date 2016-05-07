@@ -45,7 +45,7 @@ function activityCtrl($scope, appService, $modal, promiseAjax, localStorageServi
                 $scope.paginationObject.limit = limit;
                 $scope.paginationObject.currentPage = pageNumber;
                 $scope.paginationObject.totalItems = result.totalItems;
-                $scope.global.events = result.totalItems;
+                $scope.global.sessionValues.eventTotal = result.totalItems;
                 $scope.showLoader = false;
             });
         } else {
