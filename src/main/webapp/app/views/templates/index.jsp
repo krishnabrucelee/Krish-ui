@@ -71,7 +71,7 @@
                                     <div class="row" data-ng-include src="'app/views/templates/list.jsp'"></div>
                                 </div>
                                 <div data-ng-hide="listView">
-									<div class="row" data-ng-include
+									<div class="" data-ng-include
 										src="'app/views/templates/community.jsp'">
 									</div>
 								</div>
@@ -109,7 +109,7 @@
                                     <div class="row" data-ng-include src="'app/views/templates/featureList.jsp'"></div>
                                 </div>
                                 <div data-ng-hide="listView">
-                                    <div class="row" data-ng-include src="'app/views/templates/featured.jsp'"></div>
+                                    <div class="" data-ng-include src="'app/views/templates/featured.jsp'"></div>
                                 </div>
                             </div>
                         </div>
@@ -127,7 +127,7 @@
                                     </div>
                                     <div class="pull-right">
                                        <div class="clearfix"></div>
-                                        <span class="pull-right m-l-sm m-t-sm">
+                                        <span class="pull-right m-l-sm">
                                             <a  class="btn btn-info" data-ng-hide="global.sessionValues.type =='ROOT_ADMIN'" has-permission = "REGISTER_TEMPLATE" data-ng-click="uploadTemplateContainer(size)"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span> Register Template</a>
 
                                         </span>

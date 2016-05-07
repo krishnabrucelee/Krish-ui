@@ -261,7 +261,7 @@ border-color: #e74c3c !important;}
 
 .template-panel, .template-panel-area{min-height:190px;}
 .template-panel-area{margin-bottom:13px;  padding: 7px;}
-.template-panel{width:97%;}
+.template-panel{width:97%; margin-left:1%;}
 .animated-panel{width:90%;}
 
 .digit-2-width {

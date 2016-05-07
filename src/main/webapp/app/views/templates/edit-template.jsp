@@ -200,7 +200,7 @@
                                     <label> <input icheck type="checkbox" ng-model="templates.extractable"> <span class="m-l-sm"><fmt:message key="template.extractable" bundle="${msg}" /></span> </label>
                                 </div>
                                 <div class="col-md-6  col-sm-6 col-lg-6  col-sm-6 col-lg-6">
-                                    <label> <input ng-disabled="!templates.passwordEnabled" icheck type="checkbox" ng-model="templates.passwordEnabled"> <fmt:message key="template.password.enabled" bundle="${msg}" /></label>
+                                    <label data-ng-if ="templates.passwordEnabled"> <input icheck type="checkbox" ng-model="templates.passwordEnabled"> <fmt:message key="template.password.enabled" bundle="${msg}" /></label>
                             </div>
                         </div>
                         <div class="form-group">

@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-    <div class="row">
+    <div class="">
     <div class="">
 	<div class="col-md-12 col-sm-12" >
 		<div class="pull-right dashboard-filters-area" id="instances_quick_search">
@@ -24,8 +24,6 @@
 
         <div class="col-md-12 col-sm-12" >
             <div class="hpanel">
-                <div class="panel-heading">
-            </div>
                 <div class="white-content">
                     <div class="table-responsive">
                         <table cellspacing="1" cellpadding="1" class="table table-bordered dataTable table-striped">

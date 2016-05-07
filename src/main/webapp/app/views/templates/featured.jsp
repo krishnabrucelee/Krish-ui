@@ -5,7 +5,7 @@ pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <div class="row">
 	<div class="col-md-12">
-		<div class="pull-right dashboard-filters-area" id="instances_quick_search">
+		<div class="pull-right dashboard-filters-area m-r-sm" id="instances_quick_search">
 						<form data-ng-submit="featureSearchList(featureSearch)">
 							<div class="quick-search pull-right">
 								<div class="input-group">
@@ -21,7 +21,7 @@ pageEncoding="UTF-8"%>
 	</div>
 </div>
 <div class="m-t-sm">
-    <div  class="col-md-4 col-lg-4 col-xs-12 col-sm-12 template-panel-area" data-ng-repeat="templateObj in template.listFeaturedTemplate|orderBy:template.name | filter: quickSearch">
+    <div  class="col-md-4 col-lg-4 col-xs-12 col-sm-12 no-padding template-panel-area" data-ng-repeat="templateObj in template.listFeaturedTemplate|orderBy:template.name | filter: quickSearch">
         <div class="hpanel">
             <div  class="panel-body p-xs template-panel" data-ng-class="templateObj.openDescription ? 'template-panel-active': ''">
                 <div class="row">

@@ -3,12 +3,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-    <div class="row">
 <div class="">
 	<div class="col-md-12 col-sm-12" >
 		<div class="pull-right dashboard-filters-area" id="instances_quick_search">
 						<form data-ng-submit="searchList(vmSearch)">
-							<div class="quick-search pull-right">
+							<div class="quick-search pull-right m-t-sm">
 								<div class="input-group">
 									<input data-ng-model="vmSearch" type="text" class="form-control input-medium" placeholder="<fmt:message key="common.quick.search" bundle="${msg}" />" aria-describedby="quicksearch-go">
 								   	<span class="input-group-addon" id="quicksearch-go"><span class="pe-7s-search pe-lg font-bold"></span></span>
@@ -24,8 +23,6 @@
 
         <div class="col-md-12 col-sm-12" >
             <div class="hpanel">
-                <div class="panel-heading">
-            </div>
                 <div class="white-content">
                     <div class="table-responsive">
                         <table cellspacing="1" cellpadding="1" class="table table-bordered dataTable table-striped">
@@ -85,4 +82,3 @@
               <pagination-content></pagination-content>
             </div>
         </div>
-    </div>
