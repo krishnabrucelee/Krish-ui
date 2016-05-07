@@ -27,7 +27,7 @@ function vpcCtrl($scope, $modal, appService, $stateParams, localStorageService, 
     } else {
         $scope.networkList = localStorageService.get("networkList");
     }
-    
+
     // Add the VPC
     $scope.createVpc = function (size) {
         appService.dialogService.openDialog($scope.global.VIEW_URL + "vpc/add.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
@@ -36,7 +36,7 @@ function vpcCtrl($scope, $modal, appService, $stateParams, localStorageService, 
             };
             }]);
     };
-    
+
     $scope.createNetwork = function (size) {
         appService.dialogService.openDialog($scope.global.VIEW_URL + "vpc/create.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
              $scope.cancel = function(){
@@ -44,7 +44,57 @@ function vpcCtrl($scope, $modal, appService, $stateParams, localStorageService, 
             };
             }]);
     };
-    
+
+    $scope.saveNetwork = function(form, createNetwork) {
+        $scope.formSubmitted = true;
+        if (form.$valid) {
+            //var createNetwork = angular.copy($scope.createNetwork);
+            if (!angular.isUndefined($scope.network.domain) && $scope.network.domain != null) {
+            	createNetwork.domainId = $scope.network.domain.id;
+                delete createNetwork.domain;
+            }
+            if (!angular.isUndefined($scope.network.department) && $scope.network.department != null) {
+            	createNetwork.departmentId = $scope.network.department.id;
+                delete createNetwork.department;
+            }
+            if (!angular.isUndefined($scope.network.project) && $scope.network.project != null) {
+            	createNetwork.projectId = $scope.network.project.id;
+                delete createNetwork.project;
+            }
+            createNetwork.zoneId = $scope.network.zone.id;
+            createNetwork.networkOfferingId = $scope.network.networkOffering.id;
+            $scope.showLoader = true;
+appService.globalConfig.webSocketLoaders.networkLoader = true;
+            $modalInstance.close();
+            var hasguestNetworks = appService.crudService.add("guestnetwork", createNetwork);
+            hasguestNetworks.then(function(result) {
+                $scope.showLoader = false;
+            }).catch(function(result) {
+                if (!angular.isUndefined(result) && result.data != null) {
+                    if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
+                        var msg = result.data.globalError[0];
+                        $scope.showLoader = false;
+                        appService.notify({
+                            message: msg,
+                            classes: 'alert-danger',
+                            templateUrl: $scope.global.NOTIFICATION_TEMPLATE
+                        });
+                    }
+                    angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
+                        $scope.addnetworkForm[key].$invalid = true;
+                        $scope.addnetworkForm[key].errorMessage = errorMessage;
+                    });
+                }
+                $modalInstance.close();
+                appService.globalConfig.webSocketLoaders.networkLoader = false;
+            });
+            $scope.cancel = function() {
+                $modalInstance.close();
+            };
+        }
+    },
+
+
     $scope.createPrivateGateway = function (size) {
         appService.dialogService.openDialog($scope.global.VIEW_URL + "vpc/add-private-gateway.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
              $scope.cancel = function(){
@@ -52,7 +102,7 @@ function vpcCtrl($scope, $modal, appService, $stateParams, localStorageService, 
             };
             }]);
     };
-    
+
     $scope.acquireNewIp = function (size) {
         appService.dialogService.openDialog($scope.global.VIEW_URL + "vpc/acquire-newip.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
              $scope.cancel = function(){
@@ -67,7 +117,7 @@ function vpcCtrl($scope, $modal, appService, $stateParams, localStorageService, 
             };
             }]);
     };
-    
+
     $scope.openAddInstance = function(size) {
         appService.dialogService.openDialog("app/views/cloud/instance/add.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function($scope, $modalInstance, $rootScope) {
             $scope.cancel = function(){
