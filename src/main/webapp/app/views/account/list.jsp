@@ -115,7 +115,7 @@
                                         </thead>
                                         <tbody data-ng-hide="accountList.length > 0">
 		                                    <tr>
-		                                        <td class="col-md-7 col-sm-7" colspan="7"><fmt:message key="common.no.records.found" bundle="${msg}" />!!</td>
+		                                        <td class="col-md-7 col-sm-7" colspan="10"><fmt:message key="common.no.records.found" bundle="${msg}" />!!</td>
 		                                    </tr>
 		                                </tbody>
                                         <tbody data-ng-show="accountList.length > 0">
