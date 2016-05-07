@@ -7,6 +7,11 @@
 
     <div class="content" ui-view>
     	<div data-ng-controller="vpcCtrl">
+    	<div data-ng-if="global.webSocketLoaders.vpcLoader" class="overlay-wrapper">
+                		            <img data-ng-if="global.webSocketLoaders.vpcLoader" src="images/loading-bars.svg" class="inner-loading" />
+ </div>
+    	<form name="addvpcForm" data-ng-submit="update(addvpcForm)"
+	method="post" novalidate="">
             <div class="row" >
                 <div class="col-md-8">
                     <div class="panel panel-default">
@@ -18,43 +23,51 @@
 								<tbody>
 									<tr>
 										<td><b> Name</b></td>
-										<td><label data-ng-if="type != 'edit'" class="ng-binding ng-scope">myfirstVPC1</label></td>
+										<td><label data-ng-if="type != 'edit'">{{vpc.name}}</label><div data-ng-if="type == 'edit'" class="form-group"
+												ng-class="{'text-danger': addvpcForm.name.$invalid && formSubmitted}">
+												<input type="text" name="name" data-ng-model="vpc.name"
+													class="form-control editedinput "
+													data-ng-class="{'error': addvpcForm.name.$invalid && formSubmitted}">
+											</div></td>
 									</tr>
 									<tr>
 										<td><b> Description</b></td>
-										<td><label data-ng-if="type != 'edit'" class="ng-binding ng-scope">Test description VPC1</label></td>
+										<td><label data-ng-if="type != 'edit'">{{vpc.description}}</label><input data-ng-if="type == 'edit'" type="text"
+											name="description" data-ng-model="vpc.description"
+											class="form-control editedinput"
+											data-ng-class="{'error': addvpcForm.description.$invalid && formSubmitted}">
+									</td>
 									</tr>
 									<tr>
-										<td><b> Account</b></td>
-										<td>admin</td>
+										<td><b> Department</b></td>
+										<td>{{vpc.department.userName}}</td>
 									</tr>
 									<tr>
 										<td><b>Domain</b></td>
-										<td>stackwatch.io</td>
+										<td>{{vpc.domain.name}}</td>
 									</tr>
 									<tr>
 										<td><b>Zone</b></td>
-										<td>pandatest</td>
+										<td>{{vpc.zone.name}}</td>
 									</tr>
 									<tr>
 										<td><b>CIDR</b></td>
-										<td>10.0.0.0/22</td>
+										<td>{{vpc.cIDR}}</td>
 									</tr>
 									<tr>
 										<td><b>Network Domain</b></td>
-										<td>0.0.0.0</td>
+										<td>{{vpc.networkDomain}}</td>
 									</tr>
 									<tr>
 										<td><b>State</b></td>
-										<td><b class="text-success text-uppercase">IMPLEMENTED</b></td>
-									</tr>
+										<td><b data-ng-if="vpc.status =='ENABLED'" class="text-success text-uppercase">ENABLED</b> <b data-ng-if="!vpc.status || vpc.status =='INACTIVE' " class="text-danger text-uppercase">INACTIVE</b></td>									</tr>
 									<tr>
 										<td><b>Persistent </b></td>
 										<td>NO</td>
 									</tr>
 									<tr>
 										<td><b>Redundant VPC</b></td>
-										<td>YES</td>
+										<td><span data-ng-if="vpc.redundantVPC">YES</span><span data-ng-if="!vpc.redundantVPC">NO</span></td>
 									</tr>
 									<tr>
 										<td><b>Restart required</b></td>
@@ -62,10 +75,24 @@
 									</tr>
 									<tr>
 										<td><b>ID</b></td>
-										<td>1943c385-1aae-4d66-8a4e-295268ff2db3</td>
+										<td>{{vpc.uuid}}</td>
 									</tr>
 								</tbody>
 							</table>
+
+					<div class="pull-right">
+						<get-loader-image data-ng-show="showLoader"></get-loader-image>
+						<button class="btn btn-info" data-ng-hide="showLoader"
+							data-ng-if="type == 'edit'"
+							ng-disabled="form.configForm.$invalid" type="submit">
+							<fmt:message key="common.update" bundle="${msg}" />
+						</button>
+						<button type="button" class="btn btn-default "
+							data-ng-hide="showLoader" data-ng-if="type == 'edit'"
+							ui-sref="vpc.list">
+							<fmt:message key="common.cancel" bundle="${msg}" />
+						</button>
+					</div>
 						</div>
 					</div>
                 </div>
@@ -79,38 +106,20 @@
 						</div>
 						<div class="panel-body no-padding">
 							<ul class="list-group">
-								<li class="list-group-item ng-scope" data-ng-if="type != 'edit'">
-									<a href="#/network/list/edit/2" title=" Edit Network" has-permission="EDIT_NETWORK"> <span class="fa fa-edit m-xs"></span> Edit Network</a>
-								</li>
-					 			<li class="list-group-item">
-		                            <a data-ng-click="restart('sm', network)" title=" Restart Network " href="javascript:void(0);"><span class="fa-repeat fa m-xs"></span>Restart Network</a>
-		                        </li>
-								<li class="list-group-item">
-									<a data-ng-click="delete('sm', network)" title=" Delete Network" href="javascript:void(0);" has-permission="DELETE_NETWORK"><span class="fa-trash fa m-xs"></span> Delete Network</a>
-								</li>
-								<li class="list-group-item">
-									<a class="btn btn-info" ui-sref="vpc.config-vpc({id: {{ 1}}})" ><span class="fa fa-cog"> </span> Configure</a>
-								</li>
-							</ul>
-						</div>
-					</div>
-					<div class="panel panel-default">
-						<div class="panel-heading">
-							<h3 class="panel-title">Tags</h3>
-						</div>
-						<div class="panel-body">
-							<div class="row form-group">
-								<div class="col-lg-6 col-md-6 col-sm-6"><div class="m-t-xs">key</div></div>
-								<div class="col-lg-6 col-md-6 col-sm-6"><input class="form-control" type="text"></div>
-							</div>
-							<div class="row form-group">
-								<div class="col-lg-6 col-md-6 col-sm-6"><div class="m-t-xs">Value</div></div>
-								<div class="col-lg-6 col-md-6 col-sm-6"><input class="form-control" type="text"></div>
-							</div>
-							<div class="row form-group">
-								<div class="col-lg-6 col-md-6 col-sm-6"></div>
-								<div class="col-lg-6 col-md-6 col-sm-6"><a class="btn btn-success" ui-sref="config-vpc({id: {{ 1}}})" ><span class="fa fa-plus"> </span> Add</a></div>
-							</div>
+							<li class="list-group-item"><a href="javascript:void(0);" title="restart vpc "
+								data-ng-click="restart('md', vpc)"
+							><span class="fa-repeat fa font-bold m-xs"></span>Restart VPC</a></li>
+							<li class="list-group-item"><a has-permission="DELETE_VPC" href="javascript:void(0);" title=" delete vpc"
+								data-ng-click="delete('sm', vpc)"
+							><span class="fa-trash fa font-bold m-xs"></span> Remove VPC</a></li>
+							<li data-ng-if="type != 'edit'" class="list-group-item"><a has-permission="EDIT_VPC"
+								title=" <fmt:message key="edit.network" bundle="${msg}" />" href="#/vpc/edit/{{ vpc.id}}"
+							> <span class="fa fa-edit font-bold m-xs"></span> EDIT VPC
+							</a></li>
+							<li class="list-group-item"><a class="btn btn-info" ui-sref="vpc.config-vpc({id: {{ 1}}})"><span
+									class="fa fa-cog"
+								> </span> Configure</a></li>
+						</ul>
 						</div>
 					</div>
 				</div>
