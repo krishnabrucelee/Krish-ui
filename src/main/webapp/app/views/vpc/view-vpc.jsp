@@ -112,17 +112,22 @@
 								data-ng-click="delete('sm', vpc)"
 							><span class="fa-trash fa font-bold m-xs"></span> <fmt:message key="remove.vpc" bundle="${msg}" /></a></li>
 							<li data-ng-if="type != 'edit'" class="list-group-item"><a has-permission="EDIT_VPC"
-								title=" <fmt:message key="edit.vpc" bundle="${msg}" />" href="#/vpc/edit/{{ vpc.id}}"
+								title=" <fmt:message key="edit.vpc" bundle="${msg}" />" href="/vpc/edit/{{ vpc.id}}"
 							> <span class="fa fa-edit font-bold m-xs"></span> <fmt:message key="edit.vpc" bundle="${msg}" />
 							</a></li>
-							<li class="list-group-item"><a class="btn btn-info" ui-sref="vpc.config-vpc({id: {{ 1}}})"><span
-									class="fa fa-cog"
-								> </span> <fmt:message key="configure" bundle="${msg}" /></a></li>
+							<li class="list-group-item">
+							<a class="btn btn-info" href="#/vpc/view/{{vpc.id}}/config-vpc" > <span
+
+								class="fa fa-cog"> </span> <fmt:message key="configure" bundle="${msg}" /></a>
+
+							</li>
+
 						</ul>
 						</div>
 					</div>
 				</div>
-        	</div>
+        	</div></form>
     	</div>
     </div>
+
     <div id="footer" ng-include="'app/views/common/footer.jsp'"></div>

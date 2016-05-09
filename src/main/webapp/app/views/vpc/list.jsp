@@ -4,6 +4,48 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
+<!-- Header -->
+<ng-include id="header" src="global.getViewPageUrl('common/header.jsp')"></ng-include>
+
+<!-- Navigation -->
+<ng-include id="menu" src="global.getViewPageUrl('common/navigation.jsp')"></ng-include>
+<div id="wrapper">
+ <div small-header class="normalheader transition ng-scope small-header">
+        <div class="hpanel" tour-step order="1" content="Place your page title and breadcrumb. Select small or large header or give the user choice to change the size." placement="bottom">
+            <div class="panel-body">
+                <div id="hbreadcrumb" class="pull-right">
+                    <ol class="hbreadcrumb breadcrumb">
+                        <li><a ui-sref="dashboard"><fmt:message key="common.home" bundle="${msg}" /></a></li>
+                        <li ng-repeat="state in $state.$current.path" ng-switch="$last || !!state.abstract" ng-class="{active: $last}">
+                            <span data-ng-if="state.data.pageTitle === 'VPC'">
+	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.vpc" bundle="${msg}" /></a>
+	                            <span ng-switch-when="true"><fmt:message key="common.vpc" bundle="${msg}" /></span>
+                            </span>
+                            <span data-ng-if="state.data.pageTitle === 'view VPC'">
+	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}">{{ state.data.pageName }}</a>
+	                            <span ng-switch-when="true">{{ state.data.pageName }}</span>
+                            </span>
+                            <span data-ng-if="state.data.pageTitle === 'config VPC'">
+	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="vpc.configuration" bundle="${msg}" /></a>
+	                            <span ng-switch-when="true"><fmt:message key="vpc.configuration" bundle="${msg}" /></span>
+                            </span>
+                        </li>
+                    </ol>
+                </div>
+                <h2 class="font-light m-b-xs">
+                    <span id="vpc_page_title" data-ng-if="$state.current.data.pageTitle === 'VPC'"><fmt:message key="common.vpc" bundle="${msg}" /></span>
+                </h2>
+                <h2 class="font-light m-b-xs">
+                    <span id="vpc_page_title" data-ng-if="$state.current.data.pageTitle === 'view VPC'">{{ $state.current.data.pageName }}</span>
+                </h2>
+                <h2 class="font-light m-b-xs">
+                    <span id="vpc_page_title" data-ng-if="$state.current.data.pageTitle === 'config VPC'"><fmt:message key="vpc.configuration" bundle="${msg}" /></span>
+                </h2>
+                <small>{{ $state.current.data.pageDesc}}</small>
+            </div>
+        </div>
+    </div>
+
     <div class="content" ui-view>
 	    <div ng-controller="vpcCtrl">
 			<div class="hpanel">
@@ -49,7 +91,8 @@
 								<get-loader-image data-ng-show="showLoader"></get-loader-image>
 							</div>
 							<div data-ng-hide="showLoader"class="table-responsive">
-								<table cellspacing="1" cellpadding="1" class="table table-bordered table-striped">
+							<div class="white-content">
+								<table cellspacing="1" cellpadding="1" class="table dataTable table-bordered table-striped">
 								    <thead>
 								        <tr>
 								            <th data-ng-click="changeSort('name',paginationObject.currentPage)"
@@ -78,9 +121,9 @@
 			                                </tr>
 			                            </tbody>
 								    <tbody data-ng-show="vpcList.length > 0">
-								        <tr>
+								         <tr data-ng-repeat="vpc in filteredCount = (vpcList | filter: quickSearch | orderBy:sort.column:sort.descending)">
 								            <td>
-								                <a class="text-info" ui-sref="vpc.view-vpc({id: {{ 1}}})">{{vpc.name}}</a>
+								                <a class="text-info" ui-sref="vpc.view-vpc({id: {{ vpc.id}}})">{{vpc.name}}</a>
 								            </td>
 								            <td>{{vpc.description}}</td>
 								            <td>{{vpc.domain.name }}</td>
@@ -90,7 +133,7 @@
 								            <td>{{vpc.cIDR}}</td>
 								            <td><label class="label label-success text-center text-white">{{vpc.status}}</label></td>
 								            <td>
-								                <a class="icon-button" title="<fmt:message key="configure" bundle="${msg}" />" ui-sref="vpc.config-vpc({id: {{ 1}}})">
+								                <a class="icon-button" title="<fmt:message key="configure" bundle="${msg}" />"href="#/vpc/view/{{vpc.id}}/config-vpc">
 								                    <span class="fa fa-cog m-r"> </span>
 								                </a>
 								                 <a class="icon-button" data-ng-click="restart('md', vpc)" title="<fmt:message key="restart.vpc" bundle="${msg}" />">
@@ -101,6 +144,7 @@
 								        </tr>
 								    </tbody>
 								</table>
+								</div>
 							</div>
 						</div>
 						<pagination-content></pagination-content>
@@ -108,4 +152,6 @@
 				</div>
 			</div>
 		</div>
+	</div>
+	<div id="footer" ng-include="'app/views/common/footer.jsp'"></div>
 	</div>
