@@ -145,7 +145,7 @@ if ($scope.domainView != null && $scope.vmSearch == null) {
                 $scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=" + $scope.vmSearch;
             }
     		    hasProjects = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "projects/listByDomainAndOwner"+"?lang=" +appService.localStorageService.cookie.get('language')
-    				+ $scope.filter + "&sortBy="+globalConfig.sort.sortOrder+globalConfig.sort.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+    				+ encodeURI($scope.filter) + "&sortBy="+globalConfig.sort.sortOrder+globalConfig.sort.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
             }
         hasProjects.then(function (result) {  // this is only run after $http completes0
             $scope.projectList = result;

@@ -76,6 +76,17 @@ function vpcCtrl($scope, $modal, appService, filterFilter, $stateParams,$state, 
         });
     };
     $scope.domainList();
+    $scope.aclList = {};
+    $scope.aclList = function() {
+        var hasDomains = appService.crudService.listAll("vpcacl/list");
+        hasDomains.then(function(result) { // this is only run after $http
+            // completes0
+            $scope.aclList = result;
+console.log("-------------------------------------",$scope.aclList);
+        });
+    };
+     $scope.aclList();
+
     $scope.departmentList = function(domain) {
         var hasDepartments = appService.crudService.listAllByFilter("departments/search", domain);
 
@@ -405,6 +416,56 @@ function vpcCtrl($scope, $modal, appService, filterFilter, $stateParams,$state, 
                     };
                 } ]);
     };
+
+    $scope.saveNetwork = function(form, createNetwork) {
+        $scope.formSubmitted = true;
+        if (form.$valid) {
+            //var createNetwork = angular.copy($scope.createNetwork);
+            if (!angular.isUndefined($scope.createNetwork.domain) && $scope.createNetwork.domain != null) {
+            	createNetwork.domainId = $scope.createNetwork.domain.id;
+                delete createNetwork.domain;
+            }
+            if (!angular.isUndefined($scope.createNetwork.department) && $scope.createNetwork.department != null) {
+            	createNetwork.departmentId = $scope.createNetwork.department.id;
+                delete createNetwork.department;
+            }
+            if (!angular.isUndefined($scope.createNetwork.project) && $scope.createNetwork.project != null) {
+            	createNetwork.projectId = $scope.createNetwork.project.id;
+                delete createNetwork.project;
+            }
+            createNetwork.zoneId = $scope.createNetwork.zone.id;
+            createNetwork.networkOfferingId = $scope.createNetwork.networkOffering.id;
+            $scope.showLoader = true;
+appService.globalConfig.webSocketLoaders.networkLoader = true;
+            $modalInstance.close();
+            var hasguestNetworks = appService.crudService.add("guestnetwork", createNetwork);
+            hasguestNetworks.then(function(result) {
+                $scope.showLoader = false;
+            }).catch(function(result) {
+                if (!angular.isUndefined(result) && result.data != null) {
+                    if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
+                        var msg = result.data.globalError[0];
+                        $scope.showLoader = false;
+                        appService.notify({
+                            message: msg,
+                            classes: 'alert-danger',
+                            templateUrl: $scope.global.NOTIFICATION_TEMPLATE
+                        });
+                    }
+                    angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
+                        $scope.addnetworkForm[key].$invalid = true;
+                        $scope.addnetworkForm[key].errorMessage = errorMessage;
+                    });
+                }
+                $modalInstance.close();
+                appService.globalConfig.webSocketLoaders.networkLoader = false;
+            });
+            $scope.cancel = function() {
+                $modalInstance.close();
+            };
+        }
+    },
+
 
     $scope.createPrivateGateway = function(size) {
         appService.dialogService.openDialog($scope.global.VIEW_URL + "vpc/add-private-gateway.jsp", size, $scope, [

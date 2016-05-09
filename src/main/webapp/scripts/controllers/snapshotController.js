@@ -164,7 +164,7 @@ if ($scope.domainId != null && $scope.vmSearch == null) {
             } else  {
                 $scope.filter = "&domainId=" + $scope.domainId + "&searchText=" + $scope.vmSearch;
             }
-    		    hasSnapshots =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "vmsnapshot/listByDomain"+"?lang=" +appService.localStorageService.cookie.get('language')+ $scope.filter +"&sortBy="+globalConfig.sort.sortOrder+globalConfig.sort.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+    		    hasSnapshots =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "vmsnapshot/listByDomain"+"?lang=" +appService.localStorageService.cookie.get('language')+ encodeURI($scope.filter) +"&sortBy="+globalConfig.sort.sortOrder+globalConfig.sort.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
             }
         hasSnapshots.then(function(result) { // this is only run after
             // $http completes0
