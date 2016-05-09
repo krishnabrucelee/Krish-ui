@@ -566,9 +566,8 @@ if ($scope.domainView != null && $scope.vmSearch == null) {
                         appService.notify({message: 'Project deleted successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
 
                     }).catch(function (result) {
-
+				if(result.statusText == "Precondition Failed") {
                   	 if(!angular.isUndefined(result) && result.data != null) {
-				projectObj = deleteObject; 
       		 		   	if(result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])){
 	                      	 var errorMsgs = result.data.globalError[0];
 	                      	 var errorList = errorMsgs.split("@@");
@@ -587,6 +586,7 @@ if ($scope.domainView != null && $scope.vmSearch == null) {
 	                       	$scope.departmentForm[key].errorMessage = errorMessage;
 	                       });
            			  }
+			}
 
                    });
                     $modalInstance.close();
