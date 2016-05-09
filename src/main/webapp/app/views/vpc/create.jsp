@@ -99,7 +99,7 @@
 							<div class="col-md-6  col-sm-6 col-xs-12">
 								<select class="form-control input-group" name="acl"
 									data-ng-model="createNetwork.acl"
-									ng-options="project.name for project in projectList">
+									ng-options="acl.name for acl in aclList">
 									<option value=""><fmt:message key="common.select"
 											bundle="${msg}" /></option>
 								</select> <i

@@ -76,6 +76,17 @@ function vpcCtrl($scope, $modal, appService, filterFilter, $stateParams,$state, 
         });
     };
     $scope.domainList();
+    $scope.aclList = {};
+    $scope.aclList = function() {
+        var hasDomains = appService.crudService.listAll("vpcacl/list");
+        hasDomains.then(function(result) { // this is only run after $http
+            // completes0
+            $scope.aclList = result;
+console.log("-------------------------------------",$scope.aclList);
+        });
+    };
+     $scope.aclList();
+
     $scope.departmentList = function(domain) {
         var hasDepartments = appService.crudService.listAllByFilter("departments/search", domain);
 
@@ -410,20 +421,20 @@ function vpcCtrl($scope, $modal, appService, filterFilter, $stateParams,$state, 
         $scope.formSubmitted = true;
         if (form.$valid) {
             //var createNetwork = angular.copy($scope.createNetwork);
-            if (!angular.isUndefined($scope.network.domain) && $scope.network.domain != null) {
-            	createNetwork.domainId = $scope.network.domain.id;
+            if (!angular.isUndefined($scope.createNetwork.domain) && $scope.createNetwork.domain != null) {
+            	createNetwork.domainId = $scope.createNetwork.domain.id;
                 delete createNetwork.domain;
             }
-            if (!angular.isUndefined($scope.network.department) && $scope.network.department != null) {
-            	createNetwork.departmentId = $scope.network.department.id;
+            if (!angular.isUndefined($scope.createNetwork.department) && $scope.createNetwork.department != null) {
+            	createNetwork.departmentId = $scope.createNetwork.department.id;
                 delete createNetwork.department;
             }
-            if (!angular.isUndefined($scope.network.project) && $scope.network.project != null) {
-            	createNetwork.projectId = $scope.network.project.id;
+            if (!angular.isUndefined($scope.createNetwork.project) && $scope.createNetwork.project != null) {
+            	createNetwork.projectId = $scope.createNetwork.project.id;
                 delete createNetwork.project;
             }
-            createNetwork.zoneId = $scope.network.zone.id;
-            createNetwork.networkOfferingId = $scope.network.networkOffering.id;
+            createNetwork.zoneId = $scope.createNetwork.zone.id;
+            createNetwork.networkOfferingId = $scope.createNetwork.networkOffering.id;
             $scope.showLoader = true;
 appService.globalConfig.webSocketLoaders.networkLoader = true;
             $modalInstance.close();
