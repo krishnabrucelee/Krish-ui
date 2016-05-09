@@ -76,7 +76,7 @@
 											<td>{{vpc.project.name || '-'}}</td>
 								            <td>{{vpc.zone.name}}</td>
 								            <td>{{vpc.cIDR}}</td>
-								            <td><label class="label label-success text-center text-white">{{vpc.status}}</label></td>
+								            <td><label data-ng-if="vpc.status == 'ENABLED'" class="label label-success text-center text-white">ACTIVE</label><label data-ng-if="vpc.status != 'ENABLED'" class="label label-danger text-center text-white">INACTIVE</label></td>
 								            <td>
 								                <a class="icon-button" title="Configure" ui-sref="vpc.config-vpc({id: {{ 1}}})">
 								                    <span class="fa fa-cog m-r"> </span>
