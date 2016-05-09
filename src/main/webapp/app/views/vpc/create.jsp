@@ -10,23 +10,23 @@
 	<div class="inmodal">
 		<div class="modal-header">
 			<panda-modal-header page-icon="fa fa-soundcloud"
-				page-title="Add new tier"></panda-modal-header>
+				page-title="<fmt:message key="add.new.tier" bundle="${msg}" />"></panda-modal-header>
 		</div>
 		<div class="modal-body">
 			<div class="row">
 				<div class="col-md-12">
 					<div class="form-group" ng-class="{'text-danger':vpcaddnetworkForm.net.$invalid && formSubmitted}">
 						<div class="row">
-							<label class="col-md-4 col-sm-4 control-label">Name<span class="text-danger">*</span></label>
+							<label class="col-md-4 col-sm-4 control-label"><fmt:message key="common.name" bundle="${msg}" /><span class="text-danger">*</span></label>
 							<div class="col-md-6 col-sm-6">
 								<input required="true" type="text" name="net"
 									data-ng-model="createNetwork.networkName" class="form-control" data-ng-class="{'error': vpcaddnetworkForm.net.$invalid && formSubmitted}">
-								<i tooltip="Network Name"
+								<i tooltip="<fmt:message key="network.name" bundle="${msg}" />"
 									class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
 									<div class="error-area"
 									data-ng-show="vpcaddnetworkForm.net.$invalid && formSubmitted">
 									<i
-										tooltip="Name is Required"
+										tooltip="<fmt:message key="name.is.required" bundle="${msg}" />"
 										class="fa fa-warning error-icon"></i>
 								</div>
 							</div>
@@ -60,16 +60,16 @@
 					</div>
 					<div class="form-group" ng-class="{'text-danger':vpcaddnetworkForm.gateway.$invalid && formSubmitted}">
 						<div class="row">
-							<label class="col-md-4 col-sm-4 control-label">Gateway<span class="text-danger">*</span></label>
+							<label class="col-md-4 col-sm-4 control-label"><fmt:message key="gateway" bundle="${msg}" /><span class="text-danger">*</span></label>
 							<div class="col-md-6 col-sm-6">
 								<input required="true" type="text" name="gateway"
 									data-ng-model="createNetwork.gateway" class="form-control" data-ng-class="{'error': vpcaddnetworkForm.gateway.$invalid && formSubmitted}">
-								<i tooltip="Gateway"
+								<i tooltip="<fmt:message key="gateway" bundle="${msg}" />"
 									class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
 									<div class="error-area"
 									data-ng-show="vpcaddnetworkForm.gateway.$invalid && formSubmitted">
 									<i
-										tooltip="Gateway is Required"
+										tooltip="<fmt:message key="gateway.is.required" bundle="${msg}" />"
 										class="fa fa-warning error-icon"></i>
 								</div>
 							</div>
@@ -77,16 +77,16 @@
 					</div>
 					<div class="form-group" ng-class="{'text-danger':vpcaddnetworkForm.netmask.$invalid && formSubmitted}">
 						<div class="row">
-							<label class="col-md-4 col-sm-4 control-label">Net Mask<span class="text-danger">*</span></label>
+							<label class="col-md-4 col-sm-4 control-label"><fmt:message key="netmask" bundle="${msg}" /><span class="text-danger">*</span></label>
 							<div class="col-md-6 col-sm-6">
 								<input required="true" type='text' name="netmask"
 									data-ng-model="createNetwork.netMask" class="form-control" data-ng-class="{'error': vpcaddnetworkForm.netmask.$invalid && formSubmitted}">
-								<i tooltip="Net Mask"
+								<i tooltip="<fmt:message key="netmask" bundle="${msg}" />"
 									class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
 									<div class="error-area"
 									data-ng-show="vpcaddnetworkForm.netmask.$invalid && formSubmitted">
 									<i
-										tooltip="Net Mask is Required"
+										tooltip="<fmt:message key="netmask.is.required" bundle="${msg}" />"
 										class="fa fa-warning error-icon"></i>
 								</div>
 							</div>
@@ -95,7 +95,7 @@
 					<div class="form-group">
 						<div class="row">
 							<label
-								class="col-md-4 col-xs-12 col-sm-4 control-label control-normal">ACL</label>
+								class="col-md-4 col-xs-12 col-sm-4 control-label control-normal"><fmt:message key="acl" bundle="${msg}" /></label>
 							<div class="col-md-6  col-sm-6 col-xs-12">
 								<select class="form-control input-group" name="acl"
 									data-ng-model="createNetwork.acl"
@@ -103,7 +103,7 @@
 									<option value=""><fmt:message key="common.select"
 											bundle="${msg}" /></option>
 								</select> <i
-									tooltip="Choose ACL "
+									tooltip="<fmt:message key="choose.acl" bundle="${msg}" />"
 									class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
 
 							</div>

@@ -11,7 +11,7 @@
 					<div class="row">
 						<div class="col-md-12 col-sm-12 col-xs-12 ">
 							<div class="pull-left dashboard-btn-area">
-								<a class="btn btn-info" data-ng-click="openAddInstance('lg')"> <span class="pe-7s-plus pe-lg font-bold m-r-xs"></span>Add Instance</a>
+								<a class="btn btn-info" data-ng-click="openAddInstance('lg')"> <span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="add.instance" bundle="${msg}" /></a>
 							</div>
 							<div class="pull-right dashboard-filters-area">
 							<form data-ng-submit="searchList(vmSearch)">
@@ -40,12 +40,12 @@
 								<table cellspacing="1" cellpadding="1" class="table table-bordered table-striped">
 								    <thead>
 								        <tr>
-								            <th>IPs</th>
-								            <th>Internal name</th>
-								            <th>Display Name</th>
-								            <th>Zone Name</th>
-								            <th>State</th>
-								            <th>Actions</th>
+								            <th><fmt:message key="common.ips" bundle="${msg}" /></th>
+								            <th><fmt:message key="common.internal.name" bundle="${msg}" /></th>
+								            <th><fmt:message key="common.display.name" bundle="${msg}" /></th>
+								            <th><fmt:message key="zone.name" bundle="${msg}" /></th>
+								            <th><fmt:message key="common.state" bundle="${msg}" /></th>
+								            <th><fmt:message key="common.action" bundle="${msg}" /></th>
 								        </tr>
 								    </thead>
 								    <tbody>
