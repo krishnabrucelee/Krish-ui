@@ -13,11 +13,16 @@ function appCtrl($http, $scope, $window, $timeout, appService, globalConfig, cru
     // For iCheck purpose only
     $scope.infrastructure = {};
     $scope.showInfrastructureLoader = true;
-    var hasResult = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "dashboard/infrastructure");
-    hasResult.then(function(result) {  // this is only run after;
-        $scope.infrastructure  = result;
-        $scope.showInfrastructureLoader = false;
-    });
+
+
+    $scope.getInfrastructureDetails = function() {
+      var hasResult = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "dashboard/infrastructure");
+      hasResult.then(function(result) {  // this is only run after;
+          $scope.infrastructure  = result;
+          $scope.showInfrastructureLoader = false;
+      });
+    }
+
 
     $scope.quotaLimits = {
       "CPU": {label: "vCPU"}, "Memory": {label: "Memory"}, "Volume": {label: "Volume"}, "Network": {label: "Network"},
@@ -27,59 +32,64 @@ function appCtrl($http, $scope, $window, $timeout, appService, globalConfig, cru
 
     $scope.showQuotaLoader = true;
     var resourceArr = ["CPU", "Memory", "Volume", "Network", "IP", "PrimaryStorage", "SecondaryStorage", "Snapshot"];
-    var hasResourceDomainId = promiseAjax.httpTokenRequest( globalConfig.HTTP_GET , globalConfig.APP_URL + "dashboard/quota");
-    hasResourceDomainId.then(function (result) {  // this is only run after $http completes
-      $scope.showQuotaLoader = false;
-        angular.forEach(result, function(obj, key) {
-            if(resourceArr.indexOf(obj.resourceType) > -1) {
-              if(angular.isUndefined($scope.quotaLimits[obj.resourceType])) {
-                  $scope.quotaLimits[obj.resourceType] = {};
+
+    $scope.getResourceQuotaDetails = function() {
+      var hasResourceDomainId = promiseAjax.httpTokenRequest( globalConfig.HTTP_GET , globalConfig.APP_URL + "dashboard/quota");
+      hasResourceDomainId.then(function (result) {  // this is only run after $http completes
+        $scope.showQuotaLoader = false;
+          angular.forEach(result, function(obj, key) {
+              if(resourceArr.indexOf(obj.resourceType) > -1) {
+                if(angular.isUndefined($scope.quotaLimits[obj.resourceType])) {
+                    $scope.quotaLimits[obj.resourceType] = {};
+                }
+
+                if(obj.resourceType == "Memory") {
+                  obj.usedLimit = Math.round( obj.usedLimit / 1024);
+      						if (obj.max != -1) {
+      							obj.max = Math.round(obj.max / 1024);
+                    $scope.quotaLimits[obj.resourceType].label = $scope.quotaLimits[obj.resourceType].label + " " + "(GB)";
+      						}
+                }
+
+                if (obj.max == -1 && obj.resourceType == "PrimaryStorage" || obj.max == -1 && obj.resourceType == "SecondaryStorage") {
+  					        obj.usedLimit = Math.round( obj.usedLimit / (1024 * 1024 * 1024));
+                    $scope.quotaLimits[obj.resourceType].label = $scope.quotaLimits[obj.resourceType].label + " " + "(GB)";
+     				    }
+
+                $scope.quotaLimits[obj.resourceType].max = parseInt(obj.max);
+                $scope.quotaLimits[obj.resourceType].usedLimit = parseInt(obj.usedLimit);
+                $scope.quotaLimits[obj.resourceType].percentage = parseFloat(parseInt(obj.usedLimit) / parseInt(obj.max) * 100).toFixed(2);
+                var unUsed = $scope.quotaLimits[obj.resourceType].max - $scope.quotaLimits[obj.resourceType].usedLimit;
+
+
+                var usedColor = "#48a9da";
+                if($scope.quotaLimits[obj.resourceType].percentage > 79 && $scope.quotaLimits[obj.resourceType].percentage < 90) {
+                    usedColor = "#f0ad4e";
+                } else if($scope.quotaLimits[obj.resourceType].percentage > 89){
+                    usedColor = "#df6457";
+                }
+                $scope.quotaLimits[obj.resourceType].doughnutData = [
+                    {
+                        value: parseInt(obj.usedLimit),
+                        color: usedColor,
+                        highlight: usedColor,
+                        label: "Used"
+
+                    },
+                    {
+                        value: unUsed,
+                        color: "#ebf1f4",
+                        highlight: "#ebf1f4",
+                        label: "Unused"
+
+                    }
+                ];
               }
-
-              if(obj.resourceType == "Memory") {
-                obj.usedLimit = Math.round( obj.usedLimit / 1024);
-    						if (obj.max != -1) {
-    							obj.max = Math.round(obj.max / 1024);
-                  $scope.quotaLimits[obj.resourceType].label = $scope.quotaLimits[obj.resourceType].label + " " + "(GB)";
-    						}
-              }
-
-              if (obj.max == -1 && obj.resourceType == "PrimaryStorage" || obj.max == -1 && obj.resourceType == "SecondaryStorage") {
-					        obj.usedLimit = Math.round( obj.usedLimit / (1024 * 1024 * 1024));
-                  $scope.quotaLimits[obj.resourceType].label = $scope.quotaLimits[obj.resourceType].label + " " + "(GB)";
-   				    }
-
-              $scope.quotaLimits[obj.resourceType].max = parseInt(obj.max);
-              $scope.quotaLimits[obj.resourceType].usedLimit = parseInt(obj.usedLimit);
-              $scope.quotaLimits[obj.resourceType].percentage = parseFloat(parseInt(obj.usedLimit) / parseInt(obj.max) * 100).toFixed(2);
-              var unUsed = $scope.quotaLimits[obj.resourceType].max - $scope.quotaLimits[obj.resourceType].usedLimit;
+          });
+      });
+    }
 
 
-              var usedColor = "#48a9da";
-              if($scope.quotaLimits[obj.resourceType].percentage > 79 && $scope.quotaLimits[obj.resourceType].percentage < 90) {
-                  usedColor = "#f0ad4e";
-              } else if($scope.quotaLimits[obj.resourceType].percentage > 89){
-                  usedColor = "#df6457";
-              }
-              $scope.quotaLimits[obj.resourceType].doughnutData = [
-                  {
-                      value: parseInt(obj.usedLimit),
-                      color: usedColor,
-                      highlight: usedColor,
-                      label: "Used"
-
-                  },
-                  {
-                      value: unUsed,
-                      color: "#ebf1f4",
-                      highlight: "#ebf1f4",
-                      label: "Unused"
-
-                  }
-              ];
-            }
-        });
-    });
 
     $scope.checkOne = true;
     $scope.appLanguage = function() {
@@ -324,7 +334,7 @@ customTooltips: function customTooltips(tooltip){
           $scope.listing.departmentList = result;
       });
     };
-    $scope.getDepartmentList();
+
 
     $scope.showTopDeptLoader = false;
     $scope.getTopDepartmentCostList = function(type) {
@@ -335,7 +345,7 @@ customTooltips: function customTooltips(tooltip){
           $scope.top5DepartmentList = result;
       });
     }
-    $scope.getTopDepartmentCostList();
+
 
     $scope.showTopProjectLoader = false;
     $scope.getTopProjectCostList = function(type) {
@@ -346,7 +356,7 @@ customTooltips: function customTooltips(tooltip){
           $scope.top5ProjectList = result;
       });
     }
-    $scope.getTopProjectCostList();
+
 
 
     $scope.findSubCategoryByDepartment = function(groupType, id) {
@@ -415,7 +425,15 @@ customTooltips: function customTooltips(tooltip){
           ];
         });
     }
-    $scope.getCostByMonthGraph();
+
+    if(appService.globalConfig.sessionValues.type != "ROOT_ADMIN") {
+          $scope.getInfrastructureDetails();
+          $scope.getResourceQuotaDetails();
+          $scope.getDepartmentList();
+          $scope.getTopDepartmentCostList();
+          $scope.getTopProjectCostList();
+          $scope.getCostByMonthGraph();
+      }
 
 
 
