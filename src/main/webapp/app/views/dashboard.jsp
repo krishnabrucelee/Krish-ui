@@ -12,8 +12,16 @@
 
 <!-- Main Wrapper -->
 <div id="wrapper">
-
-    <div class="content" >
+	<div class="content"  data-ng-if="global.sessionValues.type === 'ROOT_ADMIN'">
+		<div class="row">
+            <div class="col-md-12">
+                <div class="alert alert-danger no-border-radious">
+                	You are logged in as a Cloud Admin. To view the company specific dashboard, please login as a company user.
+                </div>
+            </div>
+        </div>
+	</div>
+    <div class="content"  data-ng-if="global.sessionValues.type !== 'ROOT_ADMIN'">
 
 <!--         <div class="row">
             <div class="col-md-12">
