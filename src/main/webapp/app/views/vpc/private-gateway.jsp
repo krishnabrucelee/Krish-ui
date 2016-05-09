@@ -11,7 +11,7 @@
 					<div class="row">
 						<div class="col-md-12 col-sm-12 col-xs-12 ">
 							<div class="pull-left dashboard-btn-area">
-								<a class="btn btn-info" data-ng-click="createPrivateGateway('md')"> <span class="pe-7s-plus pe-lg font-bold m-r-xs"></span> Add Private Gateway</a>
+								<a class="btn btn-info" data-ng-click="createPrivateGateway('md')"> <span class="pe-7s-plus pe-lg font-bold m-r-xs"></span> <fmt:message key="add.private.gateway" bundle="${msg}" /></a>
 							</div>
 							<div class="pull-right dashboard-filters-area">
 							<form data-ng-submit="searchList(vmSearch)">
@@ -40,11 +40,11 @@
 								<table cellspacing="1" cellpadding="1" class="table table-bordered table-striped">
 								    <thead>
 								        <tr>
-								            <th>IP Address</th>
-								            <th>Gateway</th>
-								            <th>Netmask</th>
-								            <th>VLAN/VNI</th>
-								            <th>Actions</th>
+								            <th><fmt:message key="ip.address" bundle="${msg}" /></th>
+								            <th><fmt:message key="gateway" bundle="${msg}" /></th>
+								            <th><fmt:message key="netmask" bundle="${msg}" /></th>
+								            <th><fmt:message key="vlan.vni" bundle="${msg}" /></th>
+								            <th><fmt:message key="common.action" bundle="${msg}" /></th>
 								        </tr>
 								    </thead>
 								    <tbody>

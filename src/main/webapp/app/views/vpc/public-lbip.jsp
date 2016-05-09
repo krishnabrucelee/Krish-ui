@@ -37,10 +37,10 @@
 								<table cellspacing="1" cellpadding="1" class="table table-bordered table-striped">
 								    <thead>
 								        <tr>
-								            <th>IPs</th>
-								            <th>Zone</th>
-								            <th>VM Name</th>
-								            <th>State</th>
+								            <th><fmt:message key="common.ips" bundle="${msg}" /></th>
+								            <th><fmt:message key="common.zone" bundle="${msg}" /></th>
+								            <th><fmt:message key="common.vm.name" bundle="${msg}" /></th>
+								            <th><fmt:message key="common.state" bundle="${msg}" /></th>
 								        </tr>
 								    </thead>
 								    <tbody>
