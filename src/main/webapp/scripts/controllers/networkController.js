@@ -89,15 +89,20 @@ if (!angular.isUndefined($stateParams.id)) {
         $scope.showLoader = true;
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasGuestnetworkLists = {};
-        if ($scope.domainId == null || angular.isUndefined($scope.domainId)) {
-            hasGuestnetworkLists = appService.promiseAjax.httpTokenRequest(globalConfig.HTTP_GET, globalConfig.APP_URL + "guestnetwork" + "?lang=" + localStorageService.cookie.get('language') + "&sortBy=" + sortOrder + sortBy + "&limit=" + limit, $scope.global.paginationHeaders(pageNumber, limit), {
-                "limit": limit
-            });
-        } else {
-            hasGuestnetworkLists = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "guestnetwork/listByDomain" + "?lang=" + appService.localStorageService.cookie.get('language') + "&domainId=" + $scope.domainId + "&sortBy=" + $scope.paginationObject.sortOrder + $scope.paginationObject.sortBy + "&limit=" + limit, $scope.global.paginationHeaders(pageNumber, limit), {
-                "limit": limit
-            });
-        }
+	if ($scope.domainId == null && $scope.vmSearch == null) {
+            	hasGuestnetworkLists = appService.crudService.list("guestnetwork", $scope.global.paginationHeaders(pageNumber, limit), {
+                "limit": limit});
+            } 
+		else {
+	if ($scope.domainId != null && $scope.vmSearch == null) {
+                $scope.filter = "&domainId=" + $scope.domainId + "&searchText=";
+            }  else if ($scope.domainId == null && $scope.vmSearch != null) {
+                $scope.filter = "&domainId=0" + "&searchText=" + $scope.vmSearch;
+            } else  {
+                $scope.filter = "&domainId=" + $scope.domainId + "&searchText=" + $scope.vmSearch;
+            }
+    		    hasGuestnetworkLists =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "guestnetwork/listByDomain"+"?lang=" +appService.localStorageService.cookie.get('language')+ $scope.filter +"&sortBy="+globalConfig.sort.sortOrder+globalConfig.sort.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+            }
         hasGuestnetworkLists.then(function(result) { // this is only run after $http
             // completes0
             $scope.networkList = result;
@@ -617,6 +622,14 @@ $scope.ipCostList();
                 };
         }]);
     };
+
+$scope.vmSearch = null;
+    $scope.searchList = function(vmSearch) {
+        $scope.vmSearch = vmSearch;
+        $scope.list(1);
+    };
+
+
     // Get network list based on domain selection
     $scope.domainId = null;
     $scope.selectDomainView = function(pageNumber, domainId) {
@@ -634,15 +647,20 @@ $scope.ipCostList();
         $scope.type = $stateParams.view;
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasGuestNetworks = {};
-        if ($scope.domainId == null || angular.isUndefined($scope.domainId)) {
-            hasGuestNetworks = appService.crudService.list("guestnetwork", $scope.global.paginationHeaders(pageNumber, limit), {
-                "limit": limit
-            });
-        } else {
-            hasGuestNetworks = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "guestnetwork/listByDomain" + "?lang=" + appService.localStorageService.cookie.get('language') + "&domainId=" + $scope.domainId + "&sortBy=" + globalConfig.sort.sortOrder + globalConfig.sort.sortBy + "&limit=" + limit, $scope.global.paginationHeaders(pageNumber, limit), {
-                "limit": limit
-            });
-        }
+	if ($scope.domainId == null && $scope.vmSearch == null) {
+            	hasGuestNetworks = appService.crudService.list("guestnetwork", $scope.global.paginationHeaders(pageNumber, limit), {
+                "limit": limit});
+            } 
+		else {
+	if ($scope.domainId != null && $scope.vmSearch == null) {
+                $scope.filter = "&domainId=" + $scope.domainId + "&searchText=";
+            }  else if ($scope.domainId == null && $scope.vmSearch != null) {
+                $scope.filter = "&domainId=0" + "&searchText=" + $scope.vmSearch;
+            } else  {
+                $scope.filter = "&domainId=" + $scope.domainId + "&searchText=" + $scope.vmSearch;
+            }
+    		    hasGuestNetworks =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "guestnetwork/listByDomain"+"?lang=" +appService.localStorageService.cookie.get('language')+ encodeURI($scope.filter) +"&sortBy="+globalConfig.sort.sortOrder+globalConfig.sort.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+            }
         hasGuestNetworks.then(function(result) {
             $scope.showLoader = true;
             $scope.networkList = angular.copy(result);
@@ -1932,7 +1950,7 @@ if (!angular.isUndefined($stateParams.id1)) {
                         $scope.tabview = appService.localStorageService.get('view');
                         $scope.templateCategory = $scope.tabview;
     			$window.location.href = '#network/list/view/' + $stateParams.id + '/ip-address/' + $scope.ipDetails.id;
-			
+
 			}
                     }).catch(function(result) {
                         $scope.showLoader = false;

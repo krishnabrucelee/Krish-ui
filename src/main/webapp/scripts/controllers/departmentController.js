@@ -97,7 +97,7 @@ function departmentCtrl($scope, $sce, appService, localStorageService, globalCon
 		$scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=" + $scope.departmentSearch;
 	    }
 	    hasDepartments =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "departments/listByDomain"
-					+"?lang=" +appService.localStorageService.cookie.get('language')+ $scope.filter+"&sortBy="+appService.globalConfig.sort.sortOrder+appService.globalConfig.sort.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+					+"?lang=" +appService.localStorageService.cookie.get('language')+ encodeURI($scope.filter)+"&sortBy="+appService.globalConfig.sort.sortOrder+appService.globalConfig.sort.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
 	}
         hasDepartments.then(function (result) {  // this is only run after $http completes0
             $scope.departmentList = result;

@@ -214,14 +214,13 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider, $compile
 
             // VPC
             .state('vpc', {
-                abstract: true,
+                abstract : true,
                 url : "/vpc",
                 templateUrl : VIEW_URL + "views/common/vpccontent.jsp",
                 data : {
                     pageTitle : 'VPC'
                 }
             })
-
 
             // VPC list
             .state('vpc.list', {
@@ -234,7 +233,7 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider, $compile
 
             // View VPC
             .state('vpc.view-vpc', {
-                url : "/view-vpc/:id",
+                url : "/:view/:id",
                 templateUrl : VIEW_URL + "views/vpc/view-vpc.jsp",
                 data : {
                     pageTitle : 'view VPC'
@@ -336,8 +335,6 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider, $compile
                     pageTitle : 'common.applications'
                 }
             })
-
-
 
             // payment
             .state('alipayments', {
@@ -587,22 +584,28 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider, $compile
 
 }
 
-angular.module('homer').constant("PANDA_CONFIG", {
-    "VIEW_URL" : "app/views/",
-}).factory('myFactory', function($http, globalConfig, $cookies, $window, tokens, localStorageService, utilService) {
-	var loginSession = globalConfig.sessionValues;
-    if((loginSession == null || angular.isUndefined(globalConfig.sessionValues)) && tokens != null) {
-    	globalConfig.sessionValues = tokens;
-    	localStorageService.set('rememberMe', tokens.rememberMe);
-    	if ((angular.isUndefined(localStorageService.get('rememberMe')) || localStorageService.get('rememberMe') == false || localStorageService.get('rememberMe') == "false")
-    			&& (angular.isUndefined($cookies.rememberMe) || $cookies.rememberMe == undefined || $cookies.rememberMe == "undefined")) {
-    		utilService.logoutApplication("COOKIE_TIME_OUT");
-    	}
-    }
-    return {
-        foo: function() { return 'bar' }
-    };
-}).run(function($rootScope, $state, editableOptions, myFactory) {
-			$rootScope.$state = $state;
-		    editableOptions.theme = 'bs3';
-}).config(configState);
+angular
+        .module('homer')
+        .constant("PANDA_CONFIG", {
+            "VIEW_URL" : "app/views/",
+        })
+        .factory('myFactory', function($http, globalConfig, $cookies, $window, tokens, localStorageService, utilService) {
+            var loginSession = globalConfig.sessionValues;
+            if ((loginSession == null || angular.isUndefined(globalConfig.sessionValues)) && tokens != null) {
+                globalConfig.sessionValues = tokens;
+                localStorageService.set('rememberMe', tokens.rememberMe);
+                if ((angular.isUndefined(localStorageService.get('rememberMe')) || localStorageService
+                        .get('rememberMe') == false || localStorageService.get('rememberMe') == "false") && (angular
+                        .isUndefined($cookies.rememberMe) || $cookies.rememberMe == undefined || $cookies.rememberMe == "undefined")) {
+                    utilService.logoutApplication("COOKIE_TIME_OUT");
+                }
+            }
+            return {
+                foo : function() {
+                    return 'bar'
+                }
+            };
+        }).run(function($rootScope, $state, editableOptions, myFactory) {
+            $rootScope.$state = $state;
+            editableOptions.theme = 'bs3';
+        }).config(configState);
