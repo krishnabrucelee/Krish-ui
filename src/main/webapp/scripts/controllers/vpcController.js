@@ -25,7 +25,7 @@ function vpcCtrl($scope, $modal, appService, filterFilter, $stateParams,$state, 
     $scope.paginationObject.sortBy = 'name';
     $scope.vpcList = [];
     $scope.vpcForm = {};
-    $scope.vpcPersist = {};
+    $scope.vpcPersist = {};  
 
     // VPC Offer List
     $scope.listVpcOffer = function() {
@@ -145,7 +145,8 @@ function vpcCtrl($scope, $modal, appService, filterFilter, $stateParams,$state, 
                 : $scope.paginationObject.limit;
         var hasVpcLists = {};
         if ($scope.domainView == null && $scope.vpcSearch == null) {
-            hasVpcLists = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "vpc" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+sortOrder+sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+            hasVpcLists = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "vpc" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+sortOrder+sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+
         }  else {
             $scope.filter = "";
             if ($scope.domainView != null && $scope.vpcSearch == null) {
