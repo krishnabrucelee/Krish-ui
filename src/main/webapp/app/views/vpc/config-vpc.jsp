@@ -10,7 +10,7 @@
                 <div class="col-md-12">
 	                <div class="col-md-12 col-sm-12">
 	                    <span class="pull-right">
-                        	<a class="btn btn-info" data-ng-click="createNetwork('md')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span>Create Network</a>
+                        	<a class="btn btn-info" data-ng-click="createNetwork('md')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="create.network" bundle="${msg}" /></a>
 	                    </span>
                   	</div>
                     <div class="vpc-manager-area">
@@ -19,7 +19,7 @@
                                 <div class="v-timeline  vertical-timeline-block">
                                     <div class="vertical-timeline-content" >
                                         <div class="timeline-title router">
-                                            <span class="fa fa-exchange "></span> Router
+                                            <span class="fa fa-exchange "></span> <fmt:message key="router" bundle="${msg}" />
                                         </div>
                                         <div class="p-sm">
                                             <div class="col-md-6 ">
@@ -28,7 +28,7 @@
                                                 	<!-- <a ui-sref="vpc.private-gateway({id: {{ 1}}})"> -->
 	                                                    <div class="panel panel-info cursor-notallow">
 	                                                        <div class="panel-body p-xxs text-info text-center ">
-	                                                            <h3> 0 </h3>PRIVATE GATEWAY
+	                                                            <h3> 0 </h3><fmt:message key="private.gateway" bundle="${msg}" />
 	                                                        </div>
 	                                                    </div>
                                                     </a>
@@ -40,7 +40,7 @@
                                                 	 <a>
 	                                                    <div class="panel panel-info cursor-notallow">
 	                                                        <div class="panel-body p-xxs text-info text-center">
-	                                                            <h3> 0</h3>PUBLIC IP ADDRESS
+	                                                            <h3> 1</h3><fmt:message key="public.ip.address" bundle="${msg}" />
 	                                                        </div>
 	                                                    </div>
                                                     </a>
@@ -54,7 +54,7 @@
 	                                                    <div class="panel panel-info cursor-notallow">
 	                                                        <div class="panel-body p-xxs text-info text-center">
 	                                                            <h3> 0</h3>
-	                                                            SITE TO SITE VPNS
+	                                                            <fmt:message key="site.to.site.vpns" bundle="${msg}" />
 	                                                        </div>
 	                                                    </div>
                                                     </a>
@@ -65,8 +65,8 @@
                                                     <div class="panel panel-info">
                                                     	<!-- <a href="#" ui-sref="vpc.network-acl({id: {{ 1}}})"> -->
                                                     	 <a>
-	                                                        <div class="panel-body p-xxs text-info text-center cursor-notallow" >
-	                                                            <h3> 0</h3>NETWORK ACL LISTS
+	                                                            <h3> 2</h3>
+	                                                            <fmt:message key="network.acl.lists" bundle="${msg}" />
 	                                                        </div>
                                                         </a>
                                                     </div>
@@ -95,7 +95,7 @@
 	                                                                <div class="panel panel-info cursor-notallow">
 	                                                                    <div class="panel-body p-xxs text-info text-center">
 	                                                                        <h3> 0 </h3>
-	                                                                        INTERNAL LB
+	                                                                        <fmt:message key="internal.lb" bundle="${msg}" />
 	                                                                    </div>
 	                                                                </div>
 	                                                             </a>
@@ -110,7 +110,7 @@
 	                                                                <div class="panel panel-info cursor-notallow">
 	                                                                    <div class="panel-body p-xxs text-info text-center">
 	                                                                        <h3> 0 </h3>
-	                                                                        PUBLIC LB IP
+	                                                                        <fmt:message key="public.lb.ip" bundle="${msg}" />
 	                                                                    </div>
 	                                                                </div>
                                                                	</a>
@@ -125,7 +125,7 @@
 	                                                                <div class="panel panel-info cursor-notallow">
 	                                                                    <div class="panel-body p-xxs text-info text-center" >
 	                                                                        <h3> 0 </h3>
-	                                                                        STATIC NATS
+	                                                                        <fmt:message key="static.nats" bundle="${msg}" />
 	                                                                    </div>
 	                                                                </div>
 	                                                            </a>
@@ -140,7 +140,7 @@
 	                                                                <div class="panel panel-info cursor-notallow">
 	                                                                    <div class="panel-body p-xxs text-info text-center">
 	                                                                        <h3> 0 </h3>
-	                                                                        VIRTUAL MACHINES
+	                                                                        <fmt:message key="virtual.machines" bundle="${msg}" />
 	                                                                    </div>
 	                                                                </div>
 	                                                            </a>
@@ -148,7 +148,7 @@
 	                                                    </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6"> <div class="p-sm">CIDR: {{network.CIDR}}</div></div>
+                                                <div class="col-md-6"> <div class="p-sm"><fmt:message key="common.cidr" bundle="${msg}" />: {{network.CIDR}}</div></div>
                                             </div>
                                         </div>
                                     </div>

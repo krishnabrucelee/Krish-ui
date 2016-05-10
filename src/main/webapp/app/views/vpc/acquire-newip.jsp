@@ -5,7 +5,7 @@
 
 <div class="inmodal" >
     <div class="modal-header">
-        <panda-modal-header hide-zone="false" page-icon="fa fa-warning" page-title="Please confirm"></panda-modal-header>
+        <panda-modal-header hide-zone="false" page-icon="fa fa-warning" page-title="<fmt:message key="please.confirm" bundle="${msg}" />"></panda-modal-header>
     </div>
     <div class="modal-body">
         <div class=" row">
@@ -13,7 +13,7 @@
                 <img src="images/warning.png" alt="">
             </div>
             <div class="form-group has-error col-md-9 col-sm-9  col-xs-9 m-t-md">
-                <p>Please confirm</p>
+                <p><fmt:message key="please.confirm" bundle="${msg}" /></p>
             </div>
         </div>
     </div>

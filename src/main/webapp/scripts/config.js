@@ -212,28 +212,19 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider, $compile
                 }
             })
 
-            // VPC
+
+            // VPC list
             .state('vpc', {
-                abstract : true,
                 url : "/vpc",
-                templateUrl : VIEW_URL + "views/common/vpccontent.jsp",
+                templateUrl : VIEW_URL + "views/vpc/list.jsp",
                 data : {
                     pageTitle : 'VPC'
                 }
             })
 
-            // VPC list
-            .state('vpc.list', {
-                url : "/vpc/list",
-                templateUrl : VIEW_URL + "views/vpc/list.jsp",
-                data : {
-                    pageTitle : 'VPC List'
-                }
-            })
-
             // View VPC
             .state('vpc.view-vpc', {
-                url : "/:view/:id",
+                url : "/view/:id",
                 templateUrl : VIEW_URL + "views/vpc/view-vpc.jsp",
                 data : {
                     pageTitle : 'view VPC'
@@ -241,8 +232,8 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider, $compile
             })
 
             // Config VPC
-            .state('vpc.config-vpc', {
-                url : "/config-vpc/:id",
+            .state('vpc.view-vpc.config-vpc', {
+                url : "/config-vpc",
                 templateUrl : VIEW_URL + "views/vpc/config-vpc.jsp",
                 data : {
                     pageTitle : 'config VPC'

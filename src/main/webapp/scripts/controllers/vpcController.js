@@ -25,7 +25,7 @@ function vpcCtrl($scope, $modal, appService, filterFilter, $stateParams,$state, 
     $scope.paginationObject.sortBy = 'name';
     $scope.vpcList = [];
     $scope.vpcForm = {};
-    $scope.vpcPersist = {};
+    $scope.vpcPersist = {};  
 
     // VPC Offer List
     $scope.listVpcOffer = function() {
@@ -48,7 +48,7 @@ function vpcCtrl($scope, $modal, appService, filterFilter, $stateParams,$state, 
             $scope.showLoaderOffer = false;
             $scope.vpc = result;
             $scope.vpcPersist = result;
-            if ($state.current.data.pageTitle === "view.vpc") {
+            if ($state.current.data.pageTitle === "view VPC") {
                 $state.current.data.pageName = result.name;
                 $state.current.data.id = result.id;
             } else {
@@ -82,7 +82,6 @@ function vpcCtrl($scope, $modal, appService, filterFilter, $stateParams,$state, 
         hasDomains.then(function(result) { // this is only run after $http
             // completes0
             $scope.aclList = result;
-console.log("-------------------------------------",$scope.aclList);
         });
     };
      $scope.aclList();
@@ -145,20 +144,20 @@ console.log("-------------------------------------",$scope.aclList);
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT
                 : $scope.paginationObject.limit;
         var hasVpcLists = {};
-        if ($scope.domainId == null || angular.isUndefined($scope.domainId)) {
-            hasVpcLists = appService.promiseAjax
-                    .httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "vpc" + "?lang=" + localStorageService.cookie
-                            .get('language') + "&sortBy=" + sortOrder + sortBy + "&limit=" + limit, $scope.global
-                            .paginationHeaders(pageNumber, limit), {
-                        "limit" : limit
-                    });
-        } else {
-            hasVpcLists = appService.promiseAjax
-                    .httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "vpc/listByDomain" + "?lang=" + appService.localStorageService.cookie
-                            .get('language') + "&domainId=" + $scope.domainId + "&sortBy=" + $scope.paginationObject.sortOrder + $scope.paginationObject.sortBy + "&limit=" + limit, $scope.global
-                            .paginationHeaders(pageNumber, limit), {
-                        "limit" : limit
-                    });
+        if ($scope.domainView == null && $scope.vpcSearch == null) {
+            hasVpcLists = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "vpc" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+sortOrder+sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+
+        }  else {
+            $scope.filter = "";
+            if ($scope.domainView != null && $scope.vpcSearch == null) {
+                $scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=";
+            } else if ($scope.domainView == null && $scope.vpcSearch != null) {
+                $scope.filter = "&domainId=0" + "&searchText=" + $scope.vpcSearch;
+            } else {
+                $scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=" + $scope.vpcSearch;
+            }
+            hasVpcLists =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "vpc/listByDomain"
+				+"?lang=" +appService.localStorageService.cookie.get('language')+ $scope.filter+"&sortBy="+$scope.paginationObject.sortOrder +$scope.paginationObject.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
         }
         hasVpcLists.then(function(result) { // this is only run after $http
             // completes0
@@ -185,15 +184,19 @@ console.log("-------------------------------------",$scope.aclList);
         $scope.type = $stateParams.view;
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasGuestNetworks = {};
-        if ($scope.domainId == null || angular.isUndefined($scope.domainId)) {
-            hasGuestNetworks = appService.crudService.list("vpc", $scope.global.paginationHeaders(pageNumber, limit), {
-                "limit": limit
-            });
-        } else {
-            hasGuestNetworks = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "vpc/listByDomain" + "?lang=" + appService.localStorageService.cookie.get('language') + "&domainId=" + $scope.domainId + "&sortBy=" + appService.globalConfig.sort.sortOrder + appService.globalConfig.sort.sortBy + "&limit=" + limit, $scope.global.paginationHeaders(pageNumber, limit), {
-                "limit": limit
-            });
-        }
+        if ($scope.domainView == null && $scope.vpcSearch== null) {
+		    hasGuestNetworks = appService.crudService.list("vpc", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+	} else {
+	    if ($scope.domainView != null && $scope.vpcSearch == null) {
+		$scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=";
+            } else if ($scope.domainView == null && $scope.vpcSearch != null) {
+	    	$scope.filter = "&domainId=0" + "&searchText=" + $scope.vpcSearch;
+            } else {
+		$scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=" + $scope.vpcSearch;
+	    }
+	    hasGuestNetworks =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "vpc/listByDomain"
+					+"?lang=" +appService.localStorageService.cookie.get('language')+ encodeURI($scope.filter)+"&sortBy="+appService.globalConfig.sort.sortOrder+appService.globalConfig.sort.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+	}
         hasGuestNetworks.then(function(result) {
             $scope.showLoader = true;
             $scope.vpcList = angular.copy(result);
@@ -211,6 +214,18 @@ console.log("-------------------------------------",$scope.aclList);
     };
     $scope.filteredCount = $scope.vpcList;
     $scope.list(1);
+
+    // Get department list based on domain selection
+    $scope.selectDomainView = function(pageNumber) {
+    	$scope.list(1);
+    };    
+
+   // Get instance list based on quick search
+    $scope.vpcSearch = null;
+    $scope.searchList = function(vpcSearch) {
+        $scope.vpcSearch = vpcSearch;
+        $scope.list(1);
+    };
 
     // Add the VPC
     $scope.createVpc = function(size) {
