@@ -123,7 +123,7 @@
 								    <tbody data-ng-show="vpcList.length > 0">
 								         <tr data-ng-repeat="vpc in filteredCount = (vpcList | filter: quickSearch | orderBy:sort.column:sort.descending)">
 								            <td>
-								                <a class="text-info" ui-sref="vpc.view-vpc({id: {{ vpc.id}}})">{{vpc.name}}</a>
+								                <a class="text-info" href="#/vpc/view/{{vpc.id}}">{{vpc.name}}</a>
 								            </td>
 								            <td>{{vpc.description}}</td>
 								            <td>{{vpc.domain.name }}</td>
