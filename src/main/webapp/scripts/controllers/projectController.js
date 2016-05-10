@@ -572,7 +572,6 @@ if ($scope.domainView != null && $scope.vmSearch == null) {
 	                      	 var errorMsgs = result.data.globalError[0];
 	                      	 var errorList = errorMsgs.split("@@");
 	                     	 appService.notify.closeAll();
-				console.log(errorList[1]);
 				if(errorList[1] != undefined) {
 	                      		var msg = "You have following resources for this project: <br><ul>" +
 	                  	 		"<li>Instance :"+ errorList[1] +"</li>" +
