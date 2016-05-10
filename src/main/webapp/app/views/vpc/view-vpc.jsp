@@ -88,7 +88,7 @@
 						</button>
 						<button type="button" class="btn btn-default "
 							data-ng-hide="showLoader" data-ng-if="type == 'edit'"
-							ui-sref="vpc.list">
+							ui-sref="vpc">
 							<fmt:message key="common.cancel" bundle="${msg}" />
 						</button>
 					</div>
@@ -112,7 +112,7 @@
 								data-ng-click="delete('sm', vpc)"
 							><span class="fa-trash fa font-bold m-xs"></span> <fmt:message key="remove.vpc" bundle="${msg}" /></a></li>
 							<li data-ng-if="type != 'edit'" class="list-group-item"><a has-permission="EDIT_VPC"
-								title=" <fmt:message key="edit.vpc" bundle="${msg}" />" href="/vpc/edit/{{ vpc.id}}"
+								title=" <fmt:message key="edit.vpc" bundle="${msg}" />" href="#/vpc/edit/{{ vpc.id}}"
 							> <span class="fa fa-edit font-bold m-xs"></span> <fmt:message key="edit.vpc" bundle="${msg}" />
 							</a></li>
 							<li class="list-group-item">
