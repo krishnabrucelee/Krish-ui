@@ -566,13 +566,13 @@ if ($scope.domainView != null && $scope.vmSearch == null) {
                         appService.notify({message: 'Project deleted successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
 
                     }).catch(function (result) {
-
+				
                   	 if(!angular.isUndefined(result) && result.data != null) {
-				projectObj = deleteObject; 
       		 		   	if(result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])){
 	                      	 var errorMsgs = result.data.globalError[0];
 	                      	 var errorList = errorMsgs.split("@@");
 	                     	 appService.notify.closeAll();
+				if(errorList[1] != undefined) {
 	                      		var msg = "You have following resources for this project: <br><ul>" +
 	                  	 		"<li>Instance :"+ errorList[1] +"</li>" +
 	                  	 		"<li>Network :"+ errorList[2] + "</li>" +
@@ -581,12 +581,14 @@ if ($scope.domainView != null && $scope.vmSearch == null) {
 	                  	 		"</ul><br>Kindly delete associated resources and try again";
 	                      		appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
 	                       }
+			  }
 
 	                       angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
 	                      	$scope.departmentForm[key].$invalid = true;
 	                       	$scope.departmentForm[key].errorMessage = errorMessage;
 	                       });
            			  }
+			
 
                    });
                     $modalInstance.close();

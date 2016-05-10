@@ -24,8 +24,8 @@
                                         <div class="p-sm">
                                             <div class="col-md-6 ">
                                                 <div class="media-body">
-                                                 <a>
                                                 	<!-- <a ui-sref="vpc.private-gateway({id: {{ 1}}})"> -->
+	                                                    <div class="panel panel-info cursor-notallow">
 	                                                    <div class="panel panel-info cursor-notallow">
 	                                                        <div class="panel-body p-xxs text-info text-center ">
 	                                                            <h3> 0 </h3><fmt:message key="private.gateway" bundle="${msg}" />
@@ -37,10 +37,10 @@
                                             <div class="col-md-6">
                                                 <div class="media-body">
                                                 	<!-- <a ui-sref="vpc.public-ip({id: {{ 1}}})"> -->
-                                                	 <a>
+	                                                    <div class="panel panel-info cursor-notallow">
 	                                                    <div class="panel panel-info cursor-notallow">
 	                                                        <div class="panel-body p-xxs text-info text-center">
-	                                                            <h3> 1</h3><fmt:message key="public.ip.address" bundle="${msg}" />
+	                                                            <h3> 0</h3><fmt:message key="public.ip.address" bundle="${msg}" />
 	                                                        </div>
 	                                                    </div>
                                                     </a>
@@ -50,7 +50,7 @@
                                             <div class="col-md-6">
                                                 <div class="media-body">
                                                 	<!-- <a data-ng-click="acquireNewIp('sm')"> -->
-                                                	<a>
+	                                                    <div class="panel panel-info cursor-notallow">
 	                                                    <div class="panel panel-info cursor-notallow">
 	                                                        <div class="panel-body p-xxs text-info text-center">
 	                                                            <h3> 0</h3>
@@ -64,8 +64,8 @@
                                                 <div class="media-body">
                                                     <div class="panel panel-info">
                                                     	<!-- <a href="#" ui-sref="vpc.network-acl({id: {{ 1}}})"> -->
-                                                    	 <a>
-	                                                            <h3> 2</h3>
+	                                                        <div class="panel-body p-xxs text-info text-center cursor-notallow" >
+	                                                            <h3> 0</h3>
 	                                                            <fmt:message key="network.acl.lists" bundle="${msg}" />
 	                                                        </div>
                                                         </a>
@@ -80,7 +80,7 @@
                         <div class="vpc-manager pull-right">
                             <div class="hpanel">
                                 <div class=" vertical-container" animate-panel child="vertical-timeline-block" >
-                                    <div class="v-timeline  vertical-timeline-block" data-ng-class="{'timeline-primary' : network.isDefault == 'YES'}"  data-ng-repeat="network in aclList" >
+                                    <div class="v-timeline  vertical-timeline-block" data-ng-class="{'timeline-primary' : network.isDefault == 'YES'}"  data-ng-repeat="network in vpcNetworkList" >
                                         <div class="h-timeline">
                                             <div class="vertical-timeline-content">
                                                 <div class="timeline-title">
@@ -90,8 +90,8 @@
                                                     <div class="col-md-6">
 	                                                    <div class="media">
 	                                                        <div class="media-body">
-	                                                        <a>
 	                                                            <!-- <a href="#" class="cursor-notallow"> -->
+	                                                                <div class="panel panel-info cursor-notallow">
 	                                                                <div class="panel panel-info cursor-notallow">
 	                                                                    <div class="panel-body p-xxs text-info text-center">
 	                                                                        <h3> 0 </h3>
@@ -106,7 +106,7 @@
 														<div class="media">
 	                                                        <div class="media-body">
 	                                                            <!-- <a ui-sref="vpc.public-lbip({id: {{ 1}}})"> -->
-	                                                            <a>
+	                                                                <div class="panel panel-info cursor-notallow">
 	                                                                <div class="panel panel-info cursor-notallow">
 	                                                                    <div class="panel-body p-xxs text-info text-center">
 	                                                                        <h3> 0 </h3>
@@ -122,8 +122,7 @@
 	                                                        <div class="media-body">
 	                                                            <!-- <a ui-sref="vpc.static-nat({id: {{1}}})"> -->
 	                                                            <a>
-	                                                                <div class="panel panel-info cursor-notallow">
-	                                                                    <div class="panel-body p-xxs text-info text-center" >
+	                                                                    <div class="panel-body p-xxs text-info text-center cursor-notallow">
 	                                                                        <h3> 0 </h3>
 	                                                                        <fmt:message key="static.nats" bundle="${msg}" />
 	                                                                    </div>
@@ -136,7 +135,7 @@
 	                                                    <div class="media">
 	                                                        <div class="media-body">
 	                                                            <!-- <a href="#" ui-sref="vpc.virtual-machines({id: {{1}}})"> -->
-	                                                            <a>
+	                                                                <div class="panel panel-info cursor-notallow">
 	                                                                <div class="panel panel-info cursor-notallow">
 	                                                                    <div class="panel-body p-xxs text-info text-center">
 	                                                                        <h3> 0 </h3>
