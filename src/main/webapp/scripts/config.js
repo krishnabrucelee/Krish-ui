@@ -285,6 +285,14 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider, $compile
                 }
             })
 
+             .state('vpc.ip-view', {
+                url : "/:view/:id",
+                templateUrl : VIEW_URL + "views/vpc/vpcip-view.jsp",
+                data : {
+                    pageTitle : 'View IP'
+                }
+            })
+
             // Virtual Machines
             .state('vpc.virtual-machines', {
                 url : "/virtual-machines/:id",

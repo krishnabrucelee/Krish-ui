@@ -29,6 +29,8 @@ function vpcCtrl($scope, $modal, appService, filterFilter, $stateParams,$state, 
     $scope.vpcCreateNetwork = {};
     $scope.vpcNetworkList = {};
 
+    $scope.type = $stateParams.view;
+
     // VPC Offer List
     $scope.listVpcOffer = function() {
         var listVpcOffers = appService.promiseAjax
@@ -550,4 +552,23 @@ function vpcCtrl($scope, $modal, appService, filterFilter, $stateParams,$state, 
         appService.globalConfig.webSocketLoaders.vpcLoader = false;
         $scope.list(1);
     });
+    $scope.portRulesLists = function(pageNumber) {
+        $scope.showLoader = true;
+        $scope.templateCategory = 'port-forward';
+        $scope.firewallRules = {};
+			$scope.portForward = {};
+      /**  var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
+        var hasFirewallRuless = appService.crudService.listAllByQuery("portforwarding/list?ipaddress=" + $stateParams.id1, $scope.global.paginationHeaders(pageNumber, limit), {
+            "limit": limit
+        });
+        hasFirewallRuless.then(function(result) { // this is only run after
+            $scope.showLoader = true;
+            $scope.portList = result;
+            $scope.showLoader = false;
+            // For pagination
+            $scope.paginationObject.limit = limit;
+            $scope.paginationObject.currentPage = pageNumber;
+            $scope.paginationObject.totalItems = result.totalItems;
+        });*/
+    };
 }

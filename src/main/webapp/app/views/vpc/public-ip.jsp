@@ -49,9 +49,9 @@
 								    </thead>
 								    <tbody>
 								        <tr>
-								            <td>
-								                192.168.1.184 [Source NAT]
-								            </td>
+								            <td><a class="text-info"
+													ui-sref="vpc.ip-view({id: {{ 1 }}, view: 'source'})"
+													title="View Network">192.168.1.184 [Source NAT]</a></td>
 								            <td>devpanda-zone</td>
 								            <td>-</td>
 								            <td><label class="label label-success text-center text-white">ALLOCATED</label></td>
@@ -59,28 +59,7 @@
 								                <a class="icon-button" title="Enable Remote Access VPN" data-ng-click="acquireNewIp('sm')"><span class="fa fa-desktop"></span></a>
 								            </td>
 								        </tr>
-								        <tr>
-								            <td>
-								                192.168.1.184 [Source NAT]
-								            </td>
-								            <td>devpanda-zone</td>
-								            <td>-</td>
-								            <td><label class="label label-success text-center text-white">ALLOCATED</label></td>
-								            <td>
-								                <a class="icon-button" title="Enable Remote Access VPN" data-ng-click="acquireNewIp('sm')"><span class="fa fa-desktop"></span></a>
-								            </td>
-								        </tr>
-								        <tr>
-								            <td>
-								                192.168.1.184 [Source NAT]
-								            </td>
-								            <td>devpanda-zone</td>
-								            <td>-</td>
-								            <td><label class="label label-success text-center text-white">ALLOCATED</label></td>
-								            <td>
-								                <a class="icon-button" title="Enable Remote Access VPN" data-ng-click="acquireNewIp('sm')"><span class="fa fa-desktop"></span></a>
-								            </td>
-								        </tr>
+
 								    </tbody>
 								</table>
 							</div>
