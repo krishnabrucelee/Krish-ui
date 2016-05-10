@@ -9,7 +9,7 @@
 <div class="inmodal ">
     <div class="modal-header">
         <panda-modal-header page-icon="fa fa-soundcloud"
-			page-title="Add VPC">
+			page-title="<fmt:message key="add.vpc" bundle="${msg}" />">
         </panda-modal-header>
     </div>
     <div class="modal-body">
@@ -21,14 +21,14 @@
 						ng-class="{'text-danger':addvpcForm.name.$invalid && formSubmitted}">
 						<div class="row">
 							<label
-								class="col-md-4 col-xs-12 col-sm-4 control-label control-normal">Name<span class="text-danger">*</span></label>
+								class="col-md-4 col-xs-12 col-sm-4 control-label control-normal"><fmt:message key="common.name" bundle="${msg}" /><span class="text-danger">*</span></label>
 							<div class="col-md-6  col-sm-6 col-xs-12">
 								<input type="text" name="name" data-ng-model="vpc.name" required="true" class="form-control"
-									data-ng-class="{'error': addvpcForm.name.$invalid && formSubmitted}"> <i tooltip="Enter name of the VPC "
+									data-ng-class="{'error': addvpcForm.name.$invalid && formSubmitted}"> <i tooltip="<fmt:message key="enter.name.of.the.vpc" bundle="${msg}" /> "
 									class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
 								<div class="error-area"
 									data-ng-show="addvpcForm.name.$invalid && formSubmitted">
-									<i tooltip="Name is required"
+									<i tooltip="<fmt:message key="name.is.required" bundle="${msg}" />"
 										class="fa fa-warning error-icon"></i>
 								</div>
 							</div>
@@ -38,13 +38,13 @@
 						ng-class="{'text-danger':addvpcForm.description.$invalid && formSubmitted}">
 						<div class="row">
 							<label
-								class="col-md-4 col-xs-12 col-sm-4 control-label control-normal">Description<span class="text-danger">*</span></label>
+								class="col-md-4 col-xs-12 col-sm-4 control-label control-normal"><fmt:message key="common.description" bundle="${msg}" /><span class="text-danger">*</span></label>
 							<div class="col-md-6  col-sm-6 col-xs-12">
-								<input class="form-control" type="text" name="description" data-ng-model="vpc.description"  required="true" data-ng-class="{'error': addvpcForm.description.$invalid && formSubmitted}"> <i tooltip="Enter description of the VPC "
+								<input class="form-control" type="text" name="description" data-ng-model="vpc.description"  required="true" data-ng-class="{'error': addvpcForm.description.$invalid && formSubmitted}"> <i tooltip="<fmt:message key="enter.description.of.the.vpc" bundle="${msg}" />"
 									class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
 								<div class="error-area"
 									data-ng-show="addvpcForm.description.$invalid && formSubmitted">
-									<i tooltip="Description is required"
+									<i tooltip="<fmt:message key="description.is.required" bundle="${msg}" />"
 										class="fa fa-warning error-icon"></i>
 								</div>
 							</div>
@@ -78,13 +78,13 @@
 						ng-class="{'text-danger':addvpcForm.cIDR.$invalid && formSubmitted}">
 						<div class="row">
 							<label
-								class="col-md-4 col-xs-12 col-sm-4 control-label control-normal">Super CIDR for Guest Networks<span class="text-danger">*</span></label>
+								class="col-md-4 col-xs-12 col-sm-4 control-label control-normal"><fmt:message key="super.cidr" bundle="${msg}" /><span class="text-danger">*</span></label>
 							<div class="col-md-6  col-sm-6 col-xs-12">
-								<input class="form-control" type="text" name="cIDR" data-ng-model="vpc.cIDR" required="true" data-ng-class="{'error': addvpcForm.cIDR.$invalid && formSubmitted}"> <i tooltip="Enter super cidr "
+								<input class="form-control" type="text" name="cIDR" data-ng-model="vpc.cIDR" required="true" data-ng-class="{'error': addvpcForm.cIDR.$invalid && formSubmitted}"> <i tooltip="<fmt:message key="enter.super.cidr" bundle="${msg}" />"
 									class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
 								<div class="error-area"
 									data-ng-show="addvpcForm.cIDR.$invalid && formSubmitted">
-									<i tooltip="Super cidr is required"
+									<i tooltip="<fmt:message key="super.cidr.is.required" bundle="${msg}" />"
 										class="fa fa-warning error-icon"></i>
 								</div>
 							</div>
@@ -93,9 +93,9 @@
 					<div class="form-group">
 						<div class="row">
 							<label
-								class="col-md-4 col-xs-12 col-sm-4 control-label control-normal">DNS domain for Guest Networks</label>
+								class="col-md-4 col-xs-12 col-sm-4 control-label control-normal"><fmt:message key="dns.domain" bundle="${msg}" /></label>
 							<div class="col-md-6  col-sm-6 col-xs-12">
-								<input class="form-control" type="text" name="networkDomain" data-ng-model="vpc.networkDomain" > <i tooltip="Enter DNS for guest networks "
+								<input class="form-control" type="text" name="networkDomain" data-ng-model="vpc.networkDomain" > <i tooltip="<fmt:message key="enter.dns.for.guest.networks" bundle="${msg}" /> "
 									class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
 
 							</div>
@@ -118,7 +118,7 @@
 						ng-class="{'text-danger':addvpcForm.vpcoffering.$invalid && formSubmitted}">
 						<div class="row">
 							<label
-								class="col-md-4 col-xs-12 col-sm-4 control-label control-normal">VPC Offering <span
+								class="col-md-4 col-xs-12 col-sm-4 control-label control-normal"><fmt:message key="vpc.offering" bundle="${msg}" /><span
 								class="text-danger">*</span></label>
 							<div class="col-md-6  col-sm-6 col-xs-12">
 								<select required="true" class="form-control input-group"
@@ -128,12 +128,12 @@
 									<option value=""><fmt:message key="common.select"
 											bundle="${msg}" /></option>
 								</select> <i
-									tooltip="choose vpc offering"
+									tooltip="<fmt:message key="choose.vpc.offering" bundle="${msg}" />"
 									class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
 								<div class="error-area"
 									data-ng-show="addvpcForm.vpcoffering.$invalid && formSubmitted">
 									<i
-										tooltip="Vpc offering is required"
+										tooltip="<fmt:message key="vpc.offering.is.required" bundle="${msg}" />"
 										class="fa fa-warning error-icon"></i>
 								</div>
 							</div>
@@ -186,7 +186,7 @@
 								<div class="error-area"
 									data-ng-show="addvpcForm.department.$invalid && formSubmitted">
 									<i
-										ng-attr-tooltip="{{ addvpcForm.department.errorMessage || '<fmt:message key="account.is.required" bundle="${msg}" />' }}"
+										ng-attr-tooltip="{{ addvpcForm.department.errorMessage || '<fmt:message key="department.is.required" bundle="${msg}" />' }}"
 										class="fa fa-warning error-icon"></i>
 								</div>
 								<i

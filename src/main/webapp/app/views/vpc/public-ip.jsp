@@ -11,7 +11,7 @@
 					<div class="row">
 						<div class="col-md-12 col-sm-12 col-xs-12 ">
 							<div class="pull-left dashboard-btn-area">
-								<a class="btn btn-info" data-ng-click="acquireNewIp('sm')"> <span class="pe-7s-plus pe-lg font-bold m-r-xs"></span> Acquire new IP</a>
+								<a class="btn btn-info" data-ng-click="acquireNewIp('sm')"> <span class="pe-7s-plus pe-lg font-bold m-r-xs"></span> <fmt:message key="acquire.new.ip" bundle="${msg}" /></a>
 							</div>
 							<div class="pull-right dashboard-filters-area">
 							<form data-ng-submit="searchList(vmSearch)">
@@ -40,11 +40,11 @@
 								<table cellspacing="1" cellpadding="1" class="table table-bordered table-striped">
 								    <thead>
 								        <tr>
-								            <th>IPs</th>
-								            <th>Zone</th>
-								            <th>Network Name</th>
-								            <th>State</th>
-								            <th>Actions</th>
+								            <th><fmt:message key="common.ips" bundle="${msg}" /></th>
+								            <th><fmt:message key="common.zone" bundle="${msg}" /></th>
+								            <th><fmt:message key="network.name" bundle="${msg}" /></th>
+								            <th><fmt:message key="common.state" bundle="${msg}" /></th>
+								            <th><fmt:message key="common.action" bundle="${msg}" /></th>
 								        </tr>
 								    </thead>
 								    <tbody>

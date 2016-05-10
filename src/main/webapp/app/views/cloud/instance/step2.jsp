@@ -338,8 +338,8 @@
 									<tr data-ng-repeat="networks in instance.networks.networkList">
 										<td>
 											<label>
-												<input id="create_instance_network_checkbox_{{networks.id}}" data-unique-field="{{networks.name}}-{{networks.networkOffering.displayText}}" data-ng-model="instance.networks[$index]" type="checkbox" data-ng-checked="false"
-												class="test_create_instance_network_checkbox" required="true" name="network" value="{{networks}}">
+												<input id="create_instance_network_checkbox_{{networks.id}}" data-unique-field="{{networks.name}}-{{networks.networkOffering.displayText}}" data-ng-model="instance.networkss[$index]" type="checkbox" data-ng-checked="false"
+												class="test_create_instance_network_checkbox" required="true" name="network" value="{{networks.uuid}}" data-ng-change="stateChanged($index)" >
 													{{ networks.name}}
 											</label>
 										</td>
@@ -353,7 +353,7 @@
 											<a title="<fmt:message key="ip.address" bundle="${msg}" />"></a>
 											<span>
 												<label>
-													<input type="radio" id="create_instance_network_default_radio_button_{{networks.id}}" class="test_create_instance_network_default_radio_button" data-unique-field="{{networks.name}}-{{networks.networkOffering.displayText}}" name="instance.networks.default" data-ng-model="instance.networkc" value="{{networks}}">
+													<input type="radio" id="create_instance_network_default_radio_button_{{networks.id}}" class="test_create_instance_network_default_radio_button" data-unique-field="{{networks.name}}-{{networks.networkOffering.displayText}}" name="networksDefault" data-ng-model="instance.networkc" value="{{networks.uuid}}">
 														<fmt:message key="common.default" bundle="${msg}" />
 												</label>
 											</span>
@@ -373,30 +373,32 @@
 								<thead>
 									<tr>
 										<th><fmt:message key="common.network" bundle="${msg}" /></th>
+										<th><fmt:message key="common.vpc" bundle="${msg}" /></th>
 										<th><fmt:message key="common.type" bundle="${msg}" /></th>
 										<th><fmt:message key="common.action" bundle="${msg}" /></th>
 									</tr>
 								</thead>
 								<tbody>
-									<tr
-										data-ng-repeat="networks in instance.networks.networkList| filter:{ vpc : true }">
+									<tr data-ng-repeat="networks in instance.networks.vpcList">
 										<td>
 											<label>
-												<input data-ng-model="networks.selected" type="checkbox" id="create_instance_network_checkbox_{{networks.id}}"
-													data-unique-field="{{networks.name}}-{{networks.networkOffering.displayText}}" class="test_create_instance_network_checkbox" required="true" name="instance.networks" value="networks">
+												<input id="create_instance_network_checkbox_{{networks.id}}" data-unique-field="{{networks.name}}-{{networks.networkOffering.displayText}}" data-ng-model="instance.networkss[$index]" type="checkbox" data-ng-checked="false"
+												class="test_create_instance_network_checkbox" required="true" name="network" value="{{networks.uuid}}" data-ng-change="stateChangedvpc($index)">
 													{{ networks.name}}
 											</label>
 										</td>
-										<td>{{ networks.type}}</td>
+										<td>
+											<label>
+													{{ networks.vpc.name}}
+											</label>
+										</td>
+										<td>{{ networks.networkType}}</td>
 										<td>
 											<a title="<fmt:message key="ip.address" bundle="${msg}" />"></a>
-											<input type="text" required="true" valid-cidr id="create_instance_network_ip_address_{{networks.id}}"
-												data-unique-field="{{networks.name}}-{{networks.networkOffering.displayText}}" class="test_create_instance_network_ip_address" placeholder="<fmt:message key="ip.address" bundle="${msg}" />"
-												class="input-small" data-ng-model="networks.ipaddress" />
 											<span>
 												<label>
-													<input type="radio" id="create_instance_network_default_radio__{{networks.id}}" data-unique-field="{{networks.name}}-{{networks.networkOffering.displayText}}" name="instance.networks.default" data-ng-model="instance.networks[$index]"
-													class="test_create_instance_network_default_radio" value="{{networks}}"> <fmt:message key="common.default" bundle="${msg}" />
+													<input type="radio" id="create_instance_network_default_radio_button_{{networks.id}}" class="test_create_instance_network_default_radio_button" data-unique-field="{{networks.name}}-{{networks.networkOffering.displayText}}" name="instance.networks.default" data-ng-model="instance.networkc" value="{{networks.uuid}}">
+														<fmt:message key="common.default" bundle="${msg}" />
 												</label>
 											</span>
 										</td>

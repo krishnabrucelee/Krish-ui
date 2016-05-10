@@ -26,6 +26,8 @@ function vpcCtrl($scope, $modal, appService, filterFilter, $stateParams,$state, 
     $scope.vpcList = [];
     $scope.vpcForm = {};
     $scope.vpcPersist = {};
+    $scope.vpcCreateNetwork = {};
+    $scope.vpcNetworkList = {};
 
     // VPC Offer List
     $scope.listVpcOffer = function() {
@@ -48,7 +50,8 @@ function vpcCtrl($scope, $modal, appService, filterFilter, $stateParams,$state, 
             $scope.showLoaderOffer = false;
             $scope.vpc = result;
             $scope.vpcPersist = result;
-            if ($state.current.data.pageTitle === "view.vpc") {
+            $scope.listVpcNetwork($scope.vpc.id);
+            if ($state.current.data.pageTitle === "view VPC") {
                 $state.current.data.pageName = result.name;
                 $state.current.data.id = result.id;
             } else {
@@ -76,6 +79,27 @@ function vpcCtrl($scope, $modal, appService, filterFilter, $stateParams,$state, 
         });
     };
     $scope.domainList();
+    $scope.aclList = {};
+    $scope.aclList = function() {
+        var hasDomains = appService.crudService.listAll("vpcacl/list");
+        hasDomains.then(function(result) { // this is only run after $http
+            // completes0
+            $scope.aclList = result;
+        });
+    };
+     $scope.aclList();
+
+     // VPC network Offer List
+     $scope.listNetworkOffer = function() {
+         var listNetworkOffers = appService.promiseAjax
+                 .httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "networkoffer/vpcList" + "?lang=" + appService.localStorageService.cookie
+                         .get('language') + "&sortBy=-id");
+         listNetworkOffers.then(function(result) {
+             $scope.vpcNetworkOfferList = result;
+         });
+     };
+     $scope.listNetworkOffer();
+
     $scope.departmentList = function(domain) {
         var hasDepartments = appService.crudService.listAllByFilter("departments/search", domain);
 
@@ -134,20 +158,20 @@ function vpcCtrl($scope, $modal, appService, filterFilter, $stateParams,$state, 
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT
                 : $scope.paginationObject.limit;
         var hasVpcLists = {};
-        if ($scope.domainId == null || angular.isUndefined($scope.domainId)) {
-            hasVpcLists = appService.promiseAjax
-                    .httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "vpc" + "?lang=" + localStorageService.cookie
-                            .get('language') + "&sortBy=" + sortOrder + sortBy + "&limit=" + limit, $scope.global
-                            .paginationHeaders(pageNumber, limit), {
-                        "limit" : limit
-                    });
-        } else {
-            hasVpcLists = appService.promiseAjax
-                    .httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "vpc/listByDomain" + "?lang=" + appService.localStorageService.cookie
-                            .get('language') + "&domainId=" + $scope.domainId + "&sortBy=" + $scope.paginationObject.sortOrder + $scope.paginationObject.sortBy + "&limit=" + limit, $scope.global
-                            .paginationHeaders(pageNumber, limit), {
-                        "limit" : limit
-                    });
+        if ($scope.domainView == null && $scope.vpcSearch == null) {
+            hasVpcLists = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "vpc" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+sortOrder+sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+
+        }  else {
+            $scope.filter = "";
+            if ($scope.domainView != null && $scope.vpcSearch == null) {
+                $scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=";
+            } else if ($scope.domainView == null && $scope.vpcSearch != null) {
+                $scope.filter = "&domainId=0" + "&searchText=" + $scope.vpcSearch;
+            } else {
+                $scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=" + $scope.vpcSearch;
+            }
+            hasVpcLists =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "vpc/listByDomain"
+				+"?lang=" +appService.localStorageService.cookie.get('language')+ $scope.filter+"&sortBy="+$scope.paginationObject.sortOrder +$scope.paginationObject.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
         }
         hasVpcLists.then(function(result) { // this is only run after $http
             // completes0
@@ -174,15 +198,19 @@ function vpcCtrl($scope, $modal, appService, filterFilter, $stateParams,$state, 
         $scope.type = $stateParams.view;
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasGuestNetworks = {};
-        if ($scope.domainId == null || angular.isUndefined($scope.domainId)) {
-            hasGuestNetworks = appService.crudService.list("vpc", $scope.global.paginationHeaders(pageNumber, limit), {
-                "limit": limit
-            });
-        } else {
-            hasGuestNetworks = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "vpc/listByDomain" + "?lang=" + appService.localStorageService.cookie.get('language') + "&domainId=" + $scope.domainId + "&sortBy=" + appService.globalConfig.sort.sortOrder + appService.globalConfig.sort.sortBy + "&limit=" + limit, $scope.global.paginationHeaders(pageNumber, limit), {
-                "limit": limit
-            });
-        }
+        if ($scope.domainView == null && $scope.vpcSearch== null) {
+		    hasGuestNetworks = appService.crudService.list("vpc", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+	} else {
+	    if ($scope.domainView != null && $scope.vpcSearch == null) {
+		$scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=";
+            } else if ($scope.domainView == null && $scope.vpcSearch != null) {
+	    	$scope.filter = "&domainId=0" + "&searchText=" + $scope.vpcSearch;
+            } else {
+		$scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=" + $scope.vpcSearch;
+	    }
+	    hasGuestNetworks =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "vpc/listByDomain"
+					+"?lang=" +appService.localStorageService.cookie.get('language')+ encodeURI($scope.filter)+"&sortBy="+appService.globalConfig.sort.sortOrder+appService.globalConfig.sort.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+	}
         hasGuestNetworks.then(function(result) {
             $scope.showLoader = true;
             $scope.vpcList = angular.copy(result);
@@ -200,6 +228,18 @@ function vpcCtrl($scope, $modal, appService, filterFilter, $stateParams,$state, 
     };
     $scope.filteredCount = $scope.vpcList;
     $scope.list(1);
+
+    // Get department list based on domain selection
+    $scope.selectDomainView = function(pageNumber) {
+    	$scope.list(1);
+    };    
+
+   // Get instance list based on quick search
+    $scope.vpcSearch = null;
+    $scope.searchList = function(vpcSearch) {
+        $scope.vpcSearch = vpcSearch;
+        $scope.list(1);
+    };
 
     // Add the VPC
     $scope.createVpc = function(size) {
@@ -397,13 +437,63 @@ function vpcCtrl($scope, $modal, appService, filterFilter, $stateParams,$state, 
         }]);
     };
 
+    // VPC Network List
+    $scope.listVpcNetwork = function(vpcId) {
+    	var listVpcNetworks = appService.crudService.listAllByID("guestnetwork/vpcNetworkList?vpcId=" + vpcId);
+        listVpcNetworks.then(function(result) {
+            $scope.vpcNetworkList = result;
+        });
+    };
+
     $scope.createNetwork = function(size) {
         appService.dialogService.openDialog($scope.global.VIEW_URL + "vpc/create.jsp", size, $scope, [ '$scope',
                 '$modalInstance', '$rootScope', function($scope, $modalInstance, $rootScope) {
-                    $scope.cancel = function() {
+        	$scope.saveNetwork = function(form, vpcCreateNetwork) {
+                $scope.formSubmitted = true;
+                if (form.$valid) {
+                	vpcCreateNetwork.domainId = $scope.vpc.domainId;
+                	vpcCreateNetwork.departmentId = $scope.vpc.departmentId;
+                	vpcCreateNetwork.project = $scope.vpc.project;
+                	vpcCreateNetwork.projectId = $scope.vpc.projectId;
+                	vpcCreateNetwork.zone = $scope.vpc.zone;
+                	vpcCreateNetwork.zoneId = $scope.vpc.zoneId;
+                	vpcCreateNetwork.aclId = $scope.vpcCreateNetwork.acl.id;
+                	vpcCreateNetwork.vpcId = $scope.vpc.id;
+                	vpcCreateNetwork.displayText = $scope.vpcCreateNetwork.name;
+                    vpcCreateNetwork.networkOfferingId = $scope.vpcCreateNetwork.networkOffering.id;
+                    $scope.showLoader = true;
+                    appService.globalConfig.webSocketLoaders.networkLoader = true;
+                    var hasguestNetworks = appService.crudService.add("guestnetwork", vpcCreateNetwork);
+                    hasguestNetworks.then(function(result) {
+                        $scope.showLoader = false;
+                        $scope.listVpcNetwork($scope.vpc.id);
                         $modalInstance.close();
-                    };
-                } ]);
+                        appService.notify({message: 'VPC Network Added Successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                    }).catch(function(result) {
+                        if (!angular.isUndefined(result) && result.data != null) {
+                            if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
+                                var msg = result.data.globalError[0];
+                                $scope.showLoader = false;
+                                appService.notify({
+                                    message: msg,
+                                    classes: 'alert-danger',
+                                    templateUrl: $scope.global.NOTIFICATION_TEMPLATE
+                                });
+                            }
+                            angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
+                                $scope.addnetworkForm[key].$invalid = true;
+                                $scope.addnetworkForm[key].errorMessage = errorMessage;
+                            });
+                        }
+                        $modalInstance.close();
+                        appService.globalConfig.webSocketLoaders.networkLoader = false;
+                    });
+                }
+            },
+            $scope.cancel = function() {
+                $modalInstance.close();
+            };
+        }]);
     };
 
     $scope.createPrivateGateway = function(size) {

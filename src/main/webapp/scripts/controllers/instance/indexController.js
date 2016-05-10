@@ -66,6 +66,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
     $scope.instanceElements = {};
     $scope.instance = {};
     $scope.instance.networks = {};
+    $scope.instance.networks.vpcList = [];
     $scope.paginationObject = {};
     $scope.templateCategories = {};
     $scope.templateVM = {};
@@ -267,7 +268,8 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
     $scope.disks = false;
     $scope.computes = false;
     $scope.networks = false;
-
+    var networkArrays = [];
+    var networkArray = [];
     $scope.computeFunction = function(item) {
         if (item === true) {
             $scope.compute = true;
@@ -316,6 +318,9 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
             $scope.networks = false;
         } else {
         	if(item == 'all') {
+        	        networkArray = [];
+        	        $scope.instance.networkc = null;
+        	        $scope.instance.networkss = [];
         		$scope.instance.networkOfferinglist.value = item;
         		$scope.instance.networkOfferinglist = $scope.instanceElements.networkOfferingList[0];
         	}
@@ -323,6 +328,11 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
         		$scope.instance.networkOfferinglist.value = item;
         		$scope.instance.networkOfferinglist = $scope.instanceElements.networkOfferingList[2];
         	}
+        	if(item == 'vpc'){
+                    networkArrays = [];
+        	    $scope.instance.networkc = null;
+        	    $scope.instance.networkss = [];
+                }
             $scope.networks = true;
             $scope.compute = false;
             $scope.disk = false;
@@ -383,6 +393,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
         $scope.instance.instanceOwner = null;
         $scope.instance.project = null;
         $scope.instance.networks.networkList = {};
+        $scope.instance.networks.vpcList = {};
         if (!angular.isUndefined(obj)) {
 
             $scope.departmentList(obj);
@@ -398,6 +409,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
         $scope.instance.instanceOwner = null;
         $scope.instance.project = null;
         $scope.instance.networks.networkList = null;
+        $scope.instance.networks.vpcList = null;
         if (!angular.isUndefined(obj)) {
             $scope.userList(obj);
             $scope.listNetworks(obj.id, 'department');
@@ -419,6 +431,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
 
     $scope.changeproject = function(obj) {
         $scope.instance.networks.networkList = null;
+        $scope.instance.networks.vpcList = null;
         if (!angular.isUndefined(obj)) {
             $scope.listNetworks(obj.id, 'project');
         } else {
@@ -478,6 +491,41 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
     };
 
     $scope.instance.networkList = [];
+    $scope.stateChanged = function (item) {
+        if($scope.instance.networks.networkList[item].vpcId != null) {
+            if(angular.isUndefined($scope.instance.networkss[item])) {
+                $scope.instance.networkss[item] = true;
+            } else {
+                if(networkArray.length > 0){
+                 $scope.instance.networkss[networkArray[0]] = false;
+                 networkArray.splice(0, 1);
+                 networkArray.push(item);
+                } else {
+                   networkArray.push(item);
+                }
+             $scope.instance.networkc = $scope.instance.networks.networkList[item].uuid;
+            }
+        }
+
+    }
+
+    $scope.stateChangedvpc = function (item) {
+        if($scope.instance.networks.vpcList[item].vpcId != null) {
+            if(angular.isUndefined($scope.instance.networkss[item])) {
+                $scope.instance.networkss[item] = true;
+            } else {
+                if(networkArrays.length > 0){
+                 $scope.instance.networkss[networkArrays[0]] = false;
+                 networkArrays.splice(0, 1);
+                 networkArrays.push(item);
+                } else {
+                    networkArrays.push(item);
+                }
+             $scope.instance.networkc = $scope.instance.networks.vpcList[item].uuid;
+            }
+        }
+
+    }
     $scope.validateOffering = function(form) {
         $scope.OfferingSubmitted = true;
         var submitError = false;
@@ -533,13 +581,13 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
                     }
                 }
                 var networkSelected = false;
-                if ($scope.instance.networkOfferinglist.value == 'vpc' || $scope.instance.networkOfferinglist.value == 'all') {
+                if ($scope.instance.networkOfferinglist.value == 'all') {
                 	var allNetworks = "";
                     for (var i = 0; i < $scope.instance.networks.networkList.length; i++) {
-                        if ($scope.instance.networks[i] == true) {
+                        if ($scope.instance.networkss[i] == true) {
                             var networks = $scope.instance.networks.networkList[i];
-                            var result = angular.fromJson($scope.instance.networkc);
-                            if (result.id === networks.id) {
+                            var result = $scope.instance.networkc;
+                            if (result === networks.uuid) {
                                 $scope.instance.networkUuid = networks.uuid;
                                 networkSelected = true;
                                 submitError = false;
@@ -572,6 +620,46 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
                         });
                     }
                 }
+
+                if ($scope.instance.networkOfferinglist.value == 'vpc') {
+                    var allNetworks = "";
+                for (var i = 0; i < $scope.instance.networks.vpcList.length; i++) {
+                    if ($scope.instance.networkss[i] == true) {
+                        var networks = $scope.instance.networks.vpcList[i];
+                        var result = $scope.instance.networkc;
+                        if (result === networks.uuid) {
+                            $scope.instance.networkUuid = networks.uuid;
+                            networkSelected = true;
+                            submitError = false;
+                        } else {
+                            allNetworks = allNetworks +","+ networks.uuid;
+                        }
+                    }
+
+                }
+                $scope.instance.networkUuid = $scope.instance.networkUuid + allNetworks;
+                if (!networkSelected && $scope.isEmpty($scope.instance.networkc)) {
+                    submitError = true;
+                    $scope.networks = true;
+                    $scope.disk = false;
+                    $scope.homerTemplate = 'app/views/notification/notify.jsp';
+                    appService.notify({
+                        message: 'Select one default network',
+                        classes: 'alert-danger',
+                        templateUrl: $scope.homerTemplate
+                    });
+                } else if (!networkSelected && !$scope.isEmpty($scope.instance.networkc)) {
+                    submitError = true;
+                    $scope.networks = true;
+                    $scope.disk = false;
+                    $scope.homerTemplate = 'app/views/notification/notify.jsp';
+                    appService.notify({
+                        message: 'Select atleast one vpc network',
+                        classes: 'alert-danger',
+                        templateUrl: $scope.homerTemplate
+                    });
+                }
+            }
             }
             if (networkSelected && computeOfferValid) {
                 if (!angular.isUndefined($scope.instance.diskOffering)) {
@@ -997,7 +1085,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
             $scope.step--;
         }
     };
-    $scope.instance.networks = {};
+    $scope.instance.networkss = {};
     $scope.instance.networkc = {};
     $scope.getOsListByImage = function(templateImage) {
         $scope.instance.templateOs = {};
@@ -1040,6 +1128,14 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
         }
         hasGuestNetworks.then(function(result) { // this is only run after $http
             $scope.instance.networks.networkList = result;
+            if ( $scope.instance.networks.vpcList == null) {
+                $scope.instance.networks.vpcList = [];
+            }
+            angular.forEach(result, function(value, key) {
+                if (value.vpcId != null) {
+                    $scope.instance.networks.vpcList.push(value);
+                }
+            });
             if(result.length > 0) {
                 $scope.instance.networkOfferinglist = $scope.instanceElements.networkOfferingList[0];
                 $scope.networks = true;
