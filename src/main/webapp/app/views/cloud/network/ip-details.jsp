@@ -78,11 +78,11 @@ pageEncoding="UTF-8"%>
                     Firewall
                     <a href="javascript:void(0)" data-ng-click="firewallRule(1)" class="btn-diagram"><span>View</span></a>
                 </div>
-                 <div class="child-left pull-left">
+                 <div class="child-left pull-left" data-ng-if = "!ipDetails.isStaticnat" >
                     Port Forwarding
                     <a href="javascript:void(0)" data-ng-click="portRulesLists(1)" class="btn-diagram"><span>View</span></a>
                 </div>
-                <div class="child-right pull-right">
+                <div class="child-right pull-right" data-ng-if = "!ipDetails.isStaticnat">
                     Load Balancing
                     <a href="javascript:void(0)" data-ng-click="selectTab('loadBalance')" class="btn-diagram"><span>View</span></a>
 

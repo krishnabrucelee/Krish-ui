@@ -224,7 +224,7 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider, $compile
 
             // View VPC
             .state('vpc.view-vpc', {
-                url : "/view/:id",
+                url : "/:view/:id",
                 templateUrl : VIEW_URL + "views/vpc/view-vpc.jsp",
                 data : {
                     pageTitle : 'view VPC'
