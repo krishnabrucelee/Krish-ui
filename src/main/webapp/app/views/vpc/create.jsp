@@ -5,7 +5,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <form name="vpcaddnetworkForm"
-	data-ng-submit="saveNetwork(vpcaddnetworkForm, createNetwork)" method="post"
+	data-ng-submit="saveNetwork(vpcaddnetworkForm, vpcCreateNetwork)" method="post"
 	novalidate="">
 	<div class="inmodal">
 		<div class="modal-header">
@@ -20,7 +20,7 @@
 							<label class="col-md-4 col-sm-4 control-label"><fmt:message key="common.name" bundle="${msg}" /><span class="text-danger">*</span></label>
 							<div class="col-md-6 col-sm-6">
 								<input required="true" type="text" name="net"
-									data-ng-model="createNetwork.networkName" class="form-control" data-ng-class="{'error': vpcaddnetworkForm.net.$invalid && formSubmitted}">
+									data-ng-model="vpcCreateNetwork.name" class="form-control" data-ng-class="{'error': vpcaddnetworkForm.net.$invalid && formSubmitted}">
 								<i tooltip="<fmt:message key="network.name" bundle="${msg}" />"
 									class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
 									<div class="error-area"
@@ -41,8 +41,8 @@
 								class="text-danger">*</span></label>
 							<div class="col-md-6  col-sm-6 col-xs-12">
 								<select required="true" class="form-control input-group"
-									name="networkoffering" data-ng-model="createNetwork.networkOffering"
-									ng-options="networkoffering.displayText for networkoffering in networkOfferList"
+									name="networkoffering" data-ng-model="vpcCreateNetwork.networkOffering"
+									ng-options="networkoffering.name for networkoffering in vpcNetworkOfferList"
 									data-ng-class="{'error': vpcaddnetworkForm.networkoffering.$invalid && formSubmitted}">
 									<option value=""><fmt:message key="common.select"
 											bundle="${msg}" /></option>
@@ -63,7 +63,7 @@
 							<label class="col-md-4 col-sm-4 control-label"><fmt:message key="gateway" bundle="${msg}" /><span class="text-danger">*</span></label>
 							<div class="col-md-6 col-sm-6">
 								<input required="true" type="text" name="gateway"
-									data-ng-model="createNetwork.gateway" class="form-control" data-ng-class="{'error': vpcaddnetworkForm.gateway.$invalid && formSubmitted}">
+									data-ng-model="vpcCreateNetwork.gateway" class="form-control" data-ng-class="{'error': vpcaddnetworkForm.gateway.$invalid && formSubmitted}">
 								<i tooltip="<fmt:message key="gateway" bundle="${msg}" />"
 									class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
 									<div class="error-area"
@@ -80,7 +80,7 @@
 							<label class="col-md-4 col-sm-4 control-label"><fmt:message key="netmask" bundle="${msg}" /><span class="text-danger">*</span></label>
 							<div class="col-md-6 col-sm-6">
 								<input required="true" type='text' name="netmask"
-									data-ng-model="createNetwork.netMask" class="form-control" data-ng-class="{'error': vpcaddnetworkForm.netmask.$invalid && formSubmitted}">
+									data-ng-model="vpcCreateNetwork.netMask" class="form-control" data-ng-class="{'error': vpcaddnetworkForm.netmask.$invalid && formSubmitted}">
 								<i tooltip="<fmt:message key="netmask" bundle="${msg}" />"
 									class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
 									<div class="error-area"
@@ -98,7 +98,7 @@
 								class="col-md-4 col-xs-12 col-sm-4 control-label control-normal"><fmt:message key="acl" bundle="${msg}" /></label>
 							<div class="col-md-6  col-sm-6 col-xs-12">
 								<select class="form-control input-group" name="acl"
-									data-ng-model="createNetwork.acl"
+									data-ng-model="vpcCreateNetwork.acl"
 									ng-options="acl.name for acl in aclList">
 									<option value=""><fmt:message key="common.select"
 											bundle="${msg}" /></option>
