@@ -232,7 +232,7 @@ function vpcCtrl($scope, $modal, appService, filterFilter, $stateParams,$state, 
     // Get department list based on domain selection
     $scope.selectDomainView = function(pageNumber) {
     	$scope.list(1);
-    };    
+    };
 
    // Get instance list based on quick search
     $scope.vpcSearch = null;
@@ -457,7 +457,9 @@ function vpcCtrl($scope, $modal, appService, filterFilter, $stateParams,$state, 
                 	vpcCreateNetwork.projectId = $scope.vpc.projectId;
                 	vpcCreateNetwork.zone = $scope.vpc.zone;
                 	vpcCreateNetwork.zoneId = $scope.vpc.zoneId;
-                	vpcCreateNetwork.aclId = $scope.vpcCreateNetwork.acl.id;
+                	if (!angular.isUndefined($scope.vpcCreateNetwork.acl)) {
+                	    vpcCreateNetwork.aclId = $scope.vpcCreateNetwork.acl.id;
+                    }
                 	vpcCreateNetwork.vpcId = $scope.vpc.id;
                 	vpcCreateNetwork.displayText = $scope.vpcCreateNetwork.name;
                     vpcCreateNetwork.networkOfferingId = $scope.vpcCreateNetwork.networkOffering.id;
