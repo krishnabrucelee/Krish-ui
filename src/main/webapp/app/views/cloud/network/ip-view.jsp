@@ -10,7 +10,7 @@ pageEncoding="UTF-8"%>
         <li data-ng-class="{'active' : tabview == 'ipdetails'}"><a href="javascript:void(0)" data-ng-click="templateCategory = 'ipdetails'" data-toggle="tab">  <i class="fa fa-list"></i> Details</a></li>
         <li data-ng-class="{'active' : tabview == 'firewall'}"><a  data-ng-click="firewallRule(1)" data-toggle="tab"><i class="custom-icon custom-firewall-ip"></i> Firewall</a></li>
         <li data-ng-if = "!ipDetails.isStaticnat" data-ng-class="{'active' : tabview == 'port-forward'}"><a  data-ng-click="portRulesLists(1)" data-toggle="tab"> <i class="fa fa-mail-forward"></i> Port Forwarding</a></li>
-        <li data-ng-if = "!ipDetails.isStaticnat" data-ng-class="{'active' : tabview == 'load-balance'}"><a data-ng-click="templateCategory = 'load-balance'" data-toggle="tab"> <i class="custom-icon custom-load-ip"></i> Load Balancing</a></li>
+        <li data-ng-if = "!ipDetails.isStaticnat" data-ng-class="{'active' : tabview == 'load-balance'}"><a data-ng-click="LBlist(1)" data-toggle="tab"> <i class="custom-icon custom-load-ip"></i> Load Balancing</a></li>
         <li data-ng-show="ipDetails.vpnState == 'RUNNING'" data-ng-class="{'active' : tabview == 'vpn-details'}"><a data-ng-click="templateCategory = 'vpn-details'" data-toggle="tab"> <i class="custom-icon custom-icon-ip"></i> VPN</a></li>
     </ul>
 

@@ -1,3 +1,5 @@
+
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -35,8 +37,8 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="media-body">
-                                                	<!-- <a ui-sref="vpc.public-ip({id: {{ 1}}})"> -->
-	                                                    <div class="panel panel-info cursor-notallow">
+                                                	 <a ui-sref="vpc.view-vpc.config-vpc.public-ip">
+	                                                    <div class="panel panel-info">
 	                                                        <div class="panel-body p-xxs text-info text-center">
 	                                                            <h3> 0</h3><fmt:message key="public.ip.address" bundle="${msg}" />
 	                                                        </div>
@@ -153,7 +155,4 @@
             </div>
         </div>
     </div>
-
-
-
 

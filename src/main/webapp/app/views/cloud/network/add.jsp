@@ -183,6 +183,7 @@
 							<div class="col-md-6  col-sm-6 col-xs-12">
 								<select required="true" class="form-control input-group"
 									name="department" data-ng-model="network.department"
+									data-ng-change="changeDepartment(network.department)"
 									data-ng-class="{'error': addnetworkForm.department.$invalid && formSubmitted}"
 									ng-options="department.userName for department in formElements.departmenttypeList">
 									<option value=""><fmt:message key="common.select"
