@@ -16,8 +16,8 @@ pageEncoding="UTF-8"%>
 
 									<div class="col-md-3 col-sm-7 col-xs-7">
 										<select  class="form-control input-group"
-									name="vpcnetwork" data-ng-model="network.vpcnetwork"
-									ng-options="vpcnetwork.name for vpcnetwork in vpcNetworkList"
+									name="vpcnetwork" data-ng-model="loadBalancer.vpcnetwork"
+									ng-options="vpcnetwork.name for vpcnetwork in vpcNetworkListForLB"
 									>
 									<option value=""><fmt:message key="common.select"
 											bundle="${msg}" /></option>

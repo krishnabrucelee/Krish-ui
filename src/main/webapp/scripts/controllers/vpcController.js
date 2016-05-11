@@ -51,6 +51,7 @@ function vpcCtrl($scope, $modal, appService, filterFilter, $stateParams,$state, 
             $scope.vpc = result;
             $scope.vpcPersist = result;
             $scope.listVpcNetwork($scope.vpc.id);
+	    $scope.listVpcNetworkForLB($scope.vpc.id);
             if ($state.current.data.pageTitle === "view VPC") {
                 $state.current.data.pageName = result.name;
                 $state.current.data.id = result.id;
@@ -440,13 +441,14 @@ function vpcCtrl($scope, $modal, appService, filterFilter, $stateParams,$state, 
         });
     };
 
- /** // VPC Network List
+  // VPC Network List
     $scope.listVpcNetworkForLB = function(vpcId) {
-    	var listVpcNetworksLB = appService.crudService.listAllByID("guestnetwork/vpcNetworkList?vpcId=" + vpcId);
+    	var listVpcNetworksLB = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "guestnetwork/vpcNetworkListforlb?vpcId=" + vpcId + "&type=" +"Lb" +"&sortBy=-id");
         listVpcNetworksLB.then(function(result) {
             $scope.vpcNetworkListForLB = result;
         });
-    };**/
+    };
+//$scope.listVpcNetworkForLB($scope.vpc.id);
 
     $scope.createNetwork = function(size) {
         appService.dialogService.openDialog($scope.global.VIEW_URL + "vpc/create.jsp", size, $scope, [ '$scope',
@@ -549,7 +551,8 @@ if (!angular.isUndefined($stateParams.id1)) {
             appService.dialogService.openDialog("app/views/vpc/vm-list.jsp", 'lg', $scope, ['$scope', '$modalInstance', function($scope, $modalInstance) {
                 $scope.lbvmLists = function() {
                     $scope.lbvmList = [];
-                    var networkId = $stateParams.id;
+			console.log($scope.loadBalancer.vpcnetwork.id);
+                    var networkId = $scope.loadBalancer.vpcnetwork.id;
                     var hasVms = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbynetwork?networkid=" + networkId + "&lang=" + appService.localStorageService.cookie.get('language') + "&sortBy=-id");
                     hasVms.then(function(result) { // this is only run after $http
                         $scope.lbvmList = result;
@@ -560,6 +563,7 @@ if (!angular.isUndefined($stateParams.id1)) {
                         loadBalancer.vmIpAddress = [];
                         $scope.loadBalancer = $scope.global.rulesLB[0];
                         $scope.showLoader = true;
+			//state-param id to be changed
                         $scope.loadBalancer.ipAddressId = $stateParams.id1;
                         // var loadBalancer = angular.copy($scope.loadBalancer);
                         $scope.loadBalancer.protocol = $scope.loadBalancer.protocol.toUpperCase();
