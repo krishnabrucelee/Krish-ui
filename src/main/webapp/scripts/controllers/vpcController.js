@@ -28,6 +28,8 @@ function vpcCtrl($scope, $modal, appService, filterFilter, $stateParams,$state, 
     $scope.vpcPersist = {};
     $scope.vpcCreateNetwork = {};
     $scope.vpcNetworkList = {};
+    $scope.ipList = {};
+    $scope.ipDetails = {};
 
     $scope.type = $stateParams.view;
 
@@ -1152,6 +1154,102 @@ $scope.dropnetworkLists = {
                 } ]);
     };
 
+    $scope.editIpaddress = function(ipaddressId) {
+        var hasIpaddress = appService.crudService.read("ipAddresses", ipaddressId);
+        hasIpaddress.then(function(result) {
+            $scope.ipDetails = result;
+            $scope.vpnUserList($scope.ipDetails);
+            appService.localStorageService.set('view', 'ipdetails');
+        });
+    };
+
+    $scope.ipLists = function(pageNumber) {
+        appService.localStorageService.set('views', 'ip');
+        $scope.tabViews = appService.localStorageService.get('views');
+        $scope.templateCategorys = $scope.tabViews;
+        $scope.active = true;
+        //var networkId = $stateParams.id;
+        var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
+        if (!angular.isUndefined($stateParams.id)) {
+        var hasFirewallRuless = appService.crudService.listAllByQuery("ipAddresses/vpc/iplist?vpc=" + $stateParams.id, $scope.global.paginationHeaders(pageNumber, limit), {
+            "limit": limit
+        });
+        hasFirewallRuless.then(function(result) { // this is only run after
+            // $http completes0
+            $scope.ipList = result;
+            /*$state.current.data.publicIpAddress = result[0].publicIpAddress;
+            console.log($state.current.data.publicIpAddress);
+            console.log(result[0].publicIpAddress);*/
+            // For pagination
+            $scope.paginationObject.limit = limit;
+            $scope.paginationObject.currentPage = pageNumber;
+            $scope.paginationObject.totalItems = result.totalItems;
+        });
+        }
+    };
+    $scope.ipLists(1);
+
+    if (!angular.isUndefined($stateParams.id1) && $stateParams.id1 != null && $stateParams.id > 0) {
+        if(angular.isUndefined(appService.localStorageService.get('view')) || appService.localStorageService.get('view') == null){
+            appService.localStorageService.set('view', $state.current.data.networkTabs);
+        }
+        $scope.tabView = appService.localStorageService.get('view');
+        $scope.editIpaddress($stateParams.id1);
+    }
+
+    $scope.openAddIP = function(size, vpc) {
+        appService.dialogService.openDialog("app/views/vpc/acquire-IP.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function($scope, $modalInstance, $rootScope) {
+            $scope.acquire = function(vpc) {
+                    $scope.actionAcquire = true;
+                    if ($scope.agree == true) {
+                        $scope.acquiringIP = true;
+                        var hasIP = appService.crudService.listByQuery("ipAddresses/vpc/acquireip?vpc=" + $stateParams.id);
+                        hasIP.then(function(result) {
+                            $scope.acquiringIP = false;
+                            $scope.cancel();
+                        }).catch(function(result) {
+                            $scope.acquiringIP = false;
+                            $scope.showLoader = false;
+                            appService.globalConfig.webSocketLoaders.ipLoader = false;
+                            $modalInstance.close();
+                        });
+                    }
+                },
+                $scope.cancel = function() {
+                    $modalInstance.close();
+                };
+        }]);
+    };
+
+    $scope.releaseIP = function(size, ipAddress) {
+        $scope.ipAddress = angular.copy(ipAddress);
+        appService.dialogService.openDialog("app/views/vpc/release-ip.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function($scope, $modalInstance, $rootScope) {
+            $scope.release = function(ipAddress) {
+                    $scope.showLoader = true;
+                    appService.globalConfig.webSocketLoaders.ipLoader = true;
+                    $scope.cancel();
+                    var hasIP = appService.crudService.listByQuery("ipAddresses/vpc/dissociate?ipuuid=" + ipAddress.uuid);
+                    hasIP.then(function(result) {
+                        $scope.showLoader = false;
+                    }).catch(function(result) {
+                        $scope.cancel();
+                        appService.globalConfig.webSocketLoaders.ipLoader = false;
+                    });
+                },
+                $scope.cancel = function() {
+                    $modalInstance.close();
+                };
+        }]);
+    };
+
+    $scope.webeditIpaddress = function(ipaddressId) {
+        var hasIpaddress = appService.crudService.read("ipAddresses", ipaddressId);
+        hasIpaddress.then(function(result) {
+            $scope.ipDetails = result;
+            $scope.vpnUserList($scope.ipDetails);
+            appService.localStorageService.set('view', 'ipdetails');
+        });
+    };
     $scope.acquireNewIp = function(size) {
         appService.dialogService.openDialog($scope.global.VIEW_URL + "vpc/acquire-newip.jsp", size, $scope, [ '$scope',
                 '$modalInstance', '$rootScope', function($scope, $modalInstance, $rootScope) {
@@ -1303,6 +1401,26 @@ alert(form);
     $scope.$on(appService.globalConfig.webSocketEvents.vpcEvents.deleteVPC, function(event, args) {
         appService.globalConfig.webSocketLoaders.vpcLoader = false;
         $scope.list(1);
+    });
+    $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.ipAquire, function(event, args) {
+        appService.globalConfig.webSocketLoaders.ipLoader = false;
+        $scope.ipLists(1);
+    });
+    $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.enableStaticNat, function(event, args) {
+        appService.globalConfig.webSocketLoaders.ipLoader = false;
+        if (!angular.isUndefined($stateParams.id1) && $stateParams.id1 > 0) {
+            $scope.webeditIpaddress($stateParams.id1);
+        }
+    });
+    $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.disableStaticNat, function(event, args) {
+        appService.globalConfig.webSocketLoaders.ipLoader = false;
+        if (!angular.isUndefined($stateParams.id1) && $stateParams.id1 > 0) {
+            $scope.webeditIpaddress($stateParams.id1);
+        }
+    });
+    $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.ipRelease, function(event, args) {
+        appService.globalConfig.webSocketLoaders.ipLoader = false;
+        $scope.ipLists(1);
     });
  
 }

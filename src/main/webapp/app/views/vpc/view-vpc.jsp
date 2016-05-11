@@ -5,7 +5,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!-- Header -->
 
-    <div class="content" ui-view>
+    <div ui-view>
     	<div data-ng-controller="vpcCtrl">
     	<div data-ng-if="global.webSocketLoaders.vpcLoader" class="overlay-wrapper">
                 		            <img data-ng-if="global.webSocketLoaders.vpcLoader" src="images/loading-bars.svg" class="inner-loading" />

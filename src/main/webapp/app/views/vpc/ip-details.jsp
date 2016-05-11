@@ -23,7 +23,7 @@ pageEncoding="UTF-8"%>
 
         <div class="panel panel-info">
             <div class="panel-heading">
-                <h3 class="panel-title"><i class="custom-icon custom-icon-ip"></i>&nbsp;&nbsp;IP Address Detailsssssssssssssssssssssssssss</h3>
+                <h3 class="panel-title"><i class="custom-icon custom-icon-ip"></i>&nbsp;&nbsp;IP Address Details</h3>
             </div>
             <div class="panel-body">
                 <div class="row">
@@ -38,12 +38,16 @@ pageEncoding="UTF-8"%>
                                 <td class="col-md-8 col-sm-8">{{ipDetails.uuid}}</td>
                             </tr>
                             <tr>
-                                <td class="col-md-4 col-sm-4"><b>Network Name</b></td>
-                                <td class="col-md-8 col-sm-8">{{ipDetails.network.name}}</td>
+                                <td class="col-md-4 col-sm-4"><b>VPC Name</b></td>
+                                <td class="col-md-8 col-sm-8">{{ipDetails.vpc.name}}</td>
                             </tr>
                             <tr>
-                                <td class="col-md-4 col-sm-4"><b>Network ID</b></td>
-                                <td class="col-md-8 col-sm-8">{{ipDetails.network.uuid}}</td>
+                                <td class="col-md-4 col-sm-4"><b>VPC ID</b></td>
+                                <td class="col-md-8 col-sm-8">{{ipDetails.vpc.uuid}}</td>
+                            </tr>
+                            <tr>
+                                <td class="col-md-4 col-sm-4"><b>Network Name</b></td>
+                                <td class="col-md-8 col-sm-8"><span data-ng-if="ipDetails.network">{{ipDetails.network.name}}</span><span data-ng-if="!ipDetails.network">-</span></td>
                             </tr>
                             <tr>
                                 <td><b>VLAN</b></td>

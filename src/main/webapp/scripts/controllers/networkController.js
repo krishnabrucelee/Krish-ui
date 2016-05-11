@@ -92,7 +92,7 @@ if (!angular.isUndefined($stateParams.id)) {
 	if ($scope.domainId == null && $scope.vmSearch == null) {
             	hasGuestnetworkLists = appService.crudService.list("guestnetwork", $scope.global.paginationHeaders(pageNumber, limit), {
                 "limit": limit});
-            } 
+            }
 		else {
 	if ($scope.domainId != null && $scope.vmSearch == null) {
                 $scope.filter = "&domainId=" + $scope.domainId + "&searchText=";
@@ -555,7 +555,7 @@ $scope.ipCostList();
                 });
             }
 
-          
+
 
             // Create a new Isolated Network
             $scope.save = function(form, network) {
@@ -610,7 +610,7 @@ $scope.ipCostList();
         $scope.changedomain = function(obj) {
 			$scope.network.department = "";
 		    $scope.network.project = {};
-		if (!angular.isUndefined(obj)) {   
+		if (!angular.isUndefined(obj)) {
 		    $scope.departmentList(obj);
 		}
          },
@@ -622,7 +622,7 @@ $scope.ipCostList();
 		    $scope.getProjectList(obj);
 		}
          },
-               
+
                 $scope.cancel = function() {
                     $modalInstance.close();
                 };
@@ -656,7 +656,7 @@ $scope.vmSearch = null;
 	if ($scope.domainId == null && $scope.vmSearch == null) {
             	hasGuestNetworks = appService.crudService.list("guestnetwork", $scope.global.paginationHeaders(pageNumber, limit), {
                 "limit": limit});
-            } 
+            }
 		else {
 	if ($scope.domainId != null && $scope.vmSearch == null) {
                 $scope.filter = "&domainId=" + $scope.domainId + "&searchText=";

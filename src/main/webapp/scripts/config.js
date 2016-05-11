@@ -212,7 +212,6 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider, $compile
                 }
             })
 
-
             // VPC list
             .state('vpc', {
                 url : "/vpc",
@@ -240,7 +239,7 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider, $compile
                 }
             })
 
-	  // Public IP
+            // Public IP
             .state('vpc.view-vpc.config-vpc.public-ip', {
                 url : "/public-ip",
                 templateUrl : VIEW_URL + "views/vpc/public-ip.jsp",
@@ -248,13 +247,14 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider, $compile
                     pageTitle : 'Public IP'
                 }
             })
-           
+
             // View IP
             .state('vpc.view-vpc.config-vpc.public-ip.ip-view', {
                 url : "/ip-address/:id1",
                 templateUrl : VIEW_URL + "views/vpc/vpcip-view.jsp",
                 data : {
-                    pageTitle : 'View IP'
+                    pageTitle : 'View IP',
+                    networkTabs : 'ipdetails'
                 }
             })
 
@@ -266,8 +266,6 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider, $compile
                     pageTitle : 'Private Gateway'
                 }
             })           
-
-          
 
             // Network ACL
             .state('vpc.network-acl', {
@@ -305,14 +303,13 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider, $compile
                 }
             })
 
-             .state('vpc.ip-view', {
+            .state('vpc.ip-view', {
                 url : "/:view/:id",
                 templateUrl : VIEW_URL + "views/vpc/vpcip-view.jsp",
                 data : {
                     pageTitle : 'View IP'
                 }
             })
-
 
             // Projects
             .state('projects', {
