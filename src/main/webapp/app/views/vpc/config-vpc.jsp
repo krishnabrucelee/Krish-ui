@@ -6,7 +6,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
-    <div class="content" ui-view>
+    <div ui-view>
         <div ng-controller="vpcCtrl">
             <div class="row" >
                 <div class="col-md-12">

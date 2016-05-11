@@ -265,7 +265,7 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider, $compile
                 data : {
                     pageTitle : 'Private Gateway'
                 }
-            })
+            })           
 
           
 
@@ -294,7 +294,7 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider, $compile
                 data : {
                     pageTitle : 'Static NAT'
                 }
-            })
+            })  
 
             // Virtual Machines
             .state('vpc.virtual-machines', {
