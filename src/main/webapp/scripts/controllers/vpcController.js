@@ -530,11 +530,6 @@ function vpcCtrl($scope, $modal, appService, filterFilter, $stateParams,$state, 
 
     $scope.$on(appService.globalConfig.webSocketEvents.vpcEvents.createVPC, function(event, args) {
         appService.globalConfig.webSocketLoaders.vpcLoader = false;
-        appService.notify({
-            message: "VPC created successfully",
-            classes: 'alert-success',
-            templateUrl: $scope.global.NOTIFICATION_TEMPLATE
-        });
         $scope.list(1);
     });
     $scope.$on(appService.globalConfig.webSocketEvents.vpcEvents.editVPC, function(event, args) {
