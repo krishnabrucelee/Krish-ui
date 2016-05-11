@@ -1,12 +1,10 @@
-
-
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
-    <div ui-view>
+    <div class="content" ui-view>
 	    <div ng-controller="vpcCtrl">
 			<div class="hpanel">
 				<div class="panel-heading no-padding">
@@ -51,17 +49,32 @@
 								    </thead>
 								    <tbody>
 								        <tr>
-								            <td><a class="text-info"
-													ui-sref="vpc.view-vpc.config-vpc.public-ip.ip-view"
-													title="View Network">192.168.1.184 [Source NAT]</a></td>
+								            <td>
+								                192.168.1.184 [Source NAT]dfsdfsfsdf
+								            </td>
 								            <td>devpanda-zone</td>
 								            <td>-</td>
 								            <td><label class="label label-success text-center text-white">ALLOCATED</label></td>
-								            <td>
-								                <a class="icon-button" title="Enable Remote Access VPN" data-ng-click="acquireNewIp('sm')"><span class="fa fa-desktop"></span></a>
-								            </td>
+								            <td><a class="icon-button" title="Remove"><span class="fa fa-trash"></span></a></td>
 								        </tr>
-
+								        <tr>
+								            <td>
+								                192.168.1.184 [Source NAT]sdfsdfsdf
+								            </td>
+								            <td>devpanda-zone</td>
+								            <td>-</td>
+								            <td><label class="label label-success text-center text-white">ALLOCATED</label></td>
+								            <td><a class="icon-button" title="Remove"><span class="fa fa-trash"></span></a></td>
+								        </tr>
+								        <tr>
+								            <td>
+								                192.168.1.184 [Source NAT]sdfsdfsdf
+								            </td>
+								            <td>devpanda-zone</td>
+								            <td>-</td>
+								            <td><label class="label label-success text-center text-white">ALLOCATED</label></td>
+								            <td><a class="icon-button" title="Remove"><span class="fa fa-trash"></span></a></td>
+								        </tr>
 								    </tbody>
 								</table>
 							</div>
@@ -72,4 +85,3 @@
 			</div>
 		</div>
 	</div>
-
