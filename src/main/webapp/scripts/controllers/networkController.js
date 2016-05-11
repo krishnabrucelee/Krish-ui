@@ -1249,6 +1249,7 @@ $scope.vmSearch = null;
         }
     };
     $scope.LBlist = function(loadBalancer) {
+        $scope.templateCategory = 'load-balance';
         $scope.rulesvmList = {};
         $scope.stickiness = {};
         $scope.loadBalancer = {};

@@ -51,17 +51,32 @@
 								    </thead>
 								    <tbody>
 								        <tr>
-								            <td><a class="text-info"
-													ui-sref="vpc.view-vpc.config-vpc.public-ip.ip-view"
-													title="View Network">192.168.1.184 [Source NAT]</a></td>
+								            <td>
+								                192.168.1.184 [Source NAT]dfsdfsfsdf
+								            </td>
 								            <td>devpanda-zone</td>
 								            <td>-</td>
 								            <td><label class="label label-success text-center text-white">ALLOCATED</label></td>
-								            <td>
-								                <a class="icon-button" title="Enable Remote Access VPN" data-ng-click="acquireNewIp('sm')"><span class="fa fa-desktop"></span></a>
-								            </td>
+								            <td><a class="icon-button" title="Remove"><span class="fa fa-trash"></span></a></td>
 								        </tr>
-
+								        <tr>
+								            <td>
+								                192.168.1.184 [Source NAT]sdfsdfsdf
+								            </td>
+								            <td>devpanda-zone</td>
+								            <td>-</td>
+								            <td><label class="label label-success text-center text-white">ALLOCATED</label></td>
+								            <td><a class="icon-button" title="Remove"><span class="fa fa-trash"></span></a></td>
+								        </tr>
+								        <tr>
+								            <td>
+								                192.168.1.184 [Source NAT]sdfsdfsdf
+								            </td>
+								            <td>devpanda-zone</td>
+								            <td>-</td>
+								            <td><label class="label label-success text-center text-white">ALLOCATED</label></td>
+								            <td><a class="icon-button" title="Remove"><span class="fa fa-trash"></span></a></td>
+								        </tr>
 								    </tbody>
 								</table>
 							</div>
