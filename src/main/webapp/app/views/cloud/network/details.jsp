@@ -133,8 +133,12 @@
 										<td><b class="text-success text-uppercase">{{network.status}}</b></td>
 									</tr>
 									<tr>
+										<td><b><fmt:message key="vpc.name" bundle="${msg}" /></b></td>
+										<td>{{network.vpc.name}}</td>
+									</tr>
+									<tr>
 										<td><b><fmt:message key="vpc.id" bundle="${msg}" /></b></td>
-										<td>{{network.vpc}}</td>
+										<td>{{network.vpc.uuid}}</td>
 									</tr>
 									<tr>
 										<td><b><fmt:message key="common.persistent"
