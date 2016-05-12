@@ -12,7 +12,7 @@
 
 angular.module('homer').controller('vpcCtrl', vpcCtrl)
 
-function vpcCtrl($scope, $modal, appService, filterFilter, $stateParams,$state, localStorageService, promiseAjax, $window) {
+function vpcCtrl($scope, $modal, appService, filterFilter, $stateParams,$state, localStorageService, promiseAjax, $window, $location) {
     $scope.global = appService.globalConfig;
     $scope.vpc = {};
     $scope.formElements = {};
@@ -49,7 +49,7 @@ function vpcCtrl($scope, $modal, appService, filterFilter, $stateParams,$state, 
             $scope.networkOfferList = result;
         });
     };
-    if ($stateParams.id > 0) {
+    if ($stateParams.id > 0  && $location.path() == '/vpc/view/' + $stateParams.id ) {
         $scope.showLoader = true;
         $scope.showLoaderOffer = true;
         $state.current.data.pageName = "";
@@ -73,6 +73,8 @@ function vpcCtrl($scope, $modal, appService, filterFilter, $stateParams,$state, 
             }
         });
     }
+
+
 
     $scope.listVpcOffer();
     $scope.zoneList = {};
@@ -1448,6 +1450,58 @@ $scope.vmPortId = instance;
         }]);
     };
 
+    $scope.enableVpn = function(size, ipAddress) {
+        $scope.ipAddress = angular.copy(ipAddress);
+        appService.dialogService.openDialog("app/views/vpc/enable-vpn.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function($scope, $modalInstance, $rootScope) {
+            $scope.enableVpnAccess = function(network) {
+                    $scope.showLoader = true;
+                    var hasVpn = appService.crudService.listByQuery("ipAddresses/enablevpn?uuid=" + $scope.ipAddress.uuid);
+                    hasVpn.then(function(result) {
+                        $scope.ipDetails = result;
+                        $scope.showLoader = false;
+                        $scope.cancel();
+                        appService.globalConfig.webSocketLoaders.ipLoader = true;
+                       if(($location.path() == '/vpc/view/' + $stateParams.id+'/config-vpc/public-ip'))
+                        {
+                        appService.localStorageService.set('view', 'vpn-details');
+                        $scope.tabview = appService.localStorageService.get('view');
+                        $scope.templateCategory = $scope.tabview;
+                        $window.location.href = '#/vpc/view/' + $stateParams.id + '/config-vpc/public-ip/' + $scope.ipDetails.id;
+                        }
+                    }).catch(function(result) {
+                        $scope.showLoader = false;
+                        appService.globalConfig.webSocketLoaders.ipLoader = false;
+                        $scope.cancel();
+                    });
+                },
+                $scope.cancel = function() {
+                    $modalInstance.close();
+                };
+        }]);
+    };
+    $scope.disableVpn = function(size, ipAddress) {
+        $scope.ipAddress = angular.copy(ipAddress);
+        appService.dialogService.openDialog("app/views/vpc/disable-vpn.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function($scope, $modalInstance, $rootScope) {
+            $scope.enableVpnAccess = function(network) {
+                    $scope.showLoader = true;
+                    $scope.cancel();
+                    appService.globalConfig.webSocketLoaders.ipLoader = true;
+                    var hasVpn = appService.crudService.listByQuery("ipAddresses/disablevpn?uuid=" + $scope.ipAddress.uuid);
+                    hasVpn.then(function(result) {
+                        $scope.ipDetails = result;
+                        $scope.showLoader = false;
+                        $scope.ipLists(1);
+                    }).catch(function(result) {
+                        appService.globalConfig.webSocketLoaders.ipLoader = false;
+                        $scope.cancel();
+                    });
+                },
+                $scope.cancel = function() {
+                    $modalInstance.close();
+                };
+        }]);
+    };
+
     $scope.addVpnUser = function(form, user) {
         $scope.vpnFormSubmitted = true;
         if (form.$valid) {
@@ -1648,6 +1702,16 @@ $scope.vmPortId = instance;
         });
     };
 
+    if ($stateParams.id > 0  && $location.path() == '/vpc/view/' + $stateParams.id +'/config-vpc' ) {
+        $scope.listVpcNetwork($stateParams.id);
+    }
+
+    if ($stateParams.id1 > 0  && $location.path() == '/vpc/view/' + $stateParams.id +'/config-vpc/public-ip/ip-address/'+$stateParams.id1){
+        $scope.listVpcNetwork($stateParams.id);
+        $scope.listVpcNetworkByPortforwarding($stateParams.id);
+        $scope.vpcTiers($stateParams.id);
+    }
+
     $scope.$on(appService.globalConfig.webSocketEvents.vpcEvents.createVPC, function(event, args) {
         appService.globalConfig.webSocketLoaders.vpcLoader = false;
     });
@@ -1720,6 +1784,7 @@ $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.editStickiness,
 $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.vpnCreate, function(event, args) {
         appService.globalConfig.webSocketLoaders.vpnLoader = false;
         appService.globalConfig.webSocketLoaders.ipLoader = false;
+        $scope.ipLists(1);
     });
     $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.vpnDestroy, function(event, args) {
         appService.globalConfig.webSocketLoaders.vpnLoader = false;
