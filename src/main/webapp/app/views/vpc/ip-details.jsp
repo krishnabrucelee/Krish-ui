@@ -84,18 +84,18 @@ pageEncoding="UTF-8"%>
                 <div class="firewall">
                     <del>Firewall</del>
                 </div>
-                 <div class="child-left pull-left" data-ng-if = "!ipDetails.isStaticnat" >
+                 <div class="child-left pull-left" data-ng-if = "!ipDetails.isStaticnat && !ipDetails.isSourcenat" >
                     Port Forwarding
                     <a href="javascript:void(0)" data-ng-click="portRulesLists(1)" class="btn-diagram"><span>View</span></a>
                 </div>
-                <div class="child-left pull-left" data-ng-if = "ipDetails.isStaticnat" >
+                <div class="child-left pull-left" data-ng-if = "ipDetails.isStaticnat || ipDetails.isSourcenat" >
                     <del>Port Forwarding</del>
                 </div>
-                <div class="child-right pull-right" data-ng-if = "!ipDetails.isStaticnat">
+                <div class="child-right pull-right" data-ng-if = "!ipDetails.isStaticnat && !ipDetails.isSourcenat">
                     Load Balancing
                     <a href="javascript:void(0)" data-ng-click="selectTab('loadBalance')" class="btn-diagram"><span>View</span></a>
                 </div>
-                <div class="child-right pull-right" data-ng-if = "ipDetails.isStaticnat">
+                <div class="child-right pull-right" data-ng-if = "ipDetails.isStaticnat || ipDetails.isSourcenat">
                     <del>Load Balancing</del>
                 </div>
             </div>
