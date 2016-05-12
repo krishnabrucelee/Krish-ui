@@ -62,8 +62,8 @@ function vpcCtrl($scope, $modal, appService, filterFilter, $stateParams,$state, 
             $scope.vpcPersist = result;
             $scope.listVpcNetwork($stateParams.id);
             $scope.listVpcNetworkByPortforwarding($stateParams.id);
+            $scope.listVpcNetworkForLB($scope.vpc.id);
             $scope.vpcTiers($stateParams.id);
-             $scope.listVpcNetworkForLB($scope.vpc.id);
             if ($state.current.data.pageTitle === "view VPC") {
                 $state.current.data.pageName = result.name;
                 $state.current.data.id = result.id;
@@ -579,7 +579,7 @@ if ($stateParams.id2 > 0) {
     	var listVpcNetworksLB = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "guestnetwork/vpcNetworkLists?vpcId=" + vpcId + "&type=" +"Lb" +"&sortBy=-id");
         listVpcNetworksLB.then(function(result) {
             $scope.vpcNetworkListForLB = result;
-			
+		console.log($scope.vpcNetworkListForLB);	
         });
     };
 
@@ -657,6 +657,7 @@ $scope.portRulesLists = function(pageNumber) {
 
  // Load balancer
  $scope.LBlist = function(loadBalancer) {
+        $scope.templateCategory = 'load-balance';
         $scope.rulesvmList = {};
         $scope.stickiness = {};
         $scope.loadBalancer = {};
@@ -1709,6 +1710,7 @@ $scope.vmPortId = instance;
     if ($stateParams.id1 > 0  && $location.path() == '/vpc/view/' + $stateParams.id +'/config-vpc/public-ip/ip-address/'+$stateParams.id1){
         $scope.listVpcNetwork($stateParams.id);
         $scope.listVpcNetworkByPortforwarding($stateParams.id);
+            $scope.listVpcNetworkForLB($stateParams.id);
         $scope.vpcTiers($stateParams.id);
     }
 
