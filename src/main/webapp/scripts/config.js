@@ -265,7 +265,7 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider, $compile
                 data : {
                     pageTitle : 'Private Gateway'
                 }
-            })           
+            })
 
             // Network ACL
             .state('vpc.network-acl', {
@@ -292,11 +292,11 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider, $compile
                 data : {
                     pageTitle : 'Static NAT'
                 }
-            })  
+            })
 
             // Virtual Machines
-            .state('vpc.virtual-machines', {
-                url : "/virtual-machines/:id",
+            .state('vpc.view-vpc.config-vpc.virtual-machines', {
+                url : "/virtual-machines/:id2",
                 templateUrl : VIEW_URL + "views/vpc/virtual-machines.jsp",
                 data : {
                     pageTitle : 'Virtual Machines'

@@ -128,8 +128,8 @@
                                                     <div class="col-md-6">
 	                                                    <div class="media">
 	                                                        <div class="media-body">
-	                                                            <!-- <a href="#" ui-sref="vpc.virtual-machines({id: {{1}}})"> -->
-	                                                                <div class="panel panel-info cursor-notallow">
+	                                                          <a  ui-sref="vpc.view-vpc.config-vpc.virtual-machines({id2: {{network.id}}})" >
+	                                                                <div class="panel panel-info">
 	                                                                    <div class="panel-body p-xxs text-info text-center">
 	                                                                        <h3> 0 </h3>
 	                                                                        <fmt:message key="virtual.machines" bundle="${msg}" />
@@ -140,7 +140,7 @@
 	                                                    </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6"> <div class="p-sm"><fmt:message key="common.cidr" bundle="${msg}" />: {{network.CIDR}}</div></div>
+                                                <div class="col-md-6"> <div class="p-sm"><fmt:message key="common.cidr" bundle="${msg}" />: {{network.cIDR}}</div></div>
                                             </div>
                                         </div>
                                     </div>

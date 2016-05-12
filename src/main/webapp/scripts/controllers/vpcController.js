@@ -12,7 +12,7 @@
 
 angular.module('homer').controller('vpcCtrl', vpcCtrl)
 
-function vpcCtrl($scope, $modal, appService, filterFilter, $stateParams,$state, localStorageService, promiseAjax) {
+function vpcCtrl($scope, $modal, appService, filterFilter, $stateParams,$state, localStorageService, promiseAjax, $window) {
     $scope.global = appService.globalConfig;
     $scope.vpc = {};
     $scope.formElements = {};
@@ -25,14 +25,21 @@ function vpcCtrl($scope, $modal, appService, filterFilter, $stateParams,$state, 
     $scope.paginationObject.sortBy = 'name';
     $scope.vpcList = [];
     $scope.vpcForm = {};
+    $scope.portvmList = {};
     $scope.vpcPersist = {};
     $scope.vpcCreateNetwork = {};
     $scope.vpcNetworkList = {};
     $scope.ipList = {};
     $scope.ipDetails = {};
+    $scope.vpnUsersList = {};
+    $scope.instances = {};
+    $scope.natInstance = {};
+    $scope.vpcNetworkNatList = {};
+    $scope.instanceLists = [];
+    $scope.instanceLists.ipAddress = {};
+    $scope.networkIdu = {};
 
     $scope.type = $stateParams.view;
-
     // VPC Offer List
     $scope.listVpcOffer = function() {
         var listVpcOffers = appService.promiseAjax
@@ -43,7 +50,6 @@ function vpcCtrl($scope, $modal, appService, filterFilter, $stateParams,$state, 
         });
     };
     if ($stateParams.id > 0) {
-        console.log($stateParams.id);
         $scope.showLoader = true;
         $scope.showLoaderOffer = true;
         $state.current.data.pageName = "";
@@ -54,10 +60,10 @@ function vpcCtrl($scope, $modal, appService, filterFilter, $stateParams,$state, 
             $scope.showLoaderOffer = false;
             $scope.vpc = result;
             $scope.vpcPersist = result;
-            $scope.listVpcNetwork($scope.vpc.id);
-            $scope.listVpcNetworkForLB($scope.vpc.id);
-
-            $scope.listVpcNetworkByPortforwarding($scope.vpc.id);
+            $scope.listVpcNetwork($stateParams.id);
+            $scope.listVpcNetworkByPortforwarding($stateParams.id);
+            $scope.vpcTiers($stateParams.id);
+             $scope.listVpcNetworkForLB($scope.vpc.id);
             if ($state.current.data.pageTitle === "view VPC") {
                 $state.current.data.pageName = result.name;
                 $state.current.data.id = result.id;
@@ -554,17 +560,27 @@ $scope.dropnetworkLists = {
         listVpcNetworks.then(function(result) {
             $scope.vpcNetworkList = result;
         });
+
     };
 
-  // VPC Network List
+if ($stateParams.id2 > 0) {
+  var listVpcOffers = appService.promiseAjax
+                .httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbynetwork"+"?networkid="+$stateParams.id2 );
+        listVpcOffers.then(function(result) {
+            $scope.vpcVmList = result;
+
+});
+}
+
+ // VPC Network List
     $scope.listVpcNetworkForLB = function(vpcId) {
     	var listVpcNetworksLB = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "guestnetwork/vpcNetworkLists?vpcId=" + vpcId + "&type=" +"Lb" +"&sortBy=-id");
         listVpcNetworksLB.then(function(result) {
             $scope.vpcNetworkListForLB = result;
-			console.log(result);
+			
         });
     };
-//$scope.listVpcNetworkForLB($scope.vpc.id);
+
 
     $scope.createNetwork = function(size) {
         appService.dialogService.openDialog($scope.global.VIEW_URL + "vpc/create.jsp", size, $scope, [ '$scope',
@@ -1161,6 +1177,27 @@ $scope.dropnetworkLists = {
                     };
                 } ]);
     };
+    $scope.vpnUserList = function(ipDetatils) {
+        var domainId = ipDetatils.vpc.domainId;
+        if(ipDetatils.vpc.departmentId != null){
+            var departmentId = ipDetatils.vpc.departmentId;
+            $scope.showLoader = true;
+            var hasVpnUser = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "vpnUser/listbyvpnuser?domainId=" + domainId + "&departmentId=" + departmentId + "&lang=" + appService.localStorageService.cookie.get('language') + "&sortBy=-id");
+            hasVpnUser.then(function(result) {
+                $scope.vpnUsersList = result;
+                $scope.showLoader = false;
+            });
+        }
+        else {
+            var projectId = ipDetatils.vpc.projectId;
+            $scope.showLoader = true;
+            var hasVpnUser = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "vpnUser/listbyvpnusers?domainId=" + domainId + "&projectId=" + projectId + "&lang=" + appService.localStorageService.cookie.get('language') + "&sortBy=-id");
+            hasVpnUser.then(function(result) {
+                $scope.vpnUsersList = result;
+                $scope.showLoader = false;
+            });
+        }
+    };
 
     $scope.editIpaddress = function(ipaddressId) {
         var hasIpaddress = appService.crudService.read("ipAddresses", ipaddressId);
@@ -1258,13 +1295,221 @@ $scope.dropnetworkLists = {
             appService.localStorageService.set('view', 'ipdetails');
         });
     };
-    $scope.acquireNewIp = function(size) {
-        appService.dialogService.openDialog($scope.global.VIEW_URL + "vpc/acquire-newip.jsp", size, $scope, [ '$scope',
-                '$modalInstance', '$rootScope', function($scope, $modalInstance, $rootScope) {
+
+    $scope.vpcTiers = function(vpcId) {
+        var listVpcNetworks = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "guestnetwork/vpcNetworkLists?vpcId=" + vpcId + "&type=" + "StaticNat" + "&sortBy=-id");
+        listVpcNetworks.then(function(result) {
+            $scope.vpcNetworkNatList = result;
+        });
+    };
+    $scope.portIPList = function(instance, portvmList, index) {
+        angular.forEach(portvmList, function(obj, key) {
+                if(key == index) {
+                        obj.port = true;
+                } else {
+                        obj.port = false;
+                 }
+        })
+        var instanceId = instance;
+$scope.vmPortId = instance;
+        $scope.selected = instanceId;
+        $scope.instances = instance;
+
+        var hasPortIP = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbynicandinstances?instanceid=" + instanceId + "&lang=" + appService.localStorageService.cookie.get('language') + "&sortBy=-id");
+        hasPortIP.then(function(result) {
+            $scope.portIPLists = result;
+            $scope.showLoader = false;
+        });
+    };
+
+    $scope.staticNat = function(size, vpc) {
+        appService.dialogService.openDialog("app/views/vpc/enable-static-nat.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function($scope, $modalInstance, $rootScope) {
+                $scope.enableStaticNat = function(network) {
+                $scope.actionEnable = true;
+                appService.dialogService.openDialog("app/views/vpc/vm-list-enable-nat.jsp", "lg", $scope, ['$scope', '$modalInstance', '$rootScope', function($scope, $modalInstance, $rootScope) {
+                    $scope.vmLists = function(network) {
+                        $scope.templateCategory = 'instance';
+                        $scope.portvmList = [];
+                        var networkId = network.id;
+                        $scope.networkIdu = network.uuid;
+                        var hasVms = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "virtualmachine/network?networkId=" + networkId + "&lang=" + appService.localStorageService.cookie.get('language') + "&sortBy=-id");
+                        hasVms.then(function(result) { // this is only run after $http
+                            $scope.portvmList = result;
+                        });
+                    },
+                    $scope.enableStaticNatSave = function(natInstance) {
+                        $scope.staticNat = $scope.global.rulesPF[0];
+                        $scope.formSubmitted = true;
+                        $scope.showLoader = true;
+                        $scope.staticNat.vmInstanceId = $scope.natInstance.id;
+                        $scope.staticNat.networkId = $stateParams.id;
+                        $scope.staticNat.vmGuestIp = $scope.natInstance.ipAddress;
+                        $scope.vmIpAddress = {};
+                                $scope.instance = {};
+                                var hasError = true;
+                var assignedVmIpCount = 0;
+                var selectedVmCount = 0;
+
+                angular.forEach(natInstance, function(obj, key) {
+                   if(obj.port== true) {
+                selectedVmCount++;
+             }
+                        if(!angular.isUndefined(obj.port) && !angular.isUndefined(obj.ipAddress)) {
+                                $scope.vmId = obj.id;
+                                $scope.vmIpAddress = obj.ipAddress;
+                                assignedVmIpCount = 1;
+                           }
+                        })
+                        if(selectedVmCount == 0) {
+                                        $scope.homerTemplate = 'app/views/notification/notify.jsp';
+                                        appService.notify({message: 'Please choose atleast one VM Instance and associated Ip Address from given List', classes: 'alert-danger', "timeOut": "1000", templateUrl: $scope.homerTemplate});
+                                          $scope.showLoader = false;
+                        }
+                        else if(assignedVmIpCount != selectedVmCount) {
+                                $scope.homerTemplate = 'app/views/notification/notify.jsp';
+                                        appService.notify({message: 'Please assign Ip Address for all the selected VM Instances', classes: 'alert-danger', "timeOut": "1000", templateUrl: $scope.homerTemplate});
+                                        $scope.showLoader = false;
+                        }
+                        else {
+                        $scope.staticNat.ipAddressId = $stateParams.id1;
+
+                        appService.globalConfig.webSocketLoaders.ipLoader = true;
+                        $modalInstance.close();
+                        $scope.cancelInst();
+                       var hasStaticNat = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "ipAddresses/vpc/nat?ipaddress=" + $scope.staticNat.ipAddressId +
+                                "&vm=" + $scope.vmId + "&guestip=" + $scope.vmIpAddress + "&type=" + "enable&networkId=" + $scope.networkIdu  + "&lang=" + appService.localStorageService.cookie.get('language') + "&sortBy=-id");
+                        hasStaticNat.then(function(result) {
+                            $scope.formSubmitted = false;
+                            $scope.showLoader = false;
+                        }).catch(function(result) {
+                            $scope.showLoader = false;
+                            if (!angular.isUndefined(result.data)) {
+                                if (result.data.fieldErrors != null) {
+                                    $scope.showLoader = false;
+                                    angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
+                                        $scope.staticNatForm[key].$invalid = true;
+                                        $scope.staticNatForm[key].errorMessage = errorMessage;
+                                        $modalInstance.close();
+                                    });
+                                }
+                            }
+                            $modalInstance.close();
+                            appService.globalConfig.webSocketLoaders.ipLoader = false;
+                        });
+                        }
+
+                    },
                     $scope.cancel = function() {
                         $modalInstance.close();
                     };
-                } ]);
+                }]);
+            },
+            $scope.cancelInst = function() {
+                $modalInstance.close();
+            };
+        }]);
+    };
+
+    $scope.disableNat = function(size, vpc) {
+        appService.dialogService.openDialog("app/views/vpc/disable-static-nat.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function($scope, $modalInstance, $rootScope) {
+            $scope.disableStaticNat = function(natInstance) {
+                    var network = "1";
+                    $scope.instances = natInstance;
+                    $scope.staticNat = $scope.global.rulesPF[0];
+                    $scope.formSubmitted = true;
+                    $scope.showLoader = true;
+                    $modalInstance.close();
+                    appService.globalConfig.webSocketLoaders.ipLoader = true;
+                    var hasStaticNat = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "ipAddresses/vpc/nat?ipaddress=" + $stateParams.id1 + "&vm=1&guestip=10.0.1.1&type=" + "disable&networkId=" + network + "&lang=" + appService.localStorageService.cookie.get('language') + "&sortBy=-id");
+                    hasStaticNat.then(function(result) {
+                        $scope.formSubmitted = false;
+                        $scope.showLoader = false;
+                    }).catch(function(result) {
+                        $scope.showLoader = false;
+                        if (!angular.isUndefined(result.data)) {
+                            if (result.data.fieldErrors != null) {
+                                $scope.showLoader = false;
+                                angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
+                                    $scope.staticNatForm[key].$invalid = true;
+                                    $scope.staticNatForm[key].errorMessage = errorMessage;
+                                });
+                            }
+                        }
+                        $modalInstance.close();
+                        appService.globalConfig.webSocketLoaders.ipLoader = false;
+                    });
+                    $scope.cancel = function() {
+                        $modalInstance.close();
+                    };
+                },
+                $scope.cancel = function() {
+                    $modalInstance.close();
+                };
+        }]);
+    };
+
+    $scope.addVpnUser = function(form, user) {
+        $scope.vpnFormSubmitted = true;
+        if (form.$valid) {
+            appService.globalConfig.webSocketLoaders.vpnLoader = true;
+            var newUser = user;
+            var oldUser;
+            if (newUser) { //This will avoid empty data
+                angular.forEach($scope.vpnUsersList, function(eachuser) { //For loop
+                    if (angular.equals(newUser.userName.toLowerCase(), eachuser.userName.toLowerCase())) { // this line will check whether the data is existing or not
+                        oldUser = true;
+                        appService.notify({
+                            message: 'User already exist',
+                            classes: 'alert-danger',
+                            templateUrl: $scope.global.NOTIFICATION_TEMPLATE
+                        });
+                        appService.globalConfig.webSocketLoaders.vpnLoader = false;
+                    }
+                });
+                if (!oldUser) {
+                    $scope.showLoader = true;
+                    user.domainId = $scope.ipDetails.domainId;
+                    user.departmentId = $scope.ipDetails.network.departmentId;
+                    user.networkId = $scope.ipDetails.network.id;
+                    user.projectId = $scope.ipDetails.network.projectId;
+                    var hasServer = appService.crudService.add("vpnUser", user);
+                    hasServer.then(function(result) {
+                        user.userName = "";
+                        user.password = "";
+                        $scope.vpnFormSubmitted = false;
+                        $scope.showLoader = false;
+                        $scope.vpnUserList($scope.ipDetails);
+                        appService.globalConfig.webSocketLoaders.vpnLoader = false;
+                        appService.localStorageService.set('view', 'vpn-details');
+                    }).catch(function(result) {
+                        appService.globalConfig.webSocketLoaders.vpnLoader = false;
+                    });
+                }
+            }
+        }
+        $scope.showLoader = false;
+    }
+    $scope.deleteVpnUser = function(size, user) {
+        appService.dialogService.openDialog("app/views/vpc/confirm-delete.jsp", size, $scope, ['$scope', '$modalInstance', function($scope, $modalInstance) {
+            $scope.ok = function(deleteVpnUser) {
+                    var deleteId = user.id;
+                    $scope.showLoader = true;
+                    var hasUser = appService.crudService.delete("vpnUser", user.id);
+                    hasUser.then(function(result) {
+                        $scope.showLoader = false;
+                        $scope.editIpaddress($stateParams.id1);
+                        appService.localStorageService.set('view', 'vpn-details');
+                        $modalInstance.close();
+                        //appService.globalConfig.webSocketLoaders.vpnLoader = true;
+                    }).catch(function(result) {
+                        appService.globalConfig.webSocketLoaders.vpnLoader = false;
+                        $modalInstance.close();
+                    });
+                },
+                $scope.cancel = function() {
+                    $modalInstance.close();
+                };
+        }]);
     };
     $scope.addAcl = function(size) {
         appService.dialogService.openDialog($scope.global.VIEW_URL + "vpc/add-acl.jsp", size, $scope, [ '$scope',
@@ -1275,13 +1520,25 @@ $scope.dropnetworkLists = {
                 } ]);
     };
 
-    $scope.openAddInstance = function(size) {
-        appService.dialogService.openDialog("app/views/cloud/instance/add.jsp", size, $scope, [ '$scope',
-                '$modalInstance', '$rootScope', function($scope, $modalInstance, $rootScope) {
-                    $scope.cancel = function() {
-                        $modalInstance.close();
-                    };
-                } ]);
+  $scope.openAddInstance = function(size) {
+        var modalInstance = $modal.open({
+            templateUrl: 'app/views/cloud/instance/add.jsp',
+            controller: 'instanceCtrl',
+            size: size,
+            backdrop: 'static',
+            windowClass: "hmodal-info",
+            resolve: {
+                items: function() {
+                    return $scope.items;
+                }
+            }
+        });
+        modalInstance.result.then(function(selectedItem) {
+            $scope.selected = selectedItem;
+        }, function() {
+            $scope.vmlist(1, "Expunging");
+            $scope.borderContent = "Expunging";
+        });
     };
 
    $scope.addVM = function(form) {
@@ -1417,7 +1674,7 @@ $scope.dropnetworkLists = {
     $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.enableStaticNat, function(event, args) {
         appService.globalConfig.webSocketLoaders.ipLoader = false;
         if (!angular.isUndefined($stateParams.id1) && $stateParams.id1 > 0) {
-            $scope.webeditIpaddress($stateParams.id1);
+           $scope.webeditIpaddress($stateParams.id1);
         }
     });
     $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.disableStaticNat, function(event, args) {
@@ -1459,5 +1716,27 @@ $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.editStickiness,
     appService.globalConfig.webSocketLoaders.loadBalancerLoader = false;
     $scope.LBlist(1);
 });
- 
+
+$scope.$on(appService.globalConfig.webSocketEvents.networkEvents.vpnCreate, function(event, args) {
+        appService.globalConfig.webSocketLoaders.vpnLoader = false;
+        appService.globalConfig.webSocketLoaders.ipLoader = false;
+    });
+    $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.vpnDestroy, function(event, args) {
+        appService.globalConfig.webSocketLoaders.vpnLoader = false;
+        appService.globalConfig.webSocketLoaders.ipLoader = false;
+        $scope.ipLists(1);
+    });
+    $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.vpnUserAdd, function(event, args) {
+        appService.globalConfig.webSocketLoaders.vpnLoader = false;
+        appService.localStorageService.set('view', 'vpn-details');
+    });
+    $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.vpnUserDelete, function(event, args) {
+       appService.globalConfig.webSocketLoaders.vpnLoader = false;
+        appService.localStorageService.set('view', 'vpn-details');
+        if (!angular.isUndefined($stateParams.id1) && $stateParams.id1 > 0) {
+           $scope.webeditIpaddress($stateParams.id1);
+           appService.localStorageService.set('view', 'vpn-details');
+        }
+    });
+
 }

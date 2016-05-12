@@ -11,6 +11,12 @@
 						<div class="col-md-12 col-sm-12 col-xs-12 ">
 							<div class="pull-left dashboard-btn-area">
 								<a class="btn btn-info" data-ng-click="openAddIP('md', vpc)"> <span class="pe-7s-plus pe-lg font-bold m-r-xs"></span> <fmt:message key="acquire.new.ip" bundle="${msg}" /></a>
+								<a
+								class="btn btn-info" ui-sref="vpc.view-vpc.config-vpc.public-ip"
+								title="<fmt:message key="common.refresh" bundle="${msg}" /> "
+								ui-sref-opts="{reload: true}"><span
+								class="fa fa-refresh fa-lg"></span>
+							</a>
 							</div>
 							<div class="pull-right dashboard-filters-area">
 							<form data-ng-submit="searchList(vmSearch)">
@@ -46,7 +52,12 @@
 								            <th><fmt:message key="common.action" bundle="${msg}" /></th>
 								        </tr>
 								    </thead>
-								    <tbody>
+								    <tbody data-ng-hide="ipList.length > 0">
+			                                <tr>
+			                                    <td class="col-md-9 col-sm-9" colspan="9"><fmt:message key="common.no.records.found" bundle="${msg}" />!!</td>
+			                                </tr>
+			                            </tbody>
+								    <tbody data-ng-show="ipList.length > 0">
 								        <tr ng-repeat="ipaddress in ipList">
                       					<td>
                       						<a class="text-info" ui-sref="vpc.view-vpc.config-vpc.public-ip.ip-view({id1:ipaddress.id})"  title="View IP"> {{ ipaddress.publicIpAddress }} <span ng-if="ipaddress.isSourcenat">[Source NAT]</span></a>
@@ -60,6 +71,7 @@
                          					<a data-ng-if="!ipaddress.isSourcenat" class="icon-button" title="Release IP" data-ng-click="releaseIP('sm',ipaddress)"><span class="fa fa-chain-broken"></span></a>
                       					</td>
               							</tr>
+
 								    </tbody>
 								</table>
 							</div>
