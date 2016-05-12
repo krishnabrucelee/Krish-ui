@@ -12,7 +12,7 @@
 
 angular.module('homer').controller('vpcCtrl', vpcCtrl)
 
-function vpcCtrl($scope, $modal, appService, filterFilter, $stateParams,$state, localStorageService, promiseAjax) {
+function vpcCtrl($scope, $modal, appService, filterFilter, $stateParams,$state, localStorageService, promiseAjax, $window) {
     $scope.global = appService.globalConfig;
     $scope.vpc = {};
     $scope.formElements = {};
@@ -32,7 +32,6 @@ function vpcCtrl($scope, $modal, appService, filterFilter, $stateParams,$state, 
     $scope.ipDetails = {};
 
     $scope.type = $stateParams.view;
-
     // VPC Offer List
     $scope.listVpcOffer = function() {
         var listVpcOffers = appService.promiseAjax
@@ -54,8 +53,8 @@ function vpcCtrl($scope, $modal, appService, filterFilter, $stateParams,$state, 
             $scope.showLoaderOffer = false;
             $scope.vpc = result;
             $scope.vpcPersist = result;
-            $scope.listVpcNetwork($scope.vpc.id);
-            $scope.listVpcNetworkByPortforwarding($scope.vpc.id);
+            $scope.listVpcNetwork($stateParams.id);
+            $scope.listVpcNetworkByPortforwarding($stateParams.id);
             if ($state.current.data.pageTitle === "view VPC") {
                 $state.current.data.pageName = result.name;
                 $state.current.data.id = result.id;
@@ -552,15 +551,17 @@ $scope.dropnetworkLists = {
         listVpcNetworks.then(function(result) {
             $scope.vpcNetworkList = result;
         });
+
     };
 
- /** // VPC Network List
-    $scope.listVpcNetworkForLB = function(vpcId) {
-    	var listVpcNetworksLB = appService.crudService.listAllByID("guestnetwork/vpcNetworkList?vpcId=" + vpcId);
-        listVpcNetworksLB.then(function(result) {
-            $scope.vpcNetworkListForLB = result;
-        });
-    };**/
+if ($stateParams.id2 > 0) {
+  var listVpcOffers = appService.promiseAjax
+                .httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbynetwork"+"?networkid="+$stateParams.id2 );
+        listVpcOffers.then(function(result) {
+            $scope.vpcVmList = result;
+
+});
+}
 
     $scope.createNetwork = function(size) {
         appService.dialogService.openDialog($scope.global.VIEW_URL + "vpc/create.jsp", size, $scope, [ '$scope',
@@ -1267,17 +1268,29 @@ $scope.dropnetworkLists = {
                 } ]);
     };
 
-    $scope.openAddInstance = function(size) {
-        appService.dialogService.openDialog("app/views/cloud/instance/add.jsp", size, $scope, [ '$scope',
-                '$modalInstance', '$rootScope', function($scope, $modalInstance, $rootScope) {
-                    $scope.cancel = function() {
-                        $modalInstance.close();
-                    };
-                } ]);
+  $scope.openAddInstance = function(size) {
+        var modalInstance = $modal.open({
+            templateUrl: 'app/views/cloud/instance/add.jsp',
+            controller: 'instanceCtrl',
+            size: size,
+            backdrop: 'static',
+            windowClass: "hmodal-info",
+            resolve: {
+                items: function() {
+                    return $scope.items;
+                }
+            }
+        });
+        modalInstance.result.then(function(selectedItem) {
+            $scope.selected = selectedItem;
+        }, function() {
+            $scope.vmlist(1, "Expunging");
+            $scope.borderContent = "Expunging";
+        });
     };
 
    $scope.addVM = function(form) {
-alert(form);
+
         if (form.$valid) {
 
             $scope.global.rulesPF[0].privateStartPort = $scope.portForward.privateStartPort;
@@ -1422,5 +1435,6 @@ alert(form);
         appService.globalConfig.webSocketLoaders.ipLoader = false;
         $scope.ipLists(1);
     });
- 
+
+
 }

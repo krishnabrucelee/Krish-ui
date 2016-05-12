@@ -11,7 +11,7 @@
 					<div class="row">
 						<div class="col-md-12 col-sm-12 col-xs-12 ">
 							<div class="pull-left dashboard-btn-area">
-								<a class="btn btn-info" data-ng-click="openAddInstance('lg')"> <span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="add.instance" bundle="${msg}" /></a>
+								<a class="btn btn-info" has-permission="CREATE_VM" data-ng-click="openAddInstance('lg')"> <span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="add.instance" bundle="${msg}" /></a>
 							</div>
 							<div class="pull-right dashboard-filters-area">
 							<form data-ng-submit="searchList(vmSearch)">
@@ -45,36 +45,35 @@
 								            <th><fmt:message key="common.display.name" bundle="${msg}" /></th>
 								            <th><fmt:message key="zone.name" bundle="${msg}" /></th>
 								            <th><fmt:message key="common.state" bundle="${msg}" /></th>
-								            <th><fmt:message key="common.action" bundle="${msg}" /></th>
 								        </tr>
 								    </thead>
-								    <tbody>
-								        <tr>
-								            <td>VM Name</td>
-								            <td>devpanda-zone</td>
-								            <td>devpanda</td>
-								            <td>Zone name</td>
-								            <td><label class="label label-success text-center text-white">ALLOCATED</label></td>
-								            <td><a class="icon-button" title="Remove VM"><span class="fa fa-trash"></span></a></td>
+								    <tbody data-ng-hide="vpcVmList.length > 0">
+			                                <tr>
+			                                    <td class="col-md-9 col-sm-9" colspan="9"><fmt:message key="common.no.records.found" bundle="${msg}" />!!</td>
+			                                </tr>
+			                            </tbody>
+								    <tbody data-ng-show="vpcVmList.length > 0">
+								        <tr data-ng-repeat="vm in filteredCount = (vpcVmList| filter: quickSearch | orderBy:sort.column:sort.descending)">
+								        <td><a class="text-info" id="instances_display_name_button" ui-sref="cloud.list-instance.view-instance({id: {{ vm.vmInstance.id}}})"
+											title="View Instance">
+										{{vm.ipAddress}}</a>
+								            </td>
+								            <td>{{vm.vmInstance.instanceInternalName}}</td>
+								            <td>{{vm.vmInstance.displayName}}</td>
+								            <td>{{vm.vmInstance.zone.name}}</td>
+								            <td><label class="label label-success"
+									data-ng-if="vm.vmInstance.status == 'RUNNING'">{{
+										vm.vmInstance.status }}</label> <label class="label label-danger"
+									data-ng-if="vm.vmInstance.status == 'STOPPED'">{{
+										vm.vmInstance.status }}</label> <input type="hidden"
+									data-ng-model="vm.vmInstance.status" value="{{ instance.vmInstance.status }}" />
+								</td>
+
 								        </tr>
-								        <tr>
-								            <td>VM Name</td>
-								            <td>devpanda-zone</td>
-								            <td>devpanda</td>
-								            <td>Zone name</td>
-								            <td><label class="label label-success text-center text-white">ALLOCATED</label></td>
-								            <td><a class="icon-button" title="Remove VM"><span class="fa fa-trash"></span></a></td>
-								        </tr>
-								        <tr>
-								            <td>VM Name</td>
-								            <td>devpanda-zone</td>
-								            <td>devpanda</td>
-								            <td>Zone name</td>
-								            <td><label class="label label-success text-center text-white">ALLOCATED</label></td>
-								            <td><a class="icon-button" title="Remove VM"><span class="fa fa-trash"></span></a></td>
-								        </tr>
+
 								    </tbody>
 								</table>
+
 							</div>
 						</div>
 						<pagination-content></pagination-content>
