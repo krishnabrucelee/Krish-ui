@@ -1,13 +1,10 @@
-
-
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
-    <div class="content" ui-view>
-        <div ng-controller="vpcCtrl">
+        <div  ui-view ng-controller="vpcCtrl">
             <div class="row" >
                 <div class="col-md-12">
 	                <div class="col-md-12 col-sm-12">
@@ -40,7 +37,7 @@
                                                 	 <a ui-sref="vpc.view-vpc.config-vpc.public-ip">
 	                                                    <div class="panel panel-info">
 	                                                        <div class="panel-body p-xxs text-info text-center">
-	                                                            <h3> 0</h3><fmt:message key="public.ip.address" bundle="${msg}" />
+	                                                            <h3>{{ipList.length}}</h3><fmt:message key="public.ip.address" bundle="${msg}" />
 	                                                        </div>
 	                                                    </div>
                                                     </a>
@@ -153,6 +150,5 @@
                     </div>
                 </div>
             </div>
-        </div>
     </div>
 

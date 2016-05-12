@@ -3,14 +3,15 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<div ui-view>
+
+    <div class="content" ui-view>
 	    <div ng-controller="vpcCtrl">
 			<div class="hpanel">
 				<div class="panel-heading no-padding">
 					<div class="row">
 						<div class="col-md-12 col-sm-12 col-xs-12 ">
 							<div class="pull-left dashboard-btn-area">
-								<a class="btn btn-info" data-ng-click="openAddIP('md', vpc)"> <span class="pe-7s-plus pe-lg font-bold m-r-xs"></span> <fmt:message key="acquire.new.ip" bundle="${msg}" /></a>
+								<a class="btn btn-info" data-ng-click="acquireNewIp('sm')"> <span class="pe-7s-plus pe-lg font-bold m-r-xs"></span> <fmt:message key="acquire.new.ip" bundle="${msg}" /></a>
 							</div>
 							<div class="pull-right dashboard-filters-area">
 							<form data-ng-submit="searchList(vmSearch)">
@@ -47,19 +48,33 @@
 								        </tr>
 								    </thead>
 								    <tbody>
-								        <tr ng-repeat="ipaddress in ipList">
-                      					<td>
-                      						<a class="text-info" ui-sref="vpc.view-vpc.config-vpc.public-ip.ip-view({id1:ipaddress.id})"  title="View IP"> {{ ipaddress.publicIpAddress }} <span ng-if="ipaddress.isSourcenat">[Source NAT]</span></a>
-                      					</td>
-                      					<td>{{ipaddress.zone.name}} </td>
-                      					<td>{{ipaddress.network.name}}</td>
-                      					<td> <b class="text-success text-uppercase">{{ipaddress.state}}</b></td>
-                      					<td>
-                          					<a data-ng-if="ipaddress.isSourcenat && ipaddress.vpnState != 'RUNNING'" class="icon-button" title="Enable VPN" data-ng-click="enableVpn('sm',ipaddress)"><i class="custom-link-icon custom-icon-ip-disabled"></i></a>
-                          					<a data-ng-if="ipaddress.isSourcenat && ipaddress.vpnState == 'RUNNING'" class="icon-button" title="Disable VPN" data-ng-click="disableVpn('sm',ipaddress)"><i class="custom-link-icon custom-icon-ip"></i></a>
-                         					<a data-ng-if="!ipaddress.isSourcenat" class="icon-button" title="Release IP" data-ng-click="releaseIP('sm',ipaddress)"><span class="fa fa-chain-broken"></span></a>
-                      					</td>
-              							</tr>
+								        <tr>
+								            <td>
+								                192.168.1.184 [Source NAT]dfsdfsfsdf
+								            </td>
+								            <td>devpanda-zone</td>
+								            <td>-</td>
+								            <td><label class="label label-success text-center text-white">ALLOCATED</label></td>
+								            <td><a class="icon-button" title="Remove"><span class="fa fa-trash"></span></a></td>
+								        </tr>
+								        <tr>
+								            <td>
+								                192.168.1.184 [Source NAT]sdfsdfsdf
+								            </td>
+								            <td>devpanda-zone</td>
+								            <td>-</td>
+								            <td><label class="label label-success text-center text-white">ALLOCATED</label></td>
+								            <td><a class="icon-button" title="Remove"><span class="fa fa-trash"></span></a></td>
+								        </tr>
+								        <tr>
+								            <td>
+								                192.168.1.184 [Source NAT]sdfsdfsdf
+								            </td>
+								            <td>devpanda-zone</td>
+								            <td>-</td>
+								            <td><label class="label label-success text-center text-white">ALLOCATED</label></td>
+								            <td><a class="icon-button" title="Remove"><span class="fa fa-trash"></span></a></td>
+								        </tr>
 								    </tbody>
 								</table>
 							</div>
@@ -69,5 +84,4 @@
 				</div>
 			</div>
 		</div>
-</div>
-
+	</div>
