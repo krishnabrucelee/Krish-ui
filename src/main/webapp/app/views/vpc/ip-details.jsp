@@ -78,23 +78,26 @@ pageEncoding="UTF-8"%>
         </div>
     </div>
 
-    <div data-ng-show="type !='source'" class="col-md-6 col-sm-12" >
+     <div class="col-md-6 col-sm-12" >
             <div class="cloud-diagram1 center-block">
                 <div class="main-title">Internet<span>{{ipDetails.publicIpAddress}}</span></div>
-                <div class="firewall ">
-                 <del>  Firewall</del>
-                    <!-- <a href="javascript:void(0)" data-ng-click="firewallRule(1)" class="btn-diagram"><span>View</span></a> -->
+                <div class="firewall">
+                    <del>Firewall</del>
                 </div>
-                 <div class="child-left pull-left">
+                 <div class="child-left pull-left" data-ng-if = "!ipDetails.isStaticnat" >
                     Port Forwarding
                     <a href="javascript:void(0)" data-ng-click="portRulesLists(1)" class="btn-diagram"><span>View</span></a>
                 </div>
-                <div class="child-right pull-right">
+                <div class="child-left pull-left" data-ng-if = "ipDetails.isStaticnat" >
+                    <del>Port Forwarding</del>
+                </div>
+                <div class="child-right pull-right" data-ng-if = "!ipDetails.isStaticnat">
                     Load Balancing
                     <a href="javascript:void(0)" data-ng-click="selectTab('loadBalance')" class="btn-diagram"><span>View</span></a>
-
                 </div>
-
+                <div class="child-right pull-right" data-ng-if = "ipDetails.isStaticnat">
+                    <del>Load Balancing</del>
+                </div>
             </div>
     </div>
 
