@@ -79,7 +79,7 @@ pageEncoding="UTF-8"%>
     </div>
 
      <div class="col-md-6 col-sm-12" >
-            <div class="cloud-diagram1 center-block">
+            <div class="cloud-diagram1 without-firewall center-block">
                 <div class="main-title">Internet<span>{{ipDetails.publicIpAddress}}</span></div>
                 <div class="firewall">
                     <del>Firewall</del>

@@ -425,6 +425,8 @@ table.dataTable thead .sorting_desc::after {content: "\f0dd";}
 
 .form-control.port-forwarding-select{width:50%;}
 
+.without-firewall .firewall {padding: 50px 0 65px 0;}
+
 @media (min-width: 600px) and (max-width: 767px) {
 .dashboard-filters-area{ clear:both;}
 .dashboard-btn-area{float:right !important; clear:both;}
