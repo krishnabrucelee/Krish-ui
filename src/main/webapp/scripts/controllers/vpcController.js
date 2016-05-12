@@ -31,6 +31,11 @@ function vpcCtrl($scope, $modal, appService, filterFilter, $stateParams,$state, 
 
     $scope.type = $stateParams.view;
 
+
+
+
+
+
     // VPC Offer List
     $scope.listVpcOffer = function() {
         var listVpcOffers = appService.promiseAjax
@@ -440,7 +445,18 @@ function vpcCtrl($scope, $modal, appService, filterFilter, $stateParams,$state, 
         listVpcNetworks.then(function(result) {
             $scope.vpcNetworkList = result;
         });
+
     };
+
+ $scope.vpcvm = function() {
+alert("statdddesssssssssssssssssssss"+$stateParams.id);
+  var listVpcOffers = appService.promiseAjax
+                .httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbynetwork"+"?networkid="+$stateParams.id );
+        listVpcOffers.then(function(result) {
+            $scope.vpcVmList = result;
+        });
+}
+$scope.vpcvm();
 
     $scope.createNetwork = function(size) {
         appService.dialogService.openDialog($scope.global.VIEW_URL + "vpc/create.jsp", size, $scope, [ '$scope',
@@ -573,5 +589,8 @@ function vpcCtrl($scope, $modal, appService, filterFilter, $stateParams,$state, 
             $scope.paginationObject.currentPage = pageNumber;
             $scope.paginationObject.totalItems = result.totalItems;
         });*/
+
+
+
     };
 }

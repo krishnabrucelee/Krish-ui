@@ -49,32 +49,18 @@
 								        </tr>
 								    </thead>
 								    <tbody>
-								        <tr>
-								            <td>VM Name</td>
-								            <td>devpanda-zone</td>
-								            <td>devpanda</td>
-								            <td>Zone name</td>
-								            <td><label class="label label-success text-center text-white">ALLOCATED</label></td>
+								        <tr data-ng-repeat="vm in filteredCount = (vpcVmList| filter: quickSearch | orderBy:sort.column:sort.descending)">
+								            <td>{{vm.ipAddress}}</td>
+								            <td>{{vm.vmInstance.instanceInternalName}}</td>
+								            <td>{{vm.vmInstance.displayName}}</td>
+								            <td>{{vm.vmInstance.zone.name}}</td>
+								            <td><label class="label label-success text-center text-white">{{vm.vmInstance.status}}</label></td>
 								            <td><a class="icon-button" title="Remove VM"><span class="fa fa-trash"></span></a></td>
 								        </tr>
-								        <tr>
-								            <td>VM Name</td>
-								            <td>devpanda-zone</td>
-								            <td>devpanda</td>
-								            <td>Zone name</td>
-								            <td><label class="label label-success text-center text-white">ALLOCATED</label></td>
-								            <td><a class="icon-button" title="Remove VM"><span class="fa fa-trash"></span></a></td>
-								        </tr>
-								        <tr>
-								            <td>VM Name</td>
-								            <td>devpanda-zone</td>
-								            <td>devpanda</td>
-								            <td>Zone name</td>
-								            <td><label class="label label-success text-center text-white">ALLOCATED</label></td>
-								            <td><a class="icon-button" title="Remove VM"><span class="fa fa-trash"></span></a></td>
-								        </tr>
+
 								    </tbody>
 								</table>
+
 							</div>
 						</div>
 						<pagination-content></pagination-content>
