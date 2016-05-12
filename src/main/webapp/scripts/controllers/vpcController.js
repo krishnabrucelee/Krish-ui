@@ -558,9 +558,10 @@ $scope.dropnetworkLists = {
 
   // VPC Network List
     $scope.listVpcNetworkForLB = function(vpcId) {
-    	var listVpcNetworksLB = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "guestnetwork/vpcNetworkListforlb?vpcId=" + vpcId + "&type=" +"Lb" +"&sortBy=-id");
+    	var listVpcNetworksLB = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "guestnetwork/vpcNetworkLists?vpcId=" + vpcId + "&type=" +"Lb" +"&sortBy=-id");
         listVpcNetworksLB.then(function(result) {
             $scope.vpcNetworkListForLB = result;
+			console.log(result);
         });
     };
 //$scope.listVpcNetworkForLB($scope.vpc.id);
@@ -664,7 +665,6 @@ if (!angular.isUndefined($stateParams.id1)) {
             appService.dialogService.openDialog("app/views/vpc/vm-list.jsp", 'lg', $scope, ['$scope', '$modalInstance', function($scope, $modalInstance) {
                 $scope.lbvmLists = function() {
                     $scope.lbvmList = [];
-			console.log($scope.loadBalancer.vpcnetwork.id);
                     var networkId = $scope.loadBalancer.vpcnetwork.id;
                     var hasVms = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbynetwork?networkid=" + networkId + "&lang=" + appService.localStorageService.cookie.get('language') + "&sortBy=-id");
                     hasVms.then(function(result) { // this is only run after $http
@@ -682,6 +682,9 @@ if (!angular.isUndefined($stateParams.id1)) {
                         $scope.loadBalancer.protocol = $scope.loadBalancer.protocol.toUpperCase();
                         $scope.loadBalancer.state = $scope.loadBalancer.state.toUpperCase();
                         $scope.loadBalancer.state = $scope.loadBalancer.state.toUpperCase();
+			console.log(loadBalancer[0].networkId);
+			$scope.loadBalancer.networkId = loadBalancer[0].networkId;
+			console.log("networkid",$scope.loadBalancer.networkId);
 	var hasError = true;
 	var assignedVmIpCount = 0;
 	var selectedVmCount = 0;
@@ -775,7 +778,7 @@ if (!angular.isUndefined($stateParams.id1)) {
         appService.dialogService.openDialog("app/views/vpc/vm-list.jsp", 'lg', $scope, ['$scope', '$modalInstance', function($scope, $modalInstance) {
             $scope.lbvmLists = function() {
                 $scope.lbvmList = [];
-                var networkId = $stateParams.id;
+                var networkId = $scope.loadBalancer.vpcnetwork.id;
                 var hasVms = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbynetwork?networkid=" + networkId + "&lang=" + appService.localStorageService.cookie.get('language') + "&sortBy=-id");
                 hasVms.then(function(result) { // this is only run after $http
                     $scope.lbvmList = result;
@@ -828,7 +831,7 @@ if (!angular.isUndefined($stateParams.id1)) {
     $scope.loadBalancer.algorithm = {};
     // Edit the load balancer
     $scope.editrule = function(size, loadBalancer) {
-        appService.dialogService.openDialog("vpc/edit-rule.jsp", size, $scope, ['$scope', '$modalInstance', function($scope, $modalInstance) {
+        appService.dialogService.openDialog("app/views/vpc/edit-rule.jsp", size, $scope, ['$scope', '$modalInstance', function($scope, $modalInstance) {
             $scope.loadBalancer = angular.copy(loadBalancer);
             angular.forEach($scope.dropnetworkLists.algorithms, function(obj, key) {
                 if (obj.value == $scope.loadBalancer.algorithm) {
@@ -868,7 +871,7 @@ if (!angular.isUndefined($stateParams.id1)) {
         }]);
     };
     $scope.deleteRules = function(size, loadBalancer) {
-        appService.dialogService.openDialog("vpc/delete-rule.jsp", 'sm', $scope, ['$scope', '$modalInstance', function($scope, $modalInstance) {
+        appService.dialogService.openDialog("app/views/vpc/delete-rule.jsp", 'sm', $scope, ['$scope', '$modalInstance', function($scope, $modalInstance) {
             $scope.deleteObject = loadBalancer;
             $scope.delete = function(deleteObject) {
                     appService.globalConfig.webSocketLoaders.loadBalancerLoader = true;
@@ -1282,7 +1285,7 @@ $scope.dropnetworkLists = {
     };
 
    $scope.addVM = function(form) {
-alert(form);
+        $scope.formSubmitted = true;
         if (form.$valid) {
 
             $scope.global.rulesPF[0].privateStartPort = $scope.portForward.privateStartPort;
@@ -1427,5 +1430,34 @@ alert(form);
         appService.globalConfig.webSocketLoaders.ipLoader = false;
         $scope.ipLists(1);
     });
+
+    $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.loadbalancerSave, function(event, args) {
+    appService.globalConfig.webSocketLoaders.loadBalancerLoader = false;
+    $scope.LBlist(1);
+});
+
+    $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.assignRule, function(event, args) {
+    appService.globalConfig.webSocketLoaders.loadBalancerLoader = false;
+    $scope.LBlist(1);
+    });
+
+    $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.configureStickiness, function(event, args) {
+    appService.globalConfig.webSocketLoaders.loadBalancerLoader = false;
+    $scope.LBlist(1);
+    });
+
+$scope.$on(appService.globalConfig.webSocketEvents.networkEvents.editrule, function(event, args) {
+    appService.globalConfig.webSocketLoaders.loadBalancerLoader = false;
+    $scope.LBlist(1);
+});
+$scope.$on(appService.globalConfig.webSocketEvents.networkEvents.deleteRules, function(event, args) {
+    appService.globalConfig.webSocketLoaders.loadBalancerLoader = false;
+    appService.globalConfig.webSocketLoaders.networkLoader = false;
+    $scope.LBlist(1);
+});
+$scope.$on(appService.globalConfig.webSocketEvents.networkEvents.editStickiness, function(event, args) {
+    appService.globalConfig.webSocketLoaders.loadBalancerLoader = false;
+    $scope.LBlist(1);
+});
  
 }

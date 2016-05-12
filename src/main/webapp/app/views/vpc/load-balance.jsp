@@ -10,21 +10,21 @@ pageEncoding="UTF-8"%>
             		            </div>
         <form name="loadform" method="POST" novalidate
               data-ng-submit="openAddVM(loadform,loadBalancer)">
-              <div class="row">
-							<div class="form-group">
-
-
-									<div class="col-md-3 col-sm-7 col-xs-7">
-										<select  class="form-control input-group"
+				<div class="form-group">
+					<div class="row">
+                	<div class="col-md-4  col-sm-4 col-xs-14">
+                		<h5 class="pull-left">Tier :</h5>
+                    	<select  class="form-control m-l-md port-forwarding-select input-group pull-left"
 									name="vpcnetwork" data-ng-model="loadBalancer.vpcnetwork"
 									ng-options="vpcnetwork.name for vpcnetwork in vpcNetworkListForLB"
 									>
 									<option value=""><fmt:message key="common.select"
 											bundle="${msg}" /></option>
 								</select>
-									</div>
-								</div>
-							</div>
+                         </div>
+                        </div>
+                        </div>
+
 
             <table cellspacing="1" cellpadding="1"
                    class="table table-bordered table-striped">
