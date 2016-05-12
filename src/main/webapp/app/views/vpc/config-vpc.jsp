@@ -140,7 +140,7 @@
 	                                                    </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6"> <div class="p-sm"><fmt:message key="common.cidr" bundle="${msg}" />: {{network.CIDR}}</div></div>
+                                                <div class="col-md-6"> <div class="p-sm"><fmt:message key="common.cidr" bundle="${msg}" />: {{network.cIDR}}</div></div>
                                             </div>
                                         </div>
                                     </div>
