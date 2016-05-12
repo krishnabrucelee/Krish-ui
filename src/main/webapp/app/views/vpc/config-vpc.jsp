@@ -128,11 +128,11 @@
                                                     <div class="col-md-6">
 	                                                    <div class="media">
 	                                                        <div class="media-body">
-	                                                            <a href="#" ui-sref="vpc.virtual-machines({id: {{network.id}}})">
-	                                                                <div class="panel panel-info ">
+	                                                          <a  ui-sref="vpc.view-vpc.config-vpc.virtual-machines({id2: {{network.id}}})" >
+	                                                                <div class="panel panel-info">
 	                                                                    <div class="panel-body p-xxs text-info text-center">
 	                                                                        <h3> 0 </h3>
-	                                                                        <fmt:message key="virtual.machines" bundle="${msg}" />{{network.id}}
+	                                                                        <fmt:message key="virtual.machines" bundle="${msg}" />
 	                                                                    </div>
 	                                                                </div>
 	                                                            </a>

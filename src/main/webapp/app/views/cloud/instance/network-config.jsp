@@ -4,7 +4,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<div ui-view data-ng-controller="networkCtrl"> 
+<div ui-view data-ng-controller="networkCtrl">
 
 <div data-ng-if="global.webSocketLoaders.vmnicLoader" class="overlay-wrapper">
                 <img data-ng-if="global.webSocketLoaders.vmnicLoader" src="images/loading-bars.svg" class="inner-loading" />
@@ -72,9 +72,9 @@
                                                                     </div>
                                                                     </div>
                                                                     <div class="table-responsive">
-                                                                    	
+
                                                                     </div>
-                                                                    <div class=""><label class="headerLabel m-r-xs"><fmt:message key="network.name" bundle="${msg}" />:</label><a href="#/user/network/view/2">{{nic.network.name}}</a></div>
+                                                                    <div class=""><label class="headerLabel m-r-xs"><fmt:message key="network.name" bundle="${msg}" />:</label>{{nic.network.name}}</div>
                                                                     <div class=""><label class="headerLabel m-r-xs"><fmt:message key="id" bundle="${msg}" />:</label><span id="nicId">{{nic.uuid}}</span></div>
                                                                     <div class=""><label class="headerLabel m-r-xs"><fmt:message key="common.type" bundle="${msg}" />:</label><span>{{nic.network.networkType}}</span></div>
                                                                     <div class=""><label class="headerLabel m-r-xs"><fmt:message key="ip.address" bundle="${msg}" />:</label><span>{{nic.ipAddress}}</span></div>
