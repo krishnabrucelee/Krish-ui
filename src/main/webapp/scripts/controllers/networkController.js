@@ -92,7 +92,7 @@ if (!angular.isUndefined($stateParams.id)) {
 	if ($scope.domainId == null && $scope.vmSearch == null) {
             	hasGuestnetworkLists = appService.crudService.list("guestnetwork", $scope.global.paginationHeaders(pageNumber, limit), {
                 "limit": limit});
-            } 
+            }
 		else {
 	if ($scope.domainId != null && $scope.vmSearch == null) {
                 $scope.filter = "&domainId=" + $scope.domainId + "&searchText=";
@@ -554,11 +554,14 @@ $scope.ipCostList();
                     $scope.network.department = result;
                 });
             }
+
+
+
             // Create a new Isolated Network
             $scope.save = function(form, network) {
                     $scope.formSubmitted = true;
-                    if (form.$valid) {
-                        var network = angular.copy($scope.network);
+		    var network = angular.copy($scope.network);
+                    if (form.$valid && (!angular.isUndefined($scope.network.department) && $scope.network.department != null) ) {
                         if (!angular.isUndefined($scope.network.domain) && $scope.network.domain != null) {
                             network.domainId = $scope.network.domain.id;
                             delete network.domain;
@@ -605,18 +608,21 @@ $scope.ipCostList();
                 },
 
         $scope.changedomain = function(obj) {
-        $scope.network.project = {};
-        if (!angular.isUndefined(obj)) {
-            $scope.departmentList(obj);
-	//$scope.projectList = [];
-        }
-    },
-               $scope.$watch('network.department', function(obj) {
-        $scope.network.project = null;
-                    if (!angular.isUndefined(obj)) {
-                        $scope.getProjectList(obj);
-                    }
-                }),
+			$scope.network.department = "";
+		    $scope.network.project = {};
+		if (!angular.isUndefined(obj)) {
+		    $scope.departmentList(obj);
+		}
+         },
+
+	$scope.changeDepartment = function(obj) {
+		$scope.network.project = {};
+		if (!angular.isUndefined(obj)) {
+			$scope.network.project = {};
+		    $scope.getProjectList(obj);
+		}
+         },
+
                 $scope.cancel = function() {
                     $modalInstance.close();
                 };
@@ -650,7 +656,7 @@ $scope.vmSearch = null;
 	if ($scope.domainId == null && $scope.vmSearch == null) {
             	hasGuestNetworks = appService.crudService.list("guestnetwork", $scope.global.paginationHeaders(pageNumber, limit), {
                 "limit": limit});
-            } 
+            }
 		else {
 	if ($scope.domainId != null && $scope.vmSearch == null) {
                 $scope.filter = "&domainId=" + $scope.domainId + "&searchText=";
@@ -822,10 +828,8 @@ $scope.vmSearch = null;
                 if (!oldUser) {
                     $scope.showLoader = true;
                     user.domainId = $scope.ipDetails.domainId;
-		console.log(user.domainId);
                     user.departmentId = $scope.ipDetails.network.departmentId;
                     user.networkId = $scope.ipDetails.network.id;
-                    console.log($scope.ipDetails.network);
                     user.projectId = $scope.ipDetails.network.projectId;
                     var hasServer = appService.crudService.add("vpnUser", user);
                     hasServer.then(function(result) {
@@ -942,10 +946,12 @@ $scope.vmSearch = null;
         hasDepartments.then(function(result) { // this is only run after
             // $http completes0
             $scope.formElements.departmenttypeList = result;
+            $scope.projectList = [];
         });
     };
 
     $scope.getProjectList = function(department) {
+	$scope.projectList = [];
         if ($scope.global.sessionValues.type != "USER") {
             var hasProjects = appService.crudService.listAllByObject("projects/department", department);
             hasProjects.then(function(result) { // this is only run after $http
@@ -1243,6 +1249,7 @@ $scope.vmSearch = null;
         }
     };
     $scope.LBlist = function(loadBalancer) {
+        $scope.templateCategory = 'load-balance';
         $scope.rulesvmList = {};
         $scope.stickiness = {};
         $scope.loadBalancer = {};

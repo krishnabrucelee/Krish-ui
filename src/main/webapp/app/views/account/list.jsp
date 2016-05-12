@@ -171,13 +171,37 @@
 													data-ng-click="deleteUser('sm',account)"><span
 														class="fa fa-trash"></span>
 												</a>
-												 <a class = "test_accounts_enable_user_button"
+
+                                        		  <a class = "test_accounts_enable_user_button" data-ng-if="global.sessionValues.type =='ROOT_ADMIN'" data-ng-show = "account.type != 'ROOT_ADMIN' && account.status == 'DISABLED' "
 												  id="accounts_enable_user_button_{{account.id}}" data-unique-field="{{account.domain.name}}-{{account.department.userName}}-{{ account.userName}}"
-												  has-permission="ENABLE_USER" data-ng-show="account.status == 'DISABLED'" data-ng-click="activating(account)"><span class="pe-7s-user pe-lg font-bold m-r-xs" title="Enable User"></span></a>
-                                        		 <a class = "test_accounts_disable_user_button"
+												  has-permission="ENABLE_USER" data-ng-click="activating(account)"><span class="pe-7s-user pe-lg font-bold m-r-xs" title="Enable User"></span></a>
+
+                                        		  <a data-ng-if="global.sessionValues.type =='ROOT_ADMIN'" data-ng-show = "account.type != 'ROOT_ADMIN' && account.status == 'ENABLED' "
+												   class = "test_accounts_disable_user_button"
                                         		  id="accounts_disable_user_button_{{account.id}}" data-unique-field="{{account.domain.name}}-{{account.department.userName}}-{{ account.userName}}"
-                                        		  has-permission="DISABLE_USER" data-ng-show="account.status == 'ENABLED'" data-ng-click="revoking(account)" ><span class="pe-7s-delete-user pe-lg font-bold m-r-xs" title="Disable User"></span></a>
-												</td>
+                                        		  has-permission="DISABLE_USER" data-ng-click="revoking(account)" ><span class="pe-7s-delete-user pe-lg font-bold m-r-xs" title="Disable User"></span>
+                                        		  </a>
+
+                                        		 <a class = "test_accounts_enable_user_button" data-ng-if="global.sessionValues.type =='DOMAIN_ADMIN'" data-ng-show = "account.type != 'DOMAIN_ADMIN' && account.status == 'DISABLED' "
+												  id="accounts_enable_user_button_{{account.id}}" data-unique-field="{{account.domain.name}}-{{account.department.userName}}-{{ account.userName}}"
+												  has-permission="ENABLE_USER" data-ng-click="activating(account)"><span class="pe-7s-user pe-lg font-bold m-r-xs" title="Enable User"></span></a>
+
+                                        		  <a data-ng-if="global.sessionValues.type =='DOMAIN_ADMIN'" data-ng-show = "account.type != 'DOMAIN_ADMIN' && account.status == 'ENABLED' "
+												   class = "test_accounts_disable_user_button"
+                                        		  id="accounts_disable_user_button_{{account.id}}" data-unique-field="{{account.domain.name}}-{{account.department.userName}}-{{ account.userName}}"
+                                        		  has-permission="DISABLE_USER" data-ng-click="revoking(account)" ><span class="pe-7s-delete-user pe-lg font-bold m-r-xs" title="Disable User"></span>
+                                        		  </a>
+
+                                        		   <a class = "test_accounts_enable_user_button" data-ng-if="global.sessionValues.type =='USER'" data-ng-show = "global.sessionValues.userName != '{{account.userName}}' && account.status == 'DISABLED' && account.type !='DOMAIN_ADMIN'"
+												  id="accounts_enable_user_button_{{account.id}}" data-unique-field="{{account.domain.name}}-{{account.department.userName}}-{{ account.userName}}"
+												  has-permission="ENABLE_USER" data-ng-click="activating(account)"><span class="pe-7s-user pe-lg font-bold m-r-xs" title="Enable User"></span></a>
+
+                                        		  <a data-ng-if="global.sessionValues.type =='USER'" data-ng-show = "global.sessionValues.userName != '{{account.userName}}' && account.status == 'ENABLED' && account.type !='DOMAIN_ADMIN'"
+												   class = "test_accounts_disable_user_button"
+                                        		  id="accounts_disable_user_button_{{account.id}}" data-unique-field="{{account.domain.name}}-{{account.department.userName}}-{{ account.userName}}"
+                                        		  has-permission="DISABLE_USER" data-ng-click="revoking(account)" ><span class="pe-7s-delete-user pe-lg font-bold m-r-xs" title="Disable User"></span>
+                                        		  </a>
+												 </td>
                                             </tr>
                                         </tbody>
                                     </table>

@@ -212,7 +212,6 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider, $compile
                 }
             })
 
-
             // VPC list
             .state('vpc', {
                 url : "/vpc",
@@ -240,6 +239,25 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider, $compile
                 }
             })
 
+            // Public IP
+            .state('vpc.view-vpc.config-vpc.public-ip', {
+                url : "/public-ip",
+                templateUrl : VIEW_URL + "views/vpc/public-ip.jsp",
+                data : {
+                    pageTitle : 'Public IP'
+                }
+            })
+
+            // View IP
+            .state('vpc.view-vpc.config-vpc.public-ip.ip-view', {
+                url : "/ip-address/:id1",
+                templateUrl : VIEW_URL + "views/vpc/vpcip-view.jsp",
+                data : {
+                    pageTitle : 'View IP',
+                    networkTabs : 'ipdetails'
+                }
+            })
+
             // Private Gateway
             .state('vpc.private-gateway', {
                 url : "/private-gateway/:id",
@@ -247,16 +265,7 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider, $compile
                 data : {
                     pageTitle : 'Private Gateway'
                 }
-            })
-
-            // Public IP
-            .state('vpc.public-ip', {
-                url : "/public-ip/:id",
-                templateUrl : VIEW_URL + "views/vpc/public-ip.jsp",
-                data : {
-                    pageTitle : 'Public IP'
-                }
-            })
+            })           
 
             // Network ACL
             .state('vpc.network-acl', {
@@ -283,7 +292,7 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider, $compile
                 data : {
                     pageTitle : 'Static NAT'
                 }
-            })
+            })  
 
              .state('vpc.ip-view', {
                 url : "/:view/:id",
@@ -299,6 +308,14 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider, $compile
                 templateUrl : VIEW_URL + "views/vpc/virtual-machines.jsp",
                 data : {
                     pageTitle : 'Virtual Machines'
+                }
+            })
+
+            .state('vpc.ip-view', {
+                url : "/:view/:id",
+                templateUrl : VIEW_URL + "views/vpc/vpcip-view.jsp",
+                data : {
+                    pageTitle : 'View IP'
                 }
             })
 

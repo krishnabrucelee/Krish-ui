@@ -3,12 +3,28 @@ pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<div ui-view data-ng-controller="vpcCtrl">
     <div class="white-content">
     <div data-ng-if="global.webSocketLoaders.loadBalancerLoader" class="overlay-wrapper">
                 		            <img data-ng-if="global.webSocketLoaders.loadBalancerLoader" src="images/loading-bars.svg" class="inner-loading" />
             		            </div>
         <form name="loadform" method="POST" novalidate
               data-ng-submit="openAddVM(loadform,loadBalancer)">
+              <div class="row">
+							<div class="form-group">
+
+
+									<div class="col-md-3 col-sm-7 col-xs-7">
+										<select  class="form-control input-group"
+									name="vpcnetwork" data-ng-model="network.vpcnetwork"
+									ng-options="vpcnetwork.name for vpcnetwork in vpcNetworkList"
+									>
+									<option value=""><fmt:message key="common.select"
+											bundle="${msg}" /></option>
+								</select>
+									</div>
+								</div>
+							</div>
 
             <table cellspacing="1" cellpadding="1"
                    class="table table-bordered table-striped">
@@ -120,4 +136,4 @@ pageEncoding="UTF-8"%>
             </table>
         </form>
     </div>
-
+</div>

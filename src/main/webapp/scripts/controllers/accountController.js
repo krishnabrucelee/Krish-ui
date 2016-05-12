@@ -669,7 +669,6 @@ $scope.options = [];
                    var hasServer = appService.crudService.update("users/disable", user);
                    hasServer.then(function (result) {
     			     $scope.list(1);
-    			     $scope.userList();
                    appService.notify({message: 'Disabled successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                    $scope.showLoader = false;
                    $scope.cancel();
@@ -694,7 +693,6 @@ $scope.options = [];
                  var hasServer = appService.crudService.update("users/enable", user);
                  hasServer.then(function (result) {
   			     $scope.list(1);
-  			     $scope.userList();
                  appService.notify({message: 'Enabled successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                  $scope.showLoader = false;
                  $scope.cancel();

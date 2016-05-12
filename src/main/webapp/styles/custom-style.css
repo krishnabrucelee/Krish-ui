@@ -423,6 +423,8 @@ table.dataTable thead .sorting_desc::after {content: "\f0dd";}
 .iso-name{display:block; background:url('../images/second-level-icon.png') no-repeat 0px 4px; padding-left:15px;}
 .icon-disable img.img-icon{opacity:0.2; filter:alpha(opacity=20);}
 
+.form-control.port-forwarding-select{width:50%;}
+
 @media (min-width: 600px) and (max-width: 767px) {
 .dashboard-filters-area{ clear:both;}
 .dashboard-btn-area{float:right !important; clear:both;}
