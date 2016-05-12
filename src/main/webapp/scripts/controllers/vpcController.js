@@ -21,6 +21,8 @@ function vpcCtrl($scope, $modal, appService, filterFilter, $stateParams,$state, 
     $scope.sort = appService.globalConfig.sort;
     $scope.changeSorting = appService.utilService.changeSorting;
     appService.globalConfig.webSocketLoaders.vpcLoader = false;
+    appService.globalConfig.webSocketLoaders.vpnLoader = false;
+    appService.globalConfig.webSocketLoaders.ipLoader = false;
     $scope.paginationObject.sortOrder = '+';
     $scope.paginationObject.sortBy = 'name';
     $scope.vpcList = [];
@@ -1451,7 +1453,7 @@ $scope.vmPortId = instance;
                         appService.localStorageService.set('view', 'vpn-details');
                         $scope.tabview = appService.localStorageService.get('view');
                         $scope.templateCategory = $scope.tabview;
-                        $window.location.href = '#/vpc/view/' + $stateParams.id + '/config-vpc/public-ip/' + $scope.ipDetails.id;
+                        $window.location.href = '#/vpc/view/' + $stateParams.id + '/config-vpc/public-ip/ip-address/' + $scope.ipDetails.id;
                         }
                     }).catch(function(result) {
                         $scope.showLoader = false;
@@ -1507,10 +1509,11 @@ $scope.vmPortId = instance;
                 });
                 if (!oldUser) {
                     $scope.showLoader = true;
-                    user.domainId = $scope.ipDetails.domainId;
-                    user.departmentId = $scope.ipDetails.network.departmentId;
-                    user.networkId = $scope.ipDetails.network.id;
-                    user.projectId = $scope.ipDetails.network.projectId;
+                    user.domainId = $scope.ipDetails.vpc.domainId;
+                    user.departmentId = $scope.ipDetails.vpc.departmentId;
+                    if($scope.ipDetails.vpc.projectId != null) {
+                        user.projectId = $scope.ipDetails.vpc.projectId;
+                    }
                     var hasServer = appService.crudService.add("vpnUser", user);
                     hasServer.then(function(result) {
                         user.userName = "";
@@ -1684,6 +1687,19 @@ $scope.vmPortId = instance;
             $scope.paginationObject.limit = limit;
             $scope.paginationObject.currentPage = pageNumber;
             $scope.paginationObject.totalItems = result.totalItems;
+        });
+    };
+
+    $scope.showVpnKey = function(ipDetails) {
+        var ipAddressId = ipDetails.id;
+        var hasVpn = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "ipAddresses/getvpnkey?id=" + ipAddressId + "&lang=" + appService.localStorageService.cookie.get('language') + "&sortBy=-id");
+        hasVpn.then(function(result) {
+            $scope.vpnKey = result;
+            appService.dialogService.openDialog("app/views/cloud/network/show-vpn-key.jsp", 'md', $scope, ['$scope', '$modalInstance', '$rootScope', function($scope, $modalInstance, $rootScope) {
+                $scope.cancel = function() {
+                    $modalInstance.close();
+                };
+            }]);
         });
     };
 
