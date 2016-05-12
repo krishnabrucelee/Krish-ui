@@ -57,7 +57,7 @@
 			                                    <td class="col-md-9 col-sm-9" colspan="9"><fmt:message key="common.no.records.found" bundle="${msg}" />!!</td>
 			                                </tr>
 			                            </tbody>
-								    <tbody data-ng-show="ip.length > 0">
+								    <tbody data-ng-show="ipList.length > 0">
 								        <tr ng-repeat="ipaddress in ipList">
                       					<td>
                       						<a class="text-info" ui-sref="vpc.view-vpc.config-vpc.public-ip.ip-view({id1:ipaddress.id})"  title="View IP"> {{ ipaddress.publicIpAddress }} <span ng-if="ipaddress.isSourcenat">[Source NAT]</span></a>
