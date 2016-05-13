@@ -66,14 +66,14 @@
 										class="btn btn-info font-bold" data-ng-click="createProject('md')"><span
 											class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="common.create" bundle="${msg}" />
 											</a>
-									    <a class="btn btn-info" id="projects_refresh_button" ui-sref="projects" title="<fmt:message key="common.refresh" bundle="${msg}" />" ui-sref-opts="{reload: true}"><span
+									<a class="btn btn-info" data-ng-click="list(1)" id="projects_refresh_button" title="<fmt:message key="common.refresh" bundle="${msg}" />" ui-sref-opts="{reload: true}"><span
 											class="fa fa-refresh fa-lg "></span></a>
 								</div>
 						 <div class="pull-right dashboard-filters-area" id="volume_quick_search">
 						<form data-ng-submit="searchList(quickSearchText)">
 							<div class="quick-search pull-right">
 								<div class="input-group">
-									<input data-ng-model="quickSearchText" type="text" class="form-control input-medium" placeholder="<fmt:message key="common.quick.search" bundle="${msg}" />" aria-describedby="quicksearch-go">
+									<input data-ng-model="quickSearchText" id="project_list_search" type="text" class="form-control input-medium" placeholder="<fmt:message key="common.quick.search" bundle="${msg}" />" aria-describedby="quicksearch-go">
 								   	<span class="input-group-addon" id="quicksearch-go"><span class="pe-7s-search pe-lg font-bold"></span></span>
 								</div>
 							</div>
@@ -107,13 +107,13 @@
 										<thead>
 											<tr>
 												<!-- <th class="w-5"></th> -->
-												<th ng-click="changeSort('name',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.name" bundle="${msg}" /></th>
-												<th ng-click="changeSort('status',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='status'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="common.status" bundle="${msg}" /></th>
+												<th data-ng-click="changeSort('name',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.name" bundle="${msg}" /></th>
+												<th data-ng-click="changeSort('status',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='status'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="common.status" bundle="${msg}" /></th>
 												<th><fmt:message key="project.owner" bundle="${msg}" /></th>
 												<th><fmt:message key="billing.owner" bundle="${msg}" /></th>
-												<th ng-click="changeSort('domain.name',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='domain.name'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="common.company" bundle="${msg}" /></th>
-												<th ng-click="changeSort('department.userName',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='department.userName'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="common.department" bundle="${msg}" /></th>
-												<th ng-click="changeSort('createdDateTime',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='createdDateTime'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="create.time" bundle="${msg}" /></th>
+												<th data-ng-click="changeSort('domain.name',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='domain.name'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="common.company" bundle="${msg}" /></th>
+												<th data-ng-click="changeSort('department.userName',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='department.userName'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="common.department" bundle="${msg}" /></th>
+												<th data-ng-click="changeSort('createdDateTime',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='createdDateTime'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="create.time" bundle="${msg}" /></th>
 												<th><fmt:message key="common.action" bundle="${msg}" /></th>
 											</tr>
 										</thead>

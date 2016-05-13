@@ -66,13 +66,13 @@
 	                                </div>
 	                            </div>
 	                            <a has-permission="CREATE_USER" id="accounts_add_button" class="btn btn-info font-bold" data-ng-click="addUser('lg')"><span class="pe-7s-add-user pe-lg font-bold m-r-xs"></span><fmt:message key="add.user" bundle="${msg}" /></a>
-	                            <a class="btn btn-info " ui-sref="accounts" id="accounts_refresh_button" title="Refresh"  ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
+	                            <a class="btn btn-info" data-ng-click="list(1)" id="accounts_refresh_button" title="<fmt:message key="common.refresh" bundle="${msg}" />"  ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
 							</div>
                                 <div class="pull-right dashboard-filters-area">
                                    <form data-ng-submit="searchList(userSearch)">
 									<div class="quick-search pull-right">
 									<div class="input-group">
-										<input data-ng-model="userSearch" type="text" class="form-control input-medium" placeholder="<fmt:message key="common.quick.search" bundle="${msg}" />" aria-describedby="quicksearch-go">
+										<input data-ng-model="userSearch" id="account_list_search" type="text" class="form-control input-medium" placeholder="<fmt:message key="common.quick.search" bundle="${msg}" />" aria-describedby="quicksearch-go">
 								   		<span class="input-group-addon" id="quicksearch-go"><span class="pe-7s-search pe-lg font-bold"></span></span>
 									</div>
 									</div>
@@ -119,7 +119,7 @@
 		                                    </tr>
 		                                </tbody>
                                         <tbody data-ng-show="accountList.length > 0">
-                                            <tr  data-ng-repeat="account in filteredCount = (accountList| filter: quickSearch | orderBy:sort.column:sort.descending)">
+                                            <tr  data-ng-repeat="account in filteredCount = accountList">
                                                 <td>
                                                     <a class="text-info" >{{ account.userName}}</a>
                                                </td>
