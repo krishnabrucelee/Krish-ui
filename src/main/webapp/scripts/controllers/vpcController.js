@@ -569,8 +569,126 @@ $scope.dropnetworkLists = {
     	var listVpcNetworks = appService.crudService.listAllByID("guestnetwork/vpcNetworkList?vpcId=" + vpcId);
         listVpcNetworks.then(function(result) {
             $scope.vpcNetworkList = result;
+
         });
    };
+
+    // Delete the Network
+    $scope.deleteNetwork = function(size, network) {
+        appService.dialogService.openDialog("app/views/cloud/network/confirm-delete.jsp", size, $scope, ['$scope', '$modalInstance', function($scope, $modalInstance) {
+            $scope.deleteId = network.id;
+            $scope.ok = function(networkId) {
+                    $scope.showLoader = true;
+                    appService.globalConfig.webSocketLoaders.networkLoader = true;
+                    $modalInstance.close();
+                    var hasNetworks = appService.crudService.softDelete("guestnetwork", network);
+                    hasNetworks.then(function(result) {
+                        $scope.showLoader = false;
+                    }).catch(function(result) {
+                        if (!angular.isUndefined(result.data) && result.data.fieldErrors != null) {
+                            angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
+                                $scope.addnetworkForm[key].$invalid = true;
+                                $scope.addnetworkForm[key].errorMessage = errorMessage;
+                            });
+                        }
+                        $modalInstance.close();
+                        $scope.showLoader = false;
+                        appService.globalConfig.webSocketLoaders.networkLoader = false;
+                    });
+                        $window.location.href = '#/vpc/view/' + $stateParams.id + '/config-vpc/';
+                },
+                $scope.cancel = function() {
+                    $modalInstance.close();
+                };
+        }]);
+    };
+
+   $scope.updateNetwork = function(form) {
+alert("++++++++");
+        $scope.formSubmitted = true;
+        if (form.$valid) {
+            var network = $scope.network;
+            $scope.showLoader = true;
+            if (!angular.isUndefined($scope.network.domain)) {
+                network.domainId = $scope.network.domain.id;
+                delete network.domain;
+            }
+            if (!angular.isUndefined($scope.network.department) && $scope.network.department != null) {
+                network.departmentId = $scope.network.department.id;
+                delete network.department;
+            }
+            if (!angular.isUndefined($scope.network.project) && $scope.network.project != null) {
+                network.projectId = $scope.network.project.id;
+                delete network.project;
+            }
+            network.zoneId = $scope.network.zone.id;
+            network.networkOfferingId = $scope.network.networkOffering.id;
+            delete network.zone;
+            delete network.networkOffering;
+            appService.globalConfig.webSocketLoaders.networkLoader = true;
+            var hasNetwork = appService.crudService.update("guestnetwork", network);
+            hasNetwork.then(function(result) {
+                $scope.showLoader = false;
+                $scope.formSubmitted = false;
+            }).catch(function(result) {
+                if (!angular.isUndefined(result.data) && result.data.fieldErrors != null) {
+                    angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
+                        $scope.addnetworkForm[key].$invalid = true;
+                        $scope.addnetworkForm[key].errorMessage = errorMessage;
+                    });
+                }
+                $scope.showLoader = false;
+                appService.globalConfig.webSocketLoaders.networkLoader = false;
+            });
+        }
+    };
+
+    if ($stateParams.idNetwork > 0) {
+        $scope.showLoader = true;
+        $scope.showLoaderOffer = true;
+
+            var hasServer = appService.crudService.read("guestnetwork", $stateParams.idNetwork);
+        hasServer.then(function(result) {
+            $scope.showLoader = false;
+
+            $scope.network = result;
+   
+        });
+    }
+        $scope.type = $stateParams.view;
+
+    $scope.networkRestart = {};
+    // Restart the Network
+    $scope.restartNetwork = function(size, network) {
+        appService.dialogService.openDialog("app/views/cloud/network/restart-network.jsp", size, $scope, ['$scope', '$modalInstance', function($scope, $modalInstance) {
+            $scope.ok = function(restart) {
+                    $scope.networkRestart = restart;
+                    $scope.showLoader = true;
+                    appService.globalConfig.webSocketLoaders.networkLoader = true;
+                    $modalInstance.close();
+                    var hasServer = appService.crudService.add("guestnetwork/restart/" + network.id, network);
+                    hasServer.then(function(result) { // this is only run after $http completes
+                        $scope.showLoader = false;
+                    }).catch(function(result) {
+                        if (!angular.isUndefined(result.data)) {
+                            if (result.data.fieldErrors != null) {
+                                angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
+                                    $scope.addnetworkForm[key].$invalid = true;
+                                    $scope.addnetworkForm[key].errorMessage = errorMessage;
+                                });
+                            }
+                        }
+                        $scope.showLoader = false;
+                        appService.globalConfig.webSocketLoaders.networkLoader = false;
+                        $modalInstance.close();
+                    });
+                },
+                $scope.cancel = function() {
+                    $modalInstance.close();
+                };
+        }]);
+    };
+
 
 
 if (!angular.isUndefined($stateParams.id2) && $stateParams.id2 > 0) {
@@ -602,7 +720,11 @@ if (!angular.isUndefined($stateParams.id2) && $stateParams.id2 > 0) {
                 	vpcCreateNetwork.projectId = $scope.vpc.projectId;
                 	vpcCreateNetwork.zone = $scope.vpc.zone;
                 	vpcCreateNetwork.zoneId = $scope.vpc.zoneId;
-                	vpcCreateNetwork.aclId = $scope.vpcCreateNetwork.acl.id;
+if (!angular.isUndefined($scope.vpcCreateNetwork.acl)) {
+	 
+               	    vpcCreateNetwork.aclId = $scope.vpcCreateNetwork.acl.id;
+	 
+                   }
                 	vpcCreateNetwork.vpcId = $scope.vpc.id;
                 	vpcCreateNetwork.displayText = $scope.vpcCreateNetwork.name;
                     vpcCreateNetwork.networkOfferingId = $scope.vpcCreateNetwork.networkOffering.id;

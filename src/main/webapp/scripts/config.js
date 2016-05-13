@@ -239,6 +239,15 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider, $compile
                 }
             })
 
+   	   .state('vpc.view-vpc.config-vpc.view-network', {
+                url : "/:view/:idNetwork",
+                templateUrl : VIEW_URL + "views/vpc/vpc-network-dashboard.jsp",
+                data : {
+                    pageTitle : 'view.network',
+                    networkTab : 'details'
+                }
+            })
+
             // Public IP
             .state('vpc.view-vpc.config-vpc.public-ip', {
                 url : "/public-ip",
