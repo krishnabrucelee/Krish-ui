@@ -199,18 +199,12 @@
                                 <div class="col-md-6  col-sm-6 col-lg-6  col-sm-6 col-lg-6">
                                     <label> <input icheck type="checkbox" ng-model="templates.extractable"> <span class="m-l-sm"><fmt:message key="template.extractable" bundle="${msg}" /></span> </label>
                                 </div>
-                                <div class="col-md-6  col-sm-6 col-lg-6  col-sm-6 col-lg-6">
-                                    <label data-ng-if ="templates.passwordEnabled"> <input icheck type="checkbox" ng-model="templates.passwordEnabled"> <fmt:message key="template.password.enabled" bundle="${msg}" /></label>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="row">
-								 <div class="col-md-6  col-sm-6 col-lg-6">
+                                 <div class="col-md-6  col-sm-6 col-lg-6">
                                     <label> <input icheck type="checkbox" ng-model="templates.share"> <span class="m-l-sm"><fmt:message key="template.share" bundle="${msg}" /></span> </label>
                                 </div>
-                            </div>
                         </div>
-                        <div class="form-group" data-ng-class="{'text-danger': uploadTemplateForm.summernoteTextTwo.$invalid && formSubmitted}">
+                        </div>
+                         <div class="form-group" data-ng-class="{'text-danger': uploadTemplateForm.summernoteTextTwo.$invalid && formSubmitted}">
                             <div class="row" >
                                 <label class="col-md-3 col-sm-3 control-label "> <fmt:message key="template.detaileddescription" bundle="${msg}" /><span class="text-danger">*</span></label>
                                 <div class="col-md-8 col-sm-8" data-ng-class="{'error': uploadTemplateForm.summernoteTextTwo.$invalid && formSubmitted}" >
