@@ -584,7 +584,6 @@ if ($stateParams.id2 > 0) {
     	var listVpcNetworksLB = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "guestnetwork/vpcNetworkLists?vpcId=" + vpcId + "&type=" +"Lb" +"&sortBy=-id");
         listVpcNetworksLB.then(function(result) {
             $scope.vpcNetworkListForLB = result;
-		console.log($scope.vpcNetworkListForLB);	
         });
     };
 
@@ -659,13 +658,15 @@ if (!angular.isUndefined($stateParams.id1)) {
 
     $scope.openAddVM = function(form) {
         $scope.loadFormSubmitted = true;
-        if (form.$valid) {
+        if (form.$valid ) {
             $scope.global.rulesLB[0].name = $scope.loadBalancer.name;
             $scope.global.rulesLB[0].publicPort = $scope.loadBalancer.publicPort;
             $scope.global.rulesLB[0].privatePort = $scope.loadBalancer.privatePort;
             $scope.global.rulesLB[0].algorithm = $scope.loadBalancer.algorithms.value;
             //modalService.trigger('app/views/cloud/network/vm-list.jsp', 'lg');
+	   
             $scope.loadBalancer.vmIpaddress = [];
+
             appService.dialogService.openDialog("app/views/vpc/vm-list.jsp", 'lg', $scope, ['$scope', '$modalInstance', function($scope, $modalInstance) {
                 $scope.lbvmLists = function() {
                     $scope.lbvmList = [];
@@ -1569,7 +1570,7 @@ $scope.vmPortId = instance;
     };
 
    $scope.addVM = function(form) {
-        $scope.formSubmitted = true;
+        $scope.portFormSubmitted = true;
         if (form.$valid) {
             $scope.global.rulesPF[0].privateStartPort = $scope.portForward.privateStartPort;
             $scope.global.rulesPF[0].privateEndPort = $scope.portForward.privateEndPort;

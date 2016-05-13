@@ -25,7 +25,7 @@
                                                 <div class="media-body">
                                                 	<!-- <a ui-sref="vpc.private-gateway({id: {{ 1}}})"> -->
 	                                                    <div class="panel panel-info cursor-notallow">
-	                                                        <div class="panel-body p-xxs text-info text-center ">
+	                                                        <div class="panel-body config-box p-xxs text-info text-center ">
 	                                                            <h3> 0 </h3><fmt:message key="private.gateway" bundle="${msg}" />
 	                                                        </div>
 	                                                    </div>
@@ -36,19 +36,20 @@
                                                 <div class="media-body">
                                                 	 <a ui-sref="vpc.view-vpc.config-vpc.public-ip">
 	                                                    <div class="panel panel-info">
-	                                                        <div class="panel-body p-xxs text-info text-center">
+	                                                        <div class="panel-body config-box p-xxs text-info text-center">
 	                                                            <h3>{{ipList.length}}</h3><fmt:message key="public.ip.address" bundle="${msg}" />
 	                                                        </div>
 	                                                    </div>
                                                     </a>
                                                 </div>
-                                            </div></div>
-                                        <div class="p-sm">
+                                            </div>
+                                            <div class="clearfix"></div>
+
                                             <div class="col-md-6">
                                                 <div class="media-body">
                                                 	<!-- <a data-ng-click="acquireNewIp('sm')"> -->
 	                                                    <div class="panel panel-info cursor-notallow">
-	                                                        <div class="panel-body p-xxs text-info text-center">
+	                                                        <div class="panel-body config-box p-xxs text-info text-center">
 	                                                            <h3> 0</h3>
 	                                                            <fmt:message key="site.to.site.vpns" bundle="${msg}" />
 	                                                        </div>
@@ -60,7 +61,7 @@
                                                 <div class="media-body">
                                                     <div class="panel panel-info">
                                                     	<!-- <a href="#" ui-sref="vpc.network-acl({id: {{ 1}}})"> -->
-	                                                        <div class="panel-body p-xxs text-info text-center cursor-notallow" >
+	                                                        <div class="panel-body config-box p-xxs text-info text-center cursor-notallow" >
 	                                                            <h3> 0</h3>
 	                                                            <fmt:message key="network.acl.lists" bundle="${msg}" />
 	                                                        </div>
@@ -68,6 +69,7 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="clearfix"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -88,7 +90,7 @@
 	                                                        <div class="media-body">
 	                                                            <!-- <a href="#" class="cursor-notallow"> -->
 	                                                                <div class="panel panel-info cursor-notallow">
-	                                                                    <div class="panel-body p-xxs text-info text-center">
+	                                                                    <div class="panel-body config-box p-xxs text-info text-center">
 	                                                                        <h3> 0 </h3>
 	                                                                        <fmt:message key="internal.lb" bundle="${msg}" />
 	                                                                    </div>
@@ -102,7 +104,7 @@
 	                                                        <div class="media-body">
 	                                                            <!-- <a ui-sref="vpc.public-lbip({id: {{ 1}}})"> -->
 	                                                                <div class="panel panel-info cursor-notallow">
-	                                                                    <div class="panel-body p-xxs text-info text-center">
+	                                                                    <div class="panel-body config-box p-xxs text-info text-center">
 	                                                                        <h3> 0 </h3>
 	                                                                        <fmt:message key="public.lb.ip" bundle="${msg}" />
 	                                                                    </div>
@@ -116,7 +118,7 @@
 	                                                        <div class="media-body">
 	                                                            <!-- <a ui-sref="vpc.static-nat({id: {{1}}})"> -->
 	                                                                <div class="panel panel-info">
-	                                                                    <div class="panel-body p-xxs text-info text-center cursor-notallow">
+	                                                                    <div class="panel-body config-box p-xxs text-info text-center cursor-notallow">
 	                                                                        <h3> 0 </h3>
 	                                                                        <fmt:message key="static.nats" bundle="${msg}" />
 	                                                                    </div>
@@ -130,7 +132,7 @@
 	                                                        <div class="media-body">
 	                                                          <a  ui-sref="vpc.view-vpc.config-vpc.virtual-machines({id2: {{network.id}}})" >
 	                                                                <div class="panel panel-info">
-	                                                                    <div class="panel-body p-xxs text-info text-center">
+	                                                                    <div class="panel-body config-box p-xxs text-info text-center">
 	                                                                        <h3> 0 </h3>
 	                                                                        <fmt:message key="virtual.machines" bundle="${msg}" />
 	                                                                    </div>

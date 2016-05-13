@@ -10,17 +10,20 @@ pageEncoding="UTF-8"%>
             		            </div>
         <form name="loadform" method="POST" novalidate
               data-ng-submit="openAddVM(loadform,loadBalancer)">
-				<div class="form-group">
+				<div class="form-group" ng-class="{'text-danger': loadform.vpcnetworks.$invalid && loadFormSubmitted">
 					<div class="row">
                 	<div class="col-md-4  col-sm-4 col-xs-14">
                 		<h5 class="pull-left">Tier :</h5>
-                    	<select  class="form-control m-l-md port-forwarding-select input-group pull-left"
-									name="vpcnetwork" data-ng-model="loadBalancer.vpcnetwork"
-									ng-options="vpcnetwork.name for vpcnetwork in vpcNetworkListForLB"
+                    	<select required="true"  class="form-control m-l-md port-forwarding-select input-group pull-left"
+									name="vpcnetworks" data-ng-model="loadBalancer.vpcnetwork"
+									ng-options="vpcnetwork.name for vpcnetwork in vpcNetworkListForLB" data-ng-class="{'error': loadform.vpcnetworks.$invalid && loadFormSubmitted"
 									>
 									<option value=""><fmt:message key="common.select"
 											bundle="${msg}" /></option>
 								</select>
+								<span class="text-center text-danger"
+                                          data-ng-show="loadform.vpcnetworks.$invalid && loadFormSubmitted">
+                                *Required</span></td>
                          </div>
                         </div>
                         </div>
