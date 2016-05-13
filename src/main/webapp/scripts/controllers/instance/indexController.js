@@ -80,7 +80,17 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
     if (!angular.isUndefined($scope.templateVM) && $scope.templateVM != null && $scope.templateVM.$valid) {
         $scope.instance.template = $scope.templateVM;
     }
-
+    $scope.networkVM = appService.localStorageService.get("selectedNetwork");
+    console.log($scope.networkVM);
+    if (!angular.isUndefined($scope.networkVM) && $scope.networkVM != null) {
+        console.log($scope.networkVM);
+        var hasNetwork = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "guestnetwork/"+$scope.networkVM );
+        hasNetwork.then(function(result) { // this is only run after $http
+            $scope.instance.networkUuid = result.uuid;
+            $scope.instance.network = result;
+            appService.localStorageService.set("selectedNetwork", null);
+        });
+    }
     $scope.instance.networkOfferinglist = {};
     $scope.instance.networkOfferinglist.value = 'all';
 
@@ -576,6 +586,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
             } else {
                 $scope.compute = false;
             }
+            if (angular.isUndefined($scope.networkVM) || $scope.networkVM == null ) {
             if (form.networkoffer.$valid && !$scope.compute) {
                 if ($scope.instance.networkOfferinglist.value == 'new') {
                     if ($scope.instance.networks.name == null) {
@@ -682,6 +693,10 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
                     });
                 }
             }
+            }
+            } else {
+                networkSelected = true;
+                submitError = false;
             }
             if (networkSelected && computeOfferValid) {
                 if (!angular.isUndefined($scope.instance.diskOffering)) {

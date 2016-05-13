@@ -312,6 +312,24 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider, $compile
                 }
             })
 
+            // Virtual Machines
+            .state('vpc.view-vpc.config-vpc.lbip', {
+                url : "/lbip/:id3",
+                templateUrl : VIEW_URL + "views/vpc/lbip.jsp",
+                data : {
+                    pageTitle : 'LoadBalancer IP'
+                }
+            })
+
+            // Virtual Machines
+            .state('vpc.view-vpc.config-vpc.natip', {
+                url : "/staticnat/:id4",
+                templateUrl : VIEW_URL + "views/vpc/staticnat.jsp",
+                data : {
+                    pageTitle : 'Static Nat IP'
+                }
+            })
+
             .state('vpc.ip-view', {
                 url : "/:view/:id",
                 templateUrl : VIEW_URL + "views/vpc/vpcip-view.jsp",
