@@ -12,7 +12,7 @@
 
 angular.module('homer').controller('vpcCtrl', vpcCtrl)
 
-function vpcCtrl($scope, $modal, appService, filterFilter, $stateParams,$state, localStorageService, promiseAjax, $window, $location) {
+function vpcCtrl($scope,$rootScope, $modal, appService, filterFilter, $stateParams,$state, localStorageService, promiseAjax, $window, $location) {
     $scope.global = appService.globalConfig;
     $scope.vpc = {};
     $scope.formElements = {};
@@ -40,6 +40,7 @@ function vpcCtrl($scope, $modal, appService, filterFilter, $stateParams,$state, 
     $scope.instanceLists = [];
     $scope.instanceLists.ipAddress = {};
     $scope.networkIdu = {};
+    $scope.templateCategory = $scope.tabview;
 
     $scope.type = $stateParams.view;
     // VPC Offer List
@@ -212,7 +213,7 @@ function vpcCtrl($scope, $modal, appService, filterFilter, $stateParams,$state, 
             $scope.paginationObject.sortOrder = sortOrder;
             $scope.paginationObject.sortBy = sortBy;
             $scope.showLoader = false;
-            appService.localStorageService.set('views', null);
+            appService.localStorageService.set('view', null);
         });
     };
 
@@ -564,15 +565,14 @@ $scope.dropnetworkLists = {
         listVpcNetworks.then(function(result) {
             $scope.vpcNetworkList = result;
         });
+   };
 
-    };
 
-if ($stateParams.id2 > 0) {
+if (!angular.isUndefined($stateParams.id2) && $stateParams.id2 > 0) {
   var listVpcOffers = appService.promiseAjax
                 .httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbynetwork"+"?networkid="+$stateParams.id2 );
         listVpcOffers.then(function(result) {
             $scope.vpcVmList = result;
-
 });
 }
 
@@ -581,7 +581,6 @@ if ($stateParams.id2 > 0) {
     	var listVpcNetworksLB = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "guestnetwork/vpcNetworkLists?vpcId=" + vpcId + "&type=" +"Lb" +"&sortBy=-id");
         listVpcNetworksLB.then(function(result) {
             $scope.vpcNetworkListForLB = result;
-		console.log($scope.vpcNetworkListForLB);	
         });
     };
 
@@ -637,26 +636,6 @@ if ($stateParams.id2 > 0) {
         }]);
     };
 
-$scope.portRulesLists = function(pageNumber) {
-        $scope.showLoader = true;
-        $scope.templateCategory = 'port-forward';
-        $scope.firewallRules = {};
-			$scope.portForward = {};
-       var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
-      /**  var hasFirewallRuless = appService.crudService.listAllByQuery("portforwarding/list?ipaddress=" + $stateParams.id1, $scope.global.paginationHeaders(pageNumber, limit), {
-            "limit": limit
-        });
-        hasFirewallRuless.then(function(result) { // this is only run after
-            $scope.showLoader = true;
-            $scope.portList = result;
-            $scope.showLoader = false;
-            // For pagination
-            $scope.paginationObject.limit = limit;
-            $scope.paginationObject.currentPage = pageNumber;
-            $scope.paginationObject.totalItems = result.totalItems;
-        });**/
-    };
-
  // Load balancer
  $scope.LBlist = function(loadBalancer) {
         $scope.templateCategory = 'load-balance';
@@ -703,9 +682,7 @@ if (!angular.isUndefined($stateParams.id1)) {
                         $scope.loadBalancer.protocol = $scope.loadBalancer.protocol.toUpperCase();
                         $scope.loadBalancer.state = $scope.loadBalancer.state.toUpperCase();
                         $scope.loadBalancer.state = $scope.loadBalancer.state.toUpperCase();
-			console.log(loadBalancer[0].networkId);
 			$scope.loadBalancer.networkId = loadBalancer[0].networkId;
-			console.log("networkid",$scope.loadBalancer.networkId);
 	var hasError = true;
 	var assignedVmIpCount = 0;
 	var selectedVmCount = 0;
@@ -1214,9 +1191,9 @@ $scope.dropnetworkLists = {
     };
 
     $scope.ipLists = function(pageNumber) {
-        appService.localStorageService.set('views', 'ip');
-        $scope.tabViews = appService.localStorageService.get('views');
-        $scope.templateCategorys = $scope.tabViews;
+        appService.localStorageService.set('view', 'ipdetails');
+        $scope.tabview = appService.localStorageService.get('view');
+        $scope.templateCategory = $scope.tabview;
         $scope.active = true;
         //var networkId = $stateParams.id;
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
@@ -1239,11 +1216,13 @@ $scope.dropnetworkLists = {
     };
     $scope.ipLists(1);
 
+        $scope.tabview = appService.localStorageService.get('view');
+
     if (!angular.isUndefined($stateParams.id1) && $stateParams.id1 != null && $stateParams.id > 0) {
         if(angular.isUndefined(appService.localStorageService.get('view')) || appService.localStorageService.get('view') == null){
             appService.localStorageService.set('view', $state.current.data.networkTabs);
         }
-        $scope.tabView = appService.localStorageService.get('view');
+        $scope.tabview = appService.localStorageService.get('view');
         $scope.editIpaddress($stateParams.id1);
     }
 
@@ -1452,6 +1431,17 @@ $scope.vmPortId = instance;
                 };
         }]);
     };
+
+   $scope.selectTab = function(type) {
+        if (type == 'loadBalance') {
+            appService.localStorageService.set('view', 'load-balance');
+        }
+        if (type == 'portForward') {
+            appService.localStorageService.set('view', 'port-forward');
+        }
+        $scope.tabview = appService.localStorageService.get('view');
+        $state.reload();
+    }
 
     $scope.enableVpn = function(size, ipAddress) {
         $scope.ipAddress = angular.copy(ipAddress);
@@ -1687,6 +1677,7 @@ $scope.vmPortId = instance;
     }
 
    $scope.portRulesLists = function(pageNumber) {
+
         $scope.showLoader = true;
         $scope.templateCategory = 'port-forward';
         $scope.firewallRules = {};
@@ -1703,6 +1694,8 @@ $scope.vmPortId = instance;
             $scope.paginationObject.limit = limit;
             $scope.paginationObject.currentPage = pageNumber;
             $scope.paginationObject.totalItems = result.totalItems;
+            appService.localStorageService.set('view', 'port-forward');
+            $scope.tabview = appService.localStorageService.get('view');
         });
     };
 
