@@ -426,6 +426,8 @@ table.dataTable thead .sorting_desc::after {content: "\f0dd";}
 .form-control.port-forwarding-select{width:50%;}
 
 .without-firewall .firewall {padding: 50px 0 65px 0;}
+.config-box{min-height:110px;}
+.vpc-manager .v-timeline::before, .vpc-manager .h-timeline::before{left:-42px;}
 
 @media (min-width: 600px) and (max-width: 767px) {
 .dashboard-filters-area{ clear:both;}
