@@ -29,6 +29,10 @@
 	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="vpc.configuration" bundle="${msg}" /></a>
 	                            <span ng-switch-when="true"><fmt:message key="vpc.configuration" bundle="${msg}" /></span>
                             </span>
+                            <span data-ng-if="state.data.pageTitle === 'Network ACL'">
+	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="network.acl" bundle="${msg}" /></a>
+	                            <span ng-switch-when="true"><fmt:message key="network.acl" bundle="${msg}" /></span>
+                            </span>
                         </li>
                     </ol>
                 </div>
@@ -40,6 +44,9 @@
                 </h2>
                 <h2 class="font-light m-b-xs">
                     <span id="vpc_page_title" data-ng-if="$state.current.data.pageTitle === 'config VPC'"><fmt:message key="vpc.configuration" bundle="${msg}" /></span>
+                </h2>
+                <h2 class="font-light m-b-xs">
+                    <span id="vpc_page_title" data-ng-if="$state.current.data.pageTitle === 'Network ACL'"><fmt:message key="network.acl" bundle="${msg}" /></span>
                 </h2>
                 <small>{{ $state.current.data.pageDesc}}</small>
             </div>

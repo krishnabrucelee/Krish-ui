@@ -13,9 +13,11 @@ pageEncoding="UTF-8"%>
 
                 	<div class="col-md-4  col-sm-4 col-xs-14">
                 		<h5 class="pull-left">Tier :</h5>
-                    	<select required="true" class="form-control m-l-md port-forwarding-select input-group pull-left" name="vpcnetwork" data-ng-model="portForward.vpcnetwork" ng-options="vpcnetwork.name for vpcnetwork in vpcNetworkList" >
+                    	<select required="true" class="form-control m-l-md port-forwarding-select input-group pull-left" name="vpcnetworks" data-ng-model="portForward.vpcnetwork" ng-options="vpcnetwork.name for vpcnetwork in vpcNetworkListByPortforwarding" >
                         	<option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
-                        </select>
+                        </select><span class="text-center text-danger"
+                                          data-ng-show="portform.vpcnetworks.$invalid && portFormSubmitted">
+                                *Required</span></td>
                     </div>
                         </div>
         </div>
