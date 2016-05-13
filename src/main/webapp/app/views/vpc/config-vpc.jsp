@@ -61,7 +61,7 @@
                                                 <div class="media-body">
                                                     <div class="panel panel-info">
                                                     	<a ui-sref="vpc.view-vpc.config-vpc.network-acl">
-	                                                        <div class="panel-body config-box p-xxs text-info text-center cursor-notallow" >
+	                                                        <div class="panel-body config-box p-xxs text-info text-center " >
 	                                                            <h3> 0</h3>
 	                                                            <fmt:message key="network.acl.lists" bundle="${msg}" />
 	                                                        </div>
