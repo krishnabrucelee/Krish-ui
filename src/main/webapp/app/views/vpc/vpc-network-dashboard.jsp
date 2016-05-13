@@ -184,7 +184,7 @@
 			</div>
 
 		</div>
-<%-- 		<div class="col-lg-3 col-md-3 col-sm-4">
+		<div class="col-lg-3 col-md-3 col-sm-4">
 			<div class="panel panel-info">
 				<div class="panel-heading">
 					<h3 class="panel-title">
@@ -203,17 +203,17 @@
 							data-ng-click="deleteNetwork('sm', network)"><span
 								class="fa-trash fa font-bold m-xs"></span> <fmt:message
 									key="delete.network" bundle="${msg}" /></a></li>
-						<li data-ng-if="type != 'edit'" class="list-group-item"><a
+						<%-- <li data-ng-if="type != 'edit'" class="list-group-item"><a
 							has-permission="EDIT_NETWORK"
 							title=" <fmt:message key="edit.network" bundle="${msg}" />"
 							href="#/vpc/view/{{vpc.id}}/config-vpc/edit/{{ network.id}}"> <span
 								class="fa fa-edit font-bold m-xs"></span> <fmt:message
 									key="edit.network" bundle="${msg}" />
-						</a></li>
+						</a></li> --%>
 					</ul>
 				</div>
 			</div>
-		</div> --%>
+		</div>
 
 	</div>
 </form>

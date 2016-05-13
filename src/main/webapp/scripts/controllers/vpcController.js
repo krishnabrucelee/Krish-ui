@@ -595,7 +595,7 @@ $scope.dropnetworkLists = {
                         $scope.showLoader = false;
                         appService.globalConfig.webSocketLoaders.networkLoader = false;
                     });
-                        $window.location.href = '#/vpc/view/' + $stateParams.id + '/config-vpc/';
+                       // $window.location.href = '#/vpc/view/' + $stateParams.id + '/config-vpc/';
                 },
                 $scope.cancel = function() {
                     $modalInstance.close();
@@ -604,7 +604,6 @@ $scope.dropnetworkLists = {
     };
 
    $scope.updateNetwork = function(form) {
-alert("++++++++");
         $scope.formSubmitted = true;
         if (form.$valid) {
             var network = $scope.network;
