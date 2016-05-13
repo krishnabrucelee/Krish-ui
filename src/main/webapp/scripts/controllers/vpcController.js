@@ -12,11 +12,12 @@
 
 angular.module('homer').controller('vpcCtrl', vpcCtrl)
 
-function vpcCtrl($scope, $modal, appService, filterFilter, $stateParams,$state, localStorageService, promiseAjax, $window, $location) {
+function vpcCtrl($scope, $modal, appService, $timeout, filterFilter, $stateParams,$state, localStorageService, promiseAjax, $window, $location) {
     $scope.global = appService.globalConfig;
     $scope.vpc = {};
     $scope.formElements = {};
     $scope.showLoader = false;
+    $scope.showLoaderOffer = false;
     $scope.paginationObject = {};
     $scope.sort = appService.globalConfig.sort;
     $scope.changeSorting = appService.utilService.changeSorting;
@@ -43,6 +44,12 @@ function vpcCtrl($scope, $modal, appService, filterFilter, $stateParams,$state, 
     $scope.networkIdu = {};
     $scope.portForward = {};
     $scope.portform = {};
+    $scope.networkVMList = [];
+    $scope.networkVMLists = [];
+    $scope.lbrulesList = [];
+    $scope.lbrulesLists = [];
+    $scope.lbrulesIps = {};
+    $scope.natIps = {};
 
     $scope.type = $stateParams.view;
     // VPC Offer List
@@ -575,20 +582,73 @@ $scope.dropnetworkLists = {
 
     // VPC Network List
     $scope.listVpcNetwork = function(vpcId) {
+        $scope.showLoaderOffer = true;
     	var listVpcNetworks = appService.crudService.listAllByID("guestnetwork/vpcNetworkList?vpcId=" + vpcId);
         listVpcNetworks.then(function(result) {
             $scope.vpcNetworkList = result;
+            angular.forEach(result, function(value, key) {
+                $scope.getNatList(value.id);
+                $scope.instanceListForVpc(value.id);
+                $scope.lBForVpc(value.id);
+            });
+            $timeout(function(){$scope.callAtTimeout();}, 2000);
+
         });
 
     };
+
+    $scope.callAtTimeout = function() {
+        $scope.showLoaderOffer = false;
+    }
+
 
 if ($stateParams.id2 > 0) {
   var listVpcOffers = appService.promiseAjax
                 .httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbynetwork"+"?networkid="+$stateParams.id2 );
         listVpcOffers.then(function(result) {
             $scope.vpcVmList = result;
+  });
+}
 
-});
+if ($stateParams.id3 > 0) {
+    var hasloadBalancer = appService.crudService.listByQuery("ipAddresses/vpc/lb/list?networkId=" + $stateParams.id3);
+    hasloadBalancer.then(function(result) {
+        $scope.lbrulesIp = result;
+    });
+}
+
+
+if ($stateParams.id4 > 0) {
+    var hasNat = appService.crudService.listByQuery("ipAddresses/vpc/nat/list?networkId=" + $stateParams.id4);
+    hasNat.then(function(result) {
+        $scope.natIps = result;
+    });
+}
+
+$scope.instanceListForVpc = function(networkId){
+    var listVpcVm = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbynetwork?networkid="+networkId );
+    listVpcVm.then(function(result) {
+        $scope.networkVMLists = [];
+        angular.forEach(result, function(value, key) {
+            if(result.length >= $scope.networkVMLists.length) {
+                $scope.networkVMLists.push(key + ': ' + value);
+            }
+        });
+        $scope.networkVMList.push($scope.networkVMLists.length);
+    });
+}
+
+$scope.lBForVpc = function(networkId){
+    var hasloadBalancer = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "loadBalancer/network/list?networkId=" + networkId + "&lang=" + appService.localStorageService.cookie.get('language'));
+    hasloadBalancer.then(function(result) {
+        $scope.lbrulesLists = [];
+        angular.forEach(result, function(value, key) {
+            if(result.length >= $scope.lbrulesLists.length) {
+                $scope.lbrulesLists.push(key + ': ' + value);
+            }
+        });
+        $scope.lbrulesList.push($scope.lbrulesLists.length);
+    });
 }
 
  // VPC Network List
@@ -1433,6 +1493,19 @@ $scope.vmPortId = instance;
         }]);
     };
 
+    $scope.getNatList = function(networkId){
+        var hasNat = appService.crudService.listByQuery("ipAddresses/vpc/nat/list?networkId=" + networkId);
+        hasNat.then(function(result) {
+            $scope.natLists = [];
+            angular.forEach(result, function(value, key) {
+                if(result.length >= $scope.natLists.length) {
+                    $scope.natLists.push(key + ': ' + value);
+                }
+            });
+            $scope.natList.push($scope.natLists.length);
+        });
+    };
+
     $scope.enableVpn = function(size, ipAddress) {
         $scope.ipAddress = angular.copy(ipAddress);
         appService.dialogService.openDialog("app/views/vpc/enable-vpn.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function($scope, $modalInstance, $rootScope) {
@@ -1559,6 +1632,7 @@ $scope.vmPortId = instance;
     };
 
   $scope.openAddInstance = function(size) {
+      appService.localStorageService.set("selectedNetwork", $stateParams.id2);
         var modalInstance = $modal.open({
             templateUrl: 'app/views/cloud/instance/add.jsp',
             controller: 'instanceCtrl',
@@ -1574,8 +1648,7 @@ $scope.vmPortId = instance;
         modalInstance.result.then(function(selectedItem) {
             $scope.selected = selectedItem;
         }, function() {
-            $scope.vmlist(1, "Expunging");
-            $scope.borderContent = "Expunging";
+            appService.localStorageService.set("selectedNetwork", null);
         });
     };
 
@@ -1705,7 +1778,7 @@ $scope.vmPortId = instance;
     if ($stateParams.id1 > 0  && $location.path() == '/vpc/view/' + $stateParams.id +'/config-vpc/public-ip/ip-address/'+$stateParams.id1){
         $scope.listVpcNetwork($stateParams.id);
         $scope.listVpcNetworkByPortforwarding($stateParams.id);
-            $scope.listVpcNetworkForLB($stateParams.id);
+        $scope.listVpcNetworkForLB($stateParams.id);
         $scope.vpcTiers($stateParams.id);
     }
     
