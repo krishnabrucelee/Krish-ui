@@ -491,23 +491,45 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
     };
 
     $scope.instance.networkList = [];
+    $scope.deselect = false;
     $scope.stateChanged = function (item) {
         if($scope.instance.networks.networkList[item].vpcId != null) {
             if(angular.isUndefined($scope.instance.networkss[item])) {
-                $scope.instance.networkss[item] = true;
-            } else {
-                if(networkArray.length > 0){
-                 $scope.instance.networkss[networkArray[0]] = false;
-                 networkArray.splice(0, 1);
-                 networkArray.push(item);
+                if($scope.deselect) {
+                  $scope.instance.networkss[item] = false;
                 } else {
-                   networkArray.push(item);
+                    $scope.instance.networkss[item] = true;
                 }
-             $scope.instance.networkc = $scope.instance.networks.networkList[item].uuid;
+            } else {
+                $scope.instance.networkss[item] = true;
+                if (networkArray.length > 0) {
+                    $scope.instance.networkss[networkArray[0]] = false;
+                    networkArray.splice(0, 1);
+                    networkArray.push(item);
+                 } else {
+                    $scope.instance.networkss[item] = true;
+                    networkArray.push(item);
+                }
+                if(!$scope.deselect) {
+                 $scope.instance.networkc = $scope.instance.networks.networkList[item].uuid;
+                }
             }
         }
-
     }
+
+    $scope.$watch('instance.networkc', function(obj) {
+        if (!angular.isUndefined(obj)) {
+            angular.forEach($scope.instance.networks.networkList, function(value, item) {
+            if($scope.instance.networks.networkList[item].uuid == obj) {
+                if($scope.instance.networks.networkList[item].vpcId == null) {
+                    $scope.deselect = true;
+                } else {
+                    $scope.deselect = false;
+                }
+            }
+          });
+        }
+    });
 
     $scope.stateChangedvpc = function (item) {
         if($scope.instance.networks.vpcList[item].vpcId != null) {

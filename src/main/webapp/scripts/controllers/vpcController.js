@@ -21,9 +21,12 @@ function vpcCtrl($scope, $modal, appService, filterFilter, $stateParams,$state, 
     $scope.sort = appService.globalConfig.sort;
     $scope.changeSorting = appService.utilService.changeSorting;
     appService.globalConfig.webSocketLoaders.vpcLoader = false;
+    appService.globalConfig.webSocketLoaders.vpnLoader = false;
+    appService.globalConfig.webSocketLoaders.ipLoader = false;
     $scope.paginationObject.sortOrder = '+';
     $scope.paginationObject.sortBy = 'name';
     $scope.vpcList = [];
+    $scope.portList = [];
     $scope.vpcForm = {};
     $scope.portvmList = {};
     $scope.vpcPersist = {};
@@ -38,6 +41,8 @@ function vpcCtrl($scope, $modal, appService, filterFilter, $stateParams,$state, 
     $scope.instanceLists = [];
     $scope.instanceLists.ipAddress = {};
     $scope.networkIdu = {};
+    $scope.portForward = {};
+    $scope.portform = {};
 
     $scope.type = $stateParams.view;
     // VPC Offer List
@@ -62,6 +67,7 @@ function vpcCtrl($scope, $modal, appService, filterFilter, $stateParams,$state, 
             $scope.vpcPersist = result;
             $scope.listVpcNetwork($stateParams.id);
             $scope.listVpcNetworkByPortforwarding($stateParams.id);
+            $scope.listVpcNetworkForLB($scope.vpc.id);
             $scope.vpcTiers($stateParams.id);
             if ($state.current.data.pageTitle === "view VPC") {
                 $state.current.data.pageName = result.name;
@@ -118,9 +124,9 @@ function vpcCtrl($scope, $modal, appService, filterFilter, $stateParams,$state, 
 
    // VPC Network List
     $scope.listVpcNetworkByPortforwarding = function(vpcId) {
-    	var listVpcNetworks = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "guestnetwork/vpcNetworkList?vpcId=" + vpcId +     "&type=" +"PortForwarding" +"&sortBy=-id");
+    	var listVpcNetworks = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "guestnetwork/vpcNetworkLists?vpcId=" + vpcId + "&type=" +"PortForwarding" +"&sortBy=-id");
         listVpcNetworks.then(function(result) {
-            $scope.vpcNetworkList = result;
+            $scope.vpcNetworkListByPortforwarding = result;
         });
     };
 
@@ -575,6 +581,16 @@ if ($stateParams.id2 > 0) {
 });
 }
 
+ // VPC Network List
+    $scope.listVpcNetworkForLB = function(vpcId) {
+    	var listVpcNetworksLB = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "guestnetwork/vpcNetworkLists?vpcId=" + vpcId + "&type=" +"Lb" +"&sortBy=-id");
+        listVpcNetworksLB.then(function(result) {
+            $scope.vpcNetworkListForLB = result;
+		console.log($scope.vpcNetworkListForLB);	
+        });
+    };
+
+
     $scope.createNetwork = function(size) {
         appService.dialogService.openDialog($scope.global.VIEW_URL + "vpc/create.jsp", size, $scope, [ '$scope',
                 '$modalInstance', '$rootScope', function($scope, $modalInstance, $rootScope) {
@@ -626,28 +642,9 @@ if ($stateParams.id2 > 0) {
         }]);
     };
 
-$scope.portRulesLists = function(pageNumber) {
-        $scope.showLoader = true;
-        $scope.templateCategory = 'port-forward';
-        $scope.firewallRules = {};
-			$scope.portForward = {};
-       var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
-      /**  var hasFirewallRuless = appService.crudService.listAllByQuery("portforwarding/list?ipaddress=" + $stateParams.id1, $scope.global.paginationHeaders(pageNumber, limit), {
-            "limit": limit
-        });
-        hasFirewallRuless.then(function(result) { // this is only run after
-            $scope.showLoader = true;
-            $scope.portList = result;
-            $scope.showLoader = false;
-            // For pagination
-            $scope.paginationObject.limit = limit;
-            $scope.paginationObject.currentPage = pageNumber;
-            $scope.paginationObject.totalItems = result.totalItems;
-        });**/
-    };
-
  // Load balancer
  $scope.LBlist = function(loadBalancer) {
+        $scope.templateCategory = 'load-balance';
         $scope.rulesvmList = {};
         $scope.stickiness = {};
         $scope.loadBalancer = {};
@@ -674,7 +671,7 @@ if (!angular.isUndefined($stateParams.id1)) {
             appService.dialogService.openDialog("app/views/vpc/vm-list.jsp", 'lg', $scope, ['$scope', '$modalInstance', function($scope, $modalInstance) {
                 $scope.lbvmLists = function() {
                     $scope.lbvmList = [];
-                    var networkId = $stateParams.id;
+                    var networkId = $scope.loadBalancer.vpcnetwork.id;
                     var hasVms = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbynetwork?networkid=" + networkId + "&lang=" + appService.localStorageService.cookie.get('language') + "&sortBy=-id");
                     hasVms.then(function(result) { // this is only run after $http
                         $scope.lbvmList = result;
@@ -685,11 +682,15 @@ if (!angular.isUndefined($stateParams.id1)) {
                         loadBalancer.vmIpAddress = [];
                         $scope.loadBalancer = $scope.global.rulesLB[0];
                         $scope.showLoader = true;
+			//state-param id to be changed
                         $scope.loadBalancer.ipAddressId = $stateParams.id1;
                         // var loadBalancer = angular.copy($scope.loadBalancer);
                         $scope.loadBalancer.protocol = $scope.loadBalancer.protocol.toUpperCase();
                         $scope.loadBalancer.state = $scope.loadBalancer.state.toUpperCase();
                         $scope.loadBalancer.state = $scope.loadBalancer.state.toUpperCase();
+			console.log(loadBalancer[0].networkId);
+			$scope.loadBalancer.networkId = loadBalancer[0].networkId;
+			console.log("networkid",$scope.loadBalancer.networkId);
 	var hasError = true;
 	var assignedVmIpCount = 0;
 	var selectedVmCount = 0;
@@ -783,7 +784,7 @@ if (!angular.isUndefined($stateParams.id1)) {
         appService.dialogService.openDialog("app/views/vpc/vm-list.jsp", 'lg', $scope, ['$scope', '$modalInstance', function($scope, $modalInstance) {
             $scope.lbvmLists = function() {
                 $scope.lbvmList = [];
-                var networkId = $stateParams.id;
+                var networkId = $scope.loadBalancer.vpcnetwork.id;
                 var hasVms = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbynetwork?networkid=" + networkId + "&lang=" + appService.localStorageService.cookie.get('language') + "&sortBy=-id");
                 hasVms.then(function(result) { // this is only run after $http
                     $scope.lbvmList = result;
@@ -836,7 +837,7 @@ if (!angular.isUndefined($stateParams.id1)) {
     $scope.loadBalancer.algorithm = {};
     // Edit the load balancer
     $scope.editrule = function(size, loadBalancer) {
-        appService.dialogService.openDialog("vpc/edit-rule.jsp", size, $scope, ['$scope', '$modalInstance', function($scope, $modalInstance) {
+        appService.dialogService.openDialog("app/views/vpc/edit-rule.jsp", size, $scope, ['$scope', '$modalInstance', function($scope, $modalInstance) {
             $scope.loadBalancer = angular.copy(loadBalancer);
             angular.forEach($scope.dropnetworkLists.algorithms, function(obj, key) {
                 if (obj.value == $scope.loadBalancer.algorithm) {
@@ -876,7 +877,7 @@ if (!angular.isUndefined($stateParams.id1)) {
         }]);
     };
     $scope.deleteRules = function(size, loadBalancer) {
-        appService.dialogService.openDialog("vpc/delete-rule.jsp", 'sm', $scope, ['$scope', '$modalInstance', function($scope, $modalInstance) {
+        appService.dialogService.openDialog("app/views/vpc/delete-rule.jsp", 'sm', $scope, ['$scope', '$modalInstance', function($scope, $modalInstance) {
             $scope.deleteObject = loadBalancer;
             $scope.delete = function(deleteObject) {
                     appService.globalConfig.webSocketLoaders.loadBalancerLoader = true;
@@ -1077,20 +1078,6 @@ $scope.removeRule = function(size, vmIpAddress, loadBalancer) {
 };
 
 $scope.dropnetworkLists = {
-        /*
-         * networkOffers: [ { "id": 1, "name": "Advanced Network", "networkID":
-         * "f6dfee50-690c-4210-b77c-c9bf3179b159", "networkType": { "id": 2,
-         * "name": "Isolated" }, "ip": "10.1.10.92", "gateway": "10.1.1.1",
-         * "netmask": "255.255.255.0", "isDefault": "No" }, { "id": 2, "name":
-         * "Custom Network", "networkID":
-         * "f6dfee50-690c-4210-b77c-c9bf31734e59", "networkType": { "id": 1,
-         * "name": "Shared Network" }, "ip": "10.2.2.92", "gateway": "10.2.2.1",
-         * "netmask": "255.255.255.0", "isDefault": "NO" }, { "id": 3, "name":
-         * "Default Network", "networkID":
-         * "f6dfee50-690c-4210-b77c-m4fd452321e3", "networkType": { "id": 2,
-         * "name": "Isolated" }, "ip": "10.1.10.92", "gateway": "10.1.1.1",
-         * "netmask": "255.255.255.0", "isDefault": "NO" } ],
-         */
         views: [{
             id: 1,
             name: 'Guest Networks'
@@ -1453,7 +1440,7 @@ $scope.vmPortId = instance;
                         appService.localStorageService.set('view', 'vpn-details');
                         $scope.tabview = appService.localStorageService.get('view');
                         $scope.templateCategory = $scope.tabview;
-                        $window.location.href = '#/vpc/view/' + $stateParams.id + '/config-vpc/public-ip/' + $scope.ipDetails.id;
+                        $window.location.href = '#/vpc/view/' + $stateParams.id + '/config-vpc/public-ip/ip-address/' + $scope.ipDetails.id;
                         }
                     }).catch(function(result) {
                         $scope.showLoader = false;
@@ -1509,10 +1496,11 @@ $scope.vmPortId = instance;
                 });
                 if (!oldUser) {
                     $scope.showLoader = true;
-                    user.domainId = $scope.ipDetails.domainId;
-                    user.departmentId = $scope.ipDetails.network.departmentId;
-                    user.networkId = $scope.ipDetails.network.id;
-                    user.projectId = $scope.ipDetails.network.projectId;
+                    user.domainId = $scope.ipDetails.vpc.domainId;
+                    user.departmentId = $scope.ipDetails.vpc.departmentId;
+                    if($scope.ipDetails.vpc.projectId != null) {
+                        user.projectId = $scope.ipDetails.vpc.projectId;
+                    }
                     var hasServer = appService.crudService.add("vpnUser", user);
                     hasServer.then(function(result) {
                         user.userName = "";
@@ -1583,9 +1571,8 @@ $scope.vmPortId = instance;
     };
 
    $scope.addVM = function(form) {
-
+        $scope.formSubmitted = true;
         if (form.$valid) {
-
             $scope.global.rulesPF[0].privateStartPort = $scope.portForward.privateStartPort;
             $scope.global.rulesPF[0].privateEndPort = $scope.portForward.privateEndPort;
             $scope.global.rulesPF[0].publicStartPort = $scope.portForward.publicStartPort;
@@ -1595,8 +1582,8 @@ $scope.vmPortId = instance;
                 $scope.portvmLists = function() {
                     $scope.templateCategory = 'instance';
                     $scope.portvmList = [];
-                    var networkId = $stateParams.id;
-        var hasVms = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbynetwork?networkid="+networkId +"&lang=" + appService.localStorageService.cookie.get('language')+"&sortBy=-id");
+                    var networkId = $scope.portForward.vpcnetwork.id;     
+                    var hasVms = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbynetwork?networkid="+networkId +"&lang=" + appService.localStorageService.cookie.get('language')+"&sortBy=-id");
                     hasVms.then(function(result) { // this is only run after $http
                         $scope.portvmList = result;
                     });
@@ -1607,7 +1594,7 @@ $scope.vmPortId = instance;
                     $scope.portForward = $scope.global.rulesPF[0];
                     $scope.formSubmitted = true;
                     $scope.showLoader = true;
-                    $scope.portForward.networkId = $stateParams.id;
+                    $scope.portForward.networkId = portinstance[0].networkId;
                     $scope.vmIpAddress = {};
 		    $scope.instance = {};
                     var hasError = true;
@@ -1689,15 +1676,81 @@ $scope.vmPortId = instance;
         });
     };
 
-    if ($stateParams.id > 0  && $location.path() == '/vpc/view/' + $stateParams.id +'/config-vpc' ) {
+    $scope.showVpnKey = function(ipDetails) {
+        var ipAddressId = ipDetails.id;
+        var hasVpn = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "ipAddresses/getvpnkey?id=" + ipAddressId + "&lang=" + appService.localStorageService.cookie.get('language') + "&sortBy=-id");
+        hasVpn.then(function(result) {
+            $scope.vpnKey = result;
+            appService.dialogService.openDialog("app/views/cloud/network/show-vpn-key.jsp", 'md', $scope, ['$scope', '$modalInstance', '$rootScope', function($scope, $modalInstance, $rootScope) {
+                $scope.cancel = function() {
+                    $modalInstance.close();
+                };
+            }]);
+        });
+    };
+
+     if ($stateParams.id > 0  && $location.path() == '/vpc/view/' + $stateParams.id +'/config-vpc' ) {
         $scope.listVpcNetwork($stateParams.id);
     }
 
     if ($stateParams.id1 > 0  && $location.path() == '/vpc/view/' + $stateParams.id +'/config-vpc/public-ip/ip-address/'+$stateParams.id1){
         $scope.listVpcNetwork($stateParams.id);
         $scope.listVpcNetworkByPortforwarding($stateParams.id);
+            $scope.listVpcNetworkForLB($stateParams.id);
         $scope.vpcTiers($stateParams.id);
     }
+    
+    $scope.deletePortRules = function(size, portForward) {
+        appService.dialogService.openDialog("app/views/vpc/confirm-delete.jsp", size, $scope, ['$scope', '$modalInstance', function($scope, $modalInstance) {
+            $scope.deleteId = portForward.id;
+            $scope.ok = function(deleteId) {
+                    $scope.showLoader = true;
+                    var hasStorage = appService.crudService.delete("portforwarding", portForward.id);
+                    hasStorage.then(function(result) {
+                        $scope.showLoader = false;
+                    appService.globalConfig.webSocketLoaders.portForwardLoader = true;
+                    }).catch(function(result) {
+                        if (!angular.isUndefined(result.data)) {
+                            if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
+                                var msg = result.data.globalError[0];
+                                $scope.showLoader = false;
+                                appService.notify({
+                                    message: msg,
+                                    classes: 'alert-danger',
+                                    templateUrl: $scope.global.NOTIFICATION_TEMPLATE
+                                });
+                            }
+                        }
+                        appService.globalConfig.webSocketLoaders.portForwardLoader = false;
+                    });
+                    $modalInstance.close();
+                },
+                $scope.cancel = function() {
+                    $modalInstance.close();
+                };
+        }]);
+    };
+
+  $scope.portIPList = function(instance, portvmList, index) {
+	angular.forEach(portvmList, function(obj, key) {
+		if(key == index) {
+		    	obj.port = true;
+		} else {
+			obj.port = false;
+                 }
+	})
+        var instanceId = instance;
+$scope.vmPortId = instance;
+        $scope.selected = instanceId;
+        $scope.instances = instance;
+
+        var hasPortIP = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbynicandinstances?instanceid=" + instanceId + "&lang=" + appService.localStorageService.cookie.get('language') + "&sortBy=-id");
+        hasPortIP.then(function(result) {
+            $scope.portIPLists = result;
+            $scope.showLoader = false;
+        });
+    };
+
 
     $scope.$on(appService.globalConfig.webSocketEvents.vpcEvents.createVPC, function(event, args) {
         appService.globalConfig.webSocketLoaders.vpcLoader = false;
@@ -1738,7 +1791,37 @@ $scope.vmPortId = instance;
         appService.globalConfig.webSocketLoaders.ipLoader = false;
         $scope.ipLists(1);
     });
-    $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.vpnCreate, function(event, args) {
+
+    $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.loadbalancerSave, function(event, args) {
+    appService.globalConfig.webSocketLoaders.loadBalancerLoader = false;
+    $scope.LBlist(1);
+});
+
+    $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.assignRule, function(event, args) {
+    appService.globalConfig.webSocketLoaders.loadBalancerLoader = false;
+    $scope.LBlist(1);
+    });
+
+    $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.configureStickiness, function(event, args) {
+    appService.globalConfig.webSocketLoaders.loadBalancerLoader = false;
+    $scope.LBlist(1);
+    });
+
+$scope.$on(appService.globalConfig.webSocketEvents.networkEvents.editrule, function(event, args) {
+    appService.globalConfig.webSocketLoaders.loadBalancerLoader = false;
+    $scope.LBlist(1);
+});
+$scope.$on(appService.globalConfig.webSocketEvents.networkEvents.deleteRules, function(event, args) {
+    appService.globalConfig.webSocketLoaders.loadBalancerLoader = false;
+    appService.globalConfig.webSocketLoaders.networkLoader = false;
+    $scope.LBlist(1);
+});
+$scope.$on(appService.globalConfig.webSocketEvents.networkEvents.editStickiness, function(event, args) {
+    appService.globalConfig.webSocketLoaders.loadBalancerLoader = false;
+    $scope.LBlist(1);
+});
+
+$scope.$on(appService.globalConfig.webSocketEvents.networkEvents.vpnCreate, function(event, args) {
         appService.globalConfig.webSocketLoaders.vpnLoader = false;
         appService.globalConfig.webSocketLoaders.ipLoader = false;
         $scope.ipLists(1);
@@ -1748,6 +1831,16 @@ $scope.vmPortId = instance;
         appService.globalConfig.webSocketLoaders.ipLoader = false;
         $scope.ipLists(1);
     });
+    
+    $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.deletePortRules, function(event, args) {
+    appService.globalConfig.webSocketLoaders.portForwardLoader = false;
+    $scope.portRulesLists(1);
+});
+$scope.$on(appService.globalConfig.webSocketEvents.networkEvents.portforwardSave, function(event, args) {
+    appService.globalConfig.webSocketLoaders.portForwardLoader = false;
+    $scope.portRulesLists(1);
+});
+    
     $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.vpnUserAdd, function(event, args) {
         appService.globalConfig.webSocketLoaders.vpnLoader = false;
         appService.localStorageService.set('view', 'vpn-details');
