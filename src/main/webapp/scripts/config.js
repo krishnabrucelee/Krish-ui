@@ -280,7 +280,7 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider, $compile
                 url : "/:view/:id3",
                 templateUrl : VIEW_URL + "views/vpc/view-network-acl.jsp",
                 data : {
-                    pageTitle : 'view.network',
+                    pageTitle : 'View Network',
                     networkTab : 'details'
                 }
             })

@@ -26,12 +26,28 @@
 	                            <span ng-switch-when="true">{{ state.data.pageName }}</span>
                             </span>
                             <span data-ng-if="state.data.pageTitle === 'config VPC'">
-	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="vpc.configuration" bundle="${msg}" /></a>
+	                            <a ng-switch-when="false" ng-href="{{'#/vpc/view/'+state.data.id}}/config-vpc"><fmt:message key="vpc.configuration" bundle="${msg}" /></a>
 	                            <span ng-switch-when="true"><fmt:message key="vpc.configuration" bundle="${msg}" /></span>
                             </span>
+                            <span data-ng-if="state.data.pageTitle === 'Public IP'">
+	                            <a ng-switch-when="false" ng-href="{{'#/vpc/view/'+state.data.id}}/config-vpc/public-ip"><fmt:message key="public.ip" bundle="${msg}" /></a>
+	                            <span ng-switch-when="true"><fmt:message key="public.ip" bundle="${msg}" /></span>
+                            </span>
+                            <span data-ng-if="state.data.pageTitle === 'Virtual Machines'">
+	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.virtual.machines" bundle="${msg}" /></a>
+	                            <span ng-switch-when="true"><fmt:message key="common.virtual.machines" bundle="${msg}" /></span>
+                            </span>
+                            <span data-ng-if="state.data.pageTitle === 'View IP'">
+	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="ip.address" bundle="${msg}" /></a>
+	                            <span ng-switch-when="true"><fmt:message key="ip.address" bundle="${msg}" /></span>
+                            </span>
                             <span data-ng-if="state.data.pageTitle === 'Network ACL'">
-	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="network.acl" bundle="${msg}" /></a>
+	                            <a ng-switch-when="false" ng-href="{{'#/vpc/view/'+state.data.id}}/config-vpc/network-acl"><fmt:message key="network.acl" bundle="${msg}" /></a>
 	                            <span ng-switch-when="true"><fmt:message key="network.acl" bundle="${msg}" /></span>
+                            </span>
+                            <span data-ng-if="state.data.pageTitle === 'View Network'">
+	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}">{{ state.data.pageName }}</a>
+	                            <span ng-switch-when="true">{{ state.data.pageName }}</span>
                             </span>
                         </li>
                     </ol>
@@ -40,13 +56,25 @@
                     <span id="vpc_page_title" data-ng-if="$state.current.data.pageTitle === 'VPC'"><fmt:message key="common.vpc" bundle="${msg}" /></span>
                 </h2>
                 <h2 class="font-light m-b-xs">
-                    <span id="vpc_page_title" data-ng-if="$state.current.data.pageTitle === 'view VPC'">{{ $state.current.data.pageName }}</span>
+                    <span id="view_vpc_page_title" data-ng-if="$state.current.data.pageTitle === 'view VPC'">{{ $state.current.data.pageName }}</span>
                 </h2>
                 <h2 class="font-light m-b-xs">
-                    <span id="vpc_page_title" data-ng-if="$state.current.data.pageTitle === 'config VPC'"><fmt:message key="vpc.configuration" bundle="${msg}" /></span>
+                    <span id="vpc_configuration_page_title" data-ng-if="$state.current.data.pageTitle === 'config VPC'"><fmt:message key="vpc.configuration" bundle="${msg}" /></span>
                 </h2>
                 <h2 class="font-light m-b-xs">
-                    <span id="vpc_page_title" data-ng-if="$state.current.data.pageTitle === 'Network ACL'"><fmt:message key="network.acl" bundle="${msg}" /></span>
+                    <span id="vpc_public_ip_page_title" data-ng-if="$state.current.data.pageTitle === 'Public IP'"><fmt:message key="public.ip" bundle="${msg}" /></span>
+                </h2>
+                <h2 class="font-light m-b-xs">
+                    <span id="vpc_virtual_machine_page_title" data-ng-if="$state.current.data.pageTitle === 'Virtual Machines'"><fmt:message key="common.virtual.machines" bundle="${msg}" /></span>
+                </h2>
+                <h2 class="font-light m-b-xs">
+                    <span id="vpc_ip_address_page_title" data-ng-if="$state.current.data.pageTitle === 'View IP'"><fmt:message key="ip.address" bundle="${msg}" /></span>
+                </h2>
+                <h2 class="font-light m-b-xs">
+                    <span id="vpc_network_acl_page_title" data-ng-if="$state.current.data.pageTitle === 'Network ACL'"><fmt:message key="network.acl" bundle="${msg}" /></span>
+                </h2>
+                <h2 class="font-light m-b-xs">
+                    <span id="vpc_view_network_page_title" data-ng-if="$state.current.data.pageTitle === 'View Network'">{{ $state.current.data.pageName }}</span>
                 </h2>
                 <small>{{ $state.current.data.pageDesc}}</small>
             </div>
@@ -67,19 +95,19 @@
                              <div class="clearfix"></div>
                              </div>
                          </div>
-						 <a class="btn btn-info" data-ng-click="createVpc('md')"> <span class="pe-7s-plus pe-lg font-bold m-r-xs"></span> Add VPC</a>
-                         <a class="btn btn-info" data-ng-click="list(1)"  title="<fmt:message key="common.refresh" bundle="${msg}"/>"><span class="fa fa-refresh fa-lg "></span></a>
+						 <a class="btn btn-info" id="vpc_add_button" data-ng-click="createVpc('md')"> <span class="pe-7s-plus pe-lg font-bold m-r-xs"></span> Add VPC</a>
+                         <a class="btn btn-info" id="vpc_refresh_button" data-ng-click="list(1)"  title="<fmt:message key="common.refresh" bundle="${msg}"/>"><span class="fa fa-refresh fa-lg "></span></a>
                     </div>
-                    <div class="pull-right dashboard-filters-area" id="vpc_quick_search">
+                    <div class="pull-right dashboard-filters-area">
 						<form data-ng-submit="searchList(vpcSearch)">
 							<div class="quick-search pull-right">
 							<div class="input-group">
-							<input data-ng-model="vpcSearch" type="text" class="form-control input-medium" placeholder="<fmt:message key="common.quick.search" bundle="${msg}" />" aria-describedby="quicksearch-go">
+							<input data-ng-model="vpcSearch" id="vpc_quick_search" type="text" class="form-control input-medium" placeholder="<fmt:message key="common.quick.search" bundle="${msg}" />" aria-describedby="quicksearch-go">
 							<span class="input-group-addon" id="quicksearch-go"><span class="pe-7s-search pe-lg font-bold"></span></span>
 							</div>
 							</div>
 							<span class="pull-right m-r-sm" data-ng-show="global.sessionValues.type == 'ROOT_ADMIN'">
-								<select	class="form-control input-group col-xs-5" name="domainView" data-ng-model="domainView" data-ng-change="selectDomainView(1)" data-ng-options="domainView.name for domainView in domainList">
+								<select	class="form-control input-group col-xs-5" id="vpc_domain_filter" name="domainView" data-ng-model="domainView" data-ng-change="selectDomainView(1)" data-ng-options="domainView.name for domainView in domainList">
 								<option value=""> <fmt:message key="common.domain.filter" bundle="${msg}" /></option>
 								</select>
 							</span>
@@ -92,14 +120,14 @@
             </div>
             </div>
 				<div class="row">
-					<div class="col-md-12 col-sm-12 col-xs-12 ">
+					<div class="col-md-12 col-sm-12 col-xs-12 " id="vpc_pagination_container">
 						<div class="white-content">
 							<div data-ng-show="showLoader" style="margin: 1%">
 								<get-loader-image data-ng-show="showLoader"></get-loader-image>
 							</div>
 							<div data-ng-hide="showLoader"class="table-responsive">
 							<div class="white-content">
-								<table cellspacing="1" cellpadding="1" class="table dataTable table-bordered table-striped">
+								<table cellspacing="1" cellpadding="1" class="table dataTable table-bordered table-striped" id="vpc_table">
 								    <thead>
 								        <tr>
 								            <th data-ng-click="changeSort('name',paginationObject.currentPage)"
@@ -130,7 +158,7 @@
 								    <tbody data-ng-show="vpcList.length > 0">
 								         <tr data-ng-repeat="vpc in filteredCount = (vpcList | filter: quickSearch | orderBy:sort.column:sort.descending)">
 								            <td>
-								                <a class="text-info" href="#/vpc/view/{{vpc.id}}">{{vpc.name}}</a>
+								                <a class="text-info" id="vpc_name_{{vpc.id}}" href="#/vpc/view/{{vpc.id}}">{{vpc.name}}</a>
 								            </td>
 								            <td>{{vpc.description}}</td>
 								            <td>{{vpc.domain.name }}</td>
@@ -140,13 +168,14 @@
 								            <td>{{vpc.cIDR}}</td>
 								            <td><label data-ng-if="vpc.status == 'ENABLED'" class="label label-success text-center text-white">ACTIVE</label><label data-ng-if="vpc.status != 'ENABLED'" class="label label-danger text-center text-white">INACTIVE</label></td>
 								            <td>
-								                <a class="icon-button" title="<fmt:message key="configure" bundle="${msg}" />"href="#/vpc/view/{{vpc.id}}/config-vpc">
+								                <input type="hidden" id="vpc_unique_{{vpc.id}}"  data-unique-field="{{ vpc.domain.name }}-{{ vpc.department.userName}}-{{ vpc.name}}" class="test_vpc_unique">
+								                <a class="icon-button test_vpc_configure_button" id="vpc_configure_button_{{vpc.id}}" title="<fmt:message key="configure" bundle="${msg}" />"href="#/vpc/view/{{vpc.id}}/config-vpc">
 								                    <span class="fa fa-cog m-r"> </span>
 								                </a>
-								                 <a class="icon-button" data-ng-click="restart('md', vpc)" title="<fmt:message key="restart.vpc" bundle="${msg}" />">
+								                 <a class="icon-button test_vpc_restart_button" id="vpc_restart_button_{{vpc.id}}" data-ng-click="restart('md', vpc)" title="<fmt:message key="restart.vpc" bundle="${msg}" />">
 								                	<span class="fa fa-rotate-left m-r"></span>
 								                </a>
-								                <a class="icon-button" data-ng-click="delete('sm', vpc)" title="<fmt:message key="remove.vpc" bundle="${msg}" />"  ><span class="fa fa-trash"></span></a>
+								                <a class="icon-button test_vpc_delete_button" id="vpc_delete_button_{{vpc.id}}" data-ng-click="delete('sm', vpc)" title="<fmt:message key="remove.vpc" bundle="${msg}" />"  ><span class="fa fa-trash"></span></a>
 								            </td>
 								        </tr>
 								    </tbody>
