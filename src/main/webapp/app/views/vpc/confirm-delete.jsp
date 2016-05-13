@@ -5,7 +5,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <div class="inmodal" data-ng-contoller="networksCtrl">
     <div class="modal-header">
-        <panda-modal-header id="delete_network_page_title" hide-zone="false" page-icon="fa fa-trash" page-title="<fmt:message key="delete.confirmation" bundle="${msg}" />"></panda-modal-header>
+        <panda-modal-header id="delete_vpc_page_title" hide-zone="false" page-icon="fa fa-trash" page-title="<fmt:message key="delete.confirmation" bundle="${msg}" />"></panda-modal-header>
     </div>
 
     <div class="modal-body">
