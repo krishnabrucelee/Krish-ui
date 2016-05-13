@@ -46,20 +46,10 @@
 								        </tr>
 								    </thead>
 								    <tbody>
-								        <tr>
-								            <td>default_allow</td>
-								            <td>Default Network ACL Allow All</td>
-								            <td>376020c2-c407-11e5-a31f-364817483cf1</td>
-								        </tr>
-								        <tr>
-								            <td>default_allow</td>
-								            <td>Default Network ACL Allow All</td>
-								            <td>376020c2-c407-11e5-a31f-364817483cf1</td>
-								        </tr>
-								        <tr>
-								            <td>default_allow</td>
-								            <td>Default Network ACL Allow All</td>
-								            <td>376020c2-c407-11e5-a31f-364817483cf1</td>
+								        <tr data-ng-repeat="networkAcl in filteredCount = (aclList | filter: quickSearch | orderBy:sort.column:sort.descending)">
+								            <td><a class="text-info" ui-sref="vpc.view-vpc.config-vpc.network-acl.view-networkAcl({id3: {{ networkAcl.id }}, view: 'view'})" title="View Network">{{networkAcl.name}}</a></td>
+											<td>{{networkAcl.description}}</td>
+											<td>{{networkAcl.uuid}}</td>
 								        </tr>
 								    </tbody>
 								</table>

@@ -59,8 +59,8 @@
                                             <div class="col-md-6">
                                                 <div class="media-body">
                                                     <div class="panel panel-info">
-                                                    	<!-- <a href="#" ui-sref="vpc.network-acl({id: {{ 1}}})"> -->
-	                                                        <div class="panel-body p-xxs text-info text-center cursor-notallow" >
+                                                    	<a ui-sref="vpc.view-vpc.config-vpc.network-acl">
+	                                                        <div class="panel-body p-xxs text-info text-center" >
 	                                                            <h3> 0</h3>
 	                                                            <fmt:message key="network.acl.lists" bundle="${msg}" />
 	                                                        </div>
