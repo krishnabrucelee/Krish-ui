@@ -503,13 +503,13 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
             } else {
                 $scope.instance.networkss[item] = true;
                 if (networkArray.length > 0) {
-                 $scope.instance.networkss[networkArray[0]] = false;
-                 networkArray.splice(0, 1);
-                 networkArray.push(item);
+                    $scope.instance.networkss[networkArray[0]] = false;
+                    networkArray.splice(0, 1);
+                    networkArray.push(item);
                  } else {
-                   $scope.instance.networkss[item] = true;
-                   networkArray.push(item);
-                 }
+                    $scope.instance.networkss[item] = true;
+                    networkArray.push(item);
+                }
                 if(!$scope.deselect) {
                  $scope.instance.networkc = $scope.instance.networks.networkList[item].uuid;
                 }
