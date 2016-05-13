@@ -268,11 +268,20 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider, $compile
             })
 
             // Network ACL
-            .state('vpc.network-acl', {
-                url : "/network-acl/:id",
+            .state('vpc.view-vpc.config-vpc.network-acl', {
+                url : "/network-acl",
                 templateUrl : VIEW_URL + "views/vpc/network-acl.jsp",
                 data : {
                     pageTitle : 'Network ACL'
+                }
+            })
+
+            .state('vpc.view-vpc.config-vpc.network-acl.view-networkAcl', {
+                url : "/:view/:id3",
+                templateUrl : VIEW_URL + "views/vpc/view-network-acl.jsp",
+                data : {
+                    pageTitle : 'view.network',
+                    networkTab : 'details'
                 }
             })
 

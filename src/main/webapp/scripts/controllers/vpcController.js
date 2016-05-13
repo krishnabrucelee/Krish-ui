@@ -95,11 +95,13 @@ function vpcCtrl($scope, $modal, appService, filterFilter, $stateParams,$state, 
     $scope.domainList();
     $scope.aclList = {};
     $scope.aclList = function() {
-        var hasDomains = appService.crudService.listAll("vpcacl/list");
+    	if (!angular.isUndefined($stateParams.id)) {
+        var hasDomains = appService.promiseAjax.httpTokenRequest(appService.crudService.globalConfig.HTTP_GET, appService.crudService.globalConfig.APP_URL + "vpcacl"  +"/list/"+$stateParams.id);
         hasDomains.then(function(result) { // this is only run after $http
             // completes0
             $scope.aclList = result;
         });
+      }
     };
      $scope.aclList();
 
@@ -1758,4 +1760,189 @@ $scope.vmPortId = instance;
            appService.localStorageService.set('view', 'vpn-details');
         }
     });
+
+    $scope.trafficTypeList = {
+            "0": "Ingress",
+            "1": "Egress"
+        };
+
+    $scope.actionList = {
+            "0": "Allow",
+            "1": "Deny"
+        };
+
+    $scope.protocolList = {
+            "0": "TCP",
+            "1": "UDP",
+            "2": "ICMP",
+            "3": "ALL",
+            "4": "Protocol Number"
+        };
+    $scope.tcp = true;
+    $scope.udp = true;
+    $scope.selectProtocol = function(selectedItem) {
+    	console.log(selectedItem);
+        if (selectedItem == 'TCP' || selectedItem == 'UDP') {
+            $scope.tcp = true;
+            $scope.udp = true;
+            $scope.icmp = false;
+        }
+        if (selectedItem == 'ICMP') {
+            $scope.icmp = true;
+            $scope.tcp = false;
+            $scope.udp = false;
+        }
+        if (selectedItem == 'ALL') {
+            $scope.tcp = false;
+            $scope.udp = false;
+            $scope.icmp = false;
+        }
+    };
+
+        //Add acl
+    $scope.addAcl = function(size) {
+        appService.dialogService.openDialog($scope.global.VIEW_URL + "vpc/add-acl.jsp", size, $scope, [ '$scope',
+                '$modalInstance', '$rootScope', function($scope, $modalInstance, $rootScope) {
+        	// Create a new application
+            $scope.save = function (form, networkAcl) {
+                $scope.formSubmitted = true;
+                if (form.$valid) {
+                	$scope.showLoader = true;
+			$modalInstance.close();
+                    var hasNetworkAcl = appService.crudService.add("vpcacl/addAcl/" + $stateParams.id, networkAcl);
+                    hasNetworkAcl.then(function (result) {
+                    	$scope.showLoader = false;
+                    	$state.reload();
+                    }).catch(function (result) {
+                    	$scope.showLoader = false;
+            		    if (!angular.isUndefined(result.data)) {
+                		 if (result.data.fieldErrors != null) {
+                       	$scope.showLoader = false;
+                        	angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
+                            	$scope.networkAclForm[key].$invalid = true;
+                            	$scope.networkAclForm[key].errorMessage = errorMessage;
+                        	});
+                		}
+                	}
+            		    appService.globalConfig.webSocketLoaders.volumeLoader = false;
+            	});
+                }
+            },
+                    $scope.cancel = function() {
+                        $modalInstance.close();
+                    };
+                } ]);
+    };
+
+    $scope.vpcAclRulesList = {};
+    $scope.vpcAclRulesList = function() {
+    	if (!angular.isUndefined($stateParams.id3)) {
+        var hasDomains = appService.promiseAjax.httpTokenRequest(appService.crudService.globalConfig.HTTP_GET, appService.crudService.globalConfig.APP_URL + "vpcnetworkacl"  +"/networkAclList/"+$stateParams.id3);
+        hasDomains.then(function(result) { // this is only run after $http
+            // completes0
+            $scope.vpcAclRulesList = result;
+        });
+      }
+    };
+     $scope.vpcAclRulesList();
+
+     $scope.networkAclList = {};
+     $scope.networkAclList = function() {
+     	if (!angular.isUndefined($stateParams.id3)) {
+         var hasDomains =  appService.crudService.read("vpcacl" , $stateParams.id3);
+         hasDomains.then(function(result) { // this is only run after $http
+             // completes0
+             $scope.networkAclList = result;
+         });
+       }
+     };
+      $scope.networkAclList();
+
+    //Add vpc list
+    $scope.saveAclList = function (form, vpcAcl) {
+        $scope.formSubmitted = true;
+        if (form.$valid) {
+        	$scope.showLoader = true;
+            var hasNetworkAcl = appService.crudService.add("vpcnetworkacl/addNetworkAcl/" + $stateParams.id3, vpcAcl);
+            hasNetworkAcl.then(function (result) {
+            	$scope.showLoader = false;
+            	$state.reload();
+            }).catch(function (result) {
+            	$scope.showLoader = false;
+    		    if (!angular.isUndefined(result.data)) {
+        		 if (result.data.fieldErrors != null) {
+               	$scope.showLoader = false;
+                	angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
+                    	$scope.vpcAclForm[key].$invalid = true;
+                    	$scope.vpcAclForm[key].errorMessage = errorMessage;
+                	});
+        		}
+        	}
+    		    appService.globalConfig.webSocketLoaders.volumeLoader = false;
+    	});
+        }
+    },
+            $scope.cancel = function() {
+                $modalInstance.close();
+            };
+
+         // Delete the Vpc acl
+            $scope.deleteAclList = function (size, networkAcl) {
+            	appService.dialogService.openDialog("app/views/vpc/delete-vpcAcl.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+                       $scope.acl = networkAcl;
+            		$scope.ok = function (networkAcl) {
+                        	console.log($scope.acl);
+                        	$scope.showLoader = true;
+                            $modalInstance.close();
+                            var hasServer = appService.crudService.softDelete("vpcacl", $scope.acl);
+                            hasServer.then(function (result) {
+            		$scope.showLoader = false;
+            		$state.reload();
+                            }).catch(function (result) {
+                                if (!angular.isUndefined(result) && result.data != null) {
+                                	$scope.showLoader = false;
+                                    angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
+                                        $scope.addnetworkForm[key].$invalid = true;
+                                        $scope.addnetworkForm[key].errorMessage = errorMessage;
+                                    });
+                                }
+                                appService.globalConfig.webSocketLoaders.volumeLoader = false;
+                            });
+
+                        },
+                                $scope.cancel= function () {
+                                    $modalInstance.close();
+                                };
+                    }]);
+            };
+
+            // Delete the Vpc acl
+            $scope.deleteNetworkAcl = function (size, vpcAcl) {
+            	appService.dialogService.openDialog("app/views/vpc/delete-vpcAcl.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+                       $scope.acl = vpcAcl;
+            		$scope.ok = function (vpcAcl) {
+                        	console.log($scope.acl);
+                        	$scope.showLoader = true;
+                            $modalInstance.close();
+                            var hasServer = appService.crudService.softDelete("vpcnetworkacl", $scope.acl);
+                            hasServer.then(function (result) {
+            		$scope.showLoader = false;
+            		$state.reload();
+                            }).catch(function (result) {
+                                if (!angular.isUndefined(result) && result.data != null) {
+                                	$scope.showLoader = false;
+                                    angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
+                                        $scope.addnetworkForm[key].$invalid = true;
+                                        $scope.addnetworkForm[key].errorMessage = errorMessage;
+                                    });
+                                }
+                                appService.globalConfig.webSocketLoaders.volumeLoader = false;
+                            });
+
+                        },
+                                $scope.cancel= function () {
+                                    $modalInstance.close();
+                                };
+                    }]);
+            };
 }
