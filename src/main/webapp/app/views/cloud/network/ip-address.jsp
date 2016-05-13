@@ -38,7 +38,7 @@ pageEncoding="UTF-8"%>
                     </tr>
                     </thead>
           <tbody>
-              <tr ng-repeat="ipaddress in ipList">
+              <tr ng-repeat="ipaddress in ipList | filter: networkSearch">
                       <td>
                       	<a class="text-info" ui-sref="cloud.list-network.view-network.view-ipaddress({id1:ipaddress.id})"  title="View IP"> {{ ipaddress.publicIpAddress }} <span ng-if="ipaddress.isSourcenat">[Source NAT]</span></a>
                       </td>

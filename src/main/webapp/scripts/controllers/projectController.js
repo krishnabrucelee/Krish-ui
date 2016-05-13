@@ -54,6 +54,8 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams, localStor
     $scope.projectInfo = {};
     $scope.project.department = {};
     $scope.projectForm = [];
+    $scope.sort = appService.globalConfig.sort;
+    $scope.changeSorting = appService.utilService.changeSorting;
     $scope.paginationObject.sortOrder = '+';
     $scope.paginationObject.sortBy = 'name';
 
@@ -84,7 +86,7 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams, localStor
             }**/
  	 if ($scope.domainView == null && $scope.vmSearch == null) {
             	hasProjectsLists = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "projects" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+sortOrder+sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
-            } 
+            }
 		else {
 	  	if ($scope.domainView != null && $scope.vmSearch == null) {
                 $scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=";
@@ -135,7 +137,7 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams, localStor
         }**/
    if ($scope.domainView == null && $scope.vmSearch == null) {
             	hasProjects = appService.crudService.list("projects", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
-            } 
+            }
 		else {
 if ($scope.domainView != null && $scope.vmSearch == null) {
                 $scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=";
@@ -482,7 +484,7 @@ if ($scope.domainView != null && $scope.vmSearch == null) {
     	if(!angular.isUndefined($scope.projectInfo.department) && $scope.projectInfo.department != null ){
     		$scope.userLists($scope.projectInfo);
 	}
-   	
+
 
 
          $scope.project = $scope.editProjects;
@@ -566,7 +568,7 @@ if ($scope.domainView != null && $scope.vmSearch == null) {
                         appService.notify({message: 'Project deleted successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
 
                     }).catch(function (result) {
-				
+
                   	 if(!angular.isUndefined(result) && result.data != null) {
       		 		   	if(result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])){
 	                      	 var errorMsgs = result.data.globalError[0];
@@ -588,7 +590,7 @@ if ($scope.domainView != null && $scope.vmSearch == null) {
 	                       	$scope.departmentForm[key].errorMessage = errorMessage;
 	                       });
            			  }
-			
+
 
                    });
                     $modalInstance.close();

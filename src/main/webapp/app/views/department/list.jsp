@@ -64,13 +64,13 @@
 			                                </div>
 			                            </div>
 			                            <a has-permission="ADD_DEPARTMENT" id="departments_add_button" class="btn btn-info font-bold"  ng-click="createDepartment('md')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="common.add" bundle="${msg}" /> </a>
-                                        <a class="btn btn-info" id="departments_refresh_button" ui-sref="department" title="<fmt:message key="common.refresh" bundle="${msg}" /> " ui-sref-opts="{reload: true}" ><span class="fa fa-refresh fa-lg"></span></a>
+                                        <a class="btn btn-info" data-ng-click="list(1)" id="departments_refresh_button" title="<fmt:message key="common.refresh" bundle="${msg}" /> " ui-sref-opts="{reload: true}" ><span class="fa fa-refresh fa-lg"></span></a>
                                     </div>
                                     <div class="pull-right dashboard-filters-area" id="department_quick_search">
 									<form data-ng-submit="searchList(departmentSearch)">
 										<div class="quick-search pull-right">
 										<div class="input-group">
-										<input data-ng-model="departmentSearch" type="text" class="form-control input-medium" placeholder="<fmt:message key="common.quick.search" bundle="${msg}" />" aria-describedby="quicksearch-go">
+										<input data-ng-model="departmentSearch" id="department_list_search" type="text" class="form-control input-medium" placeholder="<fmt:message key="common.quick.search" bundle="${msg}" />" aria-describedby="quicksearch-go">
 								   		<span class="input-group-addon" id="quicksearch-go"><span class="pe-7s-search pe-lg font-bold"></span></span>
 										</div>
 										</div>
