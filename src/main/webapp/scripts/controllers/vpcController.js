@@ -54,6 +54,7 @@ function vpcCtrl($scope, $modal, appService, $timeout, filterFilter, $stateParam
     $scope.lbrulesIps = {};
     $scope.natIps = {};
 $scope.vpcsid = $stateParams.id;
+$scope.aclID = {};
 
     $scope.type = $stateParams.view;
     // VPC Offer List
@@ -68,7 +69,7 @@ $scope.vpcsid = $stateParams.id;
 
   $scope.canceledit = function(netwrkid) {
                        $window.location.href = '#/vpc/view/'+$stateParams.id+'/config-vpc/view/'+netwrkid;
-       
+
     };
 
     if ($stateParams.id > 0  && $location.path() == '/vpc/view/' + $stateParams.id ) {
@@ -700,7 +701,7 @@ $state.reload();
             $scope.network = result;
             $state.current.data.pageName = result.name;
             $state.current.data.id = result.id;
-   
+
         });
     }
         $scope.type = $stateParams.view;
@@ -708,6 +709,7 @@ $state.reload();
     $scope.networkRestart = {};
     // Restart the Network
     $scope.restartNetwork = function(size, network) {
+
         appService.dialogService.openDialog("app/views/cloud/network/restart-network.jsp", size, $scope, ['$scope', '$modalInstance', function($scope, $modalInstance) {
             $scope.ok = function(restart) {
                     $scope.networkRestart = restart;
@@ -738,34 +740,47 @@ $state.reload();
     };
 
         $scope.replaceaclList = function (size, networkObj) {
-            	appService.dialogService.openDialog("app/views/vpc/replace-acl-list.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
-                       $scope.networkObj = networkObj;
-            		$scope.ok = function (aclID) {
-$scope.networkObj.acl = aclID;
-$scope.networkObj.aclId = aclID.id;
-                          $scope.showLoader = true;
-                            $modalInstance.close();
-                            var hasServer = appService.crudService.update("vpcacl/replaceAcl", $scope.network);
-                            hasServer.then(function (result) {
-            		$scope.showLoader = false;
-            		$state.reload();
-                            }).catch(function (result) {
-                                if (!angular.isUndefined(result) && result.data != null) {
-                                	$scope.showLoader = false;
-                                    angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
-                                        $scope.addnetworkForm[key].$invalid = true;
-                                        $scope.addnetworkForm[key].errorMessage = errorMessage;
-                                    });
-                                }
-                                appService.globalConfig.webSocketLoaders.volumeLoader = false;
-                            });
+        	    angular.forEach($scope.aclList, function (obj, key) {
+                    if (obj.id == networkObj.aclId) {
+                    	$scope.aclID = obj;
+                    }
+                });
 
-                        },
-                                $scope.cancel= function () {
-                                    $modalInstance.close();
-                                };
-                    }]);
-            };
+            	appService.dialogService.openDialog("app/views/vpc/replace-acl-list.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+                    $scope.networkObj = networkObj;
+            		$scope.ok = function (aclID) {
+                    $scope.networkObj.acl = aclID;
+                    $scope.networkObj.aclId = aclID.id;
+                    $scope.showLoader = true;
+                    var hasServer = appService.crudService.update("guestnetwork/replaceAcl", $scope.network);
+                    hasServer.then(function (result) {
+            		    $scope.showLoader = false;
+            		    $scope.network = result;
+                        appService.notify({
+                            message: "ACL updated successfully",
+                            classes: 'alert-success',
+                            templateUrl: $scope.global.NOTIFICATION_TEMPLATE
+                        });
+            		    $state.reload();
+            		    $modalInstance.close();
+                    }).catch(function (result) {
+                        if (!angular.isUndefined(result) && result.data != null) {
+                        	$scope.showLoader = false;
+                            angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
+                                $scope.addnetworkForm[key].$invalid = true;
+                                $scope.addnetworkForm[key].errorMessage = errorMessage;
+                            });
+                        }
+                        appService.globalConfig.webSocketLoaders.volumeLoader = false;
+                        $modalInstance.close();
+                    });
+
+                },
+                $scope.cancel= function () {
+                    $modalInstance.close();
+                };
+            }]);
+        };
 
 
 
@@ -843,9 +858,9 @@ $scope.lBForVpc = function(networkId){
                 	vpcCreateNetwork.zone = $scope.vpc.zone;
                 	vpcCreateNetwork.zoneId = $scope.vpc.zoneId;
 if (!angular.isUndefined($scope.vpcCreateNetwork.acl)) {
-	 
+
                	    vpcCreateNetwork.aclId = $scope.vpcCreateNetwork.acl.id;
-	 
+
                    }
                 	vpcCreateNetwork.vpcId = $scope.vpc.id;
                 	vpcCreateNetwork.displayText = $scope.vpcCreateNetwork.name;
@@ -1686,7 +1701,7 @@ $scope.vmPortId = instance;
         $state.reload();
     }
 
-    
+
     $scope.getNatList = function(networkId){
         var hasNat = appService.crudService.listByQuery("ipAddresses/vpc/nat/list?networkId=" + networkId);
         hasNat.then(function(result) {
