@@ -9,11 +9,10 @@
 		<div class="col-lg-9 col-md-9 col-sm-12">
 		<div class="panel panel-info">
 				<div class="panel-heading">
-					<h3 class="panel-title">
+					<h3 class="panel-title pull-left">
 						<i class="fa fa-sitemap"></i>&nbsp;&nbsp;
 						<fmt:message key="network.details" bundle="${msg}" />
 					</h3>
-					<div class="hpanel">
 				<div class="pull-right">
 					<a ui-sref-opts="{reload: true}"
 						title="<fmt:message key="common.refresh" bundle="${msg}" />"
@@ -21,7 +20,6 @@
 						class="fa fa-refresh fa-lg "></span></a>
 				</div>
 				<div class="clearfix"></div>
-			</div>
 				</div>
 				<div class="panel-body">
 					<div class="row">
