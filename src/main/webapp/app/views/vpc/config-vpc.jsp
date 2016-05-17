@@ -86,7 +86,9 @@
                                         <div class="h-timeline">
                                             <div class="vertical-timeline-content">
                                                 <div class="timeline-title">
-                                                    {{network.name}}
+                                                    <a class="text-info"
+													ui-sref="vpc.view-vpc.config-vpc.view-network({idNetwork: {{ network.id }}, view: 'view'})"
+													title="View Network">{{ network.name }}</a>
                                                 </div>
                                                 <div class="p-sm">
                                                     <div class="col-md-6">
