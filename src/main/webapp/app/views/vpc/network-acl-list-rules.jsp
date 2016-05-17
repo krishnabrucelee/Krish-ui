@@ -5,43 +5,97 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <div data-ng-controller="vpcCtrl">
 <div class="white-content" >
-<div data-ng-if="global.webSocketLoaders.ingressLoader" class="overlay-wrapper">
-   <img data-ng-if="global.webSocketLoaders.ingressLoader" src="images/loading-bars.svg" class="inner-loading" />
+<div data-ng-if="global.webSocketLoaders.egressLoader" class="overlay-wrapper">
+   <img data-ng-if="global.webSocketLoaders.egressLoader" src="images/loading-bars.svg" class="inner-loading" />
 </div>
+<!-- <div class="table-responsive acl-table">
+                <table cellspacing="1" cellpadding="1" class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th class="acl-table-cell">Name</th>
+                        <th class="acl-table-cell">Phone</th>
+                        <th class="acl-table-cell">Street Address</th>
+                        <th class="acl-table-cell">City</th>
+                        <th class="acl-table-cell">Country</th>
+                        <th class="acl-table-cell">Name</th>
+                        <th class="acl-table-cell">Phone</th>
+                        <th class="acl-table-cell">Street Address</th>
+                        <th class="acl-table-cell">City</th>
+                        <th class="acl-table-cell">Country</th>
+                        <th class="acl-table-cell">Street Address</th>
+                        <th class="acl-table-cell">City</th>
+                        <th class="acl-table-cell">Country</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td class="acl-table-cell">Abraham</td>
+                        <td class="acl-table-cell">076 9477 4896</td>
+                        <td class="acl-table-cell">294-318 Duis Ave</td>
+                        <td class="acl-table-cell">Vosselaar</td>
+                        <td class="acl-table-cell">Belgium</td>
+                        <td class="acl-table-cell">Abraham</td>
+                        <td class="acl-table-cell">076 9477 4896</td>
+                        <td class="acl-table-cell">294-318 Duis Ave</td>
+                        <td class="acl-table-cell">Vosselaar</td>
+                        <td class="acl-table-cell">Belgium</td>
+                        <td class="acl-table-cell">294-318 Duis Ave</td>
+                        <td class="acl-table-cell">Vosselaar</td>
+                        <td class="acl-table-cell">Belgium</td>
+                    </tr>
+                    <tr>
+                        <td class="acl-table-cell">Abraham</td>
+                        <td class="acl-table-cell">076 9477 4896</td>
+                        <td class="acl-table-cell">294-318 Duis Ave</td>
+                        <td class="acl-table-cell">Vosselaar</td>
+                        <td class="acl-table-cell">Belgium</td>
+                        <td class="acl-table-cell">Abraham</td>
+                        <td class="acl-table-cell">076 9477 4896</td>
+                        <td class="acl-table-cell">294-318 Duis Ave</td>
+                        <td class="acl-table-cell">Vosselaar</td>
+                        <td class="acl-table-cell">Belgium</td>
+                        <td class="acl-table-cell">294-318 Duis Ave</td>
+                        <td class="acl-table-cell">Vosselaar</td>
+                        <td class="acl-table-cell">Belgium</td>
+                    </tr>
+                    </tbody>
+                </table>
+                </div> -->
+<div class="table-responsive acl-table">
 	<form name = "vpcAclForm" novalidate  data-ng-controller="vpcCtrl" data-ng-submit="saveAclList(vpcAclForm, vpcAcl)" method="post">
-<div class="table-responsive">
+
 	<table cellspacing="1" cellpadding="1" class="table table-bordered table-striped ">
 		       <thead>
 		           <tr>
-		               <th class="col-md-1 col-xs-1">Rule Number</th>
-		               <th class="col-md-1 col-xs-1">CIDR</th>
-		               <th class="col-md-1 col-xs-1">Action</th>
-		               <th class="col-md-1 col-xs-1">Protocol</th>
-		               <th class="col-md-1 col-xs-1">Protocol Number</th>
-		               <th class="col-md-1 col-xs-1">Start Port</th>
-		               <th class="col-md-1 col-xs-1">End Port</th>
-		               <th class="col-md-1 col-xs-1">ICMP Type</th>
-		               <th class="col-md-1 col-xs-1">ICMP Code</th>
-		               <th class="col-md-1 col-xs-1">Traffic Type</th>
-		               <th class="col-md-1 col-xs-1">Add rule</th>
-		               <th class="col-md-1 col-xs-1">Actions</th>
+		               <th class="acl-table-cell">Rule Number</th>
+		               <th class="acl-table-cell">CIDR</th>
+		               <th class="acl-table-cell">Action</th>
+		               <th class="acl-table-cell">Protocol</th>
+		               <th class="acl-table-cell">Protocol Number</th>
+		               <th class="acl-table-cell">Start Port</th>
+		               <th class="acl-table-cell">End Port</th>
+		               <th class="acl-table-cell">ICMP Type</th>
+		               <th class="acl-table-cell">ICMP Code</th>
+		               <th class="acl-table-cell">Traffic Type</th>
+		               <th class="acl-table-cell">Add rule</th>
+		               <th class="acl-table-cell">Actions</th>
 		           </tr>
 		       </thead>
 		       <tbody>
 		           <tr>
-		               <td><input required="true" type="text" name="ruleNumber"  valid-cidr data-ng-model="vpcAcl.ruleNumber" class="form-control input-group " ><span class="text-center text-danger" data-ng-show="vpcAclForm.rulenumber.$invalid && formSubmitted"> *Required</span></td>
+		               <td><input required="true" type="text" name="ruleNumber"  valid-cidr data-ng-model="vpcAcl.ruleNumber" class="form-control input-group " ><span class="text-center text-danger" data-ng-show="vpcAclForm.ruleNumber.$invalid && formSubmitted"> *Required</span></td>
 		               <td><input required="true" type="text" name="sourceCIDR"  valid-cidr placeholder="0.0.0.0/24"  data-ng-model="vpcAcl.cidrList" class="form-control input-group " ><span class="text-center text-danger" data-ng-show="vpcAclForm.sourceCIDR.$invalid && formSubmitted" data-ng-class="cidrValidates && actionRules ? 'text-danger' : ''"> Invalid format</span></td>
 		               <td><select required="true" class="form-control input-group" name="action" data-ng-model="vpcAcl.action"  data-ng-change="" ng-options="action for (id, action) in actionList"><option value=""><fmt:message key="common.select"
-										bundle="${msg}" /></option></select></td>
+										bundle="${msg}" /></option></select><span class="text-center text-danger" data-ng-show="vpcAclForm.action.$invalid && formSubmitted"> *Required</span></td>
 						<td><select required="true" class="form-control input-group" name="protocol" data-ng-model="vpcAcl.protocol"  data-ng-change="selectProtocol(vpcAcl.protocol)" ng-options="protocol for (id, protocol) in protocolList"><option value=""><fmt:message key="common.select"
-										bundle="${msg}" /></option></select> <span class="text-center text-danger" data-ng-show=""></span></td>
+										bundle="${msg}" /></option></select> <span class="text-center text-danger" data-ng-show="vpcAclForm.protocol.$invalid && formSubmitted"> *Required</span></span></td>
 		               <td><input data-ng-if = " (vpcAcl.protocol== 'Protocol Number')" required="true" valid-number type="text" name="protocolNumber" data-ng-model="vpcAcl.protocolNumber" class="form-control " autofocus ><span class="text-center text-danger" data-ng-show="vpcAclForm.protocolNumber.$invalid && formSubmitted"> *Required</span> </td>
 		               <td><input data-ng-if = " (vpcAcl.protocol == 'TCP' || vpcAcl.protocol=='UDP' || vpcAcl.protocol== 'Protocol Number')" required="true" valid-number  placeholder="1" data-ng-min="1" data-ng-max="65535"   type="text" name="startPort" data-ng-model="vpcAcl.startPort" class="form-control " autofocus ><span class="text-center text-danger" data-ng-show="vpcAclForm.startPort.$invalid && formSubmitted"> *Required</span> </td>
 		               <td><input data-ng-if = " (vpcAcl.protocol == 'TCP' || vpcAcl.protocol=='UDP' || vpcAcl.protocol== 'Protocol Number')" required="true" valid-number  placeholder="65535" data-ng-min="1" data-ng-max="65535"   type="text" name="endPort" data-ng-model="vpcAcl.endPort" class="form-control " autofocus ><span class="text-center text-danger" data-ng-show="vpcAclForm.endPort.$invalid && formSubmitted"> *Required</span> </td>
-		               <td><input data-ng-if = " (vpcAcl.protocol == 'ICMP' || vpcAcl.protocol== 'Protocol Number')" required="true" data-ng-init='-1'  type="text" name="icmpType" data-ng-model="vpcAcl.icmpType" class="form-control " autofocus ><span class="text-center text-danger" data-ng-show="vpcAclForm.icmpType.$invalid && formSubmitted"> </span></td>
-		               <td><input data-ng-if = " (vpcAcl.protocol == 'ICMP' || vpcAcl.protocol== 'Protocol Number')" required="true" data-ng-init='-1'  type="text" name="icmpCode" data-ng-model="vpcAcl.icmpCode" class="form-control " autofocus ><span class="text-center text-danger" data-ng-show="vpcAclForm.icmpCode.$invalid && formSubmitted"></span></td>
+		               <td><input data-ng-if = " (vpcAcl.protocol == 'ICMP')" required="true" data-ng-value='vpcAcl.icmpType = -1'  type="text" name="icmpType" data-ng-model="vpcAcl.icmpType" class="form-control " autofocus ><span class="text-center text-danger" data-ng-show="vpcAclForm.icmpType.$invalid && formSubmitted"> </span></td>
+		               <td><input data-ng-if = " (vpcAcl.protocol == 'ICMP')" required="true" data-ng-value='vpcAcl.icmpCode = -1'  type="text" name="icmpCode" data-ng-model="vpcAcl.icmpCode" class="form-control " autofocus ><span class="text-center text-danger" data-ng-show="vpcAclForm.icmpCode.$invalid && formSubmitted"></span></td>
 		               <td><select required="true" class="form-control input-group" name="trafficType" data-ng-model="vpcAcl.trafficType"  data-ng-change="" ng-options="trafficType for (id, trafficType) in trafficTypeList"><option value=""><fmt:message key="common.select"
-										bundle="${msg}" /></option></select></td>
+										bundle="${msg}" /></option></select><span class="text-center text-danger" data-ng-show="vpcAclForm.trafficType.$invalid && formSubmitted"> *Required</span></td>
 		               <td>
 
 		                 <get-loader-image data-ng-show="showLoader"></get-loader-image>
@@ -53,50 +107,46 @@
 		           </tr>
 		       </tbody>
 		   </table>
-</div>
+
 
 </form>
     <table cellspacing="1" cellpadding="1" class="table table-bordered table-striped">
           <thead>
                 <tr>
-                    <th class="col-md-1 col-xs-1"></th>
-                    <th class="col-md-1 col-xs-1"></th>
-                    <th class="col-md-1 col-xs-1"></th>
-                    <th class="col-md-1 col-xs-1"></th>
-                    <th class="col-md-1 col-xs-1"></th>
-                    <th class="col-md-1 col-xs-1"></th>
-                    <th class="col-md-1 col-xs-1"></th>
-                    <th class="col-md-1 col-xs-1"></th>
-                    <th class="col-md-1 col-xs-1"></th>
-                    <th class="col-md-1 col-xs-1"></th>
-                    <th class="col-md-1 col-xs-1"></th>
-                    <th class="col-md-1 col-xs-1"></th>
+                    <th class="acl-table-cell"></th>
+                    <th class="acl-table-cell"></th>
+                    <th class="acl-table-cell"></th>
+                    <th class="acl-table-cell"></th>
+                    <th class="acl-table-cell"></th>
+                    <th class="acl-table-cell"></th>
+                    <th class="acl-table-cell"></th>
+                    <th class="acl-table-cell"></th>
+                    <th class="acl-table-cell"></th>
+                    <th class="acl-table-cell"></th>
+                    <th class="acl-table-cell"></th>
+                    <th class="acl-table-cell"></th>
                 </tr>
             </thead>
             <tbody>
                <tr ng-repeat="vpcAcl in vpcAclRulesList" class="font-bold text-center">
-               <td class="col-md-1 col-xs-1">{{vpcAcl.ruleNumber}}</td>
-             	<td class="col-md-1 col-xs-1">{{vpcAcl.cidrList}}</td>
-             	<td class="col-md-1 col-xs-1">{{vpcAcl.action}}</td>
-		        <td class="col-md-1 col-xs-1">{{vpcAcl.protocol}}</td>
-		        <td class="col-md-1 col-xs-1">{{vpcAcl.protocolNumber}}</td>
-                <td class="col-md-1 col-xs-1"><div>{{vpcAcl.startPort}}</div></td>
-                <td class="col-md-1 col-xs-1"><div>{{vpcAcl.endPort}} </div></td>
-                <td class="col-md-1 col-xs-1"> <div>{{vpcAcl.icmpType}}</div></td>
-                <td class="col-md-1 col-xs-1"> <div>{{vpcAcl.icmpCode}}</div></td>
-              	<td class="col-md-1 col-xs-1"> <div>{{vpcAcl.trafficType}}</div></td>
-                <td class="col-md-1 col-xs-1"> </td>
-                <td class="col-md-1 col-xs-1">
-                <a id="network_edit_button_{{network.id}}"
-												    data-unique-field="{{network.domain.name}}-{{network.department.userName}}-{{network.name}}"
-													title="<fmt:message key="common.edit" bundle="${msg}" />"
-													ui-sref="cloud.list-network.view-network({id: {{ network.id }}, view: 'edit'})">
-														<span class="fa fa-edit m-r"> </span></a>
-                <a data-ng-click="deleteNetworkAcl('sm', vpcAcl)"><span class="fa fa-trash"></span></a>
+               <td class="acl-table-cell">{{vpcAcl.ruleNumber}}</td>
+             	<td class="acl-table-cell">{{vpcAcl.cidrList}}</td>
+             	<td class="acl-table-cell">{{vpcAcl.action}}</td>
+		        <td class="acl-table-cell">{{vpcAcl.protocol}}</td>
+		        <td class="acl-table-cell">{{vpcAcl.protocolNumber}}</td>
+                <td class="acl-table-cell"><div>{{vpcAcl.startPort}}</div></td>
+                <td class="acl-table-cell"><div>{{vpcAcl.endPort}} </div></td>
+                <td class="acl-table-cell"> <div>{{vpcAcl.icmpType}}</div></td>
+                <td class="acl-table-cell"> <div>{{vpcAcl.icmpCode}}</div></td>
+              	<td class="acl-table-cell"> <div>{{vpcAcl.trafficType}}</div></td>
+                <td class="acl-table-cell"> </td>
+                <td class="acl-table-cell">
+				<a data-ng-click="editNetworkAcl('md', vpcAcl)" title="<fmt:message key="common.edit" bundle="${msg}" />"><span class="fa fa-edit m-r"></span></a>
+                <a data-ng-click="deleteNetworkAcl('sm', vpcAcl)" title="<fmt:message key="common.delete" bundle="${msg}" />"><span class="fa fa-trash"></span></a>
                 </td>
 	        </tr>
             </tbody>
     </table>
 
-
+</div>
 </div></div>

@@ -12,6 +12,26 @@
                 		            <img data-ng-if="global.webSocketLoaders.vpcLoader" src="images/loading-bars.svg" class="inner-loading" />
  </div>
 
+ 		<div data-ng-if="networkAclList.vpcId != null" class="col-lg-3 col-md-3 col-sm-4 pull-right">
+			<div class="panel panel-info">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						<i class="fa fa-bolt"></i>&nbsp;&nbsp;
+						<fmt:message key="quick.actions" bundle="${msg}" />
+					</h3>
+				</div>
+				<div class="panel-body no-padding">
+					<ul class="list-group">
+						<li class="list-group-item"><a
+							title=" <fmt:message key="delete.acl.list" bundle="${msg}" />"
+							 data-ng-click="deleteAclList('sm', networkAclList)"type="submit"><span
+								class="fa-trash fa font-bold m-xs"></span> <fmt:message
+									key="delete.acl.list" bundle="${msg}" /></a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
             <div class="row" >
                 <div class="col-md-8">
                     <div class="panel panel-default">
@@ -40,9 +60,9 @@
 					</div>
                 </div>
         	</div>
-        					<button class="btn btn-danger" data-ng-hide="showLoader" data-ng-if="networkAclList.vpcId != null" data-ng-click="deleteAclList('sm', networkAclList)"type="submit">
+<%--         					<button class="btn btn-danger" data-ng-hide="showLoader" data-ng-if="networkAclList.vpcId != null" data-ng-click="deleteAclList('sm', networkAclList)"type="submit">
 					<fmt:message key="common.delete" bundle="${msg}" />
-				</button>
+				</button> --%>
     	</div>
     </div>
 
