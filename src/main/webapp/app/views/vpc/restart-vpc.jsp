@@ -5,7 +5,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <div class="inmodal" data-ng-contoller="vpcCtrl">
     <div class="modal-header">
-        <panda-modal-header hide-zone="false" page-icon="fa fa-warning" page-title="Restart VPC"></panda-modal-header>
+        <panda-modal-header id="restart_vpc_page_title" hide-zone="false" page-icon="fa fa-warning" page-title="Restart VPC"></panda-modal-header>
     </div>
     <div class="modal-body">
         <div class=" row">
@@ -19,7 +19,7 @@
                                  <fmt:message key="common.cleanup" bundle="${msg}" />
             </div>
             <div class="icheckbox_square-green form-group col-md-8 col-sm-8  col-xs-8 m-t-md">
-						<input icheck type="checkbox" data-ng-model="cleanup">
+						<input id="restart_vpc_clean_up" icheck type="checkbox" data-ng-model="cleanup">
              </div>
         </div>
         <div class=" row">
@@ -27,14 +27,14 @@
                                  Make redundant
             </div>
             <div class="icheckbox_square-green form-group col-md-8 col-sm-8  col-xs-8 m-t-md">
-						<input icheck type="checkbox" data-ng-model="makeredunt">
+						<input id="restart_vpc_make_redunt" icheck type="checkbox" data-ng-model="makeredunt">
              </div>
         </div>
     </div>
     <div class="modal-footer">
         <get-loader-image data-ng-show="showLoader"></get-loader-image>
-        <button type="button" data-ng-hide="showLoader" class="btn btn-default "  data-ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.cancel" bundle="${msg}" /></button>
-        <button type="button" data-ng-hide="showLoader" class="btn btn-info "   data-ng-click="ok(cleanup,makeredunt)" data-dismiss="modal"><fmt:message key="common.restart" bundle="${msg}" /></button>
+        <button type="button" data-ng-hide="showLoader" class="btn btn-default" id="restart_vpc_cancel_button"  data-ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.cancel" bundle="${msg}" /></button>
+        <button type="button" data-ng-hide="showLoader" class="btn btn-info" id="restart_vpc_restart_button"   data-ng-click="ok(cleanup,makeredunt)" data-dismiss="modal"><fmt:message key="common.restart" bundle="${msg}" /></button>
     </div>
 </div>
 

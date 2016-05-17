@@ -206,10 +206,7 @@ function globalConfig($window) {
                 portforwardSave : 'NET.RULEADD',
                 deletePortRules : 'NET.RULEDELETE',
                 configureStickiness : 'LB.STICKINESSPOLICY.CREATE',
-                editStickiness : 'LB.STICKINESSPOLICY.CREATE',
-                saveAclList : 'NETWORK.ACL.ITEM.CREATE',
-                editNetworkAcl : 'NETWORK.ACL.ITEM.UPDATE',
-                deleteNetworkAcl : 'NETWORK.ACL.ITEM.DELETE'
+                editStickiness : 'LB.STICKINESSPOLICY.CREATE'
             },
             sshKeyEvents : {
                 createSSHKey : 'REGISTER.SSH.KEYPAIR',

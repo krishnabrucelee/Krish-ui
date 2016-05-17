@@ -6,7 +6,7 @@
 <form name="vmlistform">
 <div class="inmodal">
 <div class="modal-header">
-	<panda-modal-header page-icon="fa fa-cloud" page-title="Add VMs"></panda-modal-header>
+	<panda-modal-header id="vpc_loadbalance_add_vm_page_title" page-icon="fa fa-cloud" page-title="Add VMs"></panda-modal-header>
 
 </div>
 <div class="modal-body">
@@ -17,7 +17,7 @@
 					<div class="col-md-3 col-sm-3 col-xs-3 ">
 						<div class="quick-search">
 							<div class="input-group">
-								<input data-ng-model="instanceSearch" type="text"
+								<input data-ng-model="instanceSearch" type="text" id="vpc_loadbalance_add_vm_quick_search"
 									class="form-control input-medium" placeholder="Quick Search"
 									aria-describedby="quicksearch-go"> <span
 									class="input-group-addon" id="quicksearch-go"><span
@@ -31,7 +31,7 @@
 			<div class="white-content">
 				<div class="table-responsive">
 					<table cellspacing="1" cellpadding="1"
-						class="table table-bordered table-striped">
+						class="table table-bordered table-striped" id="vpc_loadbalance_add_vm_table">
 						<thead>
 							<tr>
 								<th>Name</th>
@@ -47,7 +47,7 @@
 							<td><a class="text-info">{{ instance.vmInstance.name }}</a>
 
 									<div data-ng-show="instance.lbvm">
-									<select required="true" data-ng-show="instance.lbvm"  multiple class="form-control input-group" name="ipAddress" data-ng-model="instance.ipAddress"  data-ng-options="ipAddress.guestIpAddress for ipAddress in instance.vmIpAddress"  >
+									<select id="vpc_loadbalance_add_vm_name" required="true" data-ng-show="instance.lbvm"  multiple class="form-control input-group" name="ipAddress" data-ng-model="instance.ipAddress"  data-ng-options="ipAddress.guestIpAddress for ipAddress in instance.vmIpAddress"  >
 									</select>
 									</div>
 
@@ -65,7 +65,7 @@
 								<td>
 
 										<div class="form-group"  >
-											<input required type="checkbox"  class="form-control" icheck
+											<input id="vpc_loadbalance_add_vm_lb_vm" required type="checkbox"  class="form-control" icheck
 												data-ng-model="instance.lbvm"
 												data-ng-value="{{instance.vmInstance.id}}" name="selectVM"
 												data-ng-change="nicIPList(instance.vmInstance.id)" >
@@ -82,8 +82,8 @@
 
 <div class="modal-footer">
 			<get-loader-image data-ng-if="showLoader"></get-loader-image>
-			<button type="button" data-ng-if="!showLoader" class="btn btn-default " ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.cancel" bundle="${msg}" /></button>
-			<button class="btn btn-info"  data-ng-if="!showLoader" data-ng-click="loadbalancerSave(lbvmList)"><fmt:message key="common.apply" bundle="${msg}" /></button>
+			<button type="button" id="vpc_loadbalance_add_vm_cancel_button" data-ng-if="!showLoader" class="btn btn-default " ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.cancel" bundle="${msg}" /></button>
+			<button class="btn btn-info" id="vpc_loadbalance_add_vm_apply_button"  data-ng-if="!showLoader" data-ng-click="loadbalancerSave(lbvmList)"><fmt:message key="common.apply" bundle="${msg}" /></button>
   			</div>
 
 		</div>

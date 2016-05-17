@@ -11,11 +11,11 @@ pageEncoding="UTF-8"%>
     <div class="col-lg-6 col-md-6 col-sm-12">
         <div class="row ">
             <div class="p-sm pull-right">
-			<a data-ng-click="staticNat('md',ipDetails)"  data-ng-show="type =='source'" class="btn btn-info" title="Enable VPN"><span class="custom-icon custom-nat font-bold m-xs"></span> Enable VPN</a>
-			<a data-ng-click="disableNat('md',ipDetails)" data-ng-show="type =='source'" class="btn btn-info" title="Disable VPN"><span class="custom-icon custom-nat font-bold m-xs"></span> Disable VPN</a>
+			<a id="vpc_enable_vpn_button" data-ng-click="staticNat('md',ipDetails)"  data-ng-show="type =='source'" class="btn btn-info" title="Enable VPN"><span class="custom-icon custom-nat font-bold m-xs"></span> Enable VPN</a>
+			<a id="vpc_disable_vpn_button" data-ng-click="disableNat('md',ipDetails)" data-ng-show="type =='source'" class="btn btn-info" title="Disable VPN"><span class="custom-icon custom-nat font-bold m-xs"></span> Disable VPN</a>
 
-    	    <a data-ng-click="staticNat('md',ipDetails)" data-ng-show="type !='source'" data-ng-if="!ipDetails.isStaticnat && !ipDetails.isSourcenat" class="btn btn-info" title="Enable Static NAT"><span class="custom-icon custom-nat font-bold m-xs"></span> Enable Static NAT</a>
-			<a data-ng-click="disableNat('md',ipDetails)" data-ng-show="type !='source'" data-ng-if="ipDetails.isStaticnat && !ipDetails.isSourcenat" class="btn btn-info" title="Disable Static NAT"><span class="custom-icon custom-nat font-bold m-xs"></span> Disable Static NAT</a>
+    	    <a id="vpc_enable_static_nat_button" data-ng-click="staticNat('md',ipDetails)" data-ng-show="type !='source'" data-ng-if="!ipDetails.isStaticnat && !ipDetails.isSourcenat" class="btn btn-info" title="Enable Static NAT"><span class="custom-icon custom-nat font-bold m-xs"></span> Enable Static NAT</a>
+			<a id="vpc_disable_static_nat_button" data-ng-click="disableNat('md',ipDetails)" data-ng-show="type !='source'" data-ng-if="ipDetails.isStaticnat && !ipDetails.isSourcenat" class="btn btn-info" title="Disable Static NAT"><span class="custom-icon custom-nat font-bold m-xs"></span> Disable Static NAT</a>
 <!--                 <a data-ng-click="releaseIP('sm', ipDetails)" class="btn btn-info" title="Delete IP"><span class="fa-trash fa font-bold m-xs"></span> Delete IP </a>
  -->            </div>
 

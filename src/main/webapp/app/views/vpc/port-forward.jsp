@@ -13,7 +13,7 @@ pageEncoding="UTF-8"%>
 
                 	<div class="col-md-4  col-sm-4 col-xs-14">
                 		<h5 class="pull-left">Tier :</h5>
-                    	<select required="true" class="form-control m-l-md port-forwarding-select input-group pull-left" name="vpcnetworks" data-ng-model="portForward.vpcnetwork" ng-options="vpcnetwork.name for vpcnetwork in vpcNetworkListByPortforwarding" >
+                    	<select id="vpc_ip_address_portforwarding_tier" required="true" class="form-control m-l-md port-forwarding-select input-group pull-left" name="vpcnetworks" data-ng-model="portForward.vpcnetwork" ng-options="vpcnetwork.name for vpcnetwork in vpcNetworkListByPortforwarding" >
                         	<option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
                         </select><span class="text-center text-danger"
                                           data-ng-show="portform.vpcnetworks.$invalid && portFormSubmitted">
@@ -23,7 +23,7 @@ pageEncoding="UTF-8"%>
         </div>
 
 
-        <table   cellspacing="1" cellpadding="1" class="table table-bordered table-striped">
+        <table   cellspacing="1" cellpadding="1" class="table table-bordered table-striped" id="vpc_ip_address_portforwarding_table">
             <thead>
                 <tr>
                     <th class="col-md-2 col-xs-3"><fmt:message key="common.private.port" bundle="${msg}" /></th>
@@ -36,9 +36,9 @@ pageEncoding="UTF-8"%>
             </thead>
            <tbody>
                 <tr>
-                    <td><div class="col-xs-6"><input clear-input  required="true"  data-ng-show="udp || tcp" valid-number  placeholder="<fmt:message key="common.start.port" bundle="${msg}" />" data-ng-min="1" data-ng-max="65535"   type="text" name="privatestartPort" data-ng-model="portForward.privateStartPort" class="form-control" autofocus > <span class="text-center text-danger" data-ng-show="portform.privatestartPort.$invalid && portFormSubmitted"> <fmt:message key="common.required" bundle="${msg}" /></span></div><div class="col-xs-6"><input data-ng-show="udp || tcp" required="true" valid-number  placeholder="<fmt:message key="common.end.port" bundle="${msg}" />" data-ng-min="1" data-ng-max="65535"   type="text" name="privateendPort" data-ng-model="portForward.privateEndPort" class="form-control" autofocus > <span class="text-center text-danger" data-ng-show="portform.privateendPort.$invalid && portFormSubmitted"> <fmt:message key="common.required" bundle="${msg}" /></span></div></td>
-                    <td><div class="col-xs-6"><input clear-input  required="true" data-ng-show="udp || tcp" valid-number  placeholder="<fmt:message key="common.start.port" bundle="${msg}" />" data-ng-min="1" data-ng-max="65535"   type="text" name="publicstartPort" data-ng-model="portForward.publicStartPort" class="form-control" autofocus ><span class="text-center text-danger" data-ng-show="portform.publicstartPort.$invalid && portFormSubmitted"><fmt:message key="common.required" bundle="${msg}" /></span> </div><div class="col-xs-6"><input data-ng-show="udp || tcp" required="true" valid-number  placeholder="<fmt:message key="common.end.port" bundle="${msg}" />" data-ng-min="1" data-ng-max="65535"   type="text" name="publicendPort" data-ng-model="portForward.publicEndPort" class="form-control " autofocus ><span class="text-center text-danger" data-ng-show="portform.publicendPort.$invalid && portFormSubmitted"> <fmt:message key="common.required" bundle="${msg}" /></span></div></td>
-                    <td><select clear-input  required="true" class="form-control input-group" name="protocolType" data-ng-model="portForward.protocolType" data-ng-init="portForward.protocolType = networkLists.portProtocols[0]" data-ng-change="selectProtocol(protocolType.name)" data-ng-options="protocolType.name for protocolType in dropnetworkLists.portProtocols">
+                    <td><div class="col-xs-6"><input id="vpc_ip_address_portforwarding_private_start_Port" clear-input  required="true"  data-ng-show="udp || tcp" valid-number  placeholder="<fmt:message key="common.start.port" bundle="${msg}" />" data-ng-min="1" data-ng-max="65535"   type="text" name="privatestartPort" data-ng-model="portForward.privateStartPort" class="form-control" autofocus > <span class="text-center text-danger" data-ng-show="portform.privatestartPort.$invalid && portFormSubmitted"> <fmt:message key="common.required" bundle="${msg}" /></span></div><div class="col-xs-6"><input id="vpc_ip_address_portforwarding_private_end_Port" data-ng-show="udp || tcp" required="true" valid-number  placeholder="<fmt:message key="common.end.port" bundle="${msg}" />" data-ng-min="1" data-ng-max="65535"   type="text" name="privateendPort" data-ng-model="portForward.privateEndPort" class="form-control" autofocus > <span class="text-center text-danger" data-ng-show="portform.privateendPort.$invalid && portFormSubmitted"> <fmt:message key="common.required" bundle="${msg}" /></span></div></td>
+                    <td><div class="col-xs-6"><input id="vpc_ip_address_portforwarding_public_start_Port" clear-input  required="true" data-ng-show="udp || tcp" valid-number  placeholder="<fmt:message key="common.start.port" bundle="${msg}" />" data-ng-min="1" data-ng-max="65535"   type="text" name="publicstartPort" data-ng-model="portForward.publicStartPort" class="form-control" autofocus ><span class="text-center text-danger" data-ng-show="portform.publicstartPort.$invalid && portFormSubmitted"><fmt:message key="common.required" bundle="${msg}" /></span> </div><div class="col-xs-6"><input id="vpc_ip_address_portforwarding_public_end_Port" data-ng-show="udp || tcp" required="true" valid-number  placeholder="<fmt:message key="common.end.port" bundle="${msg}" />" data-ng-min="1" data-ng-max="65535"   type="text" name="publicendPort" data-ng-model="portForward.publicEndPort" class="form-control " autofocus ><span class="text-center text-danger" data-ng-show="portform.publicendPort.$invalid && portFormSubmitted"> <fmt:message key="common.required" bundle="${msg}" /></span></div></td>
+                    <td><select id="vpc_ip_address_portforwarding_protocol_type" clear-input  required="true" class="form-control input-group" name="protocolType" data-ng-model="portForward.protocolType" data-ng-init="portForward.protocolType = networkLists.portProtocols[0]" data-ng-change="selectProtocol(protocolType.name)" data-ng-options="protocolType.name for protocolType in dropnetworkLists.portProtocols">
                     <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>  </select>
                     <span class="text-center text-danger" data-ng-show="portform.protocolType.$invalid && portFormSubmitted"> <fmt:message key="common.required" bundle="${msg}" /></span>
                      </td>
@@ -51,7 +51,7 @@ pageEncoding="UTF-8"%>
         <div data-ng-show="showLoader" style="margin: 1%">
 			<get-loader-image data-ng-show="showLoader"></get-loader-image>
 		</div>
-        <table data-ng-hide="showLoader" cellspacing="1" cellpadding="1" class="table table-bordered table-striped">
+        <table data-ng-hide="showLoader" cellspacing="1" cellpadding="1" class="table table-bordered table-striped" id="vpc_ip_address_portforwarding_table_list">
           <thead>
                 <tr>
                     <th class="col-md-2 col-xs-3"></th>
@@ -72,7 +72,7 @@ pageEncoding="UTF-8"%>
                 <span>IP: {{portForward.vmGuestIp}}</span></td>
                 <td><span ng-if="portForward.isActive"><fmt:message key="common.active" bundle="${msg}" /></span><span ng-if="!portForward.isActive"><fmt:message key="common.inactive" bundle="${msg}" /></span></td>
                 <td>
-                    <a data-ng-click="deletePortRules('sm',portForward)" title="<fmt:message key="common.delete" bundle="${msg}" />"><span class="fa fa-trash"></span></a>
+                    <a id="vpc_ip_address_portforwarding_delete_button" data-ng-click="deletePortRules('sm',portForward)" title="<fmt:message key="common.delete" bundle="${msg}" />"><span class="fa fa-trash"></span></a>
                 </td>
 	        </tr>
             </tbody>
