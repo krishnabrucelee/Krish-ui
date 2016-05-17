@@ -66,7 +66,7 @@
                                                     <div class="panel panel-info">
                                                     	<a id="config_vpc_network_acl_lists" ui-sref="vpc.view-vpc.config-vpc.network-acl">
 	                                                        <div class="panel-body config-box p-xxs text-info text-center " >
-	                                                            <h3> 0</h3>
+	                                                            <h3> {{aclList.length}}</h3>
 	                                                            <fmt:message key="network.acl.lists" bundle="${msg}" />
 	                                                        </div>
                                                         </a>

@@ -26,11 +26,11 @@
 	                            <span ng-switch-when="true">{{ state.data.pageName }}</span>
                             </span>
                             <span data-ng-if="state.data.pageTitle === 'config VPC'">
-	                            <a ng-switch-when="false" ng-href="{{'#/vpc/view/'+state.data.id}}/config-vpc"><fmt:message key="vpc.configuration" bundle="${msg}" /></a>
+	                            <a ng-switch-when="false" ng-href="{{'#/vpc/view/'+state.parent.data.id}}/config-vpc"><fmt:message key="vpc.configuration" bundle="${msg}" /></a>
 	                            <span ng-switch-when="true"><fmt:message key="vpc.configuration" bundle="${msg}" /></span>
                             </span>
                             <span data-ng-if="state.data.pageTitle === 'Public IP'">
-	                            <a ng-switch-when="false" ng-href="{{'#/vpc/view/'+state.data.id}}/config-vpc/public-ip"><fmt:message key="public.ip" bundle="${msg}" /></a>
+	                            <a ng-switch-when="false" ng-href="{{'#/vpc/view/'+state.parent.parent.data.id}}/config-vpc/public-ip"><fmt:message key="public.ip" bundle="${msg}" /></a>
 	                            <span ng-switch-when="true"><fmt:message key="public.ip" bundle="${msg}" /></span>
                             </span>
                             <span data-ng-if="state.data.pageTitle === 'Virtual Machines'">
@@ -42,7 +42,7 @@
 	                            <span ng-switch-when="true"><fmt:message key="ip.address" bundle="${msg}" /></span>
                             </span>
                             <span data-ng-if="state.data.pageTitle === 'Network ACL'">
-	                            <a ng-switch-when="false" ng-href="{{'#/vpc/view/'+state.data.id}}/config-vpc/network-acl"><fmt:message key="network.acl" bundle="${msg}" /></a>
+	                            <a ng-switch-when="false" ng-href="{{'#/vpc/view/'+state.parent.parent.data.id}}/config-vpc/network-acl"><fmt:message key="network.acl" bundle="${msg}" /></a>
 	                            <span ng-switch-when="true"><fmt:message key="network.acl" bundle="${msg}" /></span>
                             </span>
                             <span data-ng-if="state.data.pageTitle === 'View Network'">
