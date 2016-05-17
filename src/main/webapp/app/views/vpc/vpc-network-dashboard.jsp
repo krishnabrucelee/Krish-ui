@@ -173,10 +173,11 @@
 							data-ng-if="type == 'edit'"
 							ng-disabled="form.configForm.$invalid" type="submit">
 							<fmt:message key="common.update" bundle="${msg}" />
-						</button>
+						</button><!-- href="#/vpc/view/{{vpcsid}}/config-vpc/view/{{ network.id}}" -->
 						<button type="button" class="btn btn-default "
 							data-ng-hide="showLoader" data-ng-if="type == 'edit'"
-							ui-sref="vpc.view-vpc.config-vpc.view-network">
+							data-ng-click="canceledit(network.id)"
+							>
 							<fmt:message key="common.cancel" bundle="${msg}" />
 						</button>
 					</div>
@@ -203,13 +204,20 @@
 							data-ng-click="deleteNetwork('sm', network)"><span
 								class="fa-trash fa font-bold m-xs"></span> <fmt:message
 									key="delete.network" bundle="${msg}" /></a></li>
-						<%-- <li data-ng-if="type != 'edit'" class="list-group-item"><a
+						<li data-ng-if="type != 'edit'" class="list-group-item"><a
 							has-permission="EDIT_NETWORK"
 							title=" <fmt:message key="edit.network" bundle="${msg}" />"
-							href="#/vpc/view/{{vpc.id}}/config-vpc/edit/{{ network.id}}"> <span
+							href="#/vpc/view/{{vpcsid}}/config-vpc/edit/{{ network.id}}"> <span
 								class="fa fa-edit font-bold m-xs"></span> <fmt:message
 									key="edit.network" bundle="${msg}" />
-						</a></li> --%>
+						</a></li>
+						<li class="list-group-item"><a
+							 href="javascript:void(0);"
+							title=" <fmt:message key="replace.acl.list" bundle="${msg}" />"
+							data-ng-click="replaceaclList('sm', network)"><span
+								class="fa fa-exchange font-bold m-xs"></span> <fmt:message
+									key="replace.acl.list" bundle="${msg}" /></a></li>
+
 					</ul>
 				</div>
 			</div>
