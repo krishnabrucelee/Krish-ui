@@ -1684,6 +1684,7 @@ $scope.vmPortId = instance;
                     $scope.formSubmitted = true;
                     $scope.showLoader = true;
                     $scope.portForward.networkId = portinstance.networkId;
+		   console.log("port",$scope.portForward);
                     $scope.vmIpAddress = {};
 		    $scope.instance = {};
                     var hasError = true;
@@ -1751,6 +1752,7 @@ $scope.vmPortId = instance;
         $scope.templateCategory = 'port-forward';
         $scope.firewallRules = {};
         $scope.portForward = {};
+$scope.portFormSubmitted = false;
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasFirewallRuless = appService.crudService.listAllByQuery("portforwarding/list?ipaddress=" + $stateParams.id1, $scope.global.paginationHeaders(pageNumber, limit), {
             "limit": limit
