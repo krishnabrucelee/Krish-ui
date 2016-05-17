@@ -749,17 +749,23 @@ if (!angular.isUndefined($stateParams.id1)) {
                     });
                 };
                 $scope.lbvmLists();
+
+
  $scope.loadbalancerSave = function(loadBalancer) {
+
                         loadBalancer.vmIpAddress = [];
+			loadBalancer.networkId  = $scope.loadBalancer.vpcnetwork.id;
                         $scope.loadBalancer = $scope.global.rulesLB[0];
+			$scope.loadBalancer.networkId = loadBalancer.networkId;
                         $scope.showLoader = true;
 			//state-param id to be changed
                         $scope.loadBalancer.ipAddressId = $stateParams.id1;
-                        // var loadBalancer = angular.copy($scope.loadBalancer);
                         $scope.loadBalancer.protocol = $scope.loadBalancer.protocol.toUpperCase();
                         $scope.loadBalancer.state = $scope.loadBalancer.state.toUpperCase();
                         $scope.loadBalancer.state = $scope.loadBalancer.state.toUpperCase();
-			$scope.loadBalancer.networkId = loadBalancer[0].networkId;
+
+
+
 	var hasError = true;
 	var assignedVmIpCount = 0;
 	var selectedVmCount = 0;
@@ -1673,10 +1679,11 @@ $scope.vmPortId = instance;
                 $scope.portvmLists();
                 $scope.portforwardSave = function(portinstance) {
                     $scope.instances = portinstance;
+		    portinstance.networkId  = $scope.portForward.vpcnetwork.id;
                     $scope.portForward = $scope.global.rulesPF[0];
                     $scope.formSubmitted = true;
                     $scope.showLoader = true;
-                    $scope.portForward.networkId = portinstance[0].networkId;
+                    $scope.portForward.networkId = portinstance.networkId;
                     $scope.vmIpAddress = {};
 		    $scope.instance = {};
                     var hasError = true;
@@ -1712,6 +1719,7 @@ $scope.vmPortId = instance;
                     var hasPortForward = appService.crudService.add("portforwarding", $scope.portForward);
                     hasPortForward.then(function(result) {
                     $scope.formSubmitted = false;
+        $scope.portFormSubmitted = false;
                         $modalInstance.close();
                         $scope.showLoader = false;
                     }).catch(function(result) {
