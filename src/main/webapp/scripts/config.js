@@ -280,7 +280,7 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider, $compile
                 url : "/:view/:id3",
                 templateUrl : VIEW_URL + "views/vpc/view-network-acl.jsp",
                 data : {
-                    pageTitle : 'view.network',
+                    pageTitle : 'View Network',
                     networkTab : 'details'
                 }
             })
@@ -309,6 +309,24 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider, $compile
                 templateUrl : VIEW_URL + "views/vpc/virtual-machines.jsp",
                 data : {
                     pageTitle : 'Virtual Machines'
+                }
+            })
+
+            // Virtual Machines
+            .state('vpc.view-vpc.config-vpc.lbip', {
+                url : "/lbip/:id3",
+                templateUrl : VIEW_URL + "views/vpc/lbip.jsp",
+                data : {
+                    pageTitle : 'LoadBalancer IP'
+                }
+            })
+
+            // Virtual Machines
+            .state('vpc.view-vpc.config-vpc.natip', {
+                url : "/staticnat/:id4",
+                templateUrl : VIEW_URL + "views/vpc/staticnat.jsp",
+                data : {
+                    pageTitle : 'Static Nat IP'
                 }
             })
 

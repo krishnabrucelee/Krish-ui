@@ -12,11 +12,12 @@
 
 angular.module('homer').controller('vpcCtrl', vpcCtrl)
 
-function vpcCtrl($scope, $modal, appService, filterFilter, $stateParams,$state, localStorageService, promiseAjax, $window, $location) {
+function vpcCtrl($scope, $modal, appService, $timeout, filterFilter, $stateParams,$state, localStorageService, promiseAjax, $window, $location) {
     $scope.global = appService.globalConfig;
     $scope.vpc = {};
     $scope.formElements = {};
     $scope.showLoader = false;
+    $scope.showLoaderOffer = false;
     $scope.paginationObject = {};
     $scope.sort = appService.globalConfig.sort;
     $scope.changeSorting = appService.utilService.changeSorting;
@@ -43,6 +44,12 @@ function vpcCtrl($scope, $modal, appService, filterFilter, $stateParams,$state, 
     $scope.networkIdu = {};
     $scope.portForward = {};
     $scope.portform = {};
+    $scope.networkVMList = [];
+    $scope.networkVMLists = [];
+    $scope.lbrulesList = [];
+    $scope.lbrulesLists = [];
+    $scope.lbrulesIps = {};
+    $scope.natIps = {};
 
     $scope.type = $stateParams.view;
     // VPC Offer List
@@ -54,6 +61,7 @@ function vpcCtrl($scope, $modal, appService, filterFilter, $stateParams,$state, 
             $scope.networkOfferList = result;
         });
     };
+
     if ($stateParams.id > 0  && $location.path() == '/vpc/view/' + $stateParams.id ) {
         $scope.showLoader = true;
         $scope.showLoaderOffer = true;
@@ -68,18 +76,27 @@ function vpcCtrl($scope, $modal, appService, filterFilter, $stateParams,$state, 
             $scope.listVpcNetwork($stateParams.id);
             $scope.listVpcNetworkByPortforwarding($stateParams.id);
             $scope.listVpcNetworkForLB($scope.vpc.id);
-            $scope.vpcTiers($stateParams.id);
+            $scope.vpcTiers($stateParams.id);            
             if ($state.current.data.pageTitle === "view VPC") {
                 $state.current.data.pageName = result.name;
-                $state.current.data.id = result.id;
+                $state.current.data.id = result.id;                 
             } else {
                 $state.$current.parent.data.pageName = result.name;
                 $state.$current.parent.data.id = result.id;
             }
         });
     }
-
-
+   
+    $scope.breadcrumbList = function() {
+        if (!angular.isUndefined($stateParams.id)) {
+            var hasBreadcrumb = appService.crudService.read("vpc", $stateParams.id);
+            hasBreadcrumb.then(function(result) { // this is only run after $http completes0.
+                $state.$current.parent.data.pageName = result.name;
+                $state.$current.parent.data.id = result.id;
+        });
+        }
+    };
+    $scope.breadcrumbList();
 
     $scope.listVpcOffer();
     $scope.zoneList = {};
@@ -565,27 +582,80 @@ $scope.dropnetworkLists = {
 
     // VPC Network List
     $scope.listVpcNetwork = function(vpcId) {
+        $scope.showLoaderOffer = true;
     	var listVpcNetworks = appService.crudService.listAllByID("guestnetwork/vpcNetworkList?vpcId=" + vpcId);
         listVpcNetworks.then(function(result) {
             $scope.vpcNetworkList = result;
+            angular.forEach(result, function(value, key) {
+                $scope.getNatList(value.id);
+                $scope.instanceListForVpc(value.id);
+                $scope.lBForVpc(value.id);
+            });
+            $timeout(function(){$scope.callAtTimeout();}, 2000);
+
         });
 
     };
+
+    $scope.callAtTimeout = function() {
+        $scope.showLoaderOffer = false;
+    }
+
 
 if ($stateParams.id2 > 0) {
   var listVpcOffers = appService.promiseAjax
                 .httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbynetwork"+"?networkid="+$stateParams.id2 );
         listVpcOffers.then(function(result) {
             $scope.vpcVmList = result;
+  });
+}
 
-});
+if ($stateParams.id3 > 0) {
+    var hasloadBalancer = appService.crudService.listByQuery("ipAddresses/vpc/lb/list?networkId=" + $stateParams.id3);
+    hasloadBalancer.then(function(result) {
+        $scope.lbrulesIp = result;
+    });
+}
+
+
+if ($stateParams.id4 > 0) {
+    var hasNat = appService.crudService.listByQuery("ipAddresses/vpc/nat/list?networkId=" + $stateParams.id4);
+    hasNat.then(function(result) {
+        $scope.natIps = result;
+    });
+}
+
+$scope.instanceListForVpc = function(networkId){
+    var listVpcVm = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbynetwork?networkid="+networkId );
+    listVpcVm.then(function(result) {
+        $scope.networkVMLists = [];
+        angular.forEach(result, function(value, key) {
+            if(result.length >= $scope.networkVMLists.length) {
+                $scope.networkVMLists.push(key + ': ' + value);
+            }
+        });
+        $scope.networkVMList.push($scope.networkVMLists.length);
+    });
+}
+
+$scope.lBForVpc = function(networkId){
+    var hasloadBalancer = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "loadBalancer/network/list?networkId=" + networkId + "&lang=" + appService.localStorageService.cookie.get('language'));
+    hasloadBalancer.then(function(result) {
+        $scope.lbrulesLists = [];
+        angular.forEach(result, function(value, key) {
+            if(result.length >= $scope.lbrulesLists.length) {
+                $scope.lbrulesLists.push(key + ': ' + value);
+            }
+        });
+        $scope.lbrulesList.push($scope.lbrulesLists.length);
+    });
 }
 
  // VPC Network List
     $scope.listVpcNetworkForLB = function(vpcId) {
     	var listVpcNetworksLB = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "guestnetwork/vpcNetworkLists?vpcId=" + vpcId + "&type=" +"Lb" +"&sortBy=-id");
         listVpcNetworksLB.then(function(result) {
-            $scope.vpcNetworkListForLB = result;
+            $scope.vpcNetworkListForLB = result;	
         });
     };
 
@@ -689,9 +759,7 @@ if (!angular.isUndefined($stateParams.id1)) {
                         $scope.loadBalancer.protocol = $scope.loadBalancer.protocol.toUpperCase();
                         $scope.loadBalancer.state = $scope.loadBalancer.state.toUpperCase();
                         $scope.loadBalancer.state = $scope.loadBalancer.state.toUpperCase();
-			console.log(loadBalancer[0].networkId);
 			$scope.loadBalancer.networkId = loadBalancer[0].networkId;
-			console.log("networkid",$scope.loadBalancer.networkId);
 	var hasError = true;
 	var assignedVmIpCount = 0;
 	var selectedVmCount = 0;
@@ -1425,6 +1493,19 @@ $scope.vmPortId = instance;
         }]);
     };
 
+    $scope.getNatList = function(networkId){
+        var hasNat = appService.crudService.listByQuery("ipAddresses/vpc/nat/list?networkId=" + networkId);
+        hasNat.then(function(result) {
+            $scope.natLists = [];
+            angular.forEach(result, function(value, key) {
+                if(result.length >= $scope.natLists.length) {
+                    $scope.natLists.push(key + ': ' + value);
+                }
+            });
+            $scope.natList.push($scope.natLists.length);
+        });
+    };
+
     $scope.enableVpn = function(size, ipAddress) {
         $scope.ipAddress = angular.copy(ipAddress);
         appService.dialogService.openDialog("app/views/vpc/enable-vpn.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function($scope, $modalInstance, $rootScope) {
@@ -1551,6 +1632,7 @@ $scope.vmPortId = instance;
     };
 
   $scope.openAddInstance = function(size) {
+      appService.localStorageService.set("selectedNetwork", $stateParams.id2);
         var modalInstance = $modal.open({
             templateUrl: 'app/views/cloud/instance/add.jsp',
             controller: 'instanceCtrl',
@@ -1566,8 +1648,7 @@ $scope.vmPortId = instance;
         modalInstance.result.then(function(selectedItem) {
             $scope.selected = selectedItem;
         }, function() {
-            $scope.vmlist(1, "Expunging");
-            $scope.borderContent = "Expunging";
+            appService.localStorageService.set("selectedNetwork", null);
         });
     };
 
@@ -1697,7 +1778,7 @@ $scope.vmPortId = instance;
     if ($stateParams.id1 > 0  && $location.path() == '/vpc/view/' + $stateParams.id +'/config-vpc/public-ip/ip-address/'+$stateParams.id1){
         $scope.listVpcNetwork($stateParams.id);
         $scope.listVpcNetworkByPortforwarding($stateParams.id);
-            $scope.listVpcNetworkForLB($stateParams.id);
+        $scope.listVpcNetworkForLB($stateParams.id);
         $scope.vpcTiers($stateParams.id);
     }
     
@@ -1875,7 +1956,6 @@ $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.portforwardSave
     $scope.tcp = true;
     $scope.udp = true;
     $scope.selectProtocol = function(selectedItem) {
-    	console.log(selectedItem);
         if (selectedItem == 'TCP' || selectedItem == 'UDP') {
             $scope.tcp = true;
             $scope.udp = true;
@@ -1947,7 +2027,9 @@ $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.portforwardSave
          hasDomains.then(function(result) { // this is only run after $http
              // completes0
              $scope.networkAclList = result;
-         });
+             $state.current.data.pageName = result.name;
+             $state.current.data.id = result.id; 
+         }); 
        }
      };
       $scope.networkAclList();
@@ -1985,7 +2067,6 @@ $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.portforwardSave
             	appService.dialogService.openDialog("app/views/vpc/delete-vpcAcl.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
                        $scope.acl = networkAcl;
             		$scope.ok = function (networkAcl) {
-                        	console.log($scope.acl);
                         	$scope.showLoader = true;
                             $modalInstance.close();
                             var hasServer = appService.crudService.softDelete("vpcacl", $scope.acl);
@@ -2015,8 +2096,7 @@ $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.portforwardSave
             	appService.dialogService.openDialog("app/views/vpc/delete-vpcAcl.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
                        $scope.acl = vpcAcl;
             		$scope.ok = function (vpcAcl) {
-                        	console.log($scope.acl);
-                        	$scope.showLoader = true;
+                            $scope.showLoader = true;
                             $modalInstance.close();
                             var hasServer = appService.crudService.softDelete("vpcnetworkacl", $scope.acl);
                             hasServer.then(function (result) {

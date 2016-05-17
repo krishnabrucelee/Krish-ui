@@ -12,6 +12,10 @@
                         	<a class="btn btn-info" data-ng-click="createNetwork('md')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="create.network" bundle="${msg}" /></a>
 	                    </span>
                   	</div>
+                  	<div data-ng-if="showLoaderOffer" style="margin: 30%">
+							<get-loader-image-offer data-ng-show="showLoaderOffer"></get-loader-image-offer>
+					</div>
+                  	<div data-ng-hide="showLoaderOffer">
                     <div class="vpc-manager-area">
                         <div class="vpc pull-left">
                             <div class="hpanel">
@@ -61,7 +65,7 @@
                                                 <div class="media-body">
                                                     <div class="panel panel-info">
                                                     	<a ui-sref="vpc.view-vpc.config-vpc.network-acl">
-	                                                        <div class="panel-body config-box p-xxs text-info text-center cursor-notallow" >
+	                                                        <div class="panel-body config-box p-xxs text-info text-center " >
 	                                                            <h3> 0</h3>
 	                                                            <fmt:message key="network.acl.lists" bundle="${msg}" />
 	                                                        </div>
@@ -102,10 +106,10 @@
                                                     <div class="col-md-6">
 														<div class="media">
 	                                                        <div class="media-body">
-	                                                            <!-- <a ui-sref="vpc.public-lbip({id: {{ 1}}})"> -->
-	                                                                <div class="panel panel-info cursor-notallow">
+	                                                            <a ui-sref="vpc.view-vpc.config-vpc.lbip({id3: {{network.id}}})">
+	                                                                <div class="panel panel-info">
 	                                                                    <div class="panel-body config-box p-xxs text-info text-center">
-	                                                                        <h3> 0 </h3>
+	                                                                        <h3> {{lbrulesList[$index]}}</h3>
 	                                                                        <fmt:message key="public.lb.ip" bundle="${msg}" />
 	                                                                    </div>
 	                                                                </div>
@@ -116,10 +120,10 @@
                                                     <div class="col-md-6">
 	                                                    <div class="media">
 	                                                        <div class="media-body">
-	                                                            <!-- <a ui-sref="vpc.static-nat({id: {{1}}})"> -->
+	                                                            <a ui-sref="vpc.view-vpc.config-vpc.natip({id4: {{network.id}}})" >
 	                                                                <div class="panel panel-info">
-	                                                                    <div class="panel-body config-box p-xxs text-info text-center cursor-notallow">
-	                                                                        <h3> 0 </h3>
+	                                                                    <div class="panel-body config-box p-xxs text-info text-center ">
+	                                                                        <h3> {{natList[$index]}}</h3>
 	                                                                        <fmt:message key="static.nats" bundle="${msg}" />
 	                                                                    </div>
 	                                                                </div>
@@ -133,7 +137,7 @@
 	                                                          <a  ui-sref="vpc.view-vpc.config-vpc.virtual-machines({id2: {{network.id}}})" >
 	                                                                <div class="panel panel-info">
 	                                                                    <div class="panel-body config-box p-xxs text-info text-center">
-	                                                                        <h3> 0 </h3>
+	                                                                        <h3>{{networkVMList[$index]}}</h3>
 	                                                                        <fmt:message key="virtual.machines" bundle="${msg}" />
 	                                                                    </div>
 	                                                                </div>
@@ -149,6 +153,7 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
                     </div>
                 </div>
             </div>

@@ -67,127 +67,55 @@ function accountListCtrl($scope,$state, $log,$timeout,$stateParams, appService, 
     $scope.paginationObject.sortBy = 'userName';
 
     $scope.changeSort = function(sortBy, pageNumber) {
-			var sort = appService.globalConfig.sort;
-			if (sort.column == sortBy) {
-				sort.descending = !sort.descending;
-			} else {
-				sort.column = sortBy;
-				sort.descending = false;
-			}
-			var sortOrder = '-';
-			if(!sort.descending){
-				sortOrder = '+';
-			}
+		var sort = appService.globalConfig.sort;
+		if (sort.column == sortBy) {
+			sort.descending = !sort.descending;
+		} else {
+			sort.column = sortBy;
+			sort.descending = false;
+		}
+		var sortOrder = '-';
+		if(!sort.descending){
+			sortOrder = '+';
+		}
+		$scope.paginationObject.sortOrder = sortOrder;
+		$scope.paginationObject.sortBy = sortBy;
+		$scope.showLoader = true;
+		var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
+		var hasUserLists = {};
+       	if ($scope.domainView == null && $scope.userSearch == null) {
+       		hasUserLists =  appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "users" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+sortOrder+sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+        }  else {
+            $scope.filter = "";
+        	if ($scope.domainView != null && $scope.userSearch == null) {
+            	$scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=";
+        	} else if ($scope.domainView == null && $scope.userSearch != null) {
+            	$scope.filter = "&domainId=0" + "&searchText=" + $scope.userSearch;
+        	} else {
+            	$scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=" + $scope.userSearch;
+        	}
+        	hasUserLists =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "users/listByUserDomain"
+    				+"?lang=" +appService.localStorageService.cookie.get('language')+"&flag=pandaUserPanel"
+    				+ encodeURI($scope.filter)+"&sortBy="+$scope.paginationObject.sortOrder+$scope.paginationObject.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+        }
+
+       	hasUserLists.then(function(result) { // this is only run after $http
+        	// completes0
+			$scope.accountList = result;
+			$scope.accountList.Count = 0;
+            if (result.length != 0) {
+                $scope.accountList.Count = result.totalItems;
+            }
+
+			// For pagination
+			$scope.paginationObject.limit = limit;
+			$scope.paginationObject.currentPage = pageNumber;
+			$scope.paginationObject.totalItems = result.totalItems;
 			$scope.paginationObject.sortOrder = sortOrder;
 			$scope.paginationObject.sortBy = sortBy;
-			$scope.showLoader = true;
-			var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
-            var hasUserLists = {};
-            $scope.filter = "";
-            if ($scope.global.sessionValues.type === 'ROOT_ADMIN') {
-            if ($scope.domainView == null && $scope.userSearch == null) {
-            	hasUserLists =  appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "users" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+sortOrder+sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
-            } else {
-                if ($scope.domainView != null && $scope.userSearch == null) {
-                    $scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=";
-                } else if ($scope.domainView == null && $scope.userSearch != null) {
-                    $scope.filter = "&domainId=0" + "&searchText=" + $scope.userSearch;
-                } else {
-                    $scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=" + $scope.userSearch;
-                }
-                hasUserLists =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "users/listByUserDomain"
-        				+"?lang=" +appService.localStorageService.cookie.get('language')+"&flag=pandaUserPanel"
-        				+ encodeURI($scope.filter)+"&sortBy="+$scope.paginationObject.sortOrder+$scope.paginationObject.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
-            }
-			hasUserLists.then(function(result) { // this is only run after $http
-				// completes0
-				$scope.accountList = result;
-				$scope.accountList.Count = 0;
-	            if (result.length != 0) {
-	                $scope.accountList.Count = result.totalItems;
-	            }
-	            var hasUserCount = {};
-	            if ($scope.domainView == null && $scope.userSearch == null) {
-	            	hasUserCount = appService.crudService.listAll("users/list");
-	            } else {
-	            	hasUserCount =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "users/listByUserDomain"
-	        				+"?lang=" +appService.localStorageService.cookie.get('language')+"&flag=pandaUserPanel"
-	        				+ encodeURI($scope.filter)+"&sortBy="+$scope.paginationObject.sortOrder+$scope.paginationObject.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
-	            }
-	            hasUserCount.then(function(result) {
-	            	$scope.activeUsers = result;
-	    		});
-				// For pagination
-				$scope.paginationObject.limit = limit;
-				$scope.paginationObject.currentPage = pageNumber;
-				$scope.paginationObject.totalItems = result.totalItems;
-				$scope.paginationObject.sortOrder = sortOrder;
-				$scope.paginationObject.sortBy = sortBy;
-				$scope.showLoader = false;
-			});
-    }
-
-	        if ($scope.global.sessionValues.type === 'USER' || $scope.global.sessionValues.type === 'DOMAIN_ADMIN') {
-                if ($scope.global.sessionValues.domainId != null && $scope.userSearch == null) {
-                    $scope.filter = "&domainId=" + $scope.global.sessionValues.domainId + "&searchText=";
-                } else if ($scope.global.sessionValues.domainId == null && $scope.userSearch != null) {
-                    $scope.filter = "&domainId=0" + "&searchText=" + $scope.userSearch;
-                } else {
-                    $scope.filter = "&domainId=" + $scope.global.sessionValues.domainId + "&searchText=" + $scope.userSearch;
-                }
-                hasUserLists =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "users/listByUserDomain"
-                      +"?lang=" +appService.localStorageService.cookie.get('language')+"&flag=pandaUserPanel"
-                      +encodeURI($scope.filter) +"&sortBy="+globalConfig.sort.sortOrder+globalConfig.sort.sortBy+"&limit="+limit,
-                		$scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
-
-                hasUserLists.then(function(result) { // this is only run after $http
-    				// completes0
-    				$scope.accountList = result;
-    				$scope.accountList.Count = 0;
-    	            if (result.length != 0) {
-    	                $scope.accountList.Count = result.totalItems;
-    	            }
-    	            //For Active and inactive
-    	      		 // Get the count of the listings
-    	            var hasUserCount = {};
-    	            if ($scope.global.sessionValues.domainId == null && $scope.userSearch == null) {
-    	            	hasUserCount = appService.crudService.listAll("users/list");
-    	            } else {
-    	            	hasUserCount =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "users/listByUserDomain"
-    	                        +"?lang=" +appService.localStorageService.cookie.get('language')+"&flag=pandaUserPanel"
-    	                        + encodeURI($scope.filter) +"&sortBy="+globalConfig.sort.sortOrder+globalConfig.sort.sortBy+"&limit="+limit,
-    	                  		$scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
-    	            }
-    	            hasUserCount.then(function(result) {
-    	            	$scope.activeUsers = result;
-    	    		});
-
-    				// For pagination
-    				$scope.paginationObject.limit = limit;
-    				$scope.paginationObject.currentPage = pageNumber;
-    				$scope.paginationObject.totalItems = result.totalItems;
-    				$scope.paginationObject.sortOrder = sortOrder;
-    				$scope.paginationObject.sortBy = sortBy;
-    				$scope.showLoader = false;
-    			});
-    }
-
-
-		};
-
-//    $scope.userList = function() {
-//    	var hasUsers = {};
-//        if ($scope.global.sessionValues.type == "ROOT_ADMIN") {
-//            hasUsers = appService.crudService.listAll("users/list");
-//        } else {
-//        	hasUsers = appService.crudService.listAll("users/listbydomain");
-//        }
-//		$scope.showLoader = true;
-//		hasUsers.then(function (result) {  // this is only run after $http completes0
-//		   $scope.activeUsers = result;
-//	    });
-//    }
-//    $scope.userList();
+			$scope.showLoader = false;
+	    });
+	};
 
     // Load department
     $scope.department = {};
@@ -251,28 +179,26 @@ function accountListCtrl($scope,$state, $log,$timeout,$stateParams, appService, 
         appService.globalConfig.sort.sortBy = $scope.paginationObject.sortBy;
     	$scope.showLoader = true;
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
+
         var hasUsers = {};
-
-        $scope.filter = "";
-        if ($scope.global.sessionValues.type === "ROOT_ADMIN") {
-        if ($scope.domainView == null && $scope.userSearch == null) {
-        	hasUsers = appService.crudService.list("users/listall", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
-        } else {
-            if ($scope.domainView != null && $scope.userSearch == null) {
-                $scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=";
+    	if ($scope.domainView == null && $scope.userSearch == null) {
+    		hasUsers = appService.crudService.list("users/listall", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+    	} else {
+    	    if ($scope.domainView != null && $scope.userSearch == null) {
+    	    	$scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=";
             } else if ($scope.domainView == null && $scope.userSearch != null) {
-                $scope.filter = "&domainId=0" + "&searchText=" + $scope.userSearch;
+    	    	$scope.filter = "&domainId=0" + "&searchText=" + $scope.userSearch;
             } else {
-                $scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=" + $scope.userSearch;
-            }
-            hasUsers =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "users/listByUserDomain"
-                  +"?lang=" +appService.localStorageService.cookie.get('language')+"&flag=pandaUserPanel"
-                  + encodeURI($scope.filter) +"&sortBy="+globalConfig.sort.sortOrder+globalConfig.sort.sortBy+"&limit="+limit,
-            		$scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
-        }
-        hasUsers.then(function (result) {  // this is only run after $http completes0
+            	$scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=" + $scope.userSearch;
+    	    }
+    	    hasUsers =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "users/listByUserDomain"
+                    +"?lang=" +appService.localStorageService.cookie.get('language')+"&flag=pandaUserPanel"
+                    + encodeURI($scope.filter) +"&sortBy="+globalConfig.sort.sortOrder+globalConfig.sort.sortBy+"&limit="+limit,
+              		$scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
 
-            $scope.accountList = result;
+    	}
+    	hasUsers.then(function (result) {  // this is only run after $http completes0
+        	$scope.accountList = result;
             $scope.accountList.Count = 0;
             if (result.length != 0) {
                 $scope.accountList.Count = result.totalItems;
@@ -283,7 +209,7 @@ function accountListCtrl($scope,$state, $log,$timeout,$stateParams, appService, 
             	hasUserCount = appService.crudService.listAll("users/list");
             } else {
             	hasUserCount = appService.promiseAjax.httpTokenRequest(appService.crudService.globalConfig.HTTP_GET,
-         				 appService.crudService.globalConfig.APP_URL + "users"  +"/listBySearchText?"+encodeURI($scope.filter));
+         				 appService.crudService.globalConfig.APP_URL + "users"  +"/listBySearchText?"+encodeURI($scope.filter)+"&flag=pandaUserPanel");
             }
             hasUserCount.then(function(result) {
             	$scope.activeUsers = result;
@@ -293,52 +219,9 @@ function accountListCtrl($scope,$state, $log,$timeout,$stateParams, appService, 
             $scope.paginationObject.currentPage = pageNumber;
             $scope.paginationObject.totalItems = result.totalItems;
             $scope.showLoader = false;
-
-
         });
-    }
-        if ($scope.global.sessionValues.type === 'USER' || $scope.global.sessionValues.type === 'DOMAIN_ADMIN') {
-                if ($scope.global.sessionValues.domainId != null && $scope.userSearch == null) {
-                    $scope.filter = "&domainId=" + $scope.global.sessionValues.domainId + "&searchText=";
-                } else if ($scope.global.sessionValues.domainId == null && $scope.userSearch != null) {
-                    $scope.filter = "&domainId=0" + "&searchText=" + $scope.userSearch;
-                } else {
-                    $scope.filter = "&domainId=" + $scope.global.sessionValues.domainId + "&searchText=" + $scope.userSearch;
-                }
-                hasUsers =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "users/listByUserDomain"
-                      +"?lang=" +appService.localStorageService.cookie.get('language')+"&flag=pandaUserPanel"
-                      + encodeURI($scope.filter) +"&sortBy="+globalConfig.sort.sortOrder+globalConfig.sort.sortBy+"&limit="+limit,
-                		$scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
-
-        hasUsers.then(function (result) {  // this is only run after $http completes0
-
-            $scope.accountList = result;
-            $scope.accountList.Count = 0;
-            if (result.length != 0) {
-                $scope.accountList.Count = result.totalItems;
-            }
-            var hasUserCount = {};
-            if ($scope.global.sessionValues.domainId == null && $scope.userSearch == null) {
-            	hasUserCount = appService.crudService.listAll("users/list");
-            } else {
-            		hasUserCount = appService.promiseAjax.httpTokenRequest(appService.crudService.globalConfig.HTTP_GET,
-        				 appService.crudService.globalConfig.APP_URL + "users"  +"/listBySearchText?"+encodeURI($scope.filter));
-            }
-            hasUserCount.then(function(result) {
-            	$scope.activeUsers = result;
-    		});
-
-            // For pagination
-            $scope.paginationObject.limit  = limit;
-            $scope.paginationObject.currentPage = pageNumber;
-            $scope.paginationObject.totalItems = result.totalItems;
-            $scope.showLoader = false;
-
-
-        });
-    }
-
     };
+
     $scope.list(1);
     $scope.editList = {};
     $scope.activate = false;
