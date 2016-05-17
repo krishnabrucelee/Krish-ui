@@ -40,15 +40,7 @@ function addVMSnapshotCtrl($scope, globalConfig, $window, appService, notify) {
             });
         }
     };
-    /*    $scope.validateCreateVolume = function(form) {
-            $scope.formSubmitted = true;
-            if (form.$valid) {
-                $scope.cancel();
-                $scope.homerTemplate = 'app/views/notification/notify.jsp';
-                notify({message: 'Created successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
 
-            }
-        };*/
     $scope.validateDeleteSnapshot = function(form) {
         $scope.formSubmitted = true;
         if (form.$valid) {
@@ -94,12 +86,30 @@ function snapshotListCtrl($scope, crudService, $state, $timeout, promiseAjax, gl
         $scope.paginationObject.sortBy = sortBy;
         $scope.showLoader = true;
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
-        var hasSnapshotLists = appService.promiseAjax.httpTokenRequest(globalConfig.HTTP_GET, globalConfig.APP_URL + "snapshots" + "?lang=" + localStorageService.cookie.get('language') + "&sortBy=" + sortOrder + sortBy + "&limit=" + limit, $scope.global.paginationHeaders(pageNumber, limit), {
-            "limit": limit
-        });
+        var hasSnapshotLists = {};
+        if ($scope.domainId == null && ($scope.snapshotSearch == null
+        		|| angular.isUndefined($scope.snapshotSearch) || $scope.snapshotSearch == '')) {
+        	var hasSnapshotLists = appService.promiseAjax.httpTokenRequest(globalConfig.HTTP_GET, globalConfig.APP_URL + "snapshots" + "?lang=" + localStorageService.cookie.get('language') + "&sortBy=" + sortOrder + sortBy + "&limit=" + limit, $scope.global.paginationHeaders(pageNumber, limit), {
+                "limit": limit
+            });
+        }
+		else {
+            if ($scope.domainId != null && $scope.snapshotSearch == null) {
+                $scope.filter = "&domainId=" + $scope.domainId + "&searchText=";
+            }  else if ($scope.domainId == null && $scope.snapshotSearch != null) {
+                $scope.filter = "&domainId=0" + "&searchText=" + $scope.snapshotSearch;
+            } else  {
+                $scope.filter = "&domainId=" + $scope.domainId + "&searchText=" + $scope.snapshotSearch;
+            }
+            hasSnapshotLists =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "snapshots/listByDomain"+"?lang=" +appService.localStorageService.cookie.get('language')+ encodeURI($scope.filter) +"&sortBy="+$scope.paginationObject.sortOrder +$scope.paginationObject.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+        }
         hasSnapshotLists.then(function(result) { // this is only run after $http
             // completes0
             $scope.snapshotList = result;
+            $scope.snapshotList.Count = 0;
+            if (result.length != 0) {
+                $scope.snapshotList.Count = result.totalItems;
+            }
             // For pagination
             $scope.paginationObject.limit = limit;
             $scope.paginationObject.currentPage = pageNumber;
@@ -110,16 +120,77 @@ function snapshotListCtrl($scope, crudService, $state, $timeout, promiseAjax, gl
         });
     };
 
+    $scope.changeSorts = function(sortBy, pageNumber) {
+        var sort = appService.globalConfig.sort;
+        if (sort.column == sortBy) {
+            sort.descending = !sort.descending;
+        } else {
+            sort.column = sortBy;
+            sort.descending = false;
+        }
+        var sortOrder = '-';
+        if (!sort.descending) {
+            sortOrder = '+';
+        }
+        $scope.paginationObject.sortOrder = sortOrder;
+        $scope.paginationObject.sortBy = sortBy;
+        $scope.showLoader = true;
+        var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
+        var hasSnapshotLists = {};
+        if ($scope.domainId == null && $scope.vmSearch == null) {
+        	var hasSnapshotLists = appService.promiseAjax.httpTokenRequest(globalConfig.HTTP_GET, globalConfig.APP_URL + "vmsnapshot" + "?lang=" + localStorageService.cookie.get('language') + "&sortBy=" + sortOrder + sortBy + "&limit=" + limit, $scope.global.paginationHeaders(pageNumber, limit), {
+                "limit": limit
+            });
+        }
+		else {
+            if ($scope.domainId != null && $scope.vmSearch == null) {
+                $scope.filter = "&domainId=" + $scope.domainId + "&searchText=";
+            }  else if ($scope.domainId == null && $scope.vmSearch != null) {
+                $scope.filter = "&domainId=0" + "&searchText=" + $scope.vmSearch;
+            } else  {
+                $scope.filter = "&domainId=" + $scope.domainId + "&searchText=" + $scope.vmSearch;
+            }
+            hasSnapshotLists =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "vmsnapshot/listByDomain"+"?lang=" +appService.localStorageService.cookie.get('language')+ encodeURI($scope.filter) +"&sortBy="+$scope.paginationObject.sortOrder +$scope.paginationObject.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+        }
+        hasSnapshotLists.then(function(result) { // this is only run after $http
+            // completes0
+        	$scope.vmSnapshotList = result;
+            $scope.vmSnapshotList.Count = 0;
+            if (result.length != 0) {
+                $scope.vmSnapshotList.Count = result.totalItems;
+            }
+            // For pagination
+            $scope.paginationObject.limit = limit;
+            $scope.paginationObject.currentPage = pageNumber;
+            $scope.paginationObject.totalItems = result.totalItems;
+            $scope.paginationObject.sortOrder = sortOrder;
+            $scope.paginationObject.sortBy = sortBy;
+            $scope.showLoader = false;
+        });
+    };
 
     $scope.list = function(pageNumber) {
         appService.globalConfig.sort.sortOrder = $scope.paginationObject.sortOrder;
         appService.globalConfig.sort.sortBy = $scope.paginationObject.sortBy;
         $scope.showLoader = true;
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? crudService.globalConfig.CONTENT_LIMIT : $scope.paginationObject.limit;
-        var hasVolumes = crudService.list("snapshots", crudService.globalConfig.paginationHeaders(pageNumber, limit), {
-            "limit": limit
-        });
-        hasVolumes.then(function(result) {
+        var hasSnapshot = {};
+        if ($scope.domainId == null && $scope.snapshotSearch == null) {
+        	var hasSnapshot = crudService.list("snapshots", crudService.globalConfig.paginationHeaders(pageNumber, limit), {
+                "limit": limit
+            });
+        }
+		else {
+            if ($scope.domainId != null && $scope.snapshotSearch == null) {
+                $scope.filter = "&domainId=" + $scope.domainId + "&searchText=";
+            }  else if ($scope.domainId == null && $scope.snapshotSearch != null) {
+                $scope.filter = "&domainId=0" + "&searchText=" + $scope.snapshotSearch;
+            } else  {
+                $scope.filter = "&domainId=" + $scope.domainId + "&searchText=" + $scope.snapshotSearch;
+            }
+            hasSnapshot =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "snapshots/listByDomain"+"?lang=" +appService.localStorageService.cookie.get('language')+ encodeURI($scope.filter) +"&sortBy="+globalConfig.sort.sortOrder+globalConfig.sort.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+        }
+        hasSnapshot.then(function(result) {
             $scope.showLoader = false;
             $scope.snapshotList = result;
             $scope.snapshotList.Count = 0;
@@ -134,7 +205,13 @@ function snapshotListCtrl($scope, crudService, $state, $timeout, promiseAjax, gl
     }
     $scope.list(1);
 
-	 $scope.vmSearch = null;
+    $scope.snapshotSearch = null;
+    $scope.snapshotSearchList = function(snapshotSearch) {
+        $scope.snapshotSearch = snapshotSearch;
+        $scope.list(1);
+    };
+
+	$scope.vmSearch = null;
     $scope.searchList = function(vmSearch) {
         $scope.vmSearch = vmSearch;
         $scope.lists(1);
@@ -144,28 +221,19 @@ function snapshotListCtrl($scope, crudService, $state, $timeout, promiseAjax, gl
         $scope.showLoaderOffer = true;
         var limit = (angular.isUndefined($scope.paginationObjects.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObjects.limit;
         var hasSnapshots = {};
-        /**if ($scope.domainId == null) {
-            hasSnapshots = appService.crudService.list("vmsnapshot", $scope.global.paginationHeaders(pageNumber, limit), {
-                "limit": limit
-            });
-        } else {
-            hasSnapshots = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "vmsnapshot/listByDomain" + "?lang=" + appService.localStorageService.cookie.get('language') + "&domainId=" + $scope.domainId + "&sortBy=" + globalConfig.sort.sortOrder + globalConfig.sort.sortBy + "&limit=" + limit, $scope.global.paginationHeaders(pageNumber, limit), {
-                "limit": limit
-            });
-        }**/
-if ($scope.domainId == null && $scope.vmSearch == null) {
-            	hasSnapshots = appService.crudService.list("vmsnapshot", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
-            } 
+        if ($scope.domainId == null && $scope.vmSearch == null) {
+          	hasSnapshots = appService.crudService.list("vmsnapshot", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+        }
 		else {
-if ($scope.domainId != null && $scope.vmSearch == null) {
+            if ($scope.domainId != null && $scope.vmSearch == null) {
                 $scope.filter = "&domainId=" + $scope.domainId + "&searchText=";
             }  else if ($scope.domainId == null && $scope.vmSearch != null) {
                 $scope.filter = "&domainId=0" + "&searchText=" + $scope.vmSearch;
             } else  {
                 $scope.filter = "&domainId=" + $scope.domainId + "&searchText=" + $scope.vmSearch;
             }
-    		    hasSnapshots =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "vmsnapshot/listByDomain"+"?lang=" +appService.localStorageService.cookie.get('language')+ encodeURI($scope.filter) +"&sortBy="+globalConfig.sort.sortOrder+globalConfig.sort.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
-            }
+    		hasSnapshots =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "vmsnapshot/listByDomain"+"?lang=" +appService.localStorageService.cookie.get('language')+ encodeURI($scope.filter) +"&sortBy="+globalConfig.sort.sortOrder+globalConfig.sort.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+        }
         hasSnapshots.then(function(result) { // this is only run after
             // $http completes0
             $scope.showLoaderOffer = false;
@@ -181,6 +249,7 @@ if ($scope.domainId != null && $scope.vmSearch == null) {
         });
     };
     $scope.lists(1);
+
     // Get domain list
     var hasdomainListView = appService.crudService.listAll("domains/list");
     hasdomainListView.then(function(result) {
@@ -192,6 +261,13 @@ if ($scope.domainId != null && $scope.vmSearch == null) {
         $scope.domainId = domainId;
         $scope.lists(1);
     };
+
+    $scope.domainId = null;
+    $scope.selectSnapshotDomainView = function(pageNumber,domainId) {
+        $scope.domainId = domainId;
+        $scope.list(1);
+    };
+
     $scope.instanceList = {};
     $scope.instanceId = function(pageNumber) {
         var hasUsers = crudService.listByQuery("virtualmachine/list");
@@ -357,7 +433,7 @@ appService.globalConfig.webSocketLoaders.volumeBackupLoader = false;
                     snapshot.zone = crudService.globalConfig.zone;
                     var hasServer = crudService.add("snapshots", snapshot);
                     hasServer.then(function(result) {
-                        
+
                     }).catch(function(result) {
                         if (!angular.isUndefined(result.data) && result.data.fieldErrors != null) {
                             angular.forEach(result.data.fieldErrors, function(errorMessage, key) {

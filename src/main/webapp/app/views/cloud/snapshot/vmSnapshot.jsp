@@ -26,27 +26,13 @@
                                 </div>
                             </div>
                             <a class="btn btn-info font-bold"  ng-click="openAddVMSnapshotContainer()"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="create.vm.snapshot" bundle="${msg}" /></a>
-                            <a class="btn btn-info" ui-sref="cloud.list-snapshot" title="<fmt:message key="common.refresh" bundle="${msg}" />"  ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
+                            <a class="btn btn-info" data-ng-click="lists(1)" title="<fmt:message key="common.refresh" bundle="${msg}" />"  ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
                         </div>
-                        <%-- <div class="pull-right dashboard-filters-area">
-					        <panda-quick-search></panda-quick-search>
-					        <span class="pull-right m-r-sm" data-ng-show="global.sessionValues.type == 'ROOT_ADMIN'">
-								<select
-									class="form-control input-group col-xs-5" name="domainView"
-									data-ng-model="domainView"
-									data-ng-change="selectDomainView(1, domainView.id)"
-									data-ng-options="domainView.name for domainView in domainListView">
-									<option value=""> <fmt:message key="common.domain.filter" bundle="${msg}" /></option>
-								</select>
-							</span>
-							<div class="clearfix"></div>
-							<span class="pull-right m-l-sm m-t-sm"></span>
-                        </div> --%>
                         <div class="pull-right dashboard-filters-area" id="instances_quick_search">
 						<form data-ng-submit="searchList(vmSearch)">
 							<div class="quick-search pull-right">
 								<div class="input-group">
-									<input data-ng-model="vmSearch" type="text" class="form-control input-medium" placeholder="<fmt:message key="common.quick.search" bundle="${msg}" />" aria-describedby="quicksearch-go">
+									<input data-ng-model="vmSearch" id="vm_snapshot_list_search" type="text" class="form-control input-medium" placeholder="<fmt:message key="common.quick.search" bundle="${msg}" />" aria-describedby="quicksearch-go">
 								   	<span class="input-group-addon" id="quicksearch-go"><span class="pe-7s-search pe-lg font-bold"></span></span>
 								</div>
 							</div>
@@ -74,12 +60,12 @@
                         <table cellspacing="1" cellpadding="1" class="table dataTable table-bordered table-striped">
                             <thead>
                             <tr>
-                                <th class="col-md-2 col-sm-2" data-ng-click="changeSort('name',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='name'? 'sorting_desc' : 'sorting_asc'"><fmt:message key="common.name" bundle="${msg}" /></th>
-                                <th class="col-md-2 col-sm-2" data-ng-click="changeSort('description',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='description'? 'sorting_desc' : 'sorting_asc'"><fmt:message key="common.description" bundle="${msg}" /></th>
+                                <th class="col-md-2 col-sm-2" data-ng-click="changeSorts('name',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='name'? 'sorting_desc' : 'sorting_asc'"><fmt:message key="common.name" bundle="${msg}" /></th>
+                                <th class="col-md-2 col-sm-2" data-ng-click="changeSorts('description',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='description'? 'sorting_desc' : 'sorting_asc'"><fmt:message key="common.description" bundle="${msg}" /></th>
                                 <th class="col-md-2 col-sm-2"><fmt:message key="common.instance" bundle="${msg}" /></th>
-                                <th class="col-md-2 col-sm-2" data-ng-click="changeSort('snapshot.isCurrent',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='snapshot.isCurrent'? 'sorting_desc' : 'sorting_asc'"><fmt:message key="common.iscurrent" bundle="${msg}" /></th>
-                                <th class="col-md-2 col-sm-2" data-ng-click="changeSort('createdDateTime',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='createdDateTime'? 'sorting_desc' : 'sorting_asc'"><fmt:message key="common.created.date" bundle="${msg}" /></th>
-                                <th class="col-md-2 col-sm-2" data-ng-click="changeSort('status',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='status'? 'sorting_desc' : 'sorting_asc'"><fmt:message key="common.status" bundle="${msg}" /></th>
+                                <th class="col-md-2 col-sm-2"><fmt:message key="common.iscurrent" bundle="${msg}" /></th>
+                                <th class="col-md-2 col-sm-2" data-ng-click="changeSorts('createdDateTime',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='createdDateTime'? 'sorting_desc' : 'sorting_asc'"><fmt:message key="common.created.date" bundle="${msg}" /></th>
+                                <th class="col-md-2 col-sm-2" data-ng-click="changeSorts('status',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='status'? 'sorting_desc' : 'sorting_asc'"><fmt:message key="common.status" bundle="${msg}" /></th>
                                 <th class="col-md-1 col-sm-1"><fmt:message key="common.action" bundle="${msg}" /></th>
                             </tr>
                         </thead>

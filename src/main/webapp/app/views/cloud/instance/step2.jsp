@@ -238,8 +238,8 @@
 				<div class="col-md-5 col-xs-5 col-sm-5">
 					<div class="pull-left m-r-xs m-t-xxs"
 						data-ng-show="instanceForm.networkOfferinglist.$valid">
-						<a id="create_instance_networks" ng-click="computeSlide(); diskSlide(); networkSlide();">
-							<span data-ng-hide="networks" class="pe pe-lg pe-7s-plus"></span>
+						<a data-ng-hide="networkVM" id="create_instance_networks" ng-click="computeSlide(); diskSlide(); networkSlide();">
+							<span data-ng-hide="networks " data-ng-hide="" class="pe pe-lg pe-7s-plus"></span>
 							<span data-ng-show="networks" class="pe pe-lg pe-7s-less"></span>
 						</a>
 					</div>
@@ -248,7 +248,7 @@
 					</label>
 				</div>
 				<div class="col-md-6 col-xs-6 col-sm-6">
-					<select required="true" class="form-control input-group"
+					<select data-ng-hide="networkVM" required="true" class="form-control input-group"
 						name="networkOfferinglist" id="create_instance_network"
 						data-ng-class="{'error': instanceForm.networkOfferinglist.$invalid && OfferingSubmitted}"
 						data-ng-model="instance.networkOfferinglist"
@@ -258,6 +258,9 @@
 							<fmt:message key="common.select" bundle="${msg}" />
 						</option>
 					</select>
+					<label data-ng-show="networkVM" >
+				      {{instance.network.name}}
+				    </label>
 					<i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"
 						tooltip="<fmt:message key="networks.offerings" bundle="${msg}" />">
 					</i>
@@ -273,7 +276,7 @@
 						data-ng-class="{'error': instanceForm.networkoffer.$invalid && OfferingSubmitted}">
 				</div>
 				<div
-					data-ng-show="instance.networkOfferinglist.value == 'new' && networks">
+					data-ng-show="instance.networkOfferinglist.value == 'new' && networks && !networkVM">
 					<div class="col-md-12 col-sm-12">
 						<div class="table-responsive m-t-md">
 							<table cellspacing="1" cellpadding="1" id="create_instance_network_table"
@@ -320,7 +323,7 @@
 					</div>
 				</div>
 				<div
-					data-ng-show=" instance.networkOfferinglist.value == 'all' && networks">
+					data-ng-show=" instance.networkOfferinglist.value == 'all' && networks && !networkVM">
 					<div class="col-md-12 col-sm-12">
 						<div class="table-responsive m-t-md"
 							style="height: 206px; overflow-y: auto; overflow-x: hidden;">
@@ -365,7 +368,7 @@
 					</div>
 				</div>
 				<div
-					data-ng-show=" instance.networkOfferinglist.value == 'vpc' && networks">
+					data-ng-show=" instance.networkOfferinglist.value == 'vpc' && networks && !networkVM">
 					<div class="col-md-12 col-sm-12">
 						<div class="table-responsive m-t-md">
 							<table cellspacing="1" cellpadding="1" id="create_instance_networks_table"

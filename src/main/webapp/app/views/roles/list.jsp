@@ -64,13 +64,13 @@
 	                            </div>
                                 <a class="btn btn-info font-bold" id="roles_add_role_button" has-permission="CREATE_ROLE"  ui-sref="roles.list-add"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="common.add" bundle="${msg}" /></a>
                                 <a class="btn btn-info font-bold" id="roles_assign_user_role_button" has-permission="ASSIGN_ROLE" data-ng-click="assignRole('lg')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="assign.user.role" bundle="${msg}" /></a>
-                                <a class="btn btn-info" id="roles_refresh_button" ui-sref="roles" title="<fmt:message key="common.refresh" bundle="${msg}" />"  ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
+                                <a class="btn btn-info" data-ng-click="list(1)" id="roles_refresh_button" title="<fmt:message key="common.refresh" bundle="${msg}" />"  ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
                             </div>
                             <div class="pull-right dashboard-filters-area">
                              <form data-ng-submit="searchList(roleSearch)">
 									<div class="quick-search pull-right">
 									<div class="input-group">
-										<input data-ng-model="roleSearch" type="text" class="form-control input-medium" placeholder="<fmt:message key="common.quick.search" bundle="${msg}" />" aria-describedby="quicksearch-go">
+										<input data-ng-model="roleSearch" id="role_list_search" type="text" class="form-control input-medium" placeholder="<fmt:message key="common.quick.search" bundle="${msg}" />" aria-describedby="quicksearch-go">
 								   		<span class="input-group-addon" id="quicksearch-go"><span class="pe-7s-search pe-lg font-bold"></span></span>
 									</div>
 									</div>
