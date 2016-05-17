@@ -206,7 +206,10 @@ function globalConfig($window) {
                 portforwardSave : 'NET.RULEADD',
                 deletePortRules : 'NET.RULEDELETE',
                 configureStickiness : 'LB.STICKINESSPOLICY.CREATE',
-                editStickiness : 'LB.STICKINESSPOLICY.CREATE'
+                editStickiness : 'LB.STICKINESSPOLICY.CREATE',
+                saveAclList : 'NETWORK.ACL.ITEM.CREATE',
+                editNetworkAcl : 'NETWORK.ACL.ITEM.UPDATE',
+                deleteNetworkAcl : 'NETWORK.ACL.ITEM.DELETE'
             },
             sshKeyEvents : {
                 createSSHKey : 'REGISTER.SSH.KEYPAIR',
@@ -298,7 +301,7 @@ function globalConfig($window) {
         SOCKET_URL : "http://" + window.location.hostname + ":8080/",
         PING_APP_URL : "http://" + window.location.hostname + ":8086/api/",
         MONITOR_URL : "http://211.156.49.15:4242/api/",
-        BASE_UI_URL : "http://" + window.location.hostname + ":9090/pandauser/",
+        BASE_UI_URL : "http://" + window.location.hostname + ":8081/pandaui/",
         CONTENT_LIMIT : 10,
         VIEW_URL : 'app/views/',
         NOTIFICATION_TEMPLATE : 'app/views/notification/notify.jsp',

@@ -429,6 +429,10 @@ table.dataTable thead .sorting_desc::after {content: "\f0dd";}
 .config-box{min-height:110px;}
 .vpc-manager .v-timeline::before, .vpc-manager .h-timeline::before{left:-42px;}
 
+.acl-table{overflow-x:scroll; overflow-y:hidden;}
+.acl-table .table{max-width:none; width:1600px;}
+.acl-table .table th, .acl-table .table td{min-width:135px;}
+
 @media (min-width: 600px) and (max-width: 767px) {
 .dashboard-filters-area{ clear:both;}
 .dashboard-btn-area{float:right !important; clear:both;}
