@@ -40,7 +40,7 @@
 								<table cellspacing="1" cellpadding="1" class="table table-bordered table-striped">
 								    <thead>
 								        <tr>
-								            <th><fmt:message key="common.ips" bundle="${msg}" /></th>
+								            <th><fmt:message key="common.name" bundle="${msg}" /></th>
 								            <th><fmt:message key="common.internal.name" bundle="${msg}" /></th>
 								            <th><fmt:message key="common.display.name" bundle="${msg}" /></th>
 								            <th><fmt:message key="zone.name" bundle="${msg}" /></th>
@@ -56,7 +56,7 @@
 								        <tr data-ng-repeat="vm in filteredCount = (vpcVmList| filter: quickSearch | orderBy:sort.column:sort.descending)">
 								        <td><a class="text-info" id="instances_display_name_button" ui-sref="cloud.list-instance.view-instance({id: {{ vm.vmInstance.id}}})"
 											title="View Instance">
-										{{vm.ipAddress}}</a>
+										{{vm.vmInstance.name}}</a>
 								            </td>
 								            <td>{{vm.vmInstance.instanceInternalName}}</td>
 								            <td>{{vm.vmInstance.displayName}}</td>
