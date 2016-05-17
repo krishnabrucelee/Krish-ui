@@ -59,7 +59,7 @@
 									<form data-ng-submit="searchList(applicationSearch)">
 										<div class="quick-search pull-right">
 										<div class="input-group">
-										<input data-ng-model="applicationSearch" id="application_list_search" type="text" class="form-control input-medium" placeholder="<fmt:message key="common.quick.search" bundle="${msg}" />" aria-describedby="quicksearch-go">
+										<input data-ng-model="applicationSearch" id="application_list_search" type="text" valid-characters class="form-control input-medium" placeholder="<fmt:message key="common.quick.search" bundle="${msg}" />" aria-describedby="quicksearch-go">
 								   		<span class="input-group-addon" id="quicksearch-go"><span class="pe-7s-search pe-lg font-bold"></span></span>
 										</div>
 										</div>

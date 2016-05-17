@@ -35,6 +35,7 @@ angular
     .directive('getLoginLoaderImage', getLoginLoaderImage)
     .directive('passwordVerify', passwordVerify)
     .directive('validInteger', validInteger)
+    .directive('validCharacters', validCharacters)
     .directive('hasPermission', hasPermission)
     .directive('chart', function(){
     return{
@@ -816,6 +817,45 @@ function passwordVerify() {
 		}
 	};
 };
+function validCharacters() {
+    return {
+        require: '?ngModel',
+        link: function (scope, element, attrs, ngModelCtrl) {
+              if (!ngModelCtrl) {
+                return;
+            }
+
+            ngModelCtrl.$parsers.push(function (val) {
+                if (angular.isUndefined(val)) {
+                    var val = 0;
+                }
+                var clean = val.replace(/[^0-9.*!@$A-Za-z]/g, '');
+
+
+                if (clean < parseInt(attrs.ngMin)) {
+                     clean = clean.substring(1, clean.length);
+                }
+
+
+                if (clean > parseInt(attrs.ngMax)) {
+                     clean = clean.substring(0, clean.length - 1);
+                }
+
+                if (val !== clean) {
+                    ngModelCtrl.$setViewValue(clean);
+                    ngModelCtrl.$render();
+                }
+                return clean;
+            });
+
+            element.bind('keypress', function (event) {
+                if (event.keyCode === 32) {
+                    event.preventDefault();
+                }
+            });
+        }
+    };
+}
 
 /**
  * Check the User has permission or not
