@@ -109,7 +109,7 @@ $scope.aclID = {};
                        $state.$current.parent.parent.parent.data.pageName = result.name;
                        $state.$current.parent.parent.parent.data.id = result.id;
 		   }
-                   else if ($state.current.data.pageTitle === "Network ACL" || $state.current.data.pageTitle === "Public IP") {
+                   else if ($state.current.data.pageTitle === "Network ACL" || $state.current.data.pageTitle === "Public IP" || $state.current.data.pageTitle === "view.network") {
                        $state.$current.parent.parent.data.pageName = result.name;
                        $state.$current.parent.parent.data.id = result.id;
                     }
@@ -698,8 +698,9 @@ $state.reload();
             var hasServer = appService.crudService.read("guestnetwork", $stateParams.idNetwork);
         hasServer.then(function(result) {
             $scope.showLoader = false;
-
             $scope.network = result;
+            $state.current.data.pageName = result.name;
+            $state.current.data.id = result.id;
 
         });
     }

@@ -57,6 +57,10 @@
 	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.static.nats" bundle="${msg}" /></a>
 	                            <span ng-switch-when="true"><fmt:message key="common.static.nats" bundle="${msg}" /></span>
                             </span>
+                            <span data-ng-if="state.data.pageTitle === 'view.network'">
+	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}">{{ state.data.pageName }}</a>
+	                            <span ng-switch-when="true">{{ state.data.pageName }}</span>
+                            </span>
                         </li>
                     </ol>
                 </div>
@@ -89,6 +93,9 @@
                 </h2>
                 <h2 class="font-light m-b-xs">
                     <span id="vpc_public_lb_ip_page_title" data-ng-if="$state.current.data.pageTitle === 'Static Nat IP'"><fmt:message key="common.static.nats" bundle="${msg}" /></span>
+                </h2>
+                <h2 class="font-light m-b-xs">
+                    <span id="vpc_network_page_title" data-ng-if="$state.current.data.pageTitle === 'view.network'">{{ $state.current.data.pageName }}</span>
                 </h2>
                 <small>{{ $state.current.data.pageDesc}}</small>
             </div>
