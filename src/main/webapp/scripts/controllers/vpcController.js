@@ -51,7 +51,8 @@ function vpcCtrl($scope, $modal, appService, $timeout, filterFilter, $stateParam
     $scope.lbrulesLists = [];
     $scope.lbrulesIps = {};
     $scope.natIps = {};
-$scope.vpcsid = $stateParams.id;
+    $scope.natList = [];
+    $scope.vpcsid = $stateParams.id;
 
     $scope.type = $stateParams.view;
     // VPC Offer List
