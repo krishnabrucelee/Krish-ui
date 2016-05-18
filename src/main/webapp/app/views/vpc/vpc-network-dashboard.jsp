@@ -139,7 +139,7 @@
 									</tr>
 									<tr>
 										<td><b><fmt:message key="acl.name" bundle="${msg}" /></b></td>
-										<td>{{network.acl}}</td>
+										<td>{{network.acl.name}}</td>
 									</tr>
 								</tbody>
 							</table>
