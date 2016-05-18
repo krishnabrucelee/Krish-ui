@@ -64,7 +64,7 @@
 <div class="table-responsive acl-table">
 	<form name = "vpcAclForm" novalidate  data-ng-controller="vpcCtrl" data-ng-submit="saveAclList(vpcAclForm, vpcAcl)" method="post">
 
-	<table cellspacing="1" cellpadding="1" class="table table-bordered table-striped ">
+	<table cellspacing="1" cellpadding="1" class="table table-bordered table-striped" id="vpc_acl_list_rules_table">
 		       <thead>
 		           <tr>
 		               <th class="acl-table-cell">Rule Number</th>

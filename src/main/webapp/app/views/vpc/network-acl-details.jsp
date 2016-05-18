@@ -24,7 +24,7 @@
 					<ul class="list-group">
 						<li class="list-group-item"><a
 							title=" <fmt:message key="delete.acl.list" bundle="${msg}" />"
-							 data-ng-click="deleteAclList('sm', networkAclList)"type="submit"><span
+							 data-ng-click="deleteAclList('sm', networkAclList)" id="vpc_delete_acl_list_button" type="submit"><span
 								class="fa-trash fa font-bold m-xs"></span> <fmt:message
 									key="delete.acl.list" bundle="${msg}" /></a></li>
 					</ul>

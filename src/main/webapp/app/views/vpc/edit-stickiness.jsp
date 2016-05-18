@@ -6,7 +6,7 @@
 <form name="stickinessForm" data-ng-submit="editStickinessPolicy(stickinessForm, stickiness)" method="post" novalidate=""  >
     <div class="inmodal" >
         <div class="modal-header">
-            <panda-modal-header hide-zone="false" page-icon="fa fa-plus-circle" page-title="<fmt:message key="configure.sticky.policy" bundle="${msg}" />"></panda-modal-header>
+            <panda-modal-header id="vpc_edit_sticky_policy_page_title" hide-zone="false" page-icon="fa fa-plus-circle" page-title="<fmt:message key="configure.sticky.policy" bundle="${msg}" />"></panda-modal-header>
         </div>
         <div class="modal-body">
             <div class="row"  >
@@ -17,7 +17,7 @@
 							<label class="col-md-3 col-xs-12 col-sm-3 control-label"><fmt:message key="stickiness.method" bundle="${msg}" />
 							</label>
 							<div class="col-md-6 col-xs-12 col-sm-6">
-							<select class="form-control input-group" name="stickinessMethod"
+							<select class="form-control input-group" name="stickinessMethod" id="vpc_edit_sticky_policy_stickiness_method"
 											data-ng-model="stickiness.stickinessMethod"
 											ng-options="stickinessMethod for (id,stickinessMethod) in formElements.stickinessList">
 											<option value=""><fmt:message key="common.select"
@@ -30,7 +30,7 @@
 						<div class="row">
 							<label class="col-md-3 col-xs-12 col-sm-3 control-label"><fmt:message key="sticky.name" bundle="${msg}" /> <span class="text-danger">*</span></label>
 							<div class="col-md-6 col-xs-12 col-sm-6">
-								<input required="true" type="text" name="stickyName" data-ng-model="stickiness.stickinessName" class="form-control" data-ng-class="{'error': stickinessForm.stickyName.$invalid && formSubmitted}">
+								<input required="true" type="text" id="vpc_edit_sticky_policy_sticky_name" name="stickyName" data-ng-model="stickiness.stickinessName" class="form-control" data-ng-class="{'error': stickinessForm.stickyName.$invalid && formSubmitted}">
 								<div class="error-area" data-ng-show="stickinessForm.stickyName.$invalid && formSubmitted">
 									<i ng-attr-tooltip="{{ stickinessForm.stickyName.errorMessage || '<fmt:message key="sticky.name.is.required" bundle="${msg}" />' }}" class="fa fa-warning error-icon"></i>
 								</div>
@@ -41,7 +41,7 @@
 						<div class="row">
 							<label class="col-md-3 col-xs-12 col-sm-3 control-label"><fmt:message key="table.size" bundle="${msg}" /></label>
 							<div class="col-md-6 col-xs-12 col-sm-6">
-								<input type="text" name="tableSize" data-ng-model="stickiness.stickyTableSize" class="form-control">
+								<input type="text" name="tableSize" id="vpc_edit_sticky_policy_table_size" data-ng-model="stickiness.stickyTableSize" class="form-control">
 							</div>
 						</div>
 					</div>
@@ -49,7 +49,7 @@
 						<div class="row">
 							<label class="col-md-3 col-xs-12 col-sm-3 control-label"><fmt:message key="expires" bundle="${msg}" /></label>
 							<div class="col-md-6 col-xs-12 col-sm-6">
-								<input type="text" name="expires" data-ng-model="stickiness.stickyExpires" class="form-control">
+								<input type="text" name="expires" id="vpc_edit_sticky_policy_expires" data-ng-model="stickiness.stickyExpires" class="form-control">
 							</div>
 						</div>
 					</div>
@@ -57,7 +57,7 @@
 						<div class="row">
 							<label class="col-md-3 col-xs-12 col-sm-3 control-label"><fmt:message key="cookie.name" bundle="${msg}" /></label>
 							<div class="col-md-6 col-xs-12 col-sm-6">
-								<input type="text" name="cookieName" data-ng-model="stickiness.cookieName" class="form-control">
+								<input type="text" name="cookieName" id="vpc_edit_sticky_policy_cookie_name" data-ng-model="stickiness.cookieName" class="form-control">
 							</div>
 						</div>
 					</div>
@@ -65,7 +65,7 @@
 						<div class="row">
 							<label class="col-md-3 col-xs-12 col-sm-3 control-label"><fmt:message key="mode" bundle="${msg}" /></label>
 							<div class="col-md-6 col-xs-12 col-sm-6">
-								<input type="text" name="mode" data-ng-model="stickiness.stickyMode" class="form-control">
+								<input type="text" name="mode" id="vpc_edit_sticky_policy_mode" data-ng-model="stickiness.stickyMode" class="form-control">
 							</div>
 						</div>
 					</div>
@@ -73,7 +73,7 @@
 						<div class="row">
 							<label class="col-md-3 col-xs-12 col-sm-3 control-label"><fmt:message key="length" bundle="${msg}" /></label>
 							<div class="col-md-6 col-xs-12 col-sm-6">
-								<input type="text" name="length" data-ng-model="stickiness.stickyLength" class="form-control">
+								<input type="text" name="length" id="vpc_edit_sticky_policy_length" data-ng-model="stickiness.stickyLength" class="form-control">
 							</div>
 						</div>
 					</div>
@@ -81,7 +81,7 @@
 						<div class="row">
 							<label class="col-md-3 col-xs-12 col-sm-3 control-label"><fmt:message key="hold.time" bundle="${msg}" /></label>
 							<div class="col-md-6 col-xs-12 col-sm-6">
-								<input type="text" name="holdTime" data-ng-model="stickiness.stickyHoldTime" class="form-control">
+								<input type="text" name="holdTime" id="vpc_edit_sticky_policy_hold_time" data-ng-model="stickiness.stickyHoldTime" class="form-control">
 							</div>
 						</div>
 					</div>
@@ -89,7 +89,7 @@
 						<div class="row">
 							<label class="col-md-3 col-xs-12 col-sm-3 control-label"><fmt:message key="request.learn" bundle="${msg}" /></label>
 							<div class="col-md-6 col-xs-12 col-sm-6">
-								<input icheck  data-ng-model="stickiness.stickyRequestLearn" name="requestLearn"  type="checkbox" />
+								<input icheck  data-ng-model="stickiness.stickyRequestLearn" id="vpc_edit_sticky_policy_request_learn" name="requestLearn"  type="checkbox" />
 							</div>
 						</div>
 					</div>
@@ -97,7 +97,7 @@
 						<div class="row">
 							<label class="col-md-3 col-xs-12 col-sm-3 control-label"><fmt:message key="prefix" bundle="${msg}" /></label>
 							<div class="col-md-6 col-xs-12 col-sm-6">
-								<input icheck  data-ng-model="stickiness.stickyPrefix" name="prefix"  type="checkbox" />
+								<input icheck  data-ng-model="stickiness.stickyPrefix" name="prefix" id="vpc_edit_sticky_policy_prefix"  type="checkbox" />
 							</div>
 						</div>
 					</div>
@@ -105,7 +105,7 @@
 						<div class="row">
 							<label class="col-md-3 col-xs-12 col-sm-3 control-label"><fmt:message key="no.cache" bundle="${msg}" /></label>
 							<div class="col-md-6 col-xs-12 col-sm-6">
-								<input icheck  data-ng-model="stickiness.stickyNoCache" name="noCache"  type="checkbox" />
+								<input icheck  data-ng-model="stickiness.stickyNoCache" name="noCache" id="vpc_edit_sticky_policy_no_cache"  type="checkbox" />
 							</div>
 						</div>
 					</div>
@@ -113,7 +113,7 @@
 						<div class="row">
 							<label class="col-md-3 col-xs-12 col-sm-3 control-label"><fmt:message key="indirect" bundle="${msg}" /></label>
 							<div class="col-md-6 col-xs-12 col-sm-6">
-								<input icheck  data-ng-model="stickiness.stickyIndirect" name="indirect"  type="checkbox" />
+								<input icheck  data-ng-model="stickiness.stickyIndirect" name="indirect" id="vpc_edit_sticky_policy_indirect" type="checkbox" />
 							</div>
 						</div>
 					</div>
@@ -121,7 +121,7 @@
 						<div class="row">
 							<label class="col-md-3 col-xs-12 col-sm-3 control-label"><fmt:message key="post.only" bundle="${msg}" /></label>
 							<div class="col-md-6 col-xs-12 col-sm-6">
-								<input icheck  data-ng-model="stickiness.stickyPostOnly" name="postOnly"  type="checkbox" />
+								<input icheck  data-ng-model="stickiness.stickyPostOnly" id="vpc_edit_sticky_policy_post_only" name="postOnly"  type="checkbox" />
 							</div>
 						</div>
 					</div>
@@ -129,7 +129,7 @@
 						<div class="row">
 							<label class="col-md-3 col-xs-12 col-sm-3 control-label"><fmt:message key="common.domain" bundle="${msg}" /></label>
 							<div class="col-md-6 col-xs-12 col-sm-6">
-								<input type="text" name="domain" data-ng-model="stickiness.stickyCompany" class="form-control">
+								<input type="text" name="domain" data-ng-model="stickiness.stickyCompany" id="vpc_edit_sticky_policy_domain" class="form-control">
 							</div>
 						</div>
 					</div>
@@ -139,8 +139,8 @@
         </div>
         <div class="modal-footer">
             <get-loader-image data-ng-show="showLoader"></get-loader-image>
-            <button type="button" class="btn btn-default " data-ng-hide="showLoader" ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.cancel" bundle="${msg}" /></button>
-            <button class="btn btn-info" data-ng-hide="showLoader" type="submit"><fmt:message key="common.update" bundle="${msg}" /></button>
+            <button type="button" class="btn btn-default" id="vpc_edit_sticky_policy_cancel_button" data-ng-hide="showLoader" ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.cancel" bundle="${msg}" /></button>
+            <button class="btn btn-info" data-ng-hide="showLoader" id="vpc_edit_sticky_policy_update_button" type="submit"><fmt:message key="common.update" bundle="${msg}" /></button>
         </div>
         </div>
 </form>
