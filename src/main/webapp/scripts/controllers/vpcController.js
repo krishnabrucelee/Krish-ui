@@ -846,7 +846,6 @@ $scope.lBForVpc = function(networkId){
         	$scope.saveNetwork = function(form, vpcCreateNetwork) {
                 $scope.formSubmitted = true;
                 if (form.$valid) {
-                        console.log($scope.vpc);
                 	vpcCreateNetwork.domainId = $scope.vpc.domainId;
                 	vpcCreateNetwork.departmentId = $scope.vpc.departmentId;
                 	vpcCreateNetwork.project = $scope.vpc.project;
@@ -1458,9 +1457,6 @@ $scope.dropnetworkLists = {
         hasFirewallRuless.then(function(result) { // this is only run after
             // $http completes0
             $scope.ipList = result;
-            /*$state.current.data.publicIpAddress = result[0].publicIpAddress;
-            console.log($state.current.data.publicIpAddress);
-            console.log(result[0].publicIpAddress);*/
             // For pagination
             $scope.paginationObject.limit = limit;
             $scope.paginationObject.currentPage = pageNumber;
@@ -1883,7 +1879,6 @@ $scope.vmPortId = instance;
                     $scope.formSubmitted = true;
                     $scope.showLoader = true;
                     $scope.portForward.networkId = portinstance.networkId;
-		   console.log("port",$scope.portForward);
                     $scope.vmIpAddress = {};
 		    $scope.instance = {};
                     var hasError = true;
