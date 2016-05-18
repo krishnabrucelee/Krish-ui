@@ -114,7 +114,7 @@
 											class="form-control input-group editedinput"
 											name="networkoffering" data-ng-init=""
 											data-ng-model="network.networkOffering"
-											data-ng-options="networkoffering.displayText for networkoffering in networkOfferList">
+											data-ng-options="networkoffering.displayText for networkoffering in vpcNetworkOfferList">
 												<option value=""><fmt:message key="common.select"
 														bundle="${msg}" /></option>
 										</select></td>
