@@ -14,7 +14,7 @@
 						<fmt:message key="network.details" bundle="${msg}" />
 					</h3>
 				<div class="pull-right">
-					<a ui-sref-opts="{reload: true}"
+					<a ui-sref-opts="{reload: true}" id="vpc_network_name_refresh_button"
 						title="<fmt:message key="common.refresh" bundle="${msg}" />"
 						ui-sref="vpc.view-vpc.config-vpc.view-network" class="btn btn-info" href="#"><span
 						class="fa fa-refresh fa-lg "></span></a>
@@ -25,7 +25,7 @@
 					<div class="row">
 						<div class="col-md-6">
 							<table class="table table-condensed table-striped"
-								cellspacing="1" cellpadding="1">
+								cellspacing="1" cellpadding="1" id="vpc_network_name_table">
 								<tbody>
 									<tr>
 										<td><b> <fmt:message key="common.name"
@@ -33,7 +33,7 @@
 										<td><label data-ng-if="type != 'edit'">{{network.name}}</label>
 											<div data-ng-if="type == 'edit'" class="form-group"
 												ng-class="{'text-danger': addnetworkForm.name.$invalid && formSubmitted}">
-												<input type="text" name="name" data-ng-model="network.name"
+												<input type="text" name="name" data-ng-model="network.name" id="vpc_network_name_name"
 													class="form-control editedinput "
 													data-ng-class="{'error': addnetworkForm.name.$invalid && formSubmitted}">
 											</div></td>
@@ -52,7 +52,7 @@
 										<td><b><fmt:message key="common.description"
 													bundle="${msg}" /></b></td>
 										<td><label data-ng-if="type != 'edit'">{{network.displayText}}</label>
-											<input data-ng-if="type == 'edit'" type="text"
+											<input data-ng-if="type == 'edit'" type="text" id="vpc_network_name_display_text"
 											name="displayText" data-ng-model="network.displayText"
 											class="form-control editedinput"
 											data-ng-class="{'error': addnetworkForm.displayText.$invalid && formSubmitted}">
@@ -95,7 +95,7 @@
 						</div>
 						<div class="col-md-6">
 							<table class="table table-condensed table-striped"
-								cellspacing="1" cellpadding="1">
+								cellspacing="1" cellpadding="1" id="vpc_network_name_table_actions">
 								<tbody>
 									<tr>
 										<td class="col-md-4 col-sm-4"><b><fmt:message
@@ -107,15 +107,10 @@
 										<td>{{network.VLAN}}</td>
 									</tr>
 									<tr>
-										<td><b><fmt:message key="broadcast.uri"
-													bundle="${msg}" /></b></td>
-										<td>{{network.broadcasturi}}</td>
-									</tr>
-									<tr>
 										<td><b><fmt:message key="common.network.offering"
 													bundle="${msg}" /></b></td>
 										<td><label data-ng-if="type != 'edit'">{{network.networkOffering.name}}</label>
-											<select data-ng-if="type == 'edit'"
+											<select data-ng-if="type == 'edit'" id="vpc_network_name_network_offering"
 											class="form-control input-group editedinput"
 											name="networkoffering" data-ng-init=""
 											data-ng-model="network.networkOffering"
@@ -127,39 +122,24 @@
 									<tr>
 										<td><b><fmt:message key="common.cidr" bundle="${msg}" /></b></td>
 										<td><label data-ng-if="type != 'edit'">{{network.cIDR}}</label>
-											<input data-ng-if="type == 'edit'" type="text" name="cidr"
+											<input data-ng-if="type == 'edit'" type="text" name="cidr" id="vpc_network_name_cidr"
 											valid-cidr data-ng-model="network.cIDR"
 											class="form-control editedinput"
 											data-ng-class="{'error': addnetworkForm.cidr.$invalid && formSubmitted}">
 									</tr>
 									<tr>
-										<td><b><fmt:message key="network.cidr"
-													bundle="${msg}" /></b></td>
-										<td>{{network.networkCIDR}}</td>
-									</tr>
-									<tr>
-										<td><b><fmt:message key="ipv6.gateway"
-													bundle="${msg}" /></b></td>
-										<td>{{network.ipv6gateway}}</td>
-									</tr>
-									<tr>
-										<td><b><fmt:message key="ipv6.cidr" bundle="${msg}" /></b></td>
-										<td>{{network.ipv6CIDR}}</td>
-									</tr>
-									<tr>
-										<td><b><fmt:message key="reserved.ip.range"
-													bundle="${msg}" /></b></td>
-										<td>{{network.ipRange}}</td>
-									</tr>
-									<tr>
 										<td><b><fmt:message key="networkdomain"
 													bundle="${msg}" /></b></td>
 										<td><label data-ng-if="type != 'edit'">{{network.networkDomain}}</label>
-											<input data-ng-if="type == 'edit'" type="text"
+											<input data-ng-if="type == 'edit'" type="text" id="vpc_network_name_network_domain"
 											name="networkDomain" data-ng-model="network.networkDomain"
 											class="form-control editedinput"
 											data-ng-class="{'error': addnetworkForm.networkDomain.$invalid && formSubmitted}">
 										</td>
+									</tr>
+									<tr>
+										<td><b><fmt:message key="acl.name" bundle="${msg}" /></b></td>
+										<td>{{network.acl.name}}</td>
 									</tr>
 								</tbody>
 							</table>
@@ -167,15 +147,12 @@
 					</div>
 					<div class="pull-right">
 						<get-loader-image data-ng-show="showLoader"></get-loader-image>
-						<button class="btn btn-info" data-ng-hide="showLoader"
-							data-ng-if="type == 'edit'"
+						<button class="btn btn-info" data-ng-hide="showLoader" id="vpc_network_name_update_button" data-ng-if="type == 'edit'"
 							ng-disabled="form.configForm.$invalid" type="submit">
 							<fmt:message key="common.update" bundle="${msg}" />
 						</button><!-- href="#/vpc/view/{{vpcsid}}/config-vpc/view/{{ network.id}}" -->
-						<button type="button" class="btn btn-default "
-							data-ng-hide="showLoader" data-ng-if="type == 'edit'"
-							data-ng-click="canceledit(network.id)"
-							>
+						<button type="button" class="btn btn-default" id="vpc_network_name_cancel_button" data-ng-hide="showLoader" data-ng-if="type == 'edit'"
+							data-ng-click="canceledit(network.id)">
 							<fmt:message key="common.cancel" bundle="${msg}" />
 						</button>
 					</div>
@@ -194,24 +171,21 @@
 				<div class="panel-body no-padding">
 					<ul class="list-group">
 						 <li class="list-group-item">
-                            <a href="javascript:void(0);" title=" <fmt:message key="restart.network" bundle="${msg}" /> " data-ng-click="restartNetwork('sm', network)" ><span class="fa-repeat fa font-bold m-xs"></span><fmt:message key="restart.network" bundle="${msg}" /></a>
+                            <a id="vpc_network_name_restart_network_button" href="javascript:void(0);" title=" <fmt:message key="restart.network" bundle="${msg}" /> " data-ng-click="restartNetwork('sm', network)" ><span class="fa-repeat fa font-bold m-xs"></span><fmt:message key="restart.network" bundle="${msg}" /></a>
                         </li>
 						<li class="list-group-item"><a
-							has-permission="DELETE_NETWORK" href="javascript:void(0);"
-							title=" <fmt:message key="delete.network" bundle="${msg}" />"
+							has-permission="DELETE_NETWORK" href="javascript:void(0);" id="vpc_network_name_delete_network_button" title=" <fmt:message key="delete.network" bundle="${msg}" />"
 							data-ng-click="deleteNetwork('sm', network)"><span
 								class="fa-trash fa font-bold m-xs"></span> <fmt:message
 									key="delete.network" bundle="${msg}" /></a></li>
 						<li data-ng-if="type != 'edit'" class="list-group-item"><a
-							has-permission="EDIT_NETWORK"
-							title=" <fmt:message key="edit.network" bundle="${msg}" />"
+							has-permission="EDIT_NETWORK" id="vpc_network_name_edit_network_button"	title=" <fmt:message key="edit.network" bundle="${msg}" />"
 							href="#/vpc/view/{{vpcsid}}/config-vpc/edit/{{ network.id}}"> <span
 								class="fa fa-edit font-bold m-xs"></span> <fmt:message
 									key="edit.network" bundle="${msg}" />
 						</a></li>
 						<li class="list-group-item"><a
-							 href="javascript:void(0);"
-							title=" <fmt:message key="replace.acl.list" bundle="${msg}" />"
+							 href="javascript:void(0);" id="vpc_network_name_replace_acl_list_button" title=" <fmt:message key="replace.acl.list" bundle="${msg}" />"
 							data-ng-click="replaceaclList('sm', network)"><span
 								class="fa fa-exchange font-bold m-xs"></span> <fmt:message
 									key="replace.acl.list" bundle="${msg}" /></a></li>

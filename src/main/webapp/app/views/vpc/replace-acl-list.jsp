@@ -5,7 +5,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <div class="inmodal" data-ng-contoller="vpcCtrl">
     <div class="modal-header">
-        <panda-modal-header id="replace_vpc_acl_list_title" hide-zone="false" page-icon="fa fa-exchange" page-title="<fmt:message key="replace.acl.list" bundle="${msg}" />"></panda-modal-header>
+        <panda-modal-header id="replace_vpc_acl_list_page_title" hide-zone="false" page-icon="fa fa-exchange" page-title="<fmt:message key="replace.acl.list" bundle="${msg}" />"></panda-modal-header>
     </div>
 
     <div class="modal-body">
@@ -14,7 +14,7 @@
 							<label
 								class="col-md-4 col-xs-12 col-sm-4 control-label control-normal"><fmt:message key="acl" bundle="${msg}" /></label>
 							<div class="col-md-6  col-sm-6 col-xs-12">
-								<select class="form-control input-group" name="acl"
+								<select class="form-control input-group" id="replace_vpc_acl_list_acl" name="acl"
 									data-ng-model="aclID"
 									ng-options="acl.name for acl in aclList">
 									<option value=""><fmt:message key="common.select"

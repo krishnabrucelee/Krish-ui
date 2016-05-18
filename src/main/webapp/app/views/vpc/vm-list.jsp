@@ -44,10 +44,10 @@
 						</thead>
 						<tbody>
 							<tr data-ng-repeat="instance in lbvmList | filter: instanceSearch">
-							<td><a class="text-info">{{ instance.vmInstance.name }}</a>
+							<td><a id="vpc_loadbalance_add_vm_name" class="text-info">{{ instance.vmInstance.name }}</a>
 
 									<div data-ng-show="instance.lbvm">
-									<select id="vpc_loadbalance_add_vm_name" required="true" data-ng-show="instance.lbvm"  multiple class="form-control input-group" name="ipAddress" data-ng-model="instance.ipAddress"  data-ng-options="ipAddress.guestIpAddress for ipAddress in instance.vmIpAddress"  >
+									<select id="vpc_loadbalance_add_vm_ip_address" required="true" data-ng-show="instance.lbvm"  multiple class="form-control input-group" name="ipAddress" data-ng-model="instance.ipAddress"  data-ng-options="ipAddress.guestIpAddress for ipAddress in instance.vmIpAddress"  >
 									</select>
 									</div>
 
