@@ -47,7 +47,7 @@ function vpcCtrl($scope, $modal, appService, $timeout, filterFilter, $stateParam
     $scope.portForward = {};
     $scope.portform = {};
     $scope.networkVMList = [];
-    $scope.natList = []; 
+    $scope.natList = [];
     $scope.networkVMLists = [];
     $scope.lbrulesList = [];
     $scope.lbrulesLists = [];
@@ -101,19 +101,20 @@ $scope.aclID = {};
         if (!angular.isUndefined($stateParams.id)) {
             var hasBreadcrumb = appService.crudService.read("vpc", $stateParams.id);
             hasBreadcrumb.then(function(result) { // this is only run after $http completes0.
+            	$scope.vpc = result;
                 if ($state.current.data.pageTitle === "config VPC") {
                    $state.$current.parent.data.pageName = result.name;
-                   $state.$current.parent.data.id = result.id;               
+                   $state.$current.parent.data.id = result.id;
                 } else {
                     if ($state.current.data.pageTitle === "View IP" || $state.current.data.pageTitle === "View Network") {
                        $state.$current.parent.parent.parent.data.pageName = result.name;
                        $state.$current.parent.parent.parent.data.id = result.id;
-		   }
+		         }
                    else if ($state.current.data.pageTitle === "Network ACL" || $state.current.data.pageTitle === "Public IP" || $state.current.data.pageTitle === "view.network") {
                        $state.$current.parent.parent.data.pageName = result.name;
                        $state.$current.parent.parent.data.id = result.id;
                     }
-                } 
+                }
         });
         }
     };
