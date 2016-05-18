@@ -698,7 +698,7 @@ $state.reload();
             var hasServer = appService.crudService.read("guestnetwork", $stateParams.idNetwork);
         hasServer.then(function(result) {
             $scope.showLoader = false;
-            $scope.network = result;
+            $scope.network = result;            
             $state.current.data.pageName = result.name;
             $state.current.data.id = result.id;
 

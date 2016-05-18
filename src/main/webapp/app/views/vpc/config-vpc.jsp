@@ -87,7 +87,7 @@
                                             <div class="vertical-timeline-content">
                                                 <div class="timeline-title">
                                                 	<div class="pull-left m-t-xs">{{ network.name }}</div>
-                                                    <div class="pull-right"><a class="btn font-bold"
+                                                    <div class="pull-right"><a class="btn font-bold" id="config_vpc_network_name"
 													ui-sref="vpc.view-vpc.config-vpc.view-network({idNetwork: {{ network.id }}, view: 'view'})"
 													title="View Network"><span class="fa fa-external-link"></span> View</a></div>
 													<div class="clearfix"></div>
