@@ -9,7 +9,7 @@
                 <div class="col-md-12">
 	                <div class="col-md-12 col-sm-12">
 	                    <span class="pull-right">
-                        	<a class="btn btn-info" data-ng-click="createNetwork('md')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="create.network" bundle="${msg}" /></a>
+                        	<a class="btn btn-info" has-permission="ADD_ISOLATED_NETWORK" id="config_vpc_create_network_button" data-ng-click="createNetwork('md')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="create.network" bundle="${msg}" /></a>
 	                    </span>
                   	</div>
                   	<div data-ng-if="showLoaderOffer" style="margin: 30%">
@@ -27,7 +27,7 @@
                                         <div class="p-sm">
                                             <div class="col-md-6 ">
                                                 <div class="media-body">
-                                                	<!-- <a ui-sref="vpc.private-gateway({id: {{ 1}}})"> -->
+                                                	<!-- <a id="config_vpc_private_gateway" ui-sref="vpc.private-gateway({id: {{ 1}}})"> -->
 	                                                    <div class="panel panel-info cursor-notallow">
 	                                                        <div class="panel-body config-box p-xxs text-info text-center ">
 	                                                            <h3> 0 </h3><fmt:message key="private.gateway" bundle="${msg}" />
@@ -38,7 +38,7 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="media-body">
-                                                	 <a ui-sref="vpc.view-vpc.config-vpc.public-ip">
+                                                	 <a id="config_vpc_public_ip_address" ui-sref="vpc.view-vpc.config-vpc.public-ip">
 	                                                    <div class="panel panel-info">
 	                                                        <div class="panel-body config-box p-xxs text-info text-center">
 	                                                            <h3>{{ipList.length}}</h3><fmt:message key="public.ip.address" bundle="${msg}" />
@@ -51,7 +51,7 @@
 
                                             <div class="col-md-6">
                                                 <div class="media-body">
-                                                	<!-- <a data-ng-click="acquireNewIp('sm')"> -->
+                                                	<!-- <a id="config_vpc_site_to_site_vpns" data-ng-click="acquireNewIp('sm')"> -->
 	                                                    <div class="panel panel-info cursor-notallow">
 	                                                        <div class="panel-body config-box p-xxs text-info text-center">
 	                                                            <h3> 0</h3>
@@ -64,7 +64,7 @@
                                             <div class="col-md-6">
                                                 <div class="media-body">
                                                     <div class="panel panel-info">
-                                                    	<a ui-sref="vpc.view-vpc.config-vpc.network-acl">
+                                                    	<a id="config_vpc_network_acl_lists" ui-sref="vpc.view-vpc.config-vpc.network-acl">
 	                                                        <div class="panel-body config-box p-xxs text-info text-center " >
 	                                                            <h3> {{aclList.length}}</h3>
 	                                                            <fmt:message key="network.acl.lists" bundle="${msg}" />
@@ -86,15 +86,17 @@
                                         <div class="h-timeline">
                                             <div class="vertical-timeline-content">
                                                 <div class="timeline-title">
-                                                    <a class="text-info"
+                                                	<div class="pull-left m-t-xs">{{ network.name }}</div>
+                                                    <div class="pull-right"><a class="btn font-bold"
 													ui-sref="vpc.view-vpc.config-vpc.view-network({idNetwork: {{ network.id }}, view: 'view'})"
-													title="View Network">{{ network.name }}</a>
+													title="View Network"><span class="fa fa-external-link"></span> View</a></div>
+													<div class="clearfix"></div>
                                                 </div>
                                                 <div class="p-sm">
                                                     <div class="col-md-6">
 	                                                    <div class="media">
 	                                                        <div class="media-body">
-	                                                            <!-- <a href="#" class="cursor-notallow"> -->
+	                                                            <!-- <a id="config_vpc_internal_lb" href="#" class="cursor-notallow"> -->
 	                                                                <div class="panel panel-info cursor-notallow">
 	                                                                    <div class="panel-body config-box p-xxs text-info text-center">
 	                                                                        <h3> 0 </h3>
@@ -108,7 +110,7 @@
                                                     <div class="col-md-6">
 														<div class="media">
 	                                                        <div class="media-body">
-	                                                            <a ui-sref="vpc.view-vpc.config-vpc.lbip({id3: {{network.id}}})">
+	                                                            <a id="config_vpc_public_lb_ip" ui-sref="vpc.view-vpc.config-vpc.lbip({id3: {{network.id}}})">
 	                                                                <div class="panel panel-info">
 	                                                                    <div class="panel-body config-box p-xxs text-info text-center">
 	                                                                        <h3> {{lbrulesList[$index]}}</h3>
@@ -122,7 +124,7 @@
                                                     <div class="col-md-6">
 	                                                    <div class="media">
 	                                                        <div class="media-body">
-	                                                            <a ui-sref="vpc.view-vpc.config-vpc.natip({id4: {{network.id}}})" >
+	                                                            <a id="config_vpc_static_nats" ui-sref="vpc.view-vpc.config-vpc.natip({id4: {{network.id}}})" >
 	                                                                <div class="panel panel-info">
 	                                                                    <div class="panel-body config-box p-xxs text-info text-center ">
 	                                                                        <h3> {{natList[$index]}}</h3>
@@ -136,7 +138,7 @@
                                                     <div class="col-md-6">
 	                                                    <div class="media">
 	                                                        <div class="media-body">
-	                                                          <a  ui-sref="vpc.view-vpc.config-vpc.virtual-machines({id2: {{network.id}}})" >
+	                                                          <a id="config_vpc_virtual_machines" ui-sref="vpc.view-vpc.config-vpc.virtual-machines({id2: {{network.id}}})" >
 	                                                                <div class="panel panel-info">
 	                                                                    <div class="panel-body config-box p-xxs text-info text-center">
 	                                                                        <h3>{{networkVMList[$index]}}</h3>
