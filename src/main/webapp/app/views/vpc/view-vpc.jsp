@@ -18,20 +18,20 @@
 							<h3 class="panel-title"><fmt:message key="vpc.details" bundle="${msg}" /></h3>
 						</div>
 						<div class="panel-body p-md">
-							<table cellspacing="1" cellpadding="1" class="table table-condensed table-striped">
+							<table cellspacing="1" cellpadding="1" class="table table-condensed table-striped" id="vpc_view_vpc_table">
 								<tbody>
 									<tr>
 										<td><b> <fmt:message key="common.name" bundle="${msg}" /></b></td>
 										<td><label data-ng-if="type != 'edit'">{{vpc.name}}</label><div data-ng-if="type == 'edit'" class="form-group"
 												ng-class="{'text-danger': addvpcForm.name.$invalid && formSubmitted}">
-												<input type="text" name="name" data-ng-model="vpc.name"
+												<input type="text" name="name" data-ng-model="vpc.name" id="vpc_view_vpc_name"
 													class="form-control editedinput "
 													data-ng-class="{'error': addvpcForm.name.$invalid && formSubmitted}">
 											</div></td>
 									</tr>
 									<tr>
 										<td><b> <fmt:message key="common.description" bundle="${msg}" /></b></td>
-										<td><label data-ng-if="type != 'edit'">{{vpc.description}}</label><input data-ng-if="type == 'edit'" type="text"
+										<td><label data-ng-if="type != 'edit'">{{vpc.description}}</label><input data-ng-if="type == 'edit'" type="text" id="vpc_view_vpc_description"
 											name="description" data-ng-model="vpc.description"
 											class="form-control editedinput"
 											data-ng-class="{'error': addvpcForm.description.$invalid && formSubmitted}">
@@ -81,12 +81,12 @@
 
 					<div class="pull-right">
 						<get-loader-image data-ng-show="showLoader"></get-loader-image>
-						<button class="btn btn-info" data-ng-hide="showLoader"
+						<button class="btn btn-info" data-ng-hide="showLoader" id="vpc_view_vpc_update_button"
 							data-ng-if="type == 'edit'"
 							ng-disabled="form.configForm.$invalid" type="submit">
 							<fmt:message key="common.update" bundle="${msg}" />
 						</button>
-						<button type="button" class="btn btn-default "
+						<button type="button" class="btn btn-default" id="vpc_view_vpc_cancel_button"
 							data-ng-hide="showLoader" data-ng-if="type == 'edit'"
 							ui-sref="vpc">
 							<fmt:message key="common.cancel" bundle="${msg}" />
@@ -105,18 +105,18 @@
 						</div>
 						<div class="panel-body no-padding">
 							<ul class="list-group">
-							<li class="list-group-item"><a href="javascript:void(0);" title="<fmt:message key="restart.vpc" bundle="${msg}" />"
+							<li class="list-group-item"><a id="vpc_view_vpc_restart_vpc_button" href="javascript:void(0);" title="<fmt:message key="restart.vpc" bundle="${msg}" />"
 								data-ng-click="restart('md', vpc)"
 							><span class="fa-repeat fa font-bold m-xs"></span><fmt:message key="restart.vpc" bundle="${msg}" /></a></li>
-							<li class="list-group-item"><a has-permission="DELETE_VPC" href="javascript:void(0);" title=" <fmt:message key="delete.vpc" bundle="${msg}" />"
+							<li class="list-group-item"><a has-permission="DELETE_VPC" id="vpc_view_vpc_delete_vpc_button" href="javascript:void(0);" title=" <fmt:message key="delete.vpc" bundle="${msg}" />"
 								data-ng-click="delete('sm', vpc)"
 							><span class="fa-trash fa font-bold m-xs"></span> <fmt:message key="remove.vpc" bundle="${msg}" /></a></li>
-							<li data-ng-if="type != 'edit'" class="list-group-item"><a has-permission="EDIT_VPC"
+							<li data-ng-if="type != 'edit'" class="list-group-item"><a has-permission="EDIT_VPC" id="vpc_view_vpc_edit_vpc_button"
 								title=" <fmt:message key="edit.vpc" bundle="${msg}" />" href="#/vpc/edit/{{ vpc.id}}"
 							> <span class="fa fa-edit font-bold m-xs"></span> <fmt:message key="edit.vpc" bundle="${msg}" />
 							</a></li>
 							<li class="list-group-item">
-							<a class="btn btn-info" href="#/vpc/view/{{vpc.id}}/config-vpc" > <span
+							<a id="vpc_view_vpc_configure_button" class="btn btn-info" href="#/vpc/view/{{vpc.id}}/config-vpc" > <span
 
 								class="fa fa-cog"> </span> <fmt:message key="configure" bundle="${msg}" /></a>
 

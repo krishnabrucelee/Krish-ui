@@ -6,7 +6,7 @@ pageEncoding="UTF-8"%>
 <form name="ipform" >
 <div class="inmodal"  >
         <div class="modal-header">
-            <panda-modal-header page-custom-icon="images/ip-icon-big.png"  page-title="Acquire IP"></panda-modal-header>
+            <panda-modal-header id="vpc_acquire_ip_page_title" page-custom-icon="images/ip-icon-big.png"  page-title="Acquire IP"></panda-modal-header>
         </div>
         <div class="modal-body">
 
@@ -20,7 +20,7 @@ pageEncoding="UTF-8"%>
 
                <div data-ng-class=" agree != true && actionAcquire  ? 'text-danger' : ''">
 
-                   <input id="agree" icheck type="checkbox" name="agree" value="yes" class="input-mini p-md m-r-lg "  data-ng-model="agree"/>
+                   <input id="vpc_acquire_ip_agree" icheck type="checkbox" name="agree" value="yes" class="input-mini p-md m-r-lg "  data-ng-model="agree"/>
                    <label class="m-l-sm font-normal" for="agree">I agree to the Terms and conditions </label>
                </div>
 
@@ -42,8 +42,8 @@ pageEncoding="UTF-8"%>
                         </h4>
                     </span>
             <span class="pull-right">
-                <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="cancel()">No</button>
-                <button type="button" class="btn btn-info" ng-click="acquire(network)">Yes</button>
+                <button type="button" id="vpc_acquire_ip_cancel_button" class="btn btn-default" data-dismiss="modal" ng-click="cancel()">No</button>
+                <button type="button" id="vpc_acquire_ip_cancel_button" class="btn btn-info" ng-click="acquire(network)">Yes</button>
             </span>
 </div>
         </div>

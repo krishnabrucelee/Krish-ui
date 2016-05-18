@@ -24,6 +24,7 @@ function vpcCtrl($scope, $modal, appService, $timeout, filterFilter, $stateParam
     appService.globalConfig.webSocketLoaders.vpcLoader = false;
     appService.globalConfig.webSocketLoaders.vpnLoader = false;
     appService.globalConfig.webSocketLoaders.ipLoader = false;
+    appService.globalConfig.webSocketLoaders.egressLoader = false;
     $scope.paginationObject.sortOrder = '+';
     $scope.paginationObject.sortBy = 'name';
     $scope.vpcList = [];
@@ -42,14 +43,18 @@ function vpcCtrl($scope, $modal, appService, $timeout, filterFilter, $stateParam
     $scope.instanceLists = [];
     $scope.instanceLists.ipAddress = {};
     $scope.networkIdu = {};
+    $scope.templateCategory = $scope.tabview;
     $scope.portForward = {};
     $scope.portform = {};
     $scope.networkVMList = [];
+    $scope.natList = []; 
     $scope.networkVMLists = [];
     $scope.lbrulesList = [];
     $scope.lbrulesLists = [];
     $scope.lbrulesIps = {};
     $scope.natIps = {};
+$scope.vpcsid = $stateParams.id;
+$scope.aclID = {};
 
     $scope.type = $stateParams.view;
     // VPC Offer List
@@ -60,6 +65,11 @@ function vpcCtrl($scope, $modal, appService, $timeout, filterFilter, $stateParam
         listVpcOffers.then(function(result) {
             $scope.networkOfferList = result;
         });
+    };
+
+  $scope.canceledit = function(netwrkid) {
+                       $window.location.href = '#/vpc/view/'+$stateParams.id+'/config-vpc/view/'+netwrkid;
+
     };
 
     if ($stateParams.id > 0  && $location.path() == '/vpc/view/' + $stateParams.id ) {
@@ -76,23 +86,34 @@ function vpcCtrl($scope, $modal, appService, $timeout, filterFilter, $stateParam
             $scope.listVpcNetwork($stateParams.id);
             $scope.listVpcNetworkByPortforwarding($stateParams.id);
             $scope.listVpcNetworkForLB($scope.vpc.id);
-            $scope.vpcTiers($stateParams.id);            
+            $scope.vpcTiers($stateParams.id);
             if ($state.current.data.pageTitle === "view VPC") {
                 $state.current.data.pageName = result.name;
-                $state.current.data.id = result.id;                 
+                $state.current.data.id = result.id;
             } else {
                 $state.$current.parent.data.pageName = result.name;
                 $state.$current.parent.data.id = result.id;
             }
         });
     }
-   
+
     $scope.breadcrumbList = function() {
         if (!angular.isUndefined($stateParams.id)) {
             var hasBreadcrumb = appService.crudService.read("vpc", $stateParams.id);
             hasBreadcrumb.then(function(result) { // this is only run after $http completes0.
-                $state.$current.parent.data.pageName = result.name;
-                $state.$current.parent.data.id = result.id;
+                if ($state.current.data.pageTitle === "config VPC") {
+                   $state.$current.parent.data.pageName = result.name;
+                   $state.$current.parent.data.id = result.id;               
+                } else {
+                    if ($state.current.data.pageTitle === "View IP" || $state.current.data.pageTitle === "View Network") {
+                       $state.$current.parent.parent.parent.data.pageName = result.name;
+                       $state.$current.parent.parent.parent.data.id = result.id;
+		   }
+                   else if ($state.current.data.pageTitle === "Network ACL" || $state.current.data.pageTitle === "Public IP" || $state.current.data.pageTitle === "view.network") {
+                       $state.$current.parent.parent.data.pageName = result.name;
+                       $state.$current.parent.parent.data.id = result.id;
+                    }
+                } 
         });
         }
     };
@@ -234,7 +255,7 @@ function vpcCtrl($scope, $modal, appService, $timeout, filterFilter, $stateParam
             $scope.paginationObject.sortOrder = sortOrder;
             $scope.paginationObject.sortBy = sortBy;
             $scope.showLoader = false;
-            appService.localStorageService.set('views', null);
+            appService.localStorageService.set('view', null);
         });
     };
 
@@ -594,15 +615,180 @@ $scope.dropnetworkLists = {
             $timeout(function(){$scope.callAtTimeout();}, 2000);
 
         });
+   };
 
+    // Delete the Network
+    $scope.deleteNetwork = function(size, network) {
+        appService.dialogService.openDialog("app/views/cloud/network/confirm-delete.jsp", size, $scope, ['$scope', '$modalInstance', function($scope, $modalInstance) {
+            $scope.deleteId = network.id;
+            $scope.ok = function(networkId) {
+                    $scope.showLoader = true;
+                    appService.globalConfig.webSocketLoaders.networkLoader = true;
+                    $modalInstance.close();
+                    var hasNetworks = appService.crudService.softDelete("guestnetwork", network);
+                    hasNetworks.then(function(result) {
+                        $scope.showLoader = false;
+                    }).catch(function(result) {
+                        if (!angular.isUndefined(result.data) && result.data.fieldErrors != null) {
+                            angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
+                                $scope.addnetworkForm[key].$invalid = true;
+                                $scope.addnetworkForm[key].errorMessage = errorMessage;
+                            });
+                        }
+                        $modalInstance.close();
+                        $scope.showLoader = false;
+                        appService.globalConfig.webSocketLoaders.networkLoader = false;
+                    });
+
+                       $window.location.href = '#/vpc/view/'+$stateParams.id+'/config-vpc';
+            		$state.reload();
+                },
+                $scope.cancel = function() {
+                    $modalInstance.close();
+                };
+        }]);
     };
 
-    $scope.callAtTimeout = function() {
+   $scope.updateNetwork = function(form) {
+        $scope.formSubmitted = true;
+        if (form.$valid) {
+            var network = $scope.network;
+            $scope.showLoader = true;
+            if (!angular.isUndefined($scope.network.domain)) {
+                network.domainId = $scope.network.domain.id;
+                delete network.domain;
+            }
+            if (!angular.isUndefined($scope.network.department) && $scope.network.department != null) {
+                network.departmentId = $scope.network.department.id;
+                delete network.department;
+            }
+            if (!angular.isUndefined($scope.network.project) && $scope.network.project != null) {
+                network.projectId = $scope.network.project.id;
+                delete network.project;
+            }
+            network.zoneId = $scope.network.zone.id;
+            network.networkOfferingId = $scope.network.networkOffering.id;
+            delete network.zone;
+            delete network.networkOffering;
+            appService.globalConfig.webSocketLoaders.networkLoader = true;
+            var hasNetwork = appService.crudService.update("guestnetwork", network);
+            hasNetwork.then(function(result) {
+                $scope.showLoader = false;
+                $scope.formSubmitted = false;
+            }).catch(function(result) {
+                if (!angular.isUndefined(result.data) && result.data.fieldErrors != null) {
+                    angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
+                        $scope.addnetworkForm[key].$invalid = true;
+                        $scope.addnetworkForm[key].errorMessage = errorMessage;
+                    });
+                }
+                $scope.showLoader = false;
+                appService.globalConfig.webSocketLoaders.networkLoader = false;
+            });
+
+                       $window.location.href = '#/vpc/view/'+$stateParams.id+'/config-vpc/view/'+network.id;
+$state.reload();
+        }
+    };
+
+    if ($stateParams.idNetwork > 0) {
+        $scope.showLoader = true;
+        $scope.showLoaderOffer = true;
+
+            var hasServer = appService.crudService.read("guestnetwork", $stateParams.idNetwork);
+        hasServer.then(function(result) {
+            $scope.showLoader = false;
+            $scope.network = result;
+            $state.current.data.pageName = result.name;
+            $state.current.data.id = result.id;
+
+        });
+    }
+        $scope.type = $stateParams.view;
+
+    $scope.networkRestart = {};
+    // Restart the Network
+    $scope.restartNetwork = function(size, network) {
+
+        appService.dialogService.openDialog("app/views/cloud/network/restart-network.jsp", size, $scope, ['$scope', '$modalInstance', function($scope, $modalInstance) {
+            $scope.ok = function(restart) {
+                    $scope.networkRestart = restart;
+                    $scope.showLoader = true;
+                    appService.globalConfig.webSocketLoaders.networkLoader = true;
+                    $modalInstance.close();
+                    var hasServer = appService.crudService.add("guestnetwork/restart/" + network.id, network);
+                    hasServer.then(function(result) { // this is only run after $http completes
+                        $scope.showLoader = false;
+                    }).catch(function(result) {
+                        if (!angular.isUndefined(result.data)) {
+                            if (result.data.fieldErrors != null) {
+                                angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
+                                    $scope.addnetworkForm[key].$invalid = true;
+                                    $scope.addnetworkForm[key].errorMessage = errorMessage;
+                                });
+                            }
+                        }
+                        $scope.showLoader = false;
+                        appService.globalConfig.webSocketLoaders.networkLoader = false;
+                        $modalInstance.close();
+                    });
+                },
+                $scope.cancel = function() {
+                    $modalInstance.close();
+                };
+        }]);
+    };
+
+        $scope.replaceaclList = function (size, networkObj) {
+        	    angular.forEach($scope.aclList, function (obj, key) {
+                    if (obj.id == networkObj.aclId) {
+                    	$scope.aclID = obj;
+                    }
+                });
+
+            	appService.dialogService.openDialog("app/views/vpc/replace-acl-list.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+                    $scope.networkObj = networkObj;
+            		$scope.ok = function (aclID) {
+                    $scope.networkObj.acl = aclID;
+                    $scope.networkObj.aclId = aclID.id;
+                    $scope.showLoader = true;
+                    var hasServer = appService.crudService.update("guestnetwork/replaceAcl", $scope.network);
+                    hasServer.then(function (result) {
+            		    $scope.showLoader = false;
+            		    $scope.network = result;
+                        appService.notify({
+                            message: "ACL updated successfully",
+                            classes: 'alert-success',
+                            templateUrl: $scope.global.NOTIFICATION_TEMPLATE
+                        });
+            		    $state.reload();
+            		    $modalInstance.close();
+                    }).catch(function (result) {
+                        if (!angular.isUndefined(result) && result.data != null) {
+                        	$scope.showLoader = false;
+                            angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
+                                $scope.addnetworkForm[key].$invalid = true;
+                                $scope.addnetworkForm[key].errorMessage = errorMessage;
+                            });
+                        }
+                        appService.globalConfig.webSocketLoaders.volumeLoader = false;
+                        $modalInstance.close();
+                    });
+
+                },
+                $scope.cancel= function () {
+                    $modalInstance.close();
+                };
+            }]);
+        };
+
+
+
+   $scope.callAtTimeout = function() {
         $scope.showLoaderOffer = false;
     }
 
-
-if ($stateParams.id2 > 0) {
+if (!angular.isUndefined($stateParams.id2) && $stateParams.id2 > 0) {
   var listVpcOffers = appService.promiseAjax
                 .httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbynetwork"+"?networkid="+$stateParams.id2 );
         listVpcOffers.then(function(result) {
@@ -624,7 +810,6 @@ if ($stateParams.id4 > 0) {
         $scope.natIps = result;
     });
 }
-
 $scope.instanceListForVpc = function(networkId){
     var listVpcVm = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbynetwork?networkid="+networkId );
     listVpcVm.then(function(result) {
@@ -655,7 +840,7 @@ $scope.lBForVpc = function(networkId){
     $scope.listVpcNetworkForLB = function(vpcId) {
     	var listVpcNetworksLB = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "guestnetwork/vpcNetworkLists?vpcId=" + vpcId + "&type=" +"Lb" +"&sortBy=-id");
         listVpcNetworksLB.then(function(result) {
-            $scope.vpcNetworkListForLB = result;	
+            $scope.vpcNetworkListForLB = result;
         });
     };
 
@@ -672,7 +857,11 @@ $scope.lBForVpc = function(networkId){
                 	vpcCreateNetwork.projectId = $scope.vpc.projectId;
                 	vpcCreateNetwork.zone = $scope.vpc.zone;
                 	vpcCreateNetwork.zoneId = $scope.vpc.zoneId;
-                	vpcCreateNetwork.aclId = $scope.vpcCreateNetwork.acl.id;
+if (!angular.isUndefined($scope.vpcCreateNetwork.acl)) {
+
+               	    vpcCreateNetwork.aclId = $scope.vpcCreateNetwork.acl.id;
+
+                   }
                 	vpcCreateNetwork.vpcId = $scope.vpc.id;
                 	vpcCreateNetwork.displayText = $scope.vpcCreateNetwork.name;
                     vpcCreateNetwork.networkOfferingId = $scope.vpcCreateNetwork.networkOffering.id;
@@ -736,7 +925,7 @@ if (!angular.isUndefined($stateParams.id1)) {
             $scope.global.rulesLB[0].privatePort = $scope.loadBalancer.privatePort;
             $scope.global.rulesLB[0].algorithm = $scope.loadBalancer.algorithms.value;
             //modalService.trigger('app/views/cloud/network/vm-list.jsp', 'lg');
-	   
+
             $scope.loadBalancer.vmIpaddress = [];
 
             appService.dialogService.openDialog("app/views/vpc/vm-list.jsp", 'lg', $scope, ['$scope', '$modalInstance', function($scope, $modalInstance) {
@@ -1260,9 +1449,9 @@ $scope.dropnetworkLists = {
     };
 
     $scope.ipLists = function(pageNumber) {
-        appService.localStorageService.set('views', 'ip');
-        $scope.tabViews = appService.localStorageService.get('views');
-        $scope.templateCategorys = $scope.tabViews;
+        appService.localStorageService.set('view', 'ipdetails');
+        $scope.tabview = appService.localStorageService.get('view');
+        $scope.templateCategory = $scope.tabview;
         $scope.active = true;
         //var networkId = $stateParams.id;
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
@@ -1285,11 +1474,13 @@ $scope.dropnetworkLists = {
     };
     $scope.ipLists(1);
 
+        $scope.tabview = appService.localStorageService.get('view');
+
     if (!angular.isUndefined($stateParams.id1) && $stateParams.id1 != null && $stateParams.id > 0) {
         if(angular.isUndefined(appService.localStorageService.get('view')) || appService.localStorageService.get('view') == null){
             appService.localStorageService.set('view', $state.current.data.networkTabs);
         }
-        $scope.tabView = appService.localStorageService.get('view');
+        $scope.tabview = appService.localStorageService.get('view');
         $scope.editIpaddress($stateParams.id1);
     }
 
@@ -1499,6 +1690,18 @@ $scope.vmPortId = instance;
         }]);
     };
 
+      $scope.selectTab = function(type) {
+        if (type == 'loadBalance') {
+            appService.localStorageService.set('view', 'load-balance');
+        }
+        if (type == 'portForward') {
+            appService.localStorageService.set('view', 'port-forward');
+        }
+        $scope.tabview = appService.localStorageService.get('view');
+        $state.reload();
+    }
+
+
     $scope.getNatList = function(networkId){
         var hasNat = appService.crudService.listByQuery("ipAddresses/vpc/nat/list?networkId=" + networkId);
         hasNat.then(function(result) {
@@ -1670,7 +1873,7 @@ $scope.vmPortId = instance;
                 $scope.portvmLists = function() {
                     $scope.templateCategory = 'instance';
                     $scope.portvmList = [];
-                    var networkId = $scope.portForward.vpcnetwork.id;     
+                    var networkId = $scope.portForward.vpcnetwork.id;
                     var hasVms = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbynetwork?networkid="+networkId +"&lang=" + appService.localStorageService.cookie.get('language')+"&sortBy=-id");
                     hasVms.then(function(result) { // this is only run after $http
                         $scope.portvmList = result;
@@ -1748,6 +1951,7 @@ $scope.vmPortId = instance;
     }
 
    $scope.portRulesLists = function(pageNumber) {
+
         $scope.showLoader = true;
         $scope.templateCategory = 'port-forward';
         $scope.firewallRules = {};
@@ -1765,6 +1969,8 @@ $scope.portFormSubmitted = false;
             $scope.paginationObject.limit = limit;
             $scope.paginationObject.currentPage = pageNumber;
             $scope.paginationObject.totalItems = result.totalItems;
+            appService.localStorageService.set('view', 'port-forward');
+            $scope.tabview = appService.localStorageService.get('view');
         });
     };
 
@@ -1785,13 +1991,18 @@ $scope.portFormSubmitted = false;
         $scope.listVpcNetwork($stateParams.id);
     }
 
+    if ($stateParams.id > 0  && $location.path() == '/vpc/view/' + $stateParams.id +'/config-vpc/network-acl' ) {
+        $scope.listVpcNetwork($stateParams.id);
+    }
+
+
     if ($stateParams.id1 > 0  && $location.path() == '/vpc/view/' + $stateParams.id +'/config-vpc/public-ip/ip-address/'+$stateParams.id1){
         $scope.listVpcNetwork($stateParams.id);
         $scope.listVpcNetworkByPortforwarding($stateParams.id);
         $scope.listVpcNetworkForLB($stateParams.id);
         $scope.vpcTiers($stateParams.id);
     }
-    
+
     $scope.deletePortRules = function(size, portForward) {
         appService.dialogService.openDialog("app/views/vpc/confirm-delete.jsp", size, $scope, ['$scope', '$modalInstance', function($scope, $modalInstance) {
             $scope.deleteId = portForward.id;
@@ -1923,7 +2134,7 @@ $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.vpnCreate, func
         appService.globalConfig.webSocketLoaders.ipLoader = false;
         $scope.ipLists(1);
     });
-    
+
     $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.deletePortRules, function(event, args) {
     appService.globalConfig.webSocketLoaders.portForwardLoader = false;
     $scope.portRulesLists(1);
@@ -1932,7 +2143,7 @@ $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.portforwardSave
     appService.globalConfig.webSocketLoaders.portForwardLoader = false;
     $scope.portRulesLists(1);
 });
-    
+
     $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.vpnUserAdd, function(event, args) {
         appService.globalConfig.webSocketLoaders.vpnLoader = false;
         appService.localStorageService.set('view', 'vpn-details');
@@ -1945,6 +2156,8 @@ $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.portforwardSave
            appService.localStorageService.set('view', 'vpn-details');
         }
     });
+
+
 
     $scope.trafficTypeList = {
             "0": "Ingress",
@@ -2018,28 +2231,32 @@ $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.portforwardSave
                 } ]);
     };
 
-    $scope.vpcAclRulesList = {};
-    $scope.vpcAclRulesList = function() {
+    //$scope.vpcAclRulesList = {};
+    $scope.vpcAclRulesListElement = function() {
+    	$scope.showLoader = true;
     	if (!angular.isUndefined($stateParams.id3)) {
         var hasDomains = appService.promiseAjax.httpTokenRequest(appService.crudService.globalConfig.HTTP_GET, appService.crudService.globalConfig.APP_URL + "vpcnetworkacl"  +"/networkAclList/"+$stateParams.id3);
         hasDomains.then(function(result) { // this is only run after $http
             // completes0
+        	$scope.showLoader = false;
             $scope.vpcAclRulesList = result;
         });
       }
     };
-     $scope.vpcAclRulesList();
+     $scope.vpcAclRulesListElement();
 
      $scope.networkAclList = {};
      $scope.networkAclList = function() {
+    	 $scope.showLoader = true;
      	if (!angular.isUndefined($stateParams.id3)) {
          var hasDomains =  appService.crudService.read("vpcacl" , $stateParams.id3);
          hasDomains.then(function(result) { // this is only run after $http
              // completes0
+        	 $scope.showLoader = false;
              $scope.networkAclList = result;
              $state.current.data.pageName = result.name;
-             $state.current.data.id = result.id; 
-         }); 
+             $state.current.data.id = result.id;
+         });
        }
      };
       $scope.networkAclList();
@@ -2049,15 +2266,18 @@ $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.portforwardSave
         $scope.formSubmitted = true;
         if (form.$valid) {
         	$scope.showLoader = true;
+            appService.globalConfig.webSocketLoaders.egressLoader = true;
             var hasNetworkAcl = appService.crudService.add("vpcnetworkacl/addNetworkAcl/" + $stateParams.id3, vpcAcl);
             hasNetworkAcl.then(function (result) {
             	$scope.showLoader = false;
-            	$state.reload();
+                $scope.formSubmitted = false;
+            	$scope.vpcAcl = "";
             }).catch(function (result) {
             	$scope.showLoader = false;
     		    if (!angular.isUndefined(result.data)) {
         		 if (result.data.fieldErrors != null) {
                	$scope.showLoader = false;
+                appService.globalConfig.webSocketLoaders.egressLoader = false;
                 	angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
                     	$scope.vpcAclForm[key].$invalid = true;
                     	$scope.vpcAclForm[key].errorMessage = errorMessage;
@@ -2068,24 +2288,19 @@ $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.portforwardSave
     	});
         }
     },
-            $scope.cancel = function() {
-                $modalInstance.close();
-            };
 
          // Delete the Vpc acl
             $scope.deleteAclList = function (size, networkAcl) {
             	appService.dialogService.openDialog("app/views/vpc/delete-vpcAcl.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
                        $scope.acl = networkAcl;
             		$scope.ok = function (networkAcl) {
-                        	$scope.showLoader = true;
                             $modalInstance.close();
                             var hasServer = appService.crudService.softDelete("vpcacl", $scope.acl);
                             hasServer.then(function (result) {
-            		$scope.showLoader = false;
-            		$state.reload();
                             }).catch(function (result) {
                                 if (!angular.isUndefined(result) && result.data != null) {
                                 	$scope.showLoader = false;
+                    	            appService.globalConfig.webSocketLoaders.egressLoader = false;
                                     angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
                                         $scope.addnetworkForm[key].$invalid = true;
                                         $scope.addnetworkForm[key].errorMessage = errorMessage;
@@ -2106,21 +2321,18 @@ $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.portforwardSave
             	appService.dialogService.openDialog("app/views/vpc/delete-vpcAcl.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
                        $scope.acl = vpcAcl;
             		$scope.ok = function (vpcAcl) {
-                            $scope.showLoader = true;
                             $modalInstance.close();
+            	            appService.globalConfig.webSocketLoaders.egressLoader = true;
                             var hasServer = appService.crudService.softDelete("vpcnetworkacl", $scope.acl);
                             hasServer.then(function (result) {
-            		$scope.showLoader = false;
-            		$state.reload();
                             }).catch(function (result) {
                                 if (!angular.isUndefined(result) && result.data != null) {
-                                	$scope.showLoader = false;
                                     angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
                                         $scope.addnetworkForm[key].$invalid = true;
                                         $scope.addnetworkForm[key].errorMessage = errorMessage;
                                     });
                                 }
-                                appService.globalConfig.webSocketLoaders.volumeLoader = false;
+                	            appService.globalConfig.webSocketLoaders.egressLoader = false;
                             });
 
                         },
@@ -2129,4 +2341,53 @@ $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.portforwardSave
                                 };
                     }]);
             };
+
+
+
+            // Edit the Network ACL
+            $scope.editNetworkAcl = function (size, vpcAcl) {
+                appService.dialogService.openDialog("app/views/vpc/edit-networkAcl.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+                        // Update ACL
+                        $scope.vpcAcl = angular.copy(vpcAcl);
+                        $scope.update = function (form) {
+                            $scope.formSubmitted = true;
+                            if (form.$valid) {
+                            	$modalInstance.close();
+                	            appService.globalConfig.webSocketLoaders.egressLoader = true;
+                                var vpcAcl =angular.copy($scope.vpcAcl);
+                                var hasServer = appService.crudService.update("vpcnetworkacl", vpcAcl);
+                                hasServer.then(function (result) {
+                                    $modalInstance.close();
+                                }).catch(function (result) {
+                                	if(!angular.isUndefined(result) && result.data != null) {
+                                		$scope.showLoader = false;
+                                		$modalInstance.close();
+                        	            appService.globalConfig.webSocketLoaders.egressLoader = false;
+                            		 	angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
+         	                            	$scope.departmentForm[key].$invalid = true;
+         	                                $scope.departmentForm[key].errorMessage = errorMessage;
+         	                            });
+                                    }
+
+                                });
+                            }
+                        },
+                                $scope.cancel = function () {
+                                    $modalInstance.close();
+                                };
+                    }]);
+            };
+
+            $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.saveAclList, function(event, args) {
+                appService.globalConfig.webSocketLoaders.egressLoader = false;
+                $scope.vpcAclRulesListElement();
+            });
+            $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.editNetworkAcl, function(event, args) {
+                appService.globalConfig.webSocketLoaders.egressLoader = false;
+                $scope.vpcAclRulesListElement();
+            });
+            $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.deleteNetworkAcl, function(event, args) {
+                appService.globalConfig.webSocketLoaders.egressLoader = false;
+                $scope.vpcAclRulesListElement();
+            });
 }

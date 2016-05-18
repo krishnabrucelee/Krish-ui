@@ -11,13 +11,13 @@
 					<div class="row">
 						<div class="col-md-12 col-sm-12 col-xs-12 ">
 							<div class="pull-left dashboard-btn-area">
-								<a class="btn btn-info" has-permission="CREATE_VM" data-ng-click="openAddInstance('lg')"> <span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="add.instance" bundle="${msg}" /></a>
+								<a id="vpc_virtual_machine_create_vm_button" class="btn btn-info" has-permission="CREATE_VM" data-ng-click="openAddInstance('lg')"> <span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="add.instance" bundle="${msg}" /></a>
 							</div>
 							<div class="pull-right dashboard-filters-area">
 							<form data-ng-submit="searchList(vmSearch)">
 								<div class="quick-search pull-right">
 									<div class="input-group">
-										<input data-ng-model="vmSearch" type="text" class="form-control input-medium" placeholder="<fmt:message key="common.quick.search" bundle="${msg}" />" aria-describedby="quicksearch-go">
+										<input id="vpc_virtual_machine_quick_search" data-ng-model="vmSearch" type="text" class="form-control input-medium" placeholder="<fmt:message key="common.quick.search" bundle="${msg}" />" aria-describedby="quicksearch-go">
 									   	<span class="input-group-addon" id="quicksearch-go"><span class="pe-7s-search pe-lg font-bold"></span></span>
 									</div>
 								</div>
@@ -31,16 +31,16 @@
 					<div class="clearfix"></div>
 				</div>
 				<div class="row">
-					<div class="col-md-12 col-sm-12 col-xs-12 ">
+					<div class="col-md-12 col-sm-12 col-xs-12" id="vpc_virtual_machine_pagination_container">
 						<div class="white-content">
 							<div data-ng-show="showLoader" style="margin: 1%">
 								<get-loader-image data-ng-show="showLoader"></get-loader-image>
 							</div>
 							<div class="table-responsive">
-								<table cellspacing="1" cellpadding="1" class="table table-bordered table-striped">
+								<table cellspacing="1" cellpadding="1" class="table table-bordered table-striped" id="vpc_virtual_machine_table">
 								    <thead>
 								        <tr>
-								            <th><fmt:message key="common.ips" bundle="${msg}" /></th>
+								            <th><fmt:message key="common.name" bundle="${msg}" /></th>
 								            <th><fmt:message key="common.internal.name" bundle="${msg}" /></th>
 								            <th><fmt:message key="common.display.name" bundle="${msg}" /></th>
 								            <th><fmt:message key="zone.name" bundle="${msg}" /></th>
@@ -54,9 +54,9 @@
 			                            </tbody>
 								    <tbody data-ng-show="vpcVmList.length > 0">
 								        <tr data-ng-repeat="vm in filteredCount = (vpcVmList| filter: quickSearch | orderBy:sort.column:sort.descending)">
-								        <td><a class="text-info" id="instances_display_name_button" ui-sref="cloud.list-instance.view-instance({id: {{ vm.vmInstance.id}}})"
+								        <td><a id="vpc_virtual_machine_ip_address_button" class="text-info" ui-sref="cloud.list-instance.view-instance({id: {{ vm.vmInstance.id}}})"
 											title="View Instance">
-										{{vm.ipAddress}}</a>
+										{{vm.vmInstance.name}}</a>
 								            </td>
 								            <td>{{vm.vmInstance.instanceInternalName}}</td>
 								            <td>{{vm.vmInstance.displayName}}</td>
