@@ -440,11 +440,6 @@ $scope.dropnetworkLists = {
                         var hasVpcs = appService.crudService.add("vpc", vpc);
                         hasVpcs.then(function(result) {
                             $scope.showLoader = false;
-                            appService.notify({
-                                message: "Added successfully",
-                                classes: 'alert-success',
-                                templateUrl: $scope.global.NOTIFICATION_TEMPLATE
-                            });
                             $scope.list(1);
                             $modalInstance.close();
                         }).catch(function(result) {
@@ -851,6 +846,7 @@ $scope.lBForVpc = function(networkId){
         	$scope.saveNetwork = function(form, vpcCreateNetwork) {
                 $scope.formSubmitted = true;
                 if (form.$valid) {
+                        console.log($scope.vpc);
                 	vpcCreateNetwork.domainId = $scope.vpc.domainId;
                 	vpcCreateNetwork.departmentId = $scope.vpc.departmentId;
                 	vpcCreateNetwork.project = $scope.vpc.project;
@@ -2057,6 +2053,8 @@ $scope.vmPortId = instance;
 
     $scope.$on(appService.globalConfig.webSocketEvents.vpcEvents.createVPC, function(event, args) {
         appService.globalConfig.webSocketLoaders.vpcLoader = false;
+        $scope.list(1);
+        appService.notify({message: 'VPC Created Successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});          
     });
     $scope.$on(appService.globalConfig.webSocketEvents.vpcEvents.editVPC, function(event, args) {
         appService.globalConfig.webSocketLoaders.vpcLoader = false;
