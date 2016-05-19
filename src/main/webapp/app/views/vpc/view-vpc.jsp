@@ -105,7 +105,7 @@
 						</div>
 						<div class="panel-body no-padding">
 							<ul class="list-group">
-							<li class="list-group-item"><a id="vpc_view_vpc_restart_vpc_button" href="javascript:void(0);" title="<fmt:message key="restart.vpc" bundle="${msg}" />"
+							<li class="list-group-item"><a has-permission="RESTART_VPC" id="vpc_view_vpc_restart_vpc_button" href="javascript:void(0);" title="<fmt:message key="restart.vpc" bundle="${msg}" />"
 								data-ng-click="restart('md', vpc)"
 							><span class="fa-repeat fa font-bold m-xs"></span><fmt:message key="restart.vpc" bundle="${msg}" /></a></li>
 							<li class="list-group-item"><a has-permission="DELETE_VPC" id="vpc_view_vpc_delete_vpc_button" href="javascript:void(0);" title=" <fmt:message key="delete.vpc" bundle="${msg}" />"

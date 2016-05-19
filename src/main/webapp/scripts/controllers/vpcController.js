@@ -54,8 +54,9 @@ function vpcCtrl($scope, $modal, appService, $timeout, filterFilter, $stateParam
     $scope.lbrulesLists = [];
     $scope.lbrulesIps = {};
     $scope.natIps = {};
-$scope.vpcsid = $stateParams.id;
-$scope.aclID = {};
+    $scope.natList = [];
+    $scope.vpcsid = $stateParams.id;
+    $scope.aclID = {};
 
     $scope.type = $stateParams.view;
     // VPC Offer List
@@ -692,7 +693,7 @@ $state.reload();
             var hasServer = appService.crudService.read("guestnetwork", $stateParams.idNetwork);
         hasServer.then(function(result) {
             $scope.showLoader = false;
-            $scope.network = result;            
+            $scope.network = result;
             $state.current.data.pageName = result.name;
             $state.current.data.id = result.id;
 
@@ -840,6 +841,7 @@ $scope.lBForVpc = function(networkId){
 
 
     $scope.createNetwork = function(size) {
+    	$scope.vpcCreateNetwork = {};
         appService.dialogService.openDialog($scope.global.VIEW_URL + "vpc/create.jsp", size, $scope, [ '$scope',
                 '$modalInstance', '$rootScope', function($scope, $modalInstance, $rootScope) {
         	$scope.saveNetwork = function(form, vpcCreateNetwork) {
@@ -851,7 +853,7 @@ $scope.lBForVpc = function(networkId){
                 	vpcCreateNetwork.projectId = $scope.vpc.projectId;
                 	vpcCreateNetwork.zone = $scope.vpc.zone;
                 	vpcCreateNetwork.zoneId = $scope.vpc.zoneId;
-if (!angular.isUndefined($scope.vpcCreateNetwork.acl)) {
+                	if (!angular.isUndefined($scope.vpcCreateNetwork.acl) && $scope.vpcCreateNetwork.acl != null)  {
 
                	    vpcCreateNetwork.aclId = $scope.vpcCreateNetwork.acl.id;
 
@@ -1454,9 +1456,6 @@ $scope.dropnetworkLists = {
         hasFirewallRuless.then(function(result) { // this is only run after
             // $http completes0
             $scope.ipList = result;
-            /*$state.current.data.publicIpAddress = result[0].publicIpAddress;
-            console.log($state.current.data.publicIpAddress);
-            console.log(result[0].publicIpAddress);*/
             // For pagination
             $scope.paginationObject.limit = limit;
             $scope.paginationObject.currentPage = pageNumber;
@@ -1879,7 +1878,6 @@ $scope.vmPortId = instance;
                     $scope.formSubmitted = true;
                     $scope.showLoader = true;
                     $scope.portForward.networkId = portinstance.networkId;
-		   console.log("port",$scope.portForward);
                     $scope.vmIpAddress = {};
 		    $scope.instance = {};
                     var hasError = true;
