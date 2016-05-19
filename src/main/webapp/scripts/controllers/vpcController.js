@@ -695,7 +695,7 @@ $state.reload();
             var hasServer = appService.crudService.read("guestnetwork", $stateParams.idNetwork);
         hasServer.then(function(result) {
             $scope.showLoader = false;
-            $scope.network = result;            
+            $scope.network = result;
             $state.current.data.pageName = result.name;
             $state.current.data.id = result.id;
 
@@ -843,6 +843,7 @@ $scope.lBForVpc = function(networkId){
 
 
     $scope.createNetwork = function(size) {
+    	$scope.vpcCreateNetwork = {};
         appService.dialogService.openDialog($scope.global.VIEW_URL + "vpc/create.jsp", size, $scope, [ '$scope',
                 '$modalInstance', '$rootScope', function($scope, $modalInstance, $rootScope) {
         	$scope.saveNetwork = function(form, vpcCreateNetwork) {
@@ -854,7 +855,7 @@ $scope.lBForVpc = function(networkId){
                 	vpcCreateNetwork.projectId = $scope.vpc.projectId;
                 	vpcCreateNetwork.zone = $scope.vpc.zone;
                 	vpcCreateNetwork.zoneId = $scope.vpc.zoneId;
-if (!angular.isUndefined($scope.vpcCreateNetwork.acl)) {
+                	if (!angular.isUndefined($scope.vpcCreateNetwork.acl) && $scope.vpcCreateNetwork.acl != null)  {
 
                	    vpcCreateNetwork.aclId = $scope.vpcCreateNetwork.acl.id;
 
@@ -2051,7 +2052,7 @@ $scope.vmPortId = instance;
     $scope.$on(appService.globalConfig.webSocketEvents.vpcEvents.createVPC, function(event, args) {
         appService.globalConfig.webSocketLoaders.vpcLoader = false;
         $scope.list(1);
-        appService.notify({message: 'VPC Created Successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});          
+        appService.notify({message: 'VPC Created Successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
     });
     $scope.$on(appService.globalConfig.webSocketEvents.vpcEvents.editVPC, function(event, args) {
         appService.globalConfig.webSocketLoaders.vpcLoader = false;
