@@ -442,11 +442,6 @@ $scope.dropnetworkLists = {
                         var hasVpcs = appService.crudService.add("vpc", vpc);
                         hasVpcs.then(function(result) {
                             $scope.showLoader = false;
-                            appService.notify({
-                                message: "Added successfully",
-                                classes: 'alert-success',
-                                templateUrl: $scope.global.NOTIFICATION_TEMPLATE
-                            });
                             $scope.list(1);
                             $modalInstance.close();
                         }).catch(function(result) {
@@ -1464,9 +1459,6 @@ $scope.dropnetworkLists = {
         hasFirewallRuless.then(function(result) { // this is only run after
             // $http completes0
             $scope.ipList = result;
-            /*$state.current.data.publicIpAddress = result[0].publicIpAddress;
-            console.log($state.current.data.publicIpAddress);
-            console.log(result[0].publicIpAddress);*/
             // For pagination
             $scope.paginationObject.limit = limit;
             $scope.paginationObject.currentPage = pageNumber;
@@ -1889,7 +1881,6 @@ $scope.vmPortId = instance;
                     $scope.formSubmitted = true;
                     $scope.showLoader = true;
                     $scope.portForward.networkId = portinstance.networkId;
-		   console.log("port",$scope.portForward);
                     $scope.vmIpAddress = {};
 		    $scope.instance = {};
                     var hasError = true;
@@ -2059,6 +2050,8 @@ $scope.vmPortId = instance;
 
     $scope.$on(appService.globalConfig.webSocketEvents.vpcEvents.createVPC, function(event, args) {
         appService.globalConfig.webSocketLoaders.vpcLoader = false;
+        $scope.list(1);
+        appService.notify({message: 'VPC Created Successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});          
     });
     $scope.$on(appService.globalConfig.webSocketEvents.vpcEvents.editVPC, function(event, args) {
         appService.globalConfig.webSocketLoaders.vpcLoader = false;

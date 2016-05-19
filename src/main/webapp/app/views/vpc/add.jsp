@@ -13,10 +13,7 @@
         </panda-modal-header>
     </div>
     <div class="modal-body">
-     	<div data-ng-show="showLoader" style="margin: 20%">
-		    <get-loader-image data-ng-show="showLoader"></get-loader-image>
-		</div>
-     	<div data-ng-hide="showLoader">
+     	<div>
 	           	<div class="form-group"
 						ng-class="{'text-danger':addvpcForm.name.$invalid && formSubmitted}">
 						<div class="row">
