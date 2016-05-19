@@ -51,11 +51,11 @@ $scope.template.listAllTemplate = {};
 		$scope.showLoader = true;
 		var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
                 /**var hasCommunityList = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "templates/listall" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+sortOrder+sortBy +"&type=community"+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});**/
-if ($scope.vmSearch == null) {
+if ($scope.templateCommunityListSearch == null) {
         var hasCommunityList = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "templates/listalltemplateforadmin" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+appService.globalConfig.sort.sortOrder+appService.globalConfig.sort.sortBy +"&type=community"+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
 }
-if ($scope.vmSearch != null) {
-	$scope.filter = "&searchText=" + $scope.vmSearch;
+if ($scope.templateCommunityListSearch != null) {
+	$scope.filter = "&searchText=" + $scope.templateCommunityListSearch;
 var hasCommunityList = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "templates/listall" +"?lang=" + localStorageService.cookie.get('language')+ $scope.filter +"&sortBy="+appService.globalConfig.sort.sortOrder+appService.globalConfig.sort.sortBy +"&type=community"+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
 	}
 
@@ -125,9 +125,9 @@ if ($scope.featureSearch != null) {
     $scope.featuredTemplateList();
 
 
-$scope.vmSearch = null;
-    $scope.searchList = function(vmSearch) {
-        $scope.vmSearch = vmSearch;
+$scope.templateCommunityListSearch = null;
+    $scope.searchList = function(templateCommunityListSearch) {
+        $scope.templateCommunityListSearch = templateCommunityListSearch;
         $scope.list(1);
     };
 
@@ -142,11 +142,11 @@ $scope.vmSearch = null;
     	$scope.showLoader = true;
     	var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
 
- if ($scope.vmSearch == null) {
+ if ($scope.templateCommunityListSearch == null) {
         var hasCommunity = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "templates/listalltemplateforadmin" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+appService.globalConfig.sort.sortOrder+appService.globalConfig.sort.sortBy +"&type=community"+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
 }
-if ($scope.vmSearch != null) {
-	$scope.filter = "&searchText=" + $scope.vmSearch;
+if ($scope.templateCommunityListSearch != null) {
+	$scope.filter = "&searchText=" + $scope.templateCommunityListSearch;
 var hasCommunity = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "templates/listall" +"?lang=" + localStorageService.cookie.get('language')+ encodeURI($scope.filter) +"&sortBy="+appService.globalConfig.sort.sortOrder+appService.globalConfig.sort.sortBy +"&type=community"+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
 	}
         hasCommunity.then(function (result) {  // this is only run after $http completes0
@@ -161,6 +161,13 @@ var hasCommunity = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GE
     $scope.list (1);
 
     }
+
+
+$scope.templateFeaturedListSearch = null;
+    $scope.searchFeaturedList = function(templateFeaturedListSearch) {
+        $scope.templateFeaturedListSearch = templateFeaturedListSearch;
+        $scope.list(1);
+    };
 
   $scope.changeSorts = function(sortBy, pageNumber) {
 		var sort = appService.globalConfig.sort;
@@ -179,12 +186,12 @@ var hasCommunity = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GE
 		$scope.showLoader = true;
 		var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
                 /**var hasFeaturedList = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "templates/listall" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+sortOrder+sortBy +"&type=featured"+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});**/
- if ($scope.vmSearch == null) {
+ if ($scope.templateFeaturedListSearch == null) {
         var hasFeaturedList = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "templates/listalltemplateforadmin" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+appService.globalConfig.sort.sortOrder+appService.globalConfig.sort.sortBy +"&type=featured"+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
 }
-if ($scope.vmSearch != null) {
-	$scope.filter = "&searchText=" + $scope.vmSearch;
-$scope.filter = "&searchText=" + $scope.vmSearch;
+if ($scope.templateFeaturedListSearch != null) {
+	$scope.filter = "&searchText=" + $scope.templateFeaturedListSearch;
+$scope.filter = "&searchText=" + $scope.templateFeaturedListSearch;
 var hasFeaturedList = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "templates/listall" +"?lang=" + localStorageService.cookie.get('language')+ $scope.filter +"&sortBy="+appService.globalConfig.sort.sortOrder+appService.globalConfig.sort.sortBy +"&type=featured"+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
 	}
 
@@ -210,12 +217,12 @@ var hasFeaturedList = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP
         appService.globalConfig.sort.sortBy = $scope.paginationObject.sortBy;
     	$scope.showLoader = true;
     	var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
- if ($scope.vmSearch == null) {
+ if ($scope.templateFeaturedListSearch == null) {
         var hasFeatured = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "templates/listalltemplateforadmin" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+appService.globalConfig.sort.sortOrder+appService.globalConfig.sort.sortBy +"&type=featured"+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
 }
-if ($scope.vmSearch != null) {
-	$scope.filter = "&searchText=" + $scope.vmSearch;
-$scope.filter = "&searchText=" + $scope.vmSearch;
+if ($scope.templateFeaturedListSearch != null) {
+	$scope.filter = "&searchText=" + $scope.templateFeaturedListSearch;
+$scope.filter = "&searchText=" + $scope.templateFeaturedListSearch;
 var hasFeatured = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "templates/listall" +"?lang=" + localStorageService.cookie.get('language')+ encodeURI($scope.filter) +"&sortBy="+appService.globalConfig.sort.sortOrder+appService.globalConfig.sort.sortBy +"&type=featured"+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
 	}
         hasFeatured.then(function (result) {  // this is only run after $http completes0
@@ -229,6 +236,13 @@ var hasFeatured = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET
     };
     $scope.list (1);
    }
+
+
+$scope.vmSearch = null;
+    $scope.vmSearchList = function(vmSearch) {
+        $scope.vmSearch = vmSearch;
+         $scope.list(1);
+    };
 
    $scope.changeSortings = function(sortBy, pageNumber) {
 		var sort = appService.globalConfig.sort;

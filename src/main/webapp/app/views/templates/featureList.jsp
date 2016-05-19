@@ -7,10 +7,10 @@
     <div class="">
 	<div class="col-md-12 col-sm-12" >
 		<div class="pull-right dashboard-filters-area" id="instances_quick_search">
-						<form data-ng-submit="searchList(vmSearch)">
+						<form data-ng-submit="searchFeaturedList(templateFeaturedListSearch)">
 							<div class="quick-search pull-right">
 								<div class="input-group">
-									<input data-ng-model="vmSearch" id="featured_list_search" type="text" class="form-control input-medium" placeholder="<fmt:message key="common.quick.search" bundle="${msg}" />" aria-describedby="quicksearch-go">
+									<input data-ng-model="templateFeaturedListSearch" id="featured_list_search" type="text" valid-characters class="form-control input-medium" placeholder="<fmt:message key="common.quick.search" bundle="${msg}" />" aria-describedby="quicksearch-go">
 								   	<span class="input-group-addon" id="quicksearch-go"><span class="pe-7s-search pe-lg font-bold"></span></span>
 								</div>
 							</div>
@@ -62,7 +62,7 @@
                        					    {{ template.name }}
                                         </a>
                                     </td>
-                                    <td>{{ global.Math.round((template.size / global.Math.pow(2, 30)),1) }}</td>
+                                    <td>{{ global.Math.round((template.size / global.Math.pow(2, 30)),2) }}</td>
                                     <td>{{ template.status }}</td>
                                     <td>{{ template.templateOwner.userName || " - " }}</td>
                                     <td>{{ template.createdDateTime *1000 | date:'yyyy-MM-dd HH:mm:ss'}}</td>

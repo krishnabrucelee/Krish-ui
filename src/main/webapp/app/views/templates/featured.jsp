@@ -9,7 +9,7 @@ pageEncoding="UTF-8"%>
 						<form data-ng-submit="featureSearchList(featureSearch)">
 							<div class="quick-search pull-right">
 								<div class="input-group">
-									<input data-ng-model="featureSearch" id="featured_grid_search" type="text" class="form-control input-medium" placeholder="<fmt:message key="common.quick.search" bundle="${msg}" />" aria-describedby="quicksearch-go">
+									<input data-ng-model="featureSearch" id="featured_grid_search" type="text" valid-characters class="form-control input-medium" placeholder="<fmt:message key="common.quick.search" bundle="${msg}" />" aria-describedby="quicksearch-go">
 								   	<span class="input-group-addon" id="quicksearch-go"><span class="pe-7s-search pe-lg font-bold"></span></span>
 								</div>
 							</div>
@@ -19,10 +19,22 @@ pageEncoding="UTF-8"%>
 						</form>
 						</div>
 	</div>
+	<div class="row clearfix">
+		<div  class="col-md-4 col-md-offset-4 clearfix">
+			<div class="hpanel">
+			    <div  class="panel-body no-records p-xs text-center" data-ng-hide="template.listFeaturedTemplate.length > 0">
+					 <h5>No Records Found</h5><br>
+					 <img src="images/no-templates-found.png" border="0" alt="no records found" title="no records found">
+			    </div>
+		    </div>
+		</div>
+	</div>
 </div>
-<div class="m-t-sm">
+<div class="clearfix"></div>
+
+<div class="m-t-sm" >
     <div  class="col-md-4 col-lg-4 col-xs-12 col-sm-12 no-padding template-panel-area" data-ng-repeat="templateObj in template.listFeaturedTemplate|orderBy:template.name | filter: quickSearch">
-        <div class="hpanel">
+        <div class="hpanel" data-ng-show="template.listFeaturedTemplate.length > 0">
             <div  class="panel-body p-xs template-panel" data-ng-class="templateObj.openDescription ? 'template-panel-active': ''">
                 <div class="row">
                     <div class="col-md-12 col-sm-12">
@@ -54,7 +66,7 @@ pageEncoding="UTF-8"%>
                         </div>
                         <div class="row">
                             <div class="small  m-b-sm  "  data-ng-hide="templateObj.openDescription">
-                                {{ templateObj.description}}.
+                                {{ templateObj.description}}
                             </div>
                             <div class="small text-justify"    data-ng-show="templateObj.openDescription">
                                 <div  class="animate-panel slimScroll" data-child="hpanel" data-effect="fadeInUp">
@@ -84,3 +96,4 @@ pageEncoding="UTF-8"%>
         </div>
     </div>
 </div>
+

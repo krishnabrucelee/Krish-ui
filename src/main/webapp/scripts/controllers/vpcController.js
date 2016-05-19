@@ -22,6 +22,7 @@ function vpcCtrl($scope, $modal, appService, $timeout, filterFilter, $stateParam
     $scope.sort = appService.globalConfig.sort;
     $scope.changeSorting = appService.utilService.changeSorting;
     appService.globalConfig.webSocketLoaders.vpcLoader = false;
+    appService.globalConfig.webSocketLoaders.networkLoader = false;
     appService.globalConfig.webSocketLoaders.vpnLoader = false;
     appService.globalConfig.webSocketLoaders.ipLoader = false;
     appService.globalConfig.webSocketLoaders.egressLoader = false;
@@ -438,12 +439,11 @@ $scope.dropnetworkLists = {
                         vpc.zoneId = $scope.vpc.zone.id;
                         vpc.vpcofferingid = $scope.vpc.vpcoffering.id;
                         $scope.showLoader = true;
+                            $modalInstance.close();
                         appService.globalConfig.webSocketLoaders.vpcLoader = true;
                         var hasVpcs = appService.crudService.add("vpc", vpc);
                         hasVpcs.then(function(result) {
                             $scope.showLoader = false;
-                            $scope.list(1);
-                            $modalInstance.close();
                         }).catch(function(result) {
                             if (!angular.isUndefined(result) && result.data != null) {
                                 if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
@@ -620,8 +620,8 @@ $scope.dropnetworkLists = {
             $scope.deleteId = network.id;
             $scope.ok = function(networkId) {
                     $scope.showLoader = true;
-                    appService.globalConfig.webSocketLoaders.networkLoader = true;
                     $modalInstance.close();
+                    appService.globalConfig.webSocketLoaders.networkLoader = true;
                     var hasNetworks = appService.crudService.softDelete("guestnetwork", network);
                     hasNetworks.then(function(result) {
                         $scope.showLoader = false;
@@ -637,8 +637,6 @@ $scope.dropnetworkLists = {
                         appService.globalConfig.webSocketLoaders.networkLoader = false;
                     });
 
-                       $window.location.href = '#/vpc/view/'+$stateParams.id+'/config-vpc';
-            		$state.reload();
                 },
                 $scope.cancel = function() {
                     $modalInstance.close();
@@ -864,13 +862,11 @@ $scope.lBForVpc = function(networkId){
                 	vpcCreateNetwork.displayText = $scope.vpcCreateNetwork.name;
                     vpcCreateNetwork.networkOfferingId = $scope.vpcCreateNetwork.networkOffering.id;
                     $scope.showLoader = true;
+                    $modalInstance.close();
                     appService.globalConfig.webSocketLoaders.networkLoader = true;
                     var hasguestNetworks = appService.crudService.add("guestnetwork", vpcCreateNetwork);
                     hasguestNetworks.then(function(result) {
                         $scope.showLoader = false;
-                        $scope.listVpcNetwork($scope.vpc.id);
-                        $modalInstance.close();
-                        appService.notify({message: 'VPC Network Added Successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                     }).catch(function(result) {
                         if (!angular.isUndefined(result) && result.data != null) {
                             if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
@@ -2052,7 +2048,6 @@ $scope.vmPortId = instance;
     $scope.$on(appService.globalConfig.webSocketEvents.vpcEvents.createVPC, function(event, args) {
         appService.globalConfig.webSocketLoaders.vpcLoader = false;
         $scope.list(1);
-        appService.notify({message: 'VPC Created Successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
     });
     $scope.$on(appService.globalConfig.webSocketEvents.vpcEvents.editVPC, function(event, args) {
         appService.globalConfig.webSocketLoaders.vpcLoader = false;
@@ -2152,7 +2147,16 @@ $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.portforwardSave
            appService.localStorageService.set('view', 'vpn-details');
         }
     });
+$scope.$on(appService.globalConfig.webSocketEvents.networkEvents.deletenetwork, function(event, args) {
+    appService.globalConfig.webSocketLoaders.networkLoader = false;
+	$scope.listVpcNetwork($stateParams.id);
+      $window.location.href = '#/vpc/view/'+$stateParams.id+'/config-vpc';
 
+ });
+$scope.$on(appService.globalConfig.webSocketEvents.networkEvents.createnetwork, function(event, args) {
+    appService.globalConfig.webSocketLoaders.networkLoader = false;
+$scope.listVpcNetwork($stateParams.id);
+});
 
 
     $scope.trafficTypeList = {
