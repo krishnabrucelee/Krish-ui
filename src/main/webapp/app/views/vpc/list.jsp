@@ -104,6 +104,10 @@
 
     <div class="content" ui-view>
 	    <div ng-controller="vpcCtrl">
+	     <div data-ng-if="global.webSocketLoaders.vpcLoader" class="overlay-wrapper">
+                		            <img data-ng-if="global.webSocketLoaders.vpcLoader" src="images/loading-bars.svg" class="inner-loading" />
+            		            </div>
+
 			<div class="hpanel">
 				<div class="panel-heading">
             <div class="row">

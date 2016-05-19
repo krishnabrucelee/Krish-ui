@@ -3,6 +3,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+  <div data-ng-if="global.webSocketLoaders.networkLoader" class="overlay-wrapper">
+                		            <img data-ng-if="global.webSocketLoaders.networkLoader" src="images/loading-bars.svg" class="inner-loading" />
+            		            </div>
 <form name="addnetworkForm" data-ng-submit="updateNetwork(addnetworkForm)" data-ng-controller="vpcCtrl"
 	method="post" novalidate="">
 	<div class="row" ui-view>
