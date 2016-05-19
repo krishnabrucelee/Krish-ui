@@ -3,7 +3,7 @@
  */
 angular.module('homer').factory('globalConfig', globalConfig);
 
-function globalConfig($window) {
+function globalConfig($window)  {
     var appGlobalConfig = {};
     /**
      * Global configuration goes here
@@ -298,8 +298,8 @@ function globalConfig($window) {
         SOCKET_URL : "http://" + window.location.hostname + ":8080/",
         PING_APP_URL : "http://" + window.location.hostname + ":8086/api/",
         MONITOR_URL : "http://211.156.49.15:4242/api/",
-//        BASE_UI_URL : "http://" + window.location.hostname + ":9090/pandauser/",
-	BASE_UI_URL : "http://" + window.location.hostname + ":8082/pandaui/",
+//      BASE_UI_URL : "http://" + window.location.hostname + ":9090/pandauser/",
+	    BASE_UI_URL : "http://" + window.location.hostname + ":8082/pandaui/",
 
         CONTENT_LIMIT : 10,
         VIEW_URL : 'app/views/',
