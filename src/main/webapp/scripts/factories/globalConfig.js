@@ -299,6 +299,7 @@ function globalConfig($window) {
         PING_APP_URL : "http://" + window.location.hostname + ":8086/api/",
         MONITOR_URL : "http://211.156.49.15:4242/api/",
         BASE_UI_URL : "http://" + window.location.hostname + ":9090/pandauser/",
+
         CONTENT_LIMIT : 10,
         VIEW_URL : 'app/views/',
         NOTIFICATION_TEMPLATE : 'app/views/notification/notify.jsp',
