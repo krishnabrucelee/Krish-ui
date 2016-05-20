@@ -370,10 +370,20 @@ function resourceAllocationCtrl($scope, crudService, globalConfig, notify, $stat
         var hasSumOfDepartmentMin = promiseAjax.httpTokenRequest(globalConfig.HTTP_GET, globalConfig.APP_URL + "resourceDepartments/departmentmin/" + $stateParams.id);
         hasSumOfDepartmentMin.then(function(result) { // this is only run after $http completes
             $scope.hasSumOfDepartmentMin = result;
+            angular.forEach(result, function(object, key) {
+		if (key == "Memory") {
+                     $scope.hasSumOfDepartmentMin.Memory = object/1024;
+		}
+            });
         });
         var hasSumOfDepartmentMax = promiseAjax.httpTokenRequest(globalConfig.HTTP_GET, globalConfig.APP_URL + "resourceDepartments/departmentmax/" + $stateParams.id);
         hasSumOfDepartmentMax.then(function(result) { // this is only run after $http completes
             $scope.hasSumOfDepartmentMax = result;
+            angular.forEach(result, function(object, key) {
+		if (key == "Memory" && object != -1) {
+                     $scope.hasSumOfDepartmentMax.Memory = object/1024;
+		}
+            });
         });
         hasResource.then(function(result) {
 
@@ -424,10 +434,20 @@ function resourceAllocationCtrl($scope, crudService, globalConfig, notify, $stat
         var hasSumOfProjectMin = promiseAjax.httpTokenRequest(globalConfig.HTTP_GET, globalConfig.APP_URL + "resourceProjects/projectmin/" + $stateParams.id);
         hasSumOfProjectMin.then(function(result) { // this is only run after $http completes
             $scope.hasSumOfProjectMin = result;
+            angular.forEach(result, function(object, key) {
+		if (key == "Memory") {
+                     $scope.hasSumOfProjectMin.Memory = object/1024;
+		}
+            });
         });
         var hasSumOfProjectMax = promiseAjax.httpTokenRequest(globalConfig.HTTP_GET, globalConfig.APP_URL + "resourceProjects/projectmax/" + $stateParams.id);
         hasSumOfProjectMax.then(function(result) { // this is only run after $http completes
             $scope.hasSumOfProjectMax = result;
+            angular.forEach(result, function(object, key) {
+		if (key == "Memory" && object != -1) {
+                     $scope.hasSumOfProjectMax.Memory = object/1024;
+		}
+            });
         });
         hasResource.then(function(result) {
             var i = 0;
