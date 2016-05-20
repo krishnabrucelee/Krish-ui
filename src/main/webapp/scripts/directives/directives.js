@@ -829,7 +829,7 @@ function validCharacters() {
                 if (angular.isUndefined(val)) {
                     var val = 0;
                 }
-                var clean = val.replace(/[^0-9.*!@$A-Za-z]/g, '');
+                var clean = val.replace(/[^0-9.*!@$A-Za-z_-]/g, '');
 
 
                 if (clean < parseInt(attrs.ngMin)) {
