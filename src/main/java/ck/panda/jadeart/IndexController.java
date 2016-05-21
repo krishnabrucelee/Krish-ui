@@ -11,6 +11,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * Servlet implementation class IndexController
@@ -31,7 +32,6 @@ public class IndexController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String language;
-
 
 		Cookie[] cookies = request.getCookies();
 
@@ -61,6 +61,12 @@ public class IndexController extends HttpServlet {
         messages = ResourceBundle.getBundle("i18n/messages", currentLocale);
         request.setAttribute("messages", messages);
         request.setAttribute("lang", languageString);
+
+        // server could be temporarily unavailable fix.
+        response.setLocale(currentLocale);
+        request.getSession().setAttribute("javax.servlet.jsp.jstl.fmt.locale.session", languageString);
+        request.getSession().setAttribute("language", languageString);
+
         RequestDispatcher rd = request
                 .getRequestDispatcher("app/index.jsp");
         rd.forward(request, response);
