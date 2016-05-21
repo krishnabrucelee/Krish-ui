@@ -22,6 +22,7 @@ function vpcCtrl($scope, $modal, appService, $timeout, filterFilter, $stateParam
     $scope.sort = appService.globalConfig.sort;
     $scope.changeSorting = appService.utilService.changeSorting;
     appService.globalConfig.webSocketLoaders.vpcLoader = false;
+    appService.globalConfig.webSocketLoaders.networkLoader = false;
     appService.globalConfig.webSocketLoaders.vpnLoader = false;
     appService.globalConfig.webSocketLoaders.ipLoader = false;
     appService.globalConfig.webSocketLoaders.egressLoader = false;
@@ -47,14 +48,15 @@ function vpcCtrl($scope, $modal, appService, $timeout, filterFilter, $stateParam
     $scope.portForward = {};
     $scope.portform = {};
     $scope.networkVMList = [];
-    $scope.natList = []; 
+    $scope.natList = [];
     $scope.networkVMLists = [];
     $scope.lbrulesList = [];
     $scope.lbrulesLists = [];
     $scope.lbrulesIps = {};
     $scope.natIps = {};
-$scope.vpcsid = $stateParams.id;
-$scope.aclID = {};
+    $scope.natList = [];
+    $scope.vpcsid = $stateParams.id;
+    $scope.aclID = {};
 
     $scope.type = $stateParams.view;
     // VPC Offer List
@@ -101,19 +103,20 @@ $scope.aclID = {};
         if (!angular.isUndefined($stateParams.id)) {
             var hasBreadcrumb = appService.crudService.read("vpc", $stateParams.id);
             hasBreadcrumb.then(function(result) { // this is only run after $http completes0.
+            	$scope.vpc = result;
                 if ($state.current.data.pageTitle === "config VPC") {
                    $state.$current.parent.data.pageName = result.name;
-                   $state.$current.parent.data.id = result.id;               
+                   $state.$current.parent.data.id = result.id;
                 } else {
                     if ($state.current.data.pageTitle === "View IP" || $state.current.data.pageTitle === "View Network") {
                        $state.$current.parent.parent.parent.data.pageName = result.name;
                        $state.$current.parent.parent.parent.data.id = result.id;
-		   }
+		         }
                    else if ($state.current.data.pageTitle === "Network ACL" || $state.current.data.pageTitle === "Public IP" || $state.current.data.pageTitle === "view.network") {
                        $state.$current.parent.parent.data.pageName = result.name;
                        $state.$current.parent.parent.data.id = result.id;
                     }
-                } 
+                }
         });
         }
     };
@@ -436,12 +439,11 @@ $scope.dropnetworkLists = {
                         vpc.zoneId = $scope.vpc.zone.id;
                         vpc.vpcofferingid = $scope.vpc.vpcoffering.id;
                         $scope.showLoader = true;
+                            $modalInstance.close();
                         appService.globalConfig.webSocketLoaders.vpcLoader = true;
                         var hasVpcs = appService.crudService.add("vpc", vpc);
                         hasVpcs.then(function(result) {
                             $scope.showLoader = false;
-                            $scope.list(1);
-                            $modalInstance.close();
                         }).catch(function(result) {
                             if (!angular.isUndefined(result) && result.data != null) {
                                 if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
@@ -618,8 +620,8 @@ $scope.dropnetworkLists = {
             $scope.deleteId = network.id;
             $scope.ok = function(networkId) {
                     $scope.showLoader = true;
-                    appService.globalConfig.webSocketLoaders.networkLoader = true;
                     $modalInstance.close();
+                    appService.globalConfig.webSocketLoaders.networkLoader = true;
                     var hasNetworks = appService.crudService.softDelete("guestnetwork", network);
                     hasNetworks.then(function(result) {
                         $scope.showLoader = false;
@@ -635,8 +637,6 @@ $scope.dropnetworkLists = {
                         appService.globalConfig.webSocketLoaders.networkLoader = false;
                     });
 
-                       $window.location.href = '#/vpc/view/'+$stateParams.id+'/config-vpc';
-            		$state.reload();
                 },
                 $scope.cancel = function() {
                     $modalInstance.close();
@@ -693,7 +693,7 @@ $state.reload();
             var hasServer = appService.crudService.read("guestnetwork", $stateParams.idNetwork);
         hasServer.then(function(result) {
             $scope.showLoader = false;
-            $scope.network = result;            
+            $scope.network = result;
             $state.current.data.pageName = result.name;
             $state.current.data.id = result.id;
 
@@ -841,6 +841,7 @@ $scope.lBForVpc = function(networkId){
 
 
     $scope.createNetwork = function(size) {
+    	$scope.vpcCreateNetwork = {};
         appService.dialogService.openDialog($scope.global.VIEW_URL + "vpc/create.jsp", size, $scope, [ '$scope',
                 '$modalInstance', '$rootScope', function($scope, $modalInstance, $rootScope) {
         	$scope.saveNetwork = function(form, vpcCreateNetwork) {
@@ -852,7 +853,7 @@ $scope.lBForVpc = function(networkId){
                 	vpcCreateNetwork.projectId = $scope.vpc.projectId;
                 	vpcCreateNetwork.zone = $scope.vpc.zone;
                 	vpcCreateNetwork.zoneId = $scope.vpc.zoneId;
-if (!angular.isUndefined($scope.vpcCreateNetwork.acl)) {
+                	if (!angular.isUndefined($scope.vpcCreateNetwork.acl) && $scope.vpcCreateNetwork.acl != null)  {
 
                	    vpcCreateNetwork.aclId = $scope.vpcCreateNetwork.acl.id;
 
@@ -861,13 +862,11 @@ if (!angular.isUndefined($scope.vpcCreateNetwork.acl)) {
                 	vpcCreateNetwork.displayText = $scope.vpcCreateNetwork.name;
                     vpcCreateNetwork.networkOfferingId = $scope.vpcCreateNetwork.networkOffering.id;
                     $scope.showLoader = true;
+                    $modalInstance.close();
                     appService.globalConfig.webSocketLoaders.networkLoader = true;
                     var hasguestNetworks = appService.crudService.add("guestnetwork", vpcCreateNetwork);
                     hasguestNetworks.then(function(result) {
                         $scope.showLoader = false;
-                        $scope.listVpcNetwork($scope.vpc.id);
-                        $modalInstance.close();
-                        appService.notify({message: 'VPC Network Added Successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                     }).catch(function(result) {
                         if (!angular.isUndefined(result) && result.data != null) {
                             if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
@@ -2049,7 +2048,6 @@ $scope.vmPortId = instance;
     $scope.$on(appService.globalConfig.webSocketEvents.vpcEvents.createVPC, function(event, args) {
         appService.globalConfig.webSocketLoaders.vpcLoader = false;
         $scope.list(1);
-        appService.notify({message: 'VPC Created Successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});          
     });
     $scope.$on(appService.globalConfig.webSocketEvents.vpcEvents.editVPC, function(event, args) {
         appService.globalConfig.webSocketLoaders.vpcLoader = false;
@@ -2149,7 +2147,16 @@ $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.portforwardSave
            appService.localStorageService.set('view', 'vpn-details');
         }
     });
+$scope.$on(appService.globalConfig.webSocketEvents.networkEvents.deletenetwork, function(event, args) {
+    appService.globalConfig.webSocketLoaders.networkLoader = false;
+	$scope.listVpcNetwork($stateParams.id);
+      $window.location.href = '#/vpc/view/'+$stateParams.id+'/config-vpc';
 
+ });
+$scope.$on(appService.globalConfig.webSocketEvents.networkEvents.createnetwork, function(event, args) {
+    appService.globalConfig.webSocketLoaders.networkLoader = false;
+$scope.listVpcNetwork($stateParams.id);
+});
 
 
     $scope.trafficTypeList = {

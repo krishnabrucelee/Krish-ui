@@ -437,7 +437,7 @@ table.dataTable thead .sorting_desc::after {content: "\f0dd";}
 .acl-table .table{max-width:none; width:1600px;}
 .acl-table .table th, .acl-table .table td{min-width:135px;}
 
-
+.no-records h5{color:#b7bdc7;}
 
 @media (min-width: 600px) and (max-width: 767px) {
 .dashboard-filters-area{ clear:both;}

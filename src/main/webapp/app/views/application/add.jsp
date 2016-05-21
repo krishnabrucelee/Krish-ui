@@ -57,7 +57,7 @@
 							<label class="col-md-3 col-xs-12 col-sm-3 control-label"><fmt:message key="common.description" bundle="${msg}" /> <span class="text-danger">*</span>
 							</label>
 							<div class="col-md-6 col-xs-12 col-sm-6">
-								<textarea rows="4" required="true" type="text" name="description" id = "add_application_description" data-ng-model="application.description" class="form-control" data-ng-class="{'error': applicationForm.description.$invalid && formSubmitted}"></textarea>
+								<textarea rows="4" required="true" type="text" valid-characters name="description" id = "add_application_description" data-ng-model="application.description" class="form-control" data-ng-class="{'error': applicationForm.description.$invalid && formSubmitted}"></textarea>
 								<i tooltip="<fmt:message key="description.of.the.application" bundle="${msg}" />" class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
 								<div class="error-area" data-ng-show="applicationForm.description.$invalid && formSubmitted">
 									<i tooltip="<fmt:message key="application.description.is.required" bundle="${msg}" />" class="fa fa-warning error-icon"></i>
