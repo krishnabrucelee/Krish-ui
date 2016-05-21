@@ -190,7 +190,7 @@
 								            <td><label data-ng-if="vpc.status == 'ENABLED'" class="label label-success text-center text-white">ACTIVE</label><label data-ng-if="vpc.status != 'ENABLED'" class="label label-danger text-center text-white">INACTIVE</label></td>
 								            <td>
 								                <input type="hidden" id="vpc_unique_{{vpc.id}}"  data-unique-field="{{ vpc.domain.name }}-{{ vpc.department.userName}}-{{ vpc.name}}" class="test_vpc_unique">
-								                <a class="icon-button test_vpc_configure_button" id="vpc_configure_button_{{vpc.id}}" title="<fmt:message key="configure" bundle="${msg}" />"href="#/vpc/view/{{vpc.id}}/config-vpc">
+								                <a class="icon-button test_vpc_configure_button" id="vpc_configure_button_{{vpc.id}}" title="<fmt:message key="configure" bundle="${msg}" />" href="#/vpc/view/{{vpc.id}}/config-vpc">
 								                    <span class="fa fa-cog m-r"> </span>
 								                </a>
 								                 <a has-permission="RESTART_VPC" class="icon-button test_vpc_restart_button" id="vpc_restart_button_{{vpc.id}}" data-ng-click="restart('md', vpc)" title="<fmt:message key="restart.vpc" bundle="${msg}" />">
