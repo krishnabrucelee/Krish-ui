@@ -240,6 +240,7 @@
     <script src="scripts/factories/webSocket.js"></script>
     <script src="scripts/factories/webSocketService.js"></script>
     <script src="scripts/factories/rememberMeService.js"></script>
+    <script src="scripts/controllers/headerController.js"></script>
     <script>
     <!-- endbuild -->
         $('html').addClass("page-scroll");
