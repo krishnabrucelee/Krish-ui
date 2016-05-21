@@ -26,7 +26,7 @@
     <!-- endbuild -->
 
 </head>
-<body class="blank" data-ng-controller="loginCtrl">
+<body class="blank" data-ng-controller="loginCtrl" style="background:url({{backgroundImage}}); background-repeat: no-repeat; background-size: 100% 100%;">
 
 
 <div class="login-container">
