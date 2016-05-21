@@ -3,8 +3,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
+<c:set var="language" value="${not empty language ? language : pageContext.request.locale}" scope="session" />
+<fmt:setLocale value="${language}" />
+<fmt:setBundle basename="i18n/messages_${language}" var="msg" scope="session" />
 <!DOCTYPE html>
-<html>
+<html lang="${language}">
 <head>
 <!-- Redirect to login when passing the wrong URL -->
 <script>
@@ -99,8 +102,6 @@
 <![endif]-->
 
     <!-- Page view wrapper -->
-    <fmt:setBundle basename="i18n/messages_${lang}" var="msg" />
-    <c:set var="msg" scope="session" value="${msg}" />
 
     <div ui-view autoscroll="true"></div>
 
