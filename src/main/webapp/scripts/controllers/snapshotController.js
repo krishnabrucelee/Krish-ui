@@ -63,6 +63,7 @@ function snapshotListCtrl($scope, crudService, $state, $timeout, promiseAjax, gl
     $scope.global = crudService.globalConfig;
     $scope.global = appService.globalConfig;
 	appService.globalConfig.webSocketLoaders.snapshotLoader = false;
+        appService.globalConfig.webSocketLoaders.volumeBackupLoader = false;
     $scope.snapshotList = {};
     $scope.vmSnapshotList = {};
     $scope.instanceList = {};
@@ -464,8 +465,9 @@ appService.globalConfig.webSocketLoaders.volumeBackupLoader = false;
         appService.dialogService.openDialog("app/views/cloud/snapshot/create-volume.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope',
             function($scope, $modalInstance, $rootScope) {
                 $scope.deleteObject = snapshot;
+			console.log(snapshot);
                 $scope.save = function(form, deleteObject) {
-                        if (!angular.isUndefined($scope.deleteObject.domain)) {
+                        if (!angular.isUndefined($scope.deleteObject.domain) && ($scope.deleteObject.domain)!= null ) {
                             deleteObject.domainId = $scope.deleteObject.domain.id;
                             delete deleteObject.domain;
                         }
@@ -544,10 +546,12 @@ console.log($scope.revertSnapshot.domain);
                                 $scope.list(1);
                             }).catch(function(result) {
                                 $scope.showLoader = false;
+                            appService.globalConfig.webSocketLoaders.volumeBackupLoader = false;
                                 if (!angular.isUndefined(result.data)) {
                                     if (result.data.globalError[0] != '' && !angular.isUndefined(result.data.globalError[0])) {
                                         var msg = result.data.globalError[0];
                                         $scope.showLoader = false;
+                               appService.globalConfig.webSocketLoaders.volumeBackupLoader = false;
                                         appService.notify({
                                             message: msg,
                                             classes: 'alert-danger',
@@ -556,8 +560,8 @@ console.log($scope.revertSnapshot.domain);
                                     }
                                 }
 
-                               appService.globalConfig.webSocketLoaders.volumeBackupLoader = false;
                             });
+                               appService.globalConfig.webSocketLoaders.volumeBackupLoader = false;
                         }
                     },
                     $scope.cancel = function() {
