@@ -151,7 +151,7 @@ pageEncoding="UTF-8"%>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr  data-ng-repeat="snapshot in snapshotList">
+                                            <tr  data-ng-repeat="snapshot in recurringSnapshotList">
                                                 <td>
                                                      <div data-ng-if = "snapshot.intervalType == 'HOURLY'" >{{snapshot.scheduleTime}}</div>
                                                       <div data-ng-if = "snapshot.intervalType == 'DAILY'" >{{snapshot.scheduleTime}}</div>
