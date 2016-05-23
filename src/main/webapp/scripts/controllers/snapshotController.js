@@ -401,6 +401,17 @@ appService.globalConfig.webSocketLoaders.volumeBackupLoader = false;
                 };
         }]);
     };
+
+
+ $scope.volumeSnapCostList = function () {
+        var hasipSnapCost= appService.crudService.listAll("miscellaneous/listvolumesnapshot");
+        hasipSnapCost.then(function (result) {  // this is only run after $http completes0
+            $scope.miscellaneousVolumeSnapshotList = result;
+        });
+
+    };
+$scope.volumeSnapCostList();
+
     $scope.openAddSnapshotContainer = function() {
         dialogService.openDialog("app/views/cloud/snapshot/create.jsp", "md", $scope, ['$scope', '$modalInstance', function($scope, $modalInstance) {
             $scope.createSnapshot = false;

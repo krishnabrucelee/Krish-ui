@@ -52,13 +52,12 @@
 			</div>
 
 			<div class="modal-footer">
-				<div>
-					<!-- <span class="pull-right">
-						<h4 class="text-danger price-text m-l-lg">
-							<app-currency></app-currency>
-							0.10 <span>/ hour</span> <span>/GB</span>
-						</h4>
-					</span> -->
+					<div class="col-md-12 col-sm-12">
+                             <span class="pull-left">
+                        <h4 class="text-danger price-text m-l-lg">
+                            <app-currency></app-currency>{{miscellaneousVolumeSnapshotList[0].costperGB }} <span>/GB/day</span>
+                        </h4>
+                    </span>
 				</div>
 			</div>
 		</div>
