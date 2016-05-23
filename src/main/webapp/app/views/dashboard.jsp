@@ -154,12 +154,12 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-4 col-sm-5">
+            <div class="col-md-5 col-sm-5">
                 <div class="panel panel-white no-border-radious dashboard-tab">
                     <div class="panel-body">
-                    <ul>
-                        <li><a href="javascript:void(0)" data-ng-init="toggleCostList('department');" data-ng-class="{'active' : dashboard.costList.department}" data-ng-click="toggleCostList('department')" >Department</a></li>
-                        <li><a href="javascript:void(0)" data-ng-class="{'active' : dashboard.costList.project}" data-ng-click="toggleCostList('project')">Project</a></li>
+                    <ul class="row">
+                        <li class="col-md-6 no-padding text-center"><a href="javascript:void(0)" data-ng-init="toggleCostList('department');" data-ng-class="{'active' : dashboard.costList.department}" data-ng-click="toggleCostList('department')" >Department</a></li>
+                        <li class="col-md-6 no-padding text-center"><a href="javascript:void(0)" data-ng-class="{'active' : dashboard.costList.project}" data-ng-click="toggleCostList('project')">Project</a></li>
                         <!-- <li><a href="javascript:void(0)" data-ng-class="{'active' : dashboard.costList.application}" data-ng-click="toggleCostList('application')">Application</a></li> -->
                     </ul>
                     <div class="dashboard-department-cost" data-ng-show="dashboard.costList.department">
@@ -270,7 +270,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-8 col-sm-7">
+            <div class="col-md-7 col-sm-7">
                 <div class="panel panel-white no-border-radious">
                     <div class="panel-body p-sm">
                         <h5 class="no-margins text-primary">
@@ -297,69 +297,82 @@
             <div class="col-md-12">
                 <div class="panel panel-white no-border-radious dashboard-accordian">
                     <div class="panel-body">
-                        <div class="col-md-3 col-sm-3 no-padding">
-                        	<div class="bg-info p-xs font-bold text-primary m-b-xxs service-title">Categories</div>
-                            <div class="user-service-first-level slimScroll-220">
-                                <ul>
-                                    <li><a href="javascript:void(0)" data-ng-click="getDepartmentList('department');">Department <span class="fa  fa-chevron-right pull-right"></span></a></li>
-                                    <li><a href="javascript:void(0)" data-ng-click="getApplicationList();">Application <span class="fa  fa-chevron-right pull-right"></span></a></li>
-                                    <li><a href="javascript:void(0)" data-ng-click="getDepartmentList('user');">Users <span class="fa  fa-chevron-right pull-right"></span></a></li>
-                                </ul>
-                            </div>
+                    	<div class="row">
+	                    	<div class="col-md-5">
+								<div class="col-md-6 no-padding">
+									<div class="bg-info p-xs font-bold text-primary m-b-xxs service-title">Categories</div>
+		                            <div class="user-service-first-level slimScroll-220">
+		                                <ul>
+		                                    <li><a href="javascript:void(0)" data-ng-click="getDepartmentList('department');">Department <span class="fa  fa-chevron-right pull-right"></span></a></li>
+		                                    <li><a href="javascript:void(0)" data-ng-click="getApplicationList();">Application <span class="fa  fa-chevron-right pull-right"></span></a></li>
+		                                    <li><a href="javascript:void(0)" data-ng-click="getDepartmentList('user');">Users <span class="fa  fa-chevron-right pull-right"></span></a></li>
+		                                </ul>
+		                            </div>
+	                    		</div>
+	                    		<div class="col-md-6 no-padding">
+									<div class="select-any" data-ng-hide="listing.department || listing.application">
+                                   	<span class="fa fa-hand-o-left fa-3x"></span>
+		                                <br> Select any <br> Department, Application or User
+		                            </div>
+		                                                        	<div data-ng-show="listing.department" class="bg-info p-xs font-bold text-primary m-b-xxs service-title">Departments</div>
+
+		                            <div class="user-service-second-level slimScroll-220">
+		                                <div data-ng-show="listing.department">
+
+		                                    <ul>
+		                                        <li data-ng-repeat="department in listing.departmentList">
+		                                            <a href="javascript:void(0)" data-ng-class="{'selected' : listing.activeDepartment == department.id }" data-ng-click="findSubCategoryByDepartment(listing.groupType, department.id);">{{ department.userName }}<span class="fa  fa-chevron-right pull-right"></span></a>
+		                                        </li>
+		                                    </ul> <!-- data-ng-class="{'selected' : listing.activeDepartment == department.id }" -->
+		                                </div>
+		                                <div class="user-service-list"  data-ng-show="listing.application">
+		                                <div class="bg-info p-xs font-bold text-primary m-b-xxs service-title">Applications</div>
+		                                    <ul>
+		                                        <li  data-ng-repeat="application in listing.applicationList">
+		                                            <a  href="javascript:void(0)">{{ application.type }}</a>
+		                                          </li>
+
+		                                    </ul>
+		                                </div>
+		                            </div>
+	                    		</div>
+	                    	</div>
+	                    	<div class="col-md-7" data-ng-hide="listing.application">
+								<div  data-ng-if="listing.userList.length > 0 && listing.groupType == 'department' && type == 'Projects'" class="bg-info p-xs font-bold text-primary m-b-xxs service-details-title">{{type}}</div>
+                        		<div  data-ng-if="listing.userList.length > 0 && listing.groupType == 'user' && type == 'Users'" class="bg-info p-xs font-bold text-primary m-b-xxs service-details-title">{{type}}</div>
+	                            <div class="user-service-detail slimScroll-220">
+	                                <div class="text-center" data-ng-show="listing.userList.length == 0">
+	                                    <br> No records found
+	                                </div>
+	                                <div class="user-service-single-detail" data-ng-show="listing.userList.length > 0">
+
+	                                    <div class="table-responsive">
+	                                        <table cellspacing="1" cellpadding="1" class="table table-condensed table-striped">
+	                                            <tbody>
+	                                            <tr data-ng-if="listing.groupType == 'department'" data-ng-repeat="project in listing.userList">
+	                                                <td>{{ project.name }}</td>
+	                                            </tr>
+	                                            <tr data-ng-if="listing.groupType == 'user'" data-ng-repeat="user in listing.userList">
+	                                                <td>{{ user.userName }}</td>
+	                                            </tr>
+	                                            </tbody>
+	                                        </table>
+	                                    </div>
+	                                </div>
+
+
+	                            </div>
+	                    	</div>
+                    	</div>
+                        <!-- <div class="col-md-3 col-sm-3 no-padding">
+
                         </div>
                         <div class="col-md-3 col-sm-3 no-padding">
-                            <div class="select-any" data-ng-hide="listing.department || listing.application">
-                                   <span class="fa fa-hand-o-left fa-3x"></span>
-                                <br> Select any <br> Department, Application or User
-                            </div>
-                                                        	<div data-ng-show="listing.department" class="bg-info p-xs font-bold text-primary m-b-xxs service-title">Departments</div>
 
-                            <div class="user-service-second-level slimScroll-220">
-                                <div data-ng-show="listing.department">
-
-                                    <ul>
-                                        <li data-ng-repeat="department in listing.departmentList">
-                                            <a href="javascript:void(0)" data-ng-class="{'selected' : listing.activeDepartment == department.id }" data-ng-click="findSubCategoryByDepartment(listing.groupType, department.id);">{{ department.userName }}<span class="fa  fa-chevron-right pull-right"></span></a>
-                                        </li>
-                                    </ul> <!-- data-ng-class="{'selected' : listing.activeDepartment == department.id }" -->
-                                </div>
-                                <div class="user-service-list"  data-ng-show="listing.application">
-                                <div class="bg-info p-xs font-bold text-primary m-b-xxs service-title">Applications</div>
-                                    <ul>
-                                        <li  data-ng-repeat="application in listing.applicationList">
-                                            <a  href="javascript:void(0)">{{ application.type }}</a>
-                                          </li>
-
-                                    </ul>
-                                </div>
-                            </div>
                         </div>
                         <div class="col-md-6 col-sm-6" data-ng-hide="listing.application">
-                        	<div  data-ng-if="listing.userList.length > 0 && listing.groupType == 'department' && type == 'Projects'" class="bg-info p-xs font-bold text-primary m-b-xxs service-details-title">{{type}}</div>
-                        		<div  data-ng-if="listing.userList.length > 0 && listing.groupType == 'user' && type == 'Users'" class="bg-info p-xs font-bold text-primary m-b-xxs service-details-title">{{type}}</div>
-                            <div class="user-service-detail slimScroll-220">
-                                <div class="text-center" data-ng-show="listing.userList.length == 0">
-                                    <br> No records found
-                                </div>
-                                <div class="user-service-single-detail" data-ng-show="listing.userList.length > 0">
 
-                                    <div class="table-responsive">
-                                        <table cellspacing="1" cellpadding="1" class="table table-condensed table-striped">
-                                            <tbody>
-                                            <tr data-ng-if="listing.groupType == 'department'" data-ng-repeat="project in listing.userList">
-                                                <td>{{ project.name }}</td>
-                                            </tr>
-                                            <tr data-ng-if="listing.groupType == 'user'" data-ng-repeat="user in listing.userList">
-                                                <td>{{ user.userName }}</td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-
-
-                            </div>
-                        </div>
+                        </div> -->
                     </div>
                    </div>
             </div>
