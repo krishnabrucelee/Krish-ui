@@ -40,10 +40,7 @@
 <div class="login-container">
     <div class="row">
         <div class="col-md-12">
-            <div class="text-center m-b-md">
-                <h4 class="font-bold text-primary">Please Login To Panda User Console</h4>
-                <small>Cloud Management Portal</small>
-            </div>
+		<div data-ng-bind-html="welcomeContent | to_trusted "></div>
             <div class="hpanel hbgblue">
                 <div class="panel-body" >
                     <form name="test" method="post" id="loginForm" data-ng-submit="loginForm()">
@@ -72,18 +69,17 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-12 text-center">
-        Panda Cloud Management Portal<br/> Copyright © 2015 BlueTek Co.Ltd, All rights reserved.
-        </div>
-    </div>
 </div>
 
+        <div class="row">
+        <div data-ng-bind-html="footerContent | to_trusted"></div>
+    </div>
 
 </body>
 
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
 <script src="bower_components/angular/angular.min.js"></script>
+<script src="bower_components/sanitize/angular-sanitize.min.js"></script>
 <script src="scripts/controllers/loginController.js"></script>
 <script src="scripts/factories/rememberMeService.js"></script>
 <script src="scripts/factories/globalConfig.js"></script>
