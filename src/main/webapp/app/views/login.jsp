@@ -1,6 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<c:set var="language" value="${not empty language ? language : pageContext.request.getAttribute('language')}" scope="session" />
+<fmt:setBundle basename="i18n/messages_${language}" var="msg" scope="session" />
 
 <!DOCTYPE html>
 <html data-ng-app="homer">
@@ -26,7 +30,7 @@
     <!-- endbuild -->
 
 </head>
-<body class="blank" data-ng-controller="loginCtrl">
+<body class="blank" data-ng-controller="loginCtrl" style="background:url({{backgroundImage}}); background-repeat: no-repeat; background-size: 100% 100%;">
 
 
 <div class="login-container">

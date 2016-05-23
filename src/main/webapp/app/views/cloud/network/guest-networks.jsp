@@ -3,6 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<c:set var="language" value="${not empty language ? language : pageContext.request.getAttribute('language')}" scope="session" />
+<fmt:setBundle basename="i18n/messages_${language}" var="msg" scope="session" />
 
 <div ui-view ng-controller="networksCtrl">
 
@@ -15,7 +17,7 @@
 		<table cellspacing="1" cellpadding="1"
 			class="table dataTable table-bordered table-striped">
 			<thead>
-			
+
 				<tr>
 					<th  data-ng-click="changeSorting('name')" data-ng-class="sort.descending && sort.column =='name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.name" bundle="${msg}" /></th>
 					<th  data-ng-click="changeSorting('Account')" data-ng-class="sort.descending && sort.column =='Account'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.account" bundle="${msg}" /></th>
@@ -49,7 +51,7 @@
 				</tr>
 			</tbody>
 		</table>
-		
+
 	</div>
 	</div>
 </div>

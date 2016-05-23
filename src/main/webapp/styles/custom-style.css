@@ -439,6 +439,13 @@ table.dataTable thead .sorting_desc::after {content: "\f0dd";}
 
 .no-records h5{color:#b7bdc7;}
 
+@media (max-width: 767px) {
+    .table-responsive.responsive-x .dropdown-menu { position: relative !important; right: 200px !important; top: -34px;}
+}
+@media (min-width: 1024px) {
+    .table-responsive.responsive-x {overflow: visible;}
+}
+
 @media (min-width: 600px) and (max-width: 767px) {
 .dashboard-filters-area{ clear:both;}
 .dashboard-btn-area{float:right !important; clear:both;}
@@ -528,4 +535,15 @@ table.flotchart-legend-content-table tr{display:block; float:left; padding:0px 5
 .affinity-text-info {
 	color: #48a9da !important;
 }
+#footer {
+    clear: both;
+    height: auto;
+    margin-top: 50px;
+    overflow: hidden;
+}
 
+ul.footer-custom-links{margin:0px; padding:0px;}
+ul.footer-custom-links li{display:inline-block; list-style:none; padding:0px 5px; border-right:#ccc 1px solid; line-height:10px;}
+ul.footer-custom-links li:last-child{border-right:none;}
+ul.footer-custom-links li a{color:#6a6c6f; text-decoration:none;}
+ul.footer-custom-links li a:hover{color:#000; text-decoration:none;}

@@ -3,10 +3,25 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<c:set var="language" value="${not empty language ? language : pageContext.request.getAttribute('language')}" scope="session" />
+<fmt:setBundle basename="i18n/messages_${language}" var="msg" scope="session" />
 
- <footer class="footer">
-         <span class="pull-right">
-            <fmt:message key="panda.cloud.management.portal" bundle="${msg}" />
-        </span>
-<fmt:message key="common.copyright" bundle="${msg}" /> © <fmt:message key="common.footer" bundle="${msg}" />.
- </footer>
+<footer class="footer" data-ng-controller="headerCtrl">
+	<div class="col-md-4 col-sm-12 text-left">
+		<fmt:message key="common.copyright" bundle="${msg}" />
+		©
+		<fmt:message key="common.footer" bundle="${msg}" />
+		.
+	</div>
+	<div class="col-md-4 col-sm-12">
+		<ul class="footer-custom-links text-center">
+			<li data-ng-repeat="theme in themeSettingsList.footers" data-ng-if="theme.url != null">
+
+				<a class="label-menu-corner" target="_blank" href="http://{{theme.url}}">{{theme.name}}</a>
+			</li>
+		</ul>
+	</div>
+	<div class="col-md-4 col-sm-12 text-right">
+		<fmt:message key="panda.cloud.management.portal" bundle="${msg}" />
+	</div>
+</footer>

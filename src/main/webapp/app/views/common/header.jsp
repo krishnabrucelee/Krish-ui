@@ -3,13 +3,21 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<div id="logo" class="light-version">
-	<img src="images/profile.jpg" />
+<c:set var="language" value="${not empty language ? language : pageContext.request.getAttribute('language')}" scope="session" />
+<fmt:setBundle basename="i18n/messages_${language}" var="msg" scope="session" />
+
+<div id="logo" class="light-version" data-ng-controller="headerCtrl" >
+    <img src={{logoImage}} />
 </div>
-<nav role="navigation">
+<nav role="navigation" data-ng-controller="headerCtrl">
 	<minimaliza-menu></minimaliza-menu>
 	<div id="navbar" class="navbar-collapse collapse">
 		<ul class="nav navbar-nav navbar-right round-corner">
+
+		<li data-ng-repeat="theme in themeSettingsList.headers" >
+		<a class="label-menu-corner" data-ng-if="theme.url != null" target="_blank" href="http://{{theme.url}}" >{{theme.name}}
+		<span class="label label-warning"></span></a></li>
+
 			<li data-ng-class="{active: $state.includes('system-health')}"><a
 				class="label-menu-corner"><fmt:message
 						key="common.system.health" bundle="${msg}" /> </a></li>

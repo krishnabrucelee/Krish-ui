@@ -5,6 +5,10 @@
  */
 angular.module('homer', ['ngCookies', 'LocalStorageModule']).controller("loginCtrl", function ($scope, $http, globalConfig, $window, $remember, $cookies, localStorageService) {
 
+	  $scope.showImage = function() {
+	    	$scope.backgroundImage =  'http://'+ $window.location.hostname +':8080/'  + 'resources/' + 'theme_background.jpg';
+	}
+	$scope.showImage();
 	//For remember login functionality.
     if ((localStorageService.get('rememberMe') == "true" || localStorageService.get('rememberMe') == true)) {
 		return $http({method:'get', url: 'http://'+ $window.location.hostname +':8080/api/'  + 'users/usersessiondetails/'+localStorageService.get('id'),

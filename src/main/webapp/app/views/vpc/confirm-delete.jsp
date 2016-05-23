@@ -3,6 +3,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<c:set var="language" value="${not empty language ? language : pageContext.request.getAttribute('language')}" scope="session" />
+<fmt:setBundle basename="i18n/messages_${language}" var="msg" scope="session" />
+
 <div class="inmodal" data-ng-contoller="networksCtrl">
     <div class="modal-header">
         <panda-modal-header id="delete_vpc_page_title" hide-zone="false" page-icon="fa fa-trash" page-title="<fmt:message key="delete.confirmation" bundle="${msg}" />"></panda-modal-header>

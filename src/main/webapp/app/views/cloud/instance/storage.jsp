@@ -3,6 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<c:set var="language" value="${not empty language ? language : pageContext.request.getAttribute('language')}" scope="session" />
+<fmt:setBundle basename="i18n/messages_${language}" var="msg" scope="session" />
 
 <div data-ng-controller="storageCtrl">
 <div class="row" >
@@ -37,18 +39,18 @@
 	                </div>
 	                <div class="col-md-8 col-sm-8 pull-right storage-diagram">
 	                    <div class="hpanel">
-	
+
 	                        <div class=" vertical-container" animate-panel child="vertical-timeline-block" delay="3">
 	                            <div class="v-timeline  vertical-timeline-block" data-ng-class="{'timeline-primary' : $index == 0}"  data-ng-repeat="volume in volumeList" >
 	                                <div class="h-timeline">
 	                                    <div class="vertical-timeline-content">
-	
+
 	                                        <div class="timeline-title">
 	                                         {{ volume.name }} Created on {{ volume.createdDateTime*1000 | date:'yyyy-MM-dd HH:mm:ss'}}
 	                                       </div>
 	                                        <div class="row">
 	                                            <div class="col-md-12">
-	
+
 	                                                <div class="p-sm">
 	                                                        <div class="pull-left">
 	                                                            <i class="pe-7s-server pe-3x"></i> <h3 class="pull-right text-danger m-l-md"><span data-ng-if="volume.volumeType == 'ROOT'"> {{ volume.diskSize / global.Math.pow(2, 30)}}</span>
@@ -75,8 +77,8 @@
 	                                                                         --%><li has-permission="DELETE_VOLUME"><a href="javascript:void(0);" data-ng-hide="volume.vmInstanceId > 0" data-ng-click="delete('sm', volume)" title="Delete Volume"><span class="fa fa-trash m-xs"></span><fmt:message key="delete.volume" bundle="${msg}" /> </a></li>
 	                                                                    </ul>
 	                                                                </span>
-	
-	
+
+
 	                                                                <%--                                                             <span data-ng-if="volume.volumeType == 'ROOT'">
 	                                                                    <button class="btn btn-sm m-t-md dropdown-toggle" data-ng-class="$index == 0 ? 'btn-info' : 'btn-default'" data-toggle="dropdown"><i class="fa fa-cog"></i> <fmt:message key="configure" bundle="${msg}" /> </button>
 	                                                                    <ul class="dropdown-menu pull-right">
@@ -88,7 +90,7 @@
 	                                                        </div>
 	                                                        <div class="clearfix"></div>
 	                                                    <div class="m-t-sm" data-ng-init="getStoragePerformanceByFilters(volume.vmInstance.name, volume.storageOffering.diskSize)">
-	
+
 	                                                        <div class="progress full" style="height: 30px;">
 	                                                            <div
 	                                                            data-ng-class="rootUsage[$index] > 85 ? 'progress-bar-danger' : 'progress-bar-success'"
@@ -102,11 +104,11 @@
 	                                                </div>
 	                                            </div>
 	                                        </div>
-	
+
 	                                    </div>
 	                                </div>
 	                            </div>
-	
+
 	                        </div>
 	                    </div>
 	                </div>

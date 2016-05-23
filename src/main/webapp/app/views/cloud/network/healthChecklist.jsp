@@ -2,6 +2,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<c:set var="language" value="${not empty language ? language : pageContext.request.getAttribute('language')}" scope="session" />
+<fmt:setBundle basename="i18n/messages_${language}" var="msg" scope="session" />
 
 <div class="inmodal" >
     <div class="modal-header">
@@ -22,7 +24,7 @@
                             <tr> <td class="col-md-6"><label>Health Check Interval (in sec) :</label></td> <td class="col-md-6"><input  type="text" name="name" data-ng-model="load.name"  class="form-control" ></td></tr>
                             <tr> <td class="col-md-6"><label>Healthy Threshold :</label></td> <td class="col-md-6"><input  type="text" name="name" data-ng-model="load.name"  class="form-control" ></td></tr>
                             <tr> <td class="col-md-6"><label>Unhealthy Threshold :</label></td> <td class="col-md-6"><input  type="text" name="name" data-ng-model="load.name"  class="form-control" ></td></tr>
-                           
+
                         </table>
                     </div>
                 </div>

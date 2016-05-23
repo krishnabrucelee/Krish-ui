@@ -3,14 +3,17 @@ pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<c:set var="language" value="${not empty language ? language : pageContext.request.getAttribute('language')}" scope="session" />
+<fmt:setBundle basename="i18n/messages_${language}" var="msg" scope="session" />
+
   <div class="inmodal" ng-controller="networksCtrl"   >
         <div class="modal-header">
             <panda-modal-header page-icon="fa fa-cloud" page-title="Add VMs"></panda-modal-header>
-            
+
         </div>
         <div class="modal-body">
             <div class="row">
-                
+
 <div  ng-controller="networksCtrl">
         <div class="hpanel">
             <div class="panel-heading">
@@ -23,11 +26,11 @@ pageEncoding="UTF-8"%>
                             </div>
                         </div>
                     </div>
-                   
+
                 </div>
                <div class="clearfix"></div>
             </div>
-            
+
             <div class="white-content">
                 <div class="table-responsive">
                     <table cellspacing="1" cellpadding="1" class="table table-bordered table-striped">
@@ -51,7 +54,7 @@ pageEncoding="UTF-8"%>
                         </td>
                   		 <td>{{ instance.instanceInternalName}}</td>
                         <td>{{ instance.displayName }}</td>
-                        <td>{{ instance.zone.name }}  
+                        <td>{{ instance.zone.name }}
                          <input type="hidden" data-ng-model="instances.zoneName" value="{{ instance.zone.name }}"/></td>
                         <td>
                             <label class="label label-success" data-ng-if="instance.status == 'Running'">{{ instance.status }}</label>
@@ -75,8 +78,8 @@ pageEncoding="UTF-8"%>
     </div>
             </div></div>
   <div class="modal-footer">
-            
-         
+
+
             <a class="btn btn-default"  data-ng-click="cancel()">Cancel</a>
             <a class="btn btn-info" data-ng-click="addPort()">Apply</a>
 
