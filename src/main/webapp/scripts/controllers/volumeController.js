@@ -827,6 +827,18 @@ if(obj.scheduleType== 6)
                 };
    $scope.snapshotList();
 
+$scope.recurringSnapshotLists = function () {
+		console.log(volume);
+		    $scope.volumeId = volume.id;
+                    var hasDisks = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "snapshotpolicies/listbyvolume?volumeid="+$scope.volumeId  +"&lang=" + appService.localStorageService.cookie.get('language')+"&sortBy=-id");
+                    hasDisks.then(function (result) {  // this is only run after
+                        // $http completes0
+
+                        $scope.recurringSnapshotList = result;
+
+             });
+};
+   $scope.recurringSnapshotLists();
 
       $scope.deleteSnapshotPolicy = function(size, snapshot) {
     appService.dialogService.openDialog("app/views/common/confirm-delete.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
@@ -834,14 +846,20 @@ if(obj.scheduleType== 6)
             $scope.ok = function (deleteObject) {
                 var hasServer = appService.crudService.delete("snapshotpolicies", deleteObject);
                 hasServer.then(function (result) {
+   		  
                     appService.notify({message: 'Deleted successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+ $scope.recurringSnapshotLists();
 		    $modalInstance.close();
-                });
-            },
+                }); 
+
  $modalInstance.close();
+            },
+
             $scope.cancel = function () {
                 $modalInstance.close();
             };
+
+
         }]);
 
 
