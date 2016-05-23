@@ -3,6 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<c:set var="language" value="${not empty language ? language : pageContext.request.getAttribute('language')}" scope="session" />
+<fmt:setBundle basename="i18n/messages_${language}" var="msg" scope="session" />
 
 <form name="RoleForm" data-ng-submit="editAssignedRoleSave(RoleForm)" method="post" novalidate="">
 	<div class="inmodal" >
@@ -51,10 +53,10 @@
             			<tr data-ng-repeat="user in userList">
             				<td>{{user.userName}}</td>
             				<td>
-          						
+
           						<select class="form-control input-group" name="role" data-ng-model="userRoleList[user.id]" data-ng-class="{'error': RoleForm.role.$invalid && formSubmitted}">
-            						
-            					
+
+
             						<option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
             						<option data-ng-repeat="role in roleList"  data-ng-selected="userRoleList[user.id].id == role.id"   value="{{role}}">{{role.name}}</option>
             					</select>

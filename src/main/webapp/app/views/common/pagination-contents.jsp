@@ -3,6 +3,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<c:set var="language" value="${not empty language ? language : pageContext.request.getAttribute('language')}" scope="session" />
+<fmt:setBundle basename="i18n/messages_${language}" var="msg" scope="session" />
+
 	<div class="row" data-ng-show="paginationObjects.totalItems > 10">
     <div class="col-sm-6">
 	    <div class="col-sm-6 shown-page" data-ng-show="paginationObjects.totalItems > (((paginationObjects.currentPage - 1) * (paginationObjects.limit * 1)) + (paginationObjects.limit * 1))"><div class="dataTables_info" id="example1_info" role="status" aria-live="polite">Showing {{ ((paginationObjects.currentPage - 1) * paginationObjects.limit) + 1}} to {{ ((paginationObjects.limit * paginationObjects.currentPage/paginationObjects.limit) * paginationObjects.limit)}} of {{ paginationObjects.totalItems}} entries</div></div>
