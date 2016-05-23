@@ -465,7 +465,6 @@ appService.globalConfig.webSocketLoaders.volumeBackupLoader = false;
         appService.dialogService.openDialog("app/views/cloud/snapshot/create-volume.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope',
             function($scope, $modalInstance, $rootScope) {
                 $scope.deleteObject = snapshot;
-			console.log(snapshot);
                 $scope.save = function(form, deleteObject) {
                         if (!angular.isUndefined($scope.deleteObject.domain) && ($scope.deleteObject.domain)!= null ) {
                             deleteObject.domainId = $scope.deleteObject.domain.id;
