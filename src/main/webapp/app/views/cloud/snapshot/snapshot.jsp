@@ -59,8 +59,8 @@
                             <tr>
                                 <th class="col-md-2 col-sm-2" data-ng-click="changeSort('name',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='name'? 'sorting_desc' : 'sorting_asc'"><fmt:message key="common.name" bundle="${msg}" /></th>
                                 <th class="col-md-2 col-sm-2" data-ng-click="changeSort('volume.name',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='volume.name'? 'sorting_desc' : 'sorting_asc'"><fmt:message key="common.volume" bundle="${msg}" /></th>
-                                <th class="col-md-2 col-sm-2"><fmt:message key="common.instance" bundle="${msg}" /></th>
-                                <th class="col-md-1 col-sm-1"><fmt:message key="common.type" bundle="${msg}" /></th>
+                                <th class="col-md-2 col-sm-2" data-ng-click="changeSort('volume.vmInstance.name',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='volume.vmInstance.name'? 'sorting_desc' : 'sorting_asc'"><fmt:message key="common.instance" bundle="${msg}" /></th>
+                                <th class="col-md-1 col-sm-1" data-ng-click="changeSort('volume.volumeType',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='volume.volumeType'? 'sorting_desc' : 'sorting_asc'"><fmt:message key="common.type" bundle="${msg}" /></th>
                                 <th class="col-md-2 col-sm-2" data-ng-click="changeSort('createdDateTime',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='volume.name'? 'sorting_desc' : 'sorting_asc'"><fmt:message key="common.created.date" bundle="${msg}" /></th>
                                 <th class="col-md-1 col-sm-1"><fmt:message key="common.status" bundle="${msg}" /></th>
                                 <th class="col-md-1 col-sm-1"><fmt:message key="common.action" bundle="${msg}" /></th>
@@ -72,7 +72,7 @@
 						</tr>
 						</tbody>
                         <tbody data-ng-show="snapshotList.length > 0">
-                            <tr data-ng-repeat="snapshot in snapshotList| filter:quickSearch">
+                            <tr data-ng-repeat="snapshot in snapshotList">
                                 <td>
                                     {{ snapshot.name}}
                                 </td>

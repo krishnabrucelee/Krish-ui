@@ -84,10 +84,10 @@ pageEncoding="UTF-8"%>
                                <tr>
                             	    <th  data-ng-click="changeSort('name',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.name" bundle="${msg}" /></th>
                             	    <th  data-ng-click="changeSort('department.userName',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='department.userName'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.department" bundle="${msg}" /></th>
-                            		<th><fmt:message key="common.project" bundle="${msg}" /></th>
+                            		<th  data-ng-click="changeSort('project.name',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='project.name'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="common.project" bundle="${msg}" /></th>
                             	    <th  data-ng-click="changeSort('volumeType',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='volumeType'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.type" bundle="${msg}" /></th>
-                            	    <th><fmt:message key="common.plan" bundle="${msg}" /></th>
-                            		<th><fmt:message key="common.attached.to" bundle="${msg}" /></th>
+                            	    <th  data-ng-click="changeSort('storageOffering.name',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='storageOffering.name'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="common.plan" bundle="${msg}" /></th>
+                            		<th  data-ng-click="changeSort('vmInstance.name',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='vmInstance.name'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="common.attached.to" bundle="${msg}" /></th>
                             	    <th  data-ng-click="changeSort('diskSize',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='diskSize'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.size" bundle="${msg}" /> GB</th>
                             	    <th  data-ng-click="changeSort('createdDateTime',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='createdDateTime'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.created.date" bundle="${msg}" /></th>
 
@@ -100,7 +100,7 @@ pageEncoding="UTF-8"%>
                                 </tr>
                             </tbody>
                             <tbody data-ng-show="volumeList.length > 0">
-                                <tr data-ng-repeat="volume in filteredCount = (volumeList| filter:quickSearch | orderBy:sort.column:sort.descending)">
+                                <tr data-ng-repeat="volume in filteredCount = volumeList">
                                     <td>
                                         <!-- <a class="text-info" href="javascript:void(0)"  title="View Volume" > -->{{ volume.name}}<!-- </a> -->
                                     </td>

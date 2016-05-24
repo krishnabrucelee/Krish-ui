@@ -119,7 +119,7 @@
 								</tbody>
 								<tbody data-ng-show="instanceList.length > 0">
 									<tr
-										data-ng-repeat="instance in filteredCount = (instanceList | filter: quickSearch  |orderBy:sort.column:sort.descending) " data-ng-class = "(instance.status != 'STOPPED' && instance.status != 'RUNNING' && instance.status != 'DESTROYED' && instance.status != 'ERROR')? 'overlay-wrapper-tr' : ''">
+										data-ng-repeat="instance in filteredCount = instanceList" data-ng-class = "(instance.status != 'STOPPED' && instance.status != 'RUNNING' && instance.status != 'DESTROYED' && instance.status != 'ERROR')? 'overlay-wrapper-tr' : ''">
 
 										<td><a class="text-info" id="instances_display_name_button" ui-sref="cloud.list-instance.view-instance({id: {{ instance.id}}})"
 											title="View Instance">

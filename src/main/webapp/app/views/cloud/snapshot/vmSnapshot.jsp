@@ -64,7 +64,7 @@
                             <tr>
                                 <th class="col-md-2 col-sm-2" data-ng-click="changeSorts('name',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='name'? 'sorting_desc' : 'sorting_asc'"><fmt:message key="common.name" bundle="${msg}" /></th>
                                 <th class="col-md-2 col-sm-2" data-ng-click="changeSorts('description',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='description'? 'sorting_desc' : 'sorting_asc'"><fmt:message key="common.description" bundle="${msg}" /></th>
-                                <th class="col-md-2 col-sm-2"><fmt:message key="common.instance" bundle="${msg}" /></th>
+                                <th class="col-md-2 col-sm-2" data-ng-click="changeSorts('vm.name',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='vm.name'? 'sorting_desc' : 'sorting_asc'"><fmt:message key="common.instance" bundle="${msg}" /></th>
                                 <th class="col-md-2 col-sm-2"><fmt:message key="common.iscurrent" bundle="${msg}" /></th>
                                 <th class="col-md-2 col-sm-2" data-ng-click="changeSorts('createdDateTime',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='createdDateTime'? 'sorting_desc' : 'sorting_asc'"><fmt:message key="common.created.date" bundle="${msg}" /></th>
                                 <th class="col-md-2 col-sm-2" data-ng-click="changeSorts('status',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='status'? 'sorting_desc' : 'sorting_asc'"><fmt:message key="common.status" bundle="${msg}" /></th>
@@ -77,7 +77,7 @@
 						</tr>
 						</tbody>
                         <tbody data-ng-show="vmSnapshotList.length > 0">
-                            <tr data-ng-repeat="snapshot in filteredCount = (vmSnapshotList| filter: quickSearch | orderBy:sort.column:sort.descending)">
+                            <tr data-ng-repeat="snapshot in filteredCount = vmSnapshotList">
                                 <td>
                                     {{ snapshot.name}}
                                 </td>

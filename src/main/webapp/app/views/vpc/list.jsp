@@ -167,7 +167,8 @@
 											<th data-ng-click="changeSort('department.userName',paginationObject.currentPage)"
 													data-ng-class="sort.descending && sort.column =='Account'? 'sorting_desc' : 'sorting_asc' "><fmt:message
 														key="common.department" bundle="${msg}"/></th>
-											<th><fmt:message key="common.project" bundle="${msg}"/></th>
+											<th data-ng-click="changeSort('project.name',paginationObject.currentPage)"
+													data-ng-class="sort.descending && sort.column =='project.name'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="common.project" bundle="${msg}"/></th>
 								            <th data-ng-click="changeSort('zone.name',paginationObject.currentPage)"
 													data-ng-class="sort.descending && sort.column =='zone.name'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="common.zone" bundle="${msg}" /></th>
 								            <th data-ng-click="changeSort('cIDR',paginationObject.currentPage)"
@@ -183,7 +184,7 @@
 			                                </tr>
 			                            </tbody>
 								    <tbody data-ng-show="vpcList.length > 0">
-								         <tr data-ng-repeat="vpc in filteredCount = (vpcList | filter: quickSearch | orderBy:sort.column:sort.descending)">
+								         <tr data-ng-repeat="vpc in filteredCount = vpcList">
 								            <td>
 								                <a class="text-info" id="vpc_name_button" href="#/vpc/view/{{vpc.id}}">{{vpc.name}}</a>
 								            </td>

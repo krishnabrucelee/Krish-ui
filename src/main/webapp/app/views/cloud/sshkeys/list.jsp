@@ -56,7 +56,7 @@
 								    	<th class="col-md-2 col-sm-2" data-ng-click="changeSort('name',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.name" bundle="${msg}" /> </th>
 										<th class="col-md-2 col-sm-2" data-ng-click="changeSort('department.domain.name',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='department.domain.name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.company" bundle="${msg}" /></th>
 										<th class="col-md-2 col-sm-2" data-ng-click="changeSort('department.userName',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='department.userName'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.account" bundle="${msg}" /></th>
-										<th class="col-md-2 col-sm-2"><fmt:message key="common.project" bundle="${msg}" /></th>
+										<th class="col-md-2 col-sm-2" data-ng-click="changeSort('project.name',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='project.name'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="common.project" bundle="${msg}" /></th>
 										<th class="col-md-3 col-sm-3"><fmt:message key="common.private.key" bundle="${msg}" /></th>
 										<th class="col-md-1 col-sm-2"><fmt:message key="common.action" bundle="${msg}" /></th>
 									</tr>
@@ -67,7 +67,7 @@
                                         </tr>
                                 </tbody>
                                 <tbody data-ng-show="sshkeyList.length > 0">
-                                    <tr data-ng-repeat="sshkey in filteredCount = (sshkeyList  | filter:sshkeySearch | orderBy:sort.column:sort.descending)">
+                                    <tr data-ng-repeat="sshkey in filteredCount = sshkeyList">
                                         <td>
                                             {{ sshkey.name}}
                                         </td>
