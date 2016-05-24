@@ -323,7 +323,7 @@ function resourceAllocationCtrl($scope, crudService, globalConfig, notify, $stat
                             if (max == -1) {
                                 $scope.resourceAllocationForm[key].errorMessage = key + ' limit should be ' + min + ' to unlimited';
                             } else {
-                                $scope.resourceAllocationForm[key].errorMessage = key + ' limit should be between ' + min + ' and ' + max;
+                                $scope.resourceAllocationForm[key].errorMessage = key + ' limit should be between ' + Math.round((min),1) + ' and ' + Math.round((max),1);
                             }
                         }
                     } else {
@@ -335,7 +335,7 @@ function resourceAllocationCtrl($scope, crudService, globalConfig, notify, $stat
                     if (max == -1) {
                         $scope.resourceAllocationForm[key].errorMessage = key + ' limit should be ' + min + ' to unlimited';
                     } else {
-                        $scope.resourceAllocationForm[key].errorMessage = key + ' limit should be between ' + min + ' and ' + max;
+                        $scope.resourceAllocationForm[key].errorMessage = key + ' limit should be between ' + Math.round((min),1) + ' and ' + Math.round((max),1);
                     }
 
                 }

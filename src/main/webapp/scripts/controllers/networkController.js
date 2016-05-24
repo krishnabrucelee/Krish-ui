@@ -90,10 +90,8 @@ if (!angular.isUndefined($stateParams.id)) {
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasGuestnetworkLists = {};
 	if ($scope.domainId == null && $scope.vmSearch == null) {
-            	hasGuestnetworkLists = appService.crudService.list("guestnetwork", $scope.global.paginationHeaders(pageNumber, limit), {
-                "limit": limit});
-            }
-		else {
+            hasGuestnetworkLists = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "guestnetwork" +"?lang=" + appService.localStorageService.cookie.get('language') +"&sortBy="+sortOrder+sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+            } else {
 	if ($scope.domainId != null && $scope.vmSearch == null) {
                 $scope.filter = "&domainId=" + $scope.domainId + "&searchText=";
             }  else if ($scope.domainId == null && $scope.vmSearch != null) {
@@ -101,7 +99,7 @@ if (!angular.isUndefined($stateParams.id)) {
             } else  {
                 $scope.filter = "&domainId=" + $scope.domainId + "&searchText=" + $scope.vmSearch;
             }
-    		    hasGuestnetworkLists =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "guestnetwork/listByDomain"+"?lang=" +appService.localStorageService.cookie.get('language')+ $scope.filter +"&sortBy="+globalConfig.sort.sortOrder+globalConfig.sort.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+            hasGuestnetworkLists =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "guestnetwork/listByDomain"+"?lang=" +appService.localStorageService.cookie.get('language')+ $scope.filter +"&sortBy="+$scope.paginationObject.sortOrder+$scope.paginationObject.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
             }
         hasGuestnetworkLists.then(function(result) { // this is only run after $http
             // completes0
