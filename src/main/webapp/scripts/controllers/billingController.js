@@ -115,8 +115,11 @@ function billingCtrl($scope, appService, globalConfig, localStorageService, $win
 
             if($scope.global.sessionValues.type != 'ROOT_ADMIN') {
                 domainUuid = appService.globalConfig.sessionValues.domainAbbreviationName;
+                $scope.domainName = appService.globalConfig.sessionValues.domainAbbreviationName;
             } else {
                 domainUuid = $scope.usageStatisticsObj.domain.companyNameAbbreviation;
+                $scope.domainName = $scope.usageStatisticsObj.domain.companyNameAbbreviation;
+
             }
 
             var hasServer = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL
@@ -368,7 +371,7 @@ function billingInvoiceCtrl($scope, $http, $window, $modal, $log, $state, $state
       var hasConfigList = {};
       if (($scope.domainView == null || angular.isUndefined($scope.domainView))
               && ($scope.statusView == null || angular.isUndefined($scope.statusView))) {
-		
+
           if (appService.globalConfig.sessionValues.type !== 'ROOT_ADMIN') {
 
 $scope.domainpdf = function()
@@ -446,7 +449,7 @@ $scope.excel = function()
    $scope.configList(1);
 
    // Get application list based on domain selection
-   
+
    $scope.selectDomainView = function(pageNumber) {
           $scope.configList(1);
    };
