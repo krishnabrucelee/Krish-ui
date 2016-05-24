@@ -13,12 +13,12 @@ body
     counter-reset: Serial;           /* Set the Serial counter to 0 */
 }
 
-table
+table tbody.auto-serial
 {
     border-collapse: separate;
 }
 
-tr td:first-child:before
+table tbody.auto-serial tr td:first-child:before
 {
   counter-increment: Serial;      /* Increment the Serial counter */
   content: counter(Serial); /* Display the counter */
@@ -109,7 +109,7 @@ tr td:first-child:before
                                         <td class="col-md-6 col-sm-6" colspan="6"><fmt:message key="common.no.records.found" bundle="${msg}" />!!</td>
                                     </tr>
                                 </tbody>
-                                <tbody data-ng-show="invoiceList.length > 0">
+                                <tbody data-ng-show="invoiceList.length > 0" class="auto-serial">
                                     <tr data-ng-repeat=" invoice in filteredCount = (invoiceList| filter: quickSearch| orderBy:sort.column:sort.descending)">
                                     	<td></td>
                                         <td class="">{{ invoice.invoiceNumber}}</td>

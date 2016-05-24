@@ -136,7 +136,7 @@
                     <div class="row">
                       <div class="report-wrapper white-content" data-ng-show="myframe">
 		            <div class="label-primary p-sm h6 text-white fa-bold">
-		                <span  data-ng-show="groupBy">Group By : {{groupBy}}</span><span data-ng-show="usageStatisticsObj.domain"> | Domain : {{usageStatisticsObj.domain.name}} </span><span data-ng-show= "usageStatisticsObj.startDate"> | Start Date :<em>{{usageStatisticsObj.startDate| date:'dd-MMM-yyyy' }}</em></span><span data-ng-show="usageStatisticsObj.endDate"> | To Date :<em>{{usageStatisticsObj.endDate| date:'dd-MMM-yyyy' }}</em>
+		                <span  data-ng-show="groupBy">Group By : {{usageStatisticsType}}</span><span data-ng-show="usageStatisticsObj.domain"> | Domain : {{domainName}} </span><span data-ng-show= "usageStatisticsObj.startDate"> | Start Date :<em>{{reportStartDate | date:'dd-MMM-yyyy' }}</em></span><span data-ng-show="usageStatisticsObj.endDate"> | To Date :<em>{{reportEndDate | date:'dd-MMM-yyyy' }}</em>
 		                	</span><a data-ng-if=" global.sessionValues.type == 'ROOT_ADMIN'"
 										href="{{ global.PING_APP_URL }}usage/statistics/report?fromDate={{reportStartDate}}&toDate={{reportEndDate}}&groupingType={{groupBy}}&domainUuid={{usageStatisticsObj.domain.name}}&type=pdf"
 										class="btn btn-default  pull-right m-l-xs"><span
