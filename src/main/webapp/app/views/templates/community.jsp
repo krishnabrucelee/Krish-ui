@@ -66,17 +66,17 @@ pageEncoding="UTF-8"%>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="small  m-b-sm  "  data-ng-hide="templateObj.openDescription">
+                            <div class="small  m-b-sm  "  data-ng-hide="templateObj.openCommunityDescription">
                                 {{ templateObj.description}}
                             </div>
-                            <div class="small text-justify "    data-ng-show="templateObj.openDescription">
+                            <div class="small text-justify "    data-ng-show="templateObj.openCommunityDescription">
                                 <div  class="animate-panel slimScroll"  data-child="hpanel" data-effect="fadeInUp">
                                     <div class="animated-panel fadeInUp">
                                     <p data-ng-bind-html="templateObj.detailedDescription"></p>
                                     </div>
                                 </div>
                             </div>
-                            <a class="text-info font-bold "  data-ng-click="openDescription($index)"><span data-ng-class="templateObj.openDescription ? 'pe-7s-angle-up-circle' : 'pe-7s-angle-down-circle' " class="pe-lg font-bold m-r-xs"></span> <fmt:message key="common.details" bundle="${msg}" /></a>
+                            <a class="text-info font-bold "  data-ng-click="openCommunityDescription($index)"><span data-ng-class="templateObj.openCommunityDescription ? 'pe-7s-angle-up-circle' : 'pe-7s-angle-down-circle' " class="pe-lg font-bold m-r-xs"></span> <fmt:message key="common.details" bundle="${msg}" /></a>
                         </div>
                     </div>
                     <div class="col-md-3 col-sm-3">
