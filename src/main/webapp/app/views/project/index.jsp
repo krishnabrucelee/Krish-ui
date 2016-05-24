@@ -111,8 +111,8 @@
 												<!-- <th class="w-5"></th> -->
 												<th data-ng-click="changeSort('name',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.name" bundle="${msg}" /></th>
 												<th data-ng-click="changeSort('status',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='status'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="common.status" bundle="${msg}" /></th>
-												<th><fmt:message key="project.owner" bundle="${msg}" /></th>
-												<th><fmt:message key="billing.owner" bundle="${msg}" /></th>
+												<th data-ng-click="changeSort('projectOwner.userName',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='projectOwner.userName'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="project.owner" bundle="${msg}" /></th>
+												<th data-ng-click="changeSort('projectOwner.userName',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='projectOwner.userName'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="billing.owner" bundle="${msg}" /></th>
 												<th data-ng-click="changeSort('domain.name',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='domain.name'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="common.company" bundle="${msg}" /></th>
 												<th data-ng-click="changeSort('department.userName',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='department.userName'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="common.department" bundle="${msg}" /></th>
 												<th data-ng-click="changeSort('createdDateTime',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='createdDateTime'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="create.time" bundle="${msg}" /></th>
@@ -126,7 +126,7 @@
                                     </tbody>
                                     <tbody data-ng-show="projectList.length > 0">
 											<tr
-												data-ng-repeat="projectObj in filteredCount = (projectList| filter: quickSearch |orderBy:sort.column:sort.descending)"
+												data-ng-repeat="projectObj in filteredCount = projectList"
 												data-ng-class="isSingle === projectObj.id ? 'bg-row text-white' : ''">
 												<td><a class="text-info" ui-sref="projects.view({id: {{ projectObj.id}}})"  title="View Instance" >{{ projectObj.name}}</a></td>
 												<td><label class="badge badge-success p-xs" data-ng-show="projectObj.isActive"

@@ -119,7 +119,8 @@
 												<th data-ng-click="changeSort('department.userName',paginationObject.currentPage)"
 													data-ng-class="sort.descending && sort.column =='Account'? 'sorting_desc' : 'sorting_asc' "><fmt:message
 														key="common.department" bundle="${msg}" /></th>
-												<th><fmt:message key="common.project" bundle="${msg}" /></th>
+												<th data-ng-click="changeSort('project.name',paginationObject.currentPage)"
+													data-ng-class="sort.descending && sort.column =='project.name'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="common.project" bundle="${msg}" /></th>
 												<th data-ng-click="changeSort('networkType',paginationObject.currentPage)"
 													data-ng-class="sort.descending && sort.column =='networkType'? 'sorting_desc' : 'sorting_asc' "><fmt:message
 														key="common.type" bundle="${msg}" /></th>
@@ -139,7 +140,7 @@
 			                            </tbody>
 			                            <tbody data-ng-show="networkList.length > 0">
 											<tr
-												data-ng-repeat="network in filteredCount = (networkList | filter: quickSearch | orderBy:sort.column:sort.descending)">
+												data-ng-repeat="network in filteredCount = networkList">
 												<td><a class="text-info"
 													ui-sref="cloud.list-network.view-network({id: {{ network.id }}, view: 'view'})"
 													title="View Network">{{ network.name }}</a></td>
