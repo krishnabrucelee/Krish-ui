@@ -19,6 +19,10 @@ function templatesCtrl($scope, $stateParams, appService, $timeout, promiseAjax, 
     $scope.template = {
         templateList: {}
     };
+/** $scope.template = {
+        listFeaturedTemplate: {}
+    };
+**/
  $scope.templates = {};
 $scope.template.listAllTemplate = {};
  $scope.TemplateForm = {};
@@ -119,6 +123,7 @@ if ($scope.featureSearch != null) {
 }
         hasfeaturetemplatesList.then(function (result) {  // this is only run after $http completes0
             $scope.template.listFeaturedTemplate = result;
+		console.log("list",result);
             $scope.showLoader = false;
         });
     };
@@ -643,11 +648,31 @@ $scope.getOsCategoryList();
 
 
     $scope.openDescription = function (index) {
-        angular.forEach($scope.template.templateList, function (value, key) {
-            if (index == key && !$scope.template.templateList[key].openDescription) {
-                $scope.template.templateList[key].openDescription = true;
+        angular.forEach($scope.template.listFeaturedTemplate, function (value, key) {
+            if (index == key && !$scope.template.listFeaturedTemplate[key].openDescription) {
+                $scope.template.listFeaturedTemplate[key].openDescription = true;
             } else {
-                $scope.template.templateList[key].openDescription = false;
+                $scope.template.listFeaturedTemplate[key].openDescription = false;
+            }
+        });
+    }
+
+  $scope.openCommunityDescription = function (index) {
+        angular.forEach($scope.template.listCommunityTemplate, function (value, key) {
+            if (index == key && !$scope.template.listCommunityTemplate[key].openCommunityDescription) {
+                $scope.template.listCommunityTemplate[key].openCommunityDescription = true;
+            } else {
+                $scope.template.listCommunityTemplate[key].openCommunityDescription = false;
+            }
+        });
+    }
+
+$scope.openUserDescription = function (index) {
+        angular.forEach($scope.template.listAllTemplate, function (value, key) {
+            if (index == key && !$scope.template.listAllTemplate[key].openUserDescription) {
+                $scope.template.listAllTemplate[key].openUserDescription = true;
+            } else {
+                $scope.template.listAllTemplate[key].openUserDescription = false;
             }
         });
     }
