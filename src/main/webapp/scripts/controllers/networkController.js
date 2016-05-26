@@ -140,6 +140,7 @@ if (!angular.isUndefined($stateParams.id)) {
             $scope.networkBreadCrumbList = result;
             $scope.network = result;
             $scope.persistNetwork = result;
+            $scope.listNetworkOffer();
            // $state.current.data.pageName = result.name;
             //$state.current.data.id = result.id;
            if ($state.current.data.pageTitle === "view.network") {
@@ -916,7 +917,14 @@ $scope.vmSearch = null;
     $scope.global = appService.globalConfig;
     // Network Offer List
     $scope.listNetworkOffer = function() {
-        var hasNetworks = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "networkoffer/isolated" + "?lang=" + appService.localStorageService.cookie.get('language') + "&sortBy=-id");
+    	var hasNetworks = {};
+    	if (!angular.isUndefined($scope.network) && $scope.network.networkCreationType == 'VPC') {
+            hasNetworks = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL
+        		+ "networkoffer/vpcList" + "?lang=" + appService.localStorageService.cookie.get('language') + "&sortBy=-id");
+    	} else {
+    		hasNetworks = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL
+            		+ "networkoffer/isolated" + "?lang=" + appService.localStorageService.cookie.get('language') + "&sortBy=-id");
+    	}
         hasNetworks.then(function(result) {
             $scope.networkOfferList = result;
         });
