@@ -89,7 +89,6 @@ public class MyFilter implements Filter {
         // with the variable name language to the filter containing a
         // ISO-639 two letter country code
         String languageCode = languageString;
-        System.out.println("Checking for url " + httpRequest.getRequestURL());
         // Check if we have a locale in the session
         this.locale = (Locale) session.getAttribute("myLocale");
 
