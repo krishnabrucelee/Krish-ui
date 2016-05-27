@@ -75,6 +75,7 @@
 <link rel="stylesheet" href="styles/style.css">
 <link rel="stylesheet" href="styles/css">
 <link rel="stylesheet" href="styles/custom-style.css">
+<link rel="stylesheet" href="styles/page-loader.css">
 
 <!-- 	<link rel="stylesheet" href="scripts/test/bootstrap.min.css">-->
 
