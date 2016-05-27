@@ -79,20 +79,17 @@
                     </div>
 
                     <!--<div class="hr-line-dashed"></div>-->
-                    <div class="form-group" ng-class="{ 'text-danger' : projectForm.projectOwner.$invalid && formSubmitted}">
+                    <div class="form-group">
 
                         <div class="row" >
                             <label class="col-md-3 col-xs-12 col-sm-3 control-label"><fmt:message key="project.owner" bundle="${msg}" />
-                                <span class="text-danger">*</span>
                             </label>
                             <div class="col-md-7 col-xs-7 col-sm-5">
                                 <select required="true" class="form-control input-group" name="projectOwner" id="add_project_project_owner"
-                                        data-ng-model="newProject.projectOwner" data-ng-class="{'error': projectForm.projectOwner.$invalid && formSubmitted}"
-                                        data-ng-options="projectOwner.userName group by projectOwner.group for projectOwner in projectElements.projectOwnerList" >
+                                        data-ng-model="newProject.projectOwner" data-ng-options="projectOwner.userName group by projectOwner.group for projectOwner in projectElements.projectOwnerList" >
                                     <option value="">Select a user</option>
                                 </select>
                                 <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="<fmt:message key="select.the.project.owner" bundle="${msg}" />" ></i>
-                                <div class="error-area" data-ng-show="projectForm.projectOwner.$invalid && formSubmitted" ><i  tooltip="<fmt:message key="project.owner.is.required" bundle="${msg}" />" class="fa fa-warning error-icon"></i></div>
                             </div>
                         </div>
                     </div>
