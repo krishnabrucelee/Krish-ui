@@ -519,12 +519,15 @@ if ($scope.domainView != null && $scope.vmSearch == null) {
                     $scope.formSubmitted = true;
                     if (form.$valid) {
                         var project = angular.copy($scope.project);
+			if(!angular.isUndefined($scope.project.projectOwner) && $scope.project.projectOwner != null) { 
                         project.projectOwnerId = $scope.project.projectOwner.id;
+    		            delete project.projectOwner;
+			}
                         project.departmentId = $scope.project.department.id;
                         project.domainId = $scope.project.domain.id;
                         delete project.domain;
     		            delete project.department;
-    		            delete project.projectOwner;
+
                         var hasServer = appService.crudService.update("projects", project);
                         hasServer.then(function (result) {
 				$scope.projectLoader = false;
