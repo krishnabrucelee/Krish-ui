@@ -73,15 +73,15 @@
                    	 </div>
 
                         <!--<div class="hr-line-dashed"></div>-->
-                        <div class="form-group" ng-class="{ 'text-danger' : projectForm.projectOwner.$invalid && formSubmitted}">
+                        <div class="form-group" >
 
                             <div class="row" >
                                 <label class="col-md-3 col-xs-12 col-sm-3 control-label"><fmt:message key="project.owner" bundle="${msg}" />
-                                    <span class="text-danger">*</span>
+
                                 </label>
                                 <div class="col-md-5 col-xs-12 col-sm-5">
 
-                                    <select required="true" id="edit_project_project_owner" class="form-control input-group" name="projectOwner" data-ng-model="project.projectOwner" data-ng-class="{'error': projectForm.projectOwner.$invalid && formSubmitted}"
+                                    <select  id="edit_project_project_owner" class="form-control input-group" name="projectOwner" data-ng-model="project.projectOwner"
                                         data-ng-options="projectOwner.userName for projectOwner in projectElements.projectOwnerList" >
                                     <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
                                     </select>
