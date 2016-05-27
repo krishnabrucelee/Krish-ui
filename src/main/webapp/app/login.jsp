@@ -38,7 +38,7 @@ pageEncoding="UTF-8"%>
     <!-- endbuild -->
 
 </head>
-<body class="blank" data-ng-controller="loginCtrl" style="background:url({{backgroundImage}}); background-repeat: no-repeat; background-size: 100% 100%;">
+<body class="blank" data-ng-controller="loginCtrl" data-ng-style="{'background':(backgroundImage ? 'url('+backgroundImage+')' : '')}"  style="background-repeat: no-repeat; background-size: 100% 100%;">
 
 
 <div class="login-container">
