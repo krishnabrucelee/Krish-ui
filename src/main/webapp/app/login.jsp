@@ -35,6 +35,7 @@ pageEncoding="UTF-8"%>
 
     <!-- build:css({.tmp,app}) styles/style.css -->
     <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/login-loader.css">
     <!-- endbuild -->
 
 </head>
