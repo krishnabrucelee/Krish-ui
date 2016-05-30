@@ -36,11 +36,11 @@ pageEncoding="UTF-8"%>
     <!-- build:css({.tmp,app}) styles/style.css -->
     <link rel="stylesheet" href="styles/style.css">
     <link rel="stylesheet" href="styles/login-loader.css">
+    <link rel="stylesheet" href="styles/custom-style.css">
     <!-- endbuild -->
 
 </head>
-<body class="blank" data-ng-controller="loginCtrl" data-ng-style="{'background':(backgroundImage ? 'url('+backgroundImage+')' : '')}"  style="background-repeat: no-repeat; background-size: 100% 100%;">
-
+<body class="blank login-bg" data-ng-controller="loginCtrl" data-ng-style="{'background':(backgroundImage ? 'url('+backgroundImage+')' : '')}">
 
 <div class="login-container">
     <div class="row">
