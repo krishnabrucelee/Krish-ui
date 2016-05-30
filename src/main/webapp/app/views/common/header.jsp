@@ -18,13 +18,13 @@
 		<a class="label-menu-corner" data-ng-if="theme.url != null" target="_blank" href="http://{{theme.url}}" >{{theme.name}}
 		<span class="label label-warning"></span></a></li>
 
-			<li data-ng-class="{active: $state.includes('system-health')}"><a
+			<%-- <li data-ng-class="{active: $state.includes('system-health')}"><a
 				class="label-menu-corner"><fmt:message
 						key="common.system.health" bundle="${msg}" /> </a></li>
 			<li data-ng-class="{active: $state.includes('support')}"><a
 				class="label-menu-corner" ui-sref="support.tickets"><fmt:message
 						key="common.support" bundle="${msg}" /><span
-					class="label label-success">3</span></a></li>
+					class="label label-success">3</span></a></li> --%>
 			<li data-ng-class="{active: $state.includes('activity')}"><a
 				class="label-menu-corner" ui-sref="activity"><fmt:message
 						key="common.activity" bundle="${msg}" /><span
