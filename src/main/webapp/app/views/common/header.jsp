@@ -7,7 +7,7 @@
 <fmt:setBundle basename="i18n/messages_${language}" var="msg" scope="session" />
 
 <div id="logo" class="light-version" data-ng-controller="headerCtrl" >
-    <img src={{logoImage}} />
+    <img data-ng-src={{logoImage}} />
 </div>
 <nav role="navigation" data-ng-controller="headerCtrl">
 	<minimaliza-menu></minimaliza-menu>

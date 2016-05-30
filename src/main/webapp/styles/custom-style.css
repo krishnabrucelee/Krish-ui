@@ -438,7 +438,7 @@ table.dataTable thead .sorting_desc::after {content: "\f0dd";}
 .acl-table .table th, .acl-table .table td{min-width:135px;}
 
 .no-records h5{color:#b7bdc7;}
-
+.login-bg{background-repeat: no-repeat !important; background-size: 100% 100% !important;}
 @media (max-width: 767px) {
     .table-responsive.responsive-x .dropdown-menu { position: relative !important; right: 200px !important; top: -34px;}
 }
