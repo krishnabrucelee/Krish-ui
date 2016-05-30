@@ -161,10 +161,24 @@
 }
 .uil-ripple-css {
   background: none;
-  position: relative;
+  position: absolute;
   width: 200px;
   height: 200px;
-  margin:0 auto;
+  margin-left:40%;
+  margin-top:-70px;
+}
+.loader-img-wrapper{
+	height:64px; clear:both; overflow:hidden; position:relative;
+}
+
+.modal-dialog .uil-ripple-css {
+  margin-left:30%;
+}
+.modal-dialog.modal-sm .uil-ripple-css {
+  margin-left:17%;
+}
+.modal-dialog.modal-lg .uil-ripple-css {
+  margin-left:40%;
 }
 .uil-ripple-css div {
   position: absolute;
