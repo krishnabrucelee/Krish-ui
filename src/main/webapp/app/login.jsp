@@ -106,4 +106,7 @@ pageEncoding="UTF-8"%>
         }
     }
 </script>
+<script type="text/javascript">
+    var USER_CONTEXT_PATH = "<%=request.getContextPath()%>";
+</script>
 </html>
