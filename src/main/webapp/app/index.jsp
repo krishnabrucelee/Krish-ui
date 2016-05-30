@@ -18,6 +18,9 @@
         window.location = baseUrl;
     }
 </script>
+<script type="text/javascript">
+    var USER_CONTEXT_PATH = "<%=request.getContextPath()%>";
+</script>
 
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -260,7 +263,6 @@
             return (width1 - width2);
         }
     </script>
-
 
 </body>
 </html>

@@ -48,7 +48,7 @@ function globalConfig($window) {
             currencyLabel : "CNY"
         },
         networks : {
-            name : "http://" + window.location.hostname + ":9090/"+USER_CONTEXT_PATH+"/index#/billing/payments"
+            name : "http://" + window.location.hostname + ":9090"+USER_CONTEXT_PATH+"/index#/billing/payments"
         },
         sort : {
             column : '',
@@ -301,7 +301,7 @@ function globalConfig($window) {
         SOCKET_URL : "http://" + window.location.hostname + ":8080/",
         PING_APP_URL : "http://" + window.location.hostname + ":8086/api/",
         MONITOR_URL : "http://211.156.49.15:4242/api/",
-        BASE_UI_URL : "http://" + window.location.hostname + ":9090/"+USER_CONTEXT_PATH+"/",
+        BASE_UI_URL : "http://" + window.location.hostname + ":9090"+USER_CONTEXT_PATH+"/",
 
         CONTENT_LIMIT : 10,
         VIEW_URL : 'app/views/',
