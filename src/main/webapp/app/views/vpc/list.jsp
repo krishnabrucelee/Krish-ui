@@ -122,7 +122,7 @@
                              <div class="clearfix"></div>
                              </div>
                          </div>
-						 <a has-permission="CREATE_VPC" class="btn btn-info" id="vpc_add_button" data-ng-click="createVpc('md')"> <span class="pe-7s-plus pe-lg font-bold m-r-xs"></span> Add VPC</a>
+						 <a has-permission="CREATE_VPC" class="btn btn-info" id="vpc_add_button" data-ng-click="createVpc('md')"> <span class="pe-7s-plus pe-lg font-bold m-r-xs"></span> <fmt:message key="add.vpc" bundle="${msg}"/></a>
                          <a class="btn btn-info" id="vpc_refresh_button" data-ng-click="list(1)"  title="<fmt:message key="common.refresh" bundle="${msg}"/>"><span class="fa fa-refresh fa-lg "></span></a>
                     </div>
                     <div class="pull-right dashboard-filters-area">
