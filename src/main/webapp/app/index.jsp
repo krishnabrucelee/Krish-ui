@@ -94,17 +94,12 @@
     class="{{$state.current.data.specialClass}}" landing-scrollspy tour
     backdrop="true">
     <!-- Simple splash screen-->
-    <!-- <div class="splash loading-screen">
+    <div class="splash loading-screen">
         <div class="splash-title">
             <h1>Panda - User Console</h1>
             <p>Cloud Management Portal</p>
             <img src="images/loading-bars.svg" width="64" height="64" />
         </div>
-    </div> -->
-    <div class="splash loading-screen">
-    	<div class="splash-title" data-ng-bind-html="splashTitle | to_trusted ">
-    	<img src="images/loading-bars.svg" width="64" height="64" />
-    	</div>
     </div>
     <!--[if lt IE 7]>
 <p class="alert alert-danger">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
@@ -118,7 +113,6 @@
     <script src="bower_components/jquery-ui/jquery-ui.min.js"></script>
     <script src="bower_components/slimScroll/jquery.slimscroll.min.js"></script>
     <script src="bower_components/angular/angular.min.js"></script>
-    <script src="bower_components/sanitize/angular-sanitize.min.js"></script>
     <script src="bower_components/angular/angular-cookies.js"></script>
     <script src="bower_components/angular-sanitize/angular-sanitize.min.js"></script>
     <script src="bower_components/angular-animate/angular-animate.min.js"></script>
