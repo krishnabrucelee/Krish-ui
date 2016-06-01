@@ -75,7 +75,7 @@
                     <div data-ng-show="volume.storageOffering.isCustomDisk">
                         <div class="form-group" ng-class="{ 'text-danger' : volumeForm.diskSize <= 0 && formSubmitted}">
                             <div class="row" >
-                                <label class="col-md-2 col-xs-12 col-sm-2 control-label">Size (GB)
+                                <label class="col-md-2 col-xs-12 col-sm-2 control-label"><fmt:message key="common.size" bundle="${msg}" /> (GB)
                                     <span class="text-danger">*</span>
                                 </label>
                                 <div class="col-md-6 col-xs-12 col-sm-6">

@@ -58,35 +58,35 @@
 			                    <thead class="bg-info">
 			           		<tr data-ng-if="resource=='domain'|| type == 'domain-quota'">
 			                    <th  class="text-center">
-                                	<label> Quota Type</label></th>
-                                	<th  class="text-center">Limit</th>
+                                	<label> <fmt:message key="quota.type" bundle="${msg}" /></label></th>
+                                	<th  class="text-center"><fmt:message key="limit" bundle="${msg}" /></th>
 			                        <th>
-			                        	<label> Minimum</label>
+			                        	<label> <fmt:message key="minimum" bundle="${msg}" /></label>
 			                        </th>
 			                        <th>
-			                        	<label> Maximum</label>
+			                        	<label> <fmt:message key="maximum" bundle="${msg}" /></label>
 			                        </th>
 			                    </tr>
 			           <tr data-ng-if="resource=='department'">
 			                    <th  class="text-center">
-                                	<label> Quota Type</label></th>
-                                	<th  class="text-center">Department Limit</th>
+                                	<label> <fmt:message key="quota.type" bundle="${msg}" /></label></th>
+                                	<th  class="text-center"><fmt:message key="department.limit" bundle="${msg}" /></th>
 			                        <th>
-			                        	<label> Minimum</label>
+			                        	<label> <fmt:message key="minimum" bundle="${msg}" /></label>
 			                        </th>
 			                        <th>
-			                        	<label> Maximum</label>
+			                        	<label> <fmt:message key="maximum" bundle="${msg}" /></label>
 			                        </th>
 			                    </tr>
 			          <tr data-ng-if="resource=='project'">
 			                    <th  class="text-center">
-                                	<label> Quota Type</label></th>
-                                	<th  class="text-center">Project Limit</th>
+                                	<label> <fmt:message key="quota.type" bundle="${msg}" /></label></th>
+                                	<th  class="text-center"><fmt:message key="project.limit" bundle="${msg}" /></th>
 			                       <th>
-			                        	<label> Minimum</label>
+			                        	<label> <fmt:message key="minimum" bundle="${msg}" /></label>
 			                        </th>
 			                        <th>
-			                        	<label> Maximum</label>
+			                        	<label> <fmt:message key="maximum" bundle="${msg}" /></label>
 			                        </th>
 			                    </tr>
 			                    </thead>
@@ -706,10 +706,10 @@
 							<div class="alert alert-info">
 								<label class="control-label"><fmt:message key="note" bundle="${msg}" /> :</label>
 								<ul class="list-group">
-									<li class="list-group-item">-1 indicates, Unlimited.</li>
-									<li class="list-group-item"> 0 indicates, No quota available.</li>
-									<li class="list-group-item">Department limit should not exceed company limit. </li>
-									<li class="list-group-item">Project limit should not exceed department limit. </li>
+									<li class="list-group-item">-1 <fmt:message key="indicates" bundle="${msg}" />, <fmt:message key="unlimited" bundle="${msg}" />.</li>
+									<li class="list-group-item"> 0 <fmt:message key="indicates" bundle="${msg}" />, <fmt:message key="no.quota.available" bundle="${msg}" />.</li>
+									<li class="list-group-item"><fmt:message key="department.limit.note" bundle="${msg}" />. </li>
+									<li class="list-group-item"><fmt:message key="project.limit.note" bundle="${msg}" />. </li>
 								</ul>
 							</div>
 						</div>

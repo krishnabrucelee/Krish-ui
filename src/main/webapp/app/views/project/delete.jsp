@@ -27,8 +27,9 @@
 
         </div>
         <div class="modal-footer">
-            <button type="button" id="delete_project_cancel_button" class="btn btn-default " ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.cancel" bundle="${msg}" /></button>
-            <button type="submit" id="delete_project_ok_button" class="btn btn-default btn-danger2" ng-click="deleteProject()" data-dismiss="modal"><fmt:message key="common.ok" bundle="${msg}" /></button>
+            <get-loader-image data-ng-show="showLoader"></get-loader-image>
+            <button type="button" id="delete_project_cancel_button" data-ng-hide="showLoader" class="btn btn-default " ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.cancel" bundle="${msg}" /></button>
+            <button type="submit" id="delete_project_ok_button" data-ng-hide="showLoader" class="btn btn-default btn-danger2" ng-click="deleteProject()" data-dismiss="modal"><fmt:message key="common.ok" bundle="${msg}" /></button>
 
         </div>
     </div>

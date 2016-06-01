@@ -14,7 +14,7 @@
             <div class="panel-body">
                 <div id="hbreadcrumb" class="pull-right">
                     <ol class="hbreadcrumb breadcrumb">
-                        <li><a ui-sref="dashboard">Home</a></li>
+                        <li><a ui-sref="dashboard"><fmt:message key="common.home" bundle="${msg}" /></a></li>
                         <li ng-repeat="state in $state.$current.path" ng-switch="$last || !!state.abstract" ng-class="{active: $last}">
                             <a ng-switch-when="false" href="{{state.url.format($stateParams)}}">{{state.data.pageTitle}}</a>
                             <span ng-switch-when="true">{{state.data.pageTitle}}</span>
@@ -37,7 +37,7 @@
                             <ul class="nav nav-tabs" data-ng-init="formElements.category = 'community'">
                                 <li class="active"><a href="javascript:void(0)" data-ng-click="communitylist()" data-toggle="tab"> <fmt:message key="common.community" bundle="${msg}" /></a></li>
                                 <li class=""><a href="javascript:void(0)" data-ng-click="featuredlist()" data-toggle="tab"><fmt:message key="common.featured" bundle="${msg}" /></a></li>
-                                <li class=""><a href="javascript:void(0)" data-ng-click="usertemplatelist()" data-toggle="tab">My Templates</a></li>
+                                <li class=""><a href="javascript:void(0)" data-ng-click="usertemplatelist()" data-toggle="tab"><fmt:message key="my.templates" bundle="${msg}" /></a></li>
 <!--                                 <li class=""><a href="javascript:void(0)" data-ng-click="formElements.category = 'snapshot'" data-toggle="tab">Snapshot</a></li>
  -->                            </ul>
                         </div>
