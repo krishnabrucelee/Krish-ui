@@ -8,17 +8,17 @@
 
 	<div class="row" data-ng-show="paginationObject.totalItems > 10">
     <div class="col-sm-6">
-	    <div class="col-sm-6 shown-page" data-ng-show="paginationObject.totalItems > (((paginationObject.currentPage - 1) * (paginationObject.limit * 1)) + (paginationObject.limit * 1))"><div class="dataTables_info" id="example1_info" role="status" aria-live="polite">Showing {{ ((paginationObject.currentPage - 1) * paginationObject.limit) + 1}} to {{ ((paginationObject.limit * paginationObject.currentPage/paginationObject.limit) * paginationObject.limit)}} of {{ paginationObject.totalItems}} entries</div></div>
+	    <div class="col-sm-6 shown-page" data-ng-show="paginationObject.totalItems > (((paginationObject.currentPage - 1) * (paginationObject.limit * 1)) + (paginationObject.limit * 1))"><div class="dataTables_info" id="example1_info" role="status" aria-live="polite"><fmt:message key="showing" bundle="${msg}" /> {{ ((paginationObject.currentPage - 1) * paginationObject.limit) + 1}} <fmt:message key="to" bundle="${msg}" /> {{ ((paginationObject.limit * paginationObject.currentPage/paginationObject.limit) * paginationObject.limit)}} <fmt:message key="of" bundle="${msg}" /> {{ paginationObject.totalItems}} <fmt:message key="entries" bundle="${msg}" /></div></div>
 
-	    <div class="col-sm-6 shown-page" data-ng-hide="paginationObject.totalItems > (((paginationObject.currentPage - 1) * (paginationObject.limit * 1)) + (paginationObject.limit * 1))"><div class="dataTables_info" id="example1_info" role="status" aria-live="polite">Showing {{ ((paginationObject.currentPage - 1) * paginationObject.limit) + 1}} to {{ paginationObject.totalItems}} of {{ paginationObject.totalItems}} entries</div></div>
+	    <div class="col-sm-6 shown-page" data-ng-hide="paginationObject.totalItems > (((paginationObject.currentPage - 1) * (paginationObject.limit * 1)) + (paginationObject.limit * 1))"><div class="dataTables_info" id="example1_info" role="status" aria-live="polite"><fmt:message key="showing" bundle="${msg}" /> {{ ((paginationObject.currentPage - 1) * paginationObject.limit) + 1}} <fmt:message key="to" bundle="${msg}" /> {{ paginationObject.totalItems}} <fmt:message key="of" bundle="${msg}" /> {{ paginationObject.totalItems}} <fmt:message key="entries" bundle="${msg}" /></div></div>
 	    <div class="col-sm-6 shown-entry">
-	        <div class="dataTables_length" id="example1_length"><label>Show
+	        <div class="dataTables_length" id="example1_length"><label><fmt:message key="show" bundle="${msg}" />
 	                <select id="pagination_dropdown" data-ng-model="paginationObject.limit" data-ng-change="list(1)" aria-controls="example1" class="form-control input-sm test_pagination_dropdown">
 	                    <option value="10">10</option>
 	                    <option value="25">25</option>
 	                    <option value="50">50</option>
 	                    <option value="100">100</option>
-	                </select> entries</label>
+	                </select> <fmt:message key="entries" bundle="${msg}" /></label>
 	        </div>
 	    </div>
     </div>
