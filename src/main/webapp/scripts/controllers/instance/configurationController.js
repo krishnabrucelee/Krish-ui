@@ -125,6 +125,7 @@ function configurationCtrl($scope, $stateParams, appService, localStorageService
           		$scope.formSubmitted = true;
           		if (form.$valid) {
           		        $scope.formSubmitted = false;
+          		        $scope.showLoader = true;
 				$scope.global.webSocketLoaders.computeOffer = true;
           			$scope.instances.computeOfferingId = $scope.instance.computeOffering.id;
           			$scope.instances.computeOffering = $scope.instance.computeOffering;
@@ -140,6 +141,7 @@ function configurationCtrl($scope, $stateParams, appService, localStorageService
 	                            }
                         }
                         $scope.global.webSocketLoaders.computeOffer = false;
+                        $scope.showLoader = false;
                         });
           			}
           		},
@@ -269,7 +271,9 @@ function configurationCtrl($scope, $stateParams, appService, localStorageService
    		if (form.$valid) {
                         $scope.formSubmitted = false;
                         $scope.instances.keypairId = $scope.resetSSH.keypairName.id;
+                        $scope.showLoader = true;
 			$scope.global.webSocketLoaders.vmsshKey = true;
+			$scope.showLoader = true;
    			var hasServer = appService.crudService.updates("virtualmachine/reset", $scope.instances);
    			hasServer.then(function (result) {
                          $scope.instances = result;
@@ -283,8 +287,10 @@ function configurationCtrl($scope, $stateParams, appService, localStorageService
                          });
                          }
                      $scope.global.webSocketLoaders.vmsshKey = false;
+                     $scope.showLoader = false;
                  }
                  $scope.global.webSocketLoaders.vmsshKey = false;
+                 $scope.showLoader = false;
                  });
    			}
    		};

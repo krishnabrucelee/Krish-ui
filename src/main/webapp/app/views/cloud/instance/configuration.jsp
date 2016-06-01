@@ -20,7 +20,7 @@
             <div class="row m-t-md">
                 <div class="col-md-10 col-sm-10 col-xs-10">
  				<div data-ng-if="global.webSocketLoaders.computeOffer" class="overlay-wrapper">
-                	<img data-ng-if="global.webSocketLoaders.computeOffer" src="images/loading-bars.svg" class="inner-loading" />
+                	<get-show-loader-image data-ng-show="global.webSocketLoaders.computeOffer"></get-show-loader-image>
             	</div>
                     <form name="instanceForm" method="POST" data-ng-submit="save(instanceForm, instance)" novalidate class="form-horizontal">
                          <div class="form-group" ng-class="{ 'text-danger' : instanceForm.computeoffer.$invalid && OfferingSubmitted}">
@@ -241,10 +241,9 @@
         <div class="col-md-7 col-sm-7 col-xs-12">
 
             <div class="row m-t-md">
-                <div class="col-md-10 col-sm-10 col-xs-10">
                 <div data-ng-if="global.webSocketLoaders.vmsshKey" class="overlay-wrapper">
-                <img data-ng-if="global.webSocketLoaders.vmsshKey" src="images/loading-bars.svg" class="inner-loading" />
-            </div>
+                	<get-show-loader-image data-ng-show="global.webSocketLoaders.vmsshKey"></get-show-loader-image>
+            	</div>
                    <form name="resetForm" data-ng-submit="resetKey(resetForm, resetSSH)" method="post" novalidate class="form-horizontal">
                         <div class="form-group" ng-class="{ 'text-danger' : resetForm.keypairName.$invalid && formSubmitted}">
                             <label class="col-sm-4 control-label"><fmt:message key="select.the.key.pair" bundle="${msg}" />

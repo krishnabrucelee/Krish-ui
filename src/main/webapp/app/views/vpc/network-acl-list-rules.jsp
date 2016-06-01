@@ -9,7 +9,7 @@
 <div data-ng-controller="vpcCtrl">
 <div class="white-content" >
 <div data-ng-if="global.webSocketLoaders.egressLoader" class="overlay-wrapper">
-   <img data-ng-if="global.webSocketLoaders.egressLoader" src="images/loading-bars.svg" class="inner-loading" />
+    <get-show-loader-image data-ng-show="global.webSocketLoaders.egressLoader"></get-show-loader-image>
 </div>
 <!-- <div class="table-responsive acl-table">
                 <table cellspacing="1" cellpadding="1" class="table table-bordered table-striped">

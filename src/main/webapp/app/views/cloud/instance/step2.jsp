@@ -7,7 +7,7 @@
 <fmt:setBundle basename="i18n/messages_${language}" var="msg" scope="session" />
 
 <div data-ng-if="showLoaderOffer" style="margin: 40%">
-	<get-loader-image-offer data-ng-show="showLoaderOffer"></get-loader-image-offer>
+	<get-loader-image-offer ></get-loader-image-offer>
 </div>
 <form name="instanceForm" class="form-horizontal" >
 <div data-ng-if="!showLoaderOffer">

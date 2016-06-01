@@ -38,10 +38,11 @@ pageEncoding="UTF-8"%>
              <div class="col-md-12 m-t-sm">
                 <div class="panel">
                     <div class="panel-body p-sm">
-                        <div class="text-center m-t-xxxl" data-ng-show="showQuotaLoader">
-                             <img src="images/loading-bars.svg" />
+                        <div class="text-center m-t-xxxl" data-ng-show="showLoader">
+                            <!-- <img src="images/loading-bars.svg" data-ng-show="showLoader" /> -->
+							<get-loader-image ></get-loader-image>
                          </div>
-                        <div class="row dashboard-quota-area" data-ng-hide="showQuotaLoader">
+                        <div class="row dashboard-quota-area" data-ng-hide="showLoader">
                             <div data-ng-if="quotaLimit.max != '-1'" class="col-md-2 col-sm-4 col-xs-6 dashboard-quota" data-ng-repeat="quotaLimit in quotaLimits">
                             	<div class="doughnut-fixed-area">
                             	    <div data-ng-if="quotaLimit.percentage == undefined" class="m-b-sm"><img src="images/unlimited-quota.png" ></div>

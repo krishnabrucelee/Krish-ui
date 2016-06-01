@@ -8,7 +8,8 @@
 
 <div class="hpanel" ui-view>
 <div data-ng-if="global.webSocketLoaders.networkLoader" class="overlay-wrapper">
-                		            <img data-ng-if="global.webSocketLoaders.networkLoader" src="images/loading-bars.svg" class="inner-loading" />
+      <!-- <img data-ng-if="global.webSocketLoaders.networkLoader" src="images/loading-bars.svg" class="inner-loading" /> -->
+      <get-show-loader-image data-ng-show="global.webSocketLoaders.networkLoader"></get-show-loader-image>
  </div>
 <div class="row m-l-sm m-r-sm panel-body" data-ng-controller="networksCtrl">
      <ul class="nav nav-tabs" data-ng-init="templateCategorys = tabviews">

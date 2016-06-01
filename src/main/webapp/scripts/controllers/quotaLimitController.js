@@ -220,7 +220,7 @@ $scope.getResourceDomain = function() {
 		      "IP": {label: "IP"}, "PrimaryStorage": {label: "PrimaryStorage"}, "SecondaryStorage": {label: "SecondaryStorage"},
 		      "Snapshot": {label: "Snapshot"}
 		    };
-    $scope.showQuotaLoader = true;
+    $scope.showLoader = true;
     var resourceArr = ["CPU", "Memory", "Volume", "Network", "IP", "PrimaryStorage", "SecondaryStorage", "Snapshot"];
     if (angular.isUndefined($scope.domainView) || $scope.domainView == null) {
         var hasResourceDomainId = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET , globalConfig.APP_URL + "dashboard/quota");
@@ -228,7 +228,7 @@ $scope.getResourceDomain = function() {
        var hasResourceDomainId = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET , globalConfig.APP_URL + "resourceDomains/listByDomain/"+$scope.domainView.id);
    }
     hasResourceDomainId.then(function (result) {  // this is only run after $http completes
-      $scope.showQuotaLoader = false;
+      $scope.showLoader = false;
         angular.forEach(result, function(obj, key) {
         	if(obj.usedLimit == null || obj.usedLimit == "null") {
       		   obj.usedLimit = 0;

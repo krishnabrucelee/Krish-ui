@@ -8,7 +8,7 @@
 
         <div  ui-view ng-controller="vpcCtrl">
         <div data-ng-if="global.webSocketLoaders.networkLoader" class="overlay-wrapper">
-                		            <img data-ng-if="global.webSocketLoaders.networkLoader" src="images/loading-bars.svg" class="inner-loading" />
+         <get-show-loader-image data-ng-show="global.webSocketLoaders.networkLoader"></get-show-loader-image>
             		            </div>
             <div class="row" >
                 <div class="col-md-12">

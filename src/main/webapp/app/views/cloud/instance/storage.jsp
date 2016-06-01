@@ -11,7 +11,9 @@
 
         <div class="col-md-12">
         <div data-ng-if="global.webSocketLoaders.vmstorageLoader" class="overlay-wrapper">
-                <img data-ng-if="global.webSocketLoaders.vmstorageLoader" src="images/loading-bars.svg" class="inner-loading" />
+<!--                 <img data-ng-if="global.webSocketLoaders.vmstorageLoader" src="images/loading-bars.svg" class="inner-loading" />
+ -->
+<get-show-loader-image data-ng-show="global.webSocketLoaders.vmstorageLoader"></get-show-loader-image>
             </div>
             <div class="row">
                     <div class="col-md-12 col-sm-12">

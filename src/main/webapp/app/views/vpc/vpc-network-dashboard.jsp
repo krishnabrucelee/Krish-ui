@@ -7,8 +7,7 @@
 <fmt:setBundle basename="i18n/messages_${language}" var="msg" scope="session" />
 
   <div data-ng-if="global.webSocketLoaders.networkLoader" class="overlay-wrapper">
-                		            <img data-ng-if="global.webSocketLoaders.networkLoader" src="images/loading-bars.svg" class="inner-loading" />
-            		            </div>
+<get-show-loader-image data-ng-show="global.webSocketLoaders.networkLoader"></get-show-loader-image>            		            </div>
 <form name="addnetworkForm" data-ng-submit="updateNetwork(addnetworkForm)" data-ng-controller="vpcCtrl"
 	method="post" novalidate="">
 	<div class="row" ui-view>

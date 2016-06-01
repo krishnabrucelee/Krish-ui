@@ -119,7 +119,10 @@
                                 <fmt:message key="common.previous" bundle="${msg}" />
                             </button>
                             <div class="pull-right">
-                                <img src="images/loading-bars.svg" data-ng-if="showLoader" width="30" height="30" />
+                                <!-- <img src="images/loading-bars.svg" data-ng-if="showLoader" width="30" height="30" /> -->
+                                <get-loader-image></get-loader-image>
+                                <!-- <get-show-loader-image></get-show-loader-image> -->
+
                                 <a class="btn btn-default" id="create_instance_cancel_button" data-ng-if="!showLoader" ng-click="cancel()">
                                     <fmt:message key="common.cancel" bundle="${msg}" />
                                 </a>

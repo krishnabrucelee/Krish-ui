@@ -8,7 +8,8 @@ pageEncoding="UTF-8"%>
 
 <div data-ng-controller="networksCtrl">
 <div data-ng-if="global.webSocketLoaders.egressLoader" class="overlay-wrapper">
-   <img data-ng-if="global.webSocketLoaders.egressLoader" src="images/loading-bars.svg" class="inner-loading"/>
+<!--    <img data-ng-if="global.webSocketLoaders.egressLoader" src="images/loading-bars.svg" class="inner-loading"/>
+ -->   <get-show-loader-image data-ng-show="global.webSocketLoaders.egressLoader"></get-show-loader-image>
 </div>
 	<form name = "egressForm" novalidate data-ng-submit="egressSave(egressForm,firewallRules)" method="post">
         <table cellspacing="1" cellpadding="1" class="table table-bordered table-striped">

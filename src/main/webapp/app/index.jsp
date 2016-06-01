@@ -98,8 +98,11 @@
         <div class="splash-title">
             <h1>Panda - User Console</h1>
             <p>Cloud Management Portal</p>
-            <img src="images/loading-bars.svg" width="64" height="64" />
-        </div>
+<!--             <img src="images/loading-bars.svg" width="64" height="64" />
+ -->
+
+<get-loader-image></get-loader-image>
+ </div>
     </div>
     <!--[if lt IE 7]>
 <p class="alert alert-danger">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
