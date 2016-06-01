@@ -31,6 +31,14 @@ public class LoginController extends HttpServlet {
 		// TODO Auto-generated method stub
 		RequestDispatcher rd = request
                 .getRequestDispatcher("app/login.jsp");
+		String value = System.getenv("REQUEST_PROTOCOL");
+		request.setAttribute("REQUEST_PROTOCOL", value);
+
+		String port = System.getenv("REQUEST_PORT");
+		request.setAttribute("REQUEST_PORT", port);
+
+		String folder = System.getenv("REQUEST_FOLDER");
+		request.setAttribute("REQUEST_FOLDER", folder);
         rd.forward(request, response);
 	}
 

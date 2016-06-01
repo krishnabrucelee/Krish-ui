@@ -67,6 +67,9 @@ pageEncoding="UTF-8"%>
                             <label for="remeber_login"><fmt:message key="remember.login" bundle="${msg}" /></label>
                             <p class="small">(<fmt:message key="private.computer" bundle="${msg}" />)</p>
                         </div>
+                       	<input type="hidden" value="${REQUEST_PROTOCOL}" id="request_protocol" />
+                        <input type="hidden" value="${REQUEST_PORT}" id="request_port" />
+                        <input type="hidden" value="${REQUEST_FOLDER}" id="request_folder" />
                         <get-login-loader-image data-ng-show="showLoader"></get-login-loader-image>
                         <button data-ng-hide="showLoader" id="login_button" type="submit" class="btn btn-default"><fmt:message key="common.login" bundle="${msg}" /></button>
                     </form>
@@ -87,6 +90,7 @@ pageEncoding="UTF-8"%>
 <script src="bower_components/sanitize/angular-sanitize.min.js"></script>
 <script src="scripts/controllers/loginController.js"></script>
 <script src="scripts/factories/rememberMeService.js"></script>
+<script src="scripts/constants/appConstants.js"></script>
 <script src="scripts/factories/globalConfig.js"></script>
 <script src="bower_components/angular/angular-cookies.js"></script>
 <script src="bower_components/angular-local-storage/dist/angular-local-storage.js"></script>
@@ -107,6 +111,20 @@ pageEncoding="UTF-8"%>
     }
 </script>
 <script type="text/javascript">
+	var REQUEST_PROTOCOL = document.getElementById("request_protocol").value;
+	if(REQUEST_PROTOCOL == "" || typeof(REQUEST_PROTOCOL) == "undefined" || REQUEST_PROTOCOL == null) {
+		REQUEST_PROTOCOL = "http";
+	}
+
+	var REQUEST_PORT = document.getElementById("request_port").value;
+	if(REQUEST_PORT != "" && typeof(REQUEST_PORT) != "undefined" && REQUEST_PORT != null) {
+		REQUEST_PORT = ":" + REQUEST_PORT;
+	}
+
+	var REQUEST_FOLDER = document.getElementById("request_folder").value;
+	if(REQUEST_FOLDER == "" || typeof(REQUEST_FOLDER) == "undefined" || REQUEST_FOLDER == null) {
+		REQUEST_FOLDER = "/";
+	}
     var USER_CONTEXT_PATH = "<%=request.getContextPath()%>";
 </script>
 </html>

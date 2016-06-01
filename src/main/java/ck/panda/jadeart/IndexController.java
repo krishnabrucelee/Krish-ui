@@ -66,6 +66,14 @@ public class IndexController extends HttpServlet {
         response.setLocale(currentLocale);
         request.getSession().setAttribute("javax.servlet.jsp.jstl.fmt.locale.session", languageString);
         request.getSession().setAttribute("language", languageString);
+        String value = System.getenv("REQUEST_PROTOCOL");
+		request.setAttribute("REQUEST_PROTOCOL", value);
+
+		String port = System.getenv("REQUEST_PORT");
+		request.setAttribute("REQUEST_PORT", port);
+
+		String folder = System.getenv("REQUEST_FOLDER");
+		request.setAttribute("REQUEST_FOLDER", folder);
 
         RequestDispatcher rd = request
                 .getRequestDispatcher("app/index.jsp");

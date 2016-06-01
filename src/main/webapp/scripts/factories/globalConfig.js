@@ -48,7 +48,7 @@ function globalConfig($window) {
             currencyLabel : "CNY"
         },
         networks : {
-            name : "http://" + window.location.hostname + ":9090"+USER_CONTEXT_PATH+"/index#/billing/payments"
+            name : REQUEST_PROTOCOL + window.location.hostname + REQUEST_PORT + REQUEST_FOLDER+"index#/billing/payments"
         },
         sort : {
             column : '',
@@ -297,11 +297,11 @@ function globalConfig($window) {
         HTTP_POST : 'POST',
         HTTP_PUT : 'PUT',
         HTTP_DELETE : 'DELETE',
-        APP_URL : "http://" + window.location.hostname + ":8080/api/",
-        SOCKET_URL : "http://" + window.location.hostname + ":8080/",
-        PING_APP_URL : "http://" + window.location.hostname + ":8086/api/",
-        MONITOR_URL : "http://211.156.49.15:4242/api/",
-        BASE_UI_URL : "http://" + window.location.hostname + ":9090"+USER_CONTEXT_PATH+"/",
+        APP_URL : REQUEST_PROTOCOL + window.location.hostname + ":8080/api/",
+        SOCKET_URL : REQUEST_PROTOCOL + window.location.hostname + ":8080/",
+        PING_APP_URL : REQUEST_PROTOCOL + window.location.hostname + ":8086/api/",
+        MONITOR_URL : REQUEST_PROTOCOL +"211.156.49.15:4242/api/",
+        BASE_UI_URL : REQUEST_PROTOCOL + window.location.hostname + REQUEST_PORT + REQUEST_FOLDER,
 
         CONTENT_LIMIT : 10,
         VIEW_URL : 'app/views/',

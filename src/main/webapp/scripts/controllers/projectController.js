@@ -308,7 +308,7 @@ if ($scope.domainView != null && $scope.vmSearch == null) {
     	 }
      });**/
  $scope.changedomain = function(obj) {
-        $scope.newProject.projectOwner = {};
+        $scope.newProject.projectOwner = "";
         if($scope.global.sessionValues.type !== 'USER') {
    	  	if (!angular.isUndefined(obj)) {
        	 	$scope.departmentList(obj);
@@ -519,7 +519,7 @@ if ($scope.domainView != null && $scope.vmSearch == null) {
                     $scope.formSubmitted = true;
                     if (form.$valid) {
                         var project = angular.copy($scope.project);
-			if(!angular.isUndefined($scope.project.projectOwner) && $scope.project.projectOwner != null) { 
+			if(!angular.isUndefined($scope.project.projectOwner) && $scope.project.projectOwner != null) {
                         project.projectOwnerId = $scope.project.projectOwner.id;
     		            delete project.projectOwner;
 			}
