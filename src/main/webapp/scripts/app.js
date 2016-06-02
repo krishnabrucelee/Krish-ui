@@ -40,7 +40,7 @@
         var $cookies = initInjectors.get("$cookies");
         var rootScope = initInjectorss.get("$rootScope");
         var localStorageService = initInjectorss.get("localStorageService");
-        return $http({method:'get', url: 'http://'+ window.location.hostname +':8080/api/'  + 'users/usersessiondetails/'+localStorageService.get('id'),
+        return $http({method:'get', url: REQUEST_PROTOCOL + window.location.hostname +':8080/api/'  + 'users/usersessiondetails/'+localStorageService.get('id'),
 			"headers": {'x-auth-token': localStorageService.get('token'), 'x-requested-with': '', 'Content-Type': 'application/json', 'Range': "items=0-9", 'x-auth-login-token': localStorageService.get('loginToken'), 'x-auth-remember': localStorageService.get('rememberMe'), 'x-auth-user-id': localStorageService.get('id'), 'x-auth-login-time': localStorageService.get('loginTime')}})
 			.then(function(result){
 				myApplication.constant("tokens", result.data);

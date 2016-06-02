@@ -21,7 +21,7 @@
                 <div class="form-group has-error col-md-9 col-sm-9  col-xs-9">
                     <p ><fmt:message key="please.confirm.that.you.want.to.stop.this.instance" bundle="${msg}" />.</p>
                     <input id="agree" icheck type="checkbox" name="agree" class="input-mini p-md"  data-ng-model="agree.value1"/>
-                   <label class="m-l-sm font-normal" for="agree"> Forced Stop</label>
+                   <label class="m-l-sm font-normal" for="agree"> <fmt:message key="forced.stop" bundle="${msg}" /></label>
                 </div>
 
 

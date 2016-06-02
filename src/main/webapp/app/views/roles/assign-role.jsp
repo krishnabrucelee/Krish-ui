@@ -11,7 +11,7 @@
 	<div class="inmodal">
 		<div class="modal-header">
 			<panda-modal-header id="assign_role_page_title" page-icon="fa fa-user-plus" hide-zone="false"
-				page-title="Assign Role"></panda-modal-header>
+				page-title="<fmt:message key="assign.role" bundle="${msg}" />"></panda-modal-header>
 		</div>
 		<div class="modal-body">
 			<div class="row">

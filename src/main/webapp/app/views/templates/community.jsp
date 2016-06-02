@@ -27,7 +27,7 @@ pageEncoding="UTF-8"%>
 		<div  class="col-md-4 col-md-offset-4 clearfix">
 			<div class="hpanel">
 			    <div  class="panel-body no-records p-xs text-center" data-ng-hide="template.listCommunityTemplate.length > 0">
-					 <h5>No Records Found</h5><br>
+					 <h5><fmt:message key="common.no.records.found" bundle="${msg}" /></h5><br>
 					 <img src="images/no-templates-found.png" border="0" alt="no records found" title="no records found">
 			    </div>
 		    </div>

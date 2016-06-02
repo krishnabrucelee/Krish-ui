@@ -421,7 +421,7 @@ pageEncoding="UTF-8"%>
                                                         <fmt:message key="cpu.cores" bundle="${msg}" />
                                                     </b>
                                                 </td>
-                                                 <td class="col-md-8 col-sm-8"><span data-ng-if="!instance.computeOffering.customized">{{ instance.computeOffering.numberOfCores}}</span><span data-ng-if="instance.computeOffering.customized">{{ instance.cpuCore}}</span></td>
+                                                 <td class="col-md-8 col-sm-8">{{ instance.cpuCore}}</td>
                                             </tr>
                                             <tr>
                                                 <td class="col-md-4 col-sm-4">
@@ -429,7 +429,7 @@ pageEncoding="UTF-8"%>
                                                         <fmt:message key="ram" bundle="${msg}" />
                                                     </b>
                                                 </td>
-                                                <td class="col-md-8 col-sm-8"><span data-ng-if="!instance.computeOffering.customized">{{ instance.computeOffering.memory}}</span><span data-ng-if="instance.computeOffering.customized">{{ instance.memory}}</span></td>
+                                                <td class="col-md-8 col-sm-8">{{ instance.memory}}</td>
                                             </tr>
                                             <tr>
                                                 <td class="col-md-4 col-sm-4">

@@ -633,10 +633,12 @@ angular
         .constant("PANDA_CONFIG", {
             "VIEW_URL" : "app/views/",
         })
-        .factory('myFactory', function($http, globalConfig, $cookies, $window, tokens, localStorageService, utilService) {
+        .factory('myFactory', function($http, globalConfig, AppConstants, $cookies, $window, tokens, localStorageService, utilService) {
             var loginSession = globalConfig.sessionValues;
             if ((loginSession == null || angular.isUndefined(globalConfig.sessionValues)) && tokens != null) {
                 globalConfig.sessionValues = tokens;
+                AppConstants.REQUEST_PROTOCOL = tokens.REQUEST_PROTOCOL;
+                AppConstants.REQUEST_PORT = tokens.REQUEST_PORT;
                 localStorageService.set('rememberMe', tokens.rememberMe);
                 if ((angular.isUndefined(localStorageService.get('rememberMe')) || localStorageService
                         .get('rememberMe') == false || localStorageService.get('rememberMe') == "false") && (angular

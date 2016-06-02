@@ -51,24 +51,27 @@ pageEncoding="UTF-8"%>
                     <form name="test" method="post" id="loginForm" data-ng-submit="loginForm()">
                         <h6 class="alert alert-danger" style="display: none" id="errorMsg"></h6>
                         <div class="form-group">
-                            <label class="control-label" for="username">Username</label>
-                            <input type="text" placeholder="username" title="Please enter you username" required="" data-ng-model="user_name" name="user_name" id="user_name" class="form-control">
+                            <label class="control-label" for="username"><fmt:message key="common.username" bundle="${msg}" /></label>
+                            <input type="text" placeholder="<fmt:message key="common.small.username" bundle="${msg}" />" title="<fmt:message key="please.enter.your.username" bundle="${msg}" />" required="" data-ng-model="user_name" name="user_name" id="user_name" class="form-control">
                         </div>
                         <div class="form-group">
-                            <label class="control-label" for="password">Password</label>
-                            <input type="password" title="Please enter your password" placeholder="******" required="" data-ng-model="user_password" name="user_password" id="user_password" class="form-control">
+                            <label class="control-label" for="password"><fmt:message key="common.password" bundle="${msg}" /></label>
+                            <input type="password" title="<fmt:message key="please.enter.your.password" bundle="${msg}" />" placeholder="******" required="" data-ng-model="user_password" name="user_password" id="user_password" class="form-control">
                         </div>
                         <div class="form-group">
-                            <label class="control-label" for="domain">Company</label>
-                            <input type="text" placeholder="Company" title="Please enter you domain" required="" data-ng-model="user_domain" name="user_domain" id="user_domain" class="form-control">
+                            <label class="control-label" for="domain"><fmt:message key="common.domain" bundle="${msg}" /></label>
+                            <input type="text" placeholder="<fmt:message key="common.small.company" bundle="${msg}" />" title="<fmt:message key="please.enter.your.domain" bundle="${msg}" />" required="" data-ng-model="user_domain" name="user_domain" id="user_domain" class="form-control">
                         </div>
                         <div class="checkboxs">
                             <input data-ng-click="rememberMe()" id="user_remember" data-ng-model="user_remember" name="user_remember" type="checkbox">
-                            <label for="remeber_login">Remember login</label>
-                            <p class="small">(if this is a private computer)</p>
+                            <label for="remeber_login"><fmt:message key="remember.login" bundle="${msg}" /></label>
+                            <p class="small">(<fmt:message key="private.computer" bundle="${msg}" />)</p>
                         </div>
+                       	<input type="hidden" value="${REQUEST_PROTOCOL}" id="request_protocol" />
+                        <input type="hidden" value="${REQUEST_PORT}" id="request_port" />
+                        <input type="hidden" value="${REQUEST_FOLDER}" id="request_folder" />
                         <get-login-loader-image data-ng-show="showLoader"></get-login-loader-image>
-                        <button data-ng-hide="showLoader" id="login_button" type="submit" class="btn btn-default">Login</button>
+                        <button data-ng-hide="showLoader" id="login_button" type="submit" class="btn btn-default"><fmt:message key="common.login" bundle="${msg}" /></button>
                     </form>
                 </div>
             </div>
@@ -87,6 +90,7 @@ pageEncoding="UTF-8"%>
 <script src="bower_components/sanitize/angular-sanitize.min.js"></script>
 <script src="scripts/controllers/loginController.js"></script>
 <script src="scripts/factories/rememberMeService.js"></script>
+<script src="scripts/constants/appConstants.js"></script>
 <script src="scripts/factories/globalConfig.js"></script>
 <script src="bower_components/angular/angular-cookies.js"></script>
 <script src="bower_components/angular-local-storage/dist/angular-local-storage.js"></script>
@@ -107,6 +111,20 @@ pageEncoding="UTF-8"%>
     }
 </script>
 <script type="text/javascript">
+	var REQUEST_PROTOCOL = document.getElementById("request_protocol").value;
+	if(REQUEST_PROTOCOL == "" || typeof(REQUEST_PROTOCOL) == "undefined" || REQUEST_PROTOCOL == null) {
+		REQUEST_PROTOCOL = "http";
+	}
+
+	var REQUEST_PORT = document.getElementById("request_port").value;
+	if(REQUEST_PORT != "" && typeof(REQUEST_PORT) != "undefined" && REQUEST_PORT != null) {
+		REQUEST_PORT = ":" + REQUEST_PORT;
+	}
+
+	var REQUEST_FOLDER = document.getElementById("request_folder").value;
+	if(REQUEST_FOLDER == "" || typeof(REQUEST_FOLDER) == "undefined" || REQUEST_FOLDER == null) {
+		REQUEST_FOLDER = "/";
+	}
     var USER_CONTEXT_PATH = "<%=request.getContextPath()%>";
 </script>
 </html>

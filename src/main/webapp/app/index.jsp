@@ -93,6 +93,10 @@
 <body ng-controller="appCtrl"
     class="{{$state.current.data.specialClass}}" landing-scrollspy tour
     backdrop="true">
+    <input type="hidden" value="${REQUEST_PROTOCOL}" id="request_protocol" />
+                         <input type="hidden" value="${REQUEST_PORT}" id="request_port" />
+                         <input type="hidden" value="${REQUEST_FOLDER}" id="request_folder" />
+
     <!-- Simple splash screen-->
     <div class="splash loading-screen">
         <div class="splash-title">
@@ -186,7 +190,22 @@
  https://developers.google.com/maps/documentation/javascript/tutorial#api_key
  After your sign up replace the key in the URL below..
 -->
+<script type="text/javascript">
+var REQUEST_PROTOCOL = document.getElementById("request_protocol").value;
+	if(REQUEST_PROTOCOL == "" || typeof(REQUEST_PROTOCOL) == "undefined" || REQUEST_PROTOCOL == null) {
+		REQUEST_PROTOCOL = "http";
+	}
 
+	var REQUEST_PORT = document.getElementById("request_port").value;
+	if(REQUEST_PORT != "" && typeof(REQUEST_PORT) != "undefined" && REQUEST_PORT != null) {
+		REQUEST_PORT = ":" + REQUEST_PORT;
+	}
+
+	var REQUEST_FOLDER = document.getElementById("request_folder").value;
+	if(REQUEST_FOLDER == "" || typeof(REQUEST_FOLDER) == "undefined" || REQUEST_FOLDER == null) {
+		REQUEST_FOLDER = "/";
+	}
+	</script>
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
     <script src="scripts/angular-momentjs.js"></script>
     <script src="scripts/moment-timezone.js"></script>
@@ -233,6 +252,7 @@
     <script src="scripts/controllers/accountController.js"></script>
     <script src="scripts/controllers/applicationController.js"></script>
     <script src="scripts/controllers/paymentController.js"></script>
+    <script src="scripts/constants/appConstants.js"></script>
     <script src="scripts/factories/appService.js"></script>
     <script src="scripts/factories/utilService.js"></script>
     <script src="scripts/factories/loginService.js"></script>

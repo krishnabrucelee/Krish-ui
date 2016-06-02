@@ -13,29 +13,29 @@ import javax.servlet.http.HttpSession;
 
 @WebFilter("/*")
 public class MyFilter implements Filter {
-	/** The base name for the resource bundle */
-	private final static String BASE_NAME = "i18n/messages";
+    /** The base name for the resource bundle */
+    private final static String BASE_NAME = "i18n/messages";
 
-	/** The resource bundle for testing which resource bundle is available */
-	private ResourceBundle bundle = null;
+    /** The resource bundle for testing which resource bundle is available */
+    private ResourceBundle bundle = null;
 
-	/** Locale to be stored in the session */
-	private Locale locale;
+    /** Locale to be stored in the session */
+    private Locale locale;
 
-	/** The default locale we are using */
-	private Locale defaultLocale = new Locale("en");
+    /** The default locale we are using */
+    private Locale defaultLocale = new Locale("en");
 
-	/** The HTTP request, used to retrieve a session */
-	private HttpServletRequest httpRequest = null;
+    /** The HTTP request, used to retrieve a session */
+    private HttpServletRequest httpRequest = null;
 
-	/** The HTTP session. The locale is stored in the session */
-	private HttpSession session = null;
+    /** The HTTP session. The locale is stored in the session */
+    private HttpSession session = null;
 
-	public void init(FilterConfig arg0) throws ServletException {
-	}
+    public void init(FilterConfig arg0) throws ServletException {
+    }
 
 
-	/**
+    /**
      * Filter all request to one of the web services.
      *
      * <p>
@@ -58,59 +58,70 @@ public class MyFilter implements Filter {
      *            ServletResponse object
      *
      */
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain)
-			throws IOException, ServletException {
-		// All data coming from the app is UTF-8
-        request.setCharacterEncoding("UTF-8");
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain)
+            throws IOException, ServletException {
+        String requestedUri = ((HttpServletRequest)request).getRequestURI();
+        System.out.println("URI" + requestedUri);
+        String contentType = ((HttpServletRequest)request).getContentType();
+        System.out.println("ContentType" + contentType);
+        //((HttpServletRequest)request).getContentType().equals("text/html")
+        if(!requestedUri.matches(".*(css|jpg|png|gif|js|woff)")) {
+            System.out.println("URI" + requestedUri);
+            // All data coming from the app is UTF-8
+            request.setCharacterEncoding("UTF-8");
 
-        // Retrieve the HTTP session
-        httpRequest = (HttpServletRequest) request;
-        session = httpRequest.getSession();
+            // Retrieve the HTTP session
+            httpRequest = (HttpServletRequest) request;
+            session = httpRequest.getSession();
 
-        Cookie[] cookies = httpRequest.getCookies();
+            Cookie[] cookies = httpRequest.getCookies();
 
-		// Default Language
-		String languageString = "en";
-		// Get the selected language from cookie
-		if(cookies == null){
-			this.findBundle();
-		}
-		else {
-			for (Cookie cookie : cookies) {
-				if (cookie != null) {
-					if ("ls.language".equals(cookie.getName())) {
-						languageString = cookie.getValue();
-					}
-				}
-			}
-		}
+            // Default Language
+            String languageString = "en";
+            // Get the selected language from cookie
+            if(cookies == null){
+                this.findBundle();
+            }
+            else {
+                for (Cookie cookie : cookies) {
+                    if (cookie != null) {
+                        if ("ls.language".equals(cookie.getName())) {
+                            languageString = cookie.getValue();
+                        }
+                    }
+                }
+            }
 
-        // A locale can be manually selected by passing a request paramater
-        // with the variable name language to the filter containing a
-        // ISO-639 two letter country code
-        String languageCode = languageString;
-        // Check if we have a locale in the session
-        this.locale = (Locale) session.getAttribute("myLocale");
+            // A locale can be manually selected by passing a request paramater
+            // with the variable name language to the filter containing a
+            // ISO-639 two letter country code
+            String languageCode = languageString;
+            // Check if we have a locale in the session
+            this.locale = (Locale) session.getAttribute("myLocale");
 
-        // If no locale is defined in the session, automatically find the best
-        // match
-        if (this.locale == null) {
-            this.findBundle();
+            // If no locale is defined in the session, automatically find the best
+            // match
+            if (this.locale == null) {
+                this.findBundle();
+                this.locale = (Locale) session.getAttribute("myLocale");
+            } else {
+                System.out.println("else Checking for localesss " + this.locale);
+            }
+
+            System.out.println("Checking for localecode " + languageCode);
+            System.out.println("Checking for locale " + this.locale);
+            // Check if user manually selected a new language for the app
+            if (languageCode != null && languageCode.length() == 2
+                    && languageCode != this.locale.getLanguage()) {
+                this.setNewLocale(languageCode);
+            }
+            request.setAttribute("language", this.locale);
         }
-
-        System.out.println("Checking for localecode " + languageCode);
-        System.out.println("Checking for locale " + this.locale);
-        // Check if user manually selected a new language for the app
-        if (languageCode != null && languageCode.length() == 2
-                && languageCode != this.locale.getLanguage()) {
-            this.setNewLocale(languageCode);
-        }
-        request.setAttribute("language", this.locale);
         filterChain.doFilter(request, response);
-	}
+    }
 
-	public void destroy() {
-	}
+    public void destroy() {
+    }
 
 
     /**
@@ -140,10 +151,11 @@ public class MyFilter implements Filter {
         } else if (languageCode.equals(defaultLocale.getLanguage())) {
             // This is the default locale right now
             session.setAttribute("myLocale", bundle.getLocale());
+            this.locale = bundle.getLocale();
             System.out.println("Using default locale " + defaultLocale);
         } else {
             // Requested locale not found, change nothing
-        	System.out.println("Invalid locale or missing resource bundle for manually selected locale "
+            System.out.println("Invalid locale or missing resource bundle for manually selected locale "
                             + languageCode);
         }
     }
@@ -170,14 +182,16 @@ public class MyFilter implements Filter {
         // the browser's preferred locales; cache the final locale for future
         // use
         else {
-            Enumeration localeEnumerator = httpRequest.getLocales();
+            /**Enumeration localeEnumerator = httpRequest.getLocales();
             while (localeEnumerator.hasMoreElements()) {
                 locale = (Locale) localeEnumerator.nextElement();
-                System.out.println("Checking for locale " + locale);
+                System.out.println("Checking for localesssss " + locale.getLanguage());
+                System.out.println("####################### ");
+                System.out.println("Checking for cl " + cl);
 
                 // get a bundle and see whether it has a good locale
                 ResourceBundle testBundle = ResourceBundle.getBundle(
-                		MyFilter.BASE_NAME, locale, cl);
+                        MyFilter.BASE_NAME, locale, cl);
                 String language = testBundle.getLocale().getLanguage();
                 String country = testBundle.getLocale().getCountry();
 
@@ -208,22 +222,24 @@ public class MyFilter implements Filter {
                         continue;
                     }
                 } else {
-                	System.out.println("Locale " + locale + " not available");
+                    System.out.println("Locale " + locale + " not available");
                 }
-            } // end while loop / stepping through localeEnumerator
+            } */
+            // end while loop / stepping through localeEnumerator
 
             // Bundle should not be null here, but just to make sure we have one,
             // select the default one.
             if (bundle == null) {
                 bundle = ResourceBundle.getBundle(MyFilter.BASE_NAME);
+                //locale = bundle.getLocale();
             }
-
-            System.out.println("Using locale " + locale);
+            System.out.println("Else part");
+            this.setNewLocale("en");
 
             // If we don't have a locale in the session, store it now
-            if (session.getAttribute("myLocale") == null) {
-                session.setAttribute("myLocale", bundle.getLocale());
-            }
+//            if (session.getAttribute("myLocale") == null) {
+//                session.setAttribute("myLocale", bundle.getLocale());
+//            }
         }
 
     }

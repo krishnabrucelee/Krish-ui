@@ -45,7 +45,7 @@
                                     <div class="vertical-timeline-content">
 
                                         <div class="timeline-title">
-                                            NIC  {{ $index + 1}}  <div class="pull-right" data-ng-if="nic.isDefault" class="timeline-primary">(Default)</div>
+                                            <fmt:message key="nic" bundle="${msg}" />  {{ $index + 1}}  <div class="pull-right" data-ng-if="nic.isDefault" class="timeline-primary">(<fmt:message key="common.default" bundle="${msg}" />)</div>
                                                                          </div>
                                         <div class="row">
                                             <div class="col-md-12">

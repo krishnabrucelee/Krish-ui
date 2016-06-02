@@ -25,7 +25,7 @@
                     <div class="form-group" ng-class="{ 'text-danger' : isoForm.isolist.$invalid && formSubmitted}">
 
                         <div class="row" >
-                            <label class="col-md-offset-1 col-sm-offset-1  col-md-2 col-xs-3 col-sm-1 control-label ">ISO<span class="text-danger">*</span>
+                            <label class="col-md-offset-1 col-sm-offset-1  col-md-2 col-xs-3 col-sm-1 control-label "><fmt:message key="common.iso" bundle="${msg}" /><span class="text-danger">*</span>
                             </label>
                             <div class="col-md-5 col-xs-5 col-sm-5">
                                 <select required="true" class="form-control input-group" name="isolist"
