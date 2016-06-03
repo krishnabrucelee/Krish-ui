@@ -8,9 +8,11 @@
 
 <div ui-view ng-controller="networksCtrl">
 	<div data-ng-hide="viewContent" data-ng-init="list(1)">
-	<div data-ng-if="global.webSocketLoaders.vpcLoader" class="overlay-wrapper">
-                		            <img data-ng-if="global.webSocketLoaders.vpcLoader" src="images/loading-bars.svg" class="inner-loading" width="64" height="64" />
-            		            </div>
+	<div data-ng-if="global.webSocketLoaders.networkLoader" class="overlay-wrapper">
+<!--                 		            <img data-ng-if="global.webSocketLoaders.vpcLoader" src="images/loading-bars.svg" class="inner-loading" width="64" height="64" />
+ -->
+ <get-show-loader-image data-ng-show="global.webSocketLoaders.networkLoader"></get-show-loader-image>
+ </div>
 		<div class="hpanel">
 			<div class="panel-heading no-padding">
 				<div class="row">

@@ -37,10 +37,9 @@
                         <h5 class="no-margins text-primary">
                             <fmt:message key="common.infrastructure" bundle="${msg}" />
                         </h5>
-                        <div class="text-center m-t-xxxl" data-ng-show="showInfrastructureLoader">
-                             <img src="images/loading-bars.svg" />
-                         </div>
-                        <div class="row" data-ng-hide="showInfrastructureLoader">
+                        <div class="text-center m-t-xxxl" data-ng-show="showLoaderOffer">
+<get-loader-image-offer></get-loader-image-offer>                         </div>
+                        <div class="row" data-ng-hide="showLoaderOffer">
                             <div class="col-md-4 col-sm-4 col-xs-6">
                                 <div class="quick-view-details running-vm">
                                     <div class="quick-view-icon text-right pull-right"></div>
@@ -124,10 +123,9 @@
                         <h5 class="no-margins text-primary">
                             <fmt:message key="quota" bundle="${msg}" />
                         </h5>
-                        <div class="text-center m-t-xxxl" data-ng-show="showQuotaLoader">
-                             <img src="images/loading-bars.svg" />
-                         </div>
-                        <div class="row dashboard-quota-area" data-ng-hide="showQuotaLoader">
+                        <div class="text-center m-t-xxxl" data-ng-show="showLoaderDetail">
+<get-loader-image-detail></get-loader-image-detail>                         </div>
+                        <div class="row dashboard-quota-area" data-ng-hide="showLoaderDetail">
                             <div data-ng-if="quotaLimit.max != '-1'"class="col-md-3 col-sm-3 col-xs-6 dashboard-quota" data-ng-repeat="quotaLimit in quotaLimits">
                                 <div class="doughnut-fixed-area">
                                     <div data-ng-if="quotaLimit.percentage == undefined" class="m-b-sm"><img src="images/unlimited-quota.png" ></div>
@@ -181,10 +179,9 @@
                                     </thead>
                                 </table>
                             </div>
-                             <div class="text-center m-t-xxxl" data-ng-show="showTopDeptLoader">
-                                 <img src="images/loading-bars.svg" />
-                             </div>
-                             <div data-ng-hide="showDeptLoader">
+                             <div class="text-center m-t-xxxl" data-ng-show="showDepartmentLoader">
+<get-department-loader-image></get-department-loader-image>                             </div>
+                             <div data-ng-hide="showDepartmentLoader">
 								<table cellspacing="1" cellpadding="3" class="top-projects table table-condensed table-striped">
                                      <tbody >
                                          <tr data-ng-repeat="department in top5DepartmentList | limitTo:5">
@@ -216,10 +213,9 @@
                                 </table>
                             </div>
 
-                             <div class="text-center m-t-xxxl" data-ng-show="showTopProjectLoader">
-                                 <img src="images/loading-bars.svg" />
-                             </div>
-                             <div data-ng-hide="showTopProjectLoader">
+                             <div class="text-center m-t-xxxl" data-ng-show="showLoader">
+<get-loader-image></get-loader-image>                             </div>
+                             <div data-ng-hide="showLoader">
                                  <table cellspacing="1" cellpadding="3" class="top-projects table table-condensed table-striped">
                                      <tbody >
                                          <tr data-ng-repeat="project in top5ProjectList | limitTo:5">
@@ -251,10 +247,9 @@
                                 </table>
                             </div>
                             <div class="slimScroll-175">
-                                   <div class="text-center m-t-xxxl" data-ng-show="showAppLoader">
-                                        <img src="images/loading-bars.svg" />
-                                    </div>
-                                <div data-ng-hide="showAppLoader">
+                                   <div class="text-center m-t-xxxl" data-ng-show="showLoader">
+<get-loader-image></get-loader-image>                                    </div>
+                                <div data-ng-hide="showLoader">
                                     <table cellspacing="1" cellpadding="3" class="top-projects table table-condensed table-striped">
                                         <tbody >
                                             <tr data-ng-repeat="application in applicationList">
@@ -280,12 +275,12 @@
                         </h5>
                         <div class="col-md-12">
 				            <div class="p-xxs">
-								<div class="row" data-ng-show="showCostByMonthLoader">
+								<div class="row" data-ng-show="showUsageLoader">
 									<div class="col-md-12 text-center">
-										<img src="images/loading-bars.svg" width="64" height="64" />
+										<get-usage-loader-image></get-usage-loader-image>
 									</div>
 								</div>
-								<div class="flot-chart" data-ng-hide="showCostByMontLoader">
+								<div class="flot-chart" data-ng-hide="showUsageLoader">
 				                    <div flot class="flot-chart-content" dataset="costCharData" options="costChartOptions"></div>
 				                </div>
 				            </div>

@@ -6,11 +6,11 @@ pageEncoding="UTF-8"%>
 <c:set var="language" value="${not empty language ? language : pageContext.request.getAttribute('language')}" scope="session" />
 <fmt:setBundle basename="i18n/messages_${language}" var="msg" scope="session" />
 
-    <div class="white-content" >
+    <div class="white-content" > {{global.webSocketLoaders.vpnLoader}}
     <div data-ng-if="global.webSocketLoaders.vpnLoader" class="overlay-wrapper">
-    <!-- <img data-ng-if="global.webSocketLoaders.vpnLoader" src="images/loading-bars.svg" class="inner-loading" /> -->
-    <get-show-loader-image data-ng-show="global.webSocketLoaders.vpnLoader"></get-show-loader-image>
-</div>
+     <!-- <img data-ng-if="global.webSocketLoaders.vpnLoader" src="images/loading-bars.svg" class="inner-loading" /> -->
+	<get-show-loader-image data-ng-show="global.webSocketLoaders.vpnLoader"></get-show-loader-image>
+ </div>
         <div class="hpanel">
             <div class="panel-heading">
                 <div class="row" >

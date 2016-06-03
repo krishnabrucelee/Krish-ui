@@ -100,10 +100,16 @@
 
                 <div class="row">
                     <div class="col-md-12">
+                    	<span class="pull-left">
+							<get-loader-image></get-loader-image>
+                    	</span>
+                    	<div class="clearfix"></div>
                         <span class="pull-right">
-                            <a class="btn btn-default" id="edit_project_cancel_button" data-ng-if="!projectLoader"  data-ng-click="cancel()"><fmt:message key="common.cancel" bundle="${msg}" /></a>
-                            <img src="images/loading-bars.svg" data-ng-if="projectLoader" width="30" height="30" />
-                            <button class="btn btn-info" id="edit_project_update_button"  data-ng-if="!projectLoader"  type="submit"><fmt:message key="common.update" bundle="${msg}" /></button>
+                            <a class="btn btn-default" id="edit_project_cancel_button" data-ng-if="!showLoader"  data-ng-click="cancel()"><fmt:message key="common.cancel" bundle="${msg}" /></a>
+<!--                             <img src="images/loading-bars.svg" data-ng-if="showLoader" width="30" height="30" />
+ -->
+
+ <button class="btn btn-info" id="edit_project_update_button"  data-ng-if="!showLoader"  type="submit"><fmt:message key="common.update" bundle="${msg}" /></button>
                         </span>
                     </div>
                 </div>

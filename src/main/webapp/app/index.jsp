@@ -102,8 +102,6 @@
         <div class="splash-title">
             <h1>Panda - User Console</h1>
             <p>Cloud Management Portal</p>
-<!--             <img src="images/loading-bars.svg" width="64" height="64" />
- -->
 
 <get-loader-image></get-loader-image>
  </div>

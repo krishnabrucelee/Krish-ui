@@ -123,7 +123,6 @@ if ($scope.featureSearch != null) {
 }
         hasfeaturetemplatesList.then(function (result) {  // this is only run after $http completes0
             $scope.template.listFeaturedTemplate = result;
-		console.log("list",result);
             $scope.showLoader = false;
         });
     };

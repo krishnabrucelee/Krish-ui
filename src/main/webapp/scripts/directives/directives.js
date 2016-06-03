@@ -30,9 +30,11 @@ angular
     .directive('paginationContent', paginationContent)
     .directive('paginationContents', paginationContents)
     .directive('getLoaderImage', getLoaderImage)
-    .directive('getLoaderImageOffer', getLoaderOfferImage)
-    .directive('getLoaderImageDetail', getLoaderDetailImage)
+    .directive('getLoaderImageOffer', getLoaderImageOffer)
+    .directive('getLoaderImageDetail', getLoaderImageDetail)
+    .directive('getUsageLoaderImage', getUsageLoaderImage)
     .directive('getShowLoaderImage', getShowLoaderImage)
+    .directive('getDepartmentLoaderImage', getDepartmentLoaderImage)
     .directive('getLoginLoaderImage', getLoginLoaderImage)
     .directive('passwordVerify', passwordVerify)
     .directive('validInteger', validInteger)
@@ -710,13 +712,12 @@ function getLoaderImage() {
 	return {
 		restrict: 'E',
         link: function (scope, element, attrs) {
-
         },
         templateUrl: "app/views/common/loader-image.jsp",
 	}
 }
 
-function getLoaderDetailImage() {
+function getLoaderImageDetail() {
 	return {
 		restrict: 'E',
         link: function (scope, element, attrs) {
@@ -726,7 +727,7 @@ function getLoaderDetailImage() {
 	}
 }
 
-function getLoaderOfferImage() {
+function getLoaderImageOffer() {
 	return {
 		restrict: 'E',
         link: function (scope, element, attrs) {
@@ -755,7 +756,24 @@ function getShowLoaderImage() {
         templateUrl: "app/views/common/show-loader-image.jsp",
 	}
 }
+function getUsageLoaderImage() {
+	return {
+		restrict: 'E',
+        link: function (scope, element, attrs) {
 
+        },
+        templateUrl: "app/views/common/usage-loader-image.jsp",
+	}
+}
+function getDepartmentLoaderImage() {
+	return {
+		restrict: 'E',
+        link: function (scope, element, attrs) {
+
+        },
+        templateUrl: "app/views/common/department-loader-image.jsp",
+	}
+}
 function validInteger() {
 	return {
 		require : '?ngModel',

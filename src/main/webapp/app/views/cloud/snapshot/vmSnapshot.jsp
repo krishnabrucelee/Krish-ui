@@ -11,7 +11,7 @@
             <div class="panel-heading">
                 <div class="row" >
                 <div data-ng-if="global.webSocketLoaders.snapshotLoader" class="overlay-wrapper">
-                		            <img data-ng-if="global.webSocketLoaders.snapshotLoader" src="images/loading-bars.svg" class="inner-loading" />
+ <get-loader-image-offer  data-ng-if="global.webSocketLoaders.snapshotLoader" ></get-loader-image-offer>
             		            </div>
                     <div class="col-md-12 col-sm-12 pull-left m-b-sm"><fmt:message key="note" bundle="${msg}" />:
                         <span class="text-danger "><fmt:message key="you.cannot.attach.or.detach.the.storage.volume" bundle="${msg}" />, <fmt:message key="when.the.particular.instance.have.vm.snapshots" bundle="${msg}" />. </span>

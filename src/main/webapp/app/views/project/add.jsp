@@ -100,9 +100,10 @@
                     <div class="row">
                         <div class="col-md-12">
                             <span class="pull-right">
-                                <a class="btn btn-default" id = "add_project_cancel_button" data-ng-if="!projectLoader" data-ng-click="cancel()"><fmt:message key="common.cancel" bundle="${msg}" /></a>
-                                 <img src="images/loading-bars.svg" data-ng-if="projectLoader" width="30" height="30" />
-                                <button class="btn btn-info"  id = "add_project_add_button" data-ng-if="!projectLoader"  type="submit"><fmt:message key="common.add" bundle="${msg}" /></button>
+                                <a class="btn btn-default" id = "add_project_cancel_button" data-ng-if="!showLoader" data-ng-click="cancel()"><fmt:message key="common.cancel" bundle="${msg}" /></a>
+
+ <get-loader-image></get-loader-image>
+ <button class="btn btn-info"  id = "add_project_add_button" data-ng-if="!showLoader"  type="submit"><fmt:message key="common.add" bundle="${msg}" /></button>
                             </span>
                         </div>
 

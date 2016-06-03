@@ -2341,6 +2341,7 @@ $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.vpnDestroy, fun
     $scope.ipLists(1);
 });
 $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.vpnUserAdd, function(event, args) {
+ $scope.vpnUserList($scope.ipDetails);
     appService.globalConfig.webSocketLoaders.vpnLoader = false;
     appService.localStorageService.set('view', 'vpn-details');
 });

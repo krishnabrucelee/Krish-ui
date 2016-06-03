@@ -12,14 +12,14 @@ function appCtrl($http, $scope, $window, $timeout, appService, globalConfig, cru
 
     // For iCheck purpose only
     $scope.infrastructure = {};
-    $scope.showInfrastructureLoader = true;
+    $scope.showLoaderOffer = true;
 
 
     $scope.getInfrastructureDetails = function() {
       var hasResult = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "dashboard/infrastructure");
       hasResult.then(function(result) {  // this is only run after;
           $scope.infrastructure  = result;
-          $scope.showInfrastructureLoader = false;
+            $scope.showLoaderOffer = false;
       });
     }
 
@@ -30,14 +30,14 @@ function appCtrl($http, $scope, $window, $timeout, appService, globalConfig, cru
       "Snapshot": {label: "Snapshot"}
     };
 
-    $scope.showQuotaLoader = true;
+    $scope.showLoaderDetail = true;
     var resourceArr = ["CPU", "Memory", "Volume", "Network", "IP", "PrimaryStorage", "SecondaryStorage", "Snapshot"];
 
     $scope.getResourceQuotaDetails = function() {
       var hasResourceDomainId = promiseAjax.httpTokenRequest( globalConfig.HTTP_GET , globalConfig.APP_URL + "dashboard/quota");
       hasResourceDomainId.then(function (result) {  // this is only run after $http completes
-        $scope.showQuotaLoader = false;
-          angular.forEach(result, function(obj, key) {
+            $scope.showLoaderDetail = false;
+                angular.forEach(result, function(obj, key) {
         	  if(obj.usedLimit == null || obj.usedLimit == "null") {
         		  obj.usedLimit = 0;
         	  }
@@ -245,9 +245,9 @@ customTooltips: function customTooltips(tooltip){
     };
 
     $scope.filterByApplication = function () {
-        $scope.showAppLoader = true;
+        $scope.showLoader = true;
         $timeout(function () {
-            $scope.showAppLoader = false;
+            $scope.showLoader = false;
         }, 400);
     };
 
@@ -339,23 +339,25 @@ customTooltips: function customTooltips(tooltip){
     };
 
 
-    $scope.showTopDeptLoader = false;
+                $scope.showDepartmentLoader = false;
     $scope.getTopDepartmentCostList = function(type) {
-      $scope.showTopDeptLoader = true;
-      var hasDepartments = promiseAjax.httpTokenRequest( globalConfig.HTTP_GET , globalConfig.APP_URL + "usage/usageByAccount");
+      $scope.showDepartmentLoader = true;
+            var hasDepartments = promiseAjax.httpTokenRequest( globalConfig.HTTP_GET , globalConfig.APP_URL + "usage/usageByAccount");
       hasDepartments.then(function (result) {  // this is only run after $http completes
-          $scope.showTopDeptLoader = false;
-          $scope.top5DepartmentList = result;
+                $scope.showDepartmentLoader = false;
+$scope.top5DepartmentList = result;
+
+
       });
     }
 
 
-    $scope.showTopProjectLoader = false;
+    $scope.showLoader = false;
     $scope.getTopProjectCostList = function(type) {
-      $scope.showTopProjectLoader = true;
+      $scope.showLoader = true;
       var hasProjects = promiseAjax.httpTokenRequest( globalConfig.HTTP_GET , globalConfig.APP_URL + "usage/usageByProject");
       hasProjects.then(function (result) {  // this is only run after $http completes
-          $scope.showTopProjectLoader = false;
+          $scope.showLoader = false;
           $scope.top5ProjectList = result;
       });
     }
@@ -399,13 +401,13 @@ customTooltips: function customTooltips(tooltip){
 
     $scope.costChartOptions = appService.utilService.getFlotBarOptions();
     $scope.costCharData = appService.utilService.getFlotBarData();
-    $scope.showCostByMonthLoader = false;
+    $scope.showUsageLoader = false;
     $scope.getCostByMonthGraph = function() {
-        $scope.showCostByMonthLoader = true;
+        $scope.showUsageLoader = true;
         var hasProjects = promiseAjax.httpTokenRequest( globalConfig.HTTP_GET , globalConfig.APP_URL + "usage/usageTotalByDomain");
         hasProjects.then(function (result) {  // this is only run after $http completes
           $scope.domainUsateCost = result;
-          $scope.showCostByMonthLoader = false;
+          $scope.showUsageLoader = false;
           var usageData = [];
           var ticks = [];
           var i=0;
