@@ -637,6 +637,8 @@ angular
             var loginSession = globalConfig.sessionValues;
             if ((loginSession == null || angular.isUndefined(globalConfig.sessionValues)) && tokens != null) {
                 globalConfig.sessionValues = tokens;
+                globalConfig.sessionValues.token = localStorageService.get('token');
+                globalConfig.sessionValues.loginToken = localStorageService.get('loginToken');
                 AppConstants.REQUEST_PROTOCOL = tokens.REQUEST_PROTOCOL;
                 AppConstants.REQUEST_PORT = tokens.REQUEST_PORT;
                 localStorageService.set('rememberMe', tokens.rememberMe);
