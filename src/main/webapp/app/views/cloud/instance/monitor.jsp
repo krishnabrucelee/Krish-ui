@@ -7,11 +7,11 @@
 <fmt:setBundle basename="i18n/messages_${language}" var="msg" scope="session" />
 
 <div class="m-l-sm m-r-sm monitor-charts" ng-controller="instanceMonitorCtrl">
-<!-- <div data-ng-show = "showLoader" style="margin: 20%">
+	<div data-ng-show = "showLoader" style="margin: 20%">
                 <get-loader-image data-ng-if="showLoader"></get-loader-image>
             </div>
-            <div data-ng-hide="showLoader"> -->
-    <div class="row clearfix ">
+            <div data-ng-hide="showLoader">
+	<div class="row clearfix ">
 
         <div class="col-lg-12 col-md-12 col-sm-12">
 
@@ -37,7 +37,7 @@
 
                         <select data-ng-change="updateGraphByRange()" class="form-control"
                             name="cpuActions"
-                            data-ng-init="range.actions = instanceElements.actions[0]; updateGraphByRange();"
+                            data-ng-init="range.actions = instanceElements.actions[0];"
                             data-ng-model="range.actions"
                             ng-options="actions.name for actions in instanceElements.actions">
                         </select>
@@ -303,7 +303,7 @@
         </div>
     </div>
     <hr>
-
+</div>
 </div>
 
 <!-- <flot dataset="myData" options="myChartOptions"></flot> -->
