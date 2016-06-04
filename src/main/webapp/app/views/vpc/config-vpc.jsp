@@ -123,7 +123,7 @@
 	                                                            <a id="config_vpc_public_lb_ip" ui-sref="vpc.view-vpc.config-vpc.lbip({id3: {{network.id}}})">
 	                                                                <div class="panel panel-info">
 	                                                                    <div class="panel-body config-box p-xxs text-info text-center">
-	                                                                        <h3> {{lbrulesList[$index]}}</h3>
+	                                                                        <h3> {{lbrulesList[network.id]}}</h3>
 	                                                                        <fmt:message key="public.lb.ip" bundle="${msg}" />
 	                                                                    </div>
 	                                                                </div>
@@ -137,7 +137,7 @@
 	                                                            <a id="config_vpc_static_nats" ui-sref="vpc.view-vpc.config-vpc.natip({id4: {{network.id}}})" >
 	                                                                <div class="panel panel-info">
 	                                                                    <div class="panel-body config-box p-xxs text-info text-center ">
-	                                                                        <h3> {{natList[$index]}}</h3>
+	                                                                        <h3> {{natList[network.id]}}</h3>
 	                                                                        <fmt:message key="static.nats" bundle="${msg}" />
 	                                                                    </div>
 	                                                                </div>
@@ -151,7 +151,7 @@
 	                                                          <a id="config_vpc_virtual_machines" ui-sref="vpc.view-vpc.config-vpc.virtual-machines({id2: {{network.id}}})" >
 	                                                                <div class="panel panel-info">
 	                                                                    <div class="panel-body config-box p-xxs text-info text-center">
-	                                                                        <h3>{{networkVMList[$index]}}</h3>
+	                                                                        <h3>{{networkVMList[network.id]}}</h3>
 	                                                                        <fmt:message key="virtual.machines" bundle="${msg}" />
 	                                                                    </div>
 	                                                                </div>
