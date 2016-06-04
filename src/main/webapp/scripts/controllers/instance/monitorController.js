@@ -23,6 +23,7 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
 	var hasServer = appService.crudService.read("virtualmachine", $stateParams.id);
         hasServer.then(function(result) {
             $scope.instance = result;
+            $scope.hostName = result.name;
             //$scope.uuid = result.uuid;
             webSockets.init(appService.globalConfig.MONITOR_SOCKET_URL + 'stack/watch', $scope.uuid);
             webSockets.connect( function(frame) {
@@ -159,7 +160,7 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
     	    {
     	    	 $timeout(function() {
     	             $scope.showLoader = false;
-    	         }, 15000);
+    	         }, 10000);
      });
 
 
@@ -1328,45 +1329,48 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
     }
 
     var dataSubscribe = function() {
-        webSockets.subscribe("/topic/stackwatch.cpu/" + appService.globalConfig.sessionValues.id +"/"+ 'c62b4df6-a996-470d-b1c0-b42806619382', function(message) {
+        webSockets.subscribe("/topic/stackwatch.cpu/" + appService.globalConfig.sessionValues.id +"/"+ $scope.uuid, function(message) {
         	var cpuResult = JSON.parse(message.body).perCpuUsage;
-        	angular.forEach(cpuResult, function(value, key){
+        	$scope.cpuCount = cpuResult.length;
+        	angular.forEach(angular.fromJson(cpuResult), function(value, key){
             	getCpuPerformanceByFilters(key, -1, pandaChart.chartTypes.CPU, value);
         	});
         });
-        webSockets.subscribe("/topic/stackwatch.memory/" + appService.globalConfig.sessionValues.id +"/"+ 'c62b4df6-a996-470d-b1c0-b42806619382', function(message) {
+        webSockets.subscribe("/topic/stackwatch.memory/" + appService.globalConfig.sessionValues.id +"/"+ $scope.uuid, function(message) {
         	var memoryResult = JSON.parse(message.body);
             getMemoryPerformanceByFilter(0, -1, pandaChart.chartTypes.MEMORY, memoryResult.total, "Total" );
             getMemoryPerformanceByFilter(1, -1, pandaChart.chartTypes.MEMORY, memoryResult.free, "Free" );
         });
-        webSockets.subscribe("/topic/stackwatch.disk/" + appService.globalConfig.sessionValues.id +"/"+ 'c62b4df6-a996-470d-b1c0-b42806619382', function(message) {
+        webSockets.subscribe("/topic/stackwatch.disk/" + appService.globalConfig.sessionValues.id +"/"+ $scope.uuid, function(message) {
         	var diskResult = JSON.parse(message.body);
+        	$scope.diskCount = diskResult.read.length;
         	if($scope.diskStatus == 'read') {
-            	angular.forEach(diskResult.read, function(value, key){
+            	angular.forEach(angular.fromJson(diskResult.read), function(value, key){
             		$scope.disks.push(value.tags);
             		getDiskPerformanceByFilters(key, -1, pandaChart.chartTypes.DISK, value, "read");
             	});
         	} else {
         		$scope.disks.push(value.tags);
-            	angular.forEach(diskResult.write, function(value, key){
+            	angular.forEach(angular.fromJson(diskResult.write), function(value, key){
             		getDiskPerformanceByFilters(key, -1, pandaChart.chartTypes.DISK, value, "write");
             	});
         	}
         });
-        webSockets.subscribe("/topic/stackwatch.network/" + appService.globalConfig.sessionValues.id +"/"+ 'c62b4df6-a996-470d-b1c0-b42806619382', function(message) {
+        webSockets.subscribe("/topic/stackwatch.network/" + appService.globalConfig.sessionValues.id +"/"+ $scope.uuid, function(message) {
         	var networkResult = JSON.parse(message.body);
-        	angular.forEach(networkResult.receive, function(value, key){
+        	$scope.networkCount = networkResult.receive.length;
+        	angular.forEach(angular.fromJson(networkResult.receive), function(value, key){
         		$scope.interfaces.push(value.tags);
         		getNetworkPerformanceByFilter(key, -1, pandaChart.chartTypes.NETWORK, value, "In");
         	});
-        	angular.forEach(networkResult.send, function(value, key){
+        	angular.forEach(angular.fromJson(networkResult.send), function(value, key){
         		getNetworkPerformanceByFilter(key, -1, pandaChart.chartTypes.NETWORK, value, "Out");
         	});
         });
-        webSockets.subscribe("/topic/stackwatch.connection/" + appService.globalConfig.sessionValues.id +"/"+ 'c62b4df6-a996-470d-b1c0-b42806619382' , function(message) {
+        webSockets.subscribe("/topic/stackwatch.connection/" + appService.globalConfig.sessionValues.id +"/"+ $scope.uuid , function(message) {
 
         });
-        webSockets.subscribe("/topic/stackwatch.all/" + appService.globalConfig.sessionValues.id +"/"+ 'c62b4df6-a996-470d-b1c0-b42806619382', function(message) {
+        webSockets.subscribe("/topic/stackwatch.all/" + appService.globalConfig.sessionValues.id +"/"+ $scope.uuid, function(message) {
 
         });
     }

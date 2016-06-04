@@ -6,7 +6,7 @@
 <c:set var="language" value="${not empty language ? language : pageContext.request.getAttribute('language')}" scope="session" />
 <fmt:setBundle basename="i18n/messages_${language}" var="msg" scope="session" />
 
-<div class="m-l-sm m-r-sm " ng-controller="instanceMonitorWindowsCtrl">
+<div class="m-l-sm m-r-sm " >
 
     <div class="row clearfix ">
 
