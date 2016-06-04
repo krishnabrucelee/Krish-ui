@@ -24,7 +24,7 @@
 							<get-loader-image-offer data-ng-show="showLoaderOffer"></get-loader-image-offer>
 					</div>
                   	<div data-ng-hide="showLoaderOffer">
-                    <div class="col-md-8 col-md-offset-2 col-sm-12 vpc-diagram-area">
+                    <div class="col-md-10 col-md-offset-1 col-sm-12 vpc-diagram-area">
                     	<div class="clearfix"></div>
                     	<div class="row">
                         <div class="col-md-6 col-sm-6 pull-left vpc-diagram-router">
@@ -34,7 +34,7 @@
                                         <div class="timeline-title router">
                                             <span class="fa fa-exchange "></span> <fmt:message key="router" bundle="${msg}" />
                                         </div>
-                                        <div class="p-sm">
+                                        <div class="p-xs">
                                             <div class="col-md-6 ">
                                                 <div class="media-body">
                                                 	<!-- <a id="config_vpc_private_gateway" ui-sref="vpc.private-gateway({id: {{ 1}}})"> -->
@@ -96,13 +96,13 @@
                                         <div class="h-timeline">
                                             <div class="vertical-timeline-content">
                                                 <div class="timeline-title">
-                                                	<div class="pull-left m-t-xs">{{ network.name }}</div>
+                                                	<div class="pull-left">{{ network.name }}</div>
                                                     <div class="pull-right"><a class="btn font-bold" id="config_vpc_network_name"
 													ui-sref="vpc.view-vpc.config-vpc.view-network({idNetwork: {{ network.id }}, view: 'view'})"
 													title="View Network"><span class="fa fa-external-link"></span> <fmt:message key="view" bundle="${msg}" /></a></div>
 													<div class="clearfix"></div>
                                                 </div>
-                                                <div class="p-sm">
+                                                <div class="p-xs">
                                                     <div class="col-md-6">
 	                                                    <div class="media">
 	                                                        <div class="media-body">
@@ -160,7 +160,7 @@
 	                                                    </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6"> <div class="m-b-md m-l-md"><fmt:message key="common.cidr" bundle="${msg}" />: {{network.cIDR}}</div></div>
+                                                <div class="col-md-6"> <div class="m-b-xs m-l-md"><fmt:message key="common.cidr" bundle="${msg}" />: {{network.cIDR}}</div></div>
                                             </div>
                                         </div>
                                     </div>
