@@ -45,7 +45,7 @@ pageEncoding="UTF-8"%>
 <div class="login-container">
     <div class="row">
         <div class="col-md-12">
-		<div data-ng-bind-html="welcomeContent | to_trusted "></div>
+		<div data-ng-bind-html="welcomeContentUser | to_trusted "></div>
             <div class="hpanel hbgblue">
                 <div class="panel-body" >
                     <form name="test" method="post" id="loginForm" data-ng-submit="loginForm()">
