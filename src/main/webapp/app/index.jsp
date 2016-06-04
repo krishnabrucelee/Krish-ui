@@ -98,13 +98,21 @@
                          <input type="hidden" value="${REQUEST_FOLDER}" id="request_folder" />
 
     <!-- Simple splash screen-->
-    <div class="splash loading-screen">
+    <!-- <div class="splash loading-screen">
         <div class="splash-title">
             <h1>Panda - User Console</h1>
             <p>Cloud Management Portal</p>
             <img src="images/loading-bars.svg" width="64" height="64" />
         </div>
-    </div>
+    </div> -->
+
+    <div class="splash loading-screen"> <div class="splash-title">
+<h1><p id="p1"></p></h1>
+<div class="loader-img-wrapper">
+	<div class='uil-ripple-css' style='transform:scale(0.32);'><div></div><div></div></div>
+</div></div>
+</div>
+
     <!--[if lt IE 7]>
 <p class="alert alert-danger">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
 <![endif]-->
@@ -286,3 +294,18 @@ var REQUEST_PROTOCOL = document.getElementById("request_protocol").value;
 
 </body>
 </html>
+
+
+<script type="text/javascript">
+
+
+
+var re = new RegExp("splashTitleUser" + "=([^;]+)");
+//var re = new RegExp("splashTitle" + "!#$%&'()*+-./:<=>?@[]^_`{|}~");
+var value = re.exec(document.cookie);
+var text = unescape(value[1]);
+		//var splashTitle = splashText[1].split(';');
+		document.getElementById("p1").innerHTML = text;
+		//document.write(unescape(value[1]));
+
+	</script>

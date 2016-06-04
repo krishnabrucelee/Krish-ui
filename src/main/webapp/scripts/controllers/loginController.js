@@ -36,8 +36,10 @@ angular.module('homer', ['ngCookies', 'LocalStorageModule'])
 		return $http({method:'get', url:  REQUEST_PROTOCOL+ $window.location.hostname +':8080/home/list'})
 		.then(function(result){
 			$scope.themeSettings = result;
-			 $scope.welcomeContent = result.data.welcomeContent;
+			 $scope.welcomeContentUser = result.data.welcomeContentUser;
 			 $scope.footerContent = result.data.footerContent;
+			 $scope.splashTitleUser= result.data.splashTitleUser;
+			 $cookies.splashTitleUser = result.data.splashTitleUser;
 		});
 	};
 	$scope.themeSettingList();
