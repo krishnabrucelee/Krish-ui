@@ -6,8 +6,6 @@
 <c:set var="language" value="${not empty language ? language : pageContext.request.getAttribute('language')}" scope="session" />
 <fmt:setBundle basename="i18n/messages_${language}" var="msg" scope="session" />
 <!-- This is content container for nested view in UI-Router-->
-<!-- You can put here any constant element in app content for example: Page title or breadcrum -->
-
 <!-- Header -->
 <ng-include id="header" src="global.getViewPageUrl('common/header.jsp')"></ng-include>
 
