@@ -17,6 +17,12 @@ function storageCtrl($scope, $state, $stateParams, appService, $window, volumeSe
     $scope.volumeElement = {};
     // Load domain
     $scope.domain = {};
+    $scope.diskTotal = [];
+    $scope.diskUsed = [];
+    $scope.diskFree = [];
+
+    var bytesFormulaValue = 1073741824;
+
     var hasDomains = appService.crudService.listAll("domains/list");
     hasDomains.then(function(result) {
         $scope.volumeElement.domainList = result;
@@ -94,7 +100,7 @@ function storageCtrl($scope, $state, $stateParams, appService, $window, volumeSe
                         delete volume.zone;
                     }
                     appService.globalConfig.webSocketLoaders.vmstorageLoader = true;
-		    $modalInstance.close(); 
+		    $modalInstance.close();
                     var hasServer = appService.crudService.add("volumes/attach/" + volume.id, volume);
                     hasServer.then(function(result) { // this is only run after $http completes
                         $scope.showLoader = false;
@@ -348,9 +354,9 @@ function storageCtrl($scope, $state, $stateParams, appService, $window, volumeSe
                                 volume.zoneId = volume.zone.id;
                                 delete volume.zone;
                             }
-			    
+
                             appService.globalConfig.webSocketLoaders.vmstorageLoader = true;
-                            $modalInstance.close();	
+                            $modalInstance.close();
                             var hasVolume = appService.crudService.add("volumes", volume);
                             hasVolume.then(function(result) {
                                 $scope.showLoader = false;
@@ -604,6 +610,25 @@ function storageCtrl($scope, $state, $stateParams, appService, $window, volumeSe
             }
         });
 
+    $scope.$on("DISK", function(event, msg) {
+    	$scope.diskTotal = msg.total;
+    	$scope.diskUsed = msg.used;
+    	angular.forEach($scope.diskUsed, function(val, index) {
+    		 var usedMemory = "";
+    		 var totalMemory = "";
+             angular.forEach(angular.fromJson(val.dataPoints), function(val, index) {
+                 usedMemory = val;
+             });
+             angular.forEach(angular.fromJson(angular.fromJson($scope.diskTotal[index].dataPoints)), function(val, index) {
+            	 totalMemory = val;
+             });
+             console.log(totalMemory);
+    		$scope.rootUsage[index] = ((usedMemory / bytesFormulaValue) / (totalMemory/ bytesFormulaValue) * 100).toFixed(2);
+            $scope.memoryStyle[index] = {
+                width : parseInt($scope.rootUsage[index]) + "%"
+            };
+        });
+    });
 
     // API for storage
 
@@ -669,11 +694,9 @@ function storageCtrl($scope, $state, $stateParams, appService, $window, volumeSe
                 usedMemory = val;
             });
 
-            $scope.rootUsage[index] = ((usedMemory / bytesFormulaValue) / 3.9 * 100).toFixed(2);
-            $scope.memoryStyle[index] = {
-                width : parseInt($scope.rootUsage[index]) + "%"
-            };
+
 
         });
+
     }
 };
