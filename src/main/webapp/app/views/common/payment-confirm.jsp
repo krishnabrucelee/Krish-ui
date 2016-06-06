@@ -16,8 +16,7 @@
 						<div class="col-md-12 text-center">
 							<h1>Payment - Processing..</h1>
 							<p>Cloud Management Portal</p>
-							<!-- <img src="images/loading-bars.svg" width="64" height="64" /> -->
-							<get-loader-offer></get-loader-offer>
+							<img src="images/loading-bars.svg" width="64" height="64" />
 						</div>
 					</div>
 					<p ng-bind-html="data"></p>
