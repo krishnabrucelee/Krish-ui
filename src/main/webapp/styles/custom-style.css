@@ -443,6 +443,13 @@ table.dataTable thead .sorting_desc::after {content: "\f0dd";}
 
 .no-records h5{color:#b7bdc7;}
 .login-bg{background-repeat: no-repeat !important; background-size: 100% 100% !important;}
+
+.legendColorBox{padding-left:20px; color:#4c6986;}
+.legendColorBox .fa{color:#4c6986;}
+
+.legendLabel.active a{color:#48a9da;}
+.legendColorBox.active .fa{color:#48a9da;}
+
 @media (max-width: 767px) {
     .table-responsive.responsive-x .dropdown-menu { position: relative !important; right: 200px !important; top: -34px;}
 }
