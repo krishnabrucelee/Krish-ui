@@ -23,6 +23,18 @@ function appCtrl($http, $scope, $window, $timeout, appService, globalConfig, cru
       });
     }
 
+$scope.themeSettingList = function () {
+		return $http({method:'get', url:  REQUEST_PROTOCOL+ $window.location.hostname +':8080/home/list'})
+		.then(function(result){
+			$scope.themeSettings = result;
+			 $scope.welcomeContentUser = result.data.welcomeContentUser;
+			 $scope.footerContent = result.data.footerContent;
+			 $scope.splashTitleUser= result.data.splashTitleUser;
+			 $cookies.splashTitleUser = result.data.splashTitleUser;
+		});
+	};
+	$scope.themeSettingList();
+
 
     $scope.quotaLimits = {
       "CPU": {label: "vCPU"}, "Memory": {label: "Memory"}, "Volume": {label: "Volume"}, "Network": {label: "Network"},
@@ -97,7 +109,15 @@ function appCtrl($http, $scope, $window, $timeout, appService, globalConfig, cru
     $scope.checkOne = true;
     $scope.appLanguage = function() {
         if(localStorageService.cookie.get('language') == null) {
-            localStorageService.cookie.set('language', 'en');
+        	var hasConfigs = appService.crudService.listAll("generalconfiguration/configlist");
+            hasConfigs.then(function (result) {
+                $scope.generalconfiguration = result[0];
+                if ($scope.generalconfiguration.defaultLanguage == 'Chinese') {
+                	localStorageService.cookie.set('language', 'zh');
+                } else {
+                	localStorageService.cookie.set('language', 'en');
+                }
+            });
         }
         return localStorageService.cookie.get('language');
     }();

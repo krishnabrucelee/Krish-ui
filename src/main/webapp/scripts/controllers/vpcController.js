@@ -808,26 +808,14 @@ if ($stateParams.id4 > 0) {
 $scope.instanceListForVpc = function(networkId){
     var listVpcVm = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "nics/listbynetwork?networkid="+networkId );
     listVpcVm.then(function(result) {
-        $scope.networkVMLists = [];
-        angular.forEach(result, function(value, key) {
-            if(result.length >= $scope.networkVMLists.length) {
-                $scope.networkVMLists.push(key + ': ' + value);
-            }
-        });
-        $scope.networkVMList.push($scope.networkVMLists.length);
+        $scope.networkVMList[networkId] = result.length;
     });
 }
 
 $scope.lBForVpc = function(networkId){
     var hasloadBalancer = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "loadBalancer/network/list?networkId=" + networkId + "&lang=" + appService.localStorageService.cookie.get('language'));
     hasloadBalancer.then(function(result) {
-        $scope.lbrulesLists = [];
-        angular.forEach(result, function(value, key) {
-            if(result.length >= $scope.lbrulesLists.length) {
-                $scope.lbrulesLists.push(key + ': ' + value);
-            }
-        });
-        $scope.lbrulesList.push($scope.lbrulesLists.length);
+        $scope.lbrulesList[networkId] = result.length;
     });
 }
 
@@ -1696,13 +1684,7 @@ $scope.vmPortId = instance;
     $scope.getNatList = function(networkId){
         var hasNat = appService.crudService.listByQuery("ipAddresses/vpc/nat/list?networkId=" + networkId);
         hasNat.then(function(result) {
-            $scope.natLists = [];
-            angular.forEach(result, function(value, key) {
-                if(result.length >= $scope.natLists.length) {
-                    $scope.natLists.push(key + ': ' + value);
-                }
-            });
-            $scope.natList.push($scope.natLists.length);
+            $scope.natList[networkId] = result.length;
         });
     };
 

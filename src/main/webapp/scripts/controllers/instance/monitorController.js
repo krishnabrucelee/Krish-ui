@@ -6,9 +6,42 @@
 
 angular.module('homer').controller('instanceMonitorCtrl', instanceMonitorCtrl)
 
-function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService) {
+function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService, webSockets, $timeout) {
+
+	 var webSocket = {};
+
+	    $rootScope.messages = '';
+	    $rootScope.initiateConnection = 0;
+
+	var headers = {};
+	$scope.instance = {};
+
+    $scope.uuid = "c62b4df6-a996-470d-b1c0-b42806619382";
+
+    var initStompClient = function() {
+
+	var hasServer = appService.crudService.read("virtualmachine", $stateParams.id);
+        hasServer.then(function(result) {
+            $scope.instance = result;
+            $scope.hostName = result.name;
+            //$scope.uuid = result.uuid;
+            webSockets.init(appService.globalConfig.MONITOR_SOCKET_URL + 'stack/watch', $scope.uuid);
+            webSockets.connect( function(frame) {
+                        dataSubscribe();
+                    }, function(error) {
+                    });
+        });
+    };
 
     var cpuData = [];
+
+    $scope.disks = [];
+
+    $scope.diskStatus = "read";
+
+    $scope.networkStatus = "in";
+
+    $scope.interfaces = [];
 
     $scope.cpuIndex = "";
 
@@ -16,11 +49,18 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
 
     $scope.storageIndex = "";
 
+    $scope.readwIndex = "";
+
     $scope.OpenTsdbIp = appService.globalConfig.MONITOR_URL;
 
     $scope.hostName = "az-monitor-centos";
 
     $scope.cpuCount = 4;
+
+    $scope.diskCount = 4;
+
+    $scope.networkCount = 4;
+
 
     $scope.cpu = {
         result : [],
@@ -114,6 +154,16 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
 
     var pandaChart = appService.monitorService.getPandaChart();
     var pandaMemoryChart = appService.monitorService.getPandaChart();
+    $scope.showLoader = true;
+
+    $scope.$watch('$viewContentLoaded', function()
+    	    {
+    	    	 $timeout(function() {
+    	             $scope.showLoader = false;
+    	         }, 10000);
+     });
+
+
 
     $scope.cpuAltEnabled = [];
 
@@ -134,6 +184,7 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
             }
         }
     };
+
 
     $scope.flotOptions = {
         series : {
@@ -221,6 +272,83 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
     chartIterationCount = 3;
     var forAdditionalIterations = [];
 
+
+    function getCpuPerformanceByFilters(indexValue, totalCount, chartType, result) {
+        var chartConfig = pandaChart.getConfigurationByRange($scope.range.actions.id);
+        dataIndexCount = chartConfig.dataIndexCount;
+        chartIterationCount = chartConfig.iterationCountCount;
+
+        $scope.flotOptions.xaxes[0].tickSize = chartConfig.tickSize;
+
+        $scope.flotOptions.colors = [ "#62cb31", "#d9534f", "#f0ad4e", "#48a9da", "#d81df5" ];
+        if (indexValue == 0 && totalCount != -1) {
+            chartIteration++;
+        }
+        if (chartIteration == chartIterationCount || totalCount == -1) {
+            forAdditionlTenIndex = 0;
+            if (indexValue == totalCount)
+                chartIteration = 0;
+
+               if (angular.isUndefined($scope.cpuData)) {
+                    $scope.cpuData = [];
+                    $scope.cpuAltData = [];
+                }
+
+                $scope.cpuData[indexValue] = [];
+                $scope.cpuAltData[indexValue] = [];
+//                //for (var i = 0; i < result.length; i++) {
+                    j++;
+                    var dataPoints = result.dataPoints;
+                    var dataIndex = 0;
+                    forAdditionalIterations[indexValue] = [];
+                    angular.forEach(angular.fromJson(dataPoints), function(obj, key) {
+                        dataIndex++;
+                        var currentValue = obj;
+                        if (dataIndex <= dataIndexCount) {
+                            $scope.cpuData[indexValue].push([ getDateByTime(key).getTime(), currentValue ]);
+                        } else {
+                            //forAdditionalIterations[indexValue].push([getDateByTime(key).getTime(), currentValue]);
+                        }
+                    });
+                    $scope.cpuAltData[indexValue] = $scope.cpuData[indexValue];
+                    var currentData = {
+                        data : $scope.cpuData[indexValue],
+                        yaxis : 100,
+                        label : "CPU " + indexValue,
+                        color : colorLabels[indexValue],
+                        points : {
+                            fillColor : colorLabels[indexValue],
+                            show : false
+                        },
+                        idx : indexValue
+                    };
+
+                    if (angular.isUndefined($scope.cpu.dataset[i])) {
+                        $scope.cpu.dataset[indexValue] = {
+                            data : []
+                        };
+                        $scope.cpu.altdataset[indexValue] = {
+                            data : []
+                        };
+                    }
+                    $scope.cpu.dataset[indexValue] = currentData;
+                    $scope.cpu.altdataset[indexValue] = currentData;
+//                }
+        }
+
+        if (indexValue == 0) {
+            jQuery('.cpu-chart-container').find('.flot-base, .flot-x-axis, .flot-overlay').css({
+                "margin-left" : 0
+            });
+        }
+        pandaChart.updateChartMarginByRangeAndIndex($scope.range.actions.id, indexValue, chartIteration, 'cpu-chart-container');
+
+        if ($scope.cpuIndex) {
+        	$scope.togglePlot($scope.cpuIndex, $scope.cpuData.length);
+        }
+
+    }
+
     function getPerformanceByFilters(url, indexValue, instanceName, totalCount, chartType) {
         var chartConfig = pandaChart.getConfigurationByRange($scope.range.actions.id);
         dataIndexCount = chartConfig.dataIndexCount;
@@ -251,6 +379,7 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
                     var dataPoints = result[i].dps;
                     var dataIndex = 0;
                     forAdditionalIterations[indexValue] = [];
+                    console.log(dataPoints)
                     angular.forEach(dataPoints, function(obj, key) {
                         dataIndex++;
                         var currentValue = obj;
@@ -312,13 +441,8 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
         chartIterationCount = 3;
         forAdditionalIterations = [];
         var displayName = $scope.hostName;
-        for (var cpuCores = 0; cpuCores < $scope.cpuCount; cpuCores++) {
-            getPerformanceByFilters("query?start=" + $scope.range.actions.id + "-ago&m=avg:rate:linux.cpu.percpu{host=" + displayName + ",type=user,cpu=" + cpuCores + "}", cpuCores, displayName, -1, pandaChart.chartTypes.CPU);
-        }
-        getPerformanceByFilters("query?start=" + $scope.range.actions.id + "-ago&m=avg:rate:linux.cpu{host=" + displayName + ",type=user}", cpuCores, displayName, -1, pandaChart.chartTypes.CPU);
-
         if (updatePerformance == 1) {
-            setInterval(function() {
+           /* setInterval(function() {
                 $scope
                         .$apply(function() {
                             for (var cpuCores = 0; cpuCores < $scope.cpuCount; cpuCores++) {
@@ -327,7 +451,7 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
                             getPerformanceByFilters("query?start=" + $scope.range.actions.id + "-ago&m=avg:rate:linux.cpu{host=" + displayName + ",type=user}", cpuCores, displayName, -1, pandaChart.chartTypes.CPU);
 
                         });
-            }, 5000);
+            }, 5000);*/
         }
 
     }
@@ -424,6 +548,84 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
     memoryChartIterationCount = 2;
     var memoryForAdditionalIterations = [];
 
+    function getMemoryPerformanceByFilter(indexValue, totalCount, chartType, result, memoryType) {
+        var chartConfig = pandaChart.getConfigurationByRange($scope.range.actions.id);
+        memoryIndexCount = chartConfig.dataIndexCount;
+        memoryChartIterationCount = chartConfig.iterationCountCount;
+        $scope.memoryFlotOptions.xaxes[0].tickSize = chartConfig.tickSize;
+
+        $scope.memoryFlotOptions.colors = [ "#62cb31", "#d9534f", "#f0ad4e", "#48a9da" ];
+        if (indexValue == 0 && totalCount != -1) {
+            memoryChartIteration++;
+        }
+        if (memoryChartIteration == memoryChartIterationCount || totalCount == -1) {
+            forAdditionlTenIndex = 0;
+            if (indexValue == totalCount)
+                memoryChartIteration = 0;
+
+                if (angular.isUndefined($scope.memoryData)) {
+                    $scope.memoryData = [];
+                    $scope.memoryAltData = [];
+                }
+
+                $scope.memoryData[indexValue] = [];
+                $scope.memoryAltData[indexValue] = [];
+
+                    var dataPoints = result.dataPoints;
+                    var dataIndex = 0;
+                    memoryForAdditionalIterations[indexValue] = [];
+                    angular.forEach(angular.fromJson(dataPoints), function(obj, key) {
+                        dataIndex++;
+                        var currentValue = obj;
+                        if (!angular.isUndefined(currentValue) && currentValue != 0) {
+                            currentValue = currentValue / (1024 * 1024);
+                        }
+                        if (dataIndex <= memoryIndexCount) {
+                            $scope.memoryData[indexValue].push([ getDateByTime(key).getTime(), currentValue ]);
+                        } else {
+                            //memoryForAdditionalIterations[indexValue].push([getDateByTime(key).getTime(), currentValue]);
+                        }
+                    });
+
+                    $scope.memoryAltData[indexValue] = $scope.memoryData[indexValue];
+
+                    var currentData = {
+                        data : $scope.memoryData[indexValue],
+                        yaxis : 100,
+                        label : memoryType,
+                        color : memoryColorLabels[indexValue],
+                        points : {
+                            fillColor : memoryColorLabels[indexValue],
+                            show : false
+                        },
+                        idx : indexValue
+                    };
+
+                    if (angular.isUndefined($scope.memory.dataset[i])) {
+                        $scope.memory.dataset[indexValue] = {
+                            data : []
+                        };
+                        $scope.memory.altdataset[indexValue] = {
+                            data : []
+                        };
+                    }
+                    $scope.memory.dataset[indexValue] = currentData;
+                    $scope.memory.altdataset[indexValue] = currentData;
+        }
+
+        if (indexValue == 0) {
+            jQuery('.memory-chart-container').find('.flot-base, .flot-x-axis, .flot-overlay').css({
+                "margin-left" : 0
+            });
+        }
+        pandaChart
+                .updateChartMarginByRangeAndIndex($scope.range.actions.id, indexValue, memoryChartIteration, 'memory-chart-container');
+
+        if ($scope.memoryIndex) {
+            $scope.toggleMemoryPlot($scope.memoryIndex, $scope.memoryData.length);
+        }
+    }
+
     function getMemoryPerformanceByFilters(url, indexValue, instanceName, totalCount, chartType, memoryType) {
         var chartConfig = pandaChart.getConfigurationByRange($scope.range.actions.id);
         memoryIndexCount = chartConfig.dataIndexCount;
@@ -518,14 +720,10 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
         memoryForAdditionalIterations = [];
         var displayName = $scope.hostName;
 
-        getMemoryPerformanceByFilters("query?start=" + $scope.range.actions.id + "-ago&m=avg:os.mem.total{host=" + displayName + "}", 0, displayName
-                .toLowerCase(), -1, pandaChart.chartTypes.MEMORY, "Total");
-        getMemoryPerformanceByFilters("query?start=" + $scope.range.actions.id + "-ago&m=avg:os.mem.free{host=" + displayName + "}", 1, displayName
-                .toLowerCase(), -1, pandaChart.chartTypes.MEMORY, "Free");
-        //getMemoryPerformanceByFilters("query?start=" + $scope.memory.actions.id + "-ago&m=sum:os.mem.used{host="+ displayName +"}", 2,  displayName.toLowerCase(), -1, pandaChart.chartTypes.MEMORY);
+         //getMemoryPerformanceByFilters("query?start=" + $scope.memory.actions.id + "-ago&m=sum:os.mem.used{host="+ displayName +"}", 2,  displayName.toLowerCase(), -1, pandaChart.chartTypes.MEMORY);
 
         if (updateMemoryPerformance == 1) {
-            setInterval(function() {
+           /* setInterval(function() {
                 $scope
                         .$apply(function() {
                             getMemoryPerformanceByFilters("query?start=" + $scope.range.actions.id + "-ago&m=avg:os.mem.total{host=" + displayName + "}", 0, displayName
@@ -534,7 +732,7 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
                                     .toLowerCase(), 1, pandaChart.chartTypes.MEMORY, "Free");
                             // getMemoryPerformanceByFilters("query?start=" + $scope.memory.actions.id + "-ago&m=sum:os.mem.used{host="+ displayName +"}", 2,  displayName.toLowerCase(), 2, pandaChart.chartTypes.MEMORY);
                         });
-            }, 5000);
+            }, 5000);*/
         }
 
     }
@@ -549,8 +747,14 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
 
     $scope.storage.dataset = [];
     $scope.storage.altdataset = [];
+    $scope.storage.altdatasetread = [];
 
-    $scope.toggleStoragePlot = function(index, length) {
+    $scope.toggleStoragePlot = function(type) {
+    	$scope.diskStatus = type;
+        $scope.storage.dataset[$scope.storageIndex] = $scope.storage.altdatasetread[type];
+    };
+
+    $scope.toggleDiskPlot = function(index, length) {
         $scope.storageIndex = index;
         for (var i = 0; i < length; i++) {
             if (index == i) {
@@ -618,6 +822,90 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
     storageTotalDelayCount = 0;
     storageChartIterationCount = 3;
     var storageForAdditionalIterations = [];
+
+
+    function getDiskPerformanceByFilters(indexValue, totalCount, chartType, result, type) {
+    	var chartConfig = pandaChart.getConfigurationByRange($scope.range.actions.id);
+        storageIndexCount = chartConfig.dataIndexCount;
+        storageChartIterationCount = chartConfig.iterationCountCount;
+        $scope.storageFlotOptions.xaxes[0].tickSize = chartConfig.tickSize;
+
+        $scope.storageFlotOptions.colors = [ "#62cb31", "#d9534f", "#f0ad4e", "#48a9da" ];
+        if (indexValue == 0 && totalCount != -1) {
+            storageChartIteration++;
+        }
+
+        if (storageChartIteration == storageChartIterationCount || totalCount == -1) {
+            forAdditionlTenIndex = 0;
+            if (indexValue == totalCount)
+                storageChartIteration = 0;
+           // var hasServer = appService.promiseAjax.httpRequest("GET", $scope.OpenTsdbIp + url);
+           // hasServer.then(function(result) {
+                if (angular.isUndefined($scope.storageData)) {
+                    $scope.storageData = [];
+                    $scope.storageAltData = [];
+                }
+                $scope.storageData[indexValue] = [];
+                $scope.storageAltData[indexValue] = [];
+
+                //for (var i = 0; i < result.length; i++) {
+                    var dataPoints = result.dataPoints;
+                    var dataIndex = 0;
+                    storageForAdditionalIterations[indexValue] = [];
+                    angular.forEach(angular.fromJson(dataPoints), function(obj, key) {
+                        dataIndex++;
+                        var currentValue = obj;
+                        if (dataIndex <= storageIndexCount) {
+                            $scope.storageData[indexValue].push([ getDateByTime(key).getTime(), currentValue ]);
+                        } else {
+                            //                            storageForAdditionalIterations[indexValue].push([getDateByTime(key).getTime(), currentValue]);
+                        }
+                    });
+
+                    var currentData = {
+                        data : $scope.storageData[indexValue],
+                        yaxis : 100,
+                        label : result.tags,
+                        color : storageColorLabels[indexValue],
+                        points : {
+                            fillColor : storageColorLabels[indexValue],
+                            show : false
+                        },
+                        idx : indexValue
+                    };
+
+                    if (angular.isUndefined($scope.storage.dataset[i])) {
+                        $scope.storage.dataset[indexValue] = {
+                            data : []
+                        };
+                        $scope.memory.altdataset[indexValue] = {
+                            data : []
+                        };
+                    }
+                    $scope.storage.dataset[indexValue] = currentData;
+                    $scope.storage.altdataset[indexValue] = currentData;
+                    $scope.storage.altdatasetread[type] = currentData;
+
+               // }
+            //});
+        }
+
+        if (indexValue == 0) {
+            jQuery('.storage-chart-container').find('.flot-base, .flot-x-axis, .flot-overlay').css({
+                "margin-left" : 0
+            });
+        }
+        pandaChart
+                .updateChartMarginByRangeAndIndex($scope.range.actions.id, indexValue, storageChartIteration, 'storage-chart-container');
+
+        if ($scope.storageIndex) {
+            $scope.toggleDiskPlot($scope.storageIndex, $scope.storageData.length);
+        }
+        if ($scope.readwIndex) {
+            $scope.toggleStoragePlot($scope.readwIndex);
+        }
+
+    }
 
     function getStoragePerformanceByFilters(url, indexValue, instanceName, totalCount, chartType, diskType) {
         var chartConfig = pandaChart.getConfigurationByRange($scope.range.actions.id);
@@ -708,14 +996,10 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
         storageChartIterationCount = 3;
         storageForAdditionalIterations = [];
         var displayName = $scope.hostName;
-        getStoragePerformanceByFilters("query?start=" + $scope.range.actions.id + "-ago&m=avg:rate:linux.disk.write_requests{host=" + displayName + "}", 0, displayName
-                .toLowerCase(), -1, pandaChart.chartTypes.DISK, "Write");
-        getStoragePerformanceByFilters("query?start=" + $scope.range.actions.id + "-ago&m=avg:rate:linux.disk.read_requests{host=" + displayName + "}", 1, displayName
-                .toLowerCase(), -1, pandaChart.chartTypes.DISK, "Read");
-        //getStoragePerformanceByFilters("query?start=" + $scope.range.actions.id + "-ago&m=sum:os.mem.used{host="+ displayName +"}", 2,  displayName.toLowerCase(), -1);
+          //getStoragePerformanceByFilters("query?start=" + $scope.range.actions.id + "-ago&m=sum:os.mem.used{host="+ displayName +"}", 2,  displayName.toLowerCase(), -1);
 
         if (updateStoragePerformance == 1) {
-            setInterval(function() {
+           /* setInterval(function() {
                 $scope
                         .$apply(function() {
                             getStoragePerformanceByFilters("query?start=" + $scope.storage.actions.id + "-ago&m=avg:rate:linux.disk.write_requests{host=" + displayName + "}", 0, displayName
@@ -724,7 +1008,7 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
                                     .toLowerCase(), 1, pandaChart.chartTypes.DISK, "Read");
                             //getStoragePerformanceByFilters("query?start=" + $scope.storage.actions.id + "-ago&m=sum:os.mem.used{host="+ displayName +"}", 2,  displayName.toLowerCase(), 3);
                         });
-            }, 5000);
+            }, 5000);*/
         }
 
     }
@@ -748,7 +1032,7 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
             //getStorageIO("query?start=1m-ago&m=sum:linux.disk.write_requests{host="+ displayName +"}", 0,  result.displayName.toLowerCase());
             //getStorageIO("query?start=1m-ago&m=sum:linux.disk.read_requests{host="+ displayName +"}", 1,  result.displayName.toLowerCase());
 
-            setInterval(function() {
+            /*setInterval(function() {
                 $scope.$apply(function() {
                     //result.computeOffering.numberOfCores
                     //getCpuPerformance("query?start=1m-ago&m=sum:rate:linux.cpu{host="+ displayName +"}", 0, result.displayName.toLowerCase());
@@ -762,7 +1046,7 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
                     //getStorageIO("query?start=1m-ago&m=sum:linux.disk.write_requests{host="+ displayName +"}", 0,  result.displayName.toLowerCase());
                     // getStorageIO("query?start=1m-ago&m=sum:linux.disk.read_requests{host="+ displayName +"}", 1,  result.displayName.toLowerCase());
                 });
-            }, 5000);
+            }, 5000);*/
 
         });
     }
@@ -847,6 +1131,81 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
     networkTotalDelayCount = 0;
     networkChartIterationCount = 3;
     var networkForAdditionalIterations = [];
+
+    function getNetworkPerformanceByFilter(indexValue, totalCount, chartType, result, type) {
+        var chartConfig = pandaChart.getConfigurationByRange($scope.range.actions.id);
+        networkIndexCount = chartConfig.dataIndexCount;
+        networkChartIterationCount = chartConfig.iterationCountCount;
+        $scope.networkFlotOptions.xaxes[0].tickSize = chartConfig.tickSize;
+
+        $scope.networkFlotOptions.colors = [ "#62cb31", "#d9534f", "#f0ad4e", "#48a9da" ];
+        if (indexValue == 0 && totalCount != -1) {
+            networkChartIteration++;
+        }
+
+        if (networkChartIteration == networkChartIterationCount || totalCount == -1) {
+            forAdditionlTenIndex = 0;
+            if (indexValue == totalCount)
+                networkChartIteration = 0;
+
+                if (angular.isUndefined($scope.networkData)) {
+                    $scope.networkData = [];
+                    $scope.networkAltData = [];
+                }
+                $scope.networkData[indexValue] = [];
+                $scope.networkAltData[indexValue] = [];
+                    var dataPoints = result.dataPoints;
+                    var dataIndex = 0;
+                    networkForAdditionalIterations[indexValue] = [];
+                    angular.forEach(angular.fromJson(dataPoints), function(obj, key) {
+                        dataIndex++;
+                        var currentValue = obj;
+                        if (!angular.isUndefined(currentValue) && currentValue != 0) {
+                            currentValue = currentValue;
+                        }
+                        if (dataIndex <= networkIndexCount) {
+                            $scope.networkData[indexValue].push([ getDateByTime(key).getTime(), currentValue ]);
+                        } else {
+                            //   storageForAdditionalIterations[indexValue].push([getDateByTime(key).getTime(), currentValue]);
+                        }
+                    });
+
+                    var currentData = {
+                        data : $scope.networkData[indexValue],
+                        yaxis : 100,
+                        label : result.tags,
+                        color : networkColorLabels[indexValue],
+                        points : {
+                            fillColor : networkColorLabels[indexValue],
+                            show : false
+                        },
+                        idx : indexValue
+                    };
+
+                    if (angular.isUndefined($scope.network.dataset[i])) {
+                        $scope.network.dataset[indexValue] = {
+                            data : []
+                        };
+                        $scope.network.altdataset[indexValue] = {
+                            data : []
+                        };
+                    }
+                    $scope.network.dataset[indexValue] = currentData;
+                    $scope.network.altdataset[indexValue] = currentData;
+        }
+
+        if (indexValue == 0) {
+            jQuery('.network-chart-container').find('.flot-base, .flot-x-axis, .flot-overlay').css({
+                "margin-left" : 0
+            });
+        }
+        pandaChart
+                .updateChartMarginByRangeAndIndex($scope.range.actions.id, indexValue, storageChartIteration, 'network-chart-container');
+
+        if ($scope.networkIndex) {
+            $scope.toggleNetworkPlot($scope.networkIndex, $scope.networkData.length);
+        }
+    }
 
     function getNetworkPerformanceByFilters(url, indexValue, instanceName, totalCount, chartType, diskType) {
         var chartConfig = pandaChart.getConfigurationByRange($scope.range.actions.id);
@@ -941,13 +1300,8 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
         networkForAdditionalIterations = [];
         var displayName = $scope.hostName;
 
-        getNetworkPerformanceByFilters("query?start=" + $scope.range.actions.id + "-ago&m=avg:rate:os.net.bytes{direction=in,host=" + displayName + ",iface=eth0}", 0, displayName
-                .toLowerCase(), -1, pandaChart.chartTypes.NETWORK, "In");
-        getNetworkPerformanceByFilters("query?start=" + $scope.range.actions.id + "-ago&m=avg:rate:os.net.bytes{direction=out,host=" + displayName + ",iface=eth0}", 1, displayName
-                .toLowerCase(), -1, pandaChart.chartTypes.NETWORK, "Out");
-
         if (updateNetworkPerformance == 1) {
-            setInterval(function() {
+          /*  setInterval(function() {
                 $scope
                         .$apply(function() {
                             getNetworkPerformanceByFilters("query?start=" + $scope.range.actions.id + "-ago&m=avg:rate:os.net.bytes{direction=in,host=" + displayName + ",iface=eth0}", 0, displayName
@@ -955,15 +1309,70 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
                             getNetworkPerformanceByFilters("query?start=" + $scope.range.actions.id + "-ago&m=avg:rate:os.net.bytes{direction=out,host=" + displayName + ",iface=eth0}", 1, displayName
                                     .toLowerCase(), -1, pandaChart.chartTypes.NETWORK, "Out");
                         });
-            }, 1000);
+            }, 1000);*/
         }
     }
 
     $scope.updateGraphByRange = function() {
+    	webSockets.send("/metrics", {}, JSON.stringify({
+            "uuid" : $scope.uuid,
+            "userId" : appService.globalConfig.sessionValues.id,
+            "cpu" : $scope.range.actions.id + "-ago",
+            "network" : $scope.range.actions.id + "-ago",
+            "memory" : $scope.range.actions.id + "-ago",
+            "disk" : $scope.range.actions.id + "-ago"
+        }));
         $scope.updateCpuPerformance($scope.cpu.result, $scope.range.actions);
         $scope.updateMemoryPerformance($scope.memory.result, $scope.range.actions);
         $scope.updateStoragePerformance($scope.storage.result, $scope.range.actions);
         $scope.updateNetworkPerformance($scope.network.result, $scope.range.actions);
     }
 
+    var dataSubscribe = function() {
+        webSockets.subscribe("/topic/stackwatch.cpu/" + appService.globalConfig.sessionValues.id +"/"+ $scope.uuid, function(message) {
+        	var cpuResult = JSON.parse(message.body).perCpuUsage;
+        	$scope.cpuCount = cpuResult.length;
+        	angular.forEach(angular.fromJson(cpuResult), function(value, key){
+            	getCpuPerformanceByFilters(key, -1, pandaChart.chartTypes.CPU, value);
+        	});
+        });
+        webSockets.subscribe("/topic/stackwatch.memory/" + appService.globalConfig.sessionValues.id +"/"+ $scope.uuid, function(message) {
+        	var memoryResult = JSON.parse(message.body);
+            getMemoryPerformanceByFilter(0, -1, pandaChart.chartTypes.MEMORY, memoryResult.total, "Total" );
+            getMemoryPerformanceByFilter(1, -1, pandaChart.chartTypes.MEMORY, memoryResult.free, "Free" );
+        });
+        webSockets.subscribe("/topic/stackwatch.disk/" + appService.globalConfig.sessionValues.id +"/"+ $scope.uuid, function(message) {
+        	var diskResult = JSON.parse(message.body);
+        	$scope.diskCount = diskResult.read.length;
+        	if($scope.diskStatus == 'read') {
+            	angular.forEach(angular.fromJson(diskResult.read), function(value, key){
+            		$scope.disks.push(value.tags);
+            		getDiskPerformanceByFilters(key, -1, pandaChart.chartTypes.DISK, value, "read");
+            	});
+        	} else {
+        		$scope.disks.push(value.tags);
+            	angular.forEach(angular.fromJson(diskResult.write), function(value, key){
+            		getDiskPerformanceByFilters(key, -1, pandaChart.chartTypes.DISK, value, "write");
+            	});
+        	}
+        });
+        webSockets.subscribe("/topic/stackwatch.network/" + appService.globalConfig.sessionValues.id +"/"+ $scope.uuid, function(message) {
+        	var networkResult = JSON.parse(message.body);
+        	$scope.networkCount = networkResult.receive.length;
+        	angular.forEach(angular.fromJson(networkResult.receive), function(value, key){
+        		$scope.interfaces.push(value.tags);
+        		getNetworkPerformanceByFilter(key, -1, pandaChart.chartTypes.NETWORK, value, "In");
+        	});
+        	angular.forEach(angular.fromJson(networkResult.send), function(value, key){
+        		getNetworkPerformanceByFilter(key, -1, pandaChart.chartTypes.NETWORK, value, "Out");
+        	});
+        });
+        webSockets.subscribe("/topic/stackwatch.connection/" + appService.globalConfig.sessionValues.id +"/"+ $scope.uuid , function(message) {
+
+        });
+        webSockets.subscribe("/topic/stackwatch.all/" + appService.globalConfig.sessionValues.id +"/"+ $scope.uuid, function(message) {
+
+        });
+    }
+    initStompClient();
 }

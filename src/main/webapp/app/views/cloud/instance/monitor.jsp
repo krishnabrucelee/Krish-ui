@@ -7,8 +7,11 @@
 <fmt:setBundle basename="i18n/messages_${language}" var="msg" scope="session" />
 
 <div class="m-l-sm m-r-sm monitor-charts" ng-controller="instanceMonitorCtrl">
-
-    <div class="row clearfix ">
+	<div data-ng-show = "showLoader" style="margin: 20%">
+                <get-loader-image data-ng-if="showLoader"></get-loader-image>
+            </div>
+            <div data-ng-hide="showLoader">
+	<div class="row clearfix ">
 
         <div class="col-lg-12 col-md-12 col-sm-12">
 
@@ -34,7 +37,7 @@
 
                         <select data-ng-change="updateGraphByRange()" class="form-control"
                             name="cpuActions"
-                            data-ng-init="range.actions = instanceElements.actions[0]; updateGraphByRange();"
+                            data-ng-init="range.actions = instanceElements.actions[0];"
                             data-ng-model="range.actions"
                             ng-options="actions.name for actions in instanceElements.actions">
                         </select>
@@ -177,21 +180,45 @@
                 <table class="flotchart-legend-content-table"
                     style="font-size: smaller; color: #545454">
                     <tbody>
-                        <tr data-ng-repeat="storyLegend in storageData">
+                         <tr data-ng-repeat="storyLegend in storageData">
                             <td class="legendColorBox"
-                                data-ng-click="toggleStoragePlot($index, storageData.length)">
+                                data-ng-click="toggleDiskPlot($index, storageData.length)">
                                 <a></a>
                                 <div style="border: 1px solid #ccc; padding: 1px;">
                                     <div style="width: 4px; height: 0; overflow: hidden"
                                         ng-style="{'border': '5px solid ' + storageFlotOptions.colors[$index] }"></div>
                                 </div>
                             </td>
-                            <td class="legendLabel">
-
-                                <a class="m-l-sm">{{ ($index == 0 ? "Disk Write" : "Disk
-                                    Read") }}</a>
-                            </td>
+                        	<td class="legendLabel"
+                                data-ng-click="toggleDiskPlot($index, storageData.length)"><a
+                                class="m-l-sm">{{ disks[$index] }} </a></td>
                         </tr>
+                        <tr>
+                            <td class="legendColorBox"
+                                data-ng-click="toggleStoragePlot('read')">
+                                <a></a>
+                                <div style="border: 1px solid #ccc; padding: 1px;">
+                                    <div style="width: 4px; height: 0; overflow: hidden"
+                                        ng-style="{'border': '5px solid ' + storageFlotOptions.colors[0] }"></div>
+                                </div>
+                            </td>
+                            <td class="legendLabel">
+                                <a class="m-l-sm">Disk Read</a>
+                            </td>
+                         </tr>
+                          <tr>
+                            <td class="legendColorBox"
+                                data-ng-click="toggleStoragePlot('write')">
+                                <a></a>
+                                <div style="border: 1px solid #ccc; padding: 1px;">
+                                    <div style="width: 4px; height: 0; overflow: hidden"
+                                        ng-style="{'border': '5px solid ' + storageFlotOptions.colors[1] }"></div>
+                                </div>
+                            </td>
+                            <td class="legendLabel">
+                                <a class="m-l-sm">Disk Write</a>
+                            </td>
+                         </tr>
                     </tbody>
                 </table>
             </div>
@@ -242,15 +269,41 @@
                                         ng-style="{'border': '5px solid ' + flotOptions.colors[$index] }"></div>
                                     <!-- <div data-ng-if="cpu.dataset[$index].length == 0" style="width: 4px; height: 0; border: 5px solid red; overflow: hidden"></div> -->
                                 </div></td>
-                            <td class="legendLabel"><a class="m-l-sm">{{ $index == 0 ? "In" : "Out" }} </a></td>
+                            <td class="legendLabel"><a class="m-l-sm">{{interfaces[$index] }} </a></td>
                         </tr>
+                        <tr>
+                            <td class="legendColorBox"
+                                data-ng-click="toggleNetPlot('send')">
+                                <a></a>
+                                <div style="border: 1px solid #ccc; padding: 1px;">
+                                    <div style="width: 4px; height: 0; overflow: hidden"
+                                        ng-style="{'border': '5px solid ' + storageFlotOptions.colors[0] }"></div>
+                                </div>
+                            </td>
+                            <td class="legendLabel">
+                                <a class="m-l-sm">IN</a>
+                            </td>
+                         </tr>
+                          <tr>
+                            <td class="legendColorBox"
+                                data-ng-click="toggleNetPlot('receive')">
+                                <a></a>
+                                <div style="border: 1px solid #ccc; padding: 1px;">
+                                    <div style="width: 4px; height: 0; overflow: hidden"
+                                        ng-style="{'border': '5px solid ' + storageFlotOptions.colors[1] }"></div>
+                                </div>
+                            </td>
+                            <td class="legendLabel">
+                                <a class="m-l-sm">OUT</a>
+                            </td>
+                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
     <hr>
-
+</div>
 </div>
 
 <!-- <flot dataset="myData" options="myChartOptions"></flot> -->

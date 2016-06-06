@@ -16,12 +16,30 @@ angular.module('homer', ['ngCookies', 'LocalStorageModule'])
 	}
 	$scope.showImage();
 
+	$scope.languageSettingList = function () {
+		return $http({method:'get', url: REQUEST_PROTOCOL  + $window.location.hostname +':8080/home/generalConfiguration'})
+		.then(function(result){
+			$scope.generalconfiguration = result;
+	        if ($scope.generalconfiguration.data.defaultLanguage == 'Chinese') {
+	        	localStorageService.cookie.set('language', 'zh');
+	        } else {
+	        	localStorageService.cookie.set('language', 'en');
+	        }
+	        window.location.href = globalConfig.BASE_UI_URL;
+		});
+	};
+	if(localStorageService.cookie.get('language') == null) {
+	    $scope.languageSettingList();
+	}
+
 	$scope.themeSettingList = function () {
-		return $http({method:'get', url:  REQUEST_PROTOCOL+ $window.location.hostname +':8080/' +'home/' +'list'})
+		return $http({method:'get', url:  REQUEST_PROTOCOL+ $window.location.hostname +':8080/home/list'})
 		.then(function(result){
 			$scope.themeSettings = result;
-			 $scope.welcomeContent = result.data.welcomeContent;
+			 $scope.welcomeContentUser = result.data.welcomeContentUser;
 			 $scope.footerContent = result.data.footerContent;
+			 $scope.splashTitleUser= result.data.splashTitleUser;
+			 $cookies.splashTitleUser = result.data.splashTitleUser;
 		});
 	};
 	$scope.themeSettingList();

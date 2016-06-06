@@ -637,6 +637,8 @@ angular
             var loginSession = globalConfig.sessionValues;
             if ((loginSession == null || angular.isUndefined(globalConfig.sessionValues)) && tokens != null) {
                 globalConfig.sessionValues = tokens;
+                globalConfig.sessionValues.token = localStorageService.get('token');
+                globalConfig.sessionValues.loginToken = localStorageService.get('loginToken');
                 AppConstants.REQUEST_PROTOCOL = tokens.REQUEST_PROTOCOL;
                 AppConstants.REQUEST_PORT = tokens.REQUEST_PORT;
                 localStorageService.set('rememberMe', tokens.rememberMe);
@@ -651,7 +653,21 @@ angular
                     return 'bar'
                 }
             };
-        }).run(function($rootScope, $state, editableOptions, myFactory) {
+        }).run(function($rootScope, $state, webSockets, editableOptions, myFactory, appService, webSocket) {
             $rootScope.$state = $state;
             editableOptions.theme = 'bs3';
+            $rootScope.$on('$locationChangeStart', function(event, next, current) {
+                var nextRoute = next.split('#')[1];
+                var currentPath = current.split('#')[1];
+                if (nextRoute.indexOf('instance/list/view/') == -1 && currentPath.indexOf('instance/list/view/') > -1) {
+                	webSockets.disconnect(appService.globalConfig.MONITOR_SOCKET_URL + 'stack/watch');
+                }
+            });
+            $rootScope.$on('$locationChangeStart', function(event, next, current) {
+                var nextRoute = next.split('#')[1];
+                var currentPath = current.split('#')[1];
+                if (currentPath.indexOf('dashboard') > -1) {
+                	webSocket.initStompClient();
+                }
+            });
         }).config(configState);
