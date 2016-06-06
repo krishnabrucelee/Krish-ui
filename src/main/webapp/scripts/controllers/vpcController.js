@@ -696,6 +696,12 @@ $state.reload();
             $scope.network = result;
             $state.current.data.pageName = result.name;
             $state.current.data.id = result.id;
+            
+            angular.forEach($scope.vpcNetworkOfferList, function(obj, key) {
+                if (obj.id == $scope.network.networkOffering.id) {
+                    $scope.network.networkOffering = obj;
+                }
+            });
 
         });
     }
