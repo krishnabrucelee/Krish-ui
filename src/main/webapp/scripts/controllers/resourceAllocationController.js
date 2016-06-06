@@ -10,7 +10,7 @@ angular
 function resourceAllocationCtrl($scope, crudService, globalConfig, notify, $state, $stateParams, promiseAjax, appService) {
 
     $scope.resourceQuota = {};
-    $scope.resourceQuota = {};
+    $scope.resourceObject = {};
     $scope.resourceTypeList = [
         "Instance",
         /** Number of public IP addresses a user can own. */
@@ -49,7 +49,7 @@ function resourceAllocationCtrl($scope, crudService, globalConfig, notify, $stat
     	    var multiplier = Math.pow(10, precision);
     	    return (originalRound(number * multiplier) / multiplier);
     	  };
-    })();   
+    })();
 
     // Domain List
     $scope.departmentList = {};
@@ -146,21 +146,25 @@ function resourceAllocationCtrl($scope, crudService, globalConfig, notify, $stat
             for (var i = 0; i < $scope.resourceTypeList.length; i++) {
                 if (i != 5) {
                     var resourceObject = {};
-                    resourceObject.domainId = $scope.resourceQuota.department.domainId;
-                    resourceObject.domain = $scope.resourceQuota.department.domain;
-                    resourceObject.departmentId = $scope.resourceQuota.department.id;
-                    resourceObject.department = $scope.resourceQuota.department;
-                    resourceObject.resourceType = $scope.resourceTypeList[i];		    
-                    resourceObject.max = $scope.resourceQuota[$scope.resourceTypeList[i]]; 
+                    if (!angular.isUndefined($scope.resourceQuota.domain) && $scope.resourceQuota.domain != null) {
+                        resourceObject.domainId = $scope.resourceQuota.domain.id;
+                    }
+                    if (!angular.isUndefined($scope.resourceQuota.department) && $scope.resourceQuota.department != null) {
+                        resourceObject.departmentId = $scope.resourceQuota.department.id;
+                    }
+                    resourceObject.resourceType = $scope.resourceTypeList[i];
+                    resourceObject.max = $scope.resourceQuota[$scope.resourceTypeList[i]];
                     resourceObject.id = $scope.resourceQuota[$scope.resourceTypeList[i] + "id"];
                     quotaList.push(resourceObject);
                 }
                 if (i == 5) {
                     var resourceObject = {};
-                    resourceObject.domainId = $scope.resourceQuota.department.domainId;
-                    resourceObject.domain = $scope.resourceQuota.department.domain;
-                    resourceObject.departmentId = $scope.resourceQuota.department.id;
-                    resourceObject.department = $scope.resourceQuota.department;
+                    if (!angular.isUndefined($scope.resourceQuota.domain) && $scope.resourceQuota.domain != null) {
+                        resourceObject.domainId = $scope.resourceQuota.domain.id;
+                    }
+                    if (!angular.isUndefined($scope.resourceQuota.department) && $scope.resourceQuota.department != null) {
+                        resourceObject.departmentId = $scope.resourceQuota.department.id;
+                    }
                     resourceObject.resourceType = $scope.resourceTypeList[i];
                     resourceObject.max = -1;
                     resourceObject.id = $scope.resourceQuota[$scope.resourceTypeList[i] + "id"];
@@ -171,7 +175,7 @@ function resourceAllocationCtrl($scope, crudService, globalConfig, notify, $stat
 		    	resourceObject.max = $scope.resourceQuota[$scope.resourceTypeList[i]] * 1024;
                 } else {
  			resourceObject.max = $scope.resourceQuota[$scope.resourceTypeList[i]];
-                        $scope.validateRange('department', resourceObject.max, resourceObject.resourceType);                    
+                        $scope.validateRange('department', resourceObject.max, resourceObject.resourceType);
 		}
                 quotaList.push(resourceObject);
             }
@@ -217,25 +221,31 @@ function resourceAllocationCtrl($scope, crudService, globalConfig, notify, $stat
             for (var i = 0; i < $scope.resourceTypeList.length; i++) {
                 if (i != 5) {
                     var resourceObject = {};
-                    resourceObject.domainId = $scope.resourceQuota.project.domainId;
-                    resourceObject.domain = $scope.resourceQuota.project.domain;
-                    resourceObject.departmentId = $scope.resourceQuota.project.departmentId;
-                    resourceObject.department = $scope.resourceQuota.project.department;
-                    resourceObject.projectId = $scope.resourceQuota.project.id;
-                    resourceObject.project = $scope.resourceQuota.project;
-                    resourceObject.resourceType = $scope.resourceTypeList[i];		    
+                    if (!angular.isUndefined($scope.resourceQuota.domain) && $scope.resourceQuota.domain != null) {
+                        resourceObject.domainId = $scope.resourceQuota.project.domainId;
+                    }
+                    if (!angular.isUndefined($scope.resourceQuota.department) && $scope.resourceQuota.department != null) {
+                        resourceObject.departmentId = $scope.resourceQuota.project.departmentId;
+                    }
+                    if (!angular.isUndefined($scope.resourceQuota.project) && $scope.resourceQuota.project != null) {
+                        resourceObject.projectId = $scope.resourceQuota.project.id;
+                    }
+                    resourceObject.resourceType = $scope.resourceTypeList[i];
                     resourceObject.max = $scope.resourceQuota[$scope.resourceTypeList[i]];
                     resourceObject.id = $scope.resourceQuota[$scope.resourceTypeList[i] + "id"];
                     quotaList.push(resourceObject);
                 }
                 if (i == 5) {
                     var resourceObject = {};
-                    resourceObject.domainId = $scope.resourceQuota.project.domainId;
-                    resourceObject.domain = $scope.resourceQuota.project.domain;
-                    resourceObject.departmentId = $scope.resourceQuota.project.departmentId;
-                    resourceObject.department = $scope.resourceQuota.project.department;
-                    resourceObject.projectId = $scope.resourceQuota.project.id;
-                    resourceObject.project = $scope.resourceQuota.project;
+                     if (!angular.isUndefined($scope.resourceQuota.domain) && $scope.resourceQuota.domain != null) {
+                        resourceObject.domainId = $scope.resourceQuota.project.domainId;
+                    }
+                    if (!angular.isUndefined($scope.resourceQuota.department) && $scope.resourceQuota.department != null) {
+                        resourceObject.departmentId = $scope.resourceQuota.project.departmentId;
+                    }
+                    if (!angular.isUndefined($scope.resourceQuota.project) && $scope.resourceQuota.project != null) {
+                        resourceObject.projectId = $scope.resourceQuota.project.id;
+                    }
                     resourceObject.resourceType = $scope.resourceTypeList[i];
                     resourceObject.max = -1;
                     resourceObject.id = $scope.resourceQuota[$scope.resourceTypeList[i] + "id"];
@@ -246,10 +256,10 @@ function resourceAllocationCtrl($scope, crudService, globalConfig, notify, $stat
 		    	resourceObject.max = $scope.resourceQuota[$scope.resourceTypeList[i]] * 1024;
                 } else {
  			resourceObject.max = $scope.resourceQuota[$scope.resourceTypeList[i]];
-                        $scope.validateRange('project', resourceObject.max, resourceObject.resourceType);                    
+                        $scope.validateRange('project', resourceObject.max, resourceObject.resourceType);
 		}
                 quotaList.push(resourceObject);
-                
+
             }
             if ($scope.resourceAllocationError) {
                 $scope.showLoader = true;
@@ -396,7 +406,7 @@ function resourceAllocationCtrl($scope, crudService, globalConfig, notify, $stat
                     $scope.loadEditOption($scope.departmentList, $scope.resourceQuota.department, object.department);
                 }
                 if (object.resourceType == "Memory" && object.max != -1) {
-                    $scope.resourceQuota[object.resourceType] =  Math.round(((object.max)/1024),1);                   
+                    $scope.resourceQuota[object.resourceType] =  Math.round(((object.max)/1024),1);
                 } else {
                     $scope.resourceQuota[object.resourceType] = object.max;
                 }
@@ -460,7 +470,7 @@ function resourceAllocationCtrl($scope, crudService, globalConfig, notify, $stat
                     $scope.loadEditOption($scope.projectList, $scope.resourceQuota.project, object.project);
                 }
                 if (object.resourceType == "Memory" && object.max != -1) {
-                    $scope.resourceQuota[object.resourceType] =  Math.round(((object.max)/1024),1); 
+                    $scope.resourceQuota[object.resourceType] =  Math.round(((object.max)/1024),1);
                 } else {
                     $scope.resourceQuota[object.resourceType] = object.max;
                 }
