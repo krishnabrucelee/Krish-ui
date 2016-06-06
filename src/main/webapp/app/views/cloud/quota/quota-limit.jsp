@@ -39,7 +39,6 @@ pageEncoding="UTF-8"%>
                 <div class="panel">
                     <div class="panel-body p-sm">
                         <div class="text-center m-t-xxxl" data-ng-show="showLoader">
-                            <!-- <img src="images/loading-bars.svg" data-ng-show="showLoader" /> -->
 							<get-loader-image ></get-loader-image>
                          </div>
                         <div class="row dashboard-quota-area" data-ng-hide="showLoader">

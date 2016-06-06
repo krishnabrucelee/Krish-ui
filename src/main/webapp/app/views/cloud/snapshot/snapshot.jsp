@@ -6,9 +6,9 @@
 <fmt:setBundle basename="i18n/messages_${language}" var="msg" scope="session" />
 
 <div class="" >
-	<get-loader-image data-ng-show="showLoader"></get-loader-image>
 	 <div data-ng-if="global.webSocketLoaders.volumeBackupLoader" class="overlay-wrapper">
-          <img data-ng-if="global.webSocketLoaders.volumeBackupLoader" src="images/loading-bars.svg" class="inner-loading" />
+    	<get-loader-image data-ng-show="global.webSocketLoaders.volumeBackupLoader"></get-loader-image>
+
      </div>
 	<div class="col-md-12 col-sm-12" data-ng-hide="showLoader">
         <div class="hpanel">

@@ -73,8 +73,7 @@ pageEncoding="UTF-8"%>
                 <div class="col-md-12 col-sm-12 col-xs-12 ">
                     <div class="white-content">
                      <div data-ng-if="global.webSocketLoaders.volumeLoader" class="overlay-wrapper">
-<!--                 		<img data-ng-if="global.webSocketLoaders.volumeLoader" src="images/loading-bars.svg" class="inner-loading" />
- -->                		<get-show-loader-image data-ng-show="global.webSocketLoaders.volumeLoader"></get-show-loader-image>
+              		<get-show-loader-image data-ng-show="global.webSocketLoaders.volumeLoader"></get-show-loader-image>
             		</div>
                     <div style="margin: 1%">
     				  		<get-loader-image></get-loader-image>

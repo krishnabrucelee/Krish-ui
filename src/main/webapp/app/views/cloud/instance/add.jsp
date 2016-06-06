@@ -119,7 +119,6 @@
                                 <fmt:message key="common.previous" bundle="${msg}" />
                             </button>
                             <div class="pull-right">
-                                <!-- <img src="images/loading-bars.svg" data-ng-if="showLoader" width="30" height="30" /> -->
                                 <get-loader-image></get-loader-image>
                                 <!-- <get-show-loader-image></get-show-loader-image> -->
 

@@ -8,7 +8,6 @@ pageEncoding="UTF-8"%>
 
     <div class="white-content">
     <div data-ng-if="global.webSocketLoaders.loadBalancerLoader" class="overlay-wrapper">
-                		            <!-- <img data-ng-if="global.webSocketLoaders.loadBalancerLoader" src="images/loading-bars.svg" class="inner-loading" /> -->
     <get-show-loader-image data-ng-show="global.webSocketLoaders.loadBalancerLoader"></get-show-loader-image>
        </div>
         <form name="loadform" method="POST" novalidate

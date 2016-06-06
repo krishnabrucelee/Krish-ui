@@ -8,7 +8,6 @@
 
 			<div  ng-controller="secondaryIpCtrl">
 <div data-ng-if="global.webSocketLoaders.vmsecondaryip" class="overlay-wrapper">
-                <!-- <img data-ng-if="global.webSocketLoaders.vmsecondaryip" src="images/loading-bars.svg" class="inner-loading" /> -->
                 <get-show-loader-image data-ng-show="global.webSocketLoaders.vmsecondaryip"></get-show-loader-image>
             </div>
 					<div class="row">

@@ -8,7 +8,6 @@ pageEncoding="UTF-8"%>
 
     <div class="white-content" > {{global.webSocketLoaders.vpnLoader}}
     <div data-ng-if="global.webSocketLoaders.vpnLoader" class="overlay-wrapper">
-     <!-- <img data-ng-if="global.webSocketLoaders.vpnLoader" src="images/loading-bars.svg" class="inner-loading" /> -->
 	<get-show-loader-image data-ng-show="global.webSocketLoaders.vpnLoader"></get-show-loader-image>
  </div>
         <div class="hpanel">
@@ -48,7 +47,6 @@ pageEncoding="UTF-8"%>
                                 data-ng-show="vpnform.password.$invalid && vpnFormSubmitted">
                              * Required</span></td>
                      <td>
-                     <!-- <img src="images/loading-bars.svg" data-ng-if="showLoader" width="30" height="30" /> -->
                      <get-loader-image ></get-loader-image>
                      <input data-ng-if = "!showLoader" class="btn btn-info" type="submit" value="<fmt:message key="common.add" bundle="${msg}" />">
 		             </td>
