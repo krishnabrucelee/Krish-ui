@@ -122,7 +122,9 @@ function globalConfig($window) {
             accountLoader : false,
             roleLoader : false,
             departmentLoader : false,
-            projectAssign : false
+            projectAssign : false,
+            networkAclLoader : false,
+            networkDeleteAclLoader : false
         },
         webSocketEvents : {
             vmEvents : {
@@ -209,7 +211,9 @@ function globalConfig($window) {
                 portforwardSave : 'NET.RULEADD',
                 deletePortRules : 'NET.RULEDELETE',
                 configureStickiness : 'LB.STICKINESSPOLICY.CREATE',
-                editStickiness : 'LB.STICKINESSPOLICY.CREATE'
+                editStickiness : 'LB.STICKINESSPOLICY.CREATE',
+                addAcl : 'NETWORK.ACL.CREATE',
+                deleteAclList : 'NETWORK.ACL.DELETE'
             },
             sshKeyEvents : {
                 createSSHKey : 'REGISTER.SSH.KEYPAIR',
