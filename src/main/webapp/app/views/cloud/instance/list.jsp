@@ -122,7 +122,7 @@
 										data-ng-repeat="instance in filteredCount = instanceList" data-ng-class = "(instance.status != 'STOPPED' && instance.status != 'RUNNING' && instance.status != 'DESTROYED' && instance.status != 'ERROR')? 'overlay-wrapper-tr' : ''">
 
 										<td><a class="text-info" id="instances_display_name_button" ui-sref="cloud.list-instance.view-instance({id: {{ instance.id}}})"
-											title="View Instance">
+											title="<fmt:message key="view.instance" bundle="${msg}" />">
 										{{instance.displayName}}</a></td>
 										<td>{{ instance.instanceOwner}}</td>
 										<td class="custom-width-sm">{{ instance.application}}</td>

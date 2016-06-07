@@ -9,7 +9,7 @@
 <form name="vmlistform">
 <div class="inmodal">
 <div class="modal-header">
-	<panda-modal-header page-icon="fa fa-cloud" page-title="Add VMs"></panda-modal-header>
+	<panda-modal-header page-icon="fa fa-cloud" page-title="<fmt:message key="add.vms" bundle="${msg}" />"></panda-modal-header>
 
 </div>
 <div class="modal-body">
@@ -21,7 +21,7 @@
 						<div class="quick-search">
 							<div class="input-group">
 								<input data-ng-model="instanceSearch" type="text"
-									class="form-control input-medium" placeholder="Quick Search"
+									class="form-control input-medium" placeholder="<fmt:message key="common.quick.search" bundle="${msg}" />"
 									aria-describedby="quicksearch-go"> <span
 									class="input-group-addon" id="quicksearch-go"><span
 									class="pe-7s-search pe-lg font-bold"></span></span>
@@ -37,12 +37,12 @@
 						class="table table-bordered table-striped">
 						<thead>
 							<tr>
-								<th>Name</th>
-								<th>Internal Name</th>
-								<th>Display Name</th>
-								<th>Zone</th>
-								<th>State</th>
-								<th>Select</th>
+								<th><fmt:message key="common.name" bundle="${msg}" /></th>
+								<th><fmt:message key="common.internal.name" bundle="${msg}" /></th>
+								<th><fmt:message key="common.display.name" bundle="${msg}" /></th>
+								<th><fmt:message key="common.zone" bundle="${msg}" /></th>
+								<th><fmt:message key="common.status" bundle="${msg}" /></th>
+								<th><fmt:message key="common.select" bundle="${msg}" /></th>
 							</tr>
 						</thead>
 						<tbody>

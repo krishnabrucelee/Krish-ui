@@ -29,9 +29,9 @@ pageEncoding="UTF-8"%>
                     </div>
                     <div class="form-group"ng-class="{'text-danger': EditNetworkAclForm.cidrList.$invalid && formSubmitted}">
                         <div class="row">
-                            <label class="col-md-4 col-xs-12 col-sm-4 control-label control-normal">CIDR:<span class="text-danger">*</span></label>
+                            <label class="col-md-4 col-xs-12 col-sm-4 control-label control-normal"><fmt:message key="common.cidr" bundle="${msg}" />:<span class="text-danger">*</span></label>
                             <div class="col-md-6  col-sm-6 col-xs-12">
-                                <input required="true" type="text" name="sourceCIDR"  valid-cidr placeholder="0.0.0.0/24"  data-ng-model="vpcAcl.cidrList" class="form-control input-group " ><span class="text-center text-danger" data-ng-show="vpcAclForm.sourceCIDR.$invalid && formSubmitted" data-ng-class="cidrValidates && actionRules ? 'text-danger' : ''"> Invalid format</span>
+                                <input required="true" type="text" name="sourceCIDR"  valid-cidr placeholder="0.0.0.0/24"  data-ng-model="vpcAcl.cidrList" class="form-control input-group " ><span class="text-center text-danger" data-ng-show="vpcAclForm.sourceCIDR.$invalid && formSubmitted" data-ng-class="cidrValidates && actionRules ? 'text-danger' : ''"> <fmt:message key="invalid.format" bundle="${msg}" /></span>
                                 <i  tooltip="<fmt:message key="vpcAcl.cidrList" bundle="${msg}" />" class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
                                 <div class="error-area" data-ng-show="EditNetworkAclForm.cidrList.$invalid && formSubmitted" >
                                     <i ng-attr-tooltip="{{ EditNetworkAclForm.cidrList.errorMessage || '<fmt:message key="vpcAcl.cidrList.is.required" bundle="${msg}" />' }}" class="fa fa-warning error-icon"></i>
@@ -41,7 +41,7 @@ pageEncoding="UTF-8"%>
                     </div>
                     <div class="form-group"ng-class="{'text-danger': EditNetworkAclForm.action.$invalid && formSubmitted}">
                         <div class="row">
-                            <label class="col-md-4 col-xs-12 col-sm-4 control-label control-normal">Action:<span class="text-danger">*</span></label>
+                            <label class="col-md-4 col-xs-12 col-sm-4 control-label control-normal"><fmt:message key="action" bundle="${msg}" />:<span class="text-danger">*</span></label>
                             <div class="col-md-6  col-sm-6 col-xs-12">
                                <select required="true" class="form-control input-group" name="action" data-ng-model="vpcAcl.action"  data-ng-change="" ng-options="action for (id, action) in actionList"><option value=""><fmt:message key="common.select"
 										bundle="${msg}" /></option></select>
@@ -54,7 +54,7 @@ pageEncoding="UTF-8"%>
                     </div>
                     <div class="form-group"ng-class="{'text-danger': EditNetworkAclForm.protocol.$invalid && formSubmitted}">
                         <div class="row">
-                            <label class="col-md-4 col-xs-12 col-sm-4 control-label control-normal">Protocol:<span class="text-danger">*</span></label>
+                            <label class="col-md-4 col-xs-12 col-sm-4 control-label control-normal"><fmt:message key="common.protocol" bundle="${msg}" />:<span class="text-danger">*</span></label>
                             <div class="col-md-6  col-sm-6 col-xs-12">
                              <select required="true" class="form-control input-group" name="protocol" data-ng-model="vpcAcl.protocol"  data-ng-change="selectProtocol(vpcAcl.protocol)" ng-options="protocol for (id, protocol) in protocolList"><option value=""><fmt:message key="common.select"
 										bundle="${msg}" /></option></select> <span class="text-center text-danger" data-ng-show=""></span>
@@ -67,9 +67,9 @@ pageEncoding="UTF-8"%>
                     </div>
                      <div class="form-group"ng-class="{'text-danger': EditNetworkAclForm.protocolNumber.$invalid && formSubmitted}">
                         <div class="row" data-ng-show = " (vpcAcl.protocol== 'Protocol Number')" >
-                            <label class="col-md-4 col-xs-12 col-sm-4 control-label control-normal">Protocol Number:<span class="text-danger">*</span></label>
+                            <label class="col-md-4 col-xs-12 col-sm-4 control-label control-normal"><fmt:message key="protocol.number" bundle="${msg}" />:<span class="text-danger">*</span></label>
                             <div class="col-md-6  col-sm-6 col-xs-12">
-                             <input data-ng-if = " (vpcAcl.protocol== 'Protocol Number')" required="true" valid-number type="text" name="protocolNumber" data-ng-model="vpcAcl.protocolNumber" class="form-control " autofocus ><span class="text-center text-danger" data-ng-show="vpcAclForm.protocolNumber.$invalid && formSubmitted"> *Required</span> <span class="text-center text-danger" data-ng-show=""></span>
+                             <input data-ng-if = " (vpcAcl.protocol== 'Protocol Number')" required="true" valid-number type="text" name="protocolNumber" data-ng-model="vpcAcl.protocolNumber" class="form-control " autofocus ><span class="text-center text-danger" data-ng-show="vpcAclForm.protocolNumber.$invalid && formSubmitted"> <fmt:message key="common.required" bundle="${msg}" /></span> <span class="text-center text-danger" data-ng-show=""></span>
                                 <i  tooltip="<fmt:message key="vpcAcl.protocolNumber" bundle="${msg}" />" class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
                                 <div class="error-area" data-ng-show="EditNetworkAclForm.protocolNumber.$invalid && formSubmitted" >
                                     <i ng-attr-tooltip="{{ EditNetworkAclForm.protocolNumber.errorMessage || '<fmt:message key="vpcAcl.protocolNumber.is.required" bundle="${msg}" />' }}" class="fa fa-warning error-icon"></i>
@@ -80,9 +80,9 @@ pageEncoding="UTF-8"%>
 
                      <div class="form-group"ng-class="{'text-danger': EditNetworkAclForm.startPort.$invalid && formSubmitted}">
                         <div class="row" data-ng-show = " (vpcAcl.protocol == 'TCP' || vpcAcl.protocol=='UDP' || vpcAcl.protocol== 'Protocol Number')">
-                            <label class="col-md-4 col-xs-12 col-sm-4 control-label control-normal">Start Port:<span class="text-danger">*</span></label>
+                            <label class="col-md-4 col-xs-12 col-sm-4 control-label control-normal"><fmt:message key="common.start.port" bundle="${msg}" />:<span class="text-danger">*</span></label>
                             <div class="col-md-6  col-sm-6 col-xs-12">
-							<input data-ng-if = " (vpcAcl.protocol == 'TCP' || vpcAcl.protocol=='UDP' || vpcAcl.protocol== 'Protocol Number')" required="true" valid-number  placeholder="1" data-ng-min="1" data-ng-max="65535"   type="text" name="startPort" data-ng-model="vpcAcl.startPort" class="form-control " autofocus ><span class="text-center text-danger" data-ng-show="vpcAclForm.startPort.$invalid && formSubmitted"> *Required</span>
+							<input data-ng-if = " (vpcAcl.protocol == 'TCP' || vpcAcl.protocol=='UDP' || vpcAcl.protocol== 'Protocol Number')" required="true" valid-number  placeholder="1" data-ng-min="1" data-ng-max="65535"   type="text" name="startPort" data-ng-model="vpcAcl.startPort" class="form-control " autofocus ><span class="text-center text-danger" data-ng-show="vpcAclForm.startPort.$invalid && formSubmitted"> <fmt:message key="common.required" bundle="${msg}" /></span>
 							<i  tooltip="<fmt:message key="vpcAcl.startPort" bundle="${msg}" />" class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
                                 <div class="error-area" data-ng-show="EditNetworkAclForm.startPort.$invalid && formSubmitted" >
                                     <i ng-attr-tooltip="{{ EditNetworkAclForm.startPort.errorMessage || '<fmt:message key="vpcAcl.startPort.is.required" bundle="${msg}" />' }}" class="fa fa-warning error-icon"></i>
@@ -92,9 +92,9 @@ pageEncoding="UTF-8"%>
                     </div>
                     <div class="form-group"ng-class="{'text-danger': EditNetworkAclForm.endPort.$invalid && formSubmitted}">
                         <div class="row" data-ng-show = "(vpcAcl.protocol == 'TCP' || vpcAcl.protocol=='UDP' || vpcAcl.protocol== 'Protocol Number')">
-                            <label class="col-md-4 col-xs-12 col-sm-4 control-label control-normal">End Port:<span class="text-danger">*</span></label>
+                            <label class="col-md-4 col-xs-12 col-sm-4 control-label control-normal"><fmt:message key="common.end.port" bundle="${msg}" />:<span class="text-danger">*</span></label>
                             <div class="col-md-6  col-sm-6 col-xs-12">
-							<input data-ng-if = " (vpcAcl.protocol == 'TCP' || vpcAcl.protocol=='UDP' || vpcAcl.protocol== 'Protocol Number')" required="true" valid-number  placeholder="65535" data-ng-min="1" data-ng-max="65535"   type="text" name="endPort" data-ng-model="vpcAcl.endPort" class="form-control " autofocus ><span class="text-center text-danger" data-ng-show="vpcAclForm.endPort.$invalid && formSubmitted"> *Required</span>
+							<input data-ng-if = " (vpcAcl.protocol == 'TCP' || vpcAcl.protocol=='UDP' || vpcAcl.protocol== 'Protocol Number')" required="true" valid-number  placeholder="65535" data-ng-min="1" data-ng-max="65535"   type="text" name="endPort" data-ng-model="vpcAcl.endPort" class="form-control " autofocus ><span class="text-center text-danger" data-ng-show="vpcAclForm.endPort.$invalid && formSubmitted"> <fmt:message key="common.required" bundle="${msg}" /></span>
 							<i  tooltip="<fmt:message key="vpcAcl.endPort" bundle="${msg}" />" class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
 							<div class="error-area" data-ng-show="EditNetworkAclForm.endPort.$invalid && formSubmitted" >
                                     <i ng-attr-tooltip="{{ EditNetworkAclForm.endPort.errorMessage || '<fmt:message key="vpcAcl.endPort.is.required" bundle="${msg}" />' }}" class="fa fa-warning error-icon"></i>
@@ -104,7 +104,7 @@ pageEncoding="UTF-8"%>
                     </div>
                     <div class="form-group"ng-class="{'text-danger': EditNetworkAclForm.icmpType.$invalid && formSubmitted}">
                         <div class="row" data-ng-show = " (vpcAcl.protocol == 'ICMP')">
-                            <label class="col-md-4 col-xs-12 col-sm-4 control-label control-normal">ICMP Type:<span class="text-danger">*</span></label>
+                            <label class="col-md-4 col-xs-12 col-sm-4 control-label control-normal"><fmt:message key="icmp.type" bundle="${msg}" />:<span class="text-danger">*</span></label>
                             <div class="col-md-6  col-sm-6 col-xs-12">
 						<input data-ng-if = " (vpcAcl.protocol == 'ICMP')" required="true"  type="text" name="icmpType" data-ng-model="vpcAcl.icmpType" class="form-control " autofocus ><span class="text-center text-danger" data-ng-show="vpcAclForm.icmpType.$invalid && formSubmitted"> </span>                                <div class="error-area" data-ng-show="EditNetworkAclForm.ruleNumber.$invalid && formSubmitted" >
                                     <i  tooltip="<fmt:message key="vpcAcl.icmpType" bundle="${msg}" />" class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
@@ -115,7 +115,7 @@ pageEncoding="UTF-8"%>
                     </div>
                      <div class="form-group"ng-class="{'text-danger': EditNetworkAclForm.icmpCode.$invalid && formSubmitted}">
                         <div class="row" data-ng-show = " (vpcAcl.protocol == 'ICMP')">
-                            <label class="col-md-4 col-xs-12 col-sm-4 control-label control-normal">ICMP Code:<span class="text-danger">*</span></label>
+                            <label class="col-md-4 col-xs-12 col-sm-4 control-label control-normal"><fmt:message key="icmp.code" bundle="${msg}" />:<span class="text-danger">*</span></label>
                             <div class="col-md-6  col-sm-6 col-xs-12">
 						<input data-ng-if = " (vpcAcl.protocol == 'ICMP')" required="true"  type="text" name="icmpCode" data-ng-model="vpcAcl.icmpCode" class="form-control " autofocus ><span class="text-center text-danger" data-ng-show="vpcAclForm.icmpCode.$invalid && formSubmitted"></span>   <div class="error-area" data-ng-show="EditNetworkAclForm.ruleNumber.$invalid && formSubmitted" >
 						 <i  tooltip="<fmt:message key="vpcAcl.icmpCode" bundle="${msg}" />" class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
@@ -126,7 +126,7 @@ pageEncoding="UTF-8"%>
                     </div>
                      <div class="form-group"ng-class="{'text-danger': EditNetworkAclForm.trafficType.$invalid && formSubmitted}">
                         <div class="row">
-                            <label class="col-md-4 col-xs-12 col-sm-4 control-label control-normal">Traffic Type:<span class="text-danger">*</span></label>
+                            <label class="col-md-4 col-xs-12 col-sm-4 control-label control-normal"><fmt:message key="traffic.type" bundle="${msg}" />:<span class="text-danger">*</span></label>
                             <div class="col-md-6  col-sm-6 col-xs-12">
                                <select required="true" class="form-control input-group" name="trafficType" data-ng-model="vpcAcl.trafficType"  data-ng-change="" ng-options="trafficType for (id, trafficType) in trafficTypeList"><option value=""><fmt:message key="common.select"
 										bundle="${msg}" /></option></select>

@@ -10,10 +10,10 @@ pageEncoding="UTF-8"%>
 <div class="row m-l-sm m-r-sm panel-body" data-ng-controller="vpcCtrl" >
 
     <ul class="nav nav-tabs" data-ng-init="templateCategory = tabview">
-        <li data-ng-class="{'active' : tabview == 'ipdetails'}"><a href="javascript:void(0)" data-ng-click="templateCategory = 'ipdetails'" data-toggle="tab">  <i class="fa fa-list"></i> Details</a></li>
-        <li data-ng-if = "!ipDetails.isStaticnat && !ipDetails.isSourcenat"  data-ng-class="{'active' : tabview == 'port-forward'}"><a  data-ng-click="portRulesLists(1)" data-toggle="tab"> <i class="fa fa-mail-forward"></i> Port Forwarding</a></li>
-        <li data-ng-if = "!ipDetails.isStaticnat && !ipDetails.isSourcenat" data-ng-class="{'active' : tabview == 'load-balance'}"><a data-ng-click="LBlist(1)" data-toggle="tab"> <i class="custom-icon custom-load-ip"></i> Load Balancing</a></li>
-        <li data-ng-show="ipDetails.vpnState == 'RUNNING'" data-ng-class="{'active' : tabview == 'vpn-details'}"><a data-ng-click="templateCategory = 'vpn-details'" data-toggle="tab"> <i class="custom-icon custom-icon-ip"></i> VPN</a></li>
+        <li data-ng-class="{'active' : tabview == 'ipdetails'}"><a href="javascript:void(0)" data-ng-click="templateCategory = 'ipdetails'" data-toggle="tab">  <i class="fa fa-list"></i> <fmt:message key="common.details" bundle="${msg}" /></a></li>
+        <li data-ng-if = "!ipDetails.isStaticnat && !ipDetails.isSourcenat"  data-ng-class="{'active' : tabview == 'port-forward'}"><a  data-ng-click="portRulesLists(1)" data-toggle="tab"> <i class="fa fa-mail-forward"></i> <fmt:message key="port.forwarding" bundle="${msg}" /></a></li>
+        <li data-ng-if = "!ipDetails.isStaticnat && !ipDetails.isSourcenat" data-ng-class="{'active' : tabview == 'load-balance'}"><a data-ng-click="LBlist(1)" data-toggle="tab"> <i class="custom-icon custom-load-ip"></i> <fmt:message key="load.balancing" bundle="${msg}" /></a></li>
+        <li data-ng-show="ipDetails.vpnState == 'RUNNING'" data-ng-class="{'active' : tabview == 'vpn-details'}"><a data-ng-click="templateCategory = 'vpn-details'" data-toggle="tab"> <i class="custom-icon custom-icon-ip"></i> <fmt:message key="vpn" bundle="${msg}" /></a></li>
     </ul>
 
     <div class="tab-content">

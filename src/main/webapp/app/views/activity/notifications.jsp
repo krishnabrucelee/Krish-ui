@@ -49,10 +49,10 @@
                     <label></label>
                 </div>
                 </th>
-                <th>Description</th>
-                <th>Type</th>
-                <th>Date</th>
-                <th>Action</th>
+                <th><fmt:message key="common.description" bundle="${msg}" /></th>
+                <th><fmt:message key="common.type" bundle="${msg}" /></th>
+                <th><fmt:message key="common.date" bundle="${msg}" /></th>
+                <th><fmt:message key="action" bundle="${msg}" /></th>
                 </tr>
                 </thead>
                 <tbody data-ng-hide="activityListt.length > 0">
@@ -73,8 +73,8 @@
                         <td>{{ notification.type}}</td>
                         <td>{{ notification.date}}</td>
                         <td>
-                            <a class="icon-button" data-ng-click="archive()" title="Archive"><span class="fa fa-file-archive-o"></span></a>
-                            <a class="icon-button"   data-ng-click="delete()"title="Delete"><span class="fa fa-trash"></span></a>
+                            <a class="icon-button" data-ng-click="archive()" title="<fmt:message key="archive" bundle="${msg}" />"><span class="fa fa-file-archive-o"></span></a>
+                            <a class="icon-button"   data-ng-click="delete()"title="<fmt:message key="common.delete" bundle="${msg}" />"><span class="fa fa-trash"></span></a>
                         </td>
                     </tr>
 

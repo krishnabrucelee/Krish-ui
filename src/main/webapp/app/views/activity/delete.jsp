@@ -1,3 +1,10 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<c:set var="language" value="${not empty language ? language : pageContext.request.getAttribute('language')}" scope="session" />
+<fmt:setBundle basename="i18n/messages_${language}" var="msg" scope="session" />
+
 <form name="deleteForm" method="POST" data-ng-submit="remove(deleteForm)" novalidate  data-ng-controller="deleteCtrl">
     <div class="inmodal" >
         <div class="modal-header">
@@ -8,17 +15,17 @@
                 <div class="col-md-12">
                     <div class="form-group" ng-class="{'text-danger': deleteForm.type.$invalid && formSubmitted}">
                         <div class="row">
-                            <label  class="col-md-3 col-xs-12 col-sm-2 control-label">By type 
+                            <label  class="col-md-3 col-xs-12 col-sm-2 control-label"><fmt:message key="by.type" bundle="${msg}" />
                             </label>
                             <div class="col-md-5 col-xs-12 col-sm-5">
                                 <input required="true" type="text" name="type" data-ng-class="{'error': deleteForm.type.$invalid && formSubmitted}" data-ng-model="activity.type" class="form-control" >
-                                <div class="error-area" data-ng-show="deleteForm.type.$invalid && formSubmitted" ><i  tooltip="Type is Required" class="fa fa-warning error-icon"></i></div>
+                                <div class="error-area" data-ng-show="deleteForm.type.$invalid && formSubmitted" ><i  tooltip="<fmt:message key="type.is.required" bundle="${msg}" />" class="fa fa-warning error-icon"></i></div>
                             </div>
                         </div>
                     </div>
                     <div class="form-group" ng-class="{'text-danger': deleteForm.startDate.$invalid && formSubmitted}">
                         <div class="row">
-                            <label  class="col-md-3 col-xs-12 col-sm-2 control-label">By date (Start) 
+                            <label  class="col-md-3 col-xs-12 col-sm-2 control-label"><fmt:message key="by.date" bundle="${msg}" /> (<fmt:message key="start" bundle="${msg}" />)
                             </label>
                             <div class="col-md-5 col-xs-12 col-sm-5">
                                 <p class="input-group">
@@ -26,7 +33,7 @@
                                     <span class="input-group-btn">
                                         <button type="button" data-ng-class="{'error': deleteForm.startDate.$invalid && formSubmitted}" class="btn btn-default" ng-click="open($event, 'startDateOpened')"><i class="glyphicon glyphicon-calendar"></i></button>
                                     </span>
-                                <div class="error-area" data-ng-show="deleteForm.startDate.$invalid && formSubmitted" ><i  tooltip="Date is Required" class="fa fa-warning error-icon"></i></div>
+                                <div class="error-area" data-ng-show="deleteForm.startDate.$invalid && formSubmitted" ><i  tooltip="<fmt:message key="date.is.required" bundle="${msg}" />" class="fa fa-warning error-icon"></i></div>
 
                                 </p>
                             </div>
@@ -34,7 +41,7 @@
                     </div>
                     <div class="form-group" ng-class="{'text-danger': deleteForm.endDate.$invalid && formSubmitted}">
                         <div class="row">
-                            <label  class="col-md-3 col-xs-12 col-sm-2 control-label">By date (End) 
+                            <label  class="col-md-3 col-xs-12 col-sm-2 control-label"><fmt:message key="by.date" bundle="${msg}" /> (<fmt:message key="end" bundle="${msg}" />)
                             </label>
                             <div class="col-md-5 col-xs-12 col-sm-5"> {{ $scope.dt}}
                                 <p class="input-group">
@@ -42,7 +49,7 @@
                                     <span class="input-group-btn">
                                         <button type="button" data-ng-class="{'error': deleteForm.endDate.$invalid && formSubmitted}" class="btn btn-default" ng-click="open($event, 'endDateOpened')"><i class="glyphicon glyphicon-calendar"></i></button>
                                     </span>
-                                <div class="error-area" data-ng-show="deleteForm.endDate.$invalid && formSubmitted" ><i  tooltip="Date is Required" class="fa fa-warning error-icon"></i></div>
+                                <div class="error-area" data-ng-show="deleteForm.endDate.$invalid && formSubmitted" ><i  tooltip="<fmt:message key="date.is.required" bundle="${msg}" />" class="fa fa-warning error-icon"></i></div>
 
                                 </p>
                             </div>
@@ -52,8 +59,8 @@
             </div>
         </div>
         <div class="modal-footer">
-            <a class="btn btn-default"  data-ng-click="cancel()">Cancel</a>
-            <button class="btn btn-info" type="submit">Delete</button>
+            <a class="btn btn-default"  data-ng-click="cancel()"><fmt:message key="common.cancel" bundle="${msg}" /></a>
+            <button class="btn btn-info" type="submit"><fmt:message key="common.delete" bundle="${msg}" /></button>
         </div>
     </div>
 </form>

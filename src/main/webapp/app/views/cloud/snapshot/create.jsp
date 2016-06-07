@@ -11,7 +11,7 @@
 		<div class="inmodal">
 			<div class="modal-header">
 				<panda-modal-header page-icon="fa fa-database"
-					page-title="List of Available Disk"></panda-modal-header>
+					page-title="<fmt:message key="list.of.available.disk" bundle="${msg}" />"></panda-modal-header>
 			</div>
 			<div class="modal-body">
 				<div class="row" data-ng-show="showLoader">
@@ -57,7 +57,7 @@
 					<div class="col-md-12 col-sm-12">
                              <span class="pull-left">
                         <h4 class="text-danger price-text m-l-lg">
-                            <app-currency></app-currency>{{miscellaneousVolumeSnapshotList[0].costperGB }} <span>/GB/day</span>
+                            <app-currency></app-currency>{{miscellaneousVolumeSnapshotList[0].costperGB }} <span>/GB/<fmt:message key="common.day" bundle="${msg}" /></span>
                         </h4>
                     </span>
 				</div>

@@ -9,27 +9,27 @@ pageEncoding="UTF-8"%>
 <table  cellspacing="1" cellpadding="1" class="table table-bordered table-striped">
     <thead>
         <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Domain</th>
-            <th>Account</th>
-            <th>Action</th>
+            <th><fmt:message key="common.name" bundle="${msg}" /></th>
+            <th><fmt:message key="common.description" bundle="${msg}" /></th>
+            <th><fmt:message key="common.company" bundle="${msg}" /></th>
+            <th><fmt:message key="account" bundle="${msg}" /></th>
+            <th><fmt:message key="action" bundle="${msg}" /></th>
         </tr>
     </thead>
     <tbody>
         <tr data-ng-repeat="network in networkList| filter: quickSearch">
             <td>
-                <a class="text-info" ui-sref="cloud.list-network.view-network({id: {{ network.id}}})"  title="View Network" >{{ network.namea}}</a>
+                <a class="text-info" ui-sref="cloud.list-network.view-network({id: {{ network.id}}})"  title="<fmt:message key="view.network" bundle="${msg}" />" >{{ network.namea}}</a>
             </td>
             <td>{{ network.displayTexta}} </td>
             <td>{{ network.domain.naame}} </td>
             <td>{{ network.accounat}} </td>
 
             <td>
-                <a class="icon-button" title="Edit">
+                <a class="icon-button" title="<fmt:message key="common.edit" bundle="${msg}" />">
                     <span class="fa fa-edit m-r"> </span>
                 </a>
-              <a class="icon-button" title="Delete "  ><span class="fa fa-trash"></span></a>
+              <a class="icon-button" title="<fmt:message key="common.delete" bundle="${msg}" />"  ><span class="fa fa-trash"></span></a>
             </td>
         </tr>
     </tbody>

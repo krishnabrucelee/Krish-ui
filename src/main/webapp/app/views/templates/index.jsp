@@ -10,19 +10,19 @@
 <aside id="menu" ng-include="'app/views/common/navigation.jsp'"></aside>
 <div id="wrapper">
     <div small-header class="normalheader transition ng-scope small-header">
-        <div class="hpanel" tour-step order="1" title="Page header" content="Place your page title and breadcrumb. Select small or large header or give the user choice to change the size." placement="bottom">
+        <div class="hpanel" tour-step order="1" content="Place your page title and breadcrumb. Select small or large header or give the user choice to change the size." placement="bottom">
             <div class="panel-body">
                 <div id="hbreadcrumb" class="pull-right">
                     <ol class="hbreadcrumb breadcrumb">
                         <li><a ui-sref="dashboard"><fmt:message key="common.home" bundle="${msg}" /></a></li>
                         <li ng-repeat="state in $state.$current.path" ng-switch="$last || !!state.abstract" ng-class="{active: $last}">
-                            <a ng-switch-when="false" href="{{state.url.format($stateParams)}}">{{state.data.pageTitle}}</a>
-                            <span ng-switch-when="true">{{state.data.pageTitle}}</span>
+                            <a ng-switch-when="false" href="{{state.url.format($stateParams)}}"><fmt:message key="template.store" bundle="${msg}" /></a>
+                            <span ng-switch-when="true"><fmt:message key="template.store" bundle="${msg}" /></span>
                         </li>
                     </ol>
                 </div>
                 <h2 class="font-light m-b-xs">
-                    {{ $state.current.data.pageTitle}}
+                    <fmt:message key="template.store" bundle="${msg}" />
                 </h2>
                 <small>{{ $state.current.data.pageDesc}}</small>
             </div>
@@ -46,8 +46,8 @@
                                 <div class="col-md-12 col-sm-12 col-xs-12 ">
                                     <div class="pull-left">
                                         <div class="pull-left">
-                                            <a title="Grid View" class="btn btn-info" data-ng-click="showCommunityTemplateContent()"  data-ng-class="!listView ? 'disabled' : ''" > <i class="fa fa-th-large" /></a>
-                                            <a title="List View"  class="btn btn-info" data-ng-click="showCommunityTemplateContent()" data-ng-class="listView ? 'disabled' : ''" > <i class="fa fa-list" /></a>
+                                            <a title="<fmt:message key="grid.view" bundle="${msg}" />" class="btn btn-info" data-ng-click="showCommunityTemplateContent()"  data-ng-class="!listView ? 'disabled' : ''" > <i class="fa fa-th-large" /></a>
+                                            <a title="<fmt:message key="list.view" bundle="${msg}" />"  class="btn btn-info" data-ng-click="showCommunityTemplateContent()" data-ng-class="listView ? 'disabled' : ''" > <i class="fa fa-list" /></a>
                                             <a class="btn btn-info" data-ng-click="showCommunityRefresh()"
 											id="community_refresh_button" title="<fmt:message key="common.refresh" bundle="${msg}" />"
 											ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
@@ -84,8 +84,8 @@
                                 <div class="col-md-12 col-sm-12 col-xs-12 ">
                                     <div class="pull-left">
                                         <div class="pull-left">
-                                            <a title="Grid View" class="btn btn-info" data-ng-click="showFeaturedTemplateContent()"  data-ng-class="!listView ? 'disabled' : ''" > <i class="fa fa-th-large" /></a>
-                                            <a title="List View"  class="btn btn-info" data-ng-click="showFeaturedTemplateContent()"  data-ng-class="listView ? 'disabled' : ''" > <i class="fa fa-list" /></a>
+                                            <a title="<fmt:message key="grid.view" bundle="${msg}" />" class="btn btn-info" data-ng-click="showFeaturedTemplateContent()"  data-ng-class="!listView ? 'disabled' : ''" > <i class="fa fa-th-large" /></a>
+                                            <a title="<fmt:message key="list.view" bundle="${msg}" />"  class="btn btn-info" data-ng-click="showFeaturedTemplateContent()"  data-ng-class="listView ? 'disabled' : ''" > <i class="fa fa-list" /></a>
 			                                <a class="btn btn-info" data-ng-click="showFeaturedRefresh()"
 											id="featured_refresh_button" title="<fmt:message key="common.refresh" bundle="${msg}" />"
 											ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
@@ -120,8 +120,8 @@
                                 <div class="col-md-12 col-sm-12 col-xs-12 ">
                                     <div class="pull-left">
                                         <div class="pull-left">
-                                            <a title="Grid View" class="btn btn-info"  data-ng-click="showUserTemplateContent()"   data-ng-class="!listView ? 'disabled' : ''" > <i class="fa fa-th-large" /></a>
-                                            <a title="List View"  class="btn btn-info" data-ng-click="showUserTemplateContent()"  data-ng-class="listView ? 'disabled' : ''" > <i class="fa fa-list" /></a>
+                                            <a title="<fmt:message key="grid.view" bundle="${msg}" />" class="btn btn-info"  data-ng-click="showUserTemplateContent()"   data-ng-class="!listView ? 'disabled' : ''" > <i class="fa fa-th-large" /></a>
+                                            <a title="<fmt:message key="list.view" bundle="${msg}" />"  class="btn btn-info" data-ng-click="showUserTemplateContent()"  data-ng-class="listView ? 'disabled' : ''" > <i class="fa fa-list" /></a>
                                           <a class="btn btn-info" data-ng-click="showuserTemplateRefresh()"
 											id="featured_refresh_button" title="<fmt:message key="common.refresh" bundle="${msg}" />"
 											ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
@@ -130,7 +130,7 @@
                                     <div class="pull-right">
                                        <div class="clearfix"></div>
                                         <span class="pull-right m-l-sm">
-                                            <a  class="btn btn-info" data-ng-hide="global.sessionValues.type =='ROOT_ADMIN'" has-permission = "REGISTER_TEMPLATE" data-ng-click="uploadTemplateContainer(size)"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span> Register Template</a>
+                                            <a  class="btn btn-info" data-ng-hide="global.sessionValues.type =='ROOT_ADMIN'" has-permission = "REGISTER_TEMPLATE" data-ng-click="uploadTemplateContainer(size)"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span> <fmt:message key="register.template" bundle="${msg}" /></a>
 
                                         </span>
                                     </div>

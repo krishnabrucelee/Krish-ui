@@ -9,7 +9,7 @@ pageEncoding="UTF-8"%>
 <form name="ipform" >
 <div class="inmodal"  >
         <div class="modal-header">
-            <panda-modal-header page-custom-icon="images/ip-icon-big.png"  page-title="Enable Static Nat"></panda-modal-header>
+            <panda-modal-header page-custom-icon="images/ip-icon-big.png"  page-title="<fmt:message key="enable.static.nat" bundle="${msg}" />"></panda-modal-header>
         </div>
         <div class="modal-body">
 
@@ -19,21 +19,15 @@ pageEncoding="UTF-8"%>
                    <span class="fa fa-3x fa-warning text-warning"></span>
                 </div>
 
-               Please confirm that you want to Enable Static Nat.
+               <fmt:message key="confirmation.to.enable.static.nat" bundle="${msg}" />.
             </div>
-
-<!--             <div class="text-center" data-ng-show="enableNat">
-                <span>Please wait</span><br/>
-                <span><img src="images/loading-bars.svg" /> </span>
-            </div>
-
- -->        </div>
+        </div>
 
         <div class="modal-footer" data-ng-hide="enableNat">
 
             <span class="pull-right">
-                <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="cancelInst()">No</button>
-                <button type="button" class="btn btn-info" ng-click="enableStaticNat(network)">Yes</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="cancelInst()"><fmt:message key="common.no" bundle="${msg}" /></button>
+                <button type="button" class="btn btn-info" ng-click="enableStaticNat(network)"><fmt:message key="common.yes" bundle="${msg}" /></button>
             </span>
 
         </div>
