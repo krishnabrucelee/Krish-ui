@@ -302,7 +302,7 @@ function globalConfig($window) {
         PING_APP_URL : REQUEST_PROTOCOL + window.location.hostname + ":8086/api/",
         BASE_UI_URL : REQUEST_PROTOCOL + window.location.hostname + REQUEST_PORT + REQUEST_FOLDER,
         MONITOR_SOCKET_URL : REQUEST_PROTOCOL + window.location.hostname + ":8282/",
-        CONTENT_LIMIT : 10,
+        CONTENT_LIMIT : $window.sessionStorage.getItem("loginSession") == null ? 10 : JSON.parse($window.sessionStorage.getItem("loginSession")).paginationLimit,
         VIEW_URL : 'app/views/',
         NOTIFICATION_TEMPLATE : 'app/views/notification/notify.jsp',
         TOKEN_SEPARATOR : "@@",
