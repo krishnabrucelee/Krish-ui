@@ -167,7 +167,7 @@
                     <div class="dashboard-department-cost" data-ng-show="dashboard.costList.department">
                         <div class="panel-body">
                             <h5 class="no-margins text-primary">
-                                <fmt:message key="top.5.departments.by.cost" bundle="${msg}" /> <br>(Current Month) {{filterdept.value | lowercase}}
+                                <fmt:message key="top.5.departments.by.cost" bundle="${msg}" /> <br>(<fmt:message key="current" bundle="${msg}" /> <fmt:message key="common.month" bundle="${msg}" />) {{filterdept.value | lowercase}}
                             </h5>
 
                             <div class="m-t-md">
@@ -201,7 +201,7 @@
                     <div class="dashboard-project-cost" data-ng-show="dashboard.costList.project">
                         <div class="panel-body">
                             <h5 class="no-margins text-primary">
-                                <fmt:message key="top.5.projects.by.cost" bundle="${msg}" /> <br>(Current Month) {{filters.value | lowercase}}
+                                <fmt:message key="top.5.projects.by.cost" bundle="${msg}" /> <br>(<fmt:message key="current" bundle="${msg}" /> <fmt:message key="common.month" bundle="${msg}" />) {{filters.value | lowercase}}
                             </h5>
 
                             <div class="m-t-md">
@@ -236,7 +236,7 @@
                     <div class="dashboard-application-cost" data-ng-show="dashboard.costList.application">
                         <div class="panel-body">
                             <h5 class="no-margins text-primary">
-                                <fmt:message key="top.5.applications.by.cost" bundle="${msg}" /> (Current Month) {{filterapp.value | lowercase}}
+                                <fmt:message key="top.5.applications.by.cost" bundle="${msg}" /> (<fmt:message key="current" bundle="${msg}" /> <fmt:message key="common.month" bundle="${msg}" />) {{filterapp.value | lowercase}}
                             </h5>
                             <div class="m-t-md">
 

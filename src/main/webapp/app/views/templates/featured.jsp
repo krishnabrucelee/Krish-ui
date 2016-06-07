@@ -26,8 +26,8 @@ pageEncoding="UTF-8"%>
 		<div  class="col-md-4 col-md-offset-4 clearfix">
 			<div class="hpanel">
 			    <div  class="panel-body no-records p-xs text-center" data-ng-hide="template.listFeaturedTemplate.length > 0">
-					 <h5>No Records Found</h5><br>
-					 <img src="images/no-templates-found.png" border="0" alt="no records found" title="no records found">
+					 <h5><fmt:message key="common.no.records.found" bundle="${msg}" /></h5><br>
+					 <img src="images/no-templates-found.png" border="0" alt="no records found" title="<fmt:message key="common.no.records.found" bundle="${msg}" />">
 			    </div>
 		    </div>
 		</div>
@@ -41,8 +41,8 @@ pageEncoding="UTF-8"%>
             <div  class="panel-body p-xs template-panel" data-ng-class="templateObj.openDescription ? 'template-panel-active': ''">
                 <div class="row">
                     <div class="col-md-12 col-sm-12">
-                        <div class="font-extra-bold pull-right" title="Zone">
-                            <a  title="Properties" data-ng-click="showDescription(templateObj)"><i class="pe-7s-keypad font-extra-bold  m-r-sm"></i></a>
+                        <div class="font-extra-bold pull-right" title="<fmt:message key="common.zone" bundle="${msg}" />">
+                            <a  title="<fmt:message key="properties" bundle="${msg}" />" data-ng-click="showDescription(templateObj)"><i class="pe-7s-keypad font-extra-bold  m-r-sm"></i></a>
                             <i class="fa fa-map-marker" ></i> {{ global.zone.name}}
                         </div>
                     </div>

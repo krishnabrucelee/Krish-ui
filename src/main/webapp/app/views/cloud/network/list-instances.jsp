@@ -9,7 +9,7 @@
 <form name="vmlistform">
 <div class="inmodal">
 <div class="modal-header">
-	<panda-modal-header page-icon="fa fa-cloud" page-title="Add VMs"></panda-modal-header>
+	<panda-modal-header page-icon="fa fa-cloud" page-title="<fmt:message key="add.vms" bundle="${msg}" />"></panda-modal-header>
 
 </div>
 <div class="modal-body">
@@ -37,12 +37,12 @@
 						class="table table-bordered table-striped">
 						<thead>
 							<tr>
-								<th>Name</th>
-								<th>Internal Name</th>
-								<th>Display Name</th>
-								<th>Zone</th>
-								<th>State</th>
-								<th>Select</th>
+								<th><fmt:message key="common.name" bundle="${msg}" /></th>
+								<th><fmt:message key="common.internal.name" bundle="${msg}" /></th>
+								<th><fmt:message key="common.display.name" bundle="${msg}" /></th>
+								<th><fmt:message key="common.zone" bundle="${msg}" /></th>
+								<th><fmt:message key="common.state" bundle="${msg}" /></th>
+								<th><fmt:message key="common.select" bundle="${msg}" /></th>
 							</tr>
 						</thead>
 						<tbody>

@@ -14,15 +14,15 @@
                 <div class="col-lg-10 col-md-10 col-sm-10 col-md-offset-1">
                     <div class="panel-info panel ">
                         <div class="panel-heading">
-                            <h3 class="panel-title">Generate {{ $state.current.data.pageTitle}}</h3>
+                            <h3 class="panel-title"><fmt:message key="generate" bundle="${msg}" /> {{ $state.current.data.pageTitle}}</h3>
                         </div>
                         <div class="row m-t-md">
                             <div class="col-md-6 col-sm-6">
                                  <div class="form-group m-l-md"
                                     ng-class="{'text-danger' : !usageStatisticsObj.startDate && formSubmitted}">
                                     <div class="row">
-                                        <label class="col-md-3 col-sm-3 control-label">From
-                                            Date: <span class="text-danger">*</span>
+                                        <label class="col-md-3 col-sm-3 control-label"><fmt:message key="common.from" bundle="${msg}" />
+                                            <fmt:message key="common.date" bundle="${msg}" />: <span class="text-danger">*</span>
                                         </label>
                                         <div class="col-md-7 col-sm-7 ">
                                             <div class="input-group">
@@ -44,14 +44,14 @@
                                             </div>
                                             <div class="error-area"
                                                 data-ng-show="!usageStatisticsObj.startDate && formSubmitted">
-                                                <i tooltip="From date is Required" class=""></i>
+                                                <i tooltip="<fmt:message key="from.date.is.required" bundle="${msg}" />" class=""></i>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group m-l-md">
                                 <div class="row">
-                                <label class="col-md-3 col-sm-3 control-label">Group By:
+                                <label class="col-md-3 col-sm-3 control-label"><fmt:message key="group.by" bundle="${msg}" />:
                                     <span class="text-danger">*</span>
                                 </label>
                                 <div class="col-md-7 col-sm-7">
@@ -72,8 +72,8 @@
                                             'text-danger'
                                             : !usageStatisticsObj.endDate && formSubmitted}">
                                     <div class="row">
-                                        <label class="col-md-3 col-sm-3 control-label">To
-                                            Date: <span class="text-danger">*</span>
+                                        <label class="col-md-3 col-sm-3 control-label"><fmt:message key="common.to" bundle="${msg}" />
+                                            <fmt:message key="common.date" bundle="${msg}" />: <span class="text-danger">*</span>
                                         </label>
                                         <div class="col-md-7 col-sm-7 ">
                                             <div class="input-group">
@@ -97,14 +97,14 @@
                                             </div>
                                             <div class="error-area"
                                                 data-ng-show="!usageStatisticsObj.endDate && formSubmitted">
-                                                <i tooltip="To date is Required" class=""></i>
+                                                <i tooltip="<fmt:message key="to.date.is.required" bundle="${msg}" />" class=""></i>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group m-l-md" data-ng-show="global.sessionValues.type == 'ROOT_ADMIN'">
                                 <div class="row">
-                                <label class="col-md-3 col-sm-3 control-label">Company:
+                                <label class="col-md-3 col-sm-3 control-label"><fmt:message key="common.company" bundle="${msg}" />:
                                     <span class="text-danger">*</span>
                                 </label>
                                 <div class="col-md-7 col-sm-7">
@@ -112,7 +112,7 @@
                                     class="form-control input-group col-xs-5" name="domain"
                                     data-ng-model="usageStatisticsObj.domain"
                                     data-ng-options="domainObj.name for domainObj in domainList">
-                                    <option value="">Select</option>
+                                    <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
                                 </select>
                                 </div>
                                 </div>
@@ -122,7 +122,7 @@
                         <div class="row ">
                             <span class="col-md-4 col-sm-4"></span> <span
                                 class="col-md-7 col-sm-7 p-md">
-                                <button type="submit" data-ng-click="getUsageStatistics()" class="btn btn-info">Generate</button>
+                                <button type="submit" data-ng-click="getUsageStatistics()" class="btn btn-info"><fmt:message key="generate" bundle="${msg}" /></button>
                                 <!-- <a class="btn btn-default" data-ng-click="reset()"> Cancel </a> -->
                             </span>
                         </div>
@@ -136,7 +136,7 @@
                     <div class="row">
                       <div class="report-wrapper white-content" data-ng-show="myframe">
 		            <div class="label-primary p-sm h6 text-white fa-bold">
-		                <span  data-ng-show="groupBy">Group By : {{usageStatisticsType}}</span><span data-ng-show="usageStatisticsObj.domain"> | Domain : {{domainName}} </span><span data-ng-show= "usageStatisticsObj.startDate"> | Start Date :<em>{{reportStartDate | date:'dd-MMM-yyyy' }}</em></span><span data-ng-show="usageStatisticsObj.endDate"> | To Date :<em>{{reportEndDate | date:'dd-MMM-yyyy' }}</em>
+		                <span  data-ng-show="groupBy"><fmt:message key="group.by" bundle="${msg}" /> : {{usageStatisticsType}}</span><span data-ng-show="usageStatisticsObj.domain"> | <fmt:message key="common.company" bundle="${msg}" /> : {{domainName}} </span><span data-ng-show= "usageStatisticsObj.startDate"> | <fmt:message key="start.date" bundle="${msg}" /> :<em>{{reportStartDate | date:'dd-MMM-yyyy' }}</em></span><span data-ng-show="usageStatisticsObj.endDate"> | <fmt:message key="to.date" bundle="${msg}" /> :<em>{{reportEndDate | date:'dd-MMM-yyyy' }}</em>
 		                	</span><a data-ng-if=" global.sessionValues.type == 'ROOT_ADMIN'"
 										href="{{ global.PING_APP_URL }}usage/statistics/report?fromDate={{reportStartDate}}&toDate={{reportEndDate}}&groupingType={{groupBy}}&domainUuid={{usageStatisticsObj.domain.name}}&type=pdf"
 										class="btn btn-default  pull-right m-l-xs"><span

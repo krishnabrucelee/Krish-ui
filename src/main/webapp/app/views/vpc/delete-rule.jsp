@@ -17,7 +17,7 @@
 				<span class="fa fa-3x fa-warning text-warning"></span>
             </div>
             <div class="form-group has-error col-md-9 col-sm-9  col-xs-9">
-                <p >Please confirm that you want to delete rule. </p>
+                <p ><fmt:message key="delete.confirmation.rule" bundle="${msg}" />. </p>
             </div>
 
 

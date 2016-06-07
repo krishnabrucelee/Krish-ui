@@ -64,7 +64,7 @@
 											 		name="hypervisor" data-ng-model="instance.hypervisor" id="create_instance_hypervisor"
 											 		ng-options="hypervisor.name for hypervisor in formElements.hypervisorList"
 											 		data-ng-class="{'error': TemplateForm.hypervisor.$invalid && formSubmitted}" >
-                                                    <option value="">Select</option>
+                                                    <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
                                                 </select>
                                             </div>
                                         </div>

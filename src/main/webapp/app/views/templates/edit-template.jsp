@@ -8,7 +8,7 @@
 <form name="uploadTemplateForm" data-ng-submit="update(uploadTemplateForm, templates)" method="post" novalidate="" >
    <div class="inmodal" >
         <div class="modal-header">
-            <panda-modal-header page-icon="pe-7s-upload" page-title="Edit Template"></panda-modal-header>
+            <panda-modal-header page-icon="pe-7s-upload" page-title="<fmt:message key="edit.template" bundle="${msg}" />"></panda-modal-header>
         </div>
                 <div class="modal-body">
     <div class="row">
@@ -89,7 +89,7 @@
                                 <label class="col-md-3 col-sm-3 col-xs-3 control-label" ><fmt:message key="template.rootdiskcontroller" bundle="${msg}" /></label>
                                 <div class="col-md-7  col-sm-7 col-xs-7">
                                     <select class="form-control input-group" name="rootDiskController" data-ng-model="templates.rootDiskController" ng-options="rootDiskController for (id, rootDiskController) in formElements.rootDiskControllerList" >
-                                        <option value="">No Thanks</option>
+                                        <option value=""><fmt:message key="no.thanks" bundle="${msg}" /></option>
                                     </select>
                                 </div>
                             </div>
@@ -99,7 +99,7 @@
                                 <label class="col-md-3 col-sm-3 col-xs-3 control-label" ><fmt:message key="template.nicadapter" bundle="${msg}" /></label>
                                 <div class="col-md-7  col-sm-7 col-xs-7">
                                     <select  class="form-control input-group" name="nicType" data-ng-model="templates.nicAdapter" ng-options="nicType for (id, nicType) in formElements.nicTypeList" >
-                                        <option value="">No Thanks</option>
+                                        <option value=""><fmt:message key="no.thanks" bundle="${msg}" /></option>
                                     </select>
                                 </div>
                             </div>
@@ -109,7 +109,7 @@
                                 <label class="col-md-3 col-sm-3 col-xs-3 control-label" ><fmt:message key="template.keyboard" bundle="${msg}" /></label>
                                 <div class="col-md-7  col-sm-7 col-xs-7">
                                     <select  class="form-control input-group" name="keyboardType" data-ng-model="templates.keyboardType" ng-options="keyboardType for (id, keyboardType) in formElements.keyboardTypeList" >
-                                        <option value="">No Thanks</option>
+                                        <option value=""><fmt:message key="no.thanks" bundle="${msg}" /></option>
                                     </select>
                                 </div>
                             </div>
@@ -158,7 +158,7 @@
                                 <label class="col-md-3 col-sm-3 col-xs-3 control-label" ><fmt:message key="template.oscategory" bundle="${msg}" /><span class="text-danger">*</span></label>
                                 <div class="col-md-7  col-sm-7 col-xs-7">
                                     <select required="true" class="form-control input-group" name="osCategory" data-ng-model="templates.osCategory"  value="{{templates.osCategory.name}}" ng-options="osCategory.name for osCategory in formElements.osCategoryList" data-ng-class="{'error': uploadTemplateForm.osCategory.$invalid && formSubmitted}" >
-                                        <option value="">Select</option>
+                                        <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
                                     </select>
                                     <div class="error-area" data-ng-show="uploadTemplateForm.osCategory.$invalid && formSubmitted" ><i  ng-attr-tooltip="<fmt:message key="template.oscategory.error" bundle="${msg}" />" class="fa fa-warning error-icon"></i></div>
                                 </div>

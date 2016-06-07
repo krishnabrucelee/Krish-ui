@@ -15,10 +15,10 @@
 						<ul class="nav nav-tabs"
 							data-ng-init="formElements.category = 'Details'">
 							<li class="active"><a id="vpc_view_network_acl_details_button" href="javascript:void(0)" data-ng-click="formElements.category = 'Details'"
-								data-toggle="tab"> Details </a></li>
+								data-toggle="tab"> <fmt:message key="common.details" bundle="${msg}" /> </a></li>
 							<li class=""><a id="vpc_view_network_acl_acl_list_rules_button" href="javascript:void(0)"
 								data-ng-click="formElements.category = 'ACL List Rules'"
-								data-toggle="tab"> ACL List Rules </a></li>
+								data-toggle="tab"> <fmt:message key="acl.list.rules" bundle="${msg}" /> </a></li>
 						</ul>
 					</div>
 					<div class="tab-pane"

@@ -172,7 +172,7 @@ pageEncoding="UTF-8"%>
                             <div class="col-md-7 col-sm-7 col-xs-7">
                                 <div class="form-group">
                                     <div class="row">
-                                        <label class="col-md-4 col-sm-4 control-label"> <span class="pull-right">Email Language</span></label>
+                                        <label class="col-md-4 col-sm-4 control-label"> <span class="pull-right"><fmt:message key="email.language" bundle="${msg}" /></span></label>
                                         <div class="col-md-6 col-sm-6 col-xs-6">
                                             <select class="form-control input-group" name="language" data-ng-model="profile.language" ng-options="language for (id, language) in formElements.LanguageList">
                                             <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>

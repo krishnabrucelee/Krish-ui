@@ -74,7 +74,7 @@
                                     <td>{{ (template.passwordEnabled) ? "Yes" : "No"}}</td>
                                     <td>{{ (template.dynamicallyScalable) ? "Yes" : "No" }}</td>
                                     <td>
-                                        <button data-ng-if="template.status == 'ACTIVE'" title="Launch" class="btn btn-info btn-sm pull-right" data-ng-click="openAddInstance(template)"><i class="fa fa-power-off"></i> <fmt:message key="common.launch" bundle="${msg}" /></button>
+                                        <button data-ng-if="template.status == 'ACTIVE'" title="<fmt:message key="common.launch" bundle="${msg}" />" class="btn btn-info btn-sm pull-right" data-ng-click="openAddInstance(template)"><i class="fa fa-power-off"></i> <fmt:message key="common.launch" bundle="${msg}" /></button>
                                     </td>
                                 </tr>
                             </tbody>

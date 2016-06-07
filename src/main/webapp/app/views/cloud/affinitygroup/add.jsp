@@ -118,7 +118,7 @@
                         <label class="col-md-4 col-sm-3 col-xs-3 control-label" ><fmt:message key="affinityGroup.affinityGroupType" bundle="${msg}" /><span class="text-danger">*</span></label>
                         <div class="col-md-6  col-sm-7 col-xs-7">
                             <select required="true" class="form-control input-group" name="affinityGroupType" data-ng-model="affinityGroup.affinityGroupType" ng-options="affinityGroupType.type for affinityGroupType in formElements.affinityGroupTypeList" data-ng-class="{'error': affinityGroupForm.affinityGroupType.$invalid && formSubmitted}" >
-                                <option value="">Select</option>
+                                <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
                             </select>
                             <i tooltip="<fmt:message key="affinityGroup.affinityGroupType.tooltip" bundle="${msg}" />"  class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
                             <div class="error-area" data-ng-show="affinityGroupForm.affinityGroupType.$invalid && formSubmitted" ><i  tooltip="<fmt:message key="affinityGroup.affinityGroupType.error" bundle="${msg}" />" class="fa fa-warning error-icon"></i></div>

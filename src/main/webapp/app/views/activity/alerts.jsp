@@ -1,3 +1,10 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<c:set var="language" value="${not empty language ? language : pageContext.request.getAttribute('language')}" scope="session" />
+<fmt:setBundle basename="i18n/messages_${language}" var="msg" scope="session" />
+
 <div class="hpanel" >
     <div class="panel-heading">
 
@@ -21,7 +28,7 @@
                             <a class="btn btn-info" data-ng-click="archive()"><span class="fa fa-file-archive-o"></span> Archive Alerts</a>
                             <a class="btn btn-info" data-ng-click="delete()"><span class="fa fa-trash"></span> Delete Alerts</a>
                         </span> -->
-                        <a class="btn btn-info" data-ng-click="getActivityByCategory('alerts',1)" title="Refresh" ><span class="fa fa-refresh fa-lg "></span></a>
+                        <a class="btn btn-info" data-ng-click="getActivityByCategory('alerts',1)" title="<fmt:message key="common.refresh" bundle="${msg}" />" ><span class="fa fa-refresh fa-lg "></span></a>
                     </span>
                 </div>
             </div>
@@ -40,10 +47,10 @@
                                 <label></label>
                             </div>
                         </th>
-                        <th>Description</th>
-                        <th>Type</th>
-                        <th>Date</th>
-                        <th>Action</th>
+                        <th><fmt:message key="common.description" bundle="${msg}" /></th>
+                        <th><fmt:message key="common.type" bundle="${msg}" /></th>
+                        <th><fmt:message key="common.date" bundle="${msg}" /></th>
+                        <th><fmt:message key="action" bundle="${msg}" /></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -59,8 +66,8 @@
                         <td>{{ alert.event }}</td>
                         <td>{{ alert.eventDateTime * 1000  | date:'yyyy-MM-dd HH:mm:ss' }}</td>
                          <td>
-                           <a class="icon-button" data-ng-click="archive()" title="Archive"><span class="fa fa-file-archive-o"></span></a>
-                            <a class="icon-button"   data-ng-click="delete()"title="Delete"><span class="fa fa-trash"></span></a>
+                           <a class="icon-button" data-ng-click="archive()" title="<fmt:message key="archive" bundle="${msg}" />"><span class="fa fa-file-archive-o"></span></a>
+                            <a class="icon-button"   data-ng-click="delete()"title="<fmt:message key="common.delete" bundle="${msg}" />"><span class="fa fa-trash"></span></a>
                         </td>
                     </tr>
 
