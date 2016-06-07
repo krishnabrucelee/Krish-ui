@@ -20,7 +20,7 @@
     <div small-header class="normalheader transition ng-scope small-header">
         <div class="hpanel" tour-step order="1" content="Place your page title and breadcrumb. Select small or large header or give the user choice to change the size." placement="bottom">
             <div class="panel-body">
-                <div id="hbreadcrumb" class="pull-right">
+                <div id="hbreadcrumb" class="pull-left">
                     <ol class="hbreadcrumb breadcrumb">
                         <li><a ui-sref="dashboard"><fmt:message key="common.home" bundle="${msg}" /></a></li>
                         <li ng-repeat="state in $state.$current.path" ng-switch="$last || !!state.abstract" ng-class="{active: $last}">
@@ -91,7 +91,7 @@
                         </li>
                     </ol>
                 </div>
-                <h2 class="font-light m-b-xs">
+               <%--  <h2 class="font-light m-b-xs">
                     <span id="instances_page_title" data-ng-if="$state.current.data.pageTitle === 'common.instances'"><fmt:message key="common.instances" bundle="${msg}" /></span>
                 </h2>
                 <h2 class="font-light m-b-xs">
@@ -127,7 +127,7 @@
                 <h2 class="font-light m-b-xs">
                     <span id="ip_address_page_title" data-ng-if="$state.current.data.pageTitle === 'ip.address'"><fmt:message key="ip.address" bundle="${msg}" /></span>
                 </h2>
-                <small>{{ $state.current.data.pageDesc}}</small>
+                <small>{{ $state.current.data.pageDesc}}</small> --%>
             </div>
         </div>
     </div>
