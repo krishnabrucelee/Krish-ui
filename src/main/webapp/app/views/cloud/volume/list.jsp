@@ -78,7 +78,7 @@ pageEncoding="UTF-8"%>
                     <div data-ng-show = "showLoader" style="margin: 1%">
     				  		<get-loader-image data-ng-show="showLoader"></get-loader-image>
       						</div>
-      						<div  data-ng-hide="showLoader" class="table-responsive">
+      						<div  data-ng-hide="showLoader" class="table-responsive responsive-x">
                         <table cellspacing="1" cellpadding="1" class="table dataTable table-bordered table-striped">
                             <thead>
                                <tr>
@@ -124,8 +124,8 @@ pageEncoding="UTF-8"%>
                                                     <li  has-permission="DETACH_DISK" ><a href="javascript:void(0);"data-ng-show="volume.vmInstanceId > 0" title="<fmt:message key="common.detach.volume" bundle="${msg}" />" data-ng-click="detach(md, volume)"><span class="fa fa-unlink m-xs"></span> <fmt:message key="detach.volume" bundle="${msg}" /></a></li>
                                                     <li has-permission="ATTACH_DISK"><a href="javascript:void(0);"  data-ng-hide="volume.vmInstanceId > 0" title="<fmt:message key="common.attach.volume" bundle="${msg}" />" data-ng-click="attach(md, volume)"><span class="pe-7s-disk pe-1x font-bold m-xs"></span> <fmt:message key="attach.volume" bundle="${msg}" /></a></li>
 <%--                                                     <li><a href="javascript:void(0);" title="Download Volume" data-ng-click="downloadVolume('md')"><span class="fa fa-cloud-download m-xs"></span> <fmt:message key="download.volume" bundle="${msg}" /></a></li>
- --%><%--                                                     <li><a href="javascript:void(0);" data-ng-show="volume.status == 'READY'" data-ng-click="resizeVolume(md, volume)" title="Resize"><span class="fa fa-expand m-xs"></span><fmt:message key="resize.volume" bundle="${msg}" /> </a></li>
- --%>                                                    <li has-permission="DELETE_VOLUME"><a href="javascript:void(0);" data-ng-hide="volume.vmInstanceId > 0" data-ng-click="delete('sm', volume)" title="Delete Volume"><span class="fa fa-trash m-xs"></span><fmt:message key="delete.volume" bundle="${msg}" /> </a></li>
+ --%>                                                    <li><a href="javascript:void(0);" data-ng-show="volume.status == 'READY'" data-ng-click="resizeVolume(md, volume)" title="Resize"><span class="fa fa-expand m-xs"></span><fmt:message key="resize.volume" bundle="${msg}" /> </a></li>
+                                                    <li has-permission="DELETE_VOLUME"><a href="javascript:void(0);" data-ng-hide="volume.vmInstanceId > 0" data-ng-click="delete('sm', volume)" title="Delete Volume"><span class="fa fa-trash m-xs"></span><fmt:message key="delete.volume" bundle="${msg}" /> </a></li>
                                                 </ul>
                                             </span>
                                              <span data-ng-if="volume.volumeType == 'ROOT'">

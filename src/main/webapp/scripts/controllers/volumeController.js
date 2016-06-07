@@ -384,14 +384,23 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
 
     //Resize Volume
     $scope.resizeVolume = function (size, volume) {
-        $scope.volume = volume;
-        $scope.volume = angular.copy(volume);
+    	 $scope.volume = {};
         appService.dialogService.openDialog($scope.global.VIEW_URL + "cloud/volume/resize.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
-                $scope.diskList = function () {
+            $scope.volume = volume;
+            $scope.volume = angular.copy(volume);
+        	$scope.diskList = function () {
                     var hasDisks = appService.crudService.listAll("storages/list");
                     hasDisks.then(function (result) {  // this is only run after
                         // $http completes0
-                        $scope.volumeElements.diskOfferingList = result;
+                        $scope.volumeElements.OfferingList = result;
+                        angular.forEach(result, function(item){
+                       	 if (!angular.isUndefined($scope.volume.storageOffering)) {
+                       		 if(item.description === $scope.volume.storageOffering.description){
+                       			 var index = $scope.volumeElements.diskOfferingList.indexOf(item);
+   					 $scope.volume.storageOffering = result[index];
+                       		 }
+                       	 }
+                       	 	});
                     });
                 };
                 $scope.diskList();
@@ -406,7 +415,33 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
                     if (form.$valid) {
                     	$scope.showLoader = true;
                         $scope.volume.zone = $scope.global.zone;
-                        var volume = $scope.volume;
+                        var volume = angular.copy($scope.volume);
+                    	if (!angular.isUndefined($scope.volume.storageOffering.diskSize) && volume.storageOffering.diskSize != null) {
+                    		volume.diskSize = volume.storageOffering.diskSize;
+                    	}
+                        if(!angular.isUndefined($scope.volume.storageOffering) && volume.storageOffering != null) {
+                        	volume.storageOfferingId = volume.storageOffering.id;
+                        	if(!volume.storageOffering.isCustomDisk){
+                        		delete volume.diskSize;
+                        	}
+                        	delete volume.storageOffering;
+                        }
+                        if(!angular.isUndefined(volume.vmInstance) && volume.vmInstance != null) {
+                        	volume.vmInstanceId = volume.vmInstance.id;
+                        	delete volume.vmInstance;
+                        }
+                        if(!angular.isUndefined($scope.volume.department) && volume.department != null) {
+                        	volume.departmentId = volume.department.id;
+                        	delete volume.department;
+                        }
+                        if(!angular.isUndefined($scope.volume.project) && volume.project != null) {
+                        	volume.projectId = volume.project.id;
+                        	delete volume.project;
+                        }
+                        if(!angular.isUndefined($scope.volume.zone) && volume.zone != null) {
+                        	volume.zoneId = volume.zone.id;
+                        	delete volume.zone;
+                        }
                     	 appService.globalConfig.webSocketLoaders.volumeLoader = true;
                          $modalInstance.close();
                         var hasVolume = appService.crudService.add("volumes/resize/" + volume.id, volume);
@@ -416,8 +451,8 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
                             if (!angular.isUndefined(result.data)) {
                                if (result.data.fieldErrors != null) {
                                     angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
-                                        $scope.attachvolumeForm[key].$invalid = true;
-                                        $scope.attachvolumeForm[key].errorMessage = errorMessage;
+                                        $scope.volumeForm[key].$invalid = true;
+                                        $scope.volumeForm[key].errorMessage = errorMessage;
                                     });
                                 }
                             }
@@ -430,7 +465,6 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
                 };
             }]);
     };
-
     // Getting list of projects by department
     $scope.getProjectsByDepartment = function(department) {
      $scope.options = {};
@@ -846,11 +880,11 @@ $scope.recurringSnapshotLists = function () {
             $scope.ok = function (deleteObject) {
                 var hasServer = appService.crudService.delete("snapshotpolicies", deleteObject);
                 hasServer.then(function (result) {
-   		  
+
                     appService.notify({message: 'Deleted successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
  $scope.recurringSnapshotLists();
 		    $modalInstance.close();
-                }); 
+                });
 
  $modalInstance.close();
             },

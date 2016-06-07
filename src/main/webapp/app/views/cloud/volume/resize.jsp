@@ -45,23 +45,23 @@
                                 <select required="true" class="form-control input-group" name="diskOfferings"
                                         data-ng-model="volume.storageOffering"
                                         data-ng-class="{'error': volumeForm.diskOfferings.$invalid && formSubmitted}"
-                                        data-ng-options="storageOffering.description for (id, storageOffering) in volumeElements.diskOfferingList" >
+                                        data-ng-options="storageOffering.description group by storageOffering.group for storageOffering in volumeElements.OfferingList" >
                                     <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
                                 </select>
-                                <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="Select the plan" ></i>
-                                <div class="error-area" data-ng-show="volumeForm.diskOfferings.$invalid && formSubmitted" ><i  tooltip="Plan is Required" class="fa fa-warning error-icon"></i></div>
+                                <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="<fmt:message key="select.the.plan" bundle="${msg}" />" ></i>
+                                <div class="error-area" data-ng-show="volumeForm.diskOfferings.$invalid && formSubmitted" ><i  tooltip="<fmt:message key="plan.is.required" bundle="${msg}" />" class="fa fa-warning error-icon"></i></div>
                             </div>
                         </div>
                     </div>
 
-				<div data-ng-show="volume.storageOffering.diskSize < (volume.diskSize  / global.Math.pow(2, 30))">
+				<div data-ng-if="volume.storageOffering.isCustomDisk || volume.storageOffering.diskSize < (volume.diskSize  / global.Math.pow(2, 30))">
                     <div class="form-group" >
 
                         <div class="row">
                             <label class="col-md-2 col-xs-12 col-sm-2 control-label"><fmt:message key="volume.shrink.ok" bundle="${msg}" /> <span class="m-l-xs"></span></label>
                             <div class="col-md-5 col-xs-12 col-sm-5">
-       <label class="font-normal"> <input icheck
-												type="checkbox" ng-model="compute.isHighAvailabilityEnabled">
+      								 <label class="font-normal"> <input icheck
+												type="checkbox" ng-model="volume.isShrink">
 												</label>
 
 
@@ -73,21 +73,30 @@
 				</div>
 
                     <div data-ng-show="volume.storageOffering.isCustomDisk">
-                        <div class="form-group" ng-class="{ 'text-danger' : volumeForm.diskSize <= 0 && formSubmitted}">
-                            <div class="row" >
-                                <label class="col-md-2 col-xs-12 col-sm-2 control-label"><fmt:message key="common.size" bundle="${msg}" /> (GB)
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <div class="col-md-6 col-xs-12 col-sm-6">
-                                    <rzslider rz-slider-model="rsize" rz-slider-floor="volumeElements.diskOffer.diskSize.floor" rz-slider-ceil="volumeElements.diskOffer.diskSize.ceil" rz-slider-always-show-bar="true"></rzslider>
-                                </div>
-                                <div class="col-md-2 col-xs-12 col-sm-3">
-                                    <input type="text" data-ng-min="{{ volumeElements.diskOffer.diskSize.floor }}" data-ng-max="{{ volumeElements.diskOffer.diskSize.ceil}}"
-                                           class="form-control input-mini" name="diskSize" data-ng-model="rsize" >
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group" ng-class="{ 'text-danger' : volumeForm.diskMinIops <= 0 && formSubmitted}" data-ng-show="volume.storageOffering.isCustomizedIops">
+						<div class="form-group"
+							ng-class="{ 'text-danger' : volumeForm.diskSize <= 0 && formSubmitted}">
+							<div class="row">
+								<label class="col-md-2 col-xs-12 col-sm-2 control-label"><fmt:message
+										key="common.size" bundle="${msg}" /> (GB) <span
+									class="text-danger">*</span> </label>
+								<div class="col-md-6 col-xs-12 col-sm-6">
+									<rzslider rz-slider-model="volume.storageOffering.diskSize"
+										data-ng-init="volume.storageOffering.diskSize=1"
+										rz-slider-floor="volumeElements.diskOffer.diskSize.floor"
+										rz-slider-ceil="volumeElements.diskOffer.diskSize.ceil"
+										rz-slider-always-show-bar="true"></rzslider>
+								</div>
+								<div class="col-md-2 col-xs-12 col-sm-3">
+									<input type="text"
+										data-ng-min="{{ volumeElements.diskOffer.diskSize.floor }}"
+										data-ng-max="{{ volumeElements.diskOffer.diskSize.ceil}}"
+										class="form-control input-mini" name="diskSize"
+										data-ng-model="volume.storageOffering.diskSize"
+										valid-number="">
+								</div>
+							</div>
+						</div>
+						<div class="form-group" ng-class="{ 'text-danger' : volumeForm.diskMinIops <= 0 && formSubmitted}" data-ng-show="volume.storageOffering.isCustomizedIops">
                             <div class="row" >
                                 <div class="col-md-6 col-sm-6">
                                     <div class="form-group" ng-class="{ 'text-danger' : volumeForm.diskMinIops <= 0 && OfferingSubmitted}">
