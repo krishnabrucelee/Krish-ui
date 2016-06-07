@@ -54,15 +54,15 @@
 								    <tbody data-ng-show="natIps.length > 0">
 								        <tr ng-repeat="ipaddress in natIps">
                       					<td>
-                      						<a id="vpc_static_nat_public_ip_address" class="text-info" ui-sref="vpc.view-vpc.config-vpc.public-ip.ip-view({id1:ipaddress.id})"  title="View IP"> {{ ipaddress.publicIpAddress }} <span ng-if="ipaddress.isSourcenat">[Source NAT]</span></a>
+                      						<a id="vpc_static_nat_public_ip_address" class="text-info" ui-sref="vpc.view-vpc.config-vpc.public-ip.ip-view({id1:ipaddress.id})"  title="<fmt:message key="view.ip" bundle="${msg}" />"> {{ ipaddress.publicIpAddress }} <span ng-if="ipaddress.isSourcenat">[Source NAT]</span></a>
                       					</td>
                       					<td>{{ipaddress.zone.name}} </td>
                       					<td>{{ipaddress.network.name}}</td>
                       					<td> <b class="text-success text-uppercase">{{ipaddress.state}}</b></td>
                       					<td>
-                          					<a id="vpc_static_nat_enable_vpn_button" data-ng-if="ipaddress.isSourcenat && ipaddress.vpnState != 'RUNNING'" class="icon-button" title="Enable VPN" data-ng-click="enableVpn('md',ipaddress)"><i class="custom-link-icon custom-icon-ip-disabled"></i></a>
-                          					<a id="vpc_static_nat_disable_vpn_button" data-ng-if="ipaddress.isSourcenat && ipaddress.vpnState == 'RUNNING'" class="icon-button" title="Disable VPN" data-ng-click="disableVpn('sm',ipaddress)"><i class="custom-link-icon custom-icon-ip"></i></a>
-                         					<a id="vpc_static_nat_release_ip_button" data-ng-if="!ipaddress.isSourcenat" class="icon-button" title="Release IP" data-ng-click="releaseIP('sm',ipaddress)"><span class="fa fa-chain-broken"></span></a>
+                          					<a id="vpc_static_nat_enable_vpn_button" data-ng-if="ipaddress.isSourcenat && ipaddress.vpnState != 'RUNNING'" class="icon-button" title="<fmt:message key="enable.vpn" bundle="${msg}" />" data-ng-click="enableVpn('md',ipaddress)"><i class="custom-link-icon custom-icon-ip-disabled"></i></a>
+                          					<a id="vpc_static_nat_disable_vpn_button" data-ng-if="ipaddress.isSourcenat && ipaddress.vpnState == 'RUNNING'" class="icon-button" title="<fmt:message key="disable.vpn" bundle="${msg}" />" data-ng-click="disableVpn('sm',ipaddress)"><i class="custom-link-icon custom-icon-ip"></i></a>
+                         					<a id="vpc_static_nat_release_ip_button" data-ng-if="!ipaddress.isSourcenat" class="icon-button" title="<fmt:message key="release.ip" bundle="${msg}" />" data-ng-click="releaseIP('sm',ipaddress)"><span class="fa fa-chain-broken"></span></a>
                       					</td>
               							</tr>
 

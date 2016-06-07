@@ -58,7 +58,7 @@
 								            <td>devpanda-zone</td>
 								            <td>192.168.22</td>
 								            <td>
-								                <a class="icon-button" title="Remove Gateway"  ><span class="fa fa-trash"></span></a>
+								                <a class="icon-button" title="<fmt:message key="remove.gateway" bundle="${msg}" />"  ><span class="fa fa-trash"></span></a>
 								            </td>
 								        </tr>
 								        <tr>
@@ -69,7 +69,7 @@
 								            <td>devpanda-zone</td>
 								            <td>192.168.22</td>
 								            <td>
-								                <a class="icon-button" title="Remove Gateway"  ><span class="fa fa-trash"></span></a>
+								                <a class="icon-button" title="<fmt:message key="remove.gateway" bundle="${msg}" />"  ><span class="fa fa-trash"></span></a>
 								            </td>
 								        </tr>
 								        <tr>
@@ -80,7 +80,7 @@
 								            <td>devpanda-zone</td>
 								            <td>192.168.22</td>
 								            <td>
-								                <a class="icon-button" title="Remove Gateway"  ><span class="fa fa-trash"></span></a>
+								                <a class="icon-button" title="<fmt:message key="remove.gateway" bundle="${msg}" />"  ><span class="fa fa-trash"></span></a>
 								            </td>
 								        </tr>
 								    </tbody>

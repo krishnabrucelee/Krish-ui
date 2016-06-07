@@ -67,7 +67,7 @@ table tbody.auto-serial tr td:first-child:before
 									data-ng-model="statusView"
 									data-ng-change="selectDomainView(1)"
 									data-ng-options="statusView for (id, statusView) in formElements.invoiceStatusList">
-									<option value="">All Status</option>
+									<option value=""><fmt:message key="all.status" bundle="${msg}" /></option>
 								</select>
 							</span>
 							<span data-ng-show="global.sessionValues.type == 'ROOT_ADMIN'" class="pull-right m-r-sm">

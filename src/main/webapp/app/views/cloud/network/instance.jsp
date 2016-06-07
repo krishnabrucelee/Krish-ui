@@ -10,7 +10,7 @@
 		<div class="pull-right">
 			<div class="quick-search">
 				<div class="input-group">
-					<input data-ng-model="networkSearch" type="text" class="form-control input-medium" placeholder="Quick Search"
+					<input data-ng-model="networkSearch" type="text" class="form-control input-medium" placeholder="<fmt:message key="common.quick.search" bundle="${msg}" />"
 						aria-describedby="quicksearch-go"
 					> <span class="input-group-addon" id="quicksearch-go"><span class="pe-7s-search pe-lg font-bold"></span></span>
 				</div>
@@ -25,17 +25,17 @@
 			<table cellspacing="1" cellpadding="1" class="table dataTable table-bordered table-striped ">
 				<thead>
 					<tr>
-						<th>Name</th>
-						<th>Internal Name</th>
-						<th>Display Name</th>
-						<th>Zone</th>
-						<th>State</th>
+						<th><fmt:message key="common.name" bundle="${msg}" /></th>
+						<th><fmt:message key="common.internal.name" bundle="${msg}" /></th>
+						<th><fmt:message key="common.display.name" bundle="${msg}" /></th>
+						<th><fmt:message key="common.zone" bundle="${msg}" /></th>
+						<th><fmt:message key="common.state" bundle="${msg}" /></th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr data-ng-repeat="instance in vmList | filter: networkSearch ">
 						<td><a class="text-info" ui-sref="cloud.list-instance.view-instance({id: {{ instance.vmInstance.id}}})"
-							title="View Instance"
+							title="<fmt:message key="view.instance" bundle="${msg}" />"
 						>{{ instance.vmInstance.name}}</a></td>
 						<td>{{instance.vmInstance.instanceInternalName}}</td>
 						<td>{{instance.vmInstance.displayName}}</td>

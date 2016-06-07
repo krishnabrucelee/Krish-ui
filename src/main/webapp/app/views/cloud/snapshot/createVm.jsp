@@ -108,7 +108,7 @@
                             <div class="col-md-12 col-sm-12">
                              <span class="pull-left">
                         <h4 class="text-danger price-text m-l-lg">
-                            <app-currency></app-currency>{{miscellaneousList[0].costperGB }} <span>/GB/day</span>
+                            <app-currency></app-currency>{{miscellaneousList[0].costperGB }} <span>/GB/<fmt:message key="common.day" bundle="${msg}" /></span>
                         </h4>
                     </span>
             <img src="images/loading-bars.svg" data-ng-if="showLoaders" width="30" height="30" />

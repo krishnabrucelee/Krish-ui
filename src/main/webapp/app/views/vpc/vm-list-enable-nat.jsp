@@ -29,7 +29,7 @@ pageEncoding="UTF-8"%>
 									data-ng-model="network"
 									data-ng-change="vmLists(network)"
 									data-ng-options="network.name for network in vpcNetworkNatList">
-									<option value=""> Select Tier</option>
+									<option value=""> <fmt:message key="select.tier" bundle="${msg}" /></option>
 								</select>
 							</span>
 							<div class="clearfix"></div>

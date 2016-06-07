@@ -49,7 +49,7 @@
 								    </thead>
 								    <tbody>
 								        <tr data-ng-repeat="networkAcl in filteredCount = (aclList | filter: quickSearch | orderBy:sort.column:sort.descending)">
-								            <td><a id="vpc_network_acl_name_button" class="text-info" ui-sref="vpc.view-vpc.config-vpc.network-acl.view-networkAcl({id3: {{ networkAcl.id }}, view: 'view'})" title="View Network">{{networkAcl.name}}</a></td>
+								            <td><a id="vpc_network_acl_name_button" class="text-info" ui-sref="vpc.view-vpc.config-vpc.network-acl.view-networkAcl({id3: {{ networkAcl.id }}, view: 'view'})" title="<fmt:message key="view.network" bundle="${msg}"/>">{{networkAcl.name}}</a></td>
 											<td>{{networkAcl.description}}</td>
 											<td>{{networkAcl.uuid}}</td>
 								        </tr>

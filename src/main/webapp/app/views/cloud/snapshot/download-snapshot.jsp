@@ -16,7 +16,7 @@
                 <div class="col-md-12">
                     <div class="form-group" >
                         <div class="row" >
-                            <label class="col-md-3 col-sm-3 control-label" ><fmt:message key="disk" bundle="${msg}" /> <fmt:message key="common.name" bundle="${msg}" />:
+                            <label class="col-md-3 col-sm-3 control-label" ><fmt:message key="disk.name" bundle="${msg}" />:
 
                             </label>
                             <div class="col-md-9 col-sm-9 ">
