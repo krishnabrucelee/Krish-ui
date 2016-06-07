@@ -23,19 +23,19 @@ pageEncoding="UTF-8"%>
 						</div>
 	</div>
 </div>
-<div class="row clearfix">
+<div class="row clearfix" data-ng-hide="template.listCommunityTemplate.length > 0">
 		<div  class="col-md-4 col-md-offset-4 clearfix">
 			<div class="hpanel">
-			    <div  class="panel-body no-records p-xs text-center" data-ng-hide="template.listCommunityTemplate.length > 0">
+			    <div  class="panel-body no-records p-xs text-center" >
 					 <h5><fmt:message key="common.no.records.found" bundle="${msg}" /></h5><br>
 					 <img src="images/no-templates-found.png" border="0" alt="no records found" title="<fmt:message key="common.no.records.found" bundle="${msg}" />">
 			    </div>
 		    </div>
 		</div>
 	</div>
-<div class="">
+<div class="" data-ng-show="template.listCommunityTemplate.length > 0">
     <div class="col-md-4 col-lg-4 col-xs-12 col-sm-12 no-padding template-panel-area" data-ng-repeat="templateObj in template.listCommunityTemplate|orderBy:template.name | filter: quickSearch">
-        <div class="hpanel" data-ng-show="template.listCommunityTemplate.length > 0">
+        <div class="hpanel" >
             <div class="panel-body p-xs template-panel" data-ng-class="templateObj.openDescription ? 'template-panel-active': ''">
                 <div class="row">
                     <div class="col-md-12 col-sm-12">

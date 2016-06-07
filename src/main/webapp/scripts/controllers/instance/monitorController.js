@@ -15,7 +15,7 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
 
 	var headers = {};
 	$scope.instance = {};
-
+	$scope.networkIndex = 0;
     $scope.uuid = "c62b4df6-a996-470d-b1c0-b42806619382";
 
     var initStompClient = function() {
@@ -23,8 +23,8 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
 	var hasServer = appService.crudService.read("virtualmachine", $stateParams.id);
         hasServer.then(function(result) {
             $scope.instance = result;
-            $scope.hostName = result.name;
-            //$scope.uuid = result.uuid;
+            $scope.uuid = result.uuid;
+            $scope.hostName = result.displayName;
             webSockets.init(appService.globalConfig.MONITOR_SOCKET_URL + 'stack/watch', $scope.uuid);
             webSockets.connect( function(frame) {
                         dataSubscribe();
@@ -37,19 +37,29 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
 
     $scope.disks = [];
 
+    $scope.currentDisk = [];
+    $scope.currentCpu = [];
+    $scope.currentNetwork = [];
+
     $scope.diskStatus = "read";
 
     $scope.networkStatus = "in";
 
     $scope.interfaces = [];
 
+    $scope.diskReadData = [];
+
+    $scope.diskWriteData = [];
+
     $scope.cpuIndex = "";
 
     $scope.memoryIndex = "";
 
-    $scope.storageIndex = "";
+    $scope.storageIndex = 0;
 
-    $scope.readwIndex = "";
+    $scope.readwIndex = "read";
+
+    $scope.inIndex = "send";
 
     $scope.OpenTsdbIp = appService.globalConfig.MONITOR_URL;
 
@@ -98,27 +108,32 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
             return $scope.selectedSearchValue;
         },
 
-        getNetworkToolTipContent : function() {
+        getNetworkToolTipContent : function(type, iname) {
             var contents = "<div class='text-center'><b>" + graphTooltip.getCurrentDate() + "</b></div>";
-            contents += "<div><b>os.net.bytes{host=" + $scope.hostName + ",iface=eth0} : %y (Bps)</b></div>";
+            contents += "<div><b>swagent.network."+type+"{host=" + $scope.hostName + ",iname="+iname+"} : %y (Bps)</b></div>";
             return contents;
         },
 
-        getDiskToolTipContent : function() {
+        getDiskToolTipContent : function(type,disk) {
             var contents = "<div class='text-center'><b>" + graphTooltip.getCurrentDate() + "</b></div>";
-            contents += "<div><b>linux.disk.write_requests{host=" + $scope.hostName + "} : %y (Bps)</b></div>";
+            contents += "<div><b>swagent.disk."+type+"_requests{host=" + $scope.hostName + ",disk="+disk+"} : %y (Bps)</b></div>";
             return contents;
         },
 
-        getMemoryToolTipContent : function() {
+        getMemoryToolTipContent : function(type) {
             var contents = "<div class='text-center'><b>" + graphTooltip.getCurrentDate() + "</b></div>";
-            contents += "<div><b>os.mem.total{host=" + $scope.hostName + "} : %y (MB)</b></div>";
+            contents += "<div><b>swagent.memory."+type+"{host=" + $scope.hostName + "} : %y (MB)</b></div>";
             return contents;
         },
 
         getCpuToolTipContent : function(label, x, y) {
             var contents = "<div class='text-center'><b>" + graphTooltip.getCurrentDate() + "</b></div>";
-            contents += "<div><b>linux.cpu{host=" + $scope.hostName + "} : " + y.toFixed(2) + "</b></div>";
+            if (!angular.isUndefined($scope.currentCpu[$scope.cpuIndex])) {
+            	contents += "<div><b>swagent.percpu{host=" + $scope.hostName + ", core="+$scope.currentCpu[$scope.cpuIndex]+"} : " + y.toFixed(2) + "</b></div>";
+            }
+            if (angular.isUndefined($scope.currentCpu[$scope.cpuIndex])) {
+            	contents += "<div><b>swagent.percpu{host=" + $scope.hostName + ", core="+$scope.currentCpu[0]+"} : " + y.toFixed(2) + "</b></div>";
+            }
             return contents;
         }
 
@@ -266,7 +281,7 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
 
     var dataIndexCount = 12;
     var j = 0;
-    var colorLabels = [ "#62cb31", "#d9534f", "#f0ad4e", "#48a9da", "#d81df5" ];
+    var colorLabels = ["#62cb31", "#d9534f", "#f0ad4e", "#48a9da", "#9ACD32", "#FFFF00", "#F5DEB3", "#EE82EE", "#40E0D0", "#D8BFD8", "#008080", "#4682B4", "#708090", "#2E8B57", "#FA8072", "#800080", "#DB7093", "#DA70D6", "#FFE4B5", "#7B68EE", "#9370DB", "#FF00FF", "#00FF00", "#FFB6C1"];
     var chartIteration = 0;
     totalDelayCount = 0;
     chartIterationCount = 3;
@@ -280,7 +295,7 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
 
         $scope.flotOptions.xaxes[0].tickSize = chartConfig.tickSize;
 
-        $scope.flotOptions.colors = [ "#62cb31", "#d9534f", "#f0ad4e", "#48a9da", "#d81df5" ];
+        $scope.flotOptions.colors = [ "#62cb31", "#d9534f", "#f0ad4e", "#48a9da", "#9ACD32", "#FFFF00", "#F5DEB3", "#EE82EE", "#40E0D0", "#D8BFD8", "#008080", "#4682B4", "#708090", "#2E8B57", "#FA8072", "#800080", "#DB7093", "#DA70D6", "#FFE4B5", "#7B68EE", "#9370DB", "#FF00FF", "#00FF00", "#FFB6C1"];
         if (indexValue == 0 && totalCount != -1) {
             chartIteration++;
         }
@@ -311,6 +326,7 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
                         }
                     });
                     $scope.cpuAltData[indexValue] = $scope.cpuData[indexValue];
+                    console.log($scope.cpuData[indexValue]);
                     var currentData = {
                         data : $scope.cpuData[indexValue],
                         yaxis : 100,
@@ -323,7 +339,7 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
                         idx : indexValue
                     };
 
-                    if (angular.isUndefined($scope.cpu.dataset[i])) {
+                    if (angular.isUndefined($scope.cpu.dataset[indexValue])) {
                         $scope.cpu.dataset[indexValue] = {
                             data : []
                         };
@@ -356,7 +372,7 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
 
         $scope.flotOptions.xaxes[0].tickSize = chartConfig.tickSize;
 
-        $scope.flotOptions.colors = [ "#62cb31", "#d9534f", "#f0ad4e", "#48a9da", "#d81df5" ];
+        $scope.flotOptions.colors = [ "#62cb31", "#d9534f", "#f0ad4e", "#48a9da", "#9ACD32", "#FFFF00", "#F5DEB3", "#EE82EE", "#40E0D0", "#D8BFD8", "#008080", "#4682B4", "#708090", "#2E8B57", "#FA8072", "#800080", "#DB7093", "#DA70D6", "#FFE4B5", "#7B68EE", "#9370DB", "#FF00FF", "#00FF00", "#FFB6C1"];
         if (indexValue == 0 && totalCount != -1) {
             chartIteration++;
         }
@@ -468,6 +484,11 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
 
     $scope.toggleMemoryPlot = function(index, length) {
         $scope.memoryIndex = index;
+        if(index == 0) {
+            $scope.memoryFlotOptions.tooltip.content = graphTooltip.getMemoryToolTipContent("Total");
+        } else {
+        	$scope.memoryFlotOptions.tooltip.content = graphTooltip.getMemoryToolTipContent("Free");
+        }
         for (var i = 0; i < length; i++) {
             if (index == i) {
                 $scope.memory.dataset[index] = $scope.memory.altdataset[index];
@@ -542,7 +563,7 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
     }
 
     var memoryIndexCount = 12;
-    var memoryColorLabels = [ "#62cb31", "#d9534f", "#f0ad4e", "#48a9da" ];
+    var memoryColorLabels = [ "#62cb31", "#d9534f", "#f0ad4e", "#48a9da", "#9ACD32", "#FFFF00", "#F5DEB3", "#EE82EE", "#40E0D0", "#D8BFD8", "#008080", "#4682B4", "#708090", "#2E8B57", "#FA8072", "#800080", "#DB7093", "#DA70D6", "#FFE4B5", "#7B68EE", "#9370DB", "#FF00FF", "#00FF00", "#FFB6C1"];
     var memoryChartIteration = 0;
     memoryTotalDelayCount = 0;
     memoryChartIterationCount = 2;
@@ -553,8 +574,8 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
         memoryIndexCount = chartConfig.dataIndexCount;
         memoryChartIterationCount = chartConfig.iterationCountCount;
         $scope.memoryFlotOptions.xaxes[0].tickSize = chartConfig.tickSize;
-
-        $scope.memoryFlotOptions.colors = [ "#62cb31", "#d9534f", "#f0ad4e", "#48a9da" ];
+        $scope.memoryFlotOptions.tooltip.content = graphTooltip.getMemoryToolTipContent(memoryType);
+        $scope.memoryFlotOptions.colors = [ "#62cb31", "#d9534f", "#f0ad4e", "#48a9da", "#9ACD32", "#FFFF00", "#F5DEB3", "#EE82EE", "#40E0D0", "#D8BFD8", "#008080", "#4682B4", "#708090", "#2E8B57", "#FA8072", "#800080", "#DB7093", "#DA70D6", "#FFE4B5", "#7B68EE", "#9370DB", "#FF00FF", "#00FF00", "#FFB6C1"];
         if (indexValue == 0 && totalCount != -1) {
             memoryChartIteration++;
         }
@@ -601,7 +622,7 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
                         idx : indexValue
                     };
 
-                    if (angular.isUndefined($scope.memory.dataset[i])) {
+                    if (angular.isUndefined($scope.memory.dataset[indexValue])) {
                         $scope.memory.dataset[indexValue] = {
                             data : []
                         };
@@ -632,7 +653,7 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
         memoryChartIterationCount = chartConfig.iterationCountCount;
         $scope.memoryFlotOptions.xaxes[0].tickSize = chartConfig.tickSize;
 
-        $scope.memoryFlotOptions.colors = [ "#62cb31", "#d9534f", "#f0ad4e", "#48a9da" ];
+        $scope.memoryFlotOptions.colors = [ "#62cb31", "#d9534f", "#f0ad4e", "#48a9da", "#9ACD32", "#FFFF00", "#F5DEB3", "#EE82EE", "#40E0D0", "#D8BFD8", "#008080", "#4682B4", "#708090", "#2E8B57", "#FA8072", "#800080", "#DB7093", "#DA70D6", "#FFE4B5", "#7B68EE", "#9370DB", "#FF00FF", "#00FF00", "#FFB6C1"];
         if (indexValue == 0 && totalCount != -1) {
             memoryChartIteration++;
         }
@@ -750,8 +771,15 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
     $scope.storage.altdatasetread = [];
 
     $scope.toggleStoragePlot = function(type) {
-    	$scope.diskStatus = type;
-        $scope.storage.dataset[$scope.storageIndex] = $scope.storage.altdatasetread[type];
+    	$scope.readwIndex = type;
+    	$scope.storageFlotOptions.tooltip.content = graphTooltip.getDiskToolTipContent(type, $scope.currentDisk[$scope.storageIndex]);
+    	if (type == 'read') {
+    		$scope.storage.dataset[$scope.storageIndex] = $scope.storage.dataset[$scope.storageIndex];
+    		$scope.storage.dataset[$scope.storageIndex].color = "#62cb31";
+    	} else if(type == 'write') {
+    		$scope.storage.dataset[$scope.storageIndex] = $scope.storage.altdataset[$scope.storageIndex];
+    		$scope.storage.dataset[$scope.storageIndex].color = "#d9534f";
+    	}
     };
 
     $scope.toggleDiskPlot = function(index, length) {
@@ -817,7 +845,7 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
     };
 
     var storageIndexCount = 12;
-    var storageColorLabels = [ "#62cb31", "#d9534f", "#f0ad4e", "#48a9da" ];
+    var storageColorLabels = [ "#62cb31", "#d9534f", "#f0ad4e", "#48a9da", "#9ACD32", "#FFFF00", "#F5DEB3", "#EE82EE", "#40E0D0", "#D8BFD8", "#008080", "#4682B4", "#708090", "#2E8B57", "#FA8072", "#800080", "#DB7093", "#DA70D6", "#FFE4B5", "#7B68EE", "#9370DB", "#FF00FF", "#00FF00", "#FFB6C1"];
     var storageChartIteration = 0;
     storageTotalDelayCount = 0;
     storageChartIterationCount = 3;
@@ -828,9 +856,10 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
     	var chartConfig = pandaChart.getConfigurationByRange($scope.range.actions.id);
         storageIndexCount = chartConfig.dataIndexCount;
         storageChartIterationCount = chartConfig.iterationCountCount;
+        $scope.storageFlotOptions.tooltip.content = graphTooltip.getDiskToolTipContent(type, result.tags);
         $scope.storageFlotOptions.xaxes[0].tickSize = chartConfig.tickSize;
 
-        $scope.storageFlotOptions.colors = [ "#62cb31", "#d9534f", "#f0ad4e", "#48a9da" ];
+        $scope.storageFlotOptions.colors = [ "#62cb31", "#d9534f", "#f0ad4e", "#48a9da", "#9ACD32", "#FFFF00", "#F5DEB3", "#EE82EE", "#40E0D0", "#D8BFD8", "#008080", "#4682B4", "#708090", "#2E8B57", "#FA8072", "#800080", "#DB7093", "#DA70D6", "#FFE4B5", "#7B68EE", "#9370DB", "#FF00FF", "#00FF00", "#FFB6C1"];
         if (indexValue == 0 && totalCount != -1) {
             storageChartIteration++;
         }
@@ -856,9 +885,15 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
                         dataIndex++;
                         var currentValue = obj;
                         if (dataIndex <= storageIndexCount) {
-                            $scope.storageData[indexValue].push([ getDateByTime(key).getTime(), currentValue ]);
+                        	if(type == 'read' || $scope.readwIndex == 'read') {
+                        		$scope.storageData[indexValue].push([ getDateByTime(key).getTime(), currentValue ]);
+                        	}
+                        	if( type == 'write' || $scope.readwIndex == 'write') {
+                        		$scope.storageAltData[indexValue].push([ getDateByTime(key).getTime(), currentValue ]);
+
+                        	}
                         } else {
-                            //                            storageForAdditionalIterations[indexValue].push([getDateByTime(key).getTime(), currentValue]);
+                            // storageForAdditionalIterations[indexValue].push([getDateByTime(key).getTime(), currentValue]);
                         }
                     });
 
@@ -874,22 +909,27 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
                         idx : indexValue
                     };
 
-                    if (angular.isUndefined($scope.storage.dataset[i])) {
+                    if (angular.isUndefined($scope.storage.dataset[indexValue])) {
                         $scope.storage.dataset[indexValue] = {
                             data : []
                         };
-                        $scope.memory.altdataset[indexValue] = {
+                        $scope.storage.altdataset[indexValue] = {
                             data : []
                         };
                     }
-                    $scope.storage.dataset[indexValue] = currentData;
-                    $scope.storage.altdataset[indexValue] = currentData;
-                    $scope.storage.altdatasetread[type] = currentData;
 
+                    if(type == 'read') {
+                    	currentData.data = $scope.storageData[indexValue];
+                        $scope.storage.dataset[indexValue] = currentData;
+                    }
+                    if(type == 'write') {
+                    	currentData.data = $scope.storageAltData[indexValue];
+                        $scope.storage.altdataset[indexValue] = currentData;
+                        $scope.storage.altdataset[indexValue].color = "#d9534f";
+                    }
                // }
             //});
-        }
-
+          }
         if (indexValue == 0) {
             jQuery('.storage-chart-container').find('.flot-base, .flot-x-axis, .flot-overlay').css({
                 "margin-left" : 0
@@ -901,10 +941,6 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
         if ($scope.storageIndex) {
             $scope.toggleDiskPlot($scope.storageIndex, $scope.storageData.length);
         }
-        if ($scope.readwIndex) {
-            $scope.toggleStoragePlot($scope.readwIndex);
-        }
-
     }
 
     function getStoragePerformanceByFilters(url, indexValue, instanceName, totalCount, chartType, diskType) {
@@ -913,7 +949,7 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
         storageChartIterationCount = chartConfig.iterationCountCount;
         $scope.storageFlotOptions.xaxes[0].tickSize = chartConfig.tickSize;
 
-        $scope.storageFlotOptions.colors = [ "#62cb31", "#d9534f", "#f0ad4e", "#48a9da" ];
+        $scope.storageFlotOptions.colors = [ "#62cb31", "#d9534f", "#f0ad4e", "#48a9da", "#9ACD32", "#FFFF00", "#F5DEB3", "#EE82EE", "#40E0D0", "#D8BFD8", "#008080", "#4682B4", "#708090", "#2E8B57", "#FA8072", "#800080", "#DB7093", "#DA70D6", "#FFE4B5", "#7B68EE", "#9370DB", "#FF00FF", "#00FF00", "#FFB6C1"];
         if (indexValue == 0 && totalCount != -1) {
             storageChartIteration++;
         }
@@ -1062,6 +1098,18 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
     $scope.network.dataset = [];
     $scope.network.altdataset = [];
 
+    $scope.toggleNetPlot = function(type) {
+    	$scope.networkFlotOptions.tooltip.content = graphTooltip.getNetworkToolTipContent(type, $scope.currentNetwork[$scope.networkIndex]);
+    	$scope.inIndex = type;
+    	if (type == 'send') {
+    		$scope.network.dataset[$scope.networkIndex] = $scope.network.dataset[$scope.networkIndex];
+    		$scope.network.dataset[$scope.networkIndex].color = "#62cb31";
+    	} else if(type == 'receive') {
+    		$scope.network.dataset[$scope.networkIndex] = $scope.network.altdataset[$scope.networkIndex];
+    		$scope.network.dataset[$scope.networkIndex].color = "#d9534f";
+    	}
+    }
+
     $scope.toggleNetworkPlot = function(index, length) {
         $scope.networkIndex = index;
         for (var i = 0; i < length; i++) {
@@ -1137,8 +1185,8 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
         networkIndexCount = chartConfig.dataIndexCount;
         networkChartIterationCount = chartConfig.iterationCountCount;
         $scope.networkFlotOptions.xaxes[0].tickSize = chartConfig.tickSize;
-
-        $scope.networkFlotOptions.colors = [ "#62cb31", "#d9534f", "#f0ad4e", "#48a9da" ];
+        $scope.networkFlotOptions.tooltip.content = graphTooltip.getNetworkToolTipContent(type, result.tags);
+        $scope.networkFlotOptions.colors = [ "#62cb31", "#d9534f", "#f0ad4e", "#48a9da", "#9ACD32", "#FFFF00", "#F5DEB3", "#EE82EE", "#40E0D0", "#D8BFD8", "#008080", "#4682B4", "#708090", "#2E8B57", "#FA8072", "#800080", "#DB7093", "#DA70D6", "#FFE4B5", "#7B68EE", "#9370DB", "#FF00FF", "#00FF00", "#FFB6C1"];
         if (indexValue == 0 && totalCount != -1) {
             networkChartIteration++;
         }
@@ -1164,7 +1212,13 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
                             currentValue = currentValue;
                         }
                         if (dataIndex <= networkIndexCount) {
-                            $scope.networkData[indexValue].push([ getDateByTime(key).getTime(), currentValue ]);
+                        	if(type == 'send' || $scope.inIndex == 'send') {
+                        		$scope.networkData[indexValue].push([ getDateByTime(key).getTime(), currentValue ]);
+                        	}
+                        	if( type == 'receive' || $scope.inIndex == 'receive') {
+                        		$scope.networkAltData[indexValue].push([ getDateByTime(key).getTime(), currentValue ]);
+
+                        	}
                         } else {
                             //   storageForAdditionalIterations[indexValue].push([getDateByTime(key).getTime(), currentValue]);
                         }
@@ -1182,7 +1236,7 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
                         idx : indexValue
                     };
 
-                    if (angular.isUndefined($scope.network.dataset[i])) {
+                    if (angular.isUndefined($scope.network.dataset[indexValue])) {
                         $scope.network.dataset[indexValue] = {
                             data : []
                         };
@@ -1190,8 +1244,15 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
                             data : []
                         };
                     }
-                    $scope.network.dataset[indexValue] = currentData;
-                    $scope.network.altdataset[indexValue] = currentData;
+                    if(type == 'send') {
+                    	currentData.data = $scope.networkData[indexValue];
+                        $scope.network.dataset[indexValue] = currentData;
+                    }
+                    if(type == 'receive') {
+                    	currentData.data = $scope.networkAltData[indexValue];
+                        $scope.network.altdataset[indexValue] = currentData;
+                        $scope.network.altdataset[indexValue].color = $scope.networkFlotOptions.colors[indexValue];
+                    }
         }
 
         if (indexValue == 0) {
@@ -1199,6 +1260,11 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
                 "margin-left" : 0
             });
         }
+
+
+
+
+
         pandaChart
                 .updateChartMarginByRangeAndIndex($scope.range.actions.id, indexValue, storageChartIteration, 'network-chart-container');
 
@@ -1212,8 +1278,8 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
         networkIndexCount = chartConfig.dataIndexCount;
         networkChartIterationCount = chartConfig.iterationCountCount;
         $scope.networkFlotOptions.xaxes[0].tickSize = chartConfig.tickSize;
-
-        $scope.networkFlotOptions.colors = [ "#62cb31", "#d9534f", "#f0ad4e", "#48a9da" ];
+        $scope.storageFlotOptions.tooltip.content = graphTooltip.getDiskToolTipContent(type, result.tags);
+        $scope.networkFlotOptions.colors = [ "#62cb31", "#d9534f", "#f0ad4e", "#48a9da", "#9ACD32", "#FFFF00", "#F5DEB3", "#EE82EE", "#40E0D0", "#D8BFD8", "#008080", "#4682B4", "#708090", "#2E8B57", "#FA8072", "#800080", "#DB7093", "#DA70D6", "#FFE4B5", "#7B68EE", "#9370DB", "#FF00FF", "#00FF00", "#FFB6C1"];
         if (indexValue == 0 && totalCount != -1) {
             networkChartIteration++;
         }
@@ -1273,6 +1339,16 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
                     $scope.network.altdataset[indexValue] = currentData;
                 }
             });
+        }
+
+        if(type == 'send') {
+        	currentData.data = $scope.networkData[indexValue];
+            $scope.network.dataset[indexValue] = currentData;
+        }
+        if(type == 'receive') {
+        	currentData.data = $scope.networkAltData[indexValue];
+            $scope.network.altdataset[indexValue] = currentData;
+            $scope.network.altdataset[indexValue].color = "#d9534f";
         }
 
         if (indexValue == 0) {
@@ -1344,28 +1420,31 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
         webSockets.subscribe("/topic/stackwatch.disk/" + appService.globalConfig.sessionValues.id +"/"+ $scope.uuid, function(message) {
         	var diskResult = JSON.parse(message.body);
         	$scope.diskCount = diskResult.read.length;
-        	if($scope.diskStatus == 'read') {
             	angular.forEach(angular.fromJson(diskResult.read), function(value, key){
             		$scope.disks.push(value.tags);
+            		$scope.currentDisk[key] = value.tags;
             		getDiskPerformanceByFilters(key, -1, pandaChart.chartTypes.DISK, value, "read");
             	});
-        	} else {
-        		$scope.disks.push(value.tags);
             	angular.forEach(angular.fromJson(diskResult.write), function(value, key){
+            		$scope.currentDisk[key] = value.tags;
             		getDiskPerformanceByFilters(key, -1, pandaChart.chartTypes.DISK, value, "write");
             	});
-        	}
+
+            	$rootScope.$broadcast("DISK", diskResult);
         });
         webSockets.subscribe("/topic/stackwatch.network/" + appService.globalConfig.sessionValues.id +"/"+ $scope.uuid, function(message) {
         	var networkResult = JSON.parse(message.body);
         	$scope.networkCount = networkResult.receive.length;
         	angular.forEach(angular.fromJson(networkResult.receive), function(value, key){
         		$scope.interfaces.push(value.tags);
-        		getNetworkPerformanceByFilter(key, -1, pandaChart.chartTypes.NETWORK, value, "In");
+        		$scope.currentNetwork[key] = value.tags;
+        		getNetworkPerformanceByFilter(key, -1, pandaChart.chartTypes.NETWORK, value, "send");
         	});
         	angular.forEach(angular.fromJson(networkResult.send), function(value, key){
-        		getNetworkPerformanceByFilter(key, -1, pandaChart.chartTypes.NETWORK, value, "Out");
+        		getNetworkPerformanceByFilter(key, -1, pandaChart.chartTypes.NETWORK, value, "receive");
         	});
+
+
         });
         webSockets.subscribe("/topic/stackwatch.connection/" + appService.globalConfig.sessionValues.id +"/"+ $scope.uuid , function(message) {
 
