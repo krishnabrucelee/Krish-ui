@@ -79,15 +79,15 @@ pageEncoding="UTF-8"%>
                 <div class="main-title"><fmt:message key="internet" bundle="${msg}" /><span>{{ipDetails.publicIpAddress}}</span></div>
                 <div class="firewall">
                     <fmt:message key="firewall" bundle="${msg}" />
-                    <a href="javascript:void(0)" data-ng-click="firewallRule(1)" class="btn-diagram"><span><fmt:message key="View" bundle="${msg}" /></span></a>
+                    <a href="javascript:void(0)" data-ng-click="firewallRule(1)" class="btn-diagram"><span><fmt:message key="view" bundle="${msg}" /></span></a>
                 </div>
                  <div class="child-left pull-left" data-ng-if = "!ipDetails.isStaticnat" >
                     <fmt:message key="port.forwarding" bundle="${msg}" />
-                    <a href="javascript:void(0)" data-ng-click="portRulesLists(1)" class="btn-diagram"><span><fmt:message key="View" bundle="${msg}" /></span></a>
+                    <a href="javascript:void(0)" data-ng-click="portRulesLists(1)" class="btn-diagram"><span><fmt:message key="view" bundle="${msg}" /></span></a>
                 </div>
                 <div class="child-right pull-right" data-ng-if = "!ipDetails.isStaticnat">
                     <fmt:message key="load.balancing" bundle="${msg}" />
-                    <a href="javascript:void(0)" data-ng-click="selectTab('loadBalance')" class="btn-diagram"><span><fmt:message key="View" bundle="${msg}" /></span></a>
+                    <a href="javascript:void(0)" data-ng-click="selectTab('loadBalance')" class="btn-diagram"><span><fmt:message key="view" bundle="${msg}" /></span></a>
 
                 </div>
 
