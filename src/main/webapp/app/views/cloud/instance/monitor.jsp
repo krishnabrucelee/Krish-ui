@@ -7,8 +7,11 @@
 <fmt:setBundle basename="i18n/messages_${language}" var="msg" scope="session" />
 
 <div class="m-l-sm m-r-sm monitor-charts" ng-controller="instanceMonitorCtrl">
-
-    <div class="row clearfix ">
+	<div data-ng-show = "showLoader" style="margin: 20%">
+                <get-loader-image data-ng-if="showLoader"></get-loader-image>
+            </div>
+            <div data-ng-hide="showLoader">
+	<div class="row clearfix ">
 
         <div class="col-lg-12 col-md-12 col-sm-12">
 
@@ -34,7 +37,7 @@
 
                         <select data-ng-change="updateGraphByRange()" class="form-control"
                             name="cpuActions"
-                            data-ng-init="range.actions = instanceElements.actions[0]; updateGraphByRange();"
+                            data-ng-init="range.actions = instanceElements.actions[0];"
                             data-ng-model="range.actions"
                             ng-options="actions.name for actions in instanceElements.actions">
                         </select>
@@ -72,11 +75,12 @@
                         <tr data-ng-repeat="cpuLegend in cpuData">
                             <td class="legendColorBox"
                                 data-ng-click="togglePlot($index, cpuData.length)"><a></a>
+                                <i class="fa fa-2x fa-desktop"></i>
                                 <div style="border: 1px solid #ccc; padding: 1px;">
                                     <div style="width: 4px; height: 0; overflow: hidden"
                                         ng-style="{'border': '5px solid ' + flotOptions.colors[$index] }"></div>
-                                    <!-- <div data-ng-if="cpu.dataset[$index].length == 0" style="width: 4px; height: 0; border: 5px solid red; overflow: hidden"></div> -->
-                                </div></td>
+                                </div>
+                                </td>
                             <td class="legendLabel"
                                 data-ng-click="togglePlot($index, cpuData.length)"><a
                                 class="m-l-sm">{{ $index == 4 ? "AVERAGE" : "CPU " + $index }} </a></td>
@@ -151,8 +155,6 @@
                             <fmt:message key="disk.performance" bundle="${msg}" />
                             (Bps)
                         </h4>
-
-
                     </div>
                 </div>
             </div>
@@ -163,7 +165,7 @@
 
     <div class="row" id="storage-chart-container">
         <div class="col-md-offset-1 col-md-11">
-            <div class="hide-left"></div>
+            <div class="hide-left"> </div>
             <div class="hide-right"></div>
             <flot dataset="storage.dataset" options="storageFlotOptions"
                 height="280px" class="flotchart-container"></flot>
@@ -177,19 +179,45 @@
                 <table class="flotchart-legend-content-table"
                     style="font-size: smaller; color: #545454">
                     <tbody>
-                        <tr data-ng-repeat="storyLegend in storageData">
-                            <td class="legendColorBox"
-                                data-ng-click="toggleStoragePlot($index, storageData.length)">
-                                <a></a>
+
+                        <tr>
+                            <td class="legendColorBox">
+                                <a data-ng-click="toggleStoragePlot('read')">
                                 <div style="border: 1px solid #ccc; padding: 1px;">
                                     <div style="width: 4px; height: 0; overflow: hidden"
-                                        ng-style="{'border': '5px solid ' + storageFlotOptions.colors[$index] }"></div>
+                                        ng-style="{'border': '5px solid ' + storageFlotOptions.colors[0] }"></div>
                                 </div>
+                                </a>
                             </td>
                             <td class="legendLabel">
-
-                                <a class="m-l-sm">{{ ($index == 0 ? "Disk Write" : "Disk
-                                    Read") }}</a>
+                                <a class="m-l-sm" data-ng-click="toggleStoragePlot('read')">Disk Read</a>
+                            </td>
+                         </tr>
+                          <tr>
+                            <td class="legendColorBox">
+                                <a
+                                data-ng-click="toggleStoragePlot('write')">
+                                <div style="border: 1px solid #ccc; padding: 1px;">
+                                    <div style="width: 4px; height: 0; overflow: hidden"
+                                        ng-style="{'border': '5px solid ' + storageFlotOptions.colors[1] }"></div>
+                                </div>
+                                </a>
+                            </td>
+                            <td class="legendLabel">
+                                <a class="m-l-sm" data-ng-click="toggleStoragePlot('write')">Disk Write</a>
+                            </td>
+                         </tr>
+                    </tbody>
+                </table>
+                <table class="flotchart-legend-content-table"
+                    style="font-size: smaller; color: #545454">
+                    <tbody>
+                         <tr data-ng-repeat="storyLegend in storageData">
+                            <td class="legendColorBox " data-ng-class="storageIndex == $index ? 'active' : ''"
+                                data-ng-click="toggleDiskPlot($index, storageData.length)">
+                                <a></a>
+                                <i class="fa fa-2x fa-hdd-o"></i>
+                                {{currentDisk[$index]}}
                             </td>
                         </tr>
                     </tbody>
@@ -234,15 +262,42 @@
                 <table style="font-size: smaller; color: #545454"
                     class="flotchart-legend-content-table">
                     <tbody>
-                        <tr data-ng-repeat="networkLegend in networkData">
+                        <tr>
                             <td class="legendColorBox"
-                                data-ng-click="toggleNetworkPlot($index, networkData.length)"><a></a>
+                                data-ng-click="toggleNetPlot('send')">
+                                <a></a>
                                 <div style="border: 1px solid #ccc; padding: 1px;">
                                     <div style="width: 4px; height: 0; overflow: hidden"
-                                        ng-style="{'border': '5px solid ' + flotOptions.colors[$index] }"></div>
-                                    <!-- <div data-ng-if="cpu.dataset[$index].length == 0" style="width: 4px; height: 0; border: 5px solid red; overflow: hidden"></div> -->
-                                </div></td>
-                            <td class="legendLabel"><a class="m-l-sm">{{ $index == 0 ? "In" : "Out" }} </a></td>
+                                        ng-style="{'border': '5px solid ' + storageFlotOptions.colors[0] }"></div>
+                                </div>
+                            </td>
+                            <td class="legendLabel">
+                                <a data-ng-click="toggleNetPlot('send')" class="m-l-sm">IN</a>
+                            </td>
+                         </tr>
+                          <tr>
+                            <td class="legendColorBox"
+                                data-ng-click="toggleNetPlot('receive')">
+                                <a></a>
+                                <div style="border: 1px solid #ccc; padding: 1px;">
+                                    <div style="width: 4px; height: 0; overflow: hidden"
+                                        ng-style="{'border': '5px solid ' + storageFlotOptions.colors[1] }"></div>
+                                </div>
+                            </td>
+                            <td class="legendLabel">
+                                <a data-ng-click="toggleNetPlot('receive')" class="m-l-sm">OUT</a>
+                            </td>
+                         </tr>
+                    </tbody>
+                </table>
+                <table style="font-size: smaller; color: #545454"
+                    class="flotchart-legend-content-table">
+                    <tbody>
+                        <tr data-ng-repeat="networkLegend in networkData">
+                            <td class="legendColorBox" data-ng-class="networkIndex == $index ? 'active' : ''"
+                                data-ng-click="toggleNetworkPlot($index, networkData.length)"><a></a>
+							<i class="fa fa-sitemap fa-2x"></i>{{currentNetwork[$index]}}
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -250,7 +305,7 @@
         </div>
     </div>
     <hr>
-
+</div>
 </div>
 
 <!-- <flot dataset="myData" options="myChartOptions"></flot> -->

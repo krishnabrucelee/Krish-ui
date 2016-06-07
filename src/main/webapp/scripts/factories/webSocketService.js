@@ -7,11 +7,16 @@ angular.module('homer').factory('webSockets', [ '$rootScope', 'globalConfig', fu
     var headers = {};
     var wrappedSocket = {
 
-        init : function(url) {
-            stompClient = Stomp.over(new SockJS(url));
-            headers['x-auth-token'] = globalConfig.sessionValues.token;
-            stompClient.debug = null;
-        },
+    	init : function(url, instanceUuid) {
+    	       stompClient = Stomp.over(new SockJS(url));
+    	       headers['x-auth-token'] = globalConfig.sessionValues.token;
+    	       headers['x-auth-login-token'] = globalConfig.sessionValues.loginToken;
+    	       headers['x-auth-user-id'] = globalConfig.sessionValues.id;
+    	        if (instanceUuid != null) {
+    	                headers['x-uuid'] = instanceUuid;
+    		    }
+    	            //stompClient.debug = null;
+    	},
         connect : function(successCallback, errorCallback) {
             stompClient.connect(headers, function(frame) {
                 $rootScope.$apply(function() {
@@ -32,6 +37,9 @@ angular.module('homer').factory('webSockets', [ '$rootScope', 'globalConfig', fu
         },
         send : function(destination, headers, object) {
             stompClient.send(destination, headers, object);
+        },
+        disconnect : function(url) {
+            stompClient.disconnect(headers);
         }
     }
 
