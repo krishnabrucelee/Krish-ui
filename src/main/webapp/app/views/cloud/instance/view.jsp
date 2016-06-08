@@ -441,6 +441,14 @@ pageEncoding="UTF-8"%>
                                             <tr>
                                                 <td class="col-md-4 col-sm-4">
                                                     <b>
+                                                        <fmt:message key="public.ip" bundle="${msg}" />
+                                                    </b>
+                                                </td>
+                                                <td class="col-md-8 col-sm-8">{{ instance.publicIpAddress}} </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="col-md-4 col-sm-4">
+                                                    <b>
                                                         <fmt:message key="common.ip" bundle="${msg}" />
                                                     </b>
                                                 </td>
