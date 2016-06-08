@@ -438,7 +438,7 @@ pageEncoding="UTF-8"%>
                                                 </td>
                                                 <td class="col-md-8 col-sm-8"><span data-ng-if="instance.volumeSize > 0">{{ instance.volumeSize / global.Math.pow(2, 30)}} GB</span><span data-ng-if="!(instance.volumeSize > 0)">-No Disk-</span></td>
                                             </tr>
-                                            <tr>
+                                            <tr data-ng-if="instance.publicIpAddress">
                                                 <td class="col-md-4 col-sm-4">
                                                     <b>
                                                         <fmt:message key="public.ip" bundle="${msg}" />
