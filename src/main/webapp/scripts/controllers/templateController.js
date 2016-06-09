@@ -91,14 +91,16 @@ $scope.quickVmSearch = null;
         $scope.showLoader = true;
 if ($scope.quickVmSearch == null) {
    var hastemplatesList= appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "templates/listalltemplateByType?type="+ "community"+"&sortBy=-id");
+
 }
 if ($scope.quickVmSearch != null) {
 	$scope.filter = "&searchText=" + $scope.quickVmSearch;
    var hastemplatesList= appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "templates/listalltemplateByTypeSearchText?type="+ "community"+ $scope.filter +"&sortBy=-id");
 }
         hastemplatesList.then(function (result) {  // this is only run after $http completes0
+            $scope.showLoader = true;
             $scope.template.listCommunityTemplate = result;
-            $scope.showLoader = false;
+           $scope.showLoader = false;
         });
     };
     $scope.templateList();
@@ -123,7 +125,6 @@ if ($scope.featureSearch != null) {
 }
         hasfeaturetemplatesList.then(function (result) {  // this is only run after $http completes0
             $scope.template.listFeaturedTemplate = result;
-		console.log("list",result);
             $scope.showLoader = false;
         });
     };
