@@ -170,6 +170,14 @@
 								{{ userElement.department.userName }}
 							</div>
 						</div>
+						<div class=" form-group row">
+							<label class="col-md-3 col-sm-3 control-label"><fmt:message
+									key="common.type" bundle="${msg}" /> </label>
+							<div data-ng-if="user.department.type == null" class="col-md-5 col-sm-5">-</div>
+							<div data-ng-if="user.department.type == 'USER'" class="col-md-5 col-sm-5">{{user.department.type}}</div>
+							<div data-ng-if="user.department.type == 'DOMAIN_ADMIN'" class="col-md-5 col-sm-5">DOMAIN ADMIN</div>
+							<div data-ng-if="user.department.type == 'ROOT_ADMIN'" class="col-md-5 col-sm-5">ROOT ADMIN</div>
+						</div>
 
                         <div class="form-group"  ng-class="{'text-danger':userForm.role.$invalid && formSubmitted}">
                             <div class="row">
