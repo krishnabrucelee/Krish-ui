@@ -504,6 +504,9 @@ $scope.getZoneList = function () {
   			appService.globalConfig.APP_URL + "users" +"/paginationLimit/"+limit);
       hasResult.then(function(result) {
     	  globalConfig.CONTENT_LIMIT = limit;
+    	  var currentSession = JSON.parse($window.sessionStorage.getItem("loginSession"));
+    	  currentSession.paginationLimit = limit;
+          $window.sessionStorage.setItem("loginSession", JSON.stringify(currentSession));
       });
   };
 
