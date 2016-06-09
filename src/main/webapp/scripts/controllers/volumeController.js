@@ -389,8 +389,9 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
             $scope.volume = volume;
             $scope.volume = angular.copy(volume);
         	$scope.diskList = function () {
-                    var hasDisks = appService.crudService.listAll("storages/list");
-                    hasDisks.then(function (result) {  // this is only run after
+        		var hasDisks = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL
+    	        		+ "storages/listbydomain?domainId="+$scope.volume.domain.id);
+    	        hasDisks.then(function (result) { // this is only run after
                         // $http completes0
                         $scope.volumeElements.OfferingList = result;
                         angular.forEach(result, function(item){
