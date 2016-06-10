@@ -2288,6 +2288,7 @@ $scope.listVpcNetwork($stateParams.id);
                             appService.globalConfig.webSocketLoaders.networkDeleteAclLoader = true;
                             var hasServer = appService.crudService.softDelete("vpcacl", $scope.acl);
                             hasServer.then(function (result) {
+                            	$window.location.href = '#/vpc/view/'+$stateParams.id+'/config-vpc/network-acl';
                             }).catch(function (result) {
                                 if (!angular.isUndefined(result) && result.data != null) {
                                 	$scope.showLoader = false;
@@ -2387,6 +2388,6 @@ $scope.listVpcNetwork($stateParams.id);
             });
             $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.deleteAclList, function(event, args) {
                 appService.globalConfig.webSocketLoaders.networkDeleteAclLoader = false;
-                $window.location.href = '#/vpc/view/'+$stateParams.id+'/config-vpc/network-acl';
+                $scope.networkAclLists();
             });
 }
