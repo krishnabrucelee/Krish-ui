@@ -56,8 +56,8 @@ pageEncoding="UTF-8"%>
                <tr ng-repeat="firewallRules in egressRuleList" class="font-bold text-center">
              	<td>{{firewallRules.sourceCIDR}}</td>
 		        <td>{{firewallRules.protocol}}</td>
-                <td><div  data-ng-if=" (firewallRules.startPort == '' || firewallRules.startPort!='') ">{{firewallRules.startPort}}</div> <div  data-ng-if=" (firewallRules.icmpMessage=='' || firewallRules.icmpMessage!='') ">{{firewallRules.icmpMessage}}</div></td>
-                <td><div data-ng-if=" (firewallRules.endPort =='' || firewallRules.endPort!='')">{{firewallRules.endPort}} </div> <div data-ng-if="(firewallRules.icmpCode=='' || firewallRules.icmpCode!='')" >{{firewallRules.icmpCode}}</div></td>
+                <td><div  data-ng-if=" (firewallRules.startPort == '' || firewallRules.startPort!='') ">{{firewallRules.startPort}}</div> <div  data-ng-if=" (firewallRules.icmpMessage=='' || firewallRules.icmpMessage!='') ">{{firewallRules.icmpMessage}}</div><div  data-ng-if=" (firewallRules.protocol=='ALL') ">{{firewallRules.protocol}}</div></td>
+                <td><div data-ng-if=" (firewallRules.endPort =='' || firewallRules.endPort!='')">{{firewallRules.endPort}} </div> <div data-ng-if="(firewallRules.icmpCode=='' || firewallRules.icmpCode!='')" >{{firewallRules.icmpCode}}</div><div  data-ng-if=" (firewallRules.protocol=='ALL') ">{{firewallRules.protocol}}</div></td>
                 <td>
                 <a data-ng-click="deleteEgress('sm', firewallRules)"><span class="fa fa-trash"></span></a>
 
