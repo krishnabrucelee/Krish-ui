@@ -392,7 +392,29 @@ $scope.ipCostList();
                                     }
                                 appService.globalConfig.webSocketLoaders.egressLoader = false;
                                 });
-                            }
+                            }else
+                        {
+                                appService.globalConfig.webSocketLoaders.egressLoader = true;
+                                var hasServer = appService.crudService.add("egress", firewallRules);
+                                hasServer.then(function(result) {
+                                    $scope.firewallRules = {};
+                                    $scope.formSubmitted = false;
+                                    $scope.showLoader = false;
+                                    $scope.templateCategory = 'egress';
+                                }).catch(function(result) {
+                                    $scope.showLoader = false;
+                                    if (!angular.isUndefined(result.data)) {
+                                        if (result.data.fieldErrors != null) {
+                                            angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
+                                                $scope.egressForm[key].$invalid = true;
+                                                $scope.showLoader = false;
+                                                $scope.egressForm[key].errorMessage = errorMessage;
+                                            });
+                                        }
+                                    }
+                                appService.globalConfig.webSocketLoaders.egressLoader = false;
+                                });
+                        }
                         }
                     }
                     $scope.actionRule = false;
@@ -996,7 +1018,7 @@ $scope.vmSearch = null;
         "0": "TCP",
         "1": "UDP",
         "2": "ICMP",
-        "3": "All"
+        "3": "ALL"
     };
     $scope.protocolLists = {
         "0": "TCP",

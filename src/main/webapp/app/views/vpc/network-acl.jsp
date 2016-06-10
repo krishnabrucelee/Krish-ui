@@ -37,9 +37,6 @@
 				<div class="row">
 					<div class="col-md-12 col-sm-12 col-xs-12" id="vpc_network_acl_pagination_container">
 						<div class="white-content">
-							<div data-ng-show="showLoader" style="margin: 1%">
-								<get-loader-image data-ng-show="showLoader"></get-loader-image>
-							</div>
 							<div class="table-responsive">
 								<table cellspacing="1" cellpadding="1" class="table table-bordered table-striped" id="vpc_network_acl_table">
 								    <thead>

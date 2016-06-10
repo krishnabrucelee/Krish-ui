@@ -464,12 +464,8 @@ customTooltips: function customTooltips(tooltip){
 
 
     $scope.updateLanguage = function(language) {
-        if(localStorageService.cookie.get('language') == 'en') {
-            localStorageService.cookie.set('language', 'zh');
-        } else {
-            localStorageService.cookie.set('language', 'en');
-        }
-        $window.location.reload();
+    	 localStorageService.cookie.set('language', language);
+         $window.location.reload();
     }
 
     /**
