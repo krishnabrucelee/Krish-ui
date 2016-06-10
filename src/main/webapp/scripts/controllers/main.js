@@ -46,7 +46,11 @@ $scope.themeSettingList = function () {
     var resourceArr = ["CPU", "Memory", "Volume", "Network", "IP", "PrimaryStorage", "SecondaryStorage", "Snapshot"];
 
     $scope.getResourceQuotaDetails = function() {
-      var hasResourceDomainId = promiseAjax.httpTokenRequest( globalConfig.HTTP_GET , globalConfig.APP_URL + "dashboard/quota");
+      var  actionURL = "quota";
+      if(globalConfig.sessionValues.type == "USER") {
+    	  actionURL = "departmentQuota";
+      }
+      var hasResourceDomainId = promiseAjax.httpTokenRequest( globalConfig.HTTP_GET , globalConfig.APP_URL + "dashboard/" + actionURL);
       hasResourceDomainId.then(function (result) {  // this is only run after $http completes
         $scope.showQuotaLoader = false;
           angular.forEach(result, function(obj, key) {
