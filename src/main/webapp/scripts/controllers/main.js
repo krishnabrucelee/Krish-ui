@@ -47,14 +47,16 @@ $scope.themeSettingList = function () {
 
     $scope.getResourceQuotaDetails = function() {
       var  actionURL = "quota";
+      $scope.quotaAction = "domain";
       if(globalConfig.sessionValues.type == "USER") {
     	  actionURL = "departmentQuota";
+	  $scope.quotaAction = "department";
       }
       var hasResourceDomainId = promiseAjax.httpTokenRequest( globalConfig.HTTP_GET , globalConfig.APP_URL + "dashboard/" + actionURL);
       hasResourceDomainId.then(function (result) {  // this is only run after $http completes
         $scope.showQuotaLoader = false;
           angular.forEach(result, function(obj, key) {
-        	  if(obj.usedLimit == null || obj.usedLimit == "null") {
+        	  if(obj.usedLimit == null || obj.usedLimit == "null" || isNaN(obj.usedLimit)) {
         		  obj.usedLimit = 0;
         	  }
               if(resourceArr.indexOf(obj.resourceType) > -1) {
@@ -64,7 +66,7 @@ $scope.themeSettingList = function () {
 
                 if(obj.resourceType == "Memory") {
                   obj.usedLimit = Math.round( obj.usedLimit / 1024);
-      						if (obj.max != -1) {
+			if (obj.max != -1) {
       							obj.max = Math.round(obj.max / 1024);
                     $scope.quotaLimits[obj.resourceType].label = $scope.quotaLimits[obj.resourceType].label + " " + "(GB)";
       						}
