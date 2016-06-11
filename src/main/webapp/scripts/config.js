@@ -654,7 +654,7 @@ angular
                     return 'bar'
                 }
             };
-        }).run(function($rootScope, $state, webSockets, editableOptions, myFactory, appService, webSocket) {
+        }).run(function($rootScope, $state, webSockets, editableOptions, myFactory, appService) {
             $rootScope.$state = $state;
             editableOptions.theme = 'bs3';
             $rootScope.$on('$locationChangeStart', function(event, next, current) {
@@ -662,13 +662,6 @@ angular
                 var currentPath = current.split('#')[1];
                 if (nextRoute.indexOf('instance/list/view/') == -1 && currentPath.indexOf('instance/list/view/') > -1) {
                 	webSockets.disconnect(appService.globalConfig.MONITOR_SOCKET_URL + 'stack/watch');
-                }
-            });
-            $rootScope.$on('$locationChangeStart', function(event, next, current) {
-                var nextRoute = next.split('#')[1];
-                var currentPath = current.split('#')[1];
-                if (currentPath.indexOf('dashboard') > -1) {
-                	webSocket.initStompClient();
                 }
             });
         }).config(configState);

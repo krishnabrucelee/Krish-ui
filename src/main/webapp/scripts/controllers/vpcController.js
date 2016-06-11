@@ -2057,7 +2057,9 @@ $scope.vmPortId = instance;
     });
     $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.ipAquire, function(event, args) {
         appService.globalConfig.webSocketLoaders.ipLoader = false;
-        $scope.ipLists(1);
+        if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
+            $scope.ipLists(1);
+        }
     });
     $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.enableStaticNat, function(event, args) {
         appService.globalConfig.webSocketLoaders.ipLoader = false;
@@ -2073,56 +2075,78 @@ $scope.vmPortId = instance;
     });
     $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.ipRelease, function(event, args) {
         appService.globalConfig.webSocketLoaders.ipLoader = false;
-        $scope.ipLists(1);
+        if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
+            $scope.ipLists(1);
+        }
     });
 
     $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.loadbalancerSave, function(event, args) {
     appService.globalConfig.webSocketLoaders.loadBalancerLoader = false;
-    $scope.LBlist(1);
+    if (!angular.isUndefined($stateParams.id1) && $stateParams.id1 > 0) {
+        $scope.LBlist(1);
+    }
 });
 
     $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.assignRule, function(event, args) {
     appService.globalConfig.webSocketLoaders.loadBalancerLoader = false;
-    $scope.LBlist(1);
+    if (!angular.isUndefined($stateParams.id1) && $stateParams.id1 > 0) {
+        $scope.LBlist(1);
+    }
     });
 
     $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.configureStickiness, function(event, args) {
     appService.globalConfig.webSocketLoaders.loadBalancerLoader = false;
-    $scope.LBlist(1);
+    if (!angular.isUndefined($stateParams.id1) && $stateParams.id1 > 0) {
+        $scope.LBlist(1);
+    }
     });
 
 $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.editrule, function(event, args) {
     appService.globalConfig.webSocketLoaders.loadBalancerLoader = false;
-    $scope.LBlist(1);
+    if (!angular.isUndefined($stateParams.id1) && $stateParams.id1 > 0) {
+        $scope.LBlist(1);
+    }
 });
 $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.deleteRules, function(event, args) {
     appService.globalConfig.webSocketLoaders.loadBalancerLoader = false;
     appService.globalConfig.webSocketLoaders.networkLoader = false;
-    $scope.LBlist(1);
+    if (!angular.isUndefined($stateParams.id1) && $stateParams.id1 > 0) {
+        $scope.LBlist(1);
+    }
 });
 $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.editStickiness, function(event, args) {
     appService.globalConfig.webSocketLoaders.loadBalancerLoader = false;
-    $scope.LBlist(1);
+    if (!angular.isUndefined($stateParams.id1) && $stateParams.id1 > 0) {
+        $scope.LBlist(1);
+    }
 });
 
 $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.vpnCreate, function(event, args) {
         appService.globalConfig.webSocketLoaders.vpnLoader = false;
         appService.globalConfig.webSocketLoaders.ipLoader = false;
-        $scope.ipLists(1);
+        if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
+            $scope.ipLists(1);
+        }
     });
     $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.vpnDestroy, function(event, args) {
         appService.globalConfig.webSocketLoaders.vpnLoader = false;
         appService.globalConfig.webSocketLoaders.ipLoader = false;
-        $scope.ipLists(1);
+        if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
+            $scope.ipLists(1);
+        }
     });
 
     $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.deletePortRules, function(event, args) {
     appService.globalConfig.webSocketLoaders.portForwardLoader = false;
-    $scope.portRulesLists(1);
+    if (!angular.isUndefined($stateParams.id1) && $stateParams.id1 > 0) {
+        $scope.portRulesLists(1);
+    }
 });
 $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.portforwardSave, function(event, args) {
     appService.globalConfig.webSocketLoaders.portForwardLoader = false;
-    $scope.portRulesLists(1);
+    if (!angular.isUndefined($stateParams.id1) && $stateParams.id1 > 0) {
+        $scope.portRulesLists(1);
+    }
 });
 
     $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.vpnUserAdd, function(event, args) {
@@ -2139,13 +2163,17 @@ $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.portforwardSave
     });
 $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.deletenetwork, function(event, args) {
     appService.globalConfig.webSocketLoaders.networkLoader = false;
-	$scope.listVpcNetwork($stateParams.id);
-      $window.location.href = '#/vpc/view/'+$stateParams.id+'/config-vpc';
+    if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
+	    $scope.listVpcNetwork($stateParams.id);
+        $window.location.href = '#/vpc/view/'+$stateParams.id+'/config-vpc';
+    }
 
  });
 $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.createnetwork, function(event, args) {
     appService.globalConfig.webSocketLoaders.networkLoader = false;
-$scope.listVpcNetwork($stateParams.id);
+    if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
+        $scope.listVpcNetwork($stateParams.id);
+    }
 });
 
 
@@ -2372,22 +2400,32 @@ $scope.listVpcNetwork($stateParams.id);
 
             $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.saveAclList, function(event, args) {
                 appService.globalConfig.webSocketLoaders.egressLoader = false;
-                $scope.vpcAclRulesListElement();
+                if (!angular.isUndefined($stateParams.id3) && $stateParams.id3 > 0) {
+                    $scope.vpcAclRulesListElement();
+                }
             });
             $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.editNetworkAcl, function(event, args) {
                 appService.globalConfig.webSocketLoaders.egressLoader = false;
-                $scope.vpcAclRulesListElement();
+                if (!angular.isUndefined($stateParams.id3) && $stateParams.id3 > 0) {
+                    $scope.vpcAclRulesListElement();
+                }
             });
             $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.deleteNetworkAcl, function(event, args) {
                 appService.globalConfig.webSocketLoaders.egressLoader = false;
-                $scope.vpcAclRulesListElement();
+                if (!angular.isUndefined($stateParams.id3) && $stateParams.id3 > 0) {
+                    $scope.vpcAclRulesListElement();
+                }
             });
             $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.addAcl, function(event, args) {
                 appService.globalConfig.webSocketLoaders.networkAclLoader = false;
-                $scope.networkAclLists();
+                if (!angular.isUndefined($stateParams.id3) && $stateParams.id3 > 0) {
+                    $scope.networkAclLists();
+                }
             });
             $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.deleteAclList, function(event, args) {
                 appService.globalConfig.webSocketLoaders.networkDeleteAclLoader = false;
-                $scope.networkAclLists();
+                if (!angular.isUndefined($stateParams.id3) && $stateParams.id3 > 0) {
+                    $scope.networkAclLists();
+                }
             });
 }
