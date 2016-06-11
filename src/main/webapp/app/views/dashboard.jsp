@@ -122,7 +122,9 @@
                 <div class="panel panel-white no-border-radious dashboard-quota-section">
                     <div class="panel-body p-sm">
                         <h5 class="no-margins text-primary">
-                            <fmt:message key="quota" bundle="${msg}" />
+                        
+                        	<div data-ng-if="quotaAction == 'department'"><fmt:message key="common.department" bundle="${msg}" /> <fmt:message key="quota" bundle="${msg}" /></div>
+                        	<div data-ng-if="quotaAction == 'domain'"><fmt:message key="common.company" bundle="${msg}" /> <fmt:message key="quota" bundle="${msg}" /></div>
                         </h5>
                         <div class="text-center m-t-xxxl" data-ng-show="showQuotaLoader">
                              <img src="images/loading-bars.svg" />
