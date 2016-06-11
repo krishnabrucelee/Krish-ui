@@ -2,29 +2,28 @@ function webSocket($rootScope, $timeout, webSockets, globalConfig, notify) {
 
     $rootScope.messages = '';
     $rootScope.initiateConnection = 0;
-
+    var webSocket = {};
     var headers = {};
-    var webSocketss = {
-       initStompClient : function() {
+       var initStompClient = function() {
         webSockets.init(globalConfig.SOCKET_URL + 'socket/ws', null);
         headers['x-auth-token'] = globalConfig.sessionValues.token;
         $rootScope.initiateConnection++;
         webSockets
                 .connect(function(frame) {
                     $rootScope.initiateConnection = 0;
-                    webSocketss.eventSubscribe();
+                    eventSubscribe();
                 }, function(error) {
                     if ($rootScope.initiateConnection < 5) {
                         $timeout(function() {
-                        	webSocketss.initStompClient();
+                        	initStompClient();
                         }, 5000);
                     } else {
                         alert("The websocket server could be temporarily unavailable or too busy. Try again in a few moments.");
                         window.location.href = "login";
                     }
                 });
-    },
-    eventSubscribe : function() {
+    };
+       var eventSubscribe = function() {
         webSockets.subscribe("/topic/action.event/" + globalConfig.sessionValues.id, function(message) {
             if (JSON.parse(message.body).resourceUuid !== null) {
                 notify({
@@ -120,9 +119,11 @@ function webSocket($rootScope, $timeout, webSockets, globalConfig, notify) {
         webSockets.subscribe("/topic/resource.event/Network", function(message) {
             $rootScope.$broadcast(JSON.parse(message.body).event, JSON.parse(message.body));
         });
-       }
-    }
-    return webSocketss;
+       };
+
+       initStompClient();
+
+    return webSocket;
 };
 
 /**
