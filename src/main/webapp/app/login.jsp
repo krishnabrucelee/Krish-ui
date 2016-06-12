@@ -70,6 +70,7 @@ pageEncoding="UTF-8"%>
                        	<input type="hidden" value="${REQUEST_PROTOCOL}" id="request_protocol" />
                         <input type="hidden" value="${REQUEST_PORT}" id="request_port" />
                         <input type="hidden" value="${REQUEST_FOLDER}" id="request_folder" />
+			<input type="hidden" value="${WEBSOCKET}" id="websocket_debug" />
                         <get-login-loader-image data-ng-show="showLoader"></get-login-loader-image>
                         <button data-ng-hide="showLoader" id="login_button" type="submit" class="btn btn-default"><fmt:message key="common.login" bundle="${msg}" /></button>
                     </form>
@@ -124,6 +125,10 @@ pageEncoding="UTF-8"%>
 	var REQUEST_FOLDER = document.getElementById("request_folder").value;
 	if(REQUEST_FOLDER == "" || typeof(REQUEST_FOLDER) == "undefined" || REQUEST_FOLDER == null) {
 		REQUEST_FOLDER = "/";
+	}
+	var WEBSOCKET_DEBUG = document.getElementById("websocket_debug").value;
+	if(WEBSOCKET_DEBUG == "" || typeof(WEBSOCKET_DEBUG) == "undefined" || WEBSOCKET_DEBUG == null) {
+		WEBSOCKET_DEBUG = false;
 	}
     var USER_CONTEXT_PATH = "<%=request.getContextPath()%>";
 </script>

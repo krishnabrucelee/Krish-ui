@@ -39,6 +39,10 @@ public class LoginController extends HttpServlet {
 
 		String folder = System.getenv("REQUEST_FOLDER");
 		request.setAttribute("REQUEST_FOLDER", folder);
+		
+		Boolean debug = Boolean.valueOf(System.getenv("WEBSOCKET_CLIENT_DEBUG"));
+		request.setAttribute("WEBSOCKET", debug);
+
         rd.forward(request, response);
 	}
 

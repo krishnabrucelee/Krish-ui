@@ -96,6 +96,7 @@
     <input type="hidden" value="${REQUEST_PROTOCOL}" id="request_protocol" />
                          <input type="hidden" value="${REQUEST_PORT}" id="request_port" />
                          <input type="hidden" value="${REQUEST_FOLDER}" id="request_folder" />
+			 <input type="hidden" value="${WEBSOCKET}" id="websocket_debug" />
 
     <!-- Simple splash screen-->
     <!-- <div class="splash loading-screen">
@@ -209,6 +210,10 @@ var REQUEST_PROTOCOL = document.getElementById("request_protocol").value;
 	var REQUEST_FOLDER = document.getElementById("request_folder").value;
 	if(REQUEST_FOLDER == "" || typeof(REQUEST_FOLDER) == "undefined" || REQUEST_FOLDER == null) {
 		REQUEST_FOLDER = "/";
+	}
+	var WEBSOCKET_DEBUG = document.getElementById("websocket_debug").value;
+	if(WEBSOCKET_DEBUG == "" || typeof(WEBSOCKET_DEBUG) == "undefined" || WEBSOCKET_DEBUG == null) {
+		WEBSOCKET_DEBUG = false;
 	}
 	</script>
     <!-- build:js({.tmp,app}) scripts/scripts.js -->

@@ -13,6 +13,7 @@ function globalConfig($window) {
             id : 0,
             name : 'Projects'
         },
+        debug : WEBSOCKET_DEBUG,
         projectList : [ {
             id : 0,
             name : 'Projects'
