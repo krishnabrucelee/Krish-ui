@@ -127,7 +127,7 @@
                         </div>
                         </div>
 
-                        <div data-ng-if="global.sessionValues.type == 'ROOT_ADMIN'">
+                        <div data-ng-if="global.sessionValues.type == 'ROOT_ADMIN'">{{user.department}}
                         <div class="form-group" ng-class="{'text-danger':userForm.department.$invalid && formSubmitted}">
                             <div class="row">
                                 <label class="col-md-3 col-sm-3 control-label"><fmt:message key="common.department" bundle="${msg}" /><span class="text-danger">*</span>
@@ -178,13 +178,12 @@
 							<div data-ng-if="user.department.type == 'DOMAIN_ADMIN'" class="col-md-5 col-sm-5">DOMAIN ADMIN</div>
 							<div data-ng-if="user.department.type == 'ROOT_ADMIN'" class="col-md-5 col-sm-5">ROOT ADMIN</div>
 						</div>
-
-                        <div class="form-group"  ng-class="{'text-danger':userForm.role.$invalid && formSubmitted}">
+                        <div data-ng-if="user.department.type == null || user.department.type == 'USER'" class="form-group"  ng-class="{'text-danger':userForm.role.$invalid && formSubmitted}">
                             <div class="row">
                                 <label class="col-md-3 col-sm-3 control-label"><fmt:message key="common.role" bundle="${msg}" /><span class="text-danger">*</span>
                                 </label>
                                 <div class="col-md-5 col-sm-5">
-                                    <select  required="true" class="form-control form-group-lg" name="role" id="add_user_role"
+                                    <select required="true" class="form-control form-group-lg" name="role" id="add_user_role"
                                              data-ng-model="user.role"
                                              data-ng-options="role.name for role in accountElements.roleList" data-ng-class="{'error': userForm.role.$invalid && formSubmitted}" >
                                         <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
@@ -194,7 +193,15 @@
                                 </div>
                             </div>
                         </div>
-
+                        <div data-ng-if="user.department.type == 'DOMAIN_ADMIN' || user.department.type == 'ROOT_ADMIN'" class="form-group">
+                            <div class="row">
+                                <label class="col-md-3 col-sm-3 control-label"><fmt:message key="common.role" bundle="${msg}" />
+                                </label>
+                                <div class="col-md-5 col-sm-5">
+                                    FULL_PERMISSION
+                                </div>
+                            </div>
+                        </div>
                         <div class="form-group">
                             <div class="row">
                                 <label class="col-md-3 col-sm-3 control-label"><fmt:message key="common.projects" bundle="${msg}" />
