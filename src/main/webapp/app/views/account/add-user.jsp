@@ -127,7 +127,7 @@
                         </div>
                         </div>
 
-                        <div data-ng-if="global.sessionValues.type == 'ROOT_ADMIN'">{{user.department}}
+                        <div data-ng-if="global.sessionValues.type == 'ROOT_ADMIN'">
                         <div class="form-group" ng-class="{'text-danger':userForm.department.$invalid && formSubmitted}">
                             <div class="row">
                                 <label class="col-md-3 col-sm-3 control-label"><fmt:message key="common.department" bundle="${msg}" /><span class="text-danger">*</span>
