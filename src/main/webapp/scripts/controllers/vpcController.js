@@ -2316,7 +2316,6 @@ $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.createnetwork, 
                             appService.globalConfig.webSocketLoaders.networkDeleteAclLoader = true;
                             var hasServer = appService.crudService.softDelete("vpcacl", $scope.acl);
                             hasServer.then(function (result) {
-                            	$window.location.href = '#/vpc/view/'+$stateParams.id+'/config-vpc/network-acl';
                             }).catch(function (result) {
                                 if (!angular.isUndefined(result) && result.data != null) {
                                 	$scope.showLoader = false;
@@ -2418,14 +2417,15 @@ $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.createnetwork, 
             });
             $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.addAcl, function(event, args) {
                 appService.globalConfig.webSocketLoaders.networkAclLoader = false;
-                if (!angular.isUndefined($stateParams.id3) && $stateParams.id3 > 0) {
+                if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
                     $scope.networkAclLists();
                 }
             });
             $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.deleteAclList, function(event, args) {
                 appService.globalConfig.webSocketLoaders.networkDeleteAclLoader = false;
-                if (!angular.isUndefined($stateParams.id3) && $stateParams.id3 > 0) {
-                    $scope.networkAclLists();
+                if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
+                	$window.location.href = '#/vpc/view/'+$stateParams.id+'/config-vpc/network-acl';
+                	$state.reload();
                 }
             });
 }
