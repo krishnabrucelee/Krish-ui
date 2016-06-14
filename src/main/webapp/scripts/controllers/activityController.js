@@ -32,6 +32,7 @@ function activityCtrl($scope, appService, $modal, promiseAjax, localStorageServi
     hasUsers.then(function (result) {
         $scope.owner = result;
     });
+
     $scope.getActivityByCategory = function (category, pageNumber) {
         $scope.activity.category = category;
         $scope.showLoader = true;
@@ -41,6 +42,7 @@ function activityCtrl($scope, appService, $modal, promiseAjax, localStorageServi
             var hasactionServer = appService.crudService.list("events", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
             hasactionServer.then(function (result) {  // this is only run after $http completes
                 $scope.activityList = result;
+                $scope.activityLists = result[0];
                 // For pagination
                 $scope.paginationObject.limit = limit;
                 $scope.paginationObject.currentPage = pageNumber;
@@ -135,7 +137,9 @@ function activityCtrl($scope, appService, $modal, promiseAjax, localStorageServi
             }
         });
     }
+
     $scope.showDescription = function (activity) {
+    	var hasServer = appService.promiseAjax.httpTokenRequest( $scope.global.HTTP_PUT , $scope.global.APP_URL + "events/event-update"  +"/"+activity.id);
         $scope.currentActivity = activity;
         activity.pageTitle = $scope.pageTitle;
         activity.category = $scope.activity.category;
@@ -168,6 +172,11 @@ function activityCtrl($scope, appService, $modal, promiseAjax, localStorageServi
     $scope.$on("EVENTS", function() {
         $scope.getActivityByCategory("events", 1);
     });
+
+   /* $scope.$on("notification", function(event, args) {
+   	 $scope.getActivity(1);
+   	 });*/
+
 };
 
 
@@ -254,3 +263,5 @@ function activityViewCtrl($scope, $state, $stateParams, promiseAjax, localStorag
     });
 
 };
+
+

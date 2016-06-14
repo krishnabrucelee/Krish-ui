@@ -310,6 +310,7 @@ function globalConfig($window) {
         CONTENT_LIMIT : $window.sessionStorage.getItem("loginSession") == null ? 10 : JSON.parse($window.sessionStorage.getItem("loginSession")).paginationLimit,
         VIEW_URL : 'app/views/',
         NOTIFICATION_TEMPLATE : 'app/views/notification/notify.jsp',
+        NOTIFICATIONS_TEMPLATE : 'app/views/common/notify1.jsp',
         TOKEN_SEPARATOR : "@@",
         PAGE_ERROR_SEPARATOR : "PAGE_ERROR",
         USER_SESSION : "remember_me",

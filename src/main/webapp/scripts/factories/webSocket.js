@@ -35,72 +35,94 @@ function webSocket($rootScope, $timeout, webSockets, globalConfig, notify) {
         });
         webSockets.subscribe("/topic/async.event/VM/" + globalConfig.sessionValues.id, function(message) {
             $rootScope.$broadcast(JSON.parse(message.body).event, JSON.parse(message.body));
+            $rootScope.$broadcast("notification", JSON.parse(message.body));
         });
         webSockets.subscribe("/topic/async.event/VPC/" + globalConfig.sessionValues.id, function(message) {
             $rootScope.$broadcast(JSON.parse(message.body).event, JSON.parse(message.body));
+            $rootScope.$broadcast("notification", JSON.parse(message.body));
         });
         webSockets.subscribe("/topic/async.event/NIC/" + globalConfig.sessionValues.id, function(message) {
             $rootScope.$broadcast(JSON.parse(message.body).event, JSON.parse(message.body));
+            $rootScope.$broadcast("notification", JSON.parse(message.body));
         });
         webSockets.subscribe("/topic/async.event/NET/" + globalConfig.sessionValues.id, function(message) {
             $rootScope.$broadcast(JSON.parse(message.body).event, JSON.parse(message.body));
+            $rootScope.$broadcast("notification", JSON.parse(message.body));
         });
         webSockets.subscribe("/topic/async.event/ISO/" + globalConfig.sessionValues.id, function(message) {
             $rootScope.$broadcast(JSON.parse(message.body).event, JSON.parse(message.body));
+            $rootScope.$broadcast("notification", JSON.parse(message.body));
         });
         webSockets.subscribe("/topic/async.event/VMSNAPSHOT/" + globalConfig.sessionValues.id, function(message) {
             $rootScope.$broadcast(JSON.parse(message.body).event, JSON.parse(message.body));
+            $rootScope.$broadcast("notification", JSON.parse(message.body));
         });
         webSockets.subscribe("/topic/async.event/VOLUME/" + globalConfig.sessionValues.id, function(message) {
             $rootScope.$broadcast(JSON.parse(message.body).event, JSON.parse(message.body));
+            $rootScope.$broadcast("notification", JSON.parse(message.body));
         });
         webSockets.subscribe("/topic/async.event/SNAPSHOT/" + globalConfig.sessionValues.id, function(message) {
             $rootScope.$broadcast(JSON.parse(message.body).event, JSON.parse(message.body));
+            $rootScope.$broadcast("notification", JSON.parse(message.body));
         });
         webSockets.subscribe("/topic/async.event/SNAPSHOTPOLICY/" + globalConfig.sessionValues.id, function(message) {
             $rootScope.$broadcast(JSON.parse(message.body).event, JSON.parse(message.body));
+            $rootScope.$broadcast("notification", JSON.parse(message.body));
         });
         webSockets.subscribe("/topic/async.event/FIREWALL/" + globalConfig.sessionValues.id, function(message) {
             $rootScope.$broadcast(JSON.parse(message.body).event, JSON.parse(message.body));
         });
         webSockets.subscribe("/topic/async.event/NETWORK/" + globalConfig.sessionValues.id, function(message) {
             $rootScope.$broadcast(JSON.parse(message.body).event, JSON.parse(message.body));
+            $rootScope.$broadcast("notification", JSON.parse(message.body));
         });
         webSockets.subscribe("/topic/async.event/LB/" + globalConfig.sessionValues.id, function(message) {
             $rootScope.$broadcast(JSON.parse(message.body).event, JSON.parse(message.body));
+            $rootScope.$broadcast("notification", JSON.parse(message.body));
         });
         webSockets.subscribe("/topic/async.event/VPN/" + globalConfig.sessionValues.id, function(message) {
             $rootScope.$broadcast(JSON.parse(message.body).event, JSON.parse(message.body));
+            $rootScope.$broadcast("notification", JSON.parse(message.body));
         });
         webSockets.subscribe("/topic/async.event/STATICNAT/" + globalConfig.sessionValues.id, function(message) {
             $rootScope.$broadcast(JSON.parse(message.body).event, JSON.parse(message.body));
+            $rootScope.$broadcast("notification", JSON.parse(message.body));
         });
         webSockets.subscribe("/topic/async.event/REGISTER/" + globalConfig.sessionValues.id, function(message) {
             $rootScope.$broadcast(JSON.parse(message.body).event, JSON.parse(message.body));
+            $rootScope.$broadcast("notification", JSON.parse(message.body));
         });
         webSockets.subscribe("/topic/async.event/PROJECT/" + globalConfig.sessionValues.id, function(message) {
             $rootScope.$broadcast(JSON.parse(message.body).event, JSON.parse(message.body));
+            $rootScope.$broadcast("notification", JSON.parse(message.body));
         });
         webSockets.subscribe("/topic/async.event/USER/" + globalConfig.sessionValues.id, function(message) {
             $rootScope.$broadcast(JSON.parse(message.body).event, JSON.parse(message.body));
+            $rootScope.$broadcast("notification", JSON.parse(message.body));
         });
         webSockets.subscribe("/topic/async.event/USER/" + globalConfig.sessionValues.id, function(message) {
             $rootScope.$broadcast(JSON.parse(message.body).event, JSON.parse(message.body));
+            $rootScope.$broadcast("notification", JSON.parse(message.body));
         });
         webSockets.subscribe("/topic/async.event/ACCOUNT/" + globalConfig.sessionValues.id, function(message) {
             $rootScope.$broadcast(JSON.parse(message.body).event, JSON.parse(message.body));
+            $rootScope.$broadcast("notification", JSON.parse(message.body));
         });
         webSockets.subscribe("/topic/async.event/DOMAIN/" + globalConfig.sessionValues.id, function(message) {
             $rootScope.$broadcast(JSON.parse(message.body).event, JSON.parse(message.body));
+            $rootScope.$broadcast("notification", JSON.parse(message.body));
         });
         webSockets.subscribe("/topic/async.event/SERVICE/" + globalConfig.sessionValues.id, function(message) {
             $rootScope.$broadcast(JSON.parse(message.body).event, JSON.parse(message.body));
+            $rootScope.$broadcast("notification", JSON.parse(message.body));
         });
         webSockets.subscribe("/topic/async.event/DISK/" + globalConfig.sessionValues.id, function(message) {
             $rootScope.$broadcast(JSON.parse(message.body).event, JSON.parse(message.body));
+            $rootScope.$broadcast("notification", JSON.parse(message.body));
         });
         webSockets.subscribe("/topic/async.event/TEMPLATE/" + globalConfig.sessionValues.id, function(message) {
             $rootScope.$broadcast(JSON.parse(message.body).event, JSON.parse(message.body));
+            $rootScope.$broadcast("notification", JSON.parse(message.body));
         });
         webSockets.subscribe("/topic/error.event/" + globalConfig.sessionValues.id, function(message) {
             notify({
@@ -109,15 +131,19 @@ function webSocket($rootScope, $timeout, webSockets, globalConfig, notify) {
                 templateUrl : globalConfig.NOTIFICATION_TEMPLATE
             });
             $rootScope.$broadcast(JSON.parse(message.body).event, JSON.parse(message.body));
+            $rootScope.$broadcast("notification", JSON.parse(message.body));
         });
         webSockets.subscribe("/topic/resource.event/Volume", function(message) {
             $rootScope.$broadcast(JSON.parse(message.body).event, JSON.parse(message.body));
+            $rootScope.$broadcast("notification", JSON.parse(message.body));
         });
         webSockets.subscribe("/topic/resource.event/VirtualMachine", function(message) {
             $rootScope.$broadcast(JSON.parse(message.body).event, JSON.parse(message.body));
+            $rootScope.$broadcast("notification", JSON.parse(message.body));
         });
         webSockets.subscribe("/topic/resource.event/Network", function(message) {
             $rootScope.$broadcast(JSON.parse(message.body).event, JSON.parse(message.body));
+            $rootScope.$broadcast("notification", JSON.parse(message.body));
         });
        };
 

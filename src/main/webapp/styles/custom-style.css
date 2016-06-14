@@ -258,6 +258,9 @@ border-color: #e74c3c !important;}
 .cg-notify-message ul li{float:left; width:33%; min-height:30px; border-bottom:1px dashed rgba(256, 256, 256, 0.2); list-style:none;}
 .cg-notify-message ul{clear:both; overflow:hidden; margin:12px 0 0 0; padding: 0px;}
 
+.event-notify-message {margin-left:0px !important; right:37px; z-index:0 !important; margin-top:60px !important; position:absolute;}
+.event-notify-message{max-width:1000px !important; min-width:auto !important;}
+.event-notify-message{left: auto !important;}
 
 .template-panel, .template-panel-area{min-height:190px;}
 .template-panel-area{margin-bottom:13px;  padding: 7px;}
@@ -455,6 +458,8 @@ table.dataTable thead .sorting_desc::after {content: "\f0dd";}
 .chn-lang .lang{border-left:#fff 1px solid; padding-left:20px;}
 .chn-lang label{color:#157db0 !important;}
 .eng-lang label{color:#157db0 !important;}
+
+.cg-notify-close .fa{font-size: 14px;}
 
 @media (max-width: 767px) {
     .table-responsive.responsive-x .dropdown-menu { position: relative !important; right: 200px !important; top: -34px;}
