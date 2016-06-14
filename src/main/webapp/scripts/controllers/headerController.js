@@ -13,18 +13,12 @@ function headerCtrl($scope, $http, $window, $modal, $log, $state, $stateParams, 
     $scope.showImage();
 
     $scope.themeSettingList = function () {
-
                 $scope.themeSettingsList = localStorageService.cookie.get('themeSettings');
                 if ($scope.themeSettingsList.data.headerTitle != null) {
                     document.getElementById("pandaAppPageTitle").innerHTML = $scope.themeSettingsList.data.headerTitle;
                 }
 
-//		    	if (!angular.isUndefined($scope.themeSettingsList.id)) {
-//		            var hasCustomList= appService.crudService.listByQuery("themesettings/listbythemeid?id="+$scope.themeSettingsList.id);
-//			        hasCustomList.then(function (result) {
-//			        $scope.themeCustomisationList = JSON.stringify(result);
-//			        });
-//		    	}
     };
     $scope.themeSettingList();
+
 };

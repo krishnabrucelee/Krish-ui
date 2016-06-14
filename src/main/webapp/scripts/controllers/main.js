@@ -8,11 +8,83 @@ angular
         .module('homer')
         .controller('appCtrl', appCtrl);
 
-function appCtrl($http, $scope, $window, $timeout, appService, globalConfig, crudService, promiseAjax, localStorageService, $cookies) {
+function appCtrl($http, $scope,$rootScope, $window,$modal, $timeout, appService, globalConfig, crudService, promiseAjax, localStorageService, $cookies) {
+
+	$scope.global = appService.globalConfig;
+    $scope.paginationObject = {};
+    $scope.sort = appService.globalConfig.sort;
+    $scope.paginationObject.sortOrder = '-';
+    $scope.paginationObject.sortBy = 'eventDateTime';
 
     // For iCheck purpose only
     $scope.infrastructure = {};
     $scope.showInfrastructureLoader = true;
+
+
+    $scope.getActivity = function (pageNumber) {
+	appService.globalConfig.sort.sortOrder = $scope.paginationObject.sortOrder;
+    appService.globalConfig.sort.sortBy = $scope.paginationObject.sortBy;
+    var limit = 10;
+        var hasactionServer = appService.promiseAjax.httpTokenRequest($scope.global.HTTP_GET, $scope.global.APP_URL + "events/list/read-event" +"?lang=" + localStorageService.cookie.get('language') + "&sortBy="+appService.globalConfig.sort.sortOrder+appService.globalConfig.sort.sortBy+"&limit=10", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+        hasactionServer.then(function (result) {  // this is only run after $http completes
+            $scope.activityList = result[0];
+            var msg = result[0].message;
+            appService.notify({message: msg, classes: 'alert-info',templateUrl: $scope.global.NOTIFICATIONS_TEMPLATE });
+            // For pagination
+            $scope.paginationObject.limit = limit;
+            $scope.paginationObject.currentPage = pageNumber;
+            $scope.paginationObject.totalItems = result.totalItems;
+            $scope.global.sessionValues.eventTotal = result.totalItems;
+        });
+    };
+    $scope.getActivity(1);
+
+    // Delete the event
+    $rootScope.deleteEvent = function () {
+        var hasServer = appService.crudService.softDelete("events", $scope.activityList);
+        hasServer.then(function(){
+    	    $scope.getActivity(1);
+        });
+    }
+
+//List the event
+$rootScope.listEvent = function () {
+	var hasServer = appService.promiseAjax.httpTokenRequest( $scope.global.HTTP_PUT , $scope.global.APP_URL + "events/event-update"  +"/"+$scope.activityList.id);
+	hasServer.then(function(){
+	    $scope.getActivity(1);
+    });
+}
+
+$rootScope.showDescriptions = function () {
+	var hasServer = appService.promiseAjax.httpTokenRequest( $scope.global.HTTP_PUT , $scope.global.APP_URL + "events/event-update"  +"/"+$scope.activityList.id);
+    $scope.currentActivity = $scope.activityList;
+    $scope.activityList.pageTitle = $scope.pageTitle;
+    $scope.activityList.category = $scope.currentActivity.category;
+    $scope.activityList.owner = $scope.owner;
+    var modalInstance = $modal.open({
+        animation: $scope.animationsEnabled,
+        templateUrl: 'app/views/activity/activity-description.jsp',
+        controller: 'activityDescriptionCtrl',
+        size: 'md',
+        backdrop: 'static',
+        windowClass: "hmodal-info",
+        resolve: {
+            activity: function () {
+                return angular.copy($scope.activityList);
+            },
+            owner:function () {
+                return angular.copy( $scope.owner);
+            },
+        }
+    });
+
+    modalInstance.result.then(function (selectedItem) {
+        $scope.selected = selectedItem;
+
+    }, function () {
+    });
+};
+
 
 
     $scope.getInfrastructureDetails = function() {
@@ -511,5 +583,9 @@ $scope.getZoneList = function () {
           $window.sessionStorage.setItem("loginSession", JSON.stringify(currentSession));
       });
   };
+
+  $scope.$on("notification", function(event, args) {
+	  $scope.getActivity(1);
+	   	 });
 
 }
