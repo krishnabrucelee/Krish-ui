@@ -48,6 +48,8 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
 
 
 $scope.ipLists = function(pageNumber) {
+
+$scope.list = function(pageNumber) {
         appService.localStorageService.set('views', 'ip');
         $scope.tabViews = appService.localStorageService.get('views');
         $scope.templateCategorys = $scope.tabViews;
@@ -71,6 +73,9 @@ if (!angular.isUndefined($stateParams.id)) {
         });
 }
     };
+    $scope.list(1);
+
+}
 
     $scope.changeSort = function(sortBy, pageNumber) {
         var sort = appService.globalConfig.sort;
