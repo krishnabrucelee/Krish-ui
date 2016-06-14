@@ -42,7 +42,6 @@ function activityCtrl($scope, appService, $modal, promiseAjax, localStorageServi
             var hasactionServer = appService.crudService.list("events", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
             hasactionServer.then(function (result) {  // this is only run after $http completes
                 $scope.activityList = result;
-                $scope.activityLists = result[0];
                 // For pagination
                 $scope.paginationObject.limit = limit;
                 $scope.paginationObject.currentPage = pageNumber;
@@ -172,11 +171,6 @@ function activityCtrl($scope, appService, $modal, promiseAjax, localStorageServi
     $scope.$on("EVENTS", function() {
         $scope.getActivityByCategory("events", 1);
     });
-
-   /* $scope.$on("notification", function(event, args) {
-   	 $scope.getActivity(1);
-   	 });*/
-
 };
 
 
