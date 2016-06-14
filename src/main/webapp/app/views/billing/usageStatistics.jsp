@@ -137,21 +137,39 @@
                       <div class="report-wrapper white-content" data-ng-show="myframe">
 		            <div class="label-primary p-sm h6 text-white fa-bold">
 		                <span  data-ng-show="groupBy"><fmt:message key="group.by" bundle="${msg}" /> : {{usageStatisticsType}}</span><span data-ng-show="usageStatisticsObj.domain"> | <fmt:message key="common.company" bundle="${msg}" /> : {{domainName}} </span><span data-ng-show= "usageStatisticsObj.startDate"> | <fmt:message key="start.date" bundle="${msg}" /> :<em>{{reportStartDate | date:'dd-MMM-yyyy' }}</em></span><span data-ng-show="usageStatisticsObj.endDate"> | <fmt:message key="to.date" bundle="${msg}" /> :<em>{{reportEndDate | date:'dd-MMM-yyyy' }}</em>
-		                	</span><a data-ng-if=" global.sessionValues.type == 'ROOT_ADMIN'"
-										href="{{ global.PING_APP_URL }}usage/statistics/report?fromDate={{reportStartDate}}&toDate={{reportEndDate}}&groupingType={{groupBy}}&domainUuid={{usageStatisticsObj.domain.name}}&type=pdf"
+		                	</span><a data-ng-if=" global.sessionValues.type == 'ROOT_ADMIN' && defaultLanguage=='en' "
+										href="{{ global.PING_APP_URL }}usage/statistics/report?fromDate={{reportStartDate}}&toDate={{reportEndDate}}&groupingType={{groupBy}}&domainUuid={{usageStatisticsObj.domain.name}}&type=pdf&lang=ENGLISH"
 										class="btn btn-default  pull-right m-l-xs"><span
 										class="fa fa-file-pdf-o text-danger"></span> PDF</a>
 
-									<a data-ng-if=" global.sessionValues.type !== 'ROOT_ADMIN'"
-										href="{{ global.PING_APP_URL }}usage/statistics/report?fromDate={{reportStartDate}}&toDate={{reportEndDate}}&groupingType={{groupBy}}&domainUuid={{global.sessionValues.domainAbbreviationName}}&type=pdf"
+									<a data-ng-if=" global.sessionValues.type !== 'ROOT_ADMIN' && defaultLanguage=='en'"
+										href="{{ global.PING_APP_URL }}usage/statistics/report?fromDate={{reportStartDate}}&toDate={{reportEndDate}}&groupingType={{groupBy}}&domainUuid={{global.sessionValues.domainAbbreviationName}}&type=pdf&lang=ENGLISH"
+										class="btn btn-default  pull-right m-l-xs"><span
+										class="fa fa-file-pdf-o text-danger"></span> PDF</a>
+										
+									<a data-ng-if=" global.sessionValues.type == 'ROOT_ADMIN' && defaultLanguage=='zh' "
+										href="{{ global.PING_APP_URL }}usage/statistics/report?fromDate={{reportStartDate}}&toDate={{reportEndDate}}&groupingType={{groupBy}}&domainUuid={{usageStatisticsObj.domain.name}}&type=pdf&lang=CHINESE"
 										class="btn btn-default  pull-right m-l-xs"><span
 										class="fa fa-file-pdf-o text-danger"></span> PDF</a>
 
-							<a	data-ng-if=" global.sessionValues.type == 'ROOT_ADMIN'"		href="{{ global.PING_APP_URL }}usage/statistics/report?fromDate={{reportStartDate}}&toDate={{reportEndDate}}&groupingType={{groupBy}}&domainUuid={{usageStatisticsObj.domain.name}}&type=xlsx"
+									<a data-ng-if=" global.sessionValues.type !== 'ROOT_ADMIN' && defaultLanguage=='zh'"
+										href="{{ global.PING_APP_URL }}usage/statistics/report?fromDate={{reportStartDate}}&toDate={{reportEndDate}}&groupingType={{groupBy}}&domainUuid={{global.sessionValues.domainAbbreviationName}}&type=pdf&lang=CHINESE"
+										class="btn btn-default  pull-right m-l-xs"><span
+										class="fa fa-file-pdf-o text-danger"></span> PDF</a>
+										
+							<a	data-ng-if=" global.sessionValues.type == 'ROOT_ADMIN' && defaultLanguage=='en' "		href="{{ global.PING_APP_URL }}usage/statistics/report?fromDate={{reportStartDate}}&toDate={{reportEndDate}}&groupingType={{groupBy}}&domainUuid={{usageStatisticsObj.domain.name}}&type=xlsx&lang=ENGLISH"
 										class="btn btn-default  pull-right m-l-xs"><span
 										class=" fa fa-file-excel-o text-success"></span> XLSX</a>
 
-							<a	data-ng-if=" global.sessionValues.type !== 'ROOT_ADMIN'"		href="{{ global.PING_APP_URL }}usage/statistics/report?fromDate={{reportStartDate}}&toDate={{reportEndDate}}&groupingType={{groupBy}}&domainUuid={{global.sessionValues.domainAbbreviationName}}&type=xlsx"
+							<a	data-ng-if=" global.sessionValues.type !== 'ROOT_ADMIN' && defaultLanguage=='en'"		href="{{ global.PING_APP_URL }}usage/statistics/report?fromDate={{reportStartDate}}&toDate={{reportEndDate}}&groupingType={{groupBy}}&domainUuid={{global.sessionValues.domainAbbreviationName}}&type=xlsx&lang=ENGLISH"
+										class="btn btn-default  pull-right m-l-xs"><span
+										class=" fa fa-file-excel-o text-success"></span> XLSX</a>
+
+							<a	data-ng-if=" global.sessionValues.type == 'ROOT_ADMIN' && defaultLanguage=='zh' "		href="{{ global.PING_APP_URL }}usage/statistics/report?fromDate={{reportStartDate}}&toDate={{reportEndDate}}&groupingType={{groupBy}}&domainUuid={{usageStatisticsObj.domain.name}}&type=xlsx&lang=CHINESE"
+										class="btn btn-default  pull-right m-l-xs"><span
+										class=" fa fa-file-excel-o text-success"></span> XLSX</a>
+
+							<a	data-ng-if=" global.sessionValues.type !== 'ROOT_ADMIN' && defaultLanguage=='zh'"		href="{{ global.PING_APP_URL }}usage/statistics/report?fromDate={{reportStartDate}}&toDate={{reportEndDate}}&groupingType={{groupBy}}&domainUuid={{global.sessionValues.domainAbbreviationName}}&type=xlsx&lang=CHINESE"
 										class="btn btn-default  pull-right m-l-xs"><span
 										class=" fa fa-file-excel-o text-success"></span> XLSX</a>
 										<div class="clearfix"></div>
