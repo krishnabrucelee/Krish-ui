@@ -171,8 +171,6 @@ $scope.captchaList();
                target.innerHTML = "Invalid captcha.";
                target.style.display = 'block';
               target.style["margin-bottom"] = '10px';
-       	       console.log(target.innerHTML);
-
         	   }
            }
            });
