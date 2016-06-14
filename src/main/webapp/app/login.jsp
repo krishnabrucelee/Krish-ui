@@ -3,7 +3,7 @@ pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<c:set var="language" value="${not empty language ? language : pageContext.request.getAttribute('language')}" scope="session" />
+ <c:set var="language" value="${not empty language ? language : pageContext.request.getAttribute('language')}" scope="session" />
 <fmt:setBundle basename="i18n/messages_${language}" var="msg" scope="session" />
 
 <!DOCTYPE html>
@@ -48,7 +48,9 @@ pageEncoding="UTF-8"%>
 		<div data-ng-bind-html="welcomeContentUser | to_trusted "></div>
             <div class="hpanel hbgblue">
                 <div class="panel-body" >
-                    <form name="test" method="post" id="loginForm" data-ng-submit="loginForm()">
+                
+                 <form name="test" method="post" id="loginForm" data-ng-submit="loginFormWithoutCaptcha()" data-ng-show ="!enableCaptcha"> 
+               
                         <h6 class="alert alert-danger" style="display: none" id="errorMsg"></h6>
                         <div class="form-group">
                             <label class="control-label" for="username"><fmt:message key="common.username" bundle="${msg}" /></label>
@@ -67,12 +69,53 @@ pageEncoding="UTF-8"%>
                             <label for="remeber_login"><fmt:message key="remember.login" bundle="${msg}" /></label>
                             <p class="small">(<fmt:message key="private.computer" bundle="${msg}" />)</p>
                         </div>
-                       	<input type="hidden" value="${REQUEST_PROTOCOL}" id="request_protocol" />
+                         
+                      	<input type="hidden" value="${REQUEST_PROTOCOL}" id="request_protocol" />
                         <input type="hidden" value="${REQUEST_PORT}" id="request_port" />
                         <input type="hidden" value="${REQUEST_FOLDER}" id="request_folder" />
 			<input type="hidden" value="${WEBSOCKET}" id="websocket_debug" />
                         <get-login-loader-image data-ng-show="showLoader"></get-login-loader-image>
                         <button data-ng-hide="showLoader" id="login_button" type="submit" class="btn btn-default"><fmt:message key="common.login" bundle="${msg}" /></button>
+                    </form>
+                    
+                 <form name="tests" method="post" id="loginForm" data-ng-submit="loginForm()" data-ng-show ="enableCaptcha"> 
+
+                        <h6 class="alert alert-danger" style="display: none" id="errorMsgs"></h6>
+                        <div class="form-group">
+                            <label class="control-label" for="username"><fmt:message key="common.username" bundle="${msg}" /></label>
+                            <input type="text" placeholder="<fmt:message key="common.small.username" bundle="${msg}" />" title="<fmt:message key="please.enter.your.username" bundle="${msg}" />" required="" data-ng-model="user_name" name="user_name" id="user_name" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="password"><fmt:message key="common.password" bundle="${msg}" /></label>
+                            <input type="password" title="<fmt:message key="please.enter.your.password" bundle="${msg}" />" placeholder="******" required="" data-ng-model="user_password" name="user_password" id="user_password" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="domain"><fmt:message key="common.domain" bundle="${msg}" /></label>
+                            <input type="text" placeholder="<fmt:message key="common.small.company" bundle="${msg}" />" title="<fmt:message key="please.enter.your.domain" bundle="${msg}" />" required="" data-ng-model="user_domain" name="user_domain" id="user_domain" class="form-control">
+                        </div>
+                        <div class="checkboxs">
+                            <input data-ng-click="rememberMe()" id="user_remember" data-ng-model="user_remember" name="user_remember" type="checkbox">
+                            <label for="remeber_login"><fmt:message key="remember.login" bundle="${msg}" /></label>
+                            <span class="small">(<fmt:message key="private.computer" bundle="${msg}" />)</span>
+                        </div>
+                         
+                        <div class="form-group row" ng-show ="enableCaptcha" >
+ 							<div class="col-md-6 m-t-sm">
+							 <img src="http://localhost:8082/pandaui/CaptchaServlet" alt="http://localhost:8082/pandaui/CaptchaServlet">
+ 				
+							</div>
+							<div class="col-md-6 captcha-textbox">
+       							<input type = "text" data-ng-model="answer"  name="answer" required=""  class= form-control>
+       							<span class="small"><fmt:message key="enter.captcha.text" bundle="${msg}" /></span>
+							</div>
+						</div>
+
+                       	<input type="hidden" value="${REQUEST_PROTOCOL}" id="request_protocol" />
+                        <input type="hidden" value="${REQUEST_PORT}" id="request_port" />
+                        <input type="hidden" value="${REQUEST_FOLDER}" id="request_folder" />
+			<input type="hidden" value="${WEBSOCKET}" id="websocket_debug" />
+                        <get-login-loader-image data-ng-show="showLoader"></get-login-loader-image>
+                        <button data-ng-hide="showLoader" id="login_button" type="submit" class="btn btn-default pull-right"><fmt:message key="common.login" bundle="${msg}" /></button>
                     </form>
                 </div>
             </div>

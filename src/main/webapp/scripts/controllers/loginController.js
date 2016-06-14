@@ -45,6 +45,16 @@ angular.module('homer', ['ngCookies', 'LocalStorageModule'])
 	};
 	$scope.themeSettingList();
 
+	 $scope.captchaList = function () {
+			return $http({method:'get', url:  REQUEST_PROTOCOL+ $window.location.hostname +':8080/home/generalConfiguration'}).
+then(function(result){
+			$scope.captcha = result;
+			$scope.enableCaptcha = result.data.enableCaptcha;
+       		});
+    };
+$scope.captchaList();
+
+
 	//For remember login functionality.
     if ((localStorageService.get('rememberMe') == "true" || localStorageService.get('rememberMe') == true)) {
 		return $http({method:'get', url:  REQUEST_PROTOCOL+ $window.location.hostname +':8080/api/'  + 'users/usersessiondetails/'+localStorageService.get('id'),
@@ -58,10 +68,17 @@ angular.module('homer', ['ngCookies', 'LocalStorageModule'])
         });
 	}
         $scope.loginForm = function () {
+        	if (!angular.isUndefined($scope.answer) && $scope.answer != null)
+        	 {
+        	 var headers = { 
+        			 "x-answer" : $scope.answer
+        	 }
+       $http({method: 'POST', url: 'http://localhost:8082/pandaui/CaptchaServlet', headers: headers})
+       .success(function (result) {
+           if(result.result == 'success'){
     	if (angular.isUndefined($scope.user_remember)) {
     		$scope.user_remember = "false";
     	}
-
         var headers = {
             "x-requested-with": $scope.user_domain,
             "x-auth-username": $scope.user_name,
@@ -70,7 +87,111 @@ angular.module('homer', ['ngCookies', 'LocalStorageModule'])
             "x-force-login" : "false",
             'Content-Type': 'application/json'
         };
+        $scope.showLoader = true;
+        $http({method: 'POST', url: globalConfig.APP_URL + 'authenticate', headers: headers})
+            .success(function (result) {
+               $scope.showLoader = false;
+               $window.sessionStorage.token = result.token;
+               $window.sessionStorage.setItem("loginSession", JSON.stringify(result));
+               localStorageService.set('token', result.token);
+               localStorageService.set('loginToken', result.loginToken);
+               localStorageService.set('id', result.id);
+               localStorageService.set('loginTime', result.loginTime);
+               localStorageService.set('rememberMe', result.rememberMe);
+               $cookies.rememberMe = result.rememberMe;
+               if(result.userStatus == "SUSPENDED") {
+                   window.location.href = globalConfig.BASE_UI_URL + "index#/billing/usage";
+               } else {
+                   window.location.href = globalConfig.BASE_UI_URL + "index#/dashboard";
+               }
+           }).catch(function (result) {
+        	      $scope.showLoader = false;
+                  if (!angular.isUndefined(result.data) && result.data != null) {
+            	      if(result.data.message == "error.already.exists") {
+            		  $scope.forceLogin = function() {
+            		      if (confirm("Already user is logged In. Are you sure want to do Force Login?") == true) {
+            		    	  var headers = {
+            		    	            "x-requested-with": $scope.user_domain,
+            		    	            "x-auth-username": $scope.user_name,
+            		    	            "x-auth-password": $scope.user_password,
+            		    	            "x-auth-remember": $scope.user_remember,
+            		    	            "x-force-login" : "true",
+            		    	            'Content-Type': 'application/json'
+            		    	        };
+            		    	  $scope.showLoader = true;
+            		          $http({method: 'POST', url: globalConfig.APP_URL + 'authenticate', headers: headers})
+            		              .success(function (result) {
+            		            	  $scope.showLoader = false;
+            		            	  $window.sessionStorage.token = result.token;
+            		                  $window.sessionStorage.setItem("loginSession", JSON.stringify(result));
+            		                  localStorageService.set('token', result.token);
+            		                  localStorageService.set('loginToken', result.loginToken);
+            		                  localStorageService.set('id', result.id);
+            		                  localStorageService.set('loginTime', result.loginTime);
+            		                  localStorageService.set('rememberMe', result.rememberMe);
+            		                  $cookies.rememberMe = result.rememberMe;
+            		                  if(result.userStatus == "SUSPENDED") {
+            		                      window.location.href = globalConfig.BASE_UI_URL + "index#/billing/usage";
+            		                  } else {
+            		                      window.location.href = globalConfig.BASE_UI_URL + "index#/dashboard";
+            		                  }
+            		          }).catch(function (result) {
+            		        	  $scope.showLoader = false;
+            		        	  $window.sessionStorage.removeItem("loginSession")
+            		        	  if (!angular.isUndefined(result.data)) {
+            		        		  var target = document.getElementById("errorMsgs");
+                                      target.innerHTML = result.data.message;
+                                      target.style.display = 'block';
+                                      target.style["margin-bottom"] = '10px';
+            		        	  }
+            		          });
+            		      }
+            		  }
+            		  $scope.forceLogin();
+            		  } else {
+                    	  $window.sessionStorage.removeItem("loginSession");
+                    	  var target = document.getElementById("errorMsgs");
+                          target.innerHTML = result.data.message;
+                          target.style.display = 'block';
+                          target.style["margin-bottom"] = '10px';
+                      }
+                  } else {
+                	  $window.sessionStorage.removeItem("loginSession")
+    	        	  if (!angular.isUndefined(result.data)) {
+    	        		var target = document.getElementById("errorMsgs");
+    	                target.innerHTML = "The server could be temporarily unavailable. Try again in a few moments.";
+    	                target.style.display = 'block';
+    	                target.style["margin-bottom"] = '10px';
+    	        	  }
+                  }
+           });
+           } else {
+        	   if(!angular.isUndefined(result.result) || result.result == "failure") {
+        	   var target = document.getElementById("errorMsgs");
+               target.innerHTML = "Invalid captcha.";
+               target.style.display = 'block';
+              target.style["margin-bottom"] = '10px';
+       	       console.log(target.innerHTML);
 
+        	   }
+           }
+           });
+        		}
+        }
+        
+        $scope.loginFormWithoutCaptcha = function () {
+      	
+     	if (angular.isUndefined($scope.user_remember)) {
+    		$scope.user_remember = "false";
+    	}
+        var headers = {
+            "x-requested-with": $scope.user_domain,
+            "x-auth-username": $scope.user_name,
+            "x-auth-password": $scope.user_password,
+            "x-auth-remember": $scope.user_remember,
+            "x-force-login" : "false",
+            'Content-Type': 'application/json'
+        };
         $scope.showLoader = true;
         $http({method: 'POST', url: globalConfig.APP_URL + 'authenticate', headers: headers})
             .success(function (result) {
@@ -149,6 +270,5 @@ angular.module('homer', ['ngCookies', 'LocalStorageModule'])
     	        	  }
                   }
            });
-
-    }
+        }
 });
