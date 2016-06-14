@@ -9,6 +9,7 @@ pageEncoding="UTF-8"%>
 <div data-ng-if="global.webSocketLoaders.ipLoader" class="overlay-wrapper">
     <img data-ng-if="global.webSocketLoaders.ipLoader" src="images/loading-bars.svg" class="inner-loading" />
 </div>
+<div class="hpanel">
 <div class="panel-heading">
                 <div class="row">
                     <div class="pull-right m-t-sm">
@@ -57,4 +58,6 @@ pageEncoding="UTF-8"%>
           </tbody>
 </table>
 </form>
+<pagination-content></pagination-content>
+</div>
 </div>
