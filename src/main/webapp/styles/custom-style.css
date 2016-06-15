@@ -462,7 +462,11 @@ table.dataTable thead .sorting_desc::after {content: "\f0dd";}
 .cg-notify-close .fa{font-size: 14px;}
 
 .captcha-textbox{margin-top:10px;}
-.captcha-refresh{margin-top:25px;}
+.captcha-refresh{margin-top:29px;}
+
+#captchaImg{border:none; height:56px;}
+#captchaImg body{margin:0px; padding:0px;}
+.captcha-number{margin-top:15px;}
 
 @media (max-width: 767px) {
     .table-responsive.responsive-x .dropdown-menu { position: relative !important; right: 200px !important; top: -34px;}

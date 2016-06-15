@@ -78,10 +78,10 @@ $scope.captchaList();
         });
     }
     
-    /*$scope.refreshCaptcha = function() {
-    	alert("test");
-    	$http({method:'get', url:  REQUEST_PROTOCOL+ $window.location.hostname +':8082/pandaui/CaptchaServlet'})
-	}*/
+   $scope.refreshCaptcha = function() {
+	     //$('#captchaImg').attr('src', '').attr('src', '${pageContext.request.contextPath}/captcha')
+	   	document.getElementById("captchaImg").setAttribute("src", 'CaptchaServlet')
+   }
     
     
         $scope.loginForm = function () {
@@ -92,7 +92,7 @@ $scope.captchaList();
         	 var headers = { 
         			 "x-answer" : $scope.answer
         	 }
-       $http({method: 'POST', url: 'http://localhost:8082/pandaui/CaptchaServlet', headers: headers})
+       $http({method: 'POST', url : REQUEST_PROTOCOL + window.location.hostname + REQUEST_PORT + REQUEST_FOLDER + 'CaptchaServlet', headers: headers})
        .success(function (result) {
            if(result.result == 'success'){
         if (angular.isUndefined($scope.user_remember)) {

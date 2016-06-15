@@ -95,17 +95,19 @@ pageEncoding="UTF-8"%>
                             <input type="text" placeholder="<fmt:message key="common.small.company" bundle="${msg}" />" title="<fmt:message key="please.enter.your.domain" bundle="${msg}" />" required="" data-ng-model="user_domain" name="user_domain" id="user_domain" class="form-control">
                         </div>
                         
-                        <div class="form-group row" ng-show ="enableCaptcha" >
+                        <div class="row" ng-show ="enableCaptcha" >
                         	<div class="col-md-5 captcha-textbox">
                         		<span class="small"><fmt:message key="enter.captcha.text" bundle="${msg}" /></span>
        							<input type = "text" data-ng-model="answer"  name="answer" required=""  class= form-control>
 							</div>
- 							<div class="col-md-5 m-t-md">
-								<img src="http://localhost:8082/pandaui/CaptchaServlet" alt="http://localhost:8082/pandaui/CaptchaServlet">
+ 							<div class="col-md-4 captcha-number no-padding"> 
+								 <iframe src=${pageContext.request.contextPath}/CaptchaServlet id="captchaImg" ></iframe> 
 							</div>
-							<!-- <div class="col-md-1 captcha-refresh">
-								<a class="btn btn-default text-info"  data-ng-click="refreshCaptcha()"  ui-sref-opts="{reload: true}"  ><span class="fa fa-refresh fa-lg "></span></a>
-							</div> -->
+							
+							<div class="col-md-2 captcha-refresh no-padding text-center">
+								<a class="btn btn-default text-info"  data-ng-click="refreshCaptcha()"  ><span class="fa fa-refresh fa-lg "></span></a>
+ 						
+ </div> 
 						</div>
 						<div class="form-group row">
 							<div class="col-md-12">
