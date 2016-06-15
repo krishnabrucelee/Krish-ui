@@ -48,6 +48,8 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
 
 
 $scope.ipLists = function(pageNumber) {
+
+$scope.list = function(pageNumber) {
         appService.localStorageService.set('views', 'ip');
         $scope.tabViews = appService.localStorageService.get('views');
         $scope.templateCategorys = $scope.tabViews;
@@ -71,6 +73,9 @@ if (!angular.isUndefined($stateParams.id)) {
         });
 }
     };
+    $scope.list(1);
+
+}
 
     $scope.changeSort = function(sortBy, pageNumber) {
         var sort = appService.globalConfig.sort;
@@ -251,6 +256,7 @@ $scope.vmPortId = instance;
     };
 
     $scope.portRulesLists = function(pageNumber) {
+    	$scope.list = function(pageNumber) {
         $scope.showLoader = true;
         $scope.templateCategory = 'port-forward';
         $scope.firewallRules = {};
@@ -270,6 +276,8 @@ $scope.vmPortId = instance;
             $scope.paginationObject.totalItems = result.totalItems;
         });
     };
+    $scope.list(1);
+    }
     $scope.hostList = function() {
         var hashostList = appService.crudService.listAll("host/list");
         hashostList.then(function(result) {

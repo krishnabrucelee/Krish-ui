@@ -7,20 +7,18 @@ angular
 
 function headerCtrl($scope, $http, $window, $modal, $log, $state, $stateParams, appService,globalConfig, localStorageService, $cookies) {
 
-	  $scope.showImage = function() {
-	    	$scope.logoImage =  REQUEST_PROTOCOL + $window.location.hostname +':8080/'  + 'resources/' + 'theme_logo.jpg';
-	}
-	$scope.showImage();
+      $scope.showImage = function() {
+            $scope.logoImage =  REQUEST_PROTOCOL + $window.location.hostname +':8080/'  + 'resources/' + 'theme_logo.jpg';
+    }
+    $scope.showImage();
 
-	$scope.themeSettingList = function () {
+    $scope.themeSettingList = function () {
+                $scope.themeSettingsList = localStorageService.cookie.get('themeSettings');
+                if ($scope.themeSettingsList.data.headerTitle != null) {
+                    document.getElementById("pandaAppPageTitle").innerHTML = $scope.themeSettingsList.data.headerTitle;
+                }
 
-		    	$scope.themeSettingsList = localStorageService.cookie.get('themeSettings');
-//		    	if (!angular.isUndefined($scope.themeSettingsList.id)) {
-//		            var hasCustomList= appService.crudService.listByQuery("themesettings/listbythemeid?id="+$scope.themeSettingsList.id);
-//			        hasCustomList.then(function (result) {
-//			        $scope.themeCustomisationList = JSON.stringify(result);
-//			        });
-//		    	}
-	};
-	$scope.themeSettingList();
+    };
+    $scope.themeSettingList();
+
 };

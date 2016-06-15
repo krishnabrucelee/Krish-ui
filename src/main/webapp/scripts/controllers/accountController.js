@@ -303,10 +303,11 @@ function accountListCtrl($scope,$state, $log,$timeout,$stateParams, appService, 
   // Department list loads based on the domain
     $scope.domainChange = function() {
         $scope.domains = {};
-$scope.options = [];
-	$scope.accountElements.roleList = [];
+        $scope.options = [];
+	    $scope.accountElements.roleList = [];
         var hasDepartmentList = appService.crudService.listAllByFilter("departments/search", $scope.user.domain);
         hasDepartmentList.then(function (result) {
+        	$scope.user.department = '';
     	    $scope.accountElements.departmentList = result;
         });
     };
@@ -359,15 +360,17 @@ $scope.options = [];
 
             // Getting list of roles and projects by department
             $scope.getRolesAndProjectsByDepartment = function(department) {
+            	if (!angular.isUndefined(department)) {
             	 var hasRoles =  appService.promiseAjax.httpTokenRequest( appService.crudService.globalConfig.HTTP_GET, appService.crudService.globalConfig.APP_URL + "roles"  +"/department/"+department.id);
             	 hasRoles.then(function (result) {  // this is only run after $http completes0
             		 $scope.accountElements.roleList = result;
             	 });
 
-		    var hasProjects =  appService.promiseAjax.httpTokenRequest( appService.crudService.globalConfig.HTTP_GET, appService.crudService.globalConfig.APP_URL + "projects"  +"/department/"+department.id);
-		    hasProjects.then(function (result) {  // this is only run after $http completes0
-                $scope.options = result;
-            });
+			     var hasProjects =  appService.promiseAjax.httpTokenRequest( appService.crudService.globalConfig.HTTP_GET, appService.crudService.globalConfig.APP_URL + "projects"  +"/department/"+department.id);
+			     hasProjects.then(function (result) {  // this is only run after $http completes0
+	                $scope.options = result;
+	             });
+            	}
            	};
         }])};
 

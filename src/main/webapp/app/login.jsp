@@ -22,7 +22,7 @@ pageEncoding="UTF-8"%>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Page title set in pageTitle directive -->
-    <title page-title></title>
+    <title id="pandaAppPageTitle" page-title></title>
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
 
@@ -46,7 +46,7 @@ pageEncoding="UTF-8"%>
 <div class="login-container">
     <div class="row">
         <div class="col-md-12">
-		<div data-ng-bind-html="welcomeContentUser | to_trusted "></div>
+        <div data-ng-bind-html="welcomeContentUser | to_trusted "></div>
             <div class="hpanel hbgblue">
                 <div class="panel-body" >
                 
@@ -71,10 +71,10 @@ pageEncoding="UTF-8"%>
                             <p class="small">(<fmt:message key="private.computer" bundle="${msg}" />)</p>
                         </div>
                          
-                      	<input type="hidden" value="${REQUEST_PROTOCOL}" id="request_protocol" />
+                           <input type="hidden" value="${REQUEST_PROTOCOL}" id="request_protocol" />
                         <input type="hidden" value="${REQUEST_PORT}" id="request_port" />
                         <input type="hidden" value="${REQUEST_FOLDER}" id="request_folder" />
-			<input type="hidden" value="${WEBSOCKET}" id="websocket_debug" />
+            <input type="hidden" value="${WEBSOCKET}" id="websocket_debug" />
                         <get-login-loader-image data-ng-show="showLoader"></get-login-loader-image>
                         <button data-ng-hide="showLoader" id="login_button" type="submit" class="btn btn-default"><fmt:message key="common.login" bundle="${msg}" /></button>
                     </form>
@@ -169,24 +169,24 @@ pageEncoding="UTF-8"%>
     }
 </script>
 <script type="text/javascript">
-	var REQUEST_PROTOCOL = document.getElementById("request_protocol").value;
-	if(REQUEST_PROTOCOL == "" || typeof(REQUEST_PROTOCOL) == "undefined" || REQUEST_PROTOCOL == null) {
-		REQUEST_PROTOCOL = "http";
-	}
+    var REQUEST_PROTOCOL = document.getElementById("request_protocol").value;
+    if(REQUEST_PROTOCOL == "" || typeof(REQUEST_PROTOCOL) == "undefined" || REQUEST_PROTOCOL == null) {
+        REQUEST_PROTOCOL = "http";
+    }
 
-	var REQUEST_PORT = document.getElementById("request_port").value;
-	if(REQUEST_PORT != "" && typeof(REQUEST_PORT) != "undefined" && REQUEST_PORT != null) {
-		REQUEST_PORT = ":" + REQUEST_PORT;
-	}
+    var REQUEST_PORT = document.getElementById("request_port").value;
+    if(REQUEST_PORT != "" && typeof(REQUEST_PORT) != "undefined" && REQUEST_PORT != null) {
+        REQUEST_PORT = ":" + REQUEST_PORT;
+    }
 
-	var REQUEST_FOLDER = document.getElementById("request_folder").value;
-	if(REQUEST_FOLDER == "" || typeof(REQUEST_FOLDER) == "undefined" || REQUEST_FOLDER == null) {
-		REQUEST_FOLDER = "/";
-	}
-	var WEBSOCKET_DEBUG = document.getElementById("websocket_debug").value;
-	if(WEBSOCKET_DEBUG == "" || typeof(WEBSOCKET_DEBUG) == "undefined" || WEBSOCKET_DEBUG == null) {
-		WEBSOCKET_DEBUG = false;
-	}
+    var REQUEST_FOLDER = document.getElementById("request_folder").value;
+    if(REQUEST_FOLDER == "" || typeof(REQUEST_FOLDER) == "undefined" || REQUEST_FOLDER == null) {
+        REQUEST_FOLDER = "/";
+    }
+    var WEBSOCKET_DEBUG = document.getElementById("websocket_debug").value;
+    if(WEBSOCKET_DEBUG == "" || typeof(WEBSOCKET_DEBUG) == "undefined" || WEBSOCKET_DEBUG == null) {
+        WEBSOCKET_DEBUG = false;
+    }
     var USER_CONTEXT_PATH = "<%=request.getContextPath()%>";
 </script>
 </html>
