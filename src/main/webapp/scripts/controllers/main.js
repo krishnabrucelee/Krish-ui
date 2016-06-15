@@ -27,14 +27,18 @@ function appCtrl($http, $scope,$rootScope, $window,$modal, $timeout, appService,
     var limit = 10;
         var hasactionServer = appService.promiseAjax.httpTokenRequest($scope.global.HTTP_GET, $scope.global.APP_URL + "events/list/read-event" +"?lang=" + localStorageService.cookie.get('language') + "&sortBy="+appService.globalConfig.sort.sortOrder+appService.globalConfig.sort.sortBy+"&limit=10", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
         hasactionServer.then(function (result) {  // this is only run after $http completes
-            $scope.activityList = result[0];
+            if(result.length>0){
+        	$scope.activityList = result[0];
             var msg = result[0].message;
             appService.notify({message: msg, classes: 'alert-info',templateUrl: $scope.global.NOTIFICATIONS_TEMPLATE });
             // For pagination
             $scope.paginationObject.limit = limit;
             $scope.paginationObject.currentPage = pageNumber;
             $scope.paginationObject.totalItems = result.totalItems;
-            $scope.global.sessionValues.eventTotal = result.totalItems;
+            $scope.global.event = result.totalItems;
+            }else{
+            	$scope.global.event = 0;
+            }
         });
     };
     $scope.getActivity(1);
