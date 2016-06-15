@@ -103,11 +103,9 @@ pageEncoding="UTF-8"%>
  							<div class="col-md-4 captcha-number no-padding"> 
 								 <iframe src=${pageContext.request.contextPath}/CaptchaServlet id="captchaImg" ></iframe> 
 							</div>
-							
-							<div class="col-md-2 captcha-refresh no-padding text-center">
-								<a class="btn btn-default text-info"  data-ng-click="refreshCaptcha()"  ><span class="fa fa-refresh fa-lg "></span></a>
- 						
- </div> 
+							<div class="col-md-1 captcha-refresh no-padding text-center">
+								<a data-ng-click="refreshCaptcha()"  ><span class="fa fa-refresh fa-lg "></span></a>
+ 							</div> 
 						</div>
 						<div class="form-group row">
 							<div class="col-md-12">
