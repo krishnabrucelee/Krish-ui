@@ -25,14 +25,14 @@
 				class="label-menu-corner" ui-sref="support.tickets"><fmt:message
 						key="common.support" bundle="${msg}" /><span
 					class="label label-success">3</span></a></li> --%>
-			<li data-ng-class="{active: $state.includes('activity')}" data-ng-if="global.sessionValues.eventTotal==0"><a
+			<li data-ng-class="{active: $state.includes('activity')}" data-ng-if="global.event==0"><a
 				class="label-menu-corner" ui-sref="activity"><fmt:message
 						key="common.activity" bundle="${msg}" /><span
 					class="label label-warning"></span></a></li>
-			<li data-ng-class="{active: $state.includes('activity')}" data-ng-if="global.sessionValues.eventTotal!=0" ><a
+			<li data-ng-class="{active: $state.includes('activity')}" data-ng-if="global.event!=0" ><a
 				class="label-menu-corner" ui-sref="activity"><fmt:message
 						key="common.activity" bundle="${msg}" /><span
-					class="label label-warning">{{global.sessionValues.eventTotal }}</span></a></li>
+					class="label label-warning">{{global.event }}</span></a></li>
 			<li data-ng-class="{active: $state.includes('billing')}"><a
 				class="label-menu-corner" ui-sref="billing.current-usage"><fmt:message
 						key="common.billing" bundle="${msg}" /><span

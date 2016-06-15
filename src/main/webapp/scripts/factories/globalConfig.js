@@ -374,7 +374,8 @@ function globalConfig($window) {
             }
         },
         sessionValues : JSON.parse($window.sessionStorage.getItem("loginSession")),
-        loginRemeberMeTimeout : 30 * 24 * 60 * 60 * 1000
+        loginRemeberMeTimeout : 30 * 24 * 60 * 60 * 1000,
+        event : 0
     };
     return appGlobalConfig;
 }

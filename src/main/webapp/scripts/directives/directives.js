@@ -205,29 +205,28 @@ angular
  */
 function pageTitle($rootScope, $timeout) {
     return {
-        link: function(scope, element) {
-            var listener = function(event, toState, toParams, fromState, fromParams) {
-                var themeSettings = localStorageService.get('themeSettings');
-                // Default title
-                if(themeSettings == null || typeof(themeSettings) == "undefined") {
-                    headerTitle = "Panda";
-                } else {
-                    headerTitle = themeSettings.data.headerTitle;
-                }
-
-                if(themeSettings.data.headerTitle == null) {
-                    themeSettings.data.headerTitle = "Panda";
-                }
-
-                var title = headerTitle;
-                // Create your own title pattern
-                if (toState.data && toState.data.pageTitle) title = 'Panda | ' + toState.data.pageTitle;
-                $timeout(function() {
-                   // element.text(title);
-                });
-            };
-            $rootScope.$on('$stateChangeStart', listener);
-        }
+//        link: function(scope, element) {
+//            var listener = function(event, toState, toParams, fromState, fromParams) {
+//                var themeSettings = localStorageService.get('themeSettings');
+//                // Default title
+//                if(themeSettings == null || typeof(themeSettings) == "undefined") {
+//                    headerTitle = "Panda";
+//                } else {
+//                    headerTitle = themeSettings.data.headerTitle;
+//                }
+//
+//                if(themeSettings.data.headerTitle == null) {
+//                    themeSettings.data.headerTitle = "Panda";
+//                }
+//
+//                var title = headerTitle;
+//                // Create your own title pattern
+//                if (toState.data && toState.data.pageTitle) title = 'Panda | ' + toState.data.pageTitle;
+//                $timeout(function() {
+//                   // element.text(title);
+//                });
+//            };
+//            $rootScope.$on('$stateChangeStart', listener);
     }
 };
 
