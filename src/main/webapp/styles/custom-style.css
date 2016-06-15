@@ -463,10 +463,15 @@ table.dataTable thead .sorting_desc::after {content: "\f0dd";}
 
 .captcha-textbox{margin-top:10px;}
 .captcha-refresh{margin-top:29px;}
+.captcha-refresh a{color:#ffffff;}
 
 #captchaImg{border:none; height:56px;}
 #captchaImg body{margin:0px; padding:0px;}
-.captcha-number{margin-top:15px;}
+.captcha-number{margin-top:14px;}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) { 
+.captcha-number{margin-top:20px;}
+}
 
 @media (max-width: 767px) {
     .table-responsive.responsive-x .dropdown-menu { position: relative !important; right: 200px !important; top: -34px;}
