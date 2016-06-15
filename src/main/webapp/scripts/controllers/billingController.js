@@ -121,7 +121,7 @@ function billingCtrl($scope, appService, globalConfig, localStorageService, $win
                 $scope.domainName = $scope.usageStatisticsObj.domain.companyNameAbbreviation;
 
             }
-          
+
 
             var hasServer = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL
                     + "usage/listUsageByPeriod?fromDate="+ startDate +"&toDate=" + endDate + "&groupingType=" + groupBy + "&domainUuid=" + domainUuid);
@@ -140,12 +140,11 @@ function billingCtrl($scope, appService, globalConfig, localStorageService, $win
                 $scope.groupItemByUsageList(usageList);
             }
         });
-            
+
             if(appService.localStorageService.cookie.get('language') == "en"){
             	var lang= "ENGLISH";
-            }else {
+            } else {
             	var lang= "CHINESE";
-
             }
 
         $scope.myframe = true;
@@ -186,7 +185,6 @@ function billingCtrl($scope, appService, globalConfig, localStorageService, $win
                 obj.usageUnits = 0;
             }
 
-
             // For template
             if(!angular.isUndefined(obj.templateid)) {
                 var tempGroupItem = obj.templateid;
@@ -211,7 +209,6 @@ function billingCtrl($scope, appService, globalConfig, localStorageService, $win
                 if(angular.isUndefined(groupItemList[tempGroupItem][7].planTotal)) {
                     groupItemList[tempGroupItem][7].planTotal = 0;
                 }
-
             }
 
             if(rawusage > 0) {
@@ -222,7 +219,6 @@ function billingCtrl($scope, appService, globalConfig, localStorageService, $win
                     if(obj.usagetype == 2
                         && !angular.isUndefined(obj.templatecost)
                         && parseFloat(obj.templatecost) > 0) {
-
 
                         if(obj.templateonetimechargeable) {
                             groupItemList[tempGroupItem][7].planTotal =  parseFloat(obj.templatecost);
@@ -282,7 +278,6 @@ function billingCtrl($scope, appService, globalConfig, localStorageService, $win
                             $scope.usageTotal[inc].total = $scope.usageTotal[inc].total + usageItem.planCost;
                         }
                     }
-
                 }
             }
         }
@@ -290,7 +285,7 @@ function billingCtrl($scope, appService, globalConfig, localStorageService, $win
 };
 
 function billingInvoiceCtrl($scope, $http, $window, $modal, $log, $state, $stateParams, appService, globalConfig) {
-	
+
 	$scope.defaultLanguage = appService.localStorageService.cookie.get('language');
     $scope.paginationObject = {};
     $scope.configForm = {};
@@ -326,13 +321,9 @@ function billingInvoiceCtrl($scope, $http, $window, $modal, $log, $state, $state
                     hasConfigList =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "usage/invoice/listByDomain"
                             +"?type=invoice"+ "&domainUuid="+appService.globalConfig.sessionValues.domainAbbreviationName+"&status=null");
                 } else {
-
                     hasConfigList = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "usage/invoice?type=invoice");
-
-
                 }
             } else {
-
                   var domainViewAbbr = null;
                     if ($scope.domainView != null && !angular.isUndefined($scope.domainView)) {
                       domainViewAbbr = $scope.domainView.companyNameAbbreviation;
@@ -353,7 +344,6 @@ function billingInvoiceCtrl($scope, $http, $window, $modal, $log, $state, $state
                     } else {
                         $scope.invoiceList = {};
                     }
-
 
                 // For pagination
                 $scope.paginationObject.limit = limit;
@@ -383,34 +373,28 @@ function billingInvoiceCtrl($scope, $http, $window, $modal, $log, $state, $state
 
           if (appService.globalConfig.sessionValues.type !== 'ROOT_ADMIN') {
 
-$scope.domainpdf = function()
-{
-	
-	if(appService.localStorageService.cookie.get('language') == "en"){
-		 $scope.viewpdf =appService.globalConfig.PING_APP_URL +"invoice/statistics/report?domainUuid="+appService.globalConfig.sessionValues.domainAbbreviationName+"&status=null&type=pdf&method=invoice&lang=ENGLISH";
-		}
-		else
-		{
-			 $scope.viewpdf =appService.globalConfig.PING_APP_URL +"invoice/statistics/report?domainUuid="+appService.globalConfig.sessionValues.domainAbbreviationName+"&status=null&type=pdf&method=invoice&lang=CHINESE";
-
-		}
-	
-}
-
-$scope.domainexcel = function()
-{
-	if(appService.localStorageService.cookie.get('language') == "en"){
-		$scope.viewexcel =appService.globalConfig.PING_APP_URL +"invoice/statistics/report?domainUuid="+appService.globalConfig.sessionValues.domainAbbreviationName+"&status=null&type=xlsx&method=invoice&lang=ENGLISH";
+	$scope.domainpdf = function()
+	{
+		if(appService.localStorageService.cookie.get('language') == "en"){
+			 $scope.viewpdf =appService.globalConfig.PING_APP_URL +"invoice/statistics/report?domainUuid="+appService.globalConfig.sessionValues.domainAbbreviationName+"&status=null&type=pdf&method=invoice&lang=ENGLISH";
+			}
+			else
+			{
+				 $scope.viewpdf =appService.globalConfig.PING_APP_URL +"invoice/statistics/report?domainUuid="+appService.globalConfig.sessionValues.domainAbbreviationName+"&status=null&type=pdf&method=invoice&lang=CHINESE";
+			}
 	}
-	else
-		{
-		$scope.viewexcel =appService.globalConfig.PING_APP_URL +"invoice/statistics/report?domainUuid="+appService.globalConfig.sessionValues.domainAbbreviationName+"&status=null&type=xlsx&method=invoice&lang=CHINESE";
+
+	$scope.domainexcel = function()
+	{
+		if(appService.localStorageService.cookie.get('language') == "en"){
+			$scope.viewexcel =appService.globalConfig.PING_APP_URL +"invoice/statistics/report?domainUuid="+appService.globalConfig.sessionValues.domainAbbreviationName+"&status=null&type=xlsx&method=invoice&lang=ENGLISH";
+		} else {
+			$scope.viewexcel =appService.globalConfig.PING_APP_URL +"invoice/statistics/report?domainUuid="+appService.globalConfig.sessionValues.domainAbbreviationName+"&status=null&type=xlsx&method=invoice&lang=CHINESE";
 		}
-}
+	}
 
    hasConfigList =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "usage/invoice/listByDomain"
                         +"?type=invoice"+ "&domainUuid="+appService.globalConfig.sessionValues.domainAbbreviationName+"&status=null");
-
 
           } else {
  $scope.showLoader = true;
@@ -435,55 +419,45 @@ $scope.domainexcel = function()
                domainViewAbbr = appService.globalConfig.sessionValues.domainAbbreviationName;
 		$scope.domainViewAbbr = appService.globalConfig.sessionValues.domainAbbreviationName;
              }
-
-
-
-
     	//$scope.myframe = true;
     	//$scope.reportUrl =  appService.globalConfig.PING_APP_URL + "invoice/statistics?domainUuid="+ $scope.domainViewAbbr +"&status=" + $scope.statusView+"&type=invoice";
     	//document.getElementById('myframe').setAttribute('src', $scope.reportUrl);
 
-$scope.pdf = function()
-{
-	if(appService.localStorageService.cookie.get('language') == "en"){
-	 $scope.viewpdf =appService.globalConfig.PING_APP_URL +"invoice/statistics/report?domainUuid="+$scope.domainViewAbbr+"&status="+ $scope.statusView+"&type=pdf&method=invoice&lang=ENGLISH";
-	}
-	else
+	$scope.pdf = function()
 	{
-		 $scope.viewpdf =appService.globalConfig.PING_APP_URL +"invoice/statistics/report?domainUuid="+$scope.domainViewAbbr+"&status="+ $scope.statusView+"&type=pdf&method=invoice&lang=CHINESE";
-
-	}
-}
-
-$scope.excel = function()
-{
-	if(appService.localStorageService.cookie.get('language') == "en"){
-		 $scope.viewexcel =appService.globalConfig.PING_APP_URL +"invoice/statistics/report?domainUuid="+$scope.domainViewAbbr+"&status="+ $scope.statusView+"&type=xlsx&method=invoice&lang=ENGLISH";
-	}
-	else
-		{
-		 $scope.viewexcel =appService.globalConfig.PING_APP_URL +"invoice/statistics/report?domainUuid="+$scope.domainViewAbbr+"&status="+ $scope.statusView+"&type=xlsx&method=invoice&lang=CHINESE";
+		if(appService.localStorageService.cookie.get('language') == "en"){
+		 $scope.viewpdf =appService.globalConfig.PING_APP_URL +"invoice/statistics/report?domainUuid="+$scope.domainViewAbbr+"&status="+ $scope.statusView+"&type=pdf&method=invoice&lang=ENGLISH";
+		} else {
+			 $scope.viewpdf =appService.globalConfig.PING_APP_URL +"invoice/statistics/report?domainUuid="+$scope.domainViewAbbr+"&status="+ $scope.statusView+"&type=pdf&method=invoice&lang=CHINESE";
 		}
-}
+	}
 
+	$scope.excel = function()
+	{
+		if(appService.localStorageService.cookie.get('language') == "en"){
+			 $scope.viewexcel =appService.globalConfig.PING_APP_URL +"invoice/statistics/report?domainUuid="+$scope.domainViewAbbr+"&status="+ $scope.statusView+"&type=xlsx&method=invoice&lang=ENGLISH";
+		} else {
+			 $scope.viewexcel =appService.globalConfig.PING_APP_URL +"invoice/statistics/report?domainUuid="+$scope.domainViewAbbr+"&status="+ $scope.statusView+"&type=xlsx&method=invoice&lang=CHINESE";
+		}
+	}
 
    hasConfigList =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "usage/invoice/listByDomain"
                 +"?type=invoice"+ "&domainUuid="+domainViewAbbr+"&status="+$scope.statusView);
       }
- $scope.showLoader = true;
-      hasConfigList.then(function (result) {  // this is only run after $http completes0
+	 $scope.showLoader = true;
+	      hasConfigList.then(function (result) {  // this is only run after $http completes0
 
- $scope.invoiceList = result;
- $scope.showLoader = false;
-         // For pagination
-         $scope.paginationObject.limit = limit;
-         $scope.paginationObject.currentPage = pageNumber;
-         $scope.paginationObject.totalItems = $scope.invoiceList.totalItems;
-         $scope.showLoader = false;
-      });
+	 $scope.invoiceList = result;
+	 $scope.showLoader = false;
+	         // For pagination
+	         $scope.paginationObject.limit = limit;
+	         $scope.paginationObject.currentPage = pageNumber;
+	         $scope.paginationObject.totalItems = $scope.invoiceList.totalItems;
+	         $scope.showLoader = false;
+	      });
 
-       };
-   $scope.configList(1);
+	       };
+	   $scope.configList(1);
 
    // Get application list based on domain selection
 
@@ -502,7 +476,7 @@ $scope.excel = function()
 };
 
 function billingPaymentsCtrl($scope, $http, $window, $modal, $log, $state, $stateParams, appService, globalConfig) {
-	
+
 	$scope.defaultLanguage = appService.localStorageService.cookie.get('language');
     $scope.paginationObject = {};
     $scope.configForm = {};
@@ -543,7 +517,7 @@ function billingPaymentsCtrl($scope, $http, $window, $modal, $log, $state, $stat
                 }
 
             } else {
- $scope.defaultView = false;
+            	$scope.defaultView = false;
                   var domainViewAbbr = null;
                     if ($scope.domainView != null && !angular.isUndefined($scope.domainView)) {
                       domainViewAbbr = $scope.domainView.companyNameAbbreviation;
@@ -566,7 +540,7 @@ function billingPaymentsCtrl($scope, $http, $window, $modal, $log, $state, $stat
 //                        $scope.invoiceList = {};
  //                   }
 
-$scope.invoiceList = result;
+        	  $scope.invoiceList = result;
 
                 // For pagination
                 $scope.paginationObject.limit = limit;
@@ -585,9 +559,9 @@ $scope.invoiceList = result;
     });
 
    $scope.global = globalConfig;
- $scope.defaultView = true;
+   $scope.defaultView = true;
    $scope.configList = function (pageNumber) {
- $scope.defaultView = true;
+   $scope.defaultView = true;
       var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
       var hasConfigList = {};
       if (($scope.domainView == null || angular.isUndefined($scope.domainView))
@@ -595,30 +569,23 @@ $scope.invoiceList = result;
 
           if (appService.globalConfig.sessionValues.type !== 'ROOT_ADMIN') {
 
-$scope.domainpdf = function()
-{
-	if(appService.localStorageService.cookie.get('language') == "en"){
-		 $scope.viewpdf =appService.globalConfig.PING_APP_URL +"invoice/statistics/report?domainUuid="+appService.globalConfig.sessionValues.domainAbbreviationName+"&status=null&type=pdf&method=payment&lang=ENGLISH";
-	   }
-	   else
-	   	{
-		 $scope.viewpdf =appService.globalConfig.PING_APP_URL +"invoice/statistics/report?domainUuid="+appService.globalConfig.sessionValues.domainAbbreviationName+"&status=null&type=pdf&method=payment&lang=CHINESE";
+	$scope.domainpdf = function()
+	{
+		if(appService.localStorageService.cookie.get('language') == "en"){
+			 $scope.viewpdf =appService.globalConfig.PING_APP_URL +"invoice/statistics/report?domainUuid="+appService.globalConfig.sessionValues.domainAbbreviationName+"&status=null&type=pdf&method=payment&lang=ENGLISH";
+		   } else {
+			 $scope.viewpdf =appService.globalConfig.PING_APP_URL +"invoice/statistics/report?domainUuid="+appService.globalConfig.sessionValues.domainAbbreviationName+"&status=null&type=pdf&method=payment&lang=CHINESE";
+		   	}
+	}
 
-	   	}
-	
-}
-
-$scope.domainexcel = function()
-{
-	if(appService.localStorageService.cookie.get('language') == "en"){
-		 $scope.viewexcel =appService.globalConfig.PING_APP_URL +"invoice/statistics/report?domainUuid="+appService.globalConfig.sessionValues.domainAbbreviationName+"&status=null&type=xlsx&method=payment&lang=ENGLISH";
-
-	   }
-	   else
-	   	{
-		 $scope.viewexcel =appService.globalConfig.PING_APP_URL +"invoice/statistics/report?domainUuid="+appService.globalConfig.sessionValues.domainAbbreviationName+"&status=null&type=xlsx&method=payment&lang=CHINESE";
-	   	}
-}
+	$scope.domainexcel = function()
+	{
+		if(appService.localStorageService.cookie.get('language') == "en"){
+			 $scope.viewexcel =appService.globalConfig.PING_APP_URL +"invoice/statistics/report?domainUuid="+appService.globalConfig.sessionValues.domainAbbreviationName+"&status=null&type=xlsx&method=payment&lang=ENGLISH";
+		   } else {
+			 $scope.viewexcel =appService.globalConfig.PING_APP_URL +"invoice/statistics/report?domainUuid="+appService.globalConfig.sessionValues.domainAbbreviationName+"&status=null&type=xlsx&method=payment&lang=CHINESE";
+		   	}
+	}
               hasConfigList =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "usage/invoice/listByDomain"
                         +"?type=payment"+ "&domainUuid="+appService.globalConfig.sessionValues.domainAbbreviationName+"&status=null");
           } else {
@@ -631,70 +598,63 @@ $scope.domainexcel = function()
           }
       } else {
 
- $scope.defaultView = false;
-          var domainViewAbbr = null;
-	  $scope.domainViewAbbr = null;
-            if ($scope.domainView != null && !angular.isUndefined($scope.domainView)) {
-              domainViewAbbr = $scope.domainView.companyNameAbbreviation;
-	$scope.domainViewAbbr = $scope.domainView.companyNameAbbreviation;
-          }
-            if ($scope.statusView == null || angular.isUndefined($scope.statusView)) {
-               $scope.statusView = null;
-            }
-            if (appService.globalConfig.sessionValues.type !== 'ROOT_ADMIN') {
-              domainViewAbbr = appService.globalConfig.sessionValues.domainAbbreviationName;
-	$scope.domainViewAbbr = appService.globalConfig.sessionValues.domainAbbreviationName;
-             }
+	 $scope.defaultView = false;
+	          var domainViewAbbr = null;
+	          $scope.domainViewAbbr = null;
+	            if ($scope.domainView != null && !angular.isUndefined($scope.domainView)) {
+	              domainViewAbbr = $scope.domainView.companyNameAbbreviation;
+	              $scope.domainViewAbbr = $scope.domainView.companyNameAbbreviation;
+	          }
+	            if ($scope.statusView == null || angular.isUndefined($scope.statusView)) {
+	               $scope.statusView = null;
+	            }
+	            if (appService.globalConfig.sessionValues.type !== 'ROOT_ADMIN') {
+	              domainViewAbbr = appService.globalConfig.sessionValues.domainAbbreviationName;
+	              $scope.domainViewAbbr = appService.globalConfig.sessionValues.domainAbbreviationName;
+	             }
 
 	  //$scope.myframe = true;
 	 //$scope.reportUrl =  appService.globalConfig.PING_APP_URL + "invoice/statistics?domainUuid="+ $scope.domainViewAbbr +"&status=" + $scope.statusView+"&type=payment";
     	//document.getElementById('myframe').setAttribute('src', $scope.reportUrl);
 
-$scope.pdf = function()
-{
-	if(appService.localStorageService.cookie.get('language') == "en"){
-   	 $scope.viewpdf =appService.globalConfig.PING_APP_URL +"invoice/statistics/report?domainUuid="+$scope.domainViewAbbr+"&status="+ $scope.statusView+"&type=pdf&method=payment&lang=ENGLISH";
-   }
-   else
-   	{
-   	 $scope.viewpdf =appService.globalConfig.PING_APP_URL +"invoice/statistics/report?domainUuid="+$scope.domainViewAbbr+"&status="+ $scope.statusView+"&type=pdf&method=payment&lang=CHINESE";
-   	}
+	$scope.pdf = function()
+	{
+		if(appService.localStorageService.cookie.get('language') == "en"){
+	   	 $scope.viewpdf =appService.globalConfig.PING_APP_URL +"invoice/statistics/report?domainUuid="+$scope.domainViewAbbr+"&status="+ $scope.statusView+"&type=pdf&method=payment&lang=ENGLISH";
+	   } else {
+	   	 $scope.viewpdf =appService.globalConfig.PING_APP_URL +"invoice/statistics/report?domainUuid="+$scope.domainViewAbbr+"&status="+ $scope.statusView+"&type=pdf&method=payment&lang=CHINESE";
+	   	}
+	}
 
-}
+	$scope.excel = function()
+	{
+		if(appService.localStorageService.cookie.get('language') == "en"){
+	   	 $scope.viewexcel =appService.globalConfig.PING_APP_URL +"invoice/statistics/report?domainUuid="+$scope.domainViewAbbr+"&status="+ $scope.statusView+"&type=xlsx&method=payment&lang=ENGLISH";
+	   } else {
+	  	 $scope.viewexcel =appService.globalConfig.PING_APP_URL +"invoice/statistics/report?domainUuid="+$scope.domainViewAbbr+"&status="+ $scope.statusView+"&type=xlsx&method=payment&lang=CHINESE";
+	   	}
 
-$scope.excel = function()
-{
-	if(appService.localStorageService.cookie.get('language') == "en"){
-   	 $scope.viewexcel =appService.globalConfig.PING_APP_URL +"invoice/statistics/report?domainUuid="+$scope.domainViewAbbr+"&status="+ $scope.statusView+"&type=xlsx&method=payment&lang=ENGLISH";
-
-   }
-   else
-   	{
-  	 $scope.viewexcel =appService.globalConfig.PING_APP_URL +"invoice/statistics/report?domainUuid="+$scope.domainViewAbbr+"&status="+ $scope.statusView+"&type=xlsx&method=payment&lang=CHINESE";
-   	}
-
-}
-
+	}
           hasConfigList =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "usage/invoice/listByDomain"
                 +"?type=payment"+ "&domainUuid="+domainViewAbbr+"&status="+$scope.statusView);
       }
- $scope.showLoader = true;
+      $scope.showLoader = true;
       hasConfigList.then(function (result) {  // this is only run after $http completes0
 //         if (!angular.isUndefined(result._embedded)) {
 //             $scope.invoiceList = result['_embedded'].invoiceList;
 //         } else {
 //             $scope.invoiceList = {};/
 //         }
-$scope.invoiceList = result;
- $scope.showLoader = false;
-         // For pagination
-         $scope.paginationObject.limit = limit;
-         $scope.paginationObject.currentPage = pageNumber;
-         $scope.paginationObject.totalItems = $scope.invoiceList.totalItems;
-         $scope.showLoader = false;
-      });
-       };
-   $scope.configList(1);
+	$scope.invoiceList = result;
+	 $scope.showLoader = false;
+	         // For pagination
+	         $scope.paginationObject.limit = limit;
+	         $scope.paginationObject.currentPage = pageNumber;
+	         $scope.paginationObject.totalItems = $scope.invoiceList.totalItems;
+	         $scope.showLoader = false;
+	      });
+	       };
+	   $scope.configList(1);
 
    // Get application list based on domain selection
    $scope.selectDomainView = function(pageNumber) {
@@ -722,12 +682,10 @@ $scope.invoiceList = result;
            }]);
    };
 
-
     $scope.formElements = {
             invoiceStatusList: {
                 "3":"PAID",
                 "5":"UNPAID"
             }
     }
-
 };
