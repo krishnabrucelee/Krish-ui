@@ -127,6 +127,52 @@ function instanceListCtrl($scope, $sce, $log, $filter, dialogService, $timeout, 
                 };
         }]);
     };
+    $scope.reDestroyVm = function(size, item) {
+        appService.dialogService.openDialog("app/views/cloud/instance/vmdestroy.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function($scope, $modalInstance, $rootScope) {
+            $scope.item = item;
+            if(item.status == 'ERROR' || item.status == 'DESTROYED' ){
+            	$scope.agree.value1 = true;
+            }
+            $scope.vmDestroy = function(item) {
+                    $scope.actionExpunge = true;
+                    var hasServer = appService.crudService.read("virtualmachine", item.id);
+                    hasServer.then(function(result) {
+                    if ($scope.agree.value1) {
+                        var event = "VM.EXPUNGE";
+                        var hasVm = appService.crudService.vmUpdate("virtualmachine/handlevmevent", result.uuid, event);
+                        appService.globalConfig.webSocketLoaders.viewLoader = true;
+                        hasVm.then(function(result) {
+                            $scope.agree.value1 = false;
+                            window.location.href = "index#/instance/list";
+                            $scope.cancel();
+                        }).catch(function(result) {
+                            $scope.cancel();
+                            appService.globalConfig.webSocketLoaders.viewLoader = false;
+                            $scope.agree.value1 = false;
+                        });
+                    } else {
+                        var event = "VM.DESTROY";
+                        appService.globalConfig.webSocketLoaders.viewLoader = true;
+                        var hasVm = appService.crudService.vmUpdate("virtualmachine/handlevmevent", result.uuid, event);
+                        hasVm.then(function(result) {
+                            $scope.agree.value1 = false;
+                            window.location.href = "index#/instance/list";
+                            $scope.cancel();
+                        }).catch(function(result) {
+                            $scope.cancel();
+                            appService.globalConfig.webSocketLoaders.viewLoader = false;
+                            $scope.agree.value1 = false;
+                        });
+                    }
+                    });
+
+                },
+                $scope.cancel = function() {
+                    $modalInstance.close();
+                };
+        }]);
+    };
+
     $scope.rebootVm = function(size, item) {
         $scope.item = item;
         dialogService.openDialog("app/views/cloud/instance/reboot.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function($scope, $modalInstance, $rootScope) {
