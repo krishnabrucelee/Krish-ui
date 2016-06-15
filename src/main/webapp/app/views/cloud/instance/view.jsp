@@ -37,7 +37,7 @@ pageEncoding="UTF-8"%>
                             </div>
                             <div class="panel-body">
                                 <div class="row">
-                                    <div class="col-md-4">
+                                    <div class="col-md-6">
                                         <table class="table table-condensed table-striped" cellspacing="1" cellpadding="1">
                                             <tbody>
                                             <h4 class="text-info"><fmt:message key="basic.info" bundle="${msg}" /></h4>
@@ -131,7 +131,7 @@ pageEncoding="UTF-8"%>
                                             </tbody>
                                         </table>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-6">
                                         <table class="table table-condensed table-striped" cellspacing="1" cellpadding="1">
                                             <tbody>
                                             <h4 class="text-info"><fmt:message key="ownership" bundle="${msg}" /></h4>
@@ -179,8 +179,154 @@ pageEncoding="UTF-8"%>
                                             </tr>
                                             </tbody>
                                         </table>
+                                        <table class="table table-condensed table-striped" cellspacing="1" cellpadding="1">
+                                            <tbody>
+                                            <h4 class="text-info"><fmt:message key="service.cost" bundle="${msg}" /></h4>
+                                            <tr>
+                                                <td class="col-md-6 col-sm-6">
+                                                    <b>
+                                                        <fmt:message key="subscription.cost" bundle="${msg}" />
+                                                    </b>
+                                                </td>
+                                                <td class="col-md-6 col-sm-6"><span class="text-danger"
+														data-ng-if="!instance.computeOffering.customized"
+													> <app-currency></app-currency> {{(instance.computeOffering.computeCost[0].instanceRunningCostMemory
+														    + instance.computeOffering.computeCost[0].instanceRunningCostVcpu) | number:4 }}
+													</span> <span class="text-danger" data-ng-if="instance.computeOffering.customized"> <app-currency></app-currency>
+															{{((instance.computeOffering.computeCost[0].instanceRunningCostPerMB > 0 ? (instance.memory * instance.computeOffering.computeCost[0].instanceRunningCostPerMB) : 0)
+														    + (instance.computeOffering.computeCost[0].instanceRunningCostPerVcpu > 0 ? (instance.cpuCore * instance.computeOffering.computeCost[0].instanceRunningCostPerVcpu) : 0)
+														    + (instance.computeOffering.computeCost[0].instanceRunningCostPerMhz > 0 ? (instance.cpuSpeed * instance.computeOffering.computeCost[0].instanceRunningCostPerMhz) : 0)) | number:4 }}
+													</span> /
+                                            <fmt:message key="common.day" bundle="${msg}" />
+                                            </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="col-md-6 col-sm-6">
+                                                    <b>
+                                                        <fmt:message key="common.package" bundle="${msg}" />
+                                                    </b>
+                                                </td>
+                                                <td class="col-md-6 col-sm-6">{{instance.computeOffering.name}}</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
-                                    <div class="col-md-4">
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <table class="table table-condensed table-striped" cellspacing="1" cellpadding="1">
+                                            <tbody>
+                                                <tr>
+                                            <h4 class="text-info"><fmt:message key="tech.specification" bundle="${msg}" /></h4>
+                                            <td class="col-md-6 col-sm-6">
+                                                <b>
+                                                    <fmt:message key="common.hypervisor" bundle="${msg}" />
+                                                </b>
+                                            </td>
+                                            <td class="col-md-6 col-sm-6">{{instance.hypervisor.name}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="col-md-6 col-sm-6">
+                                                    <b>
+                                                        <fmt:message key="common.templates" bundle="${msg}" />
+                                                    </b>
+                                                </td>
+                                                <td>{{instance.templateName}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="col-md-6 col-sm-6">
+                                                    <b>
+                                                        <fmt:message key="offer" bundle="${msg}" />
+                                                    </b>
+                                                </td>
+                                                <td class="col-md-6 col-sm-6">
+                                                    {{ instance.computeOffering.name}}
+                                                    <a has-permission="RESIZE" data-ng-click="selectab()">
+                                                       <i class="fa fa-edit m-l-lg"></i> <fmt:message key="common.resize" bundle="${msg}" />
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="col-md-6 col-sm-6">
+                                                    <b>
+                                                        <fmt:message key="common.osType" bundle="${msg}" />
+                                                    </b>
+                                                </td>
+                                                <td class="col-md-6 col-sm-6">{{instance.osType}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="col-md-6 col-sm-6">
+                                                    <b>
+                                                        <fmt:message key="cpu.cores" bundle="${msg}" />
+                                                    </b>
+                                                </td>
+                                                 <td class="col-md-6 col-sm-6">{{ instance.cpuCore}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="col-md-6 col-sm-6">
+                                                    <b>
+                                                        <fmt:message key="ram" bundle="${msg}" />
+                                                    </b>
+                                                </td>
+                                                <td class="col-md-6 col-sm-6">{{ instance.memory}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="col-md-6 col-sm-6">
+                                                    <b>
+                                                        <fmt:message key="common.storage" bundle="${msg}" />
+                                                    </b>
+                                                </td>
+                                                <td class="col-md-6 col-sm-6"><span data-ng-if="instance.volumeSize > 0">{{ instance.volumeSize / global.Math.pow(2, 30)}} GB</span><span data-ng-if="!(instance.volumeSize > 0)">-No Disk-</span></td>
+                                            </tr>
+                                            <tr data-ng-if="instance.publicIpAddress">
+                                                <td class="col-md-6 col-sm-6">
+                                                    <b>
+                                                        <fmt:message key="public.ip" bundle="${msg}" />
+                                                    </b>
+                                                </td>
+                                                <td class="col-md-6 col-sm-6">{{ instance.publicIpAddress}} </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="col-md-6 col-sm-6">
+                                                    <b>
+                                                        <fmt:message key="common.ip" bundle="${msg}" />
+                                                    </b>
+                                                </td>
+                                                <td class="col-md-6 col-sm-6">{{ instance.ipAddress}} | {{instance.network.networkType}} </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="col-md-6 col-sm-6">
+                                                    <b>
+                                                        <fmt:message key="high.availability" bundle="${msg}" />
+                                                    </b>
+                                                </td>
+                                                <td class="col-md-6 col-sm-6">{{instance.computeOffering.isHighAvailabilityEnabled}} </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="col-md-6 col-sm-6">
+                                                    <b>
+                                                        <fmt:message key="dynamic.scalable" bundle="${msg}" />
+                                                    </b>
+                                                </td>
+                                                <td class="col-md-6 col-sm-6">{{instance.template.dynamicallyScalable}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="col-md-6 col-sm-6">
+                                                    <b>
+                                                        <fmt:message key="ssh.key.pair" bundle="${msg}" />
+                                                    </b>
+                                                </td>
+                                                <td class="col-md-6 col-sm-6">{{instance.keypair.name}}
+                                                <a data-ng-click="selectab()" >
+                                                       <i class="fa fa-exchange m-l-lg"></i> <fmt:message key="common.change" bundle="${msg}" />
+                                                    </a>
+                                                 </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-md-6">
                                         <table class="table table-condensed table-striped" cellspacing="1" cellpadding="1">
                                             <tbody>
                                             <h4 class="text-info"><fmt:message key="common.statistics" bundle="${msg}" /></h4>
@@ -248,153 +394,6 @@ pageEncoding="UTF-8"%>
                                                     </b>
                                                 </td>
                                                 <td class="col-md-6 col-sm-6">{{instance.diskIoWrite}} </td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <table class="table table-condensed table-striped" cellspacing="1" cellpadding="1">
-                                            <tbody>
-                                                <tr>
-                                            <h4 class="text-info"><fmt:message key="tech.specification" bundle="${msg}" /></h4>
-                                            <td class="col-md-4 col-sm-4">
-                                                <b>
-                                                    <fmt:message key="common.hypervisor" bundle="${msg}" />
-                                                </b>
-                                            </td>
-                                            <td class="col-md-8 col-sm-8">{{instance.hypervisor.name}}</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="col-md-4 col-sm-4">
-                                                    <b>
-                                                        <fmt:message key="common.templates" bundle="${msg}" />
-                                                    </b>
-                                                </td>
-                                                <td>{{instance.templateName}}</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="col-md-4 col-sm-4">
-                                                    <b>
-                                                        <fmt:message key="offer" bundle="${msg}" />
-                                                    </b>
-                                                </td>
-                                                <td class="col-md-8 col-sm-8">
-                                                    {{ instance.computeOffering.name}}
-                                                    <a has-permission="RESIZE" data-ng-click="selectab()">
-                                                       <i class="fa fa-edit m-l-lg"></i> <fmt:message key="common.resize" bundle="${msg}" />
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="col-md-4 col-sm-4">
-                                                    <b>
-                                                        <fmt:message key="common.osType" bundle="${msg}" />
-                                                    </b>
-                                                </td>
-                                                <td class="col-md-8 col-sm-8">{{instance.osType}}</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="col-md-4 col-sm-4">
-                                                    <b>
-                                                        <fmt:message key="cpu.cores" bundle="${msg}" />
-                                                    </b>
-                                                </td>
-                                                 <td class="col-md-8 col-sm-8">{{ instance.cpuCore}}</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="col-md-4 col-sm-4">
-                                                    <b>
-                                                        <fmt:message key="ram" bundle="${msg}" />
-                                                    </b>
-                                                </td>
-                                                <td class="col-md-8 col-sm-8">{{ instance.memory}}</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="col-md-4 col-sm-4">
-                                                    <b>
-                                                        <fmt:message key="common.storage" bundle="${msg}" />
-                                                    </b>
-                                                </td>
-                                                <td class="col-md-8 col-sm-8"><span data-ng-if="instance.volumeSize > 0">{{ instance.volumeSize / global.Math.pow(2, 30)}} GB</span><span data-ng-if="!(instance.volumeSize > 0)">-No Disk-</span></td>
-                                            </tr>
-                                            <tr data-ng-if="instance.publicIpAddress">
-                                                <td class="col-md-4 col-sm-4">
-                                                    <b>
-                                                        <fmt:message key="public.ip" bundle="${msg}" />
-                                                    </b>
-                                                </td>
-                                                <td class="col-md-8 col-sm-8">{{ instance.publicIpAddress}} </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="col-md-4 col-sm-4">
-                                                    <b>
-                                                        <fmt:message key="common.ip" bundle="${msg}" />
-                                                    </b>
-                                                </td>
-                                                <td class="col-md-8 col-sm-8">{{ instance.ipAddress}} | {{instance.network.networkType}} </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="col-md-4 col-sm-4">
-                                                    <b>
-                                                        <fmt:message key="high.availability" bundle="${msg}" />
-                                                    </b>
-                                                </td>
-                                                <td class="col-md-8 col-sm-8">{{instance.computeOffering.isHighAvailabilityEnabled}} </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="col-md-4 col-sm-4">
-                                                    <b>
-                                                        <fmt:message key="dynamic.scalable" bundle="${msg}" />
-                                                    </b>
-                                                </td>
-                                                <td class="col-md-8 col-sm-8">{{instance.template.dynamicallyScalable}}</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="col-md-4 col-sm-4">
-                                                    <b>
-                                                        <fmt:message key="ssh.key.pair" bundle="${msg}" />
-                                                    </b>
-                                                </td>
-                                                <td class="col-md-8 col-sm-8">{{instance.keypair.name}}
-                                                <a data-ng-click="selectab()" >
-                                                       <i class="fa fa-exchange m-l-lg"></i> <fmt:message key="common.change" bundle="${msg}" />
-                                                    </a>
-                                                 </td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <table class="table table-condensed table-striped" cellspacing="1" cellpadding="1">
-                                            <tbody>
-                                            <h4 class="text-info"><fmt:message key="service.cost" bundle="${msg}" /></h4>
-                                            <tr>
-                                                <td class="col-md-6 col-sm-6">
-                                                    <b>
-                                                        <fmt:message key="subscription.cost" bundle="${msg}" />
-                                                    </b>
-                                                </td>
-                                                <td class="col-md-6 col-sm-6"><span class="text-danger"
-														data-ng-if="!instance.computeOffering.customized"
-													> <app-currency></app-currency> {{(instance.computeOffering.computeCost[0].instanceRunningCostMemory
-														    + instance.computeOffering.computeCost[0].instanceRunningCostVcpu) | number:4 }}
-													</span> <span class="text-danger" data-ng-if="instance.computeOffering.customized"> <app-currency></app-currency>
-															{{((instance.computeOffering.computeCost[0].instanceRunningCostPerMB > 0 ? (instance.memory * instance.computeOffering.computeCost[0].instanceRunningCostPerMB) : 0)
-														    + (instance.computeOffering.computeCost[0].instanceRunningCostPerVcpu > 0 ? (instance.cpuCore * instance.computeOffering.computeCost[0].instanceRunningCostPerVcpu) : 0)
-														    + (instance.computeOffering.computeCost[0].instanceRunningCostPerMhz > 0 ? (instance.cpuSpeed * instance.computeOffering.computeCost[0].instanceRunningCostPerMhz) : 0)) | number:4 }}
-													</span> /
-                                            <fmt:message key="common.day" bundle="${msg}" />
-                                            </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="col-md-6 col-sm-6">
-                                                    <b>
-                                                        <fmt:message key="common.package" bundle="${msg}" />
-                                                    </b>
-                                                </td>
-                                                <td class="col-md-6 col-sm-6">{{instance.computeOffering.name}}</td>
                                             </tr>
                                             </tbody>
                                         </table>
