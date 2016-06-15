@@ -11,6 +11,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GradientPaint;
 import java.awt.Graphics2D;
+import java.awt.GraphicsEnvironment;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.*;
@@ -32,8 +33,8 @@ protected TextOptions options;
                                 HttpServletResponse response) 
                  throws ServletException, IOException {
 
-    int width = 170;
-    int height = 50;
+    int width = 125;
+    int height = 40;
 
     char data[][] = {
         { '1', '5', '7', '6', '3', '2' },
@@ -49,7 +50,7 @@ protected TextOptions options;
 
     Graphics2D g2d = bufferedImage.createGraphics();
 
-    Font font = new Font("Georgia", Font.BOLD, 18);
+    Font font = new Font("Utopia", Font.BOLD, 18);
     g2d.setFont(font);
 
     RenderingHints rh = new RenderingHints(
@@ -62,11 +63,11 @@ protected TextOptions options;
     g2d.setRenderingHints(rh);
 
     Color test = new Color(143, 203, 233);
-    Color grey1 = new Color(96,96,96);
+    Color grey1 = new Color(0,0,0);
 
     
     GradientPaint gp = new GradientPaint(0, 0, 
-    		grey1, 0, height/2,Color.LIGHT_GRAY, false);
+    		grey1, 0, height/2,test, false);
 
     g2d.setPaint(gp);
     g2d.fillRect(0, 0, width, height);
@@ -75,7 +76,7 @@ protected TextOptions options;
      Random r = new Random(System.currentTimeMillis());
 	    CharArrayWriter cab = new CharArrayWriter();
 	   String answer = "";
-		for(int i = 0; i < 8; i ++){
+		for(int i = 0; i < 5; i ++){
 			int u_l_n = r.nextInt(1);
 			char ch = ' ';
 		   switch(u_l_n){

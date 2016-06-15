@@ -15,6 +15,8 @@ angular.module('homer', ['ngCookies', 'LocalStorageModule'])
 	    	$scope.backgroundImage =   REQUEST_PROTOCOL+ $window.location.hostname +':8080/'  + 'resources/' + 'theme_background.jpg';
 	}
 	$scope.showImage();
+	
+	
 
 	$scope.languageSettingList = function () {
 		return $http({method:'get', url: REQUEST_PROTOCOL  + $window.location.hostname +':8080/home/generalConfiguration'})
@@ -67,7 +69,16 @@ $scope.captchaList();
         	  $window.location.reload();
         });
 	}
+    
+    /*$scope.refreshCaptcha = function() {
+    	alert("test");
+    	$http({method:'get', url:  REQUEST_PROTOCOL+ $window.location.hostname +':8082/pandaui/CaptchaServlet'})
+	}*/
+    
+    
         $scope.loginForm = function () {
+        	
+        	
         	if (!angular.isUndefined($scope.answer) && $scope.answer != null)
         	 {
         	 var headers = { 

@@ -37,6 +37,7 @@ pageEncoding="UTF-8"%>
     <link rel="stylesheet" href="styles/style.css">
     <link rel="stylesheet" href="styles/login-loader.css">
     <link rel="stylesheet" href="styles/custom-style.css">
+    <link rel="stylesheet" href="bower_components/fontawesome/css/font-awesome.css" />
     <!-- endbuild -->
 
 </head>
@@ -93,29 +94,42 @@ pageEncoding="UTF-8"%>
                             <label class="control-label" for="domain"><fmt:message key="common.domain" bundle="${msg}" /></label>
                             <input type="text" placeholder="<fmt:message key="common.small.company" bundle="${msg}" />" title="<fmt:message key="please.enter.your.domain" bundle="${msg}" />" required="" data-ng-model="user_domain" name="user_domain" id="user_domain" class="form-control">
                         </div>
-                        <div class="checkboxs">
-                            <input data-ng-click="rememberMe()" id="user_remember" data-ng-model="user_remember" name="user_remember" type="checkbox">
-                            <label for="remeber_login"><fmt:message key="remember.login" bundle="${msg}" /></label>
-                            <span class="small">(<fmt:message key="private.computer" bundle="${msg}" />)</span>
-                        </div>
-                         
+                        
                         <div class="form-group row" ng-show ="enableCaptcha" >
- 							<div class="col-md-6 m-t-sm">
-							 <img src="http://localhost:8082/pandaui/CaptchaServlet" alt="http://localhost:8082/pandaui/CaptchaServlet">
- 				
-							</div>
-							<div class="col-md-6 captcha-textbox">
+                        	<div class="col-md-5 captcha-textbox">
+                        		<span class="small"><fmt:message key="enter.captcha.text" bundle="${msg}" /></span>
        							<input type = "text" data-ng-model="answer"  name="answer" required=""  class= form-control>
-       							<span class="small"><fmt:message key="enter.captcha.text" bundle="${msg}" /></span>
+							</div>
+ 							<div class="col-md-5 m-t-md">
+								<img src="http://localhost:8082/pandaui/CaptchaServlet" alt="http://localhost:8082/pandaui/CaptchaServlet">
+							</div>
+							<!-- <div class="col-md-1 captcha-refresh">
+								<a class="btn btn-default text-info"  data-ng-click="refreshCaptcha()"  ui-sref-opts="{reload: true}"  ><span class="fa fa-refresh fa-lg "></span></a>
+							</div> -->
+						</div>
+						<div class="form-group row">
+							<div class="col-md-12">
+								<div class="checkboxs">
+		                            <input data-ng-click="rememberMe()" id="user_remember" data-ng-model="user_remember" name="user_remember" type="checkbox">
+		                            <label for="remeber_login"><fmt:message key="remember.login" bundle="${msg}" /></label>
+		                            <span class="small">(<fmt:message key="private.computer" bundle="${msg}" />)</span>
+		                        </div>
 							</div>
 						</div>
+						<div class="form-group row">
+							<div class="col-md-12">
+								<div class="pull-left">
+		                        	<button data-ng-hide="showLoader" id="login_button" type="submit" class="btn btn-default"><fmt:message key="common.login" bundle="${msg}" /></button>
+		                        </div>
+							</div>
+                        </div>
 
                        	<input type="hidden" value="${REQUEST_PROTOCOL}" id="request_protocol" />
                         <input type="hidden" value="${REQUEST_PORT}" id="request_port" />
                         <input type="hidden" value="${REQUEST_FOLDER}" id="request_folder" />
 			<input type="hidden" value="${WEBSOCKET}" id="websocket_debug" />
                         <get-login-loader-image data-ng-show="showLoader"></get-login-loader-image>
-                        <button data-ng-hide="showLoader" id="login_button" type="submit" class="btn btn-default pull-right"><fmt:message key="common.login" bundle="${msg}" /></button>
+                        
                     </form>
                 </div>
             </div>
