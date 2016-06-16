@@ -15,8 +15,10 @@ function headerCtrl($scope, $http, $window, $modal, $log, $state, $stateParams, 
     $scope.themeSettingList = function () {
 
                 $scope.themeSettingsList = localStorageService.cookie.get('themeSettings');
-                if ($scope.themeSettingsList.data.headerTitle != null) {
-                    document.getElementById("pandaAppPageTitle").innerHTML = $scope.themeSettingsList.data.headerTitle;
+                if ($scope.themeSettingsList != null) {
+                    if ($scope.themeSettingsList.data.headerTitle != null) {
+                        document.getElementById("pandaAppPageTitle").innerHTML = $scope.themeSettingsList.data.headerTitle;
+                    }
                 }
 
 //		    	if (!angular.isUndefined($scope.themeSettingsList.id)) {
