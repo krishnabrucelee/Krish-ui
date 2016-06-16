@@ -51,22 +51,17 @@
         </div>
     </div>
 
-
-
-
-
     <div class="row" id="cpu-chart-container">
+     <get-monitor-loader-image data-ng-show="monitorImage"></get-monitor-loader-image>
         <div class="col-md-offset-1 col-md-11">
-            <div class="hide-left"></div>
-            <div class="hide-right"></div>
-            <flot dataset="cpu.dataset" options="flotOptions" height="280px" class="flotchart-container"></flot>
+            <div class="hide-left" data-ng-hide="monitorImage"></div>
+            <div class="hide-right" data-ng-hide="monitorImage"></div>
+            <flot dataset="cpu.dataset" data-ng-hide="monitorImage" options="flotOptions" height="280px" class="flotchart-container"></flot>
             <!--<div id="cpuLegendContainer" class="flotchart-legend-container"></div> -->
         </div>
     </div>
 
-
-
-    <div class="row">
+    <div class="row" data-ng-if="cpuData.length > 0">
         <div class="col-md-12">
             <div id="cpuLegendContent" class="flotchart-legend-content">
                 <table style="font-size: smaller; color: #545454"
@@ -75,15 +70,18 @@
                         <tr data-ng-repeat="cpuLegend in cpuData">
                             <td class="legendColorBox"
                                 data-ng-click="togglePlot($index, cpuData.length)"><a></a>
-                                <i class="fa fa-2x fa-desktop"></i>
-                                <div style="border: 1px solid #ccc; padding: 1px;">
+                                <i class="fa fa-desktop"></i>
+
+                                </td>
+                            <td class="legendLabel"
+                                data-ng-click="togglePlot($index, cpuData.length)">
+                                <div style="border: 1px solid #ccc; padding: 1px;" class="pull-left m-r-xs m-l-xs">
                                     <div style="width: 4px; height: 0; overflow: hidden"
                                         ng-style="{'border': '5px solid ' + flotOptions.colors[$index] }"></div>
                                 </div>
-                                </td>
-                            <td class="legendLabel"
-                                data-ng-click="togglePlot($index, cpuData.length)"><a
-                                class="m-l-sm">{{ $index == 4 ? "AVERAGE" : "CPU " + $index }} </a></td>
+                                <a class="pull-left">{{ $index == 4 ? "AVERAGE" : "CPU " + $index }} </a>
+
+                             </td>
                         </tr>
                     </tbody>
                 </table>
@@ -111,15 +109,17 @@
     </div>
 
     <div class="row" id="memory-chart-container">
+    <get-monitor-loader-image data-ng-show="monitorImage"></get-monitor-loader-image>
         <div class="col-md-offset-1 col-md-11">
-            <div class="hide-left"></div>
-            <div class="hide-right"></div>
-            <flot dataset="memory.dataset" options="memoryFlotOptions"
+            <div class="hide-left" data-ng-hide="monitorImage"></div>
+            <div class="hide-right" data-ng-hide="monitorImage"></div>
+            <flot dataset="memory.dataset" data-ng-hide="monitorImage" options="memoryFlotOptions"
                 height="280px" class="flotchart-container"></flot>
             <!-- <div id="memoryLegendContainer" class="flotchart-legend-container"></div> -->
         </div>
     </div>
-    <div class="row">
+
+    <div class="row" data-ng-if="memoryData.length >0">
     <div class="col-md-12">
             <div id="memoryLegendContent" class="flotchart-legend-content">
                 <table style="font-size: smaller; color: #545454" class="flotchart-legend-content-table">
@@ -164,15 +164,16 @@
     </div>
 
     <div class="row" id="storage-chart-container">
+         <get-monitor-loader-image data-ng-show="monitorImage"></get-monitor-loader-image>
         <div class="col-md-offset-1 col-md-11">
-            <div class="hide-left"> </div>
-            <div class="hide-right"></div>
-            <flot dataset="storage.dataset" options="storageFlotOptions"
-                height="280px" class="flotchart-container"></flot>
+            <div class="hide-left" data-ng-hide="monitorImage"> </div>
+            <div class="hide-right" data-ng-hide="monitorImage"></div>
+            <flot dataset="storage.dataset" options="storageFlotOptions" data-ng-hide="monitorImage" height="280px" class="flotchart-container"></flot>
             <!-- <div id="storageLegendContainer" class="flotchart-legend-container"></div> -->
         </div>
     </div>
-    <div class="row">
+
+    <div class="row" data-ng-if="storageData.length > 0">
 
         <div class="col-md-12">
             <div id="storageLegendContent" class="flotchart-legend-content">
@@ -215,9 +216,10 @@
                          <tr data-ng-repeat="storyLegend in storageData">
                             <td class="legendColorBox " data-ng-class="storageIndex == $index ? 'active' : ''"
                                 data-ng-click="toggleDiskPlot($index, storageData.length)">
-                                <a></a>
-                                <i class="fa fa-2x fa-hdd-o"></i>
+                                <a>
+                                <i class="fa fa-2x fa-hdd-o m-r-xs"></i>
                                 {{currentDisk[$index]}}
+                                </a>
                             </td>
                         </tr>
                     </tbody>
@@ -245,18 +247,17 @@
         </div>
     </div>
 
-    <div class="row" id="network-chart-container">
+    <div class="row" id="network-chart-container" >
+        <get-monitor-loader-image data-ng-show="monitorImage"></get-monitor-loader-image>
         <div class="col-md-offset-1 col-md-11">
-            <div class="hide-left"></div>
-            <div class="hide-right"></div>
-            <flot dataset="network.dataset" options="networkFlotOptions" height="280px" class="flotchart-container"></flot>
+            <div class="hide-left" data-ng-hide="monitorImage"></div>
+            <div class="hide-right" data-ng-hide="monitorImage"></div>
+            <flot dataset="network.dataset" data-ng-hide="monitorImage" options="networkFlotOptions" height="280px" class="flotchart-container"></flot>
             <!--<div id="cpuLegendContainer" class="flotchart-legend-container"></div> -->
         </div>
     </div>
 
-
-
-    <div class="row">
+    <div class="row" data-ng-if="networkData.length > 0">
         <div class="col-md-12">
             <div id="networkLegendContent" class="flotchart-legend-content">
                 <table style="font-size: smaller; color: #545454"
@@ -295,8 +296,8 @@
                     <tbody>
                         <tr data-ng-repeat="networkLegend in networkData">
                             <td class="legendColorBox" data-ng-class="networkIndex == $index ? 'active' : ''"
-                                data-ng-click="toggleNetworkPlot($index, networkData.length)"><a></a>
-							<i class="fa fa-sitemap fa-2x"></i>{{currentNetwork[$index]}}
+                                data-ng-click="toggleNetworkPlot($index, networkData.length)">
+							<a><i class="fa fa-sitemap fa-2x m-r-xs"></i>{{currentNetwork[$index]}}</a>
                             </td>
                         </tr>
                     </tbody>

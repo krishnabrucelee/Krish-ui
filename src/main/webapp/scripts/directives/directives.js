@@ -37,6 +37,7 @@ angular
     .directive('validInteger', validInteger)
     .directive('validCharacters', validCharacters)
     .directive('hasPermission', hasPermission)
+    .directive('getMonitorLoaderImage', getMonitorLoaderImage)
     .directive('chart', function(){
     return{
         restrict: 'E',
@@ -722,6 +723,17 @@ function getLoaderImage() {
 
         },
         templateUrl: "app/views/common/loader-image.jsp",
+    }
+}
+
+
+function getMonitorLoaderImage() {
+    return {
+        restrict: 'E',
+        link: function (scope, element, attrs) {
+
+        },
+        templateUrl: "app/views/common/monitorLoader-image.jsp",
     }
 }
 

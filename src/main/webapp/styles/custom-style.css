@@ -469,7 +469,9 @@ table.dataTable thead .sorting_desc::after {content: "\f0dd";}
 #captchaImg body{margin:0px; padding:0px;}
 .captcha-number{margin-top:14px;}
 
-@media screen and (-webkit-min-device-pixel-ratio:0) { 
+.legendColorBox .fa{font-size: 18px;}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
 .captcha-number{margin-top:20px;}
 }
 
