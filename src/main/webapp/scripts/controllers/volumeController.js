@@ -48,7 +48,7 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
             var hasVolumesLists = {};
             $scope.filter = "";
             if ($scope.domainView == null && $scope.quickSearchText == null) {
-            	hasVolumesLists =  appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "volumes" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+sortOrder+sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+            	hasVolumesLists =  appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "volumes/listView" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+sortOrder+sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
             } else {
             	if ($scope.domainView != null && $scope.quickSearchText == null) {
                     $scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=";
@@ -65,7 +65,7 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
             	// completes0
             	$scope.volumeList = result;
             	$scope.volumeList.Count = result.totalItems;
-            	console.log(globalConfig.sessionValues.token);
+            	//console.log(globalConfig.sessionValues.token);
             	// For pagination
             	$scope.paginationObject.limit = limit;
             	$scope.paginationObject.currentPage = pageNumber;
@@ -140,7 +140,7 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
         var hasVolumes = {};
         $scope.filter = "";
         if ($scope.domainView == null && $scope.quickSearchText == null) {
-        	hasVolumes = appService.crudService.list("volumes", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+        	hasVolumes = appService.crudService.list("volumes/listView", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
         } else {
         	if ($scope.domainView != null && $scope.quickSearchText == null) {
                 $scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=";
@@ -204,7 +204,9 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
 
 
     // Attach Volume
-    $scope.attach = function (size, volume) {
+    $scope.attach = function (size, volumeId) {
+    	var hasVolumeRead = appService.crudService.read("volumes", volumeId);
+    	hasVolumeRead.then(function (volume) {
         $scope.volume = volume;
             // instance List
         	$scope.instanceList = function (volume) {
@@ -280,10 +282,13 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
                     $modalInstance.close();
                 };
             }]);
+    });
     };
 
     // Detach Volume
-    $scope.detach = function (size, volume) {
+    $scope.detach = function (size, volumeId) {
+    	var hasVolumeRead = appService.crudService.read("volumes", volumeId);
+    	hasVolumeRead.then(function (volume) {
         $scope.volume = volume;
         appService.dialogService.openDialog("app/views/cloud/volume/detach-volume.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
                 $scope.instanceList = function () {
@@ -337,45 +342,49 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
                     $modalInstance.close();
                 };
             }]);
+    });
     };
 
     // Creating snapshot
-    $scope.createSnapshot = function (size, volume) {
-        $scope.volume = volume;
-        $scope.snapshot = {};
-        setTimeout(function () {
-        	appService.dialogService.openDialog("app/views/cloud/snapshot/download-snapshot.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
-                    $scope.validateConfirmSnapshot = function (form) {
-                        $scope.formSubmitted = true;
-                        if (form.$valid) {
-                            var snapshot = $scope.snapshot;
-                            snapshot.volume = $scope.volume;
-                            snapshot.zone = appService.crudService.globalConfig.zone;
-                            appService.globalConfig.webSocketLoaders.volumeLoader = true;
-                            $modalInstance.close();
-                            var hasServer = appService.crudService.add("snapshots", snapshot);
-                            hasServer.then(function (result) {
-                            }).catch(function (result) {
-                                if (!angular.isUndefined(result) && result.data != null) {
-                                    if (result.data.globalError[0] != '') {
-                                        var msg = result.data.globalError[0];
-                                        appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+    $scope.createSnapshot = function (size, volumeId) {
+    	var hasVolumeRead = appService.crudService.read("volumes", volumeId);
+    	hasVolumeRead.then(function (volume) {
+    		$scope.volume = volume;
+            $scope.snapshot = {};
+            setTimeout(function () {
+            	appService.dialogService.openDialog("app/views/cloud/snapshot/download-snapshot.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+                        $scope.validateConfirmSnapshot = function (form) {
+                            $scope.formSubmitted = true;
+                            if (form.$valid) {
+                                var snapshot = $scope.snapshot;
+                                snapshot.volume = $scope.volume;
+                                snapshot.zone = appService.crudService.globalConfig.zone;
+                                appService.globalConfig.webSocketLoaders.volumeLoader = true;
+                                $modalInstance.close();
+                                var hasServer = appService.crudService.add("snapshots", snapshot);
+                                hasServer.then(function (result) {
+                                }).catch(function (result) {
+                                    if (!angular.isUndefined(result) && result.data != null) {
+                                        if (result.data.globalError[0] != '') {
+                                            var msg = result.data.globalError[0];
+                                            appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
+                                        }
+                                        angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
+                                            $scope.confirmsnapshot[key].$invalid = true;
+                                            $scope.confirmsnapshot[key].errorMessage = errorMessage;
+                                        });
                                     }
-                                    angular.forEach(result.data.fieldErrors, function (errorMessage, key) {
-                                        $scope.confirmsnapshot[key].$invalid = true;
-                                        $scope.confirmsnapshot[key].errorMessage = errorMessage;
-                                    });
-                                }
-                                appService.globalConfig.webSocketLoaders.volumeLoader = false;
-                            });
-                        }
-                    };
-                    // Close the dialog box
-                    $scope.cancel = function () {
-                        $modalInstance.close();
-                    };
-                }]);
-        }, 500);
+                                    appService.globalConfig.webSocketLoaders.volumeLoader = false;
+                                });
+                            }
+                        };
+                        // Close the dialog box
+                        $scope.cancel = function () {
+                            $modalInstance.close();
+                        };
+                    }]);
+            }, 500);
+		 });
     };
 
     $scope.openUploadVolumeContainer = function (size) {
@@ -383,7 +392,9 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
     };
 
     //Resize Volume
-    $scope.resizeVolume = function (size, volume) {
+    $scope.resizeVolume = function (size, volumeId) {
+    	var hasVolumeRead = appService.crudService.read("volumes", volumeId);
+    	hasVolumeRead.then(function (volume) {
     	 $scope.volume = {};
         appService.dialogService.openDialog($scope.global.VIEW_URL + "cloud/volume/resize.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
             $scope.volume = volume;
@@ -465,6 +476,7 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
                     $modalInstance.close();
                 };
             }]);
+    });
     };
     // Getting list of projects by department
     $scope.getProjectsByDepartment = function(department) {
@@ -806,18 +818,21 @@ $scope.validateVolume = function (form, volume) {
 }]);
 };
 
-   $scope.openReccuringSnapshot = function (volume) {
+   $scope.openReccuringSnapshot = function (volumeId) {
+
+	var hasVolumeRead = appService.crudService.read("volumes", volumeId);
+   	hasVolumeRead.then(function (volume) {
 
  	appService.dialogService.openDialog('app/views/cloud/volume/recurring-snapshot.jsp', 'lg', $scope, ['$scope', '$modalInstance', '$rootScope', function($scope, $modalInstance, $rootScope) {
 	$scope.recurringSnapshot = volume;
-        $scope.volumeId = volume.id;
+    $scope.volumeId = volume.id;
 	$scope.snapshotTab = {};
-$scope.snapshotList = function () {
-                    var hasDisks = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "snapshotpolicies/listbyvolume?volumeid="+$scope.volumeId  +"&lang=" + appService.localStorageService.cookie.get('language')+"&sortBy=-id");
-                    hasDisks.then(function (result) {  // this is only run after
-                        // $http completes0
+    $scope.snapshotList = function () {
+        var hasDisks = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "snapshotpolicies/listbyvolume?volumeid="+$scope.volumeId  +"&lang=" + appService.localStorageService.cookie.get('language')+"&sortBy=-id");
+        hasDisks.then(function (result) {  // this is only run after
+            // $http completes0
 
-                        $scope.snapshotList = result;
+            $scope.snapshotList = result;
 			angular.forEach($scope.snapshotList , function(obj, key) {
 				$scope.snapshotTab[obj.intervalType] = true;
 				scheduleTimeArr = obj.scheduleTime.split(":");
@@ -863,7 +878,7 @@ if(obj.scheduleType== 6)
    $scope.snapshotList();
 
 $scope.recurringSnapshotLists = function () {
-		console.log(volume);
+		//console.log(volume);
 		    $scope.volumeId = volume.id;
                     var hasDisks = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "snapshotpolicies/listbyvolume?volumeid="+$scope.volumeId  +"&lang=" + appService.localStorageService.cookie.get('language')+"&sortBy=-id");
                     hasDisks.then(function (result) {  // this is only run after
@@ -946,11 +961,14 @@ $scope.recurringSnapshotLists = function () {
             $modalInstance.close();
         };
 }]);
+   });
     };
 
 
 // Delete the Volume
-$scope.delete = function (size, volume) {
+$scope.delete = function (size, volumeId) {
+	var hasVolumeRead = appService.crudService.read("volumes", volumeId);
+	hasVolumeRead.then(function (volume) {
 	appService.dialogService.openDialog("app/views/cloud/volume/delete.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
             $scope.deleteObject = volume;
             $scope.ok = function (volume) {
@@ -991,6 +1009,7 @@ $scope.delete = function (size, volume) {
                         $modalInstance.close();
                     };
         }]);
+});
 };
 
     // Form Field Decleration
