@@ -80,6 +80,10 @@ $scope.themeSettingList = function () {
                 $scope.quotaLimits[obj.resourceType].max = parseInt(obj.max);
                 $scope.quotaLimits[obj.resourceType].usedLimit = parseInt(obj.usedLimit);
                 $scope.quotaLimits[obj.resourceType].percentage = parseFloat(parseInt(obj.usedLimit) / parseInt(obj.max) * 100).toFixed(2);
+                if(isNaN($scope.quotaLimits[obj.resourceType].percentage)) {
+                    $scope.quotaLimits[obj.resourceType].percentage = 0;
+                }
+
                 var unUsed = $scope.quotaLimits[obj.resourceType].max - $scope.quotaLimits[obj.resourceType].usedLimit;
 
 
