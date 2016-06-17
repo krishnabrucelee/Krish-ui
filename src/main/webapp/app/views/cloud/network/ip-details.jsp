@@ -87,7 +87,7 @@ pageEncoding="UTF-8"%>
                 </div>
                 <div class="child-right pull-right" data-ng-if = "!ipDetails.isStaticnat">
                     <fmt:message key="load.balancing" bundle="${msg}" />
-                    <a href="javascript:void(0)" data-ng-click="selectTab('loadBalance')" class="btn-diagram"><span><fmt:message key="view" bundle="${msg}" /></span></a>
+                    <a href="javascript:void(0)" data-ng-click="LBlist(1)" class="btn-diagram"><span><fmt:message key="view" bundle="${msg}" /></span></a>
 
                 </div>
 

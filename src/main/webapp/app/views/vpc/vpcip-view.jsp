@@ -9,24 +9,24 @@ pageEncoding="UTF-8"%>
 <div class="hpanel" >
 <div class="row m-l-sm m-r-sm panel-body" data-ng-controller="vpcCtrl" >
 
-    <ul class="nav nav-tabs" data-ng-init="templateCategory = tabview">
-        <li data-ng-class="{'active' : tabview == 'ipdetails'}"><a href="javascript:void(0)" data-ng-click="templateCategory = 'ipdetails'" data-toggle="tab">  <i class="fa fa-list"></i> <fmt:message key="common.details" bundle="${msg}" /></a></li>
+    <ul class="nav nav-tabs" data-ng-init="tabview = 'ipdetails'">
+        <li data-ng-class="{'active' : tabview == 'ipdetails'}"><a href="javascript:void(0)" data-ng-click="tabview = 'ipdetails'" data-toggle="tab">  <i class="fa fa-list"></i> <fmt:message key="common.details" bundle="${msg}" /></a></li>
         <li data-ng-if = "!ipDetails.isStaticnat && !ipDetails.isSourcenat"  data-ng-class="{'active' : tabview == 'port-forward'}"><a  data-ng-click="portRulesLists(1)" data-toggle="tab"> <i class="fa fa-mail-forward"></i> <fmt:message key="port.forwarding" bundle="${msg}" /></a></li>
         <li data-ng-if = "!ipDetails.isStaticnat && !ipDetails.isSourcenat" data-ng-class="{'active' : tabview == 'load-balance'}"><a data-ng-click="LBlist(1)" data-toggle="tab"> <i class="custom-icon custom-load-ip"></i> <fmt:message key="load.balancing" bundle="${msg}" /></a></li>
-        <li data-ng-show="ipDetails.vpnState == 'RUNNING'" data-ng-class="{'active' : tabview == 'vpn-details'}"><a data-ng-click="templateCategory = 'vpn-details'" data-toggle="tab"> <i class="custom-icon custom-icon-ip"></i> <fmt:message key="vpn" bundle="${msg}" /></a></li>
+        <li data-ng-show="ipDetails.vpnState == 'RUNNING'" data-ng-class="{'active' : tabview == 'vpn-details'}"><a data-ng-click="tabview = 'vpn-details'" data-toggle="tab"> <i class="custom-icon custom-icon-ip"></i> <fmt:message key="vpn" bundle="${msg}" /></a></li>
     </ul>
 
     <div class="tab-content">
-        <div class="tab-pane" data-ng-class="{'active' : templateCategory == 'ipdetails'}" id="step1-dashboard">
+        <div class="tab-pane" data-ng-class="{'active' : tabview == 'ipdetails'}" id="step1-dashboard">
             <div data-ng-include src="'app/views/vpc/ip-details.jsp'"></div>
         </div>
-        <div class="tab-pane"  data-ng-class="{'active' : templateCategory == 'port-forward'}" id="step1-storage">
+        <div class="tab-pane"  data-ng-class="{'active' : tabview == 'port-forward'}" id="step1-storage">
             <div data-ng-include src="'app/views/vpc/port-forward.jsp'"></div>
         </div>
-        <div class="tab-pane"  data-ng-class="{'active' : templateCategory == 'load-balance'}" id="step1-network">
+        <div class="tab-pane"  data-ng-class="{'active' : tabview == 'load-balance'}" id="step1-network">
             <div data-ng-include src="'app/views/vpc/load-balance.jsp'"></div>
         </div>
-        <div class="tab-pane"  data-ng-class="{'active' : templateCategory == 'vpn-details'}" id="step1-vpn">
+        <div class="tab-pane"  data-ng-class="{'active' : tabview == 'vpn-details'}" id="step1-vpn">
             <div data-ng-include src="'app/views/vpc/vpn-details.jsp'"></div>
         </div>
     </div>
