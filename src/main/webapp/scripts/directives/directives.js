@@ -33,6 +33,7 @@ angular
     .directive('getLoaderImageOffer', getLoaderOfferImage)
     .directive('getLoaderImageDetail', getLoaderDetailImage)
     .directive('getLoginLoaderImage', getLoginLoaderImage)
+    .directive('favIconUrl', favIconUrl)
     .directive('passwordVerify', passwordVerify)
     .directive('validInteger', validInteger)
     .directive('validCharacters', validCharacters)
@@ -886,6 +887,16 @@ function hasPermission() {
             if(!permission) {
                 element.hide();
             }
+        }
+    }
+}
+
+function favIconUrl($window) {
+    var url = 'http://'+ $window.location.hostname +':8080/'  + 'resources/' + 'favicon.ico';
+    return {
+        restrict :"A",
+        link: function(scope, el, attr) {
+           el.attr("href",url)
         }
     }
 }

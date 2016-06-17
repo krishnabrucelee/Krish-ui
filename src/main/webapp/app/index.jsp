@@ -28,8 +28,7 @@
 <!-- Page title set in pageTitle directive -->
 <title id="pandaAppPageTitle" page-title></title>
 <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-<link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
-
+<link rel="shortcut icon" type="image/x-icon"  href=""  data-fav-icon-url="" />
 <!-- build:css(.) styles/vendor.css -->
 <!-- bower:css -->
 <link rel="stylesheet"
@@ -93,9 +92,12 @@
 <body ng-controller="appCtrl"
     class="{{$state.current.data.specialClass}}" landing-scrollspy tour
     backdrop="true">
-    <input type="hidden" value="${REQUEST_PROTOCOL}" id="request_protocol" />
+
+   <input type="hidden" value="${REQUEST_PROTOCOL}" id="request_protocol" />
                          <input type="hidden" value="${REQUEST_PORT}" id="request_port" />
                          <input type="hidden" value="${REQUEST_FOLDER}" id="request_folder" />
+
+
              <input type="hidden" value="${WEBSOCKET}" id="websocket_debug" />
 
     <!-- Simple splash screen-->
