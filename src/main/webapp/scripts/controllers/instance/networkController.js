@@ -45,7 +45,7 @@ function networkCtrl($scope, $modal, $state, $window, $stateParams,appService) {
          appService.globalConfig.sort.sortOrder = $scope.paginationObject.sortOrder;
          appService.globalConfig.sort.sortBy = $scope.paginationObject.sortBy;
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
-        var hasGuestNetworks = appService.crudService.list("guestnetwork", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+        var hasGuestNetworks = appService.crudService.list("guestnetwork/listView", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
         hasGuestNetworks.then(function (result) {
             $scope.networkList = result;
             $scope.networkList.Count = 0;
