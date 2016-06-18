@@ -22,8 +22,6 @@ function appCtrl($http, $scope,$rootScope, $window,$modal, $timeout, appService,
         selectedAll: {}
     };
 
-    appService.globalConfig.sort.sortOrder = $scope.paginationObject.sortOrder;
-    appService.globalConfig.sort.sortBy = $scope.paginationObject.sortBy;
     var hasUsers = appService.crudService.read("users", $scope.global.sessionValues.id);
     hasUsers.then(function (result) {
         $scope.owner = result;
@@ -35,10 +33,8 @@ function appCtrl($http, $scope,$rootScope, $window,$modal, $timeout, appService,
 
 
     $scope.getActivity = function (pageNumber) {
-    	appService.globalConfig.sort.sortOrder = $scope.paginationObject.sortOrder;
-        appService.globalConfig.sort.sortBy = $scope.paginationObject.sortBy;
         var limit = 10;
-        var hasactionServer = appService.promiseAjax.httpTokenRequest($scope.global.HTTP_GET, $scope.global.APP_URL + "events/list/read-event" +"?lang=" + localStorageService.cookie.get('language') + "&sortBy="+appService.globalConfig.sort.sortOrder+appService.globalConfig.sort.sortBy+"&limit=10", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+        var hasactionServer = appService.promiseAjax.httpTokenRequest($scope.global.HTTP_GET, $scope.global.APP_URL + "events/list/read-event" +"?lang=" + localStorageService.cookie.get('language') + "&sortBy="+$scope.paginationObject.sortOrder+$scope.paginationObject.sortBy+"&limit=10", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
         hasactionServer.then(function (result) {  // this is only run after $http completes
             if(result.length>0){
         	$scope.activityList = result[0];
