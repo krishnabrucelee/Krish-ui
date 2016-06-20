@@ -88,13 +88,13 @@
 									<tr>
 										<th ng-click="changeSort('displayName',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='displayName'? 'sorting_desc' : 'sorting_asc' ">
 										<fmt:message key="display.name" bundle="${msg}" /></th>
-										<th ng-click="changeSort('instanceOwner.userName',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='instanceOwner.userName'? 'sorting_desc' : 'sorting_asc' ">
+										<th ng-click="changeSort('instanceOwner',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='instanceOwner'? 'sorting_desc' : 'sorting_asc' ">
 										<fmt:message key="owner" bundle="${msg}" /></th>
 										<th class="custom-width-sm" ng-click="changeSort('application',paginationObject.currentPage)"
 											data-ng-class="sort.descending && sort.column =='application'? 'sorting_desc' : 'sorting_asc' ">
 										<fmt:message key="common.application" bundle="${msg}" /></th>
-										<th class="custom-width-sm" ng-click="changeSort('instanceOsType',paginationObject.currentPage)"
-											data-ng-class="sort.descending && sort.column =='instanceOsType'? 'sorting_desc' : 'sorting_asc' ">
+										<th class="custom-width-sm" ng-click="changeSort('template',paginationObject.currentPage)"
+											data-ng-class="sort.descending && sort.column =='template'? 'sorting_desc' : 'sorting_asc' ">
 										<fmt:message key="common.osType" bundle="${msg}" /></th>
 										<th class="custom-width-xs" ng-click="changeSort('cpuCore',paginationObject.currentPage)"
 											data-ng-class="sort.descending && sort.column =='cpuCore'? 'sorting_desc' : 'sorting_asc' ">
@@ -105,9 +105,9 @@
 										<th class="custom-width-xs" ng-click="changeSort('volumeSize',paginationObject.currentPage)"
 											data-ng-class="sort.descending && sort.column =='volumeSize'? 'sorting_desc' : 'sorting_asc' ">
 										<fmt:message key="disk" bundle="${msg}" /></th>
-										<th ng-click="changeSort('instancePublicIp',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='instancePublicIp'? 'sorting_desc' : 'sorting_asc' ">
+										<th ng-click="changeSort('publicIpAddress',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='publicIpAddress'? 'sorting_desc' : 'sorting_asc' ">
 										<fmt:message key="public.ip" bundle="${msg}" /></th>
-										<th ng-click="changeSort('instanceGuestIp',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='instanceGuestIp'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="common.ip" bundle="${msg}" /></th>
+										<th ng-click="changeSort('ipAddress',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='ipAddress'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="common.ip" bundle="${msg}" /></th>
 										<th class="custom-width-xs" ng-click="changeSort('status',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='status'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="common.state" bundle="${msg}" /></th>
 										<th><fmt:message key="common.action" bundle="${msg}" /></th>
 									</tr>
