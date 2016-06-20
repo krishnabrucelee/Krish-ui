@@ -12,7 +12,18 @@
     	<div data-ng-if="global.webSocketLoaders.vpcLoader" class="overlay-wrapper">
                 		            <img data-ng-if="global.webSocketLoaders.vpcLoader" src="images/loading-bars.svg" class="inner-loading" />
  </div>
-    	<form name="addvpcForm" data-ng-submit="update(addvpcForm)"	method="post" novalidate="">
+
+ <div class="row m-l-sm m-r-sm panel-body" >
+                        <ul class="nav nav-tabs" >
+                            <li data-ng-class="{'active' : vpc.category == 'details'}"><a   data-ng-click="getDetails()" data-toggle="tab">  <i class="fa fa-calendar"></i> <fmt:message key="events" bundle="${msg}" /></a></li>
+                            <li data-ng-class="{'active' : vpc.category == 'vpcrouter'}"><a   data-ng-click="getVpcrouter()" data-toggle="tab"> <i class="fa fa-warning"></i> <fmt:message key="alerts" bundle="${msg}" /></a></li>
+               			</ul>
+                      <div class="tab-content">
+                      <div data-ng-show="showLoader" style="margin: 1%">
+							<get-loader-image data-ng-show="showLoader"></get-loader-image>
+						</div>
+                            <div data-ng-hide="showLoader" class="tab-pane"  data-ng-class="{'active' : vpc.category == 'details'}" id="events">
+			<form name="addvpcForm" data-ng-submit="update(addvpcForm)"	method="post" novalidate="">
             <div class="row" >
                 <div class="col-md-8">
                     <div class="panel panel-default">
@@ -129,7 +140,105 @@
 					</div>
 				</div>
         	</div></form>
-    	</div>
+        	                            </div>
+                            <div data-ng-hide="showLoader" class="tab-pane"  data-ng-class="{'active' : vpc.category == 'vpcrouter'}" id="alerts">
+
+
+<div class="col-md-8">
+                    <div class="panel panel-default">
+                    	<div class="panel-heading">
+							<h3 class="panel-title">VPC Router Details</h3>
+						</div>
+						<div class="panel-body p-md">
+							<table cellspacing="1" cellpadding="1" class="table table-condensed table-striped" id="vpc_view_vpc_table">
+								<tbody>
+									<tr>
+										<td><b> <fmt:message key="common.name" bundle="${msg}" /></b></td>
+										<td><label data-ng-if="type != 'edit'">{{vpc.name}}</label><div data-ng-if="type == 'edit'" class="form-group"
+												ng-class="{'text-danger': addvpcForm.name.$invalid && formSubmitted}">
+												<input type="text" name="name" data-ng-model="vpc.name" id="vpc_view_vpc_name"
+													class="form-control editedinput "
+													data-ng-class="{'error': addvpcForm.name.$invalid && formSubmitted}">
+											</div></td>
+									</tr>
+									<tr>
+										<td><b> <fmt:message key="common.description" bundle="${msg}" /></b></td>
+										<td><label data-ng-if="type != 'edit'">{{vpc.description}}</label><input data-ng-if="type == 'edit'" type="text" id="vpc_view_vpc_description"
+											name="description" data-ng-model="vpc.description"
+											class="form-control editedinput"
+											data-ng-class="{'error': addvpcForm.description.$invalid && formSubmitted}">
+									</td>
+									</tr>
+									<tr>
+										<td><b> <fmt:message key="common.department" bundle="${msg}" /></b></td>
+										<td>{{vpc.department.userName}}</td>
+									</tr>
+									<tr>
+										<td><b><fmt:message key="common.company" bundle="${msg}" /></b></td>
+										<td>{{vpc.domain.name}}</td>
+									</tr>
+									<tr>
+										<td><b><fmt:message key="common.zone" bundle="${msg}" /></b></td>
+										<td>{{vpc.zone.name}}</td>
+									</tr>
+									<tr>
+										<td><b><fmt:message key="common.cidr" bundle="${msg}" /></b></td>
+										<td>{{vpc.cIDR}}</td>
+									</tr>
+									<tr>
+										<td><b><fmt:message key="networkdomain" bundle="${msg}" /></b></td>
+										<td>{{vpc.networkDomain}}</td>
+									</tr>
+									<tr>
+										<td><b><fmt:message key="common.state" bundle="${msg}" />State</b></td>
+										<td><b data-ng-if="vpc.status =='ENABLED'" class="text-success text-uppercase">ENABLED</b> <b data-ng-if="!vpc.status || vpc.status =='INACTIVE' " class="text-danger text-uppercase">INACTIVE</b></td>									</tr>
+									<tr>
+										<td><b><fmt:message key="common.persistent" bundle="${msg}" /></b></td>
+										<td>NO</td>
+									</tr>
+									<tr>
+										<td><b><fmt:message key="redundant.vpc" bundle="${msg}" /></b></td>
+										<td><span data-ng-if="vpc.redundantVPC">YES</span><span data-ng-if="!vpc.redundantVPC">NO</span></td>
+									</tr>
+									<tr>
+										<td><b><fmt:message key="restart.required" bundle="${msg}" /></b></td>
+										<td>NO</td>
+									</tr>
+									<tr>
+										<td><b><fmt:message key="id" bundle="${msg}" /></b></td>
+										<td>{{vpc.uuid}}</td>
+									</tr>
+								</tbody>
+							</table>
+							</div>
+							</div>
+							</div>
+
+
+
+
+
+                            </div>
+
+                        </div>
+                    </div>
+
+
+	</div>
     </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <div id="footer" ng-include="'app/views/common/footer.jsp'"></div>

@@ -76,6 +76,21 @@ function vpcCtrl($scope, $modal, appService, $timeout, filterFilter, $stateParam
 
     };
 
+    $scope. getDetails = function(netwrkid) {
+        $scope.vpc.category = "details";
+
+
+};
+
+$scope. getVpcrouter = function(netwrkid) {
+    $scope.vpc.category = "vpcrouter";
+
+
+};
+
+
+
+
     if ($stateParams.id > 0  && $location.path() == '/vpc/view/' + $stateParams.id ) {
         $scope.showLoader = true;
         $scope.showLoaderOffer = true;
