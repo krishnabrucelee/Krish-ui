@@ -36,10 +36,12 @@ angular
     .directive('getShowLoaderImage', getShowLoaderImage)
     .directive('getDepartmentLoaderImage', getDepartmentLoaderImage)
     .directive('getLoginLoaderImage', getLoginLoaderImage)
+    .directive('favIconUrl', favIconUrl)
     .directive('passwordVerify', passwordVerify)
     .directive('validInteger', validInteger)
     .directive('validCharacters', validCharacters)
     .directive('hasPermission', hasPermission)
+    .directive('getMonitorLoaderImage', getMonitorLoaderImage)
     .directive('chart', function(){
     return{
         restrict: 'E',
@@ -208,18 +210,28 @@ angular
  */
 function pageTitle($rootScope, $timeout) {
     return {
-        link: function(scope, element) {
-            var listener = function(event, toState, toParams, fromState, fromParams) {
-                // Default title
-                var title = 'Panda';
-                // Create your own title pattern
-                if (toState.data && toState.data.pageTitle) title = 'Panda | ' + toState.data.pageTitle;
-                $timeout(function() {
-                    element.text(title);
-                });
-            };
-            $rootScope.$on('$stateChangeStart', listener);
-        }
+//        link: function(scope, element) {
+//            var listener = function(event, toState, toParams, fromState, fromParams) {
+//                var themeSettings = localStorageService.get('themeSettings');
+//                // Default title
+//                if(themeSettings == null || typeof(themeSettings) == "undefined") {
+//                    headerTitle = "Panda";
+//                } else {
+//                    headerTitle = themeSettings.data.headerTitle;
+//                }
+//
+//                if(themeSettings.data.headerTitle == null) {
+//                    themeSettings.data.headerTitle = "Panda";
+//                }
+//
+//                var title = headerTitle;
+//                // Create your own title pattern
+//                if (toState.data && toState.data.pageTitle) title = 'Panda | ' + toState.data.pageTitle;
+//                $timeout(function() {
+//                   // element.text(title);
+//                });
+//            };
+//            $rootScope.$on('$stateChangeStart', listener);
     }
 };
 
@@ -492,7 +504,7 @@ function validNumber() {
                 var clean = val.replace(/[^0-9]/g, '');
 
                 if(parseInt(attrs.ngMin) == 500 || parseInt(attrs.ngMin) == 512){
-                	if (clean < parseInt(attrs.ngMin)) {
+                    if (clean < parseInt(attrs.ngMin)) {
                         clean = clean.substring(0, clean.length);
                    }
                 } else {
@@ -604,9 +616,9 @@ function pandaModalHeader() {
             scope.pageTitle = attrs["pageTitle"];
             scope.pageIcon = attrs["pageIcon"];
             if(attrs["pageCustomIcon"] != null && !angular.isUndefined(attrs["pageCustomIcon"])) {
-            	scope.pageCustomIcon = attrs["pageCustomIcon"];
+                scope.pageCustomIcon = attrs["pageCustomIcon"];
             } else {
-            	scope.pageCustomIcon = false;
+                scope.pageCustomIcon = false;
             }
             scope.hideZone = attrs["hideZone"];
         },
@@ -709,42 +721,54 @@ function paginationContents() {
 }
 
 function getLoaderImage() {
-	return {
-		restrict: 'E',
+    return {
+        restrict: 'E',
         link: function (scope, element, attrs) {
         },
         templateUrl: "app/views/common/loader-image.jsp",
-	}
+    }
+}
+
+
+function getMonitorLoaderImage() {
+    return {
+        restrict: 'E',
+        link: function (scope, element, attrs) {
+
+        },
+        templateUrl: "app/views/common/monitorLoader-image.jsp",
+    }
 }
 
 function getLoaderImageDetail() {
-	return {
-		restrict: 'E',
+
+    return {
+        restrict: 'E',
         link: function (scope, element, attrs) {
 
         },
         templateUrl: "app/views/common/loader-image-details.jsp",
-	}
+    }
 }
 
 function getLoaderImageOffer() {
-	return {
-		restrict: 'E',
+    return {
+        restrict: 'E',
         link: function (scope, element, attrs) {
 
         },
         templateUrl: "app/views/common/loader-image-offer.jsp",
-	}
+    }
 }
 
 function getLoginLoaderImage() {
-	return {
-		restrict: 'E',
+    return {
+        restrict: 'E',
         link: function (scope, element, attrs) {
 
         },
         templateUrl: "app/views/common/login-loader-image.jsp",
-	}
+    }
 }
 
 function getShowLoaderImage() {
@@ -775,76 +799,76 @@ function getDepartmentLoaderImage() {
 	}
 }
 function validInteger() {
-	return {
-		require : '?ngModel',
-		link : function(scope, element, attrs, ngModelCtrl) {
-			if (!ngModelCtrl) {
-				return;
-			}
+    return {
+        require : '?ngModel',
+        link : function(scope, element, attrs, ngModelCtrl) {
+            if (!ngModelCtrl) {
+                return;
+            }
 
-			ngModelCtrl.$parsers.push(function(val) {
-				if (angular.isUndefined(val)) {
-					var val = '';
-				}
+            ngModelCtrl.$parsers.push(function(val) {
+                if (angular.isUndefined(val)) {
+                    var val = '';
+                }
 
-				var clean = val.replace(/[^-0-9]/g, '');
-				var negativeCheck = clean.split('-');
-				if (!angular.isUndefined(negativeCheck[1])) {
-					negativeCheck[1] = negativeCheck[1].slice(0,
-							negativeCheck[1].length);
-					clean = negativeCheck[0] + '-' + negativeCheck[1];
-					if (negativeCheck[0].length > 0) {
-						clean = negativeCheck[0];
-					}
+                var clean = val.replace(/[^-0-9]/g, '');
+                var negativeCheck = clean.split('-');
+                if (!angular.isUndefined(negativeCheck[1])) {
+                    negativeCheck[1] = negativeCheck[1].slice(0,
+                            negativeCheck[1].length);
+                    clean = negativeCheck[0] + '-' + negativeCheck[1];
+                    if (negativeCheck[0].length > 0) {
+                        clean = negativeCheck[0];
+                    }
 
-				}
+                }
 
-				if (val !== clean) {
-					ngModelCtrl.$setViewValue(clean);
-					ngModelCtrl.$render();
-				}
-				return clean;
-			});
+                if (val !== clean) {
+                    ngModelCtrl.$setViewValue(clean);
+                    ngModelCtrl.$render();
+                }
+                return clean;
+            });
 
-			element.bind('keypress', function(event) {
-				if (event.keyCode === 32) {
-					event.preventDefault();
-				}
-			});
-		}
-	};
+            element.bind('keypress', function(event) {
+                if (event.keyCode === 32) {
+                    event.preventDefault();
+                }
+            });
+        }
+    };
 }
 
 function passwordVerify() {
-	return {
-		require : "ngModel",
-		scope : {
-			passwordVerify : '='
-		},
-		link : function(scope, element, attrs, ctrl) {
-			scope.$watch(function() {
-				var combined;
+    return {
+        require : "ngModel",
+        scope : {
+            passwordVerify : '='
+        },
+        link : function(scope, element, attrs, ctrl) {
+            scope.$watch(function() {
+                var combined;
 
-				if (scope.passwordVerify || ctrl.$viewValue) {
-					combined = scope.passwordVerify + '_' + ctrl.$viewValue;
-				}
-				return combined;
-			}, function(value) {
-				if (value) {
-					ctrl.$parsers.unshift(function(viewValue) {
-						var origin = scope.passwordVerify;
-						if (origin !== viewValue) {
-							ctrl.$setValidity("passwordVerify", false);
-							return undefined;
-						} else {
-							ctrl.$setValidity("passwordVerify", true);
-							return viewValue;
-						}
-					});
-				}
-			});
-		}
-	};
+                if (scope.passwordVerify || ctrl.$viewValue) {
+                    combined = scope.passwordVerify + '_' + ctrl.$viewValue;
+                }
+                return combined;
+            }, function(value) {
+                if (value) {
+                    ctrl.$parsers.unshift(function(viewValue) {
+                        var origin = scope.passwordVerify;
+                        if (origin !== viewValue) {
+                            ctrl.$setValidity("passwordVerify", false);
+                            return undefined;
+                        } else {
+                            ctrl.$setValidity("passwordVerify", true);
+                            return viewValue;
+                        }
+                    });
+                }
+            });
+        }
+    };
 };
 function validCharacters() {
     return {
@@ -893,17 +917,27 @@ function hasPermission() {
     return {
         restrict: 'A',
         link: function (scope, element, attrs) {
-        	var permission=false;
-        	for(var i=0;i<scope.global.sessionValues.permissionList.length;i++){
-        	    if(scope.global.sessionValues.permissionList[i].action_key === attrs["hasPermission"]){
-        	    	permission = true;
-        	    	break;
-        	    }
-        	}
+            var permission=false;
+            for(var i=0;i<scope.global.sessionValues.permissionList.length;i++){
+                if(scope.global.sessionValues.permissionList[i].action_key === attrs["hasPermission"]){
+                    permission = true;
+                    break;
+                }
+            }
 
-        	if(!permission) {
-    	    	element.hide();
-        	}
+            if(!permission) {
+                element.hide();
+            }
+        }
+    }
+}
+
+function favIconUrl($window) {
+    var url = 'http://'+ $window.location.hostname +':8080/'  + 'resources/' + 'favicon.ico';
+    return {
+        restrict :"A",
+        link: function(scope, el, attr) {
+           el.attr("href",url)
         }
     }
 }

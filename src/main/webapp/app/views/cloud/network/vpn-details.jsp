@@ -40,12 +40,12 @@ pageEncoding="UTF-8"%>
                                 data-ng-model="user.userName" class="form-control"><span
                                 class="text-center text-danger"
                                 data-ng-show="vpnform.userName.$invalid && vpnFormSubmitted">
-                             * Required</span></td>
+                             <fmt:message key="common.required" bundle="${msg}" /></span></td>
                      <td><input required="true" type="password" name="password"
                                 data-ng-model="user.password" class="form-control"><span
                                 class="text-center text-danger"
                                 data-ng-show="vpnform.password.$invalid && vpnFormSubmitted">
-                             * Required</span></td>
+                             <fmt:message key="common.required" bundle="${msg}" /></span></td>
                      <td>
                      <get-loader-image ></get-loader-image>
                      <input data-ng-if = "!showLoader" class="btn btn-info" type="submit" value="<fmt:message key="common.add" bundle="${msg}" />">

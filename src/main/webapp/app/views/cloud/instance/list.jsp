@@ -122,7 +122,7 @@
 										data-ng-repeat="instance in filteredCount = instanceList" data-ng-class = "(instance.status != 'STOPPED' && instance.status != 'RUNNING' && instance.status != 'DESTROYED' && instance.status != 'ERROR')? 'overlay-wrapper-tr' : ''">
 
 										<td><a class="text-info" id="instances_display_name_button" ui-sref="cloud.list-instance.view-instance({id: {{ instance.id}}})"
-											title="View Instance">
+											title="<fmt:message key="view.instance" bundle="${msg}" />">
 										{{instance.displayName}}</a></td>
 										<td>{{ instance.instanceOwner}}</td>
 										<td class="custom-width-sm">{{ instance.application}}</td>
@@ -201,6 +201,11 @@
 														title="<fmt:message key="stop" bundle="${msg}" />" data-ng-if="instance.status  == 'RUNNING'"
 													> <span class="fa fa-ban m-xs"></span>
 													</a></div>
+													<div has-permission="DESTROY_VM" data-ng-if = "instance.status == 'ERROR' || instance.status == 'DESTROYED'">
+													<a href="javascript:void(0);" id="instances_destroy_vm_button_{{instance.id}}" class="icon-button text-center test_instances_destroy_vm_button"	data-ng-click="reDestroyVm('sm', instance)"
+														title="<fmt:message key="destroy.vm" bundle="${msg}" />"><span
+														class="fa-remove fa m-xs"></span> </a>
+													</div>
 													<div has-permission="REBOOT_VM"
 														data-ng-if="instance.status != 'ERROR' || instance.status != 'EXPUNGING' || instance.status != 'STARTING' || instance.status != 'STOPPING' || instance.status != 'DESTROYING'  "
 													><a class="icon-button text-center test_instances_reboot_vm_button" id="instances_reboot_vm_button_{{instance.id}}" data-ng-if="instance.status == 'RUNNING'"

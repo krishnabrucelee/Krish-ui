@@ -19,7 +19,7 @@
                     <span class="fa fa-3x fa-warning text-warning"></span>
                 </div>
                 <div class="form-group has-error col-md-9 col-sm-9  col-xs-9">
-                    <p ><fmt:message key="common.are.you.sure.do.you.want.to.delete" bundle="${msg}" /> ? </p>
+                    <p ><fmt:message key="are.you.sure.do.you.want.to.delete" bundle="${msg}" /></p>
                 </div>
 
 

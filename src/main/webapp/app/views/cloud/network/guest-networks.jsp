@@ -31,7 +31,7 @@
 				<tr data-ng-repeat="network in filteredCount = (networkList | filter: quickSearch | orderBy:sort.column:sort.descending)">
 					<td><a class="text-info"
 						ui-sref="cloud.list-network.view-network({id: {{ network.id }}, view: 'view'})"
-						title="View Network">{{ network.name }}</a></td>
+						title="<fmt:message key="view.network" bundle="${msg}" />">{{ network.name }}</a></td>
 					<td>{{ network.department.userName}}</td>
 					<td>{{ network.networkType }}</td>
 					<td>{{ network.cIDR }}</td>
@@ -45,7 +45,7 @@
 							class="fa fa-rotate-left m-r"></span></a> --%>
 							 <a class="icon-button"
 						has-permission="DELETE_NETWORK"
-						title="<fmt:message key="common.delete" bundle="${msg}" /> "
+						title="<fmt:message key="common.delete" bundle="${msg}" />"
 						data-ng-click="delete('sm', network)"><span
 							class="fa fa-trash"></span></a></td>
 				</tr>

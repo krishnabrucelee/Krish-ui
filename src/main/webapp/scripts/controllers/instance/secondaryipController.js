@@ -141,10 +141,14 @@ function secondaryIpCtrl($scope, $modal, $state, $window, $stateParams, appServi
     };
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.acquireNewIP, function(event, args) {
         appService.globalConfig.webSocketLoaders.vmsecondaryip = false;
-        $scope.nicIPList();
+        if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
+            $scope.nicIPList();
+        }
     });
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.deleteIP, function(event, args) {
         appService.globalConfig.webSocketLoaders.vmsecondaryip = false;
-        $scope.nicIPList();
+        if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
+            $scope.nicIPList();
+        }
     });
 };

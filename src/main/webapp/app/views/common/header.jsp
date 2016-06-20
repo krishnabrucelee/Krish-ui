@@ -25,14 +25,18 @@
 				class="label-menu-corner" ui-sref="support.tickets"><fmt:message
 						key="common.support" bundle="${msg}" /><span
 					class="label label-success">3</span></a></li> --%>
-			<li data-ng-class="{active: $state.includes('activity')}"><a
+			<li data-ng-class="{active: $state.includes('activity')}" data-ng-if="global.event==0"><a
 				class="label-menu-corner" ui-sref="activity"><fmt:message
 						key="common.activity" bundle="${msg}" /><span
-					class="label label-warning">{{global.sessionValues.eventTotal }}</span></a></li>
+					class="label label-warning"></span></a></li>
+			<li data-ng-class="{active: $state.includes('activity')}" data-ng-if="global.event!=0" ><a
+				class="label-menu-corner" ui-sref="activity"><fmt:message
+						key="common.activity" bundle="${msg}" /><span
+					class="label label-warning">{{global.event }}</span></a></li>
 			<li data-ng-class="{active: $state.includes('billing')}"><a
 				class="label-menu-corner" ui-sref="billing.current-usage"><fmt:message
 						key="common.billing" bundle="${msg}" /><span
-					class="label label-danger">4</span></a></li>
+					class="label label-danger"></span></a></li>
 			<li class="dropdown active-round"><a data-toggle="dropdown" id="zone_name"
 				class="dropdown-toggle " href="javascript:void(0)"
 				title="{{global.zone.name}}"
@@ -50,13 +54,18 @@
 					class=" m-l-sm username">{{global.sessionValues.userName}}
 				</label> <span class="caret"></span>
 			</a>
-				<ul class="dropdown-menu hdropdown flipInX">
-					<li data-ng-show="appLanguage == 'en'"><a
-						id ="language" data-ng-click="updateLanguage( appLanguage )"><fmt:message
-								key="common.language.name" bundle="${msg}" /></a></li>
-					<li data-ng-hide="appLanguage == 'en'"><a id="language"
-						data-ng-click="updateLanguage( appLanguage )"><fmt:message
-								key="common.language.name" bundle="${msg}" /> </a></li>
+			<ul class="dropdown-menu hdropdown flipInX">
+					<li >
+						<div class="pull-left eng-lang">
+							<a class="lang m-l-md" id="language" data-ng-if="appLanguage != 'en'" data-ng-click="updateLanguage( 'en' )">English </a>
+							<label class="lang m-l-md" id="language" data-ng-if="appLanguage == 'en'">English </label>
+						</div>
+						<div class="pull-left chn-lang">
+							<a class="lang" id ="language" data-ng-if="appLanguage != 'zh'" data-ng-click="updateLanguage( 'zh' )">中文</a>
+							<label class="lang" id ="language" data-ng-if="appLanguage == 'zh'">中文</label>
+						</div>
+						<div class="clearfix"></div>
+					</li>
 					<li><a ui-sref="profile" id="profile"> <fmt:message
 								key="common.profile" bundle="${msg}" />
 					</a></li>

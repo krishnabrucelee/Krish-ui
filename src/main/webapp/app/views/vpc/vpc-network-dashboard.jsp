@@ -114,7 +114,7 @@
 									<tr>
 										<td><b><fmt:message key="common.network.offering"
 													bundle="${msg}" /></b></td>
-										<td><label data-ng-if="type != 'edit'">{{network.networkOffering.name}}</label>
+										<td><label data-ng-if="type != 'edit'">{{network.networkOffering.displayText}}</label>
 											<select data-ng-if="type == 'edit'" id="vpc_network_name_network_offering"
 											class="form-control input-group editedinput"
 											name="networkoffering" data-ng-init=""

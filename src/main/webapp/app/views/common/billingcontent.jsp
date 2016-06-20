@@ -16,21 +16,48 @@
 <!-- Main Wrapper -->
 <div id="wrapper">
     <div small-header class="normalheader transition ng-scope small-header">
-        <div class="hpanel" tour-step order="1" title="Page header" content="Place your page title and breadcrumb. Select small or large header or give the user choice to change the size." placement="bottom">
+        <div class="hpanel" tour-step order="1" content="Place your page title and breadcrumb. Select small or large header or give the user choice to change the size." placement="bottom">
             <div class="panel-body">
-                <div id="hbreadcrumb" class="pull-right">
+                <div id="hbreadcrumb" class="pull-left">
                     <ol class="hbreadcrumb breadcrumb">
                         <li><a ui-sref="dashboard"><fmt:message key="common.home" bundle="${msg}" /></a></li>
                         <li ng-repeat="state in $state.$current.path" ng-switch="$last || !!state.abstract" ng-class="{active: $last}">
-                            <a ng-switch-when="false" href="{{state.url.format($stateParams)}}">{{state.data.pageTitle}}</a>
-                            <span ng-switch-when="true">{{state.data.pageTitle}}</span>
+                            <span data-ng-if="state.data.pageTitle === 'Billing'">
+	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.billing" bundle="${msg}" /></a>
+	                            <span ng-switch-when="true"><fmt:message key="common.billing" bundle="${msg}" /></span>
+                            </span>
+                            <span data-ng-if="state.data.pageTitle === 'Current Usage'">
+	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="current.usage" bundle="${msg}" /></a>
+	                            <span ng-switch-when="true"><fmt:message key="current.usage" bundle="${msg}" /></span>
+                            </span>
+                            <span data-ng-if="state.data.pageTitle === 'Invoices'">
+	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="invoice" bundle="${msg}" /></a>
+	                            <span ng-switch-when="true"><fmt:message key="invoice" bundle="${msg}" /></span>
+                            </span>
+                            <span data-ng-if="state.data.pageTitle === 'Usage statistics'">
+	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="usage.statistics" bundle="${msg}" /></a>
+	                            <span ng-switch-when="true"><fmt:message key="usage.statistics" bundle="${msg}" /></span>
+                            </span>
+                            <span data-ng-if="state.data.pageTitle === 'Payments'">
+	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="payments" bundle="${msg}" /></a>
+	                            <span ng-switch-when="true"><fmt:message key="payments" bundle="${msg}" /></span>
+                            </span>
                         </li>
                     </ol>
                 </div>
-                <h2 class="font-light m-b-xs">
-                    {{ $state.current.data.pageTitle }}
+               <%--  <h2 class="font-light m-b-xs">
+                    <span id="instances_page_title" data-ng-if="$state.current.data.pageTitle === 'Current Usage'"><fmt:message key="current.usage" bundle="${msg}" /></span>
                 </h2>
-                <small>{{ $state.current.data.pageDesc }}</small>
+                <h2 class="font-light m-b-xs">
+                    <span id="instances_page_title" data-ng-if="$state.current.data.pageTitle === 'Invoices'"><fmt:message key="invoice" bundle="${msg}" /></span>
+                </h2>
+                <h2 class="font-light m-b-xs">
+                    <span id="instances_page_title" data-ng-if="$state.current.data.pageTitle === 'Usage statistics'"><fmt:message key="usage.statistics" bundle="${msg}" /></span>
+                </h2>
+                <h2 class="font-light m-b-xs">
+                    <span id="instances_page_title" data-ng-if="$state.current.data.pageTitle === 'Payments'"><fmt:message key="payments" bundle="${msg}" /></span>
+                </h2>
+                <small>{{ $state.current.data.pageDesc }}</small> --%>
             </div>
         </div>
     </div>

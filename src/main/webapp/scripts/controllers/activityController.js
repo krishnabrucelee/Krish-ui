@@ -32,6 +32,7 @@ function activityCtrl($scope, appService, $modal, promiseAjax, localStorageServi
     hasUsers.then(function (result) {
         $scope.owner = result;
     });
+
     $scope.getActivityByCategory = function (category, pageNumber) {
         $scope.activity.category = category;
         $scope.showLoader = true;
@@ -45,7 +46,6 @@ function activityCtrl($scope, appService, $modal, promiseAjax, localStorageServi
                 $scope.paginationObject.limit = limit;
                 $scope.paginationObject.currentPage = pageNumber;
                 $scope.paginationObject.totalItems = result.totalItems;
-                $scope.global.sessionValues.eventTotal = result.totalItems;
                 $scope.showLoader = false;
             });
         } else {
@@ -135,7 +135,9 @@ function activityCtrl($scope, appService, $modal, promiseAjax, localStorageServi
             }
         });
     }
+
     $scope.showDescription = function (activity) {
+    	var hasServer = appService.promiseAjax.httpTokenRequest( $scope.global.HTTP_PUT , $scope.global.APP_URL + "events/event-update"  +"/"+activity.id);
         $scope.currentActivity = activity;
         activity.pageTitle = $scope.pageTitle;
         activity.category = $scope.activity.category;
@@ -254,3 +256,5 @@ function activityViewCtrl($scope, $state, $stateParams, promiseAjax, localStorag
     });
 
 };
+
+

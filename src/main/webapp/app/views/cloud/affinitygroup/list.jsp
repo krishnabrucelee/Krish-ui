@@ -80,11 +80,11 @@
 											<a class="icon-button" title="<fmt:message key="common.delete" bundle="${msg}" />" data-ng-click="delete('sm', affinityGroup)"><span class="fa fa-trash"></span></a>
 											<div class="btn-group action-menu">
 	                                            <span>
-	                                                <a title="View Instances" data-ng-click="getInstance(affinityGroup)" class="fa fa-eye dropdown-toggle" data-toggle="dropdown" ></a>
+	                                                <a title="<fmt:message key="view.instance" bundle="${msg}" />" data-ng-click="getInstance(affinityGroup)" class="fa fa-eye dropdown-toggle" data-toggle="dropdown" ></a>
 	                                                <ul data-ng-show="formElements.instanceList.length > 0" class="dropdown-menu pull-right">
 	                                                    <img src="images/dropdown-arw2.png" border="0" class="vol-dropdown-arw">
 	                                                    <li data-ng-repeat="instance in formElements.instanceList">
-	                                                    <a title="View Instance" class="affinity-text-info" id="instances_display_name_button"
+	                                                    <a title="<fmt:message key="view.instance" bundle="${msg}" />" class="affinity-text-info" id="instances_display_name_button"
 	                                                    ui-sref="cloud.list-instance.view-instance({id: {{ instance.id}}})">{{instance.name}}</a>
 	                                                    </li>
 	                                                </ul>

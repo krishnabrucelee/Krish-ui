@@ -1,3 +1,10 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<c:set var="language" value="${not empty language ? language : pageContext.request.getAttribute('language')}" scope="session" />
+<fmt:setBundle basename="i18n/messages_${language}" var="msg" scope="session" />
+
 <div class="hpanel" >
     <div class="panel-heading">
 
@@ -21,7 +28,7 @@
                             <a class="btn btn-info" data-ng-click="archive()"><span class="fa fa-file-archive-o"></span> Archive Events</a>
                             <a class="btn btn-info" data-ng-click="delete()"><span class="fa fa-trash"></span> Delete Events</a>
                         </span> -->
-                        <a class="btn btn-info" data-ng-click="getActivityByCategory('events',1)" title="Refresh" ><span class="fa fa-refresh fa-lg "></span></a>
+                        <a class="btn btn-info" data-ng-click="getActivityByCategory('events',1)" title="<fmt:message key="common.refresh" bundle="${msg}" />" ><span class="fa fa-refresh fa-lg "></span></a>
                     </span>
                 </div>
             </div>
@@ -42,12 +49,12 @@
                     <input type="checkbox" data-ng-model="activity.selectedAll.events" data-ng-click="checkAll();"><label></label>
                 </div>
                 </th>
-                <th>Description</th>
-                <th>Status</th>
-                <th>Type</th>
-                <th>Domain</th>
-                <th>Account</th>
-                <th>Date</th><!--
+                <th><fmt:message key="common.description" bundle="${msg}" /></th>
+                <th><fmt:message key="status" bundle="${msg}" /></th>
+                <th><fmt:message key="common.type" bundle="${msg}" /></th>
+                <th><fmt:message key="common.company" bundle="${msg}" /></th>
+                <th><fmt:message key="account" bundle="${msg}" /></th>
+                <th><fmt:message key="common.date" bundle="${msg}" /></th><!--
                 <th>Action</th> -->
                 </tr>
                 </thead>

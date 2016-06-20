@@ -5,7 +5,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <c:set var="language" value="${not empty language ? language : pageContext.request.getAttribute('language')}" scope="session" />
 <fmt:setBundle basename="i18n/messages_${language}" var="msg" scope="session" />
-
+<div data-ng-if="global.webSocketLoaders.networkDeleteAclLoader" class="overlay-wrapper">
+    <img data-ng-if="global.webSocketLoaders.networkDeleteAclLoader" src="images/loading-bars.svg" class="inner-loading" />
+</div>
 <!-- Header -->
 
     <div class="content" ui-view >
@@ -39,7 +41,7 @@
                 <div class="col-md-8">
                     <div class="panel panel-default">
                     	<div class="panel-heading">
-							<h3 class="panel-title">Network Acl details</h3>
+							<h3 class="panel-title"><fmt:message key="network.acl.details" bundle="${msg}" /></h3>
 						</div>
 						<div class="panel-body p-md">
 							<table cellspacing="1" cellpadding="1" class="table table-condensed table-striped">

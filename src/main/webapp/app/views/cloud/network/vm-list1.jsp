@@ -8,7 +8,7 @@ pageEncoding="UTF-8"%>
 
   <div class="inmodal" ng-controller="networksCtrl"   >
         <div class="modal-header">
-            <panda-modal-header page-icon="fa fa-cloud" page-title="Add VMs"></panda-modal-header>
+            <panda-modal-header page-icon="fa fa-cloud" page-title="<fmt:message key="add.vms" bundle="${msg}" />"></panda-modal-header>
 
         </div>
         <div class="modal-body">
@@ -21,7 +21,7 @@ pageEncoding="UTF-8"%>
                     <div class="col-md-3 col-sm-3 col-xs-3 ">
                         <div class="quick-search">
                             <div class="input-group">
-                                <input data-ng-model="instanceSearch" type="text" class="form-control input-medium" placeholder="Quick Search" aria-describedby="quicksearch-go">
+                                <input data-ng-model="instanceSearch" type="text" class="form-control input-medium" placeholder="<fmt:message key="common.quick.search" bundle="${msg}" />" aria-describedby="quicksearch-go">
                                 <span class="input-group-addon" id="quicksearch-go"><span class="pe-7s-search pe-lg font-bold"></span></span>
                             </div>
                         </div>
@@ -36,12 +36,12 @@ pageEncoding="UTF-8"%>
                     <table cellspacing="1" cellpadding="1" class="table table-bordered table-striped">
                     <thead>
                     <tr>
-                         <th>Name </th>
-                       <th>Internal Name</th>
-                        <th>Display Name</th>
-                        <th>Zone</th>
-                        <th>State</th>
-                        <th>Select</th>
+                         <th><fmt:message key="common.name" bundle="${msg}" /> </th>
+                       <th><fmt:message key="common.internal.name" bundle="${msg}" /></th>
+                        <th><fmt:message key="common.display.name" bundle="${msg}" /></th>
+                        <th><fmt:message key="common.zone" bundle="${msg}" /></th>
+                        <th><fmt:message key="common.status" bundle="${msg}" /></th>
+                        <th><fmt:message key="common.select" bundle="${msg}" /></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -80,8 +80,8 @@ pageEncoding="UTF-8"%>
   <div class="modal-footer">
 
 
-            <a class="btn btn-default"  data-ng-click="cancel()">Cancel</a>
-            <a class="btn btn-info" data-ng-click="addPort()">Apply</a>
+            <a class="btn btn-default"  data-ng-click="cancel()"><fmt:message key="common.cancel" bundle="${msg}" /></a>
+            <a class="btn btn-info" data-ng-click="addPort()"><fmt:message key="common.apply" bundle="${msg}" /></a>
 
 
         </div>

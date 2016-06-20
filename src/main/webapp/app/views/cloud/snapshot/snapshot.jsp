@@ -23,8 +23,8 @@
                                 <div class="clearfix"></div>
                                 </div>
                             </div>
-                            <a class="btn btn-info font-bold"  has-permission= "DISK_SNAPSHOT" ng-click="openAddSnapshotContainer()"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span>Create Snapshot</a>
-                            <a class="btn btn-info" title="Refresh" data-ng-click="list(1)"><span class="fa fa-refresh fa-lg"></span></a>
+                            <a class="btn btn-info font-bold"  has-permission= "DISK_SNAPSHOT" ng-click="openAddSnapshotContainer()"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="create.snapshot" bundle="${msg}" /></a>
+                            <a class="btn btn-info" title="<fmt:message key="common.refresh" bundle="${msg}" />" data-ng-click="list(1)"><span class="fa fa-refresh fa-lg"></span></a>
                         </div>
                         <div class="pull-right dashboard-filters-area" id="snapshot_quick_search">
 						<form data-ng-submit="snapshotSearchList(snapshotSearch)">

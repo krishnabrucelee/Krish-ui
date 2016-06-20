@@ -6,6 +6,7 @@ pageEncoding="UTF-8"%>
 <c:set var="language" value="${not empty language ? language : pageContext.request.getAttribute('language')}" scope="session" />
 <fmt:setBundle basename="i18n/messages_${language}" var="msg" scope="session" />
 
+<div class="hpanel">
 <div class="white-content">
 <div data-ng-if="global.webSocketLoaders.portForwardLoader" class="overlay-wrapper">
 <get-loader-image data-ng-show="global.webSocketLoaders.portForwardLoader"></get-loader-image>
@@ -65,4 +66,6 @@ pageEncoding="UTF-8"%>
             </tbody>
     </table>
  </form>
+ <pagination-content></pagination-content>
+ </div>
 </div>

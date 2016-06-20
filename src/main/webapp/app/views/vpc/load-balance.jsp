@@ -16,7 +16,7 @@ pageEncoding="UTF-8"%>
 				<div class="form-group" ng-class="{'text-danger': loadform.vpcnetworks.$invalid && loadFormSubmitted">
 					<div class="row">
                 	<div class="col-md-4  col-sm-4 col-xs-14">
-                		<h5 class="pull-left">Tier :</h5>
+                		<h5 class="pull-left"><fmt:message key="tier" bundle="${msg}" /> :</h5>
                     	<select id="vpc_ip_address_loadbalance_tier" required="true"  class="form-control m-l-md port-forwarding-select input-group pull-left"
 									name="vpcnetworks" data-ng-model="loadBalancer.vpcnetwork"
 									ng-options="vpcnetwork.name for vpcnetwork in vpcNetworkListForLB" data-ng-class="{'error': loadform.vpcnetworks.$invalid && loadFormSubmitted"
@@ -26,7 +26,7 @@ pageEncoding="UTF-8"%>
 								</select>
 								<span class="text-center text-danger"
                                           data-ng-show="loadform.vpcnetworks.$invalid && loadFormSubmitted">
-                                *Required</span></td>
+                                <fmt:message key="common.required" bundle="${msg}" /></span></td>
                          </div>
                         </div>
                         </div>
@@ -36,15 +36,15 @@ pageEncoding="UTF-8"%>
                    class="table table-bordered table-striped" id="vpc_ip_address_loadbalance_table">
                 <thead>
                     <tr>
-                        <th class="col-md-2 col-xs-2">Name</th>
-                        <th class="col-md-1 col-xs-1">Public Port</th>
-                        <th class="col-md-1 col-xs-1">Private Port</th>
-                        <th class="col-md-2 col-xs-2">Algorithm</th>
-                        <th class="col-md-1 col-xs-2">Stickiness</th>
-                        <th class="col-md-1 col-xs-2">Health Check</th>
-                        <th class="col-md-1 col-xs-2">Add VMs</th>
-                        <th class="col-md-1 col-xs-2">State</th>
-                        <th class="col-md-2 col-xs-2">Action</th>
+                        <th class="col-md-2 col-xs-2"><fmt:message key="common.name" bundle="${msg}" /></th>
+                        <th class="col-md-1 col-xs-1"><fmt:message key="common.public.port" bundle="${msg}" /></th>
+                        <th class="col-md-1 col-xs-1"><fmt:message key="common.private.port" bundle="${msg}" /></th>
+                        <th class="col-md-2 col-xs-2"><fmt:message key="common.algorithm" bundle="${msg}" /></th>
+                        <th class="col-md-1 col-xs-2"><fmt:message key="stickiness" bundle="${msg}" /></th>
+                        <th class="col-md-1 col-xs-2"><fmt:message key="health.check" bundle="${msg}" /></th>
+                        <th class="col-md-1 col-xs-2"><fmt:message key="add.vms" bundle="${msg}" /></th>
+                        <th class="col-md-1 col-xs-2"><fmt:message key="common.status" bundle="${msg}" /></th>
+                        <th class="col-md-2 col-xs-2"><fmt:message key="action" bundle="${msg}" /></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -53,19 +53,19 @@ pageEncoding="UTF-8"%>
                                    data-ng-model="loadBalancer.name" class="form-control"><span
                                    class="text-center text-danger"
                                    data-ng-show="loadform.name.$invalid && loadFormSubmitted">
-                                * Required</span></td>
+                                <fmt:message key="common.required" bundle="${msg}" /></span></td>
                         <td><input required="true" valid-number id="vpc_ip_address_loadbalance_public_port"
                                    data-ng-model="loadBalancer.publicPort" data-ng-min="1" data-ng-max="65535"
                                    type="text" name="publicPort" class="form-control " autofocus>
                             <span class="text-center text-danger"
                                   data-ng-show="loadform.publicPort.$invalid && loadFormSubmitted">
-                                *Required</span></td>
+                                <fmt:message key="common.required" bundle="${msg}" /></span></td>
                         <td><input required="true" valid-number id="vpc_ip_address_loadbalance_private_port"
                                    data-ng-model="loadBalancer.privatePort" data-ng-min="1" data-ng-max="65535"
                                    type="text" name="privatePort" class="form-control " autofocus>
                             <span class="text-center text-danger"
                                   data-ng-show="loadform.privatePort.$invalid && loadFormSubmitted">
-                                *Required</span></td>
+                                <fmt:message key="common.required" bundle="${msg}" /></span></td>
                         <td><select required="true" class="form-control" id="vpc_ip_address_loadbalance_algorithm"
                                     name="algorithm" data-ng-model="loadBalancer.algorithms"
                                     data-ng-init="loadBalancer.algorithms = networkLists.algorithms[0]"
@@ -74,10 +74,10 @@ pageEncoding="UTF-8"%>
                                     value=""><fmt:message key="common.select"
                                     bundle="${msg}" /></option></select> <span class="text-center text-danger"
                                                                        data-ng-show="loadform.algorithm.$invalid && loadFormSubmitted">
-                                *Required</span></td>
-                        <td><a id="vpc_ip_address_loadbalance_stickiness_button" class="btn btn-info" ng-click="createStickiness('md')">Configure</a></td>
-                        <td><a id="vpc_ip_address_loadbalance_configure_button" class="btn btn-info">Configure</a></td>
-                        <td><input id="vpc_ip_address_loadbalance_add_vm_button" class="btn btn-info" type="submit" value="Add VM"></td>
+                                <fmt:message key="common.required" bundle="${msg}" /></span></td>
+                        <td><a id="vpc_ip_address_loadbalance_stickiness_button" class="btn btn-info" ng-click="createStickiness('md')"><fmt:message key="configure" bundle="${msg}" /></a></td>
+                        <td><a id="vpc_ip_address_loadbalance_configure_button" class="btn btn-info"><fmt:message key="configure" bundle="${msg}" /></a></td>
+                        <td><input id="vpc_ip_address_loadbalance_add_vm_button" class="btn btn-info" type="submit" value="<fmt:message key="add.vm" bundle="${msg}" />"></td>
                         <td></td>
                         <td></td>
                     </tr>
@@ -114,16 +114,14 @@ pageEncoding="UTF-8"%>
                         <a id="vpc_ip_address_loadbalance_list_configure_stickiness_button" class="btn btn-info" data-ng-if = "loadBalancer.lbPolicy.stickinessMethod ==null"
                                data-ng-click="configureStickiness('md',loadBalancer)">{{'Configure'}}</a></td>
                         <td><a id="vpc_ip_address_loadbalance_list_configure_button" class="btn btn-info">Configure</a></td>
-                        <td><a id="vpc_ip_address_loadbalance_list_add_vm_button" class="btn btn-info" data-ng-if = "loadBalancer.id!=null"  data-ng-click="applyNewRule('lg',loadBalancer)">Add
-                                VM</a></td>
-
+                        <td><a id="vpc_ip_address_loadbalance_list_add_vm_button" class="btn btn-info" data-ng-if = "loadBalancer.id!=null"  data-ng-click="applyNewRule('lg',loadBalancer)"><fmt:message key="add.vm" bundle="${msg}" /></a></td>
                         <td>{{loadBalancer.state}}</td>
                         <td><a id="vpc_ip_address_loadbalance_list_edit_button" class="icon-button"
                                data-ng-click="editrule('md', loadBalancer)"
                                title="<fmt:message key="common.edit" bundle="${msg}" />">
                                <span class="fa fa-edit m-r"> </span>
                             </a> <a class="icon-button" id="vpc_ip_address_loadbalance_list_delete_button"
-                                    title="<fmt:message key="common.delete" bundle="${msg}" /> "
+                                    title="<fmt:message key="common.delete" bundle="${msg}" />"
                                     data-ng-click="deleteRules('sm', loadBalancer)"><span
                                     class="fa fa-trash"></span></a></td>
 

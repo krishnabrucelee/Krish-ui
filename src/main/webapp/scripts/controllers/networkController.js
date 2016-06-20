@@ -48,6 +48,8 @@ function networksCtrl($scope, $sce, $rootScope, filterFilter, $state, $statePara
 
 
 $scope.ipLists = function(pageNumber) {
+
+$scope.list = function(pageNumber) {
         appService.localStorageService.set('views', 'ip');
         $scope.tabViews = appService.localStorageService.get('views');
         $scope.templateCategorys = $scope.tabViews;
@@ -71,6 +73,9 @@ if (!angular.isUndefined($stateParams.id)) {
         });
 }
     };
+    $scope.list(1);
+
+}
 
     $scope.changeSort = function(sortBy, pageNumber) {
         var sort = appService.globalConfig.sort;
@@ -90,7 +95,7 @@ if (!angular.isUndefined($stateParams.id)) {
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasGuestnetworkLists = {};
 	if ($scope.domainId == null && $scope.vmSearch == null) {
-            hasGuestnetworkLists = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "guestnetwork" +"?lang=" + appService.localStorageService.cookie.get('language') +"&sortBy="+sortOrder+sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+            hasGuestnetworkLists = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "guestnetwork/listView" +"?lang=" + appService.localStorageService.cookie.get('language') +"&sortBy="+sortOrder+sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
             } else {
 	if ($scope.domainId != null && $scope.vmSearch == null) {
                 $scope.filter = "&domainId=" + $scope.domainId + "&searchText=";
@@ -251,6 +256,7 @@ $scope.vmPortId = instance;
     };
 
     $scope.portRulesLists = function(pageNumber) {
+    	$scope.list = function(pageNumber) {
         $scope.showLoader = true;
         $scope.templateCategory = 'port-forward';
         $scope.firewallRules = {};
@@ -270,6 +276,8 @@ $scope.vmPortId = instance;
             $scope.paginationObject.totalItems = result.totalItems;
         });
     };
+    $scope.list(1);
+    }
     $scope.hostList = function() {
         var hashostList = appService.crudService.listAll("host/list");
         hashostList.then(function(result) {
@@ -392,7 +400,29 @@ $scope.ipCostList();
                                     }
                                 appService.globalConfig.webSocketLoaders.egressLoader = false;
                                 });
-                            }
+                            }else
+                        {
+                                appService.globalConfig.webSocketLoaders.egressLoader = true;
+                                var hasServer = appService.crudService.add("egress", firewallRules);
+                                hasServer.then(function(result) {
+                                    $scope.firewallRules = {};
+                                    $scope.formSubmitted = false;
+                                    $scope.showLoader = false;
+                                    $scope.templateCategory = 'egress';
+                                }).catch(function(result) {
+                                    $scope.showLoader = false;
+                                    if (!angular.isUndefined(result.data)) {
+                                        if (result.data.fieldErrors != null) {
+                                            angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
+                                                $scope.egressForm[key].$invalid = true;
+                                                $scope.showLoader = false;
+                                                $scope.egressForm[key].errorMessage = errorMessage;
+                                            });
+                                        }
+                                    }
+                                appService.globalConfig.webSocketLoaders.egressLoader = false;
+                                });
+                        }
                         }
                     }
                     $scope.actionRule = false;
@@ -654,7 +684,7 @@ $scope.vmSearch = null;
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasGuestNetworks = {};
 	if ($scope.domainId == null && $scope.vmSearch == null) {
-            	hasGuestNetworks = appService.crudService.list("guestnetwork", $scope.global.paginationHeaders(pageNumber, limit), {
+            	hasGuestNetworks = appService.crudService.list("guestnetwork/listView", $scope.global.paginationHeaders(pageNumber, limit), {
                 "limit": limit});
             }
 		else {
@@ -685,7 +715,9 @@ $scope.vmSearch = null;
     };
     $scope.filteredCount = $scope.networkList;
     // Delete the Network
-    $scope.delete = function(size, network) {
+    $scope.delete = function(size, networkId) {
+    var hasNetworkRead = appService.crudService.read("guestnetwork", networkId);
+	hasNetworkRead.then(function (network) {
         appService.dialogService.openDialog("app/views/cloud/network/confirm-delete.jsp", size, $scope, ['$scope', '$modalInstance', function($scope, $modalInstance) {
             $scope.deleteId = network.id;
             $scope.ok = function(networkId) {
@@ -711,10 +743,13 @@ $scope.vmSearch = null;
                     $modalInstance.close();
                 };
         }]);
+    });
     };
     $scope.networkRestart = {};
     // Restart the Network
-    $scope.restart = function(size, network) {
+    $scope.restart = function(size, networkId) {
+    var hasNetworkRead = appService.crudService.read("guestnetwork", networkId);
+	hasNetworkRead.then(function (network) {
         appService.dialogService.openDialog("app/views/cloud/network/restart-network.jsp", size, $scope, ['$scope', '$modalInstance', function($scope, $modalInstance) {
             $scope.ok = function(restart) {
                     $scope.networkRestart = restart;
@@ -742,6 +777,7 @@ $scope.vmSearch = null;
                     $modalInstance.close();
                 };
         }]);
+    });
     };
     // Edit Network
     $scope.edit = function(networkId) {
@@ -996,7 +1032,7 @@ $scope.vmSearch = null;
         "0": "TCP",
         "1": "UDP",
         "2": "ICMP",
-        "3": "All"
+        "3": "ALL"
     };
     $scope.protocolLists = {
         "0": "TCP",
@@ -2239,19 +2275,27 @@ $scope.healthChecklist = function() {
 };
 $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.egressSave, function(event, args) {
     appService.globalConfig.webSocketLoaders.egressLoader = false;
-    $scope.webfirewallRulesLists(1);
+    if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
+	    $scope.webfirewallRulesLists(1);
+    }
 });
 $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.deleteEgress, function(event, args) {
     appService.globalConfig.webSocketLoaders.egressLoader = false;
-    $scope.webfirewallRulesLists(1);
+    if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
+        $scope.webfirewallRulesLists(1);
+    }
 });
 $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.ingressSave, function(event, args) {
     appService.globalConfig.webSocketLoaders.ingressLoader = false;
-    $scope.webfirewallRule(1);
+    if (!angular.isUndefined($stateParams.id1) && $stateParams.id1 > 0) {
+        $scope.webfirewallRule(1);
+    }
 });
 $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.deleteIngress, function(event, args) {
     appService.globalConfig.webSocketLoaders.ingressLoader = false;
-    $scope.webfirewallRule(1);
+    if (!angular.isUndefined($stateParams.id1) && $stateParams.id1 > 0) {
+        $scope.webfirewallRule(1);
+    }
 });
 $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.createnetwork, function(event, args) {
     appService.globalConfig.webSocketLoaders.networkLoader = false;
@@ -2279,41 +2323,59 @@ $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.restartnetwork,
 });
 $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.loadbalancerSave, function(event, args) {
     appService.globalConfig.webSocketLoaders.loadBalancerLoader = false;
-    $scope.LBlist(1);
+    if (!angular.isUndefined($stateParams.id1) && $stateParams.id1 > 0) {
+        $scope.LBlist(1);
+    }
 });
 
 $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.assignRule, function(event, args) {
     appService.globalConfig.webSocketLoaders.loadBalancerLoader = false;
-    $scope.LBlist(1);
+    if (!angular.isUndefined($stateParams.id1) && $stateParams.id1 > 0) {
+        $scope.LBlist(1);
+    }
 });
 $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.configureStickiness, function(event, args) {
     appService.globalConfig.webSocketLoaders.loadBalancerLoader = false;
-    $scope.LBlist(1);
+    if (!angular.isUndefined($stateParams.id1) && $stateParams.id1 > 0) {
+        $scope.LBlist(1);
+    }
 });
 $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.editrule, function(event, args) {
     appService.globalConfig.webSocketLoaders.loadBalancerLoader = false;
-    $scope.LBlist(1);
+    if (!angular.isUndefined($stateParams.id1) && $stateParams.id1 > 0) {
+        $scope.LBlist(1);
+    }
 });
 $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.deleteRules, function(event, args) {
     appService.globalConfig.webSocketLoaders.loadBalancerLoader = false;
     appService.globalConfig.webSocketLoaders.networkLoader = false;
-    $scope.LBlist(1);
+    if (!angular.isUndefined($stateParams.id1) && $stateParams.id1 > 0) {
+        $scope.LBlist(1);
+    }
 });
 $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.editStickiness, function(event, args) {
     appService.globalConfig.webSocketLoaders.loadBalancerLoader = false;
-    $scope.LBlist(1);
+    if (!angular.isUndefined($stateParams.id1) && $stateParams.id1 > 0) {
+        $scope.LBlist(1);
+    }
 });
 $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.deletePortRules, function(event, args) {
     appService.globalConfig.webSocketLoaders.portForwardLoader = false;
-    $scope.portRulesLists(1);
+    if (!angular.isUndefined($stateParams.id1) && $stateParams.id1 > 0) {
+        $scope.portRulesLists(1);
+    }
 });
 $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.portforwardSave, function(event, args) {
     appService.globalConfig.webSocketLoaders.portForwardLoader = false;
-    $scope.portRulesLists(1);
+    if (!angular.isUndefined($stateParams.id1) && $stateParams.id1 > 0) {
+        $scope.portRulesLists(1);
+    }
 });
 $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.ipAquire, function(event, args) {
     appService.globalConfig.webSocketLoaders.ipLoader = false;
-    $scope.ipLists(1);
+    if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
+        $scope.ipLists(1);
+    }
 });
 $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.enableStaticNat, function(event, args) {
     appService.globalConfig.webSocketLoaders.ipLoader = false;
@@ -2329,7 +2391,9 @@ $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.disableStaticNa
 });
 $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.ipRelease, function(event, args) {
     appService.globalConfig.webSocketLoaders.ipLoader = false;
-    $scope.ipLists(1);
+    if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
+        $scope.ipLists(1);
+    }
 });
 $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.vpnCreate, function(event, args) {
     appService.globalConfig.webSocketLoaders.vpnLoader = false;
@@ -2338,7 +2402,9 @@ $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.vpnCreate, func
 $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.vpnDestroy, function(event, args) {
     appService.globalConfig.webSocketLoaders.vpnLoader = false;
     appService.globalConfig.webSocketLoaders.ipLoader = false;
-    $scope.ipLists(1);
+    if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
+        $scope.ipLists(1);
+    }
 });
 $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.vpnUserAdd, function(event, args) {
  $scope.vpnUserList($scope.ipDetails);

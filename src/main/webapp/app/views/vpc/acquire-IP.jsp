@@ -9,7 +9,7 @@ pageEncoding="UTF-8"%>
 <form name="ipform" >
 <div class="inmodal"  >
         <div class="modal-header">
-            <panda-modal-header id="vpc_acquire_ip_page_title" page-custom-icon="images/ip-icon-big.png"  page-title="Acquire IP"></panda-modal-header>
+            <panda-modal-header id="vpc_acquire_ip_page_title" page-custom-icon="images/ip-icon-big.png"  page-title="<fmt:message key="acquire.ip" bundle="${msg}" />"></panda-modal-header>
         </div>
         <div class="modal-body">
 
@@ -19,18 +19,18 @@ pageEncoding="UTF-8"%>
                     <span class="fa fa-3x fa-warning text-warning"></span>
                 </div>
 
-               Please confirm that you want to Acquire an IP.
+               <fmt:message key="confirm.to.acquire.an.ip" bundle="${msg}" />.
 
                <div data-ng-class=" agree != true && actionAcquire  ? 'text-danger' : ''">
 
                    <input id="vpc_acquire_ip_agree" icheck type="checkbox" name="agree" value="yes" class="input-mini p-md m-r-lg "  data-ng-model="agree"/>
-                   <label class="m-l-sm font-normal" for="agree">I agree to the Terms and conditions </label>
+                   <label class="m-l-sm font-normal" for="agree"><fmt:message key="terms.and.conditions" bundle="${msg}" /> </label>
                </div>
 
             </div>
 
             <div class="text-center" data-ng-show="acquiringIP">
-                <span>Please wait</span><br/>
+                <span><fmt:message key="please.wait" bundle="${msg}" /></span><br/>
  <span><get-show-loader-image> </get-show-loader-image></span>
              </div>
 
@@ -41,12 +41,12 @@ pageEncoding="UTF-8"%>
                             <div class="col-md-12 col-sm-12">
                              <span class="pull-left">
                         <h4 class="text-danger price-text m-l-lg">
-                            <app-currency></app-currency>{{miscellaneousList[0].costperGB }} <span>/IP/day</span>
+                            <app-currency></app-currency>{{miscellaneousList[0].costperGB }} <span>/IP/<fmt:message key="common.day" bundle="${msg}" /></span>
                         </h4>
                     </span>
             <span class="pull-right">
-                <button type="button" id="vpc_acquire_ip_cancel_button" class="btn btn-default" data-dismiss="modal" ng-click="cancel()">No</button>
-                <button type="button" id="vpc_acquire_ip_cancel_button" class="btn btn-info" ng-click="acquire(network)">Yes</button>
+                <button type="button" id="vpc_acquire_ip_cancel_button" class="btn btn-default" data-dismiss="modal" ng-click="cancel()"><fmt:message key="common.no" bundle="${msg}" /></button>
+                <button type="button" id="vpc_acquire_ip_cancel_button" class="btn btn-info" ng-click="acquire(network)"><fmt:message key="common.yes" bundle="${msg}" /></button>
             </span>
 </div>
         </div>

@@ -637,6 +637,7 @@ angular
             var loginSession = globalConfig.sessionValues;
             if ((loginSession == null || angular.isUndefined(globalConfig.sessionValues)) && tokens != null) {
                 globalConfig.sessionValues = tokens;
+                globalConfig.CONTENT_LIMIT = tokens.paginationLimit;
                 globalConfig.sessionValues.token = localStorageService.get('token');
                 globalConfig.sessionValues.loginToken = localStorageService.get('loginToken');
                 AppConstants.REQUEST_PROTOCOL = tokens.REQUEST_PROTOCOL;
@@ -653,7 +654,7 @@ angular
                     return 'bar'
                 }
             };
-        }).run(function($rootScope, $state, webSockets, editableOptions, myFactory, appService, webSocket) {
+        }).run(function($rootScope, $state, webSockets, editableOptions, myFactory, appService) {
             $rootScope.$state = $state;
             editableOptions.theme = 'bs3';
             $rootScope.$on('$locationChangeStart', function(event, next, current) {
@@ -661,13 +662,6 @@ angular
                 var currentPath = current.split('#')[1];
                 if (nextRoute.indexOf('instance/list/view/') == -1 && currentPath.indexOf('instance/list/view/') > -1) {
                 	webSockets.disconnect(appService.globalConfig.MONITOR_SOCKET_URL + 'stack/watch');
-                }
-            });
-            $rootScope.$on('$locationChangeStart', function(event, next, current) {
-                var nextRoute = next.split('#')[1];
-                var currentPath = current.split('#')[1];
-                if (currentPath.indexOf('dashboard') > -1) {
-                	webSocket.initStompClient();
                 }
             });
         }).config(configState);

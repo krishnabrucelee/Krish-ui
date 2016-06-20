@@ -15,12 +15,12 @@ pageEncoding="UTF-8"%>
         	<div class="row">
 
                 	<div class="col-md-4  col-sm-4 col-xs-14">
-                		<h5 class="pull-left">Tier :</h5>
+                		<h5 class="pull-left"><fmt:message key="tier" bundle="${msg}" /> :</h5>
                     	<select id="vpc_ip_address_portforwarding_tier" required="true" class="form-control m-l-md port-forwarding-select input-group pull-left" name="vpcnetworks" data-ng-model="portForward.vpcnetwork" ng-options="vpcnetwork.name for vpcnetwork in vpcNetworkListByPortforwarding" >
                         	<option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
                         </select><span class="text-center text-danger"
                                           data-ng-show="portform.vpcnetworks.$invalid && portFormSubmitted">
-                                *Required</span></td>
+                                <fmt:message key="common.required" bundle="${msg}" /></span></td>
                     </div>
                         </div>
         </div>

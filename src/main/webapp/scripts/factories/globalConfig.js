@@ -13,6 +13,7 @@ function globalConfig($window) {
             id : 0,
             name : 'Projects'
         },
+        debug : WEBSOCKET_DEBUG,
         projectList : [ {
             id : 0,
             name : 'Projects'
@@ -122,7 +123,9 @@ function globalConfig($window) {
             accountLoader : false,
             roleLoader : false,
             departmentLoader : false,
-            projectAssign : false
+            projectAssign : false,
+            networkAclLoader : false,
+            networkDeleteAclLoader : false
         },
         webSocketEvents : {
             vmEvents : {
@@ -209,7 +212,9 @@ function globalConfig($window) {
                 portforwardSave : 'NET.RULEADD',
                 deletePortRules : 'NET.RULEDELETE',
                 configureStickiness : 'LB.STICKINESSPOLICY.CREATE',
-                editStickiness : 'LB.STICKINESSPOLICY.CREATE'
+                editStickiness : 'LB.STICKINESSPOLICY.CREATE',
+                addAcl : 'NETWORK.ACL.CREATE',
+                deleteAclList : 'NETWORK.ACL.DELETE'
             },
             sshKeyEvents : {
                 createSSHKey : 'REGISTER.SSH.KEYPAIR',
@@ -302,9 +307,10 @@ function globalConfig($window) {
         PING_APP_URL : REQUEST_PROTOCOL + window.location.hostname + ":8086/api/",
         BASE_UI_URL : REQUEST_PROTOCOL + window.location.hostname + REQUEST_PORT + REQUEST_FOLDER,
         MONITOR_SOCKET_URL : REQUEST_PROTOCOL + window.location.hostname + ":8282/",
-        CONTENT_LIMIT : 10,
+        CONTENT_LIMIT : $window.sessionStorage.getItem("loginSession") == null ? 10 : JSON.parse($window.sessionStorage.getItem("loginSession")).paginationLimit,
         VIEW_URL : 'app/views/',
         NOTIFICATION_TEMPLATE : 'app/views/notification/notify.jsp',
+        NOTIFICATIONS_TEMPLATE : 'app/views/common/notify1.jsp',
         TOKEN_SEPARATOR : "@@",
         PAGE_ERROR_SEPARATOR : "PAGE_ERROR",
         USER_SESSION : "remember_me",
@@ -368,7 +374,8 @@ function globalConfig($window) {
             }
         },
         sessionValues : JSON.parse($window.sessionStorage.getItem("loginSession")),
-        loginRemeberMeTimeout : 30 * 24 * 60 * 60 * 1000
+        loginRemeberMeTimeout : 30 * 24 * 60 * 60 * 1000,
+        event : 0
     };
     return appGlobalConfig;
 }

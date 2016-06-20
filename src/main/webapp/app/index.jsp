@@ -26,10 +26,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <!-- Page title set in pageTitle directive -->
-<title page-title></title>
+<title id="pandaAppPageTitle" page-title></title>
 <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-<link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
-
+<link rel="shortcut icon" type="image/x-icon"  href=""  data-fav-icon-url="" />
 <!-- build:css(.) styles/vendor.css -->
 <!-- bower:css -->
 <link rel="stylesheet"
@@ -93,9 +92,13 @@
 <body ng-controller="appCtrl"
     class="{{$state.current.data.specialClass}}" landing-scrollspy tour
     backdrop="true">
-    <input type="hidden" value="${REQUEST_PROTOCOL}" id="request_protocol" />
+
+   <input type="hidden" value="${REQUEST_PROTOCOL}" id="request_protocol" />
                          <input type="hidden" value="${REQUEST_PORT}" id="request_port" />
                          <input type="hidden" value="${REQUEST_FOLDER}" id="request_folder" />
+
+
+             <input type="hidden" value="${WEBSOCKET}" id="websocket_debug" />
 
     <!-- Simple splash screen-->
     <!-- <div class="splash loading-screen">
@@ -110,7 +113,7 @@
     <div class="splash loading-screen"> <div class="splash-title">
 <h1><p id="p1"></p></h1>
 <div class="loader-img-wrapper">
-	<div class='uil-ripple-css' style='transform:scale(0.32);'><div></div><div></div></div>
+    <div class='uil-ripple-css' style='transform:scale(0.32);'><div></div><div></div></div>
 </div></div>
 </div>
 
@@ -186,7 +189,7 @@
     <script src="bower_components/angularjs-slider/rzslider.js"></script>
     <script src="bower_components/angular-filter/dist/angular-filter.js"></script>
     <script src="bower_components/sockjs/sockjs.min.js"></script>
-	<script src="bower_components/stomp/lib/stomp.min.js"></script>
+    <script src="bower_components/stomp/lib/stomp.min.js"></script>
 
     <!-- endbuild -->
 
@@ -198,20 +201,24 @@
 -->
 <script type="text/javascript">
 var REQUEST_PROTOCOL = document.getElementById("request_protocol").value;
-	if(REQUEST_PROTOCOL == "" || typeof(REQUEST_PROTOCOL) == "undefined" || REQUEST_PROTOCOL == null) {
-		REQUEST_PROTOCOL = "http";
-	}
+    if(REQUEST_PROTOCOL == "" || typeof(REQUEST_PROTOCOL) == "undefined" || REQUEST_PROTOCOL == null) {
+        REQUEST_PROTOCOL = "http";
+    }
 
-	var REQUEST_PORT = document.getElementById("request_port").value;
-	if(REQUEST_PORT != "" && typeof(REQUEST_PORT) != "undefined" && REQUEST_PORT != null) {
-		REQUEST_PORT = ":" + REQUEST_PORT;
-	}
+    var REQUEST_PORT = document.getElementById("request_port").value;
+    if(REQUEST_PORT != "" && typeof(REQUEST_PORT) != "undefined" && REQUEST_PORT != null) {
+        REQUEST_PORT = ":" + REQUEST_PORT;
+    }
 
-	var REQUEST_FOLDER = document.getElementById("request_folder").value;
-	if(REQUEST_FOLDER == "" || typeof(REQUEST_FOLDER) == "undefined" || REQUEST_FOLDER == null) {
-		REQUEST_FOLDER = "/";
-	}
-	</script>
+    var REQUEST_FOLDER = document.getElementById("request_folder").value;
+    if(REQUEST_FOLDER == "" || typeof(REQUEST_FOLDER) == "undefined" || REQUEST_FOLDER == null) {
+        REQUEST_FOLDER = "/";
+    }
+    var WEBSOCKET_DEBUG = document.getElementById("websocket_debug").value;
+    if(WEBSOCKET_DEBUG == "" || typeof(WEBSOCKET_DEBUG) == "undefined" || WEBSOCKET_DEBUG == null) {
+        WEBSOCKET_DEBUG = false;
+    }
+    </script>
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
     <script src="scripts/angular-momentjs.js"></script>
     <script src="scripts/moment-timezone.js"></script>
@@ -305,8 +312,8 @@ var re = new RegExp("splashTitleUser" + "=([^;]+)");
 //var re = new RegExp("splashTitle" + "!#$%&'()*+-./:<=>?@[]^_`{|}~");
 var value = re.exec(document.cookie);
 var text = unescape(value[1]);
-		//var splashTitle = splashText[1].split(';');
-		document.getElementById("p1").innerHTML = text;
-		//document.write(unescape(value[1]));
+        //var splashTitle = splashText[1].split(';');
+        document.getElementById("p1").innerHTML = text;
+        //document.write(unescape(value[1]));
 
-	</script>
+    </script>

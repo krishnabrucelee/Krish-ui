@@ -9,7 +9,7 @@
 
     <div class="inmodal" >
         <div class="modal-header">
-            <panda-modal-header page-icon="fa fa-database pe-lg" page-title="Create Volume"></panda-modal-header>
+            <panda-modal-header page-icon="fa fa-database pe-lg" page-title="<fmt:message key="create.volume" bundle="${msg}" />"></panda-modal-header>
 
         </div>
 
@@ -18,13 +18,13 @@
                 <div class="col-md-12">
                     <div class="form-group" ng-class="{'text-danger': createVolumeForm.disk.$invalid && formSubmitted}">
                         <div class="row" >
-                            <label class="col-md-3 col-sm-3 control-label" >Disk
+                            <label class="col-md-3 col-sm-3 control-label" ><fmt:message key="disk" bundle="${msg}" />
                                 <span class="text-danger">*</span>
                             </label>
                             <div class="col-md-5 col-sm-5">
                                 <input required="true" type="text" name="disk" data-ng-model="deleteObject.transVolumeName" class="form-control" data-ng-class="{'error': createVolumeForm.disk.$invalid && formSubmitted}">
-                               <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="Name of the volume" ></i>
-                              <div class="error-area" data-ng-show="createVolumeForm.disk.$invalid && formSubmitted" ><i  tooltip="Disk is required." class="fa fa-warning error-icon"></i></div>
+                               <i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon" tooltip="<fmt:message key="name.of.the.volume" bundle="${msg}" />" ></i>
+                              <div class="error-area" data-ng-show="createVolumeForm.disk.$invalid && formSubmitted" ><i  tooltip="<fmt:message key="Disk is required" bundle="${msg}" />." class="fa fa-warning error-icon"></i></div>
 
                             </div>
 
@@ -38,8 +38,8 @@
 
 
         <div class="modal-footer">
-            <button type="button" data-ng-hide="showLoader" class="btn btn-default " ng-click="cancel()" data-dismiss="modal">Cancel</button>
-            <button class="btn btn-info" data-ng-hide="showLoader" type="submit">Create</button>
+            <button type="button" data-ng-hide="showLoader" class="btn btn-default " ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.cancel" bundle="${msg}" /></button>
+            <button class="btn btn-info" data-ng-hide="showLoader" type="submit"><fmt:message key="common.create" bundle="${msg}" /></button>
 
         </div></div>
 </form>

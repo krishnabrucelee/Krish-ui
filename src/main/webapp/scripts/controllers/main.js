@@ -8,11 +8,99 @@ angular
         .module('homer')
         .controller('appCtrl', appCtrl);
 
-function appCtrl($http, $scope, $window, $timeout, appService, globalConfig, crudService, promiseAjax, localStorageService, $cookies) {
+function appCtrl($http, $scope,$rootScope, $window,$modal, $timeout, appService, globalConfig, crudService, promiseAjax, localStorageService, $cookies) {
+
+	$scope.global = appService.globalConfig;
+	$scope.owner = {};
+    $scope.paginationObject = {};
+    $scope.sort = appService.globalConfig.sort;
+    $scope.paginationObject.sortOrder = '-';
+    $scope.paginationObject.sortBy = 'eventDateTime';
+    $scope.activity = {
+        category: "events",
+        oneItemSelected: {},
+        selectedAll: {}
+    };
+
+    var hasUsers = appService.crudService.read("users", $scope.global.sessionValues.id);
+    hasUsers.then(function (result) {
+        $scope.owner = result;
+    });
 
     // For iCheck purpose only
     $scope.infrastructure = {};
     $scope.showLoaderOffer = true;
+
+
+    $scope.getActivity = function (pageNumber) {
+        var limit = 10;
+        var hasactionServer = appService.promiseAjax.httpTokenRequest($scope.global.HTTP_GET, $scope.global.APP_URL + "events/list/read-event" +"?lang=" + localStorageService.cookie.get('language') + "&sortBy="+$scope.paginationObject.sortOrder+$scope.paginationObject.sortBy+"&limit=10", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+        hasactionServer.then(function (result) {  // this is only run after $http completes
+            if(result.length>0){
+        	$scope.activityList = result[0];
+            var msg = result[0].message;
+            if (msg.length > 50) {
+                msg =  msg.slice(0, 50) + '...';
+            }
+            appService.notify({message: msg, classes: 'alert-info',templateUrl: $scope.global.NOTIFICATIONS_TEMPLATE });
+            // For pagination
+            $scope.paginationObject.limit = limit;
+            $scope.paginationObject.currentPage = pageNumber;
+            $scope.paginationObject.totalItems = result.totalItems;
+            $scope.global.event = result.totalItems;
+            }else{
+            	$scope.global.event = 0;
+            }
+        });
+    };
+    $scope.getActivity(1);
+
+    // Delete the event
+    $rootScope.deleteEvent = function () {
+        var hasServer = appService.crudService.softDelete("events", $scope.activityList);
+        hasServer.then(function(){
+    	    $scope.getActivity(1);
+        });
+    }
+
+//List the event
+$rootScope.listEvent = function () {
+	var hasServer = appService.promiseAjax.httpTokenRequest( $scope.global.HTTP_PUT , $scope.global.APP_URL + "events/event-update"  +"/"+$scope.activityList.id);
+	hasServer.then(function(){
+	    $scope.getActivity(1);
+    });
+}
+
+$rootScope.showDescriptions = function () {
+	var hasServer = appService.promiseAjax.httpTokenRequest( $scope.global.HTTP_PUT , $scope.global.APP_URL + "events/event-update"  +"/"+$scope.activityList.id);
+    $scope.currentActivity = $scope.activityList;
+    $scope.activityList.pageTitle = $scope.pageTitle;
+    $scope.activityList.category = $scope.activity.category;
+    $scope.activityList.owner = $scope.owner;
+    var modalInstance = $modal.open({
+        animation: $scope.animationsEnabled,
+        templateUrl: 'app/views/activity/activity-description.jsp',
+        controller: 'activityDescriptionCtrl',
+        size: 'md',
+        backdrop: 'static',
+        windowClass: "hmodal-info",
+        resolve: {
+            activity: function () {
+                return angular.copy($scope.activityList);
+            },
+            owner:function () {
+                return angular.copy( $scope.owner);
+            },
+        }
+    });
+
+    modalInstance.result.then(function (selectedItem) {
+        $scope.selected = selectedItem;
+
+    }, function () {
+    });
+};
+
 
 
     $scope.getInfrastructureDetails = function() {
@@ -24,16 +112,16 @@ function appCtrl($http, $scope, $window, $timeout, appService, globalConfig, cru
     }
 
 $scope.themeSettingList = function () {
-		return $http({method:'get', url:  REQUEST_PROTOCOL+ $window.location.hostname +':8080/home/list'})
-		.then(function(result){
-			$scope.themeSettings = result;
-			 $scope.welcomeContentUser = result.data.welcomeContentUser;
-			 $scope.footerContent = result.data.footerContent;
-			 $scope.splashTitleUser= result.data.splashTitleUser;
-			 $cookies.splashTitleUser = result.data.splashTitleUser;
-		});
-	};
-	$scope.themeSettingList();
+        return $http({method:'get', url:  REQUEST_PROTOCOL+ $window.location.hostname +':8080/home/list'})
+        .then(function(result){
+            $scope.themeSettings = result;
+             $scope.welcomeContentUser = result.data.welcomeContentUser;
+             $scope.footerContent = result.data.footerContent;
+             $scope.splashTitleUser= result.data.splashTitleUser;
+             $cookies.splashTitleUser = result.data.splashTitleUser;
+        });
+    };
+    $scope.themeSettingList();
 
 
     $scope.quotaLimits = {
@@ -46,13 +134,19 @@ $scope.themeSettingList = function () {
     var resourceArr = ["CPU", "Memory", "Volume", "Network", "IP", "PrimaryStorage", "SecondaryStorage", "Snapshot"];
 
     $scope.getResourceQuotaDetails = function() {
-      var hasResourceDomainId = promiseAjax.httpTokenRequest( globalConfig.HTTP_GET , globalConfig.APP_URL + "dashboard/quota");
+      var  actionURL = "quota";
+      $scope.quotaAction = "domain";
+      if(globalConfig.sessionValues.type == "USER") {
+          actionURL = "departmentQuota";
+      $scope.quotaAction = "department";
+      }
+      var hasResourceDomainId = promiseAjax.httpTokenRequest( globalConfig.HTTP_GET , globalConfig.APP_URL + "dashboard/" + actionURL);
       hasResourceDomainId.then(function (result) {  // this is only run after $http completes
             $scope.showLoaderDetail = false;
                 angular.forEach(result, function(obj, key) {
-        	  if(obj.usedLimit == null || obj.usedLimit == "null") {
-        		  obj.usedLimit = 0;
-        	  }
+              if(obj.usedLimit == null || obj.usedLimit == "null" || isNaN(obj.usedLimit)) {
+                  obj.usedLimit = 0;
+              }
               if(resourceArr.indexOf(obj.resourceType) > -1) {
                 if(angular.isUndefined($scope.quotaLimits[obj.resourceType])) {
                     $scope.quotaLimits[obj.resourceType] = {};
@@ -60,20 +154,24 @@ $scope.themeSettingList = function () {
 
                 if(obj.resourceType == "Memory") {
                   obj.usedLimit = Math.round( obj.usedLimit / 1024);
-      						if (obj.max != -1) {
-      							obj.max = Math.round(obj.max / 1024);
-                    $scope.quotaLimits[obj.resourceType].label = $scope.quotaLimits[obj.resourceType].label + " " + "(GB)";
-      						}
+                  if (obj.max != -1) {
+                      obj.max = Math.round(obj.max / 1024);
+                      $scope.quotaLimits[obj.resourceType].label = $scope.quotaLimits[obj.resourceType].label + " " + "(GB)";
+                  }
                 }
 
                 if (obj.max == -1 && obj.resourceType == "PrimaryStorage" || obj.max == -1 && obj.resourceType == "SecondaryStorage") {
-  					        obj.usedLimit = Math.round( obj.usedLimit / (1024 * 1024 * 1024));
+                    //obj.usedLimit = Math.round( obj.usedLimit / (1024 * 1024 * 1024));
                     $scope.quotaLimits[obj.resourceType].label = $scope.quotaLimits[obj.resourceType].label + " " + "(GB)";
-     				    }
+                }
 
                 $scope.quotaLimits[obj.resourceType].max = parseInt(obj.max);
                 $scope.quotaLimits[obj.resourceType].usedLimit = parseInt(obj.usedLimit);
                 $scope.quotaLimits[obj.resourceType].percentage = parseFloat(parseInt(obj.usedLimit) / parseInt(obj.max) * 100).toFixed(2);
+                if(isNaN($scope.quotaLimits[obj.resourceType].percentage)) {
+                    $scope.quotaLimits[obj.resourceType].percentage = 0;
+                }
+
                 var unUsed = $scope.quotaLimits[obj.resourceType].max - $scope.quotaLimits[obj.resourceType].usedLimit;
 
 
@@ -109,13 +207,13 @@ $scope.themeSettingList = function () {
     $scope.checkOne = true;
     $scope.appLanguage = function() {
         if(localStorageService.cookie.get('language') == null) {
-        	var hasConfigs = appService.crudService.listAll("generalconfiguration/configlist");
+            var hasConfigs = appService.crudService.listAll("generalconfiguration/configlist");
             hasConfigs.then(function (result) {
                 $scope.generalconfiguration = result[0];
                 if ($scope.generalconfiguration.defaultLanguage == 'Chinese') {
-                	localStorageService.cookie.set('language', 'zh');
+                    localStorageService.cookie.set('language', 'zh');
                 } else {
-                	localStorageService.cookie.set('language', 'en');
+                    localStorageService.cookie.set('language', 'en');
                 }
             });
         }
@@ -347,8 +445,8 @@ customTooltips: function customTooltips(tooltip){
 
     $scope.departmentList = {};
     $scope.getDepartmentList = function(type) {
-    	$scope.listing.activeDepartment = false;
-    	$scope.listing.userList = [];
+        $scope.listing.activeDepartment = false;
+        $scope.listing.userList = [];
       $scope.listing.groupType = type;
       $scope.listing.application = false;
       $scope.listing.department = true;
@@ -388,17 +486,17 @@ $scope.top5DepartmentList = result;
       $scope.listing.activeDepartment = id;
       if (groupType == "department") {
           var hasProjects =  appService.promiseAjax.httpTokenRequest(appService.crudService.globalConfig.HTTP_GET,
-    				 appService.crudService.globalConfig.APP_URL + "projects"  +"/department/"+id);
- 		 hasProjects.then(function (result) {  // this is only run after $http completes0
-	    		$scope.listing.userList = result;
-	    		$scope.type = "Projects";
-	    	 });
+                     appService.crudService.globalConfig.APP_URL + "projects"  +"/department/"+id);
+          hasProjects.then(function (result) {  // this is only run after $http completes0
+                $scope.listing.userList = result;
+                $scope.type = "Projects";
+             });
       } else if (groupType == "user") {
-    	  var hasUsers = promiseAjax.httpTokenRequest( globalConfig.HTTP_GET , globalConfig.APP_URL + "users/department/"+ id);
-    	  hasUsers.then(function (result) {  // this is only run after $http completes
-    		  $scope.listing.userList = result;
-    		  $scope.type = "Users";
-    	  });
+          var hasUsers = promiseAjax.httpTokenRequest( globalConfig.HTTP_GET , globalConfig.APP_URL + "users/department/"+ id);
+          hasUsers.then(function (result) {  // this is only run after $http completes
+              $scope.listing.userList = result;
+              $scope.type = "Users";
+          });
       }
     };
 
@@ -466,31 +564,27 @@ $scope.top5DepartmentList = result;
 
 
     $scope.updateLanguage = function(language) {
-        if(localStorageService.cookie.get('language') == 'en') {
-            localStorageService.cookie.set('language', 'zh');
-        } else {
-            localStorageService.cookie.set('language', 'en');
-        }
-        $window.location.reload();
+         localStorageService.cookie.set('language', language);
+         $window.location.reload();
     }
 
     /**
      *  Logout a user.
      */
     $scope.logout = function() {
-    	appService.utilService.logoutApplication("LOGOUT");
+        appService.utilService.logoutApplication("LOGOUT");
     }
 
 
 
   $scope.dashboard = {
-  	costList: {}
+      costList: {}
   };
   $scope.toggleCostList = function(type) {
-	  $scope.dashboard.costList.department = false;
+      $scope.dashboard.costList.department = false;
     $scope.dashboard.costList.project = false;
     $scope.dashboard.costList.application = false;
-	   $scope.dashboard.costList[type] = true;
+       $scope.dashboard.costList[type] = true;
   }
 
 $scope.getZoneList = function () {
@@ -500,5 +594,20 @@ $scope.getZoneList = function () {
       });
   };
   $scope.getZoneList();
+
+  $scope.updatePagination = function (limit) {
+      var hasResult = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET,
+              appService.globalConfig.APP_URL + "users" +"/paginationLimit/"+limit);
+      hasResult.then(function(result) {
+          globalConfig.CONTENT_LIMIT = limit;
+          var currentSession = JSON.parse($window.sessionStorage.getItem("loginSession"));
+          currentSession.paginationLimit = limit;
+          $window.sessionStorage.setItem("loginSession", JSON.stringify(currentSession));
+      });
+  };
+
+  $scope.$on("notification", function(event, args) {
+	  $scope.getActivity(1);
+	   	 });
 
 }

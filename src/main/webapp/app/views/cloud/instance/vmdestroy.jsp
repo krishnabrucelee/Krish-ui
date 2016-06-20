@@ -28,7 +28,6 @@
         <div class="modal-footer">
             <button type="button" id="destroy_vm_cancel_button" class="btn btn-default " ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.cancel" bundle="${msg}" /></button>
             <button type="submit" id="destroy_vm_ok_button" class="btn btn-default btn-danger2" ng-click="vmDestroy(item)" data-dismiss="modal"><fmt:message key="common.ok" bundle="${msg}" /></button>
-
         </div>
     </div>
 

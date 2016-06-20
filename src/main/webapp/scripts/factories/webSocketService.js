@@ -15,7 +15,9 @@ angular.module('homer').factory('webSockets', [ '$rootScope', 'globalConfig', fu
     	        if (instanceUuid != null) {
     	                headers['x-uuid'] = instanceUuid;
     		    }
-    	            //stompClient.debug = null;
+    	       if (globalConfig.debug == 'false') {
+        	     stompClient.debug = null;
+    	       }
     	},
         connect : function(successCallback, errorCallback) {
             stompClient.connect(headers, function(frame) {

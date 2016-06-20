@@ -5,7 +5,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <c:set var="language" value="${not empty language ? language : pageContext.request.getAttribute('language')}" scope="session" />
 <fmt:setBundle basename="i18n/messages_${language}" var="msg" scope="session" />
-
+<div data-ng-if="global.webSocketLoaders.networkAclLoader" class="overlay-wrapper">
+    <img data-ng-if="global.webSocketLoaders.networkAclLoader" src="images/loading-bars.svg" class="inner-loading" />
+</div>
     <div class="content" ui-view>
 	    <div ng-controller="vpcCtrl">
 			<div class="hpanel">
@@ -35,9 +37,6 @@
 				<div class="row">
 					<div class="col-md-12 col-sm-12 col-xs-12" id="vpc_network_acl_pagination_container">
 						<div class="white-content">
-							<div data-ng-show="showLoader" style="margin: 1%">
-								<get-loader-image data-ng-show="showLoader"></get-loader-image>
-							</div>
 							<div class="table-responsive">
 								<table cellspacing="1" cellpadding="1" class="table table-bordered table-striped" id="vpc_network_acl_table">
 								    <thead>
@@ -49,7 +48,7 @@
 								    </thead>
 								    <tbody>
 								        <tr data-ng-repeat="networkAcl in filteredCount = (aclList | filter: quickSearch | orderBy:sort.column:sort.descending)">
-								            <td><a id="vpc_network_acl_name_button" class="text-info" ui-sref="vpc.view-vpc.config-vpc.network-acl.view-networkAcl({id3: {{ networkAcl.id }}, view: 'view'})" title="View Network">{{networkAcl.name}}</a></td>
+								            <td><a id="vpc_network_acl_name_button" class="text-info" ui-sref="vpc.view-vpc.config-vpc.network-acl.view-networkAcl({id3: {{ networkAcl.id }}, view: 'view'})" title="<fmt:message key="view.network" bundle="${msg}"/>">{{networkAcl.name}}</a></td>
 											<td>{{networkAcl.description}}</td>
 											<td>{{networkAcl.uuid}}</td>
 								        </tr>

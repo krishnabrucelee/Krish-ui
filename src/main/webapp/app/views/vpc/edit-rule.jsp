@@ -8,7 +8,7 @@
 
 <form name="editRuleForm" data-ng-submit="updateRule(editRuleForm,loadBalancer)" novalidate>
     <div class="modal-header">
-        <panda-modal-header hide-zone="false" page-icon="fa fa-warning" page-title="Edit Rule<%-- <fmt:message key="delete.confirmation" bundle="${msg}" /> --%>"></panda-modal-header>
+        <panda-modal-header hide-zone="false" page-icon="fa fa-warning" page-title="<fmt:message key="edit.rule" bundle="${msg}" />"></panda-modal-header>
     </div>
 
     <div class="modal-body">
