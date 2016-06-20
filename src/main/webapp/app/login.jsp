@@ -24,8 +24,7 @@ pageEncoding="UTF-8"%>
     <!-- Page title set in pageTitle directive -->
     <title id="pandaAppPageTitle" page-title></title>
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
-
+	<link rel="shortcut icon" type="image/x-icon"  href=""  data-fav-icon-url="" />
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
@@ -49,9 +48,9 @@ pageEncoding="UTF-8"%>
         <div data-ng-bind-html="welcomeContentUser | to_trusted "></div>
             <div class="hpanel hbgblue">
                 <div class="panel-body" >
-                
-                 <form name="test" method="post" id="loginForm" data-ng-submit="loginFormWithoutCaptcha()" data-ng-show ="!enableCaptcha"> 
-               
+
+                 <form name="test" method="post" id="loginForm" data-ng-submit="loginFormWithoutCaptcha()" data-ng-show ="!enableCaptcha">
+
                         <h6 class="alert alert-danger" style="display: none" id="errorMsg"></h6>
                         <div class="form-group">
                             <label class="control-label" for="username"><fmt:message key="common.username" bundle="${msg}" /></label>
@@ -70,7 +69,7 @@ pageEncoding="UTF-8"%>
                             <label for="remeber_login"><fmt:message key="remember.login" bundle="${msg}" /></label>
                             <p class="small">(<fmt:message key="private.computer" bundle="${msg}" />)</p>
                         </div>
-                         
+
                            <input type="hidden" value="${REQUEST_PROTOCOL}" id="request_protocol" />
                         <input type="hidden" value="${REQUEST_PORT}" id="request_port" />
                         <input type="hidden" value="${REQUEST_FOLDER}" id="request_folder" />
@@ -78,8 +77,8 @@ pageEncoding="UTF-8"%>
                         <get-login-loader-image data-ng-show="showLoader"></get-login-loader-image>
                         <button data-ng-hide="showLoader" id="login_button" type="submit" class="btn btn-default"><fmt:message key="common.login" bundle="${msg}" /></button>
                     </form>
-                    
-                 <form name="tests" method="post" id="loginForm" data-ng-submit="loginForm()" data-ng-show ="enableCaptcha"> 
+
+                 <form name="tests" method="post" id="loginForm" data-ng-submit="loginForm()" data-ng-show ="enableCaptcha">
 
                         <h6 class="alert alert-danger" style="display: none" id="errorMsgs"></h6>
                         <div class="form-group">
@@ -94,18 +93,18 @@ pageEncoding="UTF-8"%>
                             <label class="control-label" for="domain"><fmt:message key="common.domain" bundle="${msg}" /></label>
                             <input type="text" placeholder="<fmt:message key="common.small.company" bundle="${msg}" />" title="<fmt:message key="please.enter.your.domain" bundle="${msg}" />" required="" data-ng-model="user_domain" name="user_domain" id="user_domain" class="form-control">
                         </div>
-                        
+
                         <div class="row" ng-show ="enableCaptcha" >
                         	<div class="col-md-5 captcha-textbox">
                         		<span class="small"><fmt:message key="enter.captcha.text" bundle="${msg}" /></span>
        							<input type = "text" data-ng-model="answer"  name="answer" required=""  class= form-control>
 							</div>
- 							<div class="col-md-4 captcha-number no-padding"> 
-								 <iframe src=${pageContext.request.contextPath}/CaptchaServlet id="captchaImg" ></iframe> 
+ 							<div class="col-md-4 captcha-number no-padding">
+								 <iframe src=${pageContext.request.contextPath}/CaptchaServlet id="captchaImg" ></iframe>
 							</div>
 							<div class="col-md-1 captcha-refresh no-padding text-center">
 								<a data-ng-click="refreshCaptcha()"  ><span class="fa fa-refresh fa-lg "></span></a>
- 							</div> 
+ 							</div>
 						</div>
 						<div class="form-group row">
 							<div class="col-md-12">
@@ -129,7 +128,7 @@ pageEncoding="UTF-8"%>
                         <input type="hidden" value="${REQUEST_FOLDER}" id="request_folder" />
 			<input type="hidden" value="${WEBSOCKET}" id="websocket_debug" />
                         <get-login-loader-image data-ng-show="showLoader"></get-login-loader-image>
-                        
+
                     </form>
                 </div>
             </div>
