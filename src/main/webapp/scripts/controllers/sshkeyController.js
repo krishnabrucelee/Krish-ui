@@ -385,6 +385,11 @@ function sshkeyListCtrl($scope,appService,$state,localStorageService, globalConf
                 	deleteObject.departmentId = deleteObject.department.id;
                     delete deleteObject.department;
                 }
+                var projectObject =  deleteObject.project;
+                if(!angular.isUndefined(deleteObject.project) && deleteObject.project != null) {
+                	deleteObject.projectId = deleteObject.project.id;
+                    delete deleteObject.project;
+                }
                 $scope.showLoader = true;
                 sshkey.isActive = false;
                 var hasServer = appService.crudService.softDelete("sshkeys", sshkey);
