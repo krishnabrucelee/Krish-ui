@@ -257,7 +257,7 @@ function vpcCtrl($scope, $modal, appService, $timeout, filterFilter, $stateParam
                 : $scope.paginationObject.limit;
         var hasVpcLists = {};
         if ($scope.domainView == null && $scope.vpcSearch == null) {
-            hasVpcLists = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "vpc" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+sortOrder+sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+            hasVpcLists = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "vpc/listView" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+sortOrder+sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
 
         }  else {
             $scope.filter = "";
@@ -297,7 +297,7 @@ function vpcCtrl($scope, $modal, appService, $timeout, filterFilter, $stateParam
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasGuestNetworks = {};
         if ($scope.domainView == null && $scope.vpcSearch== null) {
-		    hasGuestNetworks = appService.crudService.list("vpc", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+		    hasGuestNetworks = appService.crudService.list("vpc/listView", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
 	} else {
 	    if ($scope.domainView != null && $scope.vpcSearch == null) {
 		$scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=";
@@ -557,7 +557,9 @@ $scope.dropnetworkLists = {
     };
 
  // Delete the Network
-    $scope.delete = function(size, vpc) {
+    $scope.delete = function(size, vpcId) {
+    	var hasVpcRead = appService.crudService.read("vpc", vpcId);
+    	hasVpcRead.then(function (vpc) {
         appService.dialogService.openDialog("app/views/vpc/confirm-delete.jsp", size, $scope, ['$scope', '$modalInstance', function($scope, $modalInstance) {
             $scope.deleteId = vpc.id;
             $scope.ok = function(vpcId) {
@@ -584,10 +586,13 @@ $scope.dropnetworkLists = {
                     $modalInstance.close();
                 };
         }]);
+    });
     };
     $scope.networkRestart = {};
     // Restart the Network
-    $scope.restart = function(size, vpc) {
+    $scope.restart = function(size, vpcId) {
+    	var hasVpcRead = appService.crudService.read("vpc", vpcId);
+    	hasVpcRead.then(function (vpc) {
         $scope.vpc = vpc;
         appService.dialogService.openDialog("app/views/vpc/restart-vpc.jsp", size, $scope, ['$scope', '$modalInstance', function($scope, $modalInstance) {
             $scope.ok = function(cleanup,makeredunt) {
@@ -623,6 +628,7 @@ $scope.dropnetworkLists = {
                     $modalInstance.close();
                 };
         }]);
+    });
     };
 
     // VPC Network List
