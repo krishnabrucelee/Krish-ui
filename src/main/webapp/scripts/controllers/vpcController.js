@@ -61,38 +61,46 @@ function vpcCtrl($scope, $modal, appService, $timeout, filterFilter, $stateParam
     $scope.aclID = {};
     $scope.tabview = {};
 
-    $scope.type = $stateParams.view;
-    // VPC Offer List
-    $scope.listVpcOffer = function() {
+    $scope.activity = {
+            category: "details",
+        };
+
+	    $scope.type = $stateParams.view;
+	    // VPC Offer List
+	    $scope.listVpcOffer = function() {
         var listVpcOffers = appService.promiseAjax
                 .httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "vpcoffering/list" + "?lang=" + appService.localStorageService.cookie
                         .get('language') + "&sortBy=-id");
         listVpcOffers.then(function(result) {
             $scope.networkOfferList = result;
         });
-    };
+	    };
 
-  $scope.canceledit = function(netwrkid) {
-                       $window.location.href = '#/vpc/view/'+$stateParams.id+'/config-vpc/view/'+netwrkid;
+	    $scope.canceledit = function(netwrkid) {
+	                       $window.location.href = '#/vpc/view/'+$stateParams.id+'/config-vpc/view/'+netwrkid;
+	    };
 
-    };
+		$scope. getDetails = function() {
+		        $scope.activity.category = "details";
+		};
 
-    $scope. getDetails = function(netwrkid) {
-        $scope.vpc.category = "details";
+		$scope. getVpcrouter = function() {
+		    $scope.activity.category = "vpcrouter";
+		};
 
-
-};
-
-$scope. getVpcrouter = function(netwrkid) {
-    $scope.vpc.category = "vpcrouter";
-
-
-};
-
-
-
+		$scope.Vpcrouterdetails = function() {
+			   //var hasServer = appService.crudService.listAll("vpcrouter/listbyvpc", $stateParams.id);
+		var hasServer =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "vpcrouter/listbyvpc" +"?vpcid="+ $stateParams.id+ "&lang=" + appService.localStorageService.cookie
+		               .get('language') + "&sortBy=-id");
+		       hasServer.then(function(result) {
+		           $scope.showLoader = false;
+		           $scope.showLoaderOffer = false;
+		           $scope.vpcrouter = result[0];
+		       });
+		};
 
     if ($stateParams.id > 0  && $location.path() == '/vpc/view/' + $stateParams.id ) {
+    	$scope.activity.category = "details";
         $scope.showLoader = true;
         $scope.showLoaderOffer = true;
         $state.current.data.pageName = "";
@@ -115,6 +123,7 @@ $scope. getVpcrouter = function(netwrkid) {
                 $state.$current.parent.data.id = result.id;
             }
         });
+        $scope.Vpcrouterdetails();
     }
 
     $scope.breadcrumbList = function() {
