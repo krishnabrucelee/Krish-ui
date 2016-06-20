@@ -462,17 +462,19 @@ table.dataTable thead .sorting_desc::after {content: "\f0dd";}
 .cg-notify-close .fa{font-size: 14px;}
 
 .captcha-textbox{margin-top:10px;}
-.captcha-refresh{margin-top:29px;}
+.captcha-refresh{margin-top:40px; margin-left:6px;}
 .captcha-refresh a{color:#ffffff;}
 
 #captchaImg{border:none; height:56px;}
 #captchaImg body{margin:0px; padding:0px;}
-.captcha-number{margin-top:14px;}
+.captcha-number{margin-top:22px;}
+.login-container .form-control{height:38px;}
 
 .legendColorBox .fa{font-size: 18px;}
 
 @media screen and (-webkit-min-device-pixel-ratio:0) {
-.captcha-number{margin-top:20px;}
+.captcha-number{margin-top:28px; margin-left:10px;}
+.captcha-refresh{margin-top:40px; margin-left:0px;}
 }
 
 .well{padding:10px;}
