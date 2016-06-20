@@ -113,14 +113,14 @@
 												<th data-ng-click="changeSort('name',paginationObject.currentPage)"
 													data-ng-class="sort.descending && sort.column == 'name' ? 'sorting_desc' : 'sorting_asc' "><fmt:message
 														key="common.name" bundle="${msg}" /></th>
-												<th data-ng-click="changeSort('domain.name',paginationObject.currentPage)"
-													data-ng-class="sort.descending && sort.column =='domain.name'? 'sorting_desc' : 'sorting_asc' "><fmt:message
+												<th data-ng-click="changeSort('domainName',paginationObject.currentPage)"
+													data-ng-class="sort.descending && sort.column =='domainName'? 'sorting_desc' : 'sorting_asc' "><fmt:message
 														key="common.company" bundle="${msg}" /></th>
-												<th data-ng-click="changeSort('department.userName',paginationObject.currentPage)"
-													data-ng-class="sort.descending && sort.column =='Account'? 'sorting_desc' : 'sorting_asc' "><fmt:message
+												<th data-ng-click="changeSort('departmentUserName',paginationObject.currentPage)"
+													data-ng-class="sort.descending && sort.column =='departmentUserName'? 'sorting_desc' : 'sorting_asc' "><fmt:message
 														key="common.department" bundle="${msg}" /></th>
-												<th data-ng-click="changeSort('project.name',paginationObject.currentPage)"
-													data-ng-class="sort.descending && sort.column =='project.name'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="common.project" bundle="${msg}" /></th>
+												<th data-ng-click="changeSort('projectName',paginationObject.currentPage)"
+													data-ng-class="sort.descending && sort.column =='projectName'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="common.project" bundle="${msg}" /></th>
 												<th data-ng-click="changeSort('networkType',paginationObject.currentPage)"
 													data-ng-class="sort.descending && sort.column =='networkType'? 'sorting_desc' : 'sorting_asc' "><fmt:message
 														key="common.type" bundle="${msg}" /></th>
@@ -144,31 +144,31 @@
 												<td><a class="text-info"
 													ui-sref="cloud.list-network.view-network({id: {{ network.id }}, view: 'view'})"
 													title="View Network">{{ network.name }}</a></td>
-											    <td>{{ network.domain.name }}</td>
-												<td>{{ network.department.userName || '-'}}</td>
-												<td>{{ network.project.name || '-'}}</td>
+											    <td>{{ network.domainName }}</td>
+												<td>{{ network.departmentUserName || '-'}}</td>
+												<td>{{ network.projectName || '-'}}</td>
 												<td>{{ network.networkType }}</td>
 												<td>{{ network.cIDR }}</td>
 												<td>{{ network.gateway}}</td>
 												<td>
-												<input type="hidden" id="network_unique_{{network.id}}" data-unique-field="{{network.domain.name}}-{{network.department.userName}}-{{network.name}}" class="test_network_unique">
+												<input type="hidden" id="network_unique_{{network.id}}" data-unique-field="{{network.domainName}}-{{network.departmentUserName}}-{{network.name}}" class="test_network_unique">
 												<a class="icon-button test_network_edit_button" id="network_edit_button_{{network.id}}"
-												    data-unique-field="{{network.domain.name}}-{{network.department.userName}}-{{network.name}}"
+												    data-unique-field="{{network.domainName}}-{{network.departmentUserName}}-{{network.name}}"
 													has-permission="EDIT_NETWORK"
 													title="<fmt:message key="common.edit" bundle="${msg}" />"
 													ui-sref="cloud.list-network.view-network({id: {{ network.id }}, view: 'edit'})">
 														<span class="fa fa-edit m-r"> </span>
 												</a> <a class="icon-button test_network_restart_button" id="network_restart_button_{{network.id}}"
-												    data-unique-field="{{network.domain.name}}-{{network.department.userName}}-{{network.name}}"
+												    data-unique-field="{{network.domainName}}-{{network.departmentUserName}}-{{network.name}}"
 												    has-permission="RESTART_NETWORK"
 													title="<fmt:message key="common.restart" bundle="${msg}" /> "
-													data-ng-click="restart('sm', network)"><span
+													data-ng-click="restart('sm', network.id)"><span
 														class="fa fa-rotate-left m-r"></span></a> <a
 													class="icon-button test_network_delete_button" id="network_delete_button_{{network.id}}"
-													data-unique-field="{{network.domain.name}}-{{network.department.userName}}-{{network.name}}"
+													data-unique-field="{{network.domainName}}-{{network.departmentUserName}}-{{network.name}}"
 													has-permission="DELETE_NETWORK"
 													title="<fmt:message key="common.delete" bundle="${msg}" /> "
-													data-ng-click="delete('sm', network)"><span
+													data-ng-click="delete('sm', network.id)"><span
 														class="fa fa-trash"></span></a></td>
 											</tr>
 										</tbody>

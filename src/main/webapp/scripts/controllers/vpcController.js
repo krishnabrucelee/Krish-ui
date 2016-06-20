@@ -59,6 +59,7 @@ function vpcCtrl($scope, $modal, appService, $timeout, filterFilter, $stateParam
     $scope.natList = [];
     $scope.vpcsid = $stateParams.id;
     $scope.aclID = {};
+    $scope.tabview = {};
 
     $scope.type = $stateParams.view;
     // VPC Offer List
@@ -907,7 +908,7 @@ $scope.lBForVpc = function(networkId){
 
  // Load balancer
  $scope.LBlist = function(loadBalancer) {
-        $scope.templateCategory = 'load-balance';
+	    $scope.tabview = 'load-balance';
         $scope.rulesvmList = {};
         $scope.stickiness = {};
         $scope.loadBalancer = {};
@@ -1458,6 +1459,7 @@ $scope.dropnetworkLists = {
         $scope.tabview = appService.localStorageService.get('view');
         $scope.templateCategory = $scope.tabview;
         $scope.active = true;
+        $scope.showLoader = true;
         //var networkId = $stateParams.id;
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         if (!angular.isUndefined($stateParams.id)) {
@@ -1471,6 +1473,7 @@ $scope.dropnetworkLists = {
             $scope.paginationObject.limit = limit;
             $scope.paginationObject.currentPage = pageNumber;
             $scope.paginationObject.totalItems = result.totalItems;
+            $scope.showLoader = false;
         });
         }
     };
@@ -1702,6 +1705,7 @@ $scope.vmPortId = instance;
         $scope.tabview = appService.localStorageService.get('view');
         $state.reload();
     }
+      $scope.tabview = appService.localStorageService.get('view');
 
 
     $scope.getNatList = function(networkId){
@@ -1948,10 +1952,10 @@ $scope.vmPortId = instance;
    $scope.portRulesLists = function(pageNumber) {
 
         $scope.showLoader = true;
-        $scope.templateCategory = 'port-forward';
+        $scope.tabview = 'port-forward';
         $scope.firewallRules = {};
         $scope.portForward = {};
-$scope.portFormSubmitted = false;
+        $scope.portFormSubmitted = false;
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasFirewallRuless = appService.crudService.listAllByQuery("portforwarding/list?ipaddress=" + $stateParams.id1, $scope.global.paginationHeaders(pageNumber, limit), {
             "limit": limit
@@ -1964,8 +1968,6 @@ $scope.portFormSubmitted = false;
             $scope.paginationObject.limit = limit;
             $scope.paginationObject.currentPage = pageNumber;
             $scope.paginationObject.totalItems = result.totalItems;
-            appService.localStorageService.set('view', 'port-forward');
-            $scope.tabview = appService.localStorageService.get('view');
         });
     };
 

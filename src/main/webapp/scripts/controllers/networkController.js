@@ -95,7 +95,7 @@ if (!angular.isUndefined($stateParams.id)) {
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasGuestnetworkLists = {};
 	if ($scope.domainId == null && $scope.vmSearch == null) {
-            hasGuestnetworkLists = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "guestnetwork" +"?lang=" + appService.localStorageService.cookie.get('language') +"&sortBy="+sortOrder+sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+            hasGuestnetworkLists = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "guestnetwork/listView" +"?lang=" + appService.localStorageService.cookie.get('language') +"&sortBy="+sortOrder+sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
             } else {
 	if ($scope.domainId != null && $scope.vmSearch == null) {
                 $scope.filter = "&domainId=" + $scope.domainId + "&searchText=";
@@ -684,7 +684,7 @@ $scope.vmSearch = null;
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasGuestNetworks = {};
 	if ($scope.domainId == null && $scope.vmSearch == null) {
-            	hasGuestNetworks = appService.crudService.list("guestnetwork", $scope.global.paginationHeaders(pageNumber, limit), {
+            	hasGuestNetworks = appService.crudService.list("guestnetwork/listView", $scope.global.paginationHeaders(pageNumber, limit), {
                 "limit": limit});
             }
 		else {
@@ -715,7 +715,9 @@ $scope.vmSearch = null;
     };
     $scope.filteredCount = $scope.networkList;
     // Delete the Network
-    $scope.delete = function(size, network) {
+    $scope.delete = function(size, networkId) {
+    var hasNetworkRead = appService.crudService.read("guestnetwork", networkId);
+	hasNetworkRead.then(function (network) {
         appService.dialogService.openDialog("app/views/cloud/network/confirm-delete.jsp", size, $scope, ['$scope', '$modalInstance', function($scope, $modalInstance) {
             $scope.deleteId = network.id;
             $scope.ok = function(networkId) {
@@ -741,10 +743,13 @@ $scope.vmSearch = null;
                     $modalInstance.close();
                 };
         }]);
+    });
     };
     $scope.networkRestart = {};
     // Restart the Network
-    $scope.restart = function(size, network) {
+    $scope.restart = function(size, networkId) {
+    var hasNetworkRead = appService.crudService.read("guestnetwork", networkId);
+	hasNetworkRead.then(function (network) {
         appService.dialogService.openDialog("app/views/cloud/network/restart-network.jsp", size, $scope, ['$scope', '$modalInstance', function($scope, $modalInstance) {
             $scope.ok = function(restart) {
                     $scope.networkRestart = restart;
@@ -772,6 +777,7 @@ $scope.vmSearch = null;
                     $modalInstance.close();
                 };
         }]);
+    });
     };
     // Edit Network
     $scope.edit = function(networkId) {

@@ -7,7 +7,7 @@ pageEncoding="UTF-8"%>
 <c:set var="language" value="${not empty language ? language : pageContext.request.getAttribute('language')}" scope="session" />
 <fmt:setBundle basename="i18n/messages_${language}" var="msg" scope="session" />
 
-<div class="row" data-ng-controller="vpcCtrl"  >
+<div class="row"  >
 <div data-ng-if="global.webSocketLoaders.ipLoader" class="overlay-wrapper">
     <img data-ng-if="global.webSocketLoaders.ipLoader" src="images/loading-bars.svg" class="inner-loading" />
 </div>
@@ -96,7 +96,7 @@ pageEncoding="UTF-8"%>
                 </div>
                 <div class="child-right pull-right" data-ng-if = "!ipDetails.isStaticnat && !ipDetails.isSourcenat">
                     <fmt:message key="load.balancing" bundle="${msg}" />
-                    <a href="javascript:void(0)" data-ng-click="selectTab('loadBalance')" class="btn-diagram"><span><fmt:message key="view" bundle="${msg}" /></span></a>
+                    <a href="javascript:void(0)" data-ng-click="LBlist(1)" class="btn-diagram"><span><fmt:message key="view" bundle="${msg}" /></span></a>
                 </div>
                 <div class="child-right pull-right" data-ng-if = "ipDetails.isStaticnat || ipDetails.isSourcenat">
                     <del><fmt:message key="load.balancing" bundle="${msg}" /></del>
