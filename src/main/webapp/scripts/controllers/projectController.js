@@ -85,7 +85,7 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams, localStor
     				+ "&domainId="+$scope.domainView.id+"&sortBy="+$scope.paginationObject.sortOrder+$scope.paginationObject.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
             }**/
  	 if ($scope.domainView == null && $scope.vmSearch == null) {
-            	hasProjectsLists = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "projects" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+sortOrder+sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+            	hasProjectsLists = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "projects/listView" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+sortOrder+sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
             }
 		else {
 	  	if ($scope.domainView != null && $scope.vmSearch == null) {
@@ -136,7 +136,7 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams, localStor
 				+ "&domainId="+$scope.domainView.id+"&sortBy="+globalConfig.sort.sortOrder+globalConfig.sort.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
         }**/
    if ($scope.domainView == null && $scope.vmSearch == null) {
-            	hasProjects = appService.crudService.list("projects", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+            	hasProjects = appService.crudService.list("projects/listView", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
             }
 		else {
 if ($scope.domainView != null && $scope.vmSearch == null) {
@@ -477,8 +477,9 @@ if ($scope.domainView != null && $scope.vmSearch == null) {
     };
 
     // Edit the project
-    $scope.editProject = function (size,project) {
-
+    $scope.editProject = function (size, projectId) {
+	var hasProjectRead = appService.crudService.read("projects", projectId);
+	hasProjectRead.then(function (project) {
    	$scope.editProjects = angular.copy(project);
    	$scope.projectInfo = angular.copy(project);
     	if(!angular.isUndefined($scope.projectInfo.department) && $scope.projectInfo.department != null ){
@@ -556,11 +557,14 @@ if ($scope.domainView != null && $scope.vmSearch == null) {
                             $modalInstance.close();
                         };
             }]);
+    });
     };
 
 
     // Delete the department
-    $scope.projectDeleteConfirmation = function (size,projectObj) {
+    $scope.projectDeleteConfirmation = function (size, projectId) {
+    	var hasProjectRead = appService.crudService.read("projects", projectId);
+    	hasProjectRead.then(function (projectObj) {
         appService.dialogService.openDialog("app/views/project/delete.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
                 var deleteObject = angular.copy(projectObj);
                 $scope.deleteProject = function () {
@@ -602,6 +606,7 @@ if ($scope.domainView != null && $scope.vmSearch == null) {
                             $modalInstance.close();
                         };
             }]);
+    });
     };
 
     $scope.status = {};
