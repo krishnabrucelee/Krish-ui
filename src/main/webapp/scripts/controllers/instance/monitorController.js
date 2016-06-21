@@ -16,7 +16,8 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
 	var headers = {};
 	$scope.instance = {};
 	$scope.networkIndex = 0;
-    $scope.uuid = "c62b4df6-a996-470d-b1c0-b42806619382";
+    $scope.uuid = "3bd34a2d-0d72-83f5-a990-94081c8b1569";
+    $scope.monitorImage = false;
 
     var initStompClient = function() {
 
@@ -128,11 +129,10 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
 
         getCpuToolTipContent : function(label, x, y) {
             var contents = "<div class='text-center'><b>" + graphTooltip.getCurrentDate() + "</b></div>";
-            if (!angular.isUndefined($scope.currentCpu[$scope.cpuIndex])) {
-            	contents += "<div><b>swagent.percpu{host=" + $scope.hostName + ", core="+$scope.currentCpu[$scope.cpuIndex]+"} : " + y.toFixed(2) + "</b></div>";
-            }
-            if (angular.isUndefined($scope.currentCpu[$scope.cpuIndex])) {
-            	contents += "<div><b>swagent.percpu{host=" + $scope.hostName + ", core="+$scope.currentCpu[0]+"} : " + y.toFixed(2) + "</b></div>";
+            if (!angular.isUndefined($scope.cpuIndex)) {
+            	contents += "<div><b>swagent.percpu{host=" + $scope.hostName + ", core=CPU "+ $scope.cpuIndex +"} : " + y.toFixed(2) + "</b></div>";
+            } else {
+            	contents += "<div><b>swagent.percpu{host=" + $scope.hostName + ", core=CPU 0 } : " + y.toFixed(2) + "</b></div>";
             }
             return contents;
         }
@@ -175,7 +175,7 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
     	    {
     	    	 $timeout(function() {
     	             $scope.showLoader = false;
-    	         }, 5000);
+    	         }, 20000);
      });
 
 
@@ -1433,6 +1433,7 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
     }
 
     var dataSubscribe = function() {
+    	$scope.monitorImage = false;
         webSockets.subscribe("/topic/stackwatch.cpu/" + appService.globalConfig.sessionValues.id +"/"+ $scope.uuid, function(message) {
         	var cpuResult = JSON.parse(message.body).perCpuUsage;
         	$scope.cpuCount = cpuResult.length;
