@@ -84,7 +84,7 @@ function accountListCtrl($scope,$state, $log,$timeout,$stateParams, appService, 
 		var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
 		var hasUserLists = {};
        	if ($scope.domainView == null && $scope.userSearch == null) {
-       		hasUserLists =  appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "users" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+sortOrder+sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+       		hasUserLists =  appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "users/listView" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+sortOrder+sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
         }  else {
             $scope.filter = "";
         	if ($scope.domainView != null && $scope.userSearch == null) {
@@ -387,8 +387,9 @@ function accountListCtrl($scope,$state, $log,$timeout,$stateParams, appService, 
 }
 
         // Delete user data from database
-        $scope.deleteUser = function (size,account) {
-
+        $scope.deleteUser = function (size, accountId) {
+         var hasUsersRead = appService.crudService.read("users", accountId);
+         hasUsersRead.then(function (account) {
          var user = account;
        	 angular.forEach($scope.accountList, function (item, key) {
                 if (item['isSelected']) {
@@ -416,6 +417,7 @@ function accountListCtrl($scope,$state, $log,$timeout,$stateParams, appService, 
               $modalInstance.close();
           }
       }]);
+        });
 
         };
 
@@ -437,7 +439,9 @@ function accountListCtrl($scope,$state, $log,$timeout,$stateParams, appService, 
         };
 
     // Edit user data
-    $scope.editUser = function (size,account) {
+    $scope.editUser = function (size, accountId) {
+    	var hasUsersRead = appService.crudService.read("users", accountId);
+    	hasUsersRead.then(function (account) {
     	var user = account;
     	 angular.forEach($scope.accountList, function (item, key) {
              if (item['isSelected']) {
@@ -472,10 +476,13 @@ function accountListCtrl($scope,$state, $log,$timeout,$stateParams, appService, 
                 $modalInstance.close();
             };
        }]);
+    });
     };
 
     // Reset Password
-    $scope.resetPassword = function (size,account) {
+    $scope.resetPassword = function (size,accountId) {
+    	var hasUsersRead = appService.crudService.read("users", accountId);
+    	hasUsersRead.then(function (account) {
     	var user = account;
     	 angular.forEach($scope.accountList, function (item, key) {
              if (item['isSelected']) {
@@ -521,6 +528,7 @@ function accountListCtrl($scope,$state, $log,$timeout,$stateParams, appService, 
                 $modalInstance.close();
             };
        }]);
+    });
     };
 
     $scope.ok = function () {
@@ -546,7 +554,9 @@ function accountListCtrl($scope,$state, $log,$timeout,$stateParams, appService, 
         $timeout($scope.generateRevoke, 3000);
     };
 
-    $scope.revoking = function (account) {
+    $scope.revoking = function (accountId) {
+    	var hasUsersRead = appService.crudService.read("users", accountId);
+    	hasUsersRead.then(function (account) {
     	var user = account;
       	$scope.user = user;
     	  appService.dialogService.openDialog("app/views/account/revoke.jsp", 'sm', $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
@@ -567,9 +577,13 @@ function accountListCtrl($scope,$state, $log,$timeout,$stateParams, appService, 
                   $modalInstance.close();
               }
 
-    	  }]);    }
+    	  }]);
+          });
+    	  }
 
-    $scope.activating = function (account) {
+    $scope.activating = function (accountId) {
+    	var hasUsersRead = appService.crudService.read("users", accountId);
+    	hasUsersRead.then(function (account) {
     	var user = account;
       	$scope.user = user;
         appService.dialogService.openDialog("app/views/account/activate.jsp", 'sm', $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
@@ -593,6 +607,7 @@ function accountListCtrl($scope,$state, $log,$timeout,$stateParams, appService, 
 
 
         }]);
+    });
     }
 }
 
