@@ -39,6 +39,9 @@ angular
     .directive('validCharacters', validCharacters)
     .directive('hasPermission', hasPermission)
     .directive('getMonitorLoaderImage', getMonitorLoaderImage)
+    .directive('getMonitorLoaderImageMemory', getMonitorLoaderImageMemory)
+    .directive('getMonitorLoaderImageDisk', getMonitorLoaderImageDisk)
+    .directive('getMonitorLoaderImageNetwork', getMonitorLoaderImageNetwork)
     .directive('chart', function(){
     return{
         restrict: 'E',
@@ -737,6 +740,37 @@ function getMonitorLoaderImage() {
         templateUrl: "app/views/common/monitorLoader-image.jsp",
     }
 }
+
+function getMonitorLoaderImageMemory() {
+    return {
+        restrict: 'E',
+        link: function (scope, element, attrs) {
+
+        },
+        templateUrl: "app/views/common/monitorMemoryLoader-image.jsp",
+    }
+}
+
+function getMonitorLoaderImageNetwork() {
+    return {
+        restrict: 'E',
+        link: function (scope, element, attrs) {
+
+        },
+        templateUrl: "app/views/common/monitorNetworkLoader-image.jsp",
+    }
+}
+
+function getMonitorLoaderImageDisk() {
+    return {
+        restrict: 'E',
+        link: function (scope, element, attrs) {
+
+        },
+        templateUrl: "app/views/common/monitorDiskLoader-image.jsp",
+    }
+}
+
 
 function getLoaderDetailImage() {
     return {

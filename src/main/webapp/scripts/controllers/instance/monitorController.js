@@ -16,7 +16,7 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
 	var headers = {};
 	$scope.instance = {};
 	$scope.networkIndex = 0;
-    $scope.uuid = "3bd34a2d-0d72-83f5-a990-94081c8b1569";
+    $scope.uuid = "079f3a02-69be-47b7-9bdf-3319543aa821";
     $scope.monitorImage = false;
 
     var initStompClient = function() {
@@ -132,7 +132,7 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
             if (!angular.isUndefined($scope.cpuIndex)) {
             	contents += "<div><b>swagent.percpu{host=" + $scope.hostName + ", core=CPU "+ $scope.cpuIndex +"} : " + y.toFixed(2) + "</b></div>";
             } else {
-            	contents += "<div><b>swagent.percpu{host=" + $scope.hostName + ", core=CPU 0 } : " + y.toFixed(2) + "</b></div>";
+            	contents += "<div><b>swagent.percpu{host=" + $scope.hostName + ", core=CPU 0} : " + y.toFixed(2) + "</b></div>";
             }
             return contents;
         }
@@ -1433,85 +1433,84 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
     }
 
     var dataSubscribe = function() {
-    	$scope.monitorImage = false;
         webSockets.subscribe("/topic/stackwatch.cpu/" + appService.globalConfig.sessionValues.id +"/"+ $scope.uuid, function(message) {
+        	$scope.monitorImage = true;
         	var cpuResult = JSON.parse(message.body).perCpuUsage;
         	$scope.cpuCount = cpuResult.length;
         	angular.forEach(angular.fromJson(cpuResult), function(value, key){
-        		if ($scope.cpuCount > 0) {
-        			getCpuPerformanceByFilters(key, -1, pandaChart.chartTypes.CPU, value);
-        			$scope.monitorImage = false;
-        		}
-        		else {
-        			$scope.monitorImage = true;
-        		}
+        			if (value.dataPoints.length > 0) {
+        				getCpuPerformanceByFilters(key, -1, pandaChart.chartTypes.CPU, value);
+        				$scope.monitorImage = false;
+        			}
+        			else {
+        				$scope.monitorImage = true;
+        			}
         	});
         });
         webSockets.subscribe("/topic/stackwatch.memory/" + appService.globalConfig.sessionValues.id +"/"+ $scope.uuid, function(message) {
+			$scope.monitorMemoryImage = true;
         	var memoryResult = JSON.parse(message.body);
-        	//if (memoryResult.total.length > 0 || memoryResult.free.length > 0) {
         		getMemoryPerformanceByFilter(0, -1, pandaChart.chartTypes.MEMORY, memoryResult.total, "Total" );
         		getMemoryPerformanceByFilter(1, -1, pandaChart.chartTypes.MEMORY, memoryResult.free, "Free" );
-        		//$scope.monitorImage = false;
-        	//}
-        	//else {
-    			$scope.monitorImage = true;
-    		//}
+			if (memoryResult.total.dataPoints.length > 0) {
+				$scope.monitorMemoryImage = false;
+			} else {
+				$scope.monitorMemoryImage = true;
+			}
         });
         webSockets.subscribe("/topic/stackwatch.disk/" + appService.globalConfig.sessionValues.id +"/"+ $scope.uuid, function(message) {
         	var diskResult = JSON.parse(message.body);
+        	$scope.monitorDiskImage = true;
         	$scope.diskCount = diskResult.read.length;
         	$scope.diskCounts = diskResult.write.length;
             	angular.forEach(angular.fromJson(diskResult.read), function(value, key){
-            		if ($scope.diskCount > 0) {
+            		if (value.dataPoints.length > 0) {
             			$scope.disks.push(value.tags);
             			$scope.currentDisk[key] = value.tags;
             			getDiskPerformanceByFilters(key, -1, pandaChart.chartTypes.DISK, value, "read");
-            			$scope.monitorImage = false;
+            			$scope.monitorDiskImage = false;
             		}
             		else {
-            			$scope.monitorImage = true;
+            			$scope.monitorDiskImage = true;
             		}
             	});
             	angular.forEach(angular.fromJson(diskResult.write), function(value, key){
-            		if ($scope.diskCounts > 0) {
+            		if (value.dataPoints.length > 0) {
             			$scope.currentDisk[key] = value.tags;
             			getDiskPerformanceByFilters(key, -1, pandaChart.chartTypes.DISK, value, "write");
-            			$scope.monitorImage = false;
+            			$scope.monitorDiskImage = false;
             		}
             		else {
-            			$scope.monitorImage = true;
+            			$scope.monitorDiskImage = true;
             		}
             	});
-
             	$rootScope.$broadcast("DISK", diskResult);
         });
         webSockets.subscribe("/topic/stackwatch.network/" + appService.globalConfig.sessionValues.id +"/"+ $scope.uuid, function(message) {
+        	$scope.monitorNetworkImage = true;
         	var networkResult = JSON.parse(message.body);
         	$scope.networkCount = networkResult.receive.length;
         	$scope.networkCounts = networkResult.send.length;
         	angular.forEach(angular.fromJson(networkResult.receive), function(value, key){
-        		if ($scope.networkCount > 0) {
+        		if (value.dataPoints.length > 0) {
         			$scope.interfaces.push(value.tags);
         			$scope.currentNetwork[key] = value.tags;
         			getNetworkPerformanceByFilter(key, -1, pandaChart.chartTypes.NETWORK, value, "send");
-        			$scope.monitorImage = false;
+        			$scope.monitorNetworkImage = false;
         		}
         		else {
-        			$scope.monitorImage = true;
+        			$scope.monitorNetworkImage = true;
         		}
         	});
         	angular.forEach(angular.fromJson(networkResult.send), function(value, key){
-        		if ($scope.networkCounts > 0) {
+        		if (value.dataPoints.length > 0) {
         			getNetworkPerformanceByFilter(key, -1, pandaChart.chartTypes.NETWORK, value, "receive");
-        			$scope.monitorImage = false;
+        			$scope.monitorNetworkImage = false;
         		}
         		else {
-        			$scope.monitorImage = true;
+        			$scope.monitorNetworkImage = true;
         		}
         	});
-
-
         });
         webSockets.subscribe("/topic/stackwatch.connection/" + appService.globalConfig.sessionValues.id +"/"+ $scope.uuid , function(message) {
 

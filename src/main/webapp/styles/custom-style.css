@@ -454,10 +454,10 @@ table.dataTable thead .sorting_desc::after {content: "\f0dd";}
 .legendColorBox.active .fa{color:#48a9da;}
 
  a.lang{width:150px;}
-.eng-lang{padding-right:20px;}
-.chn-lang .lang{border-left:#fff 1px solid; padding-left:20px;}
-.chn-lang label{color:#157db0 !important;}
-.eng-lang label{color:#157db0 !important;}
+.eng-lang{padding-right:15px;}
+.chn-lang .lang{border-left:#fff 1px solid; padding-left:15px;}
+.chn-lang label{color:#000 !important;}
+.eng-lang label{color:#000 !important;}
 
 .cg-notify-close .fa{font-size: 14px;}
 
