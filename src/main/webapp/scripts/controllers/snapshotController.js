@@ -90,7 +90,7 @@ function snapshotListCtrl($scope, crudService, $state, $timeout, promiseAjax, gl
         var hasSnapshotLists = {};
         if ($scope.domainId == null && ($scope.snapshotSearch == null
         		|| angular.isUndefined($scope.snapshotSearch) || $scope.snapshotSearch == '')) {
-        	var hasSnapshotLists = appService.promiseAjax.httpTokenRequest(globalConfig.HTTP_GET, globalConfig.APP_URL + "snapshots" + "?lang=" + localStorageService.cookie.get('language') + "&sortBy=" + sortOrder + sortBy + "&limit=" + limit, $scope.global.paginationHeaders(pageNumber, limit), {
+        	var hasSnapshotLists = appService.promiseAjax.httpTokenRequest(globalConfig.HTTP_GET, globalConfig.APP_URL + "snapshots/listView" + "?lang=" + localStorageService.cookie.get('language') + "&sortBy=" + sortOrder + sortBy + "&limit=" + limit, $scope.global.paginationHeaders(pageNumber, limit), {
                 "limit": limit
             });
         }
@@ -139,7 +139,7 @@ function snapshotListCtrl($scope, crudService, $state, $timeout, promiseAjax, gl
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasSnapshotLists = {};
         if ($scope.domainId == null && $scope.vmSearch == null) {
-        	var hasSnapshotLists = appService.promiseAjax.httpTokenRequest(globalConfig.HTTP_GET, globalConfig.APP_URL + "vmsnapshot" + "?lang=" + localStorageService.cookie.get('language') + "&sortBy=" + sortOrder + sortBy + "&limit=" + limit, $scope.global.paginationHeaders(pageNumber, limit), {
+        	var hasSnapshotLists = appService.promiseAjax.httpTokenRequest(globalConfig.HTTP_GET, globalConfig.APP_URL + "vmsnapshot/listView" + "?lang=" + localStorageService.cookie.get('language') + "&sortBy=" + sortOrder + sortBy + "&limit=" + limit, $scope.global.paginationHeaders(pageNumber, limit), {
                 "limit": limit
             });
         }
@@ -177,7 +177,7 @@ function snapshotListCtrl($scope, crudService, $state, $timeout, promiseAjax, gl
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? crudService.globalConfig.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasSnapshot = {};
         if ($scope.domainId == null && $scope.snapshotSearch == null) {
-        	var hasSnapshot = crudService.list("snapshots", crudService.globalConfig.paginationHeaders(pageNumber, limit), {
+        	var hasSnapshot = crudService.list("snapshots/listView", crudService.globalConfig.paginationHeaders(pageNumber, limit), {
                 "limit": limit
             });
         }
@@ -223,7 +223,7 @@ function snapshotListCtrl($scope, crudService, $state, $timeout, promiseAjax, gl
         var limit = (angular.isUndefined($scope.paginationObjects.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObjects.limit;
         var hasSnapshots = {};
         if ($scope.domainId == null && $scope.vmSearch == null) {
-          	hasSnapshots = appService.crudService.list("vmsnapshot", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+          	hasSnapshots = appService.crudService.list("vmsnapshot/listView", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
         }
 		else {
             if ($scope.domainId != null && $scope.vmSearch == null) {
@@ -340,7 +340,9 @@ $scope.vmCostList();
     // };
     // }]);
     // };
-    $scope.deleteSnapshots = function(size, snapshot) {
+    $scope.deleteSnapshots = function(size, snapshotId) {
+    	var hasSnapshotRead = appService.crudService.read("vmsnapshot", snapshotId);
+    	hasSnapshotRead.then(function (snapshot) {
         dialogService.openDialog("app/views/cloud/snapshot/delete-snapshot.jsp", size, $scope, ['$scope', '$modalInstance', function($scope, $modalInstance) {
             $scope.deleteObject = snapshot;
             $scope.ok = function() {
@@ -361,8 +363,11 @@ $scope.vmCostList();
                     $modalInstance.close();
                 };
         }]);
+    });
     };
-    $scope.deleteVolumeSnapshot = function(size, snapshot) {
+    $scope.deleteVolumeSnapshot = function(size, snapshotId) {
+    	var hasSnapshotRead = appService.crudService.read("snapshots", snapshotId);
+    	hasSnapshotRead.then(function (snapshot) {
         dialogService.openDialog("app/views/common/confirm-delete.jsp", size, $scope, ['$scope', '$modalInstance', function($scope, $modalInstance) {
             $scope.deleteObject = snapshot;
             $scope.ok = function(deleteObject) {
@@ -379,8 +384,11 @@ appService.globalConfig.webSocketLoaders.volumeBackupLoader = false;
                     $modalInstance.close();
                 };
         }]);
+    });
     };
-    $scope.restoresnapshot = function(vmsnapshot) {
+    $scope.restoresnapshot = function(vmsnapshotId) {
+    	var hasSnapshotRead = appService.crudService.read("vmsnapshot", vmsnapshotId);
+    	hasSnapshotRead.then(function (vmsnapshot) {
         dialogService.openDialog("app/views/cloud/snapshot/revert-vmsnapshot.jsp", 'sm', $scope, ['$scope', '$modalInstance', '$rootScope', function($scope, $modalInstance, $rootScope) {
             $scope.ok = function() {
                     $scope.showLoader = true;
@@ -400,6 +408,7 @@ appService.globalConfig.webSocketLoaders.volumeBackupLoader = false;
                     $modalInstance.close();
                 };
         }]);
+    });
     };
 
 
@@ -472,7 +481,9 @@ appService.globalConfig.webSocketLoaders.volumeBackupLoader = false;
             };
         }]);
     };
-    $scope.createVolume = function(size, snapshot) {
+    $scope.createVolume = function(size, snapshotId) {
+    	var hasSnapshotRead = appService.crudService.read("snapshots", snapshotId);
+    	hasSnapshotRead.then(function (snapshot) {
         appService.dialogService.openDialog("app/views/cloud/snapshot/create-volume.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope',
             function($scope, $modalInstance, $rootScope) {
                 $scope.deleteObject = snapshot;
@@ -517,8 +528,11 @@ appService.globalConfig.webSocketLoaders.volumeBackupLoader = false;
                     };
             }
         ]);
+    });
     };
-    $scope.revertSnapshot = function(size, snapshot) {
+    $scope.revertSnapshot = function(size, snapshotId) {
+    	var hasSnapshotRead = appService.crudService.read("snapshots", snapshotId);
+    	hasSnapshotRead.then(function (snapshot) {
         appService.dialogService.openDialog("app/views/cloud/snapshot/revert-snapshot.jsp", size, $scope, ['$scope', '$modalInstance', '$rootScope',
             function($scope, $modalInstance, $rootScope) {
                 $scope.revertSnapshot = snapshot;
@@ -579,6 +593,7 @@ console.log($scope.revertSnapshot.domain);
                     };
             }
         ]);
+    });
     };
     $scope.$on(appService.globalConfig.webSocketEvents.snapshotEvents.createvmsnapshot, function(event, args) {
 	appService.globalConfig.webSocketLoaders.snapshotLoader = false;
