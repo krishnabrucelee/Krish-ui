@@ -54,9 +54,9 @@ protected TextOptions options;
            RenderingHints.VALUE_RENDER_QUALITY);
     g2d.setRenderingHints(rh);
 
-    Color test = new Color(143, 203, 233);
+    Color blue = new Color(143, 203, 233);
     Color grey1 = new Color(0,0,0);
-    GradientPaint gp = new GradientPaint(0, 0, test, 0, height/2,test, false);
+    GradientPaint gp = new GradientPaint(0, 0, blue, 0, height/2,blue, false);
     g2d.setPaint(gp);
     g2d.fillRect(0, 0, width, height);
     g2d.setColor(new Color(0, 0, 0));
