@@ -106,10 +106,10 @@
                                         <thead>
                                         <tr>
                                         <th  data-ng-click="changeSort('userName',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='userName'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="user.name" bundle="${msg}" /></th>
-                                     	<th  data-ng-click="changeSort('department.userName',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='department.userName'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.department" bundle="${msg}" /></th>
-                                     	<th  data-ng-click="changeSort('domain.name',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='domain.name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.domain" bundle="${msg}" /></th>
+                                     	<th  data-ng-click="changeSort('departmentUserName',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='departmentUserName'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.department" bundle="${msg}" /></th>
+                                     	<th  data-ng-click="changeSort('domainName',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='domainName'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.domain" bundle="${msg}" /></th>
                                      	<th  data-ng-click="changeSort('type',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='type'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="user.type" bundle="${msg}" /></th>
-                                       	<th  data-ng-click="changeSort('role.name',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='role.name'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="common.roles" bundle="${msg}" /></th>
+                                       	<th  data-ng-click="changeSort('roleName',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='roleName'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="common.roles" bundle="${msg}" /></th>
                                      	<th  data-ng-click="changeSort('email',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='email'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.email" bundle="${msg}" /></th>
                                      	<th  data-ng-click="changeSort('status',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='status'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.status" bundle="${msg}" /></th>
 										<th><fmt:message key="common.action" bundle="${msg}" /></th>
@@ -125,10 +125,10 @@
                                                 <td>
                                                     <a class="text-info" >{{ account.userName}}</a>
                                                </td>
-                                                <td>{{account.department.userName}}</td>
-                                                <td>{{account.domain.name}}</td>
+                                                <td>{{account.departmentUserName}}</td>
+                                                <td>{{account.domainName}}</td>
                                                 <td>{{account.type}}</td>
-                                                <td>{{account.role.name || '-'}}</td>
+                                                <td>{{account.roleName || '-'}}</td>
                                                 <td>{{account.email || '-'}}</td>
                                                 <td>
  												<label class="badge badge-success p-xs" data-ng-if="account.status == 'ENABLED'"> <fmt:message key="common.enabled" bundle="${msg}" /> </label>
@@ -137,71 +137,71 @@
 
                                                 </td>
                                                 <td>
-                                                <input type="hidden" id="accounts_unique_{{account.id}}" data-unique-field="{{account.domain.name}}-{{account.department.userName}}-{{ account.userName}}" class="test_accounts_unique">
-                                                <a class="icon-button test_accounts_edit_user_button" id="accounts_edit_user_button_{{account.id}}" data-unique-field="{{account.domain.name}}-{{account.department.userName}}-{{ account.userName}}"
+                                                <input type="hidden" id="accounts_unique_{{account.id}}" data-unique-field="{{account.domainName}}-{{account.departmentUserName}}-{{ account.userName}}" class="test_accounts_unique">
+                                                <a class="icon-button test_accounts_edit_user_button" id="accounts_edit_user_button_{{account.id}}" data-unique-field="{{account.domainName}}-{{account.departmentUserName}}-{{ account.userName}}"
 													has-permission="EDIT_USER"
 													title="<fmt:message key="edit.user" bundle="${msg}" />"
-													data-ng-click="editUser('md',account)">
+													data-ng-click="editUser('md',account.id)">
 														<span class="fa fa-edit m-r"> </span>
 												</a>
-												 <a class="icon-button test_accounts_reset_password_button" id="accounts_reset_password_button_{{account.id}}" data-unique-field="{{account.domain.name}}-{{account.department.userName}}-{{ account.userName}}" has-permission="RESET_USER_PASSWORD"
+												 <a class="icon-button test_accounts_reset_password_button" id="accounts_reset_password_button_{{account.id}}" data-unique-field="{{account.domainName}}-{{account.departmentUserName}}-{{ account.userName}}" has-permission="RESET_USER_PASSWORD"
 													title="<fmt:message key="reset.password" bundle="${msg}" /> "
-													data-ng-click="resetPassword('md',account)"><span class="fa-key fa font-bold m-r"></span>
+													data-ng-click="resetPassword('md',account.id)"><span class="fa-key fa font-bold m-r"></span>
 													</a>
 												 <a data-ng-if="global.sessionValues.type =='DOMAIN_ADMIN'"
 												 data-ng-hide = "global.sessionValues.type =='DOMAIN_ADMIN' && account.type == 'DOMAIN_ADMIN'"
-													class="icon-button test_accounts_delete_user_button" id="accounts_delete_user_button_{{account.id}}" data-unique-field="{{account.domain.name}}-{{account.department.userName}}-{{ account.userName}}"
+													class="icon-button test_accounts_delete_user_button" id="accounts_delete_user_button_{{account.id}}" data-unique-field="{{account.domainName}}-{{account.departmentUserName}}-{{ account.userName}}"
 													has-permission="DELETE_USER"
 													title="<fmt:message key="common.delete" bundle="${msg}" /> "
-													data-ng-click="deleteUser('sm',account)"><span
+													data-ng-click="deleteUser('sm',account.id)"><span
 														class="fa fa-trash"></span></a>
 
 												 <a data-ng-if="global.sessionValues.type =='ROOT_ADMIN'"
 												   data-ng-hide = "account.type == 'ROOT_ADMIN'"
-												   id="accounts_delete_user_button_{{account.id}}" data-unique-field="{{account.domain.name}}-{{account.department.userName}}-{{ account.userName}}"
+												   id="accounts_delete_user_button_{{account.id}}" data-unique-field="{{account.domainName}}-{{account.departmentUserName}}-{{ account.userName}}"
 													class="icon-button test_accounts_delete_user_button" has-permission="DELETE_USER"
 													title="<fmt:message key="common.delete" bundle="${msg}" /> "
-													data-ng-click="deleteUser('sm',account)"><span
+													data-ng-click="deleteUser('sm',account.id)"><span
 														class="fa fa-trash"></span></a>
 
 												  <a data-ng-if="global.sessionValues.type =='USER' "
 												   data-ng-hide = "account.type == 'DOMAIN_ADMIN' || global.sessionValues.userName == '{{account.userName}}'"
 													class="icon-button test_accounts_delete_user_button"
-													id="accounts_delete_user_button_{{account.id}}" data-unique-field="{{account.domain.name}}-{{account.department.userName}}-{{ account.userName}}"
+													id="accounts_delete_user_button_{{account.id}}" data-unique-field="{{account.domainName}}-{{account.departmentUserName}}-{{ account.userName}}"
 													has-permission="DELETE_USER"
 													title="<fmt:message key="common.delete" bundle="${msg}" /> "
-													data-ng-click="deleteUser('sm',account)"><span
+													data-ng-click="deleteUser('sm',account.id)"><span
 														class="fa fa-trash"></span>
 												</a>
 
                                         		  <a class = "test_accounts_enable_user_button" data-ng-if="global.sessionValues.type =='ROOT_ADMIN'" data-ng-show = "account.type != 'ROOT_ADMIN' && account.status == 'DISABLED' "
-												  id="accounts_enable_user_button_{{account.id}}" data-unique-field="{{account.domain.name}}-{{account.department.userName}}-{{ account.userName}}"
-												  has-permission="ENABLE_USER" data-ng-click="activating(account)"><span class="pe-7s-user pe-lg font-bold m-r-xs" title="Enable User"></span></a>
+												  id="accounts_enable_user_button_{{account.id}}" data-unique-field="{{account.domainName}}-{{account.departmentUserName}}-{{ account.userName}}"
+												  has-permission="ENABLE_USER" data-ng-click="activating(account.id)"><span class="pe-7s-user pe-lg font-bold m-r-xs" title="Enable User"></span></a>
 
                                         		  <a data-ng-if="global.sessionValues.type =='ROOT_ADMIN'" data-ng-show = "account.type != 'ROOT_ADMIN' && account.status == 'ENABLED' "
 												   class = "test_accounts_disable_user_button"
-                                        		  id="accounts_disable_user_button_{{account.id}}" data-unique-field="{{account.domain.name}}-{{account.department.userName}}-{{ account.userName}}"
-                                        		  has-permission="DISABLE_USER" data-ng-click="revoking(account)" ><span class="pe-7s-delete-user pe-lg font-bold m-r-xs" title="Disable User"></span>
+                                        		  id="accounts_disable_user_button_{{account.id}}" data-unique-field="{{account.domainName}}-{{account.departmentUserName}}-{{ account.userName}}"
+                                        		  has-permission="DISABLE_USER" data-ng-click="revoking(account.id)" ><span class="pe-7s-delete-user pe-lg font-bold m-r-xs" title="Disable User"></span>
                                         		  </a>
 
                                         		 <a class = "test_accounts_enable_user_button" data-ng-if="global.sessionValues.type =='DOMAIN_ADMIN'" data-ng-show = "account.type != 'DOMAIN_ADMIN' && account.status == 'DISABLED' "
-												  id="accounts_enable_user_button_{{account.id}}" data-unique-field="{{account.domain.name}}-{{account.department.userName}}-{{ account.userName}}"
-												  has-permission="ENABLE_USER" data-ng-click="activating(account)"><span class="pe-7s-user pe-lg font-bold m-r-xs" title="Enable User"></span></a>
+												  id="accounts_enable_user_button_{{account.id}}" data-unique-field="{{account.domainName}}-{{account.departmentUserName}}-{{ account.userName}}"
+												  has-permission="ENABLE_USER" data-ng-click="activating(account.id)"><span class="pe-7s-user pe-lg font-bold m-r-xs" title="Enable User"></span></a>
 
                                         		  <a data-ng-if="global.sessionValues.type =='DOMAIN_ADMIN'" data-ng-show = "account.type != 'DOMAIN_ADMIN' && account.status == 'ENABLED' "
 												   class = "test_accounts_disable_user_button"
-                                        		  id="accounts_disable_user_button_{{account.id}}" data-unique-field="{{account.domain.name}}-{{account.department.userName}}-{{ account.userName}}"
-                                        		  has-permission="DISABLE_USER" data-ng-click="revoking(account)" ><span class="pe-7s-delete-user pe-lg font-bold m-r-xs" title="Disable User"></span>
+                                        		  id="accounts_disable_user_button_{{account.id}}" data-unique-field="{{account.domainName}}-{{account.departmentUserName}}-{{ account.userName}}"
+                                        		  has-permission="DISABLE_USER" data-ng-click="revoking(account.id)" ><span class="pe-7s-delete-user pe-lg font-bold m-r-xs" title="Disable User"></span>
                                         		  </a>
 
                                         		   <a class = "test_accounts_enable_user_button" data-ng-if="global.sessionValues.type =='USER'" data-ng-show = "global.sessionValues.userName != '{{account.userName}}' && account.status == 'DISABLED' && account.type !='DOMAIN_ADMIN'"
-												  id="accounts_enable_user_button_{{account.id}}" data-unique-field="{{account.domain.name}}-{{account.department.userName}}-{{ account.userName}}"
-												  has-permission="ENABLE_USER" data-ng-click="activating(account)"><span class="pe-7s-user pe-lg font-bold m-r-xs" title="Enable User"></span></a>
+												  id="accounts_enable_user_button_{{account.id}}" data-unique-field="{{account.domainName}}-{{account.departmentUserName}}-{{ account.userName}}"
+												  has-permission="ENABLE_USER" data-ng-click="activating(account.id)"><span class="pe-7s-user pe-lg font-bold m-r-xs" title="Enable User"></span></a>
 
                                         		  <a data-ng-if="global.sessionValues.type =='USER'" data-ng-show = "global.sessionValues.userName != '{{account.userName}}' && account.status == 'ENABLED' && account.type !='DOMAIN_ADMIN'"
 												   class = "test_accounts_disable_user_button"
-                                        		  id="accounts_disable_user_button_{{account.id}}" data-unique-field="{{account.domain.name}}-{{account.department.userName}}-{{ account.userName}}"
-                                        		  has-permission="DISABLE_USER" data-ng-click="revoking(account)" ><span class="pe-7s-delete-user pe-lg font-bold m-r-xs" title="Disable User"></span>
+                                        		  id="accounts_disable_user_button_{{account.id}}" data-unique-field="{{account.domainName}}-{{account.departmentUserName}}-{{ account.userName}}"
+                                        		  has-permission="DISABLE_USER" data-ng-click="revoking(account.id)" ><span class="pe-7s-delete-user pe-lg font-bold m-r-xs" title="Disable User"></span>
                                         		  </a>
 												 </td>
                                             </tr>
