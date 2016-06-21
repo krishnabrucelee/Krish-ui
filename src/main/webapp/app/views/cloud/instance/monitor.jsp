@@ -48,16 +48,16 @@
     </div>
 
     <div class="row" id="cpu-chart-container">
-     <get-monitor-loader-image data-ng-show="monitorImage"></get-monitor-loader-image>
+     <get-monitor-loader-image data-ng-if="monitorImage"></get-monitor-loader-image>
         <div class="col-md-offset-1 col-md-11">
-            <div class="hide-left" data-ng-hide="monitorImage"></div>
-            <div class="hide-right" data-ng-hide="monitorImage"></div>
-            <flot dataset="cpu.dataset" data-ng-if="cpuData.length > 0" options="flotOptions" height="280px" class="flotchart-container"></flot>
+            <div class="hide-left" data-ng-if="!monitorImage"></div>
+            <div class="hide-right" data-ng-if="!monitorImage"></div>
+            <flot dataset="cpu.dataset" data-ng-if="!monitorImage" options="flotOptions" height="280px" class="flotchart-container"></flot>
             <!--<div id="cpuLegendContainer" class="flotchart-legend-container"></div> -->
         </div>
     </div>
 
-    <div class="row" data-ng-if="cpuData.length > 0">
+    <div class="row" data-ng-if="cpuData.length > 0 && monitorImage == false">
         <div class="col-md-12">
             <div id="cpuLegendContent" class="flotchart-legend-content">
                 <table style="font-size: smaller; color: #545454"
@@ -104,17 +104,17 @@
     </div>
 
     <div class="row" id="memory-chart-container">
-    <get-monitor-loader-image data-ng-show="monitorImage"></get-monitor-loader-image>
+    <get-monitor-loader-image-memory data-ng-if="monitorMemoryImage"></get-monitor-loader-image-memory>
         <div class="col-md-offset-1 col-md-11">
-            <div class="hide-left" data-ng-hide="monitorImage"></div>
-            <div class="hide-right" data-ng-hide="monitorImage"></div>
-            <flot dataset="memory.dataset" data-ng-hide="monitorImage" options="memoryFlotOptions"
+            <div class="hide-left" data-ng-if="!monitorMemoryImage"></div>
+            <div class="hide-right" data-ng-if="!monitorMemoryImage"></div>
+            <flot dataset="memory.dataset" data-ng-if="!monitorMemoryImage" options="memoryFlotOptions"
                 height="280px" class="flotchart-container"></flot>
             <!-- <div id="memoryLegendContainer" class="flotchart-legend-container"></div> -->
         </div>
     </div>
 
-    <div class="row" data-ng-if="memoryData.length >0 && monitorImage == false">
+    <div class="row" data-ng-if="memoryData.length >0 && monitorMemoryImage == false">
     <div class="col-md-12">
             <div id="memoryLegendContent" class="flotchart-legend-content">
                 <table style="font-size: smaller; color: #545454" class="flotchart-legend-content-table">
@@ -159,16 +159,16 @@
     </div>
 
     <div class="row" id="storage-chart-container">
-         <get-monitor-loader-image data-ng-show="monitorImage"></get-monitor-loader-image>
+         <get-monitor-loader-image-disk data-ng-if="monitorDiskImage"></get-monitor-loader-image-disk>
         <div class="col-md-offset-1 col-md-11">
-            <div class="hide-left" data-ng-hide="monitorImage"> </div>
-            <div class="hide-right" data-ng-hide="monitorImage"></div>
-            <flot dataset="storage.dataset" options="storageFlotOptions" data-ng-if="(diskCount > 0 || diskCounts > 0)" height="280px" class="flotchart-container"></flot>
+            <div class="hide-left" data-ng-if="!monitorDiskImage"> </div>
+            <div class="hide-right" data-ng-if="!monitorDiskImage"></div>
+            <flot dataset="storage.dataset" options="storageFlotOptions" data-ng-if="!monitorDiskImage" height="280px" class="flotchart-container"></flot>
             <!-- <div id="storageLegendContainer" class="flotchart-legend-container"></div> -->
         </div>
     </div>
 
-    <div class="row" data-ng-if="storageData.length > 0">
+    <div class="row" data-ng-if="storageData.length > 0 && monitorDiskImage == false">
 
         <div class="col-md-12">
             <div id="storageLegendContent" class="flotchart-legend-content">
@@ -243,16 +243,16 @@
     </div>
 
     <div class="row" id="network-chart-container" >
-        <get-monitor-loader-image data-ng-show="monitorImage"></get-monitor-loader-image>
+        <get-monitor-loader-image-network data-ng-if="monitorNetworkImage"></get-monitor-loader-image-network>
         <div class="col-md-offset-1 col-md-11">
-            <div class="hide-left" data-ng-hide="monitorImage"></div>
-            <div class="hide-right" data-ng-hide="monitorImage"></div>
-            <flot dataset="network.dataset" data-ng-if="(networkCount > 0 || networkCounts > 0)" options="networkFlotOptions" height="280px" class="flotchart-container"></flot>
+            <div class="hide-left" data-ng-if="!monitorNetworkImage"></div>
+            <div class="hide-right" data-ng-if="!monitorNetworkImage"></div>
+            <flot dataset="network.dataset" data-ng-if="!monitorNetworkImage" options="networkFlotOptions" height="280px" class="flotchart-container"></flot>
             <!--<div id="cpuLegendContainer" class="flotchart-legend-container"></div> -->
         </div>
     </div>
 
-    <div class="row" data-ng-if="networkData.length > 0">
+    <div class="row" data-ng-if="networkData.length > 0 && monitorNetworkImage == false">
         <div class="col-md-12">
             <div id="networkLegendContent" class="flotchart-legend-content">
                 <table style="font-size: smaller; color: #545454"
