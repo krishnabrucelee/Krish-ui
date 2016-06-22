@@ -9,13 +9,18 @@
 <div class="">
 	<div class="col-md-12 col-sm-12" >
 		<div class="pull-right dashboard-filters-area" id="instances_quick_search">
-						<form data-ng-submit="searchList(templateCommunityListSearch)">
+						<form data-ng-submit="searchList(templateCommunityListSearch,communityGridTemplate)">
 							<div class="quick-search pull-right">
 								<div class="input-group">
 									<input data-ng-model="templateCommunityListSearch" id="community_list_search" type="text" valid-characters class="form-control input-medium" placeholder="<fmt:message key="common.quick.search" bundle="${msg}" />" aria-describedby="quicksearch-go">
 								   	<span class="input-group-addon" id="quicksearch-go"><span class="pe-7s-search pe-lg font-bold"></span></span>
 								</div>
 							</div>
+							<span class="pull-right m-r-sm" >
+										<select	class="form-control input-group col-xs-5" name="communityGridTemplate" data-ng-model="communityGridTemplate" data-ng-change="list(1,communityGridTemplate.name)" data-ng-options="communityGridTemplate.name for communityGridTemplate in formElements.communitytypeList">
+										<option value=""> <fmt:message key="common.all.templates" bundle="${msg}" /></option>
+										</select>
+										</span>
 							<div class="clearfix"></div>
 							<span class="pull-right m-l-sm m-t-sm">
 							</span>
@@ -35,15 +40,15 @@
                         <table cellspacing="1" cellpadding="1" class="table dataTable table-bordered table-striped">
                             <thead>
                                 <tr>
-                            <th class="col-md-2 col-sm-2"  data-ng-click="changeSort('name',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.name" bundle="${msg}" /></th>
-                            <th class="col-md-1 col-sm-1"  data-ng-click="changeSort('size',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='size'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.size" bundle="${msg}" />(<fmt:message key="common.gb" bundle="${msg}" />)</th>
-                            <th class="col-md-1 col-sm-1"  data-ng-click="changeSort('status',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='status'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.status" bundle="${msg}" /></th>
-                            <th class="col-md-1 col-sm-1"  data-ng-click="changeSort('templateOwner.userName',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='templateOwner.userName'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="template.owner" bundle="${msg}" /></th>
-                            <th class="col-md-1 col-sm-1"  data-ng-click="changeSort('createdDateTime',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='createdDateTime'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="register.date" bundle="${msg}" /></th>
-                            <th class="col-md-1 col-sm-1"  data-ng-click="changeSort('format',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='format'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.format" bundle="${msg}" /></th>
-                            <th class="col-md-1 col-sm-1"  data-ng-click="changeSort('hvm',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='hvm'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.hvm" bundle="${msg}" /></th>
-                            <th class="col-md-1 col-sm-1"  data-ng-click="changeSort('passwordEnabled',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='passwordEnabled'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="password.enabled" bundle="${msg}" /></th>
-                            <th class="col-md-1 col-sm-1"  data-ng-click="changeSort('dynamicallyScalable',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='dynamicallyScalable'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="dynamically.scalable" bundle="${msg}" /></th>
+                            <th class="col-md-2 col-sm-2"  data-ng-click="changeSort('name',paginationObject.currentPage,communityGridTemplate.name)" data-ng-class="sort.descending && sort.column =='name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.name" bundle="${msg}" /></th>
+                            <th class="col-md-1 col-sm-1"  data-ng-click="changeSort('size',paginationObject.currentPage,communityGridTemplate.name)" data-ng-class="sort.descending && sort.column =='size'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.size" bundle="${msg}" />(<fmt:message key="common.gb" bundle="${msg}" />)</th>
+                            <th class="col-md-1 col-sm-1"  data-ng-click="changeSort('status',paginationObject.currentPage,communityGridTemplate.name)" data-ng-class="sort.descending && sort.column =='status'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.status" bundle="${msg}" /></th>
+                            <th class="col-md-1 col-sm-1"  data-ng-click="changeSort('templateOwner.userName',paginationObject.currentPage,communityGridTemplate.name)" data-ng-class="sort.descending && sort.column =='templateOwner.userName'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="template.owner" bundle="${msg}" /></th>
+                            <th class="col-md-1 col-sm-1"  data-ng-click="changeSort('createdDateTime',paginationObject.currentPage,communityGridTemplate.name)" data-ng-class="sort.descending && sort.column =='createdDateTime'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="register.date" bundle="${msg}" /></th>
+                            <th class="col-md-1 col-sm-1"  data-ng-click="changeSort('format',paginationObject.currentPage,communityGridTemplate.name)" data-ng-class="sort.descending && sort.column =='format'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.format" bundle="${msg}" /></th>
+                            <th class="col-md-1 col-sm-1"  data-ng-click="changeSort('hvm',paginationObject.currentPage,communityGridTemplate.name)" data-ng-class="sort.descending && sort.column =='hvm'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.hvm" bundle="${msg}" /></th>
+                            <th class="col-md-1 col-sm-1"  data-ng-click="changeSort('passwordEnabled',paginationObject.currentPage,communityGridTemplate.name)" data-ng-class="sort.descending && sort.column =='passwordEnabled'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="password.enabled" bundle="${msg}" /></th>
+                            <th class="col-md-1 col-sm-1"  data-ng-click="changeSort('dynamicallyScalable',paginationObject.currentPage,communityGridTemplate.name)" data-ng-class="sort.descending && sort.column =='dynamicallyScalable'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="dynamically.scalable" bundle="${msg}" /></th>
 							<th class="col-md-1 col-sm-1"><fmt:message key="common.action" bundle="${msg}" /></th>
                             </tr>
                             </thead>

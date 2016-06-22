@@ -9,13 +9,18 @@ pageEncoding="UTF-8"%>
 <div class="row">
 	<div class="col-md-12">
 		<div class="pull-right dashboard-filters-area m-r-sm" id="instances_quick_search">
-						<form data-ng-submit="searchVMList(quickVmSearch)">
+						<form data-ng-submit="searchVMList(quickVmSearch,communityGridTemplate)">
 							<div class="quick-search pull-right">
 								<div class="input-group">
 									<input data-ng-model="quickVmSearch" id="community_grid_search" type="text" valid-characters class="form-control input-medium" placeholder="<fmt:message key="common.quick.search" bundle="${msg}" />" aria-describedby="quicksearch-go">
 								   	<span class="input-group-addon" id="quicksearch-go"><span class="pe-7s-search pe-lg font-bold"></span></span>
 								</div>
 							</div>
+							<span class="pull-right m-r-sm" >
+										<select	class="form-control input-group col-xs-5" name="communityGridTemplate" data-ng-model="communityGridTemplate" data-ng-change="templateList(communityGridTemplate.name)" data-ng-options="communityGridTemplate.name for communityGridTemplate in gridElements.communityGridList">
+										<option value=""> <fmt:message key="common.all.templates" bundle="${msg}" /></option>
+										</select>
+										</span>
 							<div class="clearfix"></div>
 							<span class="pull-right m-l-sm m-t-sm">
 							</span>
@@ -32,7 +37,7 @@ pageEncoding="UTF-8"%>
 	</div>
 </div>
 
-<div class="row" > 
+<div class="row" >
 
 <div class="" data-ng-show="template.listCommunityTemplate.length > 0">
     <div class="col-md-4 col-lg-4 col-xs-12 col-sm-12 no-padding template-panel-area" data-ng-repeat="templateObj in template.listCommunityTemplate|orderBy:template.name | filter: quickSearch">
