@@ -23,6 +23,8 @@ function templatesCtrl($scope, $stateParams, appService, $timeout, promiseAjax, 
         listFeaturedTemplate: {}
     };
 **/
+
+
  $scope.templates = {};
 $scope.template.listAllTemplate = {};
  $scope.TemplateForm = {};
@@ -38,7 +40,13 @@ $scope.template.listAllTemplate = {};
     	  };
     	})();
 
-        $scope.changeSort = function(sortBy, pageNumber) {
+        $scope.changeSort = function(sortBy, pageNumber,communityGridTemplate) {
+	if(angular.isUndefined(communityGridTemplate)) {
+		communityGridTemplate = "ALL";
+	}
+	else if (!angular.isUndefined(communityGridTemplate) && communityGridTemplate != null) {
+		communityGridTemplate = communityGridTemplate;
+	}
 		var sort = appService.globalConfig.sort;
 		if (sort.column == sortBy) {
 			sort.descending = !sort.descending;
@@ -54,12 +62,23 @@ $scope.template.listAllTemplate = {};
 		$scope.paginationObject.sortBy = sortBy;
 		$scope.showLoader = true;
 		var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
-                /**var hasCommunityList = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "templates/listall" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+sortOrder+sortBy +"&type=community"+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});**/
-if ($scope.templateCommunityListSearch == null) {
+if (((angular.isUndefined($scope.communityGridTemplate)) || $scope.communityGridTemplate == "ALL") && $scope.templateCommunityListSearch == null) {
         var hasCommunityList = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "templates/listalltemplateforadmin" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+appService.globalConfig.sort.sortOrder+appService.globalConfig.sort.sortBy +"&type=community"+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
 }
+else {
 if ($scope.templateCommunityListSearch != null) {
 	$scope.filter = "&searchText=" + $scope.templateCommunityListSearch;
+}
+if ($scope.communityGridTemplate != "ALL" && $scope.templateCommunityListSearch == null) {
+		$scope.filter = "&typeView="+ communityGridTemplate + "&searchText=";
+	}
+if ($scope.communityGridTemplate == "ALL" && $scope.templateCommunityListSearch != null) {
+		$scope.filter = "&typeView="+ communityGridTemplate + "&searchText=" + $scope.templateCommunityListSearch;
+	}
+if ($scope.communityGridTemplate != "ALL" && $scope.templateCommunityListSearch != null) {
+		$scope.filter = "&typeView="+ communityGridTemplate + "&searchText=" + $scope.templateCommunityListSearch ;
+	}
+
 var hasCommunityList = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "templates/listall" +"?lang=" + localStorageService.cookie.get('language')+ $scope.filter +"&sortBy="+appService.globalConfig.sort.sortOrder+appService.globalConfig.sort.sortBy +"&type=community"+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
 	}
 
@@ -80,13 +99,20 @@ var hasCommunityList = appService.promiseAjax.httpTokenRequest( globalConfig.HTT
 
 $scope.quickVmSearch = null;
 
-    $scope.searchVMList = function(quickVmSearch) {
+    $scope.searchVMList = function(quickVmSearch,communityGridTemplate) {
         $scope.quickVmSearch = quickVmSearch;
-        $scope.templateList(1);
+
+if(angular.isUndefined(communityGridTemplate)) {
+	communityGridTemplate = "ALL";
+}
+else if (!angular.isUndefined(communityGridTemplate) && communityGridTemplate != null) {
+	communityGridTemplate = communityGridTemplate.name;
+}
+        $scope.templateList(communityGridTemplate);
     };
 
 
-    $scope.templateList = function () {
+   /** $scope.templateList = function () {
 
         $scope.showLoader = true;
 if ($scope.quickVmSearch == null) {
@@ -103,56 +129,144 @@ if ($scope.quickVmSearch != null) {
            $scope.showLoader = false;
         });
     };
-    $scope.templateList();
+    $scope.templateList();**/
+
+// Community Grid : 
+$scope.gridElements = {
+        communityGridList: [{
+            id: 0,
+            name: 'ISO'
+        }, {
+            id: 1,
+            name: 'TEMPLATE'
+        }, ]
+    };
+
+    $scope.templateList = function (communityGridTemplate) {
+if(angular.isUndefined(communityGridTemplate)) {
+	communityGridTemplate = "ALL";
+}
+$scope.communityGridTemplates = communityGridTemplate;
+        $scope.showLoader = true;
+if (((angular.isUndefined($scope.communityGridTemplates)) || $scope.communityGridTemplates == "ALL") && $scope.quickVmSearch == null){
+   var hastemplatesList= appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "templates/listalltemplateByType?type="+ "community"+"&sortBy=-id");
+
+} else {
+	if ($scope.communityGridTemplates != "ALL" && $scope.quickVmSearch == null) {
+		$scope.filter = "&gridViewType="+ communityGridTemplate + "&searchText=";
+	} 
+	if ($scope.communityGridTemplates != "ALL" && $scope.quickVmSearch != null) {
+		$scope.filter = "&gridViewType="+ communityGridTemplate + "&searchText=" + $scope.quickVmSearch;
+	}
+if ($scope.communityGridTemplates == "ALL" && $scope.quickVmSearch != null) {
+		$scope.filter = "&gridViewType="+ communityGridTemplate + "&searchText=" + $scope.quickVmSearch;
+	}
+   var hastemplatesList= appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "templates/listalltemplateByTypeSearchText?type="+ "community"+ $scope.filter +"&sortBy=-id");
+
+}
+        hastemplatesList.then(function (result) {  // this is only run after $http completes0
+            $scope.showLoader = true;
+            $scope.template.listCommunityTemplate = result;
+           $scope.showLoader = false;
+        });
+    };
+ $scope.templateList("ALL");
 
 $scope.featureSearch = null;
 
-    $scope.featureSearchList = function(featureSearch) {
+    $scope.featureSearchList = function(featureSearch,templateTypes) {
         $scope.featureSearch = featureSearch;
-        $scope.featuredTemplateList(1);
+
+if(angular.isUndefined(templateTypes)) {
+	templateTypes = "ALL";
+}
+else if (!angular.isUndefined(templateTypes) && templateTypes != null) {
+	templateTypes = templateTypes.name;
+}
+        $scope.featuredTemplateList(templateTypes);
     };
 
 
- $scope.featuredTemplateList = function () {
-
-        $scope.showLoader = true;
-if ($scope.featureSearch == null) {
-   var hasfeaturetemplatesList= appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "templates/listalltemplateByType?type="+ "featured"+"&sortBy=-id");
+   $scope.featuredTemplateList = function (templateTypes) {
+if(angular.isUndefined(templateTypes)) {
+	templateTypes = "ALL";
 }
-if ($scope.featureSearch != null) {
-	$scope.filter = "&searchText=" + $scope.featureSearch;
+$scope.templateTypes = templateTypes;
+        $scope.showLoader = true;
+if (((angular.isUndefined($scope.templateTypes)) || $scope.templateTypes == "ALL") && $scope.featureSearch == null) {
+   var hasfeaturetemplatesList= appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "templates/listalltemplateByType?type="+ "featured"+"&sortBy=-id");
+} else {
+	if ($scope.templateTypes != "ALL" && $scope.featureSearch == null) {
+		$scope.filter = "&gridViewType="+ templateTypes + "&searchText=";
+	} 
+	if ($scope.templateTypes != "ALL" && $scope.featureSearch != null) {
+		$scope.filter = "&gridViewType="+ templateTypes + "&searchText=" + $scope.featureSearch;
+	}
+	if ($scope.templateTypes == "ALL" && $scope.featureSearch != null) {
+		$scope.filter = "&gridViewType="+ templateTypes + "&searchText=" + $scope.featureSearch;
+	}
    var hasfeaturetemplatesList= appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "templates/listalltemplateByTypeSearchText?type="+ "featured"+ $scope.filter +"&sortBy=-id");
+
 }
         hasfeaturetemplatesList.then(function (result) {  // this is only run after $http completes0
+            $scope.showLoader = true;
             $scope.template.listFeaturedTemplate = result;
-            $scope.showLoader = false;
+           $scope.showLoader = false;
         });
     };
-    $scope.featuredTemplateList();
-
+$scope.featuredTemplateList("ALL");
 
 $scope.templateCommunityListSearch = null;
-    $scope.searchList = function(templateCommunityListSearch) {
+    $scope.searchList = function(templateCommunityListSearch,communityGridTemplate) {
         $scope.templateCommunityListSearch = templateCommunityListSearch;
-        $scope.list(1);
+if(angular.isUndefined(communityGridTemplate)) {
+	communityGridTemplate = "ALL";
+}
+else if (!angular.isUndefined(communityGridTemplate) && communityGridTemplate != null) {
+	communityGridTemplate = communityGridTemplate.name;
+}
+        $scope.list(1,communityGridTemplate);
     };
 
 
     $scope.communitylist = function () {
+
+$scope.formElements = {
+        communitytypeList: [{
+            id: 0,
+            name: 'ISO'
+        }, {
+            id: 1,
+            name: 'TEMPLATE'
+        }, ]
+    };
+
     $scope.formElements.category = 'community';
 
     //community List
-    $scope.list = function (pageNumber) {
+    $scope.list = function (pageNumber,communityGridTemplate) {
+if((angular.isUndefined(communityGridTemplate)) || $scope.communityGridTemplate == null ) {
+	communityGridTemplate = "ALL";
+}
+$scope.communityGridTemplate = communityGridTemplate;
         appService.globalConfig.sort.sortOrder = $scope.paginationObject.sortOrder;
         appService.globalConfig.sort.sortBy = $scope.paginationObject.sortBy;
     	$scope.showLoader = true;
     	var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
 
- if ($scope.templateCommunityListSearch == null) {
+ if (((angular.isUndefined($scope.communityGridTemplate)) || $scope.communityGridTemplate == "ALL") && $scope.templateCommunityListSearch == null) {
         var hasCommunity = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "templates/listalltemplateforadmin" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+appService.globalConfig.sort.sortOrder+appService.globalConfig.sort.sortBy +"&type=community"+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
 }
-if ($scope.templateCommunityListSearch != null) {
-	$scope.filter = "&searchText=" + $scope.templateCommunityListSearch;
+else {
+if ($scope.communityGridTemplate != "ALL" && $scope.templateCommunityListSearch == null) {
+		$scope.filter = "&typeView="+ communityGridTemplate + "&searchText=";
+	}
+if ($scope.communityGridTemplate == "ALL" && $scope.templateCommunityListSearch != null) {
+		$scope.filter = "&typeView="+ communityGridTemplate + "&searchText=" + $scope.templateCommunityListSearch;
+	}
+if ($scope.communityGridTemplate != "ALL" && $scope.templateCommunityListSearch != null) {
+		$scope.filter = "&typeView="+ communityGridTemplate + "&searchText=" + $scope.templateCommunityListSearch ;
+	}
 var hasCommunity = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "templates/listall" +"?lang=" + localStorageService.cookie.get('language')+ encodeURI($scope.filter) +"&sortBy="+appService.globalConfig.sort.sortOrder+appService.globalConfig.sort.sortBy +"&type=community"+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
 	}
         hasCommunity.then(function (result) {  // this is only run after $http completes0
@@ -164,18 +278,33 @@ var hasCommunity = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GE
             $scope.showLoader = false;
         });
     };
-    $scope.list (1);
+    $scope.list (1, "ALL");
 
     }
 
 
+
+
 $scope.templateFeaturedListSearch = null;
-    $scope.searchFeaturedList = function(templateFeaturedListSearch) {
+    $scope.searchFeaturedList = function(templateFeaturedListSearch,templateType) {
         $scope.templateFeaturedListSearch = templateFeaturedListSearch;
-        $scope.list(1);
+
+if(angular.isUndefined(templateType)) {
+	templateType = "ALL";
+}
+else if (!angular.isUndefined(templateType) && templateType != null) {
+	templateType = templateType.name;
+}
+        $scope.list(1,templateType);
     };
 
-  $scope.changeSorts = function(sortBy, pageNumber) {
+  $scope.changeSorts = function(sortBy, pageNumber,templateType) {
+		if(angular.isUndefined(templateType)) {
+			templateType = "ALL";
+		}
+		else if (!angular.isUndefined(templateType) && templateType != null) {
+			templateType = templateType;
+		}
 		var sort = appService.globalConfig.sort;
 		if (sort.column == sortBy) {
 			sort.descending = !sort.descending;
@@ -191,15 +320,26 @@ $scope.templateFeaturedListSearch = null;
 		$scope.paginationObject.sortBy = sortBy;
 		$scope.showLoader = true;
 		var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
-                /**var hasFeaturedList = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "templates/listall" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+sortOrder+sortBy +"&type=featured"+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});**/
- if ($scope.templateFeaturedListSearch == null) {
+	if (((angular.isUndefined($scope.templateType)) || $scope.templateType == "ALL") && $scope.templateFeaturedListSearch == null) {
         var hasFeaturedList = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "templates/listalltemplateforadmin" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+appService.globalConfig.sort.sortOrder+appService.globalConfig.sort.sortBy +"&type=featured"+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
 }
+else {
 if ($scope.templateFeaturedListSearch != null) {
 	$scope.filter = "&searchText=" + $scope.templateFeaturedListSearch;
-$scope.filter = "&searchText=" + $scope.templateFeaturedListSearch;
-var hasFeaturedList = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "templates/listall" +"?lang=" + localStorageService.cookie.get('language')+ $scope.filter +"&sortBy="+appService.globalConfig.sort.sortOrder+appService.globalConfig.sort.sortBy +"&type=featured"+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+}
+
+if ($scope.templateType != "ALL" && $scope.templateFeaturedListSearch == null) {
+		$scope.filter = "&typeView="+ templateType + "&searchText=";
 	}
+if ($scope.templateType == "ALL" && $scope.templateFeaturedListSearch != null) {
+		$scope.filter = "&typeView="+ templateType + "&searchText=" + $scope.templateFeaturedListSearch;
+	}
+if ($scope.templateType != "ALL" && $scope.templateFeaturedListSearch != null) {
+		$scope.filter = "&typeView="+ templateType + "&searchText=" + $scope.templateFeaturedListSearch ;
+	}
+var hasFeaturedList = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "templates/listall" +"?lang=" + localStorageService.cookie.get('language')+ $scope.filter +"&sortBy="+appService.globalConfig.sort.sortOrder+appService.globalConfig.sort.sortBy +"&type=featured"+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+	
+}
 
                     hasFeaturedList.then(function(result) { // this is only run after $http
 			// completes0
@@ -216,19 +356,44 @@ var hasFeaturedList = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP
 
 
    $scope.featuredlist = function () {
+
+ $scope.formElements = {
+        typeList: [{
+            id: 0,
+            name: 'ISO'
+        }, {
+            id: 1,
+            name: 'TEMPLATE'
+        }, ]
+    };
+
    $scope.formElements.category = 'featured';
+
+
+
     //featured List
-    $scope.list = function (pageNumber) {
+    $scope.list = function (pageNumber,templateType) {
+if(angular.isUndefined(templateType)) {
+	templateType = "ALL";
+}
+$scope.templateType = templateType;
         appService.globalConfig.sort.sortOrder = $scope.paginationObject.sortOrder;
         appService.globalConfig.sort.sortBy = $scope.paginationObject.sortBy;
     	$scope.showLoader = true;
     	var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
- if ($scope.templateFeaturedListSearch == null) {
+ if (((angular.isUndefined($scope.templateType)) || $scope.templateType == "ALL") && $scope.templateFeaturedListSearch == null) {
         var hasFeatured = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "templates/listalltemplateforadmin" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+appService.globalConfig.sort.sortOrder+appService.globalConfig.sort.sortBy +"&type=featured"+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
-}
-if ($scope.templateFeaturedListSearch != null) {
-	$scope.filter = "&searchText=" + $scope.templateFeaturedListSearch;
-$scope.filter = "&searchText=" + $scope.templateFeaturedListSearch;
+} else {
+	if ($scope.templateType != "ALL" && $scope.templateFeaturedListSearch == null) {
+		$scope.filter = "&typeView="+ templateType + "&searchText=";
+	}
+	if ($scope.templateType != "ALL" && $scope.templateFeaturedListSearch != null) {
+		$scope.filter = "&typeView="+ templateType + "&searchText=" + $scope.templateFeaturedListSearch;
+	}
+if ($scope.templateType == "ALL" && $scope.templateFeaturedListSearch != null) {
+		$scope.filter = "&typeView="+ templateType + "&searchText=" + $scope.templateFeaturedListSearch;
+	}
+//$scope.filter = "&searchText=" + $scope.templateFeaturedListSearch;
 var hasFeatured = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "templates/listall" +"?lang=" + localStorageService.cookie.get('language')+ encodeURI($scope.filter) +"&sortBy="+appService.globalConfig.sort.sortOrder+appService.globalConfig.sort.sortBy +"&type=featured"+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
 	}
         hasFeatured.then(function (result) {  // this is only run after $http completes0
@@ -240,17 +405,35 @@ var hasFeatured = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET
             $scope.showLoader = false;
         });
     };
-    $scope.list (1);
+    $scope.list(1,"ALL");
    }
 
 
+  /** $scope.selectTypeView = function(pageNumber,templateType) {
+	alert(pageNumber+ templateType);
+   	$scope.list(1);
+   };**/
+
+
 $scope.vmSearch = null;
-    $scope.vmSearchList = function(vmSearch) {
+    $scope.vmSearchList = function(vmSearch,userListTemplateType) {
         $scope.vmSearch = vmSearch;
-         $scope.list(1);
+if(angular.isUndefined(userListTemplateType)) {
+	userListTemplateType = "ALL";
+}
+else if (!angular.isUndefined(userListTemplateType) && userListTemplateType != null) {
+	userListTemplateType = userListTemplateType.name;
+}
+         $scope.list(1,userListTemplateType);
     };
 
-   $scope.changeSortings = function(sortBy, pageNumber) {
+   $scope.changeSortings = function(sortBy, pageNumber,userListTemplateType) {
+		if(angular.isUndefined(userListTemplateType)) {
+			userListTemplateType = "ALL";
+		}
+		else if (!angular.isUndefined(userListTemplateType) && userListTemplateType != null) {
+			userListTemplateType = userListTemplateType;
+		}
 		var sort = appService.globalConfig.sort;
 		if (sort.column == sortBy) {
 			sort.descending = !sort.descending;
@@ -266,14 +449,23 @@ $scope.vmSearch = null;
 		$scope.paginationObject.sortBy = sortBy;
 		$scope.showLoader = true;
 		var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
-	if ($scope.vmSearch == null) {
+	if (((angular.isUndefined($scope.userListTemplateType)) || $scope.userListTemplateType == "ALL") && $scope.vmSearch == null) {
         var hasUserTemplateList = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "templates/listalltemplateforadmin" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+appService.globalConfig.sort.sortOrder+appService.globalConfig.sort.sortBy +"&type=user"+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
 }
-	if ($scope.vmSearch != null) {
-	$scope.filter = "&searchText=" + $scope.vmSearch;
-$scope.filter = "&searchText=" + $scope.vmSearch;
-var hasUserTemplateList = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "templates/listall" +"?lang=" + localStorageService.cookie.get('language')+ $scope.filter +"&sortBy="+appService.globalConfig.sort.sortOrder+appService.globalConfig.sort.sortBy +"&type=user"+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+else {
+	if ($scope.userListTemplateType != "ALL" && $scope.vmSearch == null) {
+		$scope.filter = "&typeView="+ userListTemplateType + "&searchText=";
 	}
+	if ($scope.userListTemplateType == "ALL" && $scope.vmSearch != null) {
+		$scope.filter = "&typeView="+ userListTemplateType + "&searchText=" + $scope.vmSearch;
+	}
+	if ($scope.userListTemplateType != "ALL" && $scope.vmSearch != null) {
+		$scope.filter = "&typeView="+ userListTemplateType + "&searchText=" + $scope.vmSearch ;
+	}
+
+var hasUserTemplateList = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "templates/listall" +"?lang=" + localStorageService.cookie.get('language')+ $scope.filter +"&sortBy="+appService.globalConfig.sort.sortOrder+appService.globalConfig.sort.sortBy +"&type=user"+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+	
+}
 
 
                     hasUserTemplateList.then(function(result) { // this is only run after $http
@@ -292,19 +484,50 @@ var hasUserTemplateList = appService.promiseAjax.httpTokenRequest( globalConfig.
 
 
 $scope.mySearch = null;
-    $scope.mySearchList = function(mySearch) {
+    $scope.mySearchList = function(mySearch,userGridTemplate) {
         $scope.mySearch = mySearch;
-        $scope.userCreatedtemplatelist();
+if(angular.isUndefined(userGridTemplate)) {
+	userGridTemplate = "ALL";
+}
+else if (!angular.isUndefined(userGridTemplate) && userGridTemplate != null) {
+	userGridTemplate = userGridTemplate.name;
+}
+
+        $scope.userCreatedtemplatelist(userGridTemplate);
+};
+
+$scope.templateElements = {
+        usertypeList: [{
+            id: 0,
+            name: 'ISO'
+        }, {
+            id: 1,
+            name: 'TEMPLATE'
+        }, ]
     };
 
-  $scope.userCreatedtemplatelist = function () {	
-	if ($scope.mySearch == null) {
+
+  $scope.userCreatedtemplatelist = function (userGridTemplate) {
+$scope.usertemplateTypes = userGridTemplate;
+if(angular.isUndefined(userGridTemplate)) {
+	userGridTemplate = "ALL";
+}
+	if (((angular.isUndefined($scope.usertemplateTypes)) || $scope.usertemplateTypes == "ALL") && $scope.mySearch == null){
      var hastemplates = appService.crudService.listAll("templates/listalltemplate");
 	}
-	if($scope.mySearch != null) {
-	$scope.filter = "&searchText=" + $scope.mySearch;
-  var hastemplates =  appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "templates/listalltemplateSearchText?type="+ "userstemplate"+ $scope.filter +"&sortBy=-id");
+else {
+	if ($scope.usertemplateTypes != "ALL" && $scope.mySearch == null) {
+		$scope.filter = "&gridViewType="+ userGridTemplate + "&searchText=";
+	} 
+	if ($scope.usertemplateTypes != "ALL" && $scope.mySearch != null) {
+		$scope.filter = "&gridViewType="+ userGridTemplate + "&searchText=" + $scope.mySearch;
 	}
+	if ($scope.usertemplateTypes == "ALL" && $scope.mySearch != null) {
+		$scope.filter = "&gridViewType="+ userGridTemplate + "&searchText=" + $scope.mySearch;
+	}
+  var hastemplates =  appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "templates/listalltemplateSearchText?type="+ "userstemplate"+ $scope.filter +"&sortBy=-id");
+	
+}
         hastemplates.then(function (result) {  // this is only run after $http completes0
             $scope.template.listAllTemplate = result;
             $scope.showLoader = false;
@@ -317,20 +540,34 @@ $scope.userCreatedtemplatelist();
    $scope.formElements.category = 'mytemplates';
 
     //Mytemplate List
-   $scope.list = function (pageNumber) {
+   $scope.list = function (pageNumber,userListTemplateType) {
+
+if(angular.isUndefined(userListTemplateType)) {
+	userListTemplateType = "ALL";
+}
+
+$scope.userListTemplateType = userListTemplateType;
         appService.globalConfig.sort.sortOrder = $scope.paginationObject.sortOrder;
         appService.globalConfig.sort.sortBy = $scope.paginationObject.sortBy;
     	$scope.showLoader = true;
-       
+
     	var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
-if ($scope.vmSearch == null) {
+ if (((angular.isUndefined($scope.userListTemplateType)) || $scope.userListTemplateType == "ALL") && $scope.vmSearch == null){
         var hasFeatured = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "templates/listalltemplateforadmin" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+appService.globalConfig.sort.sortOrder+appService.globalConfig.sort.sortBy +"&type=user"+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
 }
-if ($scope.vmSearch != null) {
-	$scope.filter = "&searchText=" + $scope.vmSearch;
-$scope.filter = "&searchText=" + $scope.vmSearch;
-var hasFeatured = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "templates/listall" +"?lang=" + localStorageService.cookie.get('language')+ encodeURI($scope.filter) +"&sortBy="+appService.globalConfig.sort.sortOrder+appService.globalConfig.sort.sortBy +"&type=user"+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+else {
+if ($scope.userListTemplateType != "ALL" && $scope.vmSearch == null) {
+		$scope.filter = "&typeView="+ userListTemplateType + "&searchText=";
 	}
+	if ($scope.userListTemplateType != "ALL" && $scope.vmSearch != null) {
+		$scope.filter = "&typeView="+ userListTemplateType + "&searchText=" + $scope.vmSearch;
+	}
+if ($scope.userListTemplateType == "ALL" && $scope.vmSearch != null) {
+		$scope.filter = "&typeView="+ userListTemplateType + "&searchText=" + $scope.vmSearch;
+	}
+var hasFeatured = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "templates/listall" +"?lang=" + localStorageService.cookie.get('language')+ encodeURI($scope.filter) +"&sortBy="+appService.globalConfig.sort.sortOrder+appService.globalConfig.sort.sortBy +"&type=user"+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+	
+}
         hasFeatured.then(function (result) {  // this is only run after $http completes0
             $scope.userTemplateList = result;
             // For pagination
@@ -340,7 +577,7 @@ var hasFeatured = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET
             $scope.showLoader = false;
         });
     };
-    $scope.list (1);
+    $scope.list (1,"ALL");
    }
 
     $scope.showCommunityTemplateContent = function () {
