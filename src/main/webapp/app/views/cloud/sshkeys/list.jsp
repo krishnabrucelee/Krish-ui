@@ -29,9 +29,31 @@
 							<span class="input-group-addon" id="quicksearch-go"><span class="pe-7s-search pe-lg font-bold"></span></span>
 							</div>
 							</div>
-							<span class="pull-right m-r-sm" data-ng-show="global.sessionValues.type == 'ROOT_ADMIN'">
-								<select	class="form-control input-group col-xs-5" name="domainView" data-ng-model="domainView" data-ng-change="selectDomainView(1)" data-ng-options="domainView.name for domainView in formElements.domainList">
-								<option value=""> <fmt:message key="common.domain.filter" bundle="${msg}" /></option>
+							<span class="pull-right m-r-sm" data-ng-if="global.sessionValues.type == 'ROOT_ADMIN'">
+								<select
+									class="form-control input-group col-xs-5" name="domainView"
+									data-ng-model="domainView"
+									data-ng-change="selectDomainView(domainView)"
+									data-ng-options="domainView.name for domainView in formElements.domainList">
+									<option value=""> <fmt:message key="common.domain.filter" bundle="${msg}" /></option>
+								</select>
+							</span>
+							<span class="pull-right m-r-sm" data-ng-if="global.sessionValues.type == 'DOMAIN_ADMIN'">
+								<select
+									class="form-control input-group col-xs-5" name="departmentView"
+									data-ng-model="departmentView"
+									data-ng-change="selectDepartmentView(departmentView)"
+									data-ng-options="departmentView.userName for departmentView in departmentList">
+									<option value=""> <fmt:message key="common.department.filter" bundle="${msg}" /></option>
+								</select>
+							</span>
+							<span class="pull-right m-r-sm" data-ng-if="global.sessionValues.type == 'USER'">
+								<select
+									class="form-control input-group col-xs-5" name="userView"
+									data-ng-model="userView"
+									data-ng-change="selectProjectView(userView)"
+									data-ng-options="userView.name for userView in options">
+									<option value=""> <fmt:message key="common.project.filter" bundle="${msg}" /></option>
 								</select>
 							</span>
 							<div class="clearfix"></div>

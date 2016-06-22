@@ -31,10 +31,6 @@
                     </div>
 
                     <div class="pull-right m-r-sm">
-
-
-
-
                         <select data-ng-change="updateGraphByRange()" class="form-control"
                             name="cpuActions"
                             data-ng-init="range.actions = instanceElements.actions[0];"
@@ -52,16 +48,16 @@
     </div>
 
     <div class="row" id="cpu-chart-container">
-     <get-monitor-loader-image data-ng-show="monitorImage"></get-monitor-loader-image>
+     <get-monitor-loader-image data-ng-if="monitorImage"></get-monitor-loader-image>
         <div class="col-md-offset-1 col-md-11">
-            <div class="hide-left" data-ng-hide="monitorImage"></div>
-            <div class="hide-right" data-ng-hide="monitorImage"></div>
-            <flot dataset="cpu.dataset" data-ng-hide="monitorImage" options="flotOptions" height="280px" class="flotchart-container"></flot>
+            <div class="hide-left" data-ng-if="!monitorImage"></div>
+            <div class="hide-right" data-ng-if="!monitorImage"></div>
+            <flot dataset="cpu.dataset" data-ng-if="!monitorImage" options="flotOptions" height="280px" class="flotchart-container"></flot>
             <!--<div id="cpuLegendContainer" class="flotchart-legend-container"></div> -->
         </div>
     </div>
 
-    <div class="row" data-ng-if="cpuData.length > 0">
+    <div class="row" data-ng-if="cpuData.length > 0 && monitorImage == false">
         <div class="col-md-12">
             <div id="cpuLegendContent" class="flotchart-legend-content">
                 <table style="font-size: smaller; color: #545454"
@@ -69,10 +65,9 @@
                     <tbody>
                         <tr data-ng-repeat="cpuLegend in cpuData">
                             <td class="legendColorBox"
-                                data-ng-click="togglePlot($index, cpuData.length)"><a></a>
-                                <i class="fa fa-desktop"></i>
-
-                                </td>
+                                data-ng-click="togglePlot($index, cpuData.length)">
+                                <a><i class="fa fa-desktop"></i></a>
+                            </td>
                             <td class="legendLabel"
                                 data-ng-click="togglePlot($index, cpuData.length)">
                                 <div style="border: 1px solid #ccc; padding: 1px;" class="pull-left m-r-xs m-l-xs">
@@ -109,29 +104,29 @@
     </div>
 
     <div class="row" id="memory-chart-container">
-    <get-monitor-loader-image data-ng-show="monitorImage"></get-monitor-loader-image>
+    <get-monitor-loader-image-memory data-ng-if="monitorMemoryImage"></get-monitor-loader-image-memory>
         <div class="col-md-offset-1 col-md-11">
-            <div class="hide-left" data-ng-hide="monitorImage"></div>
-            <div class="hide-right" data-ng-hide="monitorImage"></div>
-            <flot dataset="memory.dataset" data-ng-hide="monitorImage" options="memoryFlotOptions"
+            <div class="hide-left" data-ng-if="!monitorMemoryImage"></div>
+            <div class="hide-right" data-ng-if="!monitorMemoryImage"></div>
+            <flot dataset="memory.dataset" data-ng-if="!monitorMemoryImage" options="memoryFlotOptions"
                 height="280px" class="flotchart-container"></flot>
             <!-- <div id="memoryLegendContainer" class="flotchart-legend-container"></div> -->
         </div>
     </div>
 
-    <div class="row" data-ng-if="memoryData.length >0">
+    <div class="row" data-ng-if="memoryData.length >0 && monitorMemoryImage == false">
     <div class="col-md-12">
             <div id="memoryLegendContent" class="flotchart-legend-content">
                 <table style="font-size: smaller; color: #545454" class="flotchart-legend-content-table">
                     <tbody>
                         <tr data-ng-repeat="memoryLegend in memoryData">
-                            <td class="legendColorBox"
-                                data-ng-click="toggleMemoryPlot($index, memoryData.length)">
-                                <a></a>
+                            <td class="legendColorBox">
+                                <a data-ng-click="toggleMemoryPlot($index, memoryData.length)">
                                 <div style="border: 1px solid #ccc; padding: 1px;">
                                     <div style="width: 4px; height: 0; overflow: hidden"
                                         ng-style="{'border': '5px solid ' + memoryFlotOptions.colors[$index] }"></div>
                                 </div>
+                                </a>
                             </td>
                             <td class="legendLabel">
                                 <a class="m-l-sm">{{ ($index == 0 ? "Total" : "Free") }}</a>
@@ -164,16 +159,16 @@
     </div>
 
     <div class="row" id="storage-chart-container">
-         <get-monitor-loader-image data-ng-show="monitorImage"></get-monitor-loader-image>
+         <get-monitor-loader-image-disk data-ng-if="monitorDiskImage"></get-monitor-loader-image-disk>
         <div class="col-md-offset-1 col-md-11">
-            <div class="hide-left" data-ng-hide="monitorImage"> </div>
-            <div class="hide-right" data-ng-hide="monitorImage"></div>
-            <flot dataset="storage.dataset" options="storageFlotOptions" data-ng-hide="monitorImage" height="280px" class="flotchart-container"></flot>
+            <div class="hide-left" data-ng-if="!monitorDiskImage"> </div>
+            <div class="hide-right" data-ng-if="!monitorDiskImage"></div>
+            <flot dataset="storage.dataset" options="storageFlotOptions" data-ng-if="!monitorDiskImage" height="280px" class="flotchart-container"></flot>
             <!-- <div id="storageLegendContainer" class="flotchart-legend-container"></div> -->
         </div>
     </div>
 
-    <div class="row" data-ng-if="storageData.length > 0">
+    <div class="row" data-ng-if="storageData.length > 0 && monitorDiskImage == false">
 
         <div class="col-md-12">
             <div id="storageLegendContent" class="flotchart-legend-content">
@@ -248,42 +243,42 @@
     </div>
 
     <div class="row" id="network-chart-container" >
-        <get-monitor-loader-image data-ng-show="monitorImage"></get-monitor-loader-image>
+        <get-monitor-loader-image-network data-ng-if="monitorNetworkImage"></get-monitor-loader-image-network>
         <div class="col-md-offset-1 col-md-11">
-            <div class="hide-left" data-ng-hide="monitorImage"></div>
-            <div class="hide-right" data-ng-hide="monitorImage"></div>
-            <flot dataset="network.dataset" data-ng-hide="monitorImage" options="networkFlotOptions" height="280px" class="flotchart-container"></flot>
+            <div class="hide-left" data-ng-if="!monitorNetworkImage"></div>
+            <div class="hide-right" data-ng-if="!monitorNetworkImage"></div>
+            <flot dataset="network.dataset" data-ng-if="!monitorNetworkImage" options="networkFlotOptions" height="280px" class="flotchart-container"></flot>
             <!--<div id="cpuLegendContainer" class="flotchart-legend-container"></div> -->
         </div>
     </div>
 
-    <div class="row" data-ng-if="networkData.length > 0">
+    <div class="row" data-ng-if="networkData.length > 0 && monitorNetworkImage == false">
         <div class="col-md-12">
             <div id="networkLegendContent" class="flotchart-legend-content">
                 <table style="font-size: smaller; color: #545454"
                     class="flotchart-legend-content-table">
                     <tbody>
                         <tr>
-                            <td class="legendColorBox"
-                                data-ng-click="toggleNetPlot('send')">
-                                <a></a>
+                            <td class="legendColorBox">
+                                <a data-ng-click="toggleNetPlot('send')">
                                 <div style="border: 1px solid #ccc; padding: 1px;">
                                     <div style="width: 4px; height: 0; overflow: hidden"
                                         ng-style="{'border': '5px solid ' + storageFlotOptions.colors[0] }"></div>
                                 </div>
+                                </a>
                             </td>
                             <td class="legendLabel">
                                 <a data-ng-click="toggleNetPlot('send')" class="m-l-sm">IN</a>
                             </td>
                          </tr>
                           <tr>
-                            <td class="legendColorBox"
-                                data-ng-click="toggleNetPlot('receive')">
-                                <a></a>
+                            <td class="legendColorBox">
+                                <a data-ng-click="toggleNetPlot('receive')">
                                 <div style="border: 1px solid #ccc; padding: 1px;">
                                     <div style="width: 4px; height: 0; overflow: hidden"
                                         ng-style="{'border': '5px solid ' + storageFlotOptions.colors[1] }"></div>
                                 </div>
+                                </a>
                             </td>
                             <td class="legendLabel">
                                 <a data-ng-click="toggleNetPlot('receive')" class="m-l-sm">OUT</a>

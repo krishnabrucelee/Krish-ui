@@ -94,15 +94,16 @@ if (!angular.isUndefined($stateParams.id)) {
         $scope.showLoader = true;
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasGuestnetworkLists = {};
-	if ($scope.domainId == null && $scope.vmSearch == null) {
+        $scope.filter = "";
+	if ($scope.filterView == null && $scope.vmSearch == null) {
             hasGuestnetworkLists = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "guestnetwork/listView" +"?lang=" + appService.localStorageService.cookie.get('language') +"&sortBy="+sortOrder+sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
             } else {
-	if ($scope.domainId != null && $scope.vmSearch == null) {
-                $scope.filter = "&domainId=" + $scope.domainId + "&searchText=";
-            }  else if ($scope.domainId == null && $scope.vmSearch != null) {
-                $scope.filter = "&domainId=0" + "&searchText=" + $scope.vmSearch;
+	if ($scope.filterView != null && $scope.vmSearch == null) {
+                $scope.filter = "&domainId=" + $scope.filterView.id + "&searchText=" + "&filterParameter=" + $scope.filterParamater;
+            }  else if ($scope.filterView == null && $scope.vmSearch != null) {
+                $scope.filter = "&domainId=0" + "&searchText=" + $scope.vmSearch + "&filterParameter=" + $scope.filterParamater;
             } else  {
-                $scope.filter = "&domainId=" + $scope.domainId + "&searchText=" + $scope.vmSearch;
+                $scope.filter = "&domainId=" + $scope.filterView.id + "&searchText=" + $scope.vmSearch + "&filterParameter=" + $scope.filterParamater;
             }
             hasGuestnetworkLists =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "guestnetwork/listByDomain"+"?lang=" +appService.localStorageService.cookie.get('language')+ $scope.filter +"&sortBy="+$scope.paginationObject.sortOrder+$scope.paginationObject.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
             }
@@ -661,17 +662,41 @@ $scope.ipCostList();
 
 $scope.vmSearch = null;
     $scope.searchList = function(vmSearch) {
+    	if ($scope.global.sessionValues.type == 'ROOT_ADMIN') {
+    		$scope.filterParamater = 'domain';
+    	}
+    	if ($scope.global.sessionValues.type == 'DOMAIN_ADMIN') {
+    		$scope.filterParamater = 'department';
+    	}
+    	if ($scope.global.sessionValues.type == 'USER') {
+    		$scope.filterParamater = 'project';
+    	}
         $scope.vmSearch = vmSearch;
         $scope.list(1);
     };
 
 
     // Get network list based on domain selection
-    $scope.domainId = null;
-    $scope.selectDomainView = function(pageNumber, domainId) {
-        $scope.domainId = domainId;
+    $scope.selectDomainView = function(domainView) {
+        $scope.filterView = domainView;
+        $scope.filterParamater = 'domain';
         $scope.list(1);
     };
+
+    // Get volume list based on domain selection
+    $scope.selectDepartmentView = function(departmentView) {
+    	$scope.filterView = departmentView;
+    	$scope.filterParamater = 'department';
+    	$scope.list(1);
+    };
+
+    // Get volume list based on domain selection
+    $scope.selectProjectView = function(projectView) {
+    	$scope.filterView = projectView;
+    	$scope.filterParamater = 'project';
+    	$scope.list(1);
+    };
+
     $scope.networkList = [];
     $scope.networkForm = {};
     $scope.global = appService.globalConfig;
@@ -683,17 +708,18 @@ $scope.vmSearch = null;
         $scope.type = $stateParams.view;
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasGuestNetworks = {};
-	if ($scope.domainId == null && $scope.vmSearch == null) {
+        $scope.filter = "";
+	if ($scope.filterView == null && $scope.vmSearch == null) {
             	hasGuestNetworks = appService.crudService.list("guestnetwork/listView", $scope.global.paginationHeaders(pageNumber, limit), {
                 "limit": limit});
             }
 		else {
-	if ($scope.domainId != null && $scope.vmSearch == null) {
-                $scope.filter = "&domainId=" + $scope.domainId + "&searchText=";
-            }  else if ($scope.domainId == null && $scope.vmSearch != null) {
-                $scope.filter = "&domainId=0" + "&searchText=" + $scope.vmSearch;
+	if ($scope.filterView != null && $scope.vmSearch == null) {
+                $scope.filter = "&domainId=" + $scope.filterView.id + "&searchText=" + "&filterParameter=" + $scope.filterParamater;
+            }  else if ($scope.filterView == null && $scope.vmSearch != null) {
+                $scope.filter = "&domainId=0" + "&searchText=" + $scope.vmSearch + "&filterParameter=" + $scope.filterParamater;
             } else  {
-                $scope.filter = "&domainId=" + $scope.domainId + "&searchText=" + $scope.vmSearch;
+                $scope.filter = "&domainId=" + $scope.filterView.id + "&searchText=" + $scope.vmSearch + "&filterParameter=" + $scope.filterParamater;
             }
     		    hasGuestNetworks =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "guestnetwork/listByDomain"+"?lang=" +appService.localStorageService.cookie.get('language')+ encodeURI($scope.filter) +"&sortBy="+globalConfig.sort.sortOrder+globalConfig.sort.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
             }
@@ -982,6 +1008,21 @@ $scope.vmSearch = null;
             $scope.domainList = result;
         });
     };
+
+    $scope.departmentLists = {};
+    $scope.getDepartmentList = function (domain) {
+        var hasDepartments = appService.crudService.listAllByFilter("departments/search", domain);
+        hasDepartments.then(function (result) {
+            $scope.departmentLists = result;
+        });
+    };
+
+    if ($scope.global.sessionValues.type != "ROOT_ADMIN") {
+        var domain = {};
+        domain.id = $scope.global.sessionValues.domainId;
+        $scope.getDepartmentList(domain);
+    }
+
     $scope.domainList();
     $scope.departmentList = function(domain) {
         var hasDepartments = appService.crudService.listAllByFilter("departments/search", domain);
