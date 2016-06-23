@@ -545,16 +545,11 @@ $scope.userCreatedtemplatelist();
     //Mytemplate List
    $scope.userTemplatePage = function (userListTemplateType) {
 
-	  // alert("test"+ userListTemplateType);
-   //$scope.
 	   if(angular.isUndefined(userListTemplateType)) {
 			userListTemplateType = "ALL";
 		}
 
 	   $scope.list = function (pageNumber) {
-
-
-
 $scope.userListTemplateType = userListTemplateType;
         appService.globalConfig.sort.sortOrder = $scope.paginationObject.sortOrder;
         appService.globalConfig.sort.sortBy = $scope.paginationObject.sortBy;
