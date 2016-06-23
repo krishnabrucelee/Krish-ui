@@ -64,7 +64,7 @@
                             <tr>
                                 <th class="col-md-2 col-sm-2" data-ng-click="changeSorts('name',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='name'? 'sorting_desc' : 'sorting_asc'"><fmt:message key="common.name" bundle="${msg}" /></th>
                                 <th class="col-md-2 col-sm-2" data-ng-click="changeSorts('description',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='description'? 'sorting_desc' : 'sorting_asc'"><fmt:message key="common.description" bundle="${msg}" /></th>
-                                <th class="col-md-2 col-sm-2" data-ng-click="changeSorts('vm.name',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='vm.name'? 'sorting_desc' : 'sorting_asc'"><fmt:message key="common.instance" bundle="${msg}" /></th>
+                                <th class="col-md-2 col-sm-2" data-ng-click="changeSorts('vmInstanceName',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='vmInstanceName'? 'sorting_desc' : 'sorting_asc'"><fmt:message key="common.instance" bundle="${msg}" /></th>
                                 <th class="col-md-2 col-sm-2"><fmt:message key="common.iscurrent" bundle="${msg}" /></th>
                                 <th class="col-md-2 col-sm-2" data-ng-click="changeSorts('createdDateTime',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='createdDateTime'? 'sorting_desc' : 'sorting_asc'"><fmt:message key="common.created.date" bundle="${msg}" /></th>
                                 <th class="col-md-2 col-sm-2" data-ng-click="changeSorts('status',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='status'? 'sorting_desc' : 'sorting_asc'"><fmt:message key="common.status" bundle="${msg}" /></th>
@@ -85,7 +85,7 @@
                                     {{ snapshot.description}}
                                 </td>
                                 <td>
-                                    {{ snapshot.vm.name}}
+                                    {{ snapshot.vmInstanceName}}
                                 </td>
                                 <td data-ng-show = "snapshot.isCurrent">
                                     Yes
@@ -114,10 +114,10 @@
 										</div>
                                 </td>
                                  <td>
-                                    <a data-ng-show = "snapshot.status != 'Error'" class="icon-button" title="<fmt:message key="restore.vm.snapshot" bundle="${msg}" />"  data-ng-click="restoresnapshot(snapshot)">
+                                    <a data-ng-show = "snapshot.status != 'Error'" class="icon-button" title="<fmt:message key="restore.vm.snapshot" bundle="${msg}" />"  data-ng-click="restoresnapshot(snapshot.id)">
                                         <span class="fa fa-rotate-left "> </span>
                                     </a>
-                                    <a class="icon-button" title="<fmt:message key="delete.vm.snapshot" bundle="${msg}" />" data-ng-click="deleteSnapshots('sm', snapshot)"><span class="fa fa-trash"></span></a>
+                                    <a class="icon-button" title="<fmt:message key="delete.vm.snapshot" bundle="${msg}" />" data-ng-click="deleteSnapshots('sm', snapshot.id)"><span class="fa fa-trash"></span></a>
                                 </td>
                             </tr>
                         </tbody>

@@ -61,23 +61,46 @@ function vpcCtrl($scope, $modal, appService, $timeout, filterFilter, $stateParam
     $scope.aclID = {};
     $scope.tabview = {};
 
-    $scope.type = $stateParams.view;
-    // VPC Offer List
-    $scope.listVpcOffer = function() {
+    $scope.activity = {
+            category: "details",
+        };
+
+	    $scope.type = $stateParams.view;
+	    // VPC Offer List
+	    $scope.listVpcOffer = function() {
         var listVpcOffers = appService.promiseAjax
                 .httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "vpcoffering/list" + "?lang=" + appService.localStorageService.cookie
                         .get('language') + "&sortBy=-id");
         listVpcOffers.then(function(result) {
             $scope.networkOfferList = result;
         });
-    };
+	    };
 
-  $scope.canceledit = function(netwrkid) {
-                       $window.location.href = '#/vpc/view/'+$stateParams.id+'/config-vpc/view/'+netwrkid;
+	    $scope.canceledit = function(netwrkid) {
+	                       $window.location.href = '#/vpc/view/'+$stateParams.id+'/config-vpc/view/'+netwrkid;
+	    };
 
-    };
+		$scope. getDetails = function() {
+		        $scope.activity.category = "details";
+		};
+
+		$scope. getVpcrouter = function() {
+		    $scope.activity.category = "vpcrouter";
+		};
+
+		$scope.Vpcrouterdetails = function() {
+			   //var hasServer = appService.crudService.listAll("vpcrouter/listbyvpc", $stateParams.id);
+		var hasServer =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "vpcrouter/listbyvpc" +"?vpcid="+ $stateParams.id+ "&lang=" + appService.localStorageService.cookie
+		               .get('language') + "&sortBy=-id");
+		       hasServer.then(function(result) {
+		           $scope.showLoader = false;
+		           $scope.showLoaderOffer = false;
+		           $scope.vpcrouter = result[0];
+		       });
+		};
 
     if ($stateParams.id > 0  && $location.path() == '/vpc/view/' + $stateParams.id ) {
+    	$scope.activity.category = "details";
         $scope.showLoader = true;
         $scope.showLoaderOffer = true;
         $state.current.data.pageName = "";
@@ -100,6 +123,7 @@ function vpcCtrl($scope, $modal, appService, $timeout, filterFilter, $stateParam
                 $state.$current.parent.data.id = result.id;
             }
         });
+        $scope.Vpcrouterdetails();
     }
 
     $scope.breadcrumbList = function() {
@@ -233,7 +257,7 @@ function vpcCtrl($scope, $modal, appService, $timeout, filterFilter, $stateParam
                 : $scope.paginationObject.limit;
         var hasVpcLists = {};
         if ($scope.domainView == null && $scope.vpcSearch == null) {
-            hasVpcLists = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "vpc" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+sortOrder+sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+            hasVpcLists = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "vpc/listView" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+sortOrder+sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
 
         }  else {
             $scope.filter = "";
@@ -273,7 +297,7 @@ function vpcCtrl($scope, $modal, appService, $timeout, filterFilter, $stateParam
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasGuestNetworks = {};
         if ($scope.domainView == null && $scope.vpcSearch== null) {
-		    hasGuestNetworks = appService.crudService.list("vpc", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+		    hasGuestNetworks = appService.crudService.list("vpc/listView", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
 	} else {
 	    if ($scope.domainView != null && $scope.vpcSearch == null) {
 		$scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=";
@@ -533,7 +557,9 @@ $scope.dropnetworkLists = {
     };
 
  // Delete the Network
-    $scope.delete = function(size, vpc) {
+    $scope.delete = function(size, vpcId) {
+    	var hasVpcRead = appService.crudService.read("vpc", vpcId);
+    	hasVpcRead.then(function (vpc) {
         appService.dialogService.openDialog("app/views/vpc/confirm-delete.jsp", size, $scope, ['$scope', '$modalInstance', function($scope, $modalInstance) {
             $scope.deleteId = vpc.id;
             $scope.ok = function(vpcId) {
@@ -560,10 +586,13 @@ $scope.dropnetworkLists = {
                     $modalInstance.close();
                 };
         }]);
+    });
     };
     $scope.networkRestart = {};
     // Restart the Network
-    $scope.restart = function(size, vpc) {
+    $scope.restart = function(size, vpcId) {
+    	var hasVpcRead = appService.crudService.read("vpc", vpcId);
+    	hasVpcRead.then(function (vpc) {
         $scope.vpc = vpc;
         appService.dialogService.openDialog("app/views/vpc/restart-vpc.jsp", size, $scope, ['$scope', '$modalInstance', function($scope, $modalInstance) {
             $scope.ok = function(cleanup,makeredunt) {
@@ -599,6 +628,7 @@ $scope.dropnetworkLists = {
                     $modalInstance.close();
                 };
         }]);
+    });
     };
 
     // VPC Network List

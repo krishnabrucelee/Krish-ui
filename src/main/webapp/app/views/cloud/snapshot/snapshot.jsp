@@ -58,9 +58,9 @@
                         <thead>
                             <tr>
                                 <th class="col-md-2 col-sm-2" data-ng-click="changeSort('name',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='name'? 'sorting_desc' : 'sorting_asc'"><fmt:message key="common.name" bundle="${msg}" /></th>
-                                <th class="col-md-2 col-sm-2" data-ng-click="changeSort('volume.name',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='volume.name'? 'sorting_desc' : 'sorting_asc'"><fmt:message key="common.volume" bundle="${msg}" /></th>
-                                <th class="col-md-2 col-sm-2" data-ng-click="changeSort('volume.vmInstance.name',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='volume.vmInstance.name'? 'sorting_desc' : 'sorting_asc'"><fmt:message key="common.instance" bundle="${msg}" /></th>
-                                <th class="col-md-1 col-sm-1" data-ng-click="changeSort('volume.volumeType',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='volume.volumeType'? 'sorting_desc' : 'sorting_asc'"><fmt:message key="common.type" bundle="${msg}" /></th>
+                                <th class="col-md-2 col-sm-2" data-ng-click="changeSort('volumeName',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='volumeName'? 'sorting_desc' : 'sorting_asc'"><fmt:message key="common.volume" bundle="${msg}" /></th>
+                                <th class="col-md-2 col-sm-2" data-ng-click="changeSort('vmInstanceName',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='vmInstanceName'? 'sorting_desc' : 'sorting_asc'"><fmt:message key="common.instance" bundle="${msg}" /></th>
+                                <th class="col-md-1 col-sm-1" data-ng-click="changeSort('volumeType',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='volumeType'? 'sorting_desc' : 'sorting_asc'"><fmt:message key="common.type" bundle="${msg}" /></th>
                                 <th class="col-md-2 col-sm-2" data-ng-click="changeSort('createdDateTime',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='volume.name'? 'sorting_desc' : 'sorting_asc'"><fmt:message key="common.created.date" bundle="${msg}" /></th>
                                 <th class="col-md-1 col-sm-1"><fmt:message key="common.status" bundle="${msg}" /></th>
                                 <th class="col-md-1 col-sm-1"><fmt:message key="common.action" bundle="${msg}" /></th>
@@ -77,13 +77,13 @@
                                     {{ snapshot.name}}
                                 </td>
                                 <td>
-                                    {{ snapshot.volume.name}}
+                                    {{ snapshot.volumeName}}
                                 </td>
                                 <td>
-                                    {{ snapshot.volume.vmInstance.name}}
+                                    {{ snapshot.vmInstanceName}}
                                 </td>
                                 <td>
-                                    {{snapshot.volume.volumeType}}
+                                    {{snapshot.volumeType}}
                                 </td>
                                 <td>
                                     {{ snapshot.createdDateTime*1000 | date:'yyyy-MM-dd HH:mm:ss'}}
@@ -92,13 +92,13 @@
                                     {{ snapshot.status}}
                                 </td>
                                 <td>
-                                   <a class="icon-button" title="Create Volume" data-ng-click="createVolume('md', snapshot)">
+                                   <a class="icon-button" title="Create Volume" data-ng-click="createVolume('md', snapshot.id)">
                                         <span class="fa fa-plus-square"> </span>
                                     </a>
-                                     <a class="icon-button" title="Revert Snapshot" data-ng-click="revertSnapshot('md', snapshot)">
+                                     <a class="icon-button" title="Revert Snapshot" data-ng-click="revertSnapshot('md', snapshot.id)">
                                         <span class="fa fa-rotate-left"> </span>
                                     </a>
-                                    <a class="icon-button" title="Delete Snapshot" data-ng-click="deleteVolumeSnapshot('sm', snapshot)" ><span class="fa fa-trash"></span></a>
+                                    <a class="icon-button" title="Delete Snapshot" data-ng-click="deleteVolumeSnapshot('sm', snapshot.id)" ><span class="fa fa-trash"></span></a>
                                 </td>
                             </tr>
                         </tbody>

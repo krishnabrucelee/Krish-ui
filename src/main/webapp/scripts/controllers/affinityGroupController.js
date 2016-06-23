@@ -22,6 +22,15 @@ function affinityGroupListCtrl($scope, appService, $state, localStorageService, 
     $scope.paginationObject.sortOrder = '+';
     $scope.paginationObject.sortBy = 'name';
 
+	if ($scope.global.sessionValues.type == 'ROOT_ADMIN') {
+		$scope.filterParamater = 'domain';
+	}
+	if ($scope.global.sessionValues.type == 'DOMAIN_ADMIN') {
+		$scope.filterParamater = 'department';
+	}
+	if($scope.global.sessionValues.type === 'USER') {
+		$scope.filterParamater = 'project';
+	}
     $scope.changeSort = function(sortBy, pageNumber) {
 		var sort = appService.globalConfig.sort;
 		if (sort.column == sortBy) {
@@ -50,18 +59,17 @@ function affinityGroupListCtrl($scope, appService, $state, localStorageService, 
 //            }
 
             $scope.filter = "";
-            if($scope.global.sessionValues.type === "ROOT_ADMIN") {
-            if ($scope.domainView == null && $scope.affinityGroupSearch == null) {
+            if ($scope.filterView == null && $scope.affinityGroupSearch == null) {
             	hasAffinityGroup =  appService.promiseAjax.httpTokenRequest(globalConfig.HTTP_GET, globalConfig.APP_URL +
                 		"affinityGroup" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+sortOrder+sortBy+"&limit="+limit,
                 		$scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
             } else {
-                if ($scope.domainView != null && $scope.affinityGroupSearch == null) {
-                    $scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=";
-                } else if ($scope.domainView == null && $scope.affinityGroupSearch != null) {
-                    $scope.filter = "&domainId=0" + "&searchText=" + $scope.affinityGroupSearch;
+                if ($scope.filterView != null && $scope.affinityGroupSearch == null) {
+                    $scope.filter = "&domainId=" + $scope.filterView.id + "&searchText=" + "&filterParameter=" + $scope.filterParamater;
+                } else if ($scope.filterView == null && $scope.affinityGroupSearch != null) {
+                    $scope.filter = "&domainId=0" + "&searchText=" + $scope.affinityGroupSearch + "&filterParameter=" + $scope.filterParamater;
                 } else {
-                    $scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=" + $scope.affinityGroupSearch;
+                    $scope.filter = "&domainId=" + $scope.filterView.id + "&searchText=" + $scope.affinityGroupSearch + "&filterParameter=" + $scope.filterParamater;
                 }
                 hasAffinityGroup =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "affinityGroup/listByDomain"
         				+"?lang=" +appService.localStorageService.cookie.get('language')
@@ -83,36 +91,6 @@ function affinityGroupListCtrl($scope, appService, $state, localStorageService, 
 			$scope.showLoader = false;
 		});
 
-    }
-
-       if ($scope.global.sessionValues.type === 'USER' || $scope.global.sessionValues.type === 'DOMAIN_ADMIN') {
-               if ($scope.global.sessionValues.domainId != null && $scope.affinityGroupSearch == null) {
-                   $scope.filter = "&domainId=" + $scope.global.sessionValues.domainId + "&searchText=";
-               } else if ($scope.global.sessionValues.domainId == null && $scope.affinityGroupSearch != null) {
-                   $scope.filter = "&domainId=0" + "&searchText=" + $scope.affinityGroupSearch;
-               } else {
-                   $scope.filter = "&domainId=" + $scope.global.sessionValues.domainId + "&searchText=" + $scope.affinityGroupSearch;
-               }
-               hasAffinityGroup =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "affinityGroup/listByDomain"
-       				+"?lang=" +appService.localStorageService.cookie.get('language')
-       				+ $scope.filter+"&sortBy="+$scope.paginationObject.sortOrder+$scope.paginationObject.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
-
-           hasAffinityGroup.then(function(result) { // this is only run after $http
-			// completes0
-			$scope.affinityGroupList = result;
-			$scope.affinityGroupList.Count = 0;
-           if (result.length != 0) {
-               $scope.affinityGroupList.Count = result.totalItems;
-           }
-			// For pagination
-			$scope.paginationObject.limit = limit;
-			$scope.paginationObject.currentPage = pageNumber;
-			$scope.paginationObject.totalItems = result.totalItems;
-			$scope.paginationObject.sortOrder = sortOrder;
-			$scope.paginationObject.sortBy = sortBy;
-			$scope.showLoader = false;
-		});
-       }
 	};
 
 	// Affinity group List
@@ -123,16 +101,15 @@ function affinityGroupListCtrl($scope, appService, $state, localStorageService, 
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasAffinityGroup = {};
         $scope.filter = "";
-        if ($scope.global.sessionValues.type === "ROOT_ADMIN") {
-        if ($scope.domainView == null && $scope.affinityGroupSearch == null) {
+        if ($scope.filterView == null && $scope.affinityGroupSearch == null) {
         	hasAffinityGroup = appService.crudService.list("affinityGroup", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
         } else {
-            if ($scope.domainView != null && $scope.affinityGroupSearch == null) {
-                $scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=";
-            } else if ($scope.domainView == null && $scope.affinityGroupSearch != null) {
-                $scope.filter = "&domainId=0" + "&searchText=" + $scope.affinityGroupSearch;
+            if ($scope.filterView != null && $scope.affinityGroupSearch == null) {
+                $scope.filter = "&domainId=" + $scope.filterView.id + "&searchText=" + "&filterParameter=" + $scope.filterParamater;
+            } else if ($scope.filterView == null && $scope.affinityGroupSearch != null) {
+                $scope.filter = "&domainId=0" + "&searchText=" + $scope.affinityGroupSearch + "&filterParameter=" + $scope.filterParamater;
             } else {
-                $scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=" + $scope.affinityGroupSearch;
+                $scope.filter = "&domainId=" + $scope.filterView.id + "&searchText=" + $scope.affinityGroupSearch + "&filterParameter=" + $scope.filterParamater;
             }
             hasAffinityGroup =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "affinityGroup/listByDomain"
     				+"?lang=" +appService.localStorageService.cookie.get('language')
@@ -151,34 +128,6 @@ function affinityGroupListCtrl($scope, appService, $state, localStorageService, 
             $scope.paginationObject.totalItems = result.totalItems;
             $scope.showLoader = false;
         });
-    }
-
-        	 if ($scope.global.sessionValues.type === 'USER' || $scope.global.sessionValues.type === 'DOMAIN_ADMIN') {
-                 if ($scope.global.sessionValues.domainId != null && $scope.affinityGroupSearch == null) {
-                     $scope.filter = "&domainId=" + $scope.global.sessionValues.domainId + "&searchText=";
-                 } else if ($scope.global.sessionValues.domainId == null && $scope.affinityGroupSearch != null) {
-                     $scope.filter = "&domainId=0" + "&searchText=" + $scope.affinityGroupSearch;
-                 } else {
-                     $scope.filter = "&domainId=" + $scope.global.sessionValues.domainId + "&searchText=" + $scope.affinityGroupSearch;
-                 }
-                 hasAffinityGroup =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "affinityGroup/listByDomain"
-         				+"?lang=" +appService.localStorageService.cookie.get('language')
-         				+ $scope.filter+"&sortBy="+$scope.paginationObject.sortOrder+$scope.paginationObject.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
-
-             hasAffinityGroup.then(function(result) { // this is only run after $http
-                 $scope.affinityGroupList = result;
-                 $scope.affinityGroupList.Count = 0;
-                 if (result.length != 0) {
-                     $scope.affinityGroupList.Count = result.totalItems;
-                 }
-
-                 // For pagination
-                 $scope.paginationObject.limit = limit;
-                 $scope.paginationObject.currentPage = pageNumber;
-                 $scope.paginationObject.totalItems = result.totalItems;
-                 $scope.showLoader = false;
-  		});
-         }
     };
     $scope.list(1);
 
@@ -225,9 +174,19 @@ function affinityGroupListCtrl($scope, appService, $state, localStorageService, 
     };
 
     // Get volume list based on domain selection
-    $scope.selectDomainView = function(pageNumber) {
+    $scope.selectDomainView = function(domainfilter) {
+    	$scope.filterView = domainfilter;
+    	$scope.filterParamater = 'domain';
     	$scope.list(1);
     };
+
+    // Get volume list based on domain selection
+    $scope.selectDepartmentView = function(departmentView) {
+    	$scope.filterView = departmentView;
+    	$scope.filterParamater = 'department';
+    	$scope.list(1);
+    };
+
 
  // Get affinity group list based on quick search
     $scope.affinityGroupSearch = null;

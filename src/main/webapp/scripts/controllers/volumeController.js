@@ -47,15 +47,15 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
 		var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
             var hasVolumesLists = {};
             $scope.filter = "";
-            if ($scope.domainView == null && $scope.quickSearchText == null) {
+            if ($scope.filterView == null && $scope.quickSearchText == null) {
             	hasVolumesLists =  appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "volumes/listView" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+sortOrder+sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
             } else {
-            	if ($scope.domainView != null && $scope.quickSearchText == null) {
-                    $scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=";
-                } else if ($scope.domainView == null && $scope.quickSearchText != null) {
-                    $scope.filter = "&domainId=0" + "&searchText=" + $scope.quickSearchText;
+            	if ($scope.filterView != null && $scope.quickSearchText == null) {
+                    $scope.filter = "&domainId=" + $scope.filterView.id + "&searchText=" + "&filterParameter=" + $scope.filterParamater;
+                } else if ($scope.filterView == null && $scope.quickSearchText != null) {
+                    $scope.filter = "&domainId=0" + "&searchText=" + $scope.quickSearchText + "&filterParameter=" + $scope.filterParamater;
                 } else {
-                    $scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=" + $scope.quickSearchText;
+                    $scope.filter = "&domainId=" + $scope.filterView.id + "&searchText=" + $scope.quickSearchText + "&filterParameter=" + $scope.filterParamater;
                 }
             	hasVolumesLists =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "volumes/listByFilter"
     				+"?lang=" +appService.localStorageService.cookie.get('language')
@@ -109,6 +109,7 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
             $scope.departmentList = result;
         });
     };
+
     if ($scope.global.sessionValues.type != "ROOT_ADMIN") {
         var domain = {};
         domain.id = $scope.global.sessionValues.domainId;
@@ -116,13 +117,38 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
     }
 
     // Get volume list based on domain selection
-    $scope.selectDomainView = function(pageNumber) {
+    $scope.selectDomainView = function(domainfilter) {
+    	$scope.filterView = domainfilter;
+    	$scope.filterParamater = 'domain';
+    	$scope.list(1);
+    };
+
+    // Get volume list based on domain selection
+    $scope.selectDepartmentView = function(departmentView) {
+    	$scope.filterView = departmentView;
+    	$scope.filterParamater = 'department';
+    	$scope.list(1);
+    };
+
+    // Get volume list based on domain selection
+    $scope.selectProjectView = function(projectView) {
+    	$scope.filterView = projectView;
+    	$scope.filterParamater = 'project';
     	$scope.list(1);
     };
 
     // Get volume list based on quick search
     $scope.quickSearchText = null;
     $scope.searchList = function(quickSearchText) {
+	if ($scope.global.sessionValues.type == 'ROOT_ADMIN') {
+		$scope.filterParamater = 'domain';
+	}
+	if ($scope.global.sessionValues.type == 'DOMAIN_ADMIN') {
+		$scope.filterParamater = 'department';
+	}
+	if ($scope.global.sessionValues.type == 'USER') {
+		$scope.filterParamater = 'project';
+	}
     	if (quickSearchText != "") {
             $scope.quickSearchText = quickSearchText;
     	} else {
@@ -139,15 +165,15 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasVolumes = {};
         $scope.filter = "";
-        if ($scope.domainView == null && $scope.quickSearchText == null) {
+        if ($scope.filterView == null && $scope.quickSearchText == null) {
         	hasVolumes = appService.crudService.list("volumes/listView", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
         } else {
-        	if ($scope.domainView != null && $scope.quickSearchText == null) {
-                $scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=";
-            } else if ($scope.domainView == null && $scope.quickSearchText != null) {
-                $scope.filter = "&domainId=0" + "&searchText=" + $scope.quickSearchText;
+        	if ($scope.filterView != null && $scope.quickSearchText == null) {
+                $scope.filter = "&domainId=" + $scope.filterView.id + "&searchText=" + "&filterParameter=" + $scope.filterParamater;
+            } else if ($scope.filterView == null && $scope.quickSearchText != null) {
+                $scope.filter = "&domainId=0" + "&searchText=" + $scope.quickSearchText + "&filterParameter=" + $scope.filterParamater;
             } else {
-                $scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=" + $scope.quickSearchText;
+                $scope.filter = "&domainId=" + $scope.filterView.id + "&searchText=" + $scope.quickSearchText + "&filterParameter=" + $scope.filterParamater;
             }
         	hasVolumes =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "volumes/listByFilter"
 				+"?lang=" +appService.localStorageService.cookie.get('language')
@@ -159,7 +185,7 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
 
       		 // Get the count of the listings
             var hasVmCount = {};
-            if ($scope.domainView == null && $scope.quickSearchText == null) {
+            if ($scope.filterView == null && $scope.quickSearchText == null) {
        		    hasVmCount = appService.crudService.listAll("volumes/volumeCounts");
             } else {
             	hasVmCount = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL +
@@ -168,7 +194,7 @@ function volumeCtrl($scope, appService, $state, $stateParams, $timeout, volumeSe
             }
        		hasVmCount.then(function(result) {
        			$scope.attachedCount = result.attachedCount;
-       			if ($scope.domainView == null && $scope.quickSearchText == null) {
+       			if ($scope.filterView == null && $scope.quickSearchText == null) {
        				$scope.detachedCount = result.detachedCount;
                 } else {
                 	$scope.detachedCount = $scope.volumeList.Count - result.attachedCount;
@@ -1254,3 +1280,4 @@ function recurringSnapshotCtrl($scope,appService, globalConfig, localStorageServ
         }
     };
 }
+

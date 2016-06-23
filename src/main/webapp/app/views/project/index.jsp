@@ -63,7 +63,7 @@
 		                                <div class="clearfix"></div>
 		                                </div>
 		                            </div>
-		                            <input type="hidden" id="projects_unique_{{projectObj.id}}"  data-unique-field="{{ projectObj.domain.name }}-{{ projectObj.department.userName }}-{{ projectObj.projectOwner.userName }}-{{projectObj.name}}" class="test_projects_unique">
+		                            <input type="hidden" id="projects_unique_{{projectObj.id}}"  data-unique-field="{{ projectObj.domainName }}-{{ projectObj.departmentUserName }}-{{ projectObj.projectOwnerUserName }}-{{projectObj.name}}" class="test_projects_unique">
 		                            <a has-permission="CREATE_PROJECT" id="projects_create_button"
 										class="btn btn-info font-bold" data-ng-click="createProject('md')"><span
 											class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="common.create" bundle="${msg}" />
@@ -110,11 +110,11 @@
 											<tr>
 												<!-- <th class="w-5"></th> -->
 												<th data-ng-click="changeSort('name',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.name" bundle="${msg}" /></th>
-												<th data-ng-click="changeSort('status',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='status'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="common.status" bundle="${msg}" /></th>
-												<th data-ng-click="changeSort('projectOwner.userName',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='projectOwner.userName'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="project.owner" bundle="${msg}" /></th>
-												<th data-ng-click="changeSort('projectOwner.userName',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='projectOwner.userName'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="billing.owner" bundle="${msg}" /></th>
-												<th data-ng-click="changeSort('domain.name',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='domain.name'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="common.company" bundle="${msg}" /></th>
-												<th data-ng-click="changeSort('department.userName',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='department.userName'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="common.department" bundle="${msg}" /></th>
+												<th data-ng-click="changeSort('isActive',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='isActive'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="common.status" bundle="${msg}" /></th>
+												<th data-ng-click="changeSort('projectOwnerUserName',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='projectOwnerUserName'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="project.owner" bundle="${msg}" /></th>
+												<th data-ng-click="changeSort('projectOwnerUserName',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='projectOwnerUserName'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="billing.owner" bundle="${msg}" /></th>
+												<th data-ng-click="changeSort('domainName',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='domainName'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="common.company" bundle="${msg}" /></th>
+												<th data-ng-click="changeSort('departmentUserName',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='departmentUserName'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="common.department" bundle="${msg}" /></th>
 												<th data-ng-click="changeSort('createdDateTime',paginationObject.currentPage)" data-ng-class="sort.descending && sort.column =='createdDateTime'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="create.time" bundle="${msg}" /></th>
 												<th><fmt:message key="common.action" bundle="${msg}" /></th>
 											</tr>
@@ -135,26 +135,26 @@
 													data-ng-hide="projectObj.isActive"
 													data-ng-class="isSingle == projectObj.id  ? 'text-white' : ''"
 													class="text-danger">In Active</label></td>
-												<td>{{ projectObj.projectOwner.userName }}</td>
-												<td>{{ projectObj.projectOwner.userName }}</td>
-												<td>{{ projectObj.domain.name }}</td>
-												<td>{{ projectObj.department.userName }}</td>
+												<td>{{ projectObj.projectOwnerUserName }}</td>
+												<td>{{ projectObj.projectOwnerUserName }}</td>
+												<td>{{ projectObj.domainName }}</td>
+												<td>{{ projectObj.departmentUserName }}</td>
 												<td>{{ projectObj.createdDateTime*1000 | date:'yyyy-MM-dd HH:mm:ss'}}</td>
 												<td>
-												<input type="hidden" id="projects_unique_{{projectObj.id}}"  data-unique-field="{{ projectObj.domain.name }}-{{ projectObj.department.userName }}-{{ projectObj.projectOwner.userName }}-{{projectObj.name}}" class="test_projects_unique">
-												<a id="projects_quota_button_{{projectObj.id}}" data-unique-field="{{ projectObj.domain.name }}-{{ projectObj.department.userName }}-{{ projectObj.projectOwner.userName }}-{{projectObj.name}}" has-permission="PROJECT_RESOURCE_QUOTA_MODIFICATION" class="icon-button test_projects_quota_button" ui-sref="projects.quotalimit({id: {{projectObj.id}}, quotaType: 'project-quota'})" title="<fmt:message key="common.edit.quota" bundle="${msg}" />">
+												<input type="hidden" id="projects_unique_{{projectObj.id}}"  data-unique-field="{{ projectObj.domainName }}-{{ projectObj.departmentUserName }}-{{ projectObj.projectOwnerUserName }}-{{projectObj.name}}" class="test_projects_unique">
+												<a id="projects_quota_button_{{projectObj.id}}" data-unique-field="{{ projectObj.domainName }}-{{ projectObj.departmentUserName }}-{{ projectObj.projectOwnerUserName }}-{{projectObj.name}}" has-permission="PROJECT_RESOURCE_QUOTA_MODIFICATION" class="icon-button test_projects_quota_button" ui-sref="projects.quotalimit({id: {{projectObj.id}}, quotaType: 'project-quota'})" title="<fmt:message key="common.edit.quota" bundle="${msg}" />">
                                                     <span class="fa font-bold pe-7s-edit"> </span>
                                                 </a>
                                                 <a
 													has-permission="EDIT_PROJECT" id="projects_edit_button"
-													class="icon-button" data-ng-click="editProject('md',projectObj)"
+													class="icon-button" data-ng-click="editProject('md',projectObj.id)"
 													 title="<fmt:message key="common.edit" bundle="${msg}" />"><span
 														class="fa fa-edit m-r-xs"></span>
 												</a>
 												<a
 													has-permission="DELETE_PROJECT" id="projects_delete_button"
 													class="icon-button"
-													data-ng-click="projectDeleteConfirmation('sm', projectObj)"
+													data-ng-click="projectDeleteConfirmation('sm', projectObj.id)"
 												 title="<fmt:message key="common.delete" bundle="${msg}" />"><span
 														class="fa fa-trash  m-r-xs"></span>
 												</a>

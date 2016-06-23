@@ -161,16 +161,16 @@
 													data-ng-class="sort.descending && sort.column =='name'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="common.name" bundle="${msg}" /></th>
 								            <th data-ng-click="changeSort('description',paginationObject.currentPage)"
 													data-ng-class="sort.descending && sort.column =='description'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="common.description" bundle="${msg}" /></th>
-								            <th data-ng-click="changeSort('domain.name',paginationObject.currentPage)"
-													data-ng-class="sort.descending && sort.column =='domain.name'? 'sorting_desc' : 'sorting_asc' "><fmt:message
+								            <th data-ng-click="changeSort('domainName',paginationObject.currentPage)"
+													data-ng-class="sort.descending && sort.column =='domainName'? 'sorting_desc' : 'sorting_asc' "><fmt:message
 														key="common.company" bundle="${msg}" /></th>
-											<th data-ng-click="changeSort('department.userName',paginationObject.currentPage)"
-													data-ng-class="sort.descending && sort.column =='Account'? 'sorting_desc' : 'sorting_asc' "><fmt:message
+											<th data-ng-click="changeSort('departmentUserName',paginationObject.currentPage)"
+													data-ng-class="sort.descending && sort.column =='departmentUserName'? 'sorting_desc' : 'sorting_asc' "><fmt:message
 														key="common.department" bundle="${msg}"/></th>
-											<th data-ng-click="changeSort('project.name',paginationObject.currentPage)"
-													data-ng-class="sort.descending && sort.column =='project.name'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="common.project" bundle="${msg}"/></th>
-								            <th data-ng-click="changeSort('zone.name',paginationObject.currentPage)"
-													data-ng-class="sort.descending && sort.column =='zone.name'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="common.zone" bundle="${msg}" /></th>
+											<th data-ng-click="changeSort('projectName',paginationObject.currentPage)"
+													data-ng-class="sort.descending && sort.column =='projectName'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="common.project" bundle="${msg}"/></th>
+								            <th data-ng-click="changeSort('zoneName',paginationObject.currentPage)"
+													data-ng-class="sort.descending && sort.column =='zoneName'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="common.zone" bundle="${msg}" /></th>
 								            <th data-ng-click="changeSort('cIDR',paginationObject.currentPage)"
 													data-ng-class="sort.descending && sort.column =='cIDR'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="common.cidr" bundle="${msg}" /></th>
 								            <th data-ng-click="changeSort('status',paginationObject.currentPage)"
@@ -189,21 +189,21 @@
 								                <a class="text-info" id="vpc_name_button" href="#/vpc/view/{{vpc.id}}">{{vpc.name}}</a>
 								            </td>
 								            <td>{{vpc.description}}</td>
-								            <td>{{vpc.domain.name }}</td>
-											<td>{{vpc.department.userName || '-'}}</td>
-											<td>{{vpc.project.name || '-'}}</td>
-								            <td>{{vpc.zone.name}}</td>
+								            <td>{{vpc.domainName }}</td>
+											<td>{{vpc.departmentUserName || '-'}}</td>
+											<td>{{vpc.projectName || '-'}}</td>
+								            <td>{{vpc.zoneName}}</td>
 								            <td>{{vpc.cIDR}}</td>
 								            <td><label data-ng-if="vpc.status == 'ENABLED'" class="label label-success text-center text-white">ACTIVE</label><label data-ng-if="vpc.status != 'ENABLED'" class="label label-danger text-center text-white">INACTIVE</label></td>
 								            <td>
-								                <input type="hidden" id="vpc_unique_{{vpc.id}}"  data-unique-field="{{ vpc.domain.name }}-{{ vpc.department.userName}}-{{ vpc.name}}" class="test_vpc_unique">
+								                <input type="hidden" id="vpc_unique_{{vpc.id}}"  data-unique-field="{{ vpc.domainName }}-{{ vpc.departmentUserName}}-{{ vpc.name}}" class="test_vpc_unique">
 								                <a class="icon-button test_vpc_configure_button" id="vpc_configure_button_{{vpc.id}}" title="<fmt:message key="configure" bundle="${msg}" />" href="#/vpc/view/{{vpc.id}}/config-vpc">
 								                    <span class="fa fa-cog m-r"> </span>
 								                </a>
-								                 <a has-permission="RESTART_VPC" class="icon-button test_vpc_restart_button" id="vpc_restart_button_{{vpc.id}}" data-ng-click="restart('md', vpc)" title="<fmt:message key="restart.vpc" bundle="${msg}" />">
+								                 <a has-permission="RESTART_VPC" class="icon-button test_vpc_restart_button" id="vpc_restart_button_{{vpc.id}}" data-ng-click="restart('md', vpc.id)" title="<fmt:message key="restart.vpc" bundle="${msg}" />">
 								                	<span class="fa fa-rotate-left m-r"></span>
 								                </a>
-								                <a has-permission="DELETE_VPC" class="icon-button test_vpc_delete_button" id="vpc_delete_button_{{vpc.id}}" data-ng-click="delete('sm', vpc)" title="<fmt:message key="remove.vpc" bundle="${msg}" />"  ><span class="fa fa-trash"></span></a>
+								                <a has-permission="DELETE_VPC" class="icon-button test_vpc_delete_button" id="vpc_delete_button_{{vpc.id}}" data-ng-click="delete('sm', vpc.id)" title="<fmt:message key="remove.vpc" bundle="${msg}" />"  ><span class="fa fa-trash"></span></a>
 								            </td>
 								        </tr>
 								    </tbody>
