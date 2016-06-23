@@ -49,7 +49,7 @@ pageEncoding="UTF-8"%>
             <div class="hpanel hbgblue">
                 <div class="panel-body" >
 
-                 <form name="test" method="post" id="loginForm" data-ng-submit="loginFormWithoutCaptcha()" data-ng-if ="!enableCaptcha">
+                 <form name="test" method="post" id="loginForm" data-ng-submit="loginFormWithoutCaptcha()" data-ng-show ="!enableCaptcha">
 
                         <h6 class="alert alert-danger" style="display: none" id="errorMsg"></h6>
                         <div class="form-group">
@@ -78,7 +78,7 @@ pageEncoding="UTF-8"%>
                         <button data-ng-hide="showLoader" id="login_button" type="submit" class="btn btn-default"><fmt:message key="common.login" bundle="${msg}" /></button>
                     </form>
 
-                 <form name="tests" method="post" id="loginForm" data-ng-submit="loginForm()" data-ng-if ="enableCaptcha">
+                 <form name="tests" method="post" id="loginForm" data-ng-submit="loginForm()" data-ng-show ="enableCaptcha">
 
                         <h6 class="alert alert-danger" style="display: none" id="errorMsgs"></h6>
                         <div class="form-group">
