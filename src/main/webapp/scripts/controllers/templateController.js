@@ -131,7 +131,7 @@ if ($scope.quickVmSearch != null) {
     };
     $scope.templateList();**/
 
-// Community Grid : 
+// Community Grid :
 $scope.gridElements = {
         communityGridList: [{
             id: 0,
@@ -154,7 +154,7 @@ if (((angular.isUndefined($scope.communityGridTemplates)) || $scope.communityGri
 } else {
 	if ($scope.communityGridTemplates != "ALL" && $scope.quickVmSearch == null) {
 		$scope.filter = "&gridViewType="+ communityGridTemplate + "&searchText=";
-	} 
+	}
 	if ($scope.communityGridTemplates != "ALL" && $scope.quickVmSearch != null) {
 		$scope.filter = "&gridViewType="+ communityGridTemplate + "&searchText=" + $scope.quickVmSearch;
 	}
@@ -198,7 +198,7 @@ if (((angular.isUndefined($scope.templateTypes)) || $scope.templateTypes == "ALL
 } else {
 	if ($scope.templateTypes != "ALL" && $scope.featureSearch == null) {
 		$scope.filter = "&gridViewType="+ templateTypes + "&searchText=";
-	} 
+	}
 	if ($scope.templateTypes != "ALL" && $scope.featureSearch != null) {
 		$scope.filter = "&gridViewType="+ templateTypes + "&searchText=" + $scope.featureSearch;
 	}
@@ -338,7 +338,7 @@ if ($scope.templateType != "ALL" && $scope.templateFeaturedListSearch != null) {
 		$scope.filter = "&typeView="+ templateType + "&searchText=" + $scope.templateFeaturedListSearch ;
 	}
 var hasFeaturedList = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "templates/listall" +"?lang=" + localStorageService.cookie.get('language')+ $scope.filter +"&sortBy="+appService.globalConfig.sort.sortOrder+appService.globalConfig.sort.sortBy +"&type=featured"+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
-	
+
 }
 
                     hasFeaturedList.then(function(result) { // this is only run after $http
@@ -464,7 +464,7 @@ else {
 	}
 
 var hasUserTemplateList = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "templates/listall" +"?lang=" + localStorageService.cookie.get('language')+ $scope.filter +"&sortBy="+appService.globalConfig.sort.sortOrder+appService.globalConfig.sort.sortBy +"&type=user"+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
-	
+
 }
 
 
@@ -518,7 +518,7 @@ if(angular.isUndefined(userGridTemplate)) {
 else {
 	if ($scope.usertemplateTypes != "ALL" && $scope.mySearch == null) {
 		$scope.filter = "&gridViewType="+ userGridTemplate + "&searchText=";
-	} 
+	}
 	if ($scope.usertemplateTypes != "ALL" && $scope.mySearch != null) {
 		$scope.filter = "&gridViewType="+ userGridTemplate + "&searchText=" + $scope.mySearch;
 	}
@@ -526,7 +526,7 @@ else {
 		$scope.filter = "&gridViewType="+ userGridTemplate + "&searchText=" + $scope.mySearch;
 	}
   var hastemplates =  appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "templates/listalltemplateSearchText?type="+ "userstemplate"+ $scope.filter +"&sortBy=-id");
-	
+
 }
         hastemplates.then(function (result) {  // this is only run after $http completes0
             $scope.template.listAllTemplate = result;
@@ -536,15 +536,24 @@ else {
 $scope.userCreatedtemplatelist();
 
 
+
+
+
    $scope.usertemplatelist = function () {
    $scope.formElements.category = 'mytemplates';
 
     //Mytemplate List
-   $scope.list = function (pageNumber,userListTemplateType) {
+   $scope.userTemplatePage = function (userListTemplateType) {
 
-if(angular.isUndefined(userListTemplateType)) {
-	userListTemplateType = "ALL";
-}
+	  // alert("test"+ userListTemplateType);
+   //$scope.
+	   if(angular.isUndefined(userListTemplateType)) {
+			userListTemplateType = "ALL";
+		}
+
+	   $scope.list = function (pageNumber) {
+
+
 
 $scope.userListTemplateType = userListTemplateType;
         appService.globalConfig.sort.sortOrder = $scope.paginationObject.sortOrder;
@@ -566,7 +575,7 @@ if ($scope.userListTemplateType == "ALL" && $scope.vmSearch != null) {
 		$scope.filter = "&typeView="+ userListTemplateType + "&searchText=" + $scope.vmSearch;
 	}
 var hasFeatured = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "templates/listall" +"?lang=" + localStorageService.cookie.get('language')+ encodeURI($scope.filter) +"&sortBy="+appService.globalConfig.sort.sortOrder+appService.globalConfig.sort.sortBy +"&type=user"+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
-	
+
 }
         hasFeatured.then(function (result) {  // this is only run after $http completes0
             $scope.userTemplateList = result;
@@ -577,7 +586,9 @@ var hasFeatured = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET
             $scope.showLoader = false;
         });
     };
-    $scope.list (1,"ALL");
+    $scope.list (1);
+   }
+   $scope.userTemplatePage("ALL");
    }
 
     $scope.showCommunityTemplateContent = function () {

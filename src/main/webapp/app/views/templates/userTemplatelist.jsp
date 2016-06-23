@@ -17,7 +17,7 @@
 								</div>
 							</div>
 							<span class="pull-right m-r-sm" >
-							<select	class="form-control input-group col-xs-5" name="userListTemplateType" data-ng-model="userListTemplateType" data-ng-change="list(1,userListTemplateType.name)" data-ng-options="userListTemplateType.name for userListTemplateType in templateElements.usertypeList">
+							<select	class="form-control input-group col-xs-5" name="userListTemplateType" data-ng-model="userListTemplateType" data-ng-change="userTemplatePage(userListTemplateType.name)" data-ng-options="userListTemplateType.name for userListTemplateType in templateElements.usertypeList">
 										<option value=""> <fmt:message key="common.all.templates" bundle="${msg}" /></option>
 										</select>
 										</span>
