@@ -64,16 +64,15 @@ angular
 //            }
 
             $scope.filter = "";
-            if ($scope.global.sessionValues.type === "ROOT_ADMIN") {
             if ($scope.domainView == null && $scope.roleSearch == null) {
             	hasRoleLists =  appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "roles" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+sortOrder+sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
             } else {
                 if ($scope.domainView != null && $scope.roleSearch == null) {
-                    $scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=";
+                    $scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=" + "&filterParameter=" + $scope.filterParamater;
                 } else if ($scope.domainView == null && $scope.roleSearch != null) {
-                    $scope.filter = "&domainId=0" + "&searchText=" + $scope.roleSearch;
+                    $scope.filter = "&domainId=0" + "&searchText=" + $scope.roleSearch + "&filterParameter=" + $scope.filterParamater;
                 } else {
-                    $scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=" + $scope.roleSearch;
+                    $scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=" + $scope.roleSearch + "&filterParameter=" + $scope.filterParamater;
                 }
               hasRoleLists =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "roles/listByDomain"
         		+"?lang=" +appService.localStorageService.cookie.get('language')
@@ -95,37 +94,36 @@ angular
 				$scope.paginationObject.sortBy = sortBy;
 				$scope.showLoader = false;
 			});
-            }
 
-           if ($scope.global.sessionValues.type === 'USER' || $scope.global.sessionValues.type === 'DOMAIN_ADMIN') {
-                if ($scope.global.sessionValues.domainId != null && $scope.roleSearch == null) {
-                    $scope.filter = "&domainId=" + $scope.global.sessionValues.domainId + "&searchText=";
-                } else if ($scope.global.sessionValues.domainId == null && $scope.roleSearch != null) {
-                    $scope.filter = "&domainId=0" + "&searchText=" + $scope.roleSearch;
-                } else {
-                    $scope.filter = "&domainId=" + $scope.global.sessionValues.domainId + "&searchText=" + $scope.roleSearch;
-                }
-              hasRoleLists =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "roles/listByDomain"
-        		+"?lang=" +appService.localStorageService.cookie.get('language')
-        		+ $scope.filter+"&sortBy="+$scope.paginationObject.sortOrder+$scope.paginationObject.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
-
-
-			hasRoleLists.then(function(result) { // this is only run after $http
-				// completes0
-				$scope.roleList = result;
-				$scope.roleList.Count = 0;
-	            if (result.length != 0) {
-	                $scope.roleList.Count = result.totalItems;
-	            }
-				// For pagination
-				$scope.paginationObject.limit = limit;
-				$scope.paginationObject.currentPage = pageNumber;
-				$scope.paginationObject.totalItems = result.totalItems;
-				$scope.paginationObject.sortOrder = sortOrder;
-				$scope.paginationObject.sortBy = sortBy;
-				$scope.showLoader = false;
-			});
-    }
+//           if ($scope.global.sessionValues.type === 'USER' || $scope.global.sessionValues.type === 'DOMAIN_ADMIN') {
+//                if ($scope.global.sessionValues.domainId != null && $scope.roleSearch == null) {
+//                    $scope.filter = "&domainId=" + $scope.global.sessionValues.domainId + "&searchText=";
+//                } else if ($scope.global.sessionValues.domainId == null && $scope.roleSearch != null) {
+//                    $scope.filter = "&domainId=0" + "&searchText=" + $scope.roleSearch;
+//                } else {
+//                    $scope.filter = "&domainId=" + $scope.global.sessionValues.domainId + "&searchText=" + $scope.roleSearch;
+//                }
+//              hasRoleLists =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "roles/listByDomain"
+//        		+"?lang=" +appService.localStorageService.cookie.get('language')
+//        		+ $scope.filter+"&sortBy="+$scope.paginationObject.sortOrder+$scope.paginationObject.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+//
+//
+//			hasRoleLists.then(function(result) { // this is only run after $http
+//				// completes0
+//				$scope.roleList = result;
+//				$scope.roleList.Count = 0;
+//	            if (result.length != 0) {
+//	                $scope.roleList.Count = result.totalItems;
+//	            }
+//				// For pagination
+//				$scope.paginationObject.limit = limit;
+//				$scope.paginationObject.currentPage = pageNumber;
+//				$scope.paginationObject.totalItems = result.totalItems;
+//				$scope.paginationObject.sortOrder = sortOrder;
+//				$scope.paginationObject.sortBy = sortBy;
+//				$scope.showLoader = false;
+//			});
+//    }
 		};
 
 
@@ -137,16 +135,15 @@ angular
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasRoles = {};
         $scope.filter = "";
-        if ($scope.global.sessionValues.type === "ROOT_ADMIN") {
         if ($scope.domainView == null && $scope.roleSearch == null) {
         	hasRoles = appService.crudService.list("roles", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
         } else {
             if ($scope.domainView != null && $scope.roleSearch == null) {
-                $scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=";
+                $scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=" + "&filterParameter=" + $scope.filterParamater;
             } else if ($scope.domainView == null && $scope.roleSearch != null) {
-                $scope.filter = "&domainId=0" + "&searchText=" + $scope.roleSearch;
+                $scope.filter = "&domainId=0" + "&searchText=" + $scope.roleSearch + "&filterParameter=" + $scope.filterParamater;
             } else {
-                $scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=" + $scope.roleSearch;
+                $scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=" + $scope.roleSearch + "&filterParameter=" + $scope.filterParamater;
             }
         	hasRoles =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "roles/listByDomain"
 			+"?lang=" +appService.localStorageService.cookie.get('language')
@@ -165,45 +162,69 @@ angular
             $scope.paginationObject.totalItems = result.totalItems;
             $scope.showLoader = false;
         });
-    }
 
-        if ($scope.global.sessionValues.type === 'USER' || $scope.global.sessionValues.type === 'DOMAIN_ADMIN') {
-            if ($scope.global.sessionValues.domainId != null && $scope.roleSearch == null) {
-                $scope.filter = "&domainId=" + $scope.global.sessionValues.domainId + "&searchText=";
-            } else if ($scope.global.sessionValues.domainId == null && $scope.roleSearch != null) {
-                $scope.filter = "&domainId=0" + "&searchText=" + $scope.roleSearch;
-            } else {
-                $scope.filter = "&domainId=" + $scope.global.sessionValues.domainId + "&searchText=" + $scope.roleSearch;
-            }
-        	hasRoles =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "roles/listByDomain"
-			+"?lang=" +appService.localStorageService.cookie.get('language')
-			+ $scope.filter +"&sortBy="+globalConfig.sort.sortOrder+globalConfig.sort.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
-
-        hasRoles.then(function (result) {  // this is only run after $http
-            $scope.roleList = result;
-            $scope.roleList.Count = 0;
-            if (result.length != 0) {
-                $scope.roleList.Count = result.totalItems;
-            }
-
-            // For pagination
-            $scope.paginationObject.limit  = limit;
-            $scope.paginationObject.currentPage = pageNumber;
-            $scope.paginationObject.totalItems = result.totalItems;
-            $scope.showLoader = false;
-        });
-    }
+//        if ($scope.global.sessionValues.type === 'USER' || $scope.global.sessionValues.type === 'DOMAIN_ADMIN') {
+//            if ($scope.global.sessionValues.domainId != null && $scope.roleSearch == null) {
+//                $scope.filter = "&domainId=" + $scope.global.sessionValues.domainId + "&searchText=";
+//            } else if ($scope.global.sessionValues.domainId == null && $scope.roleSearch != null) {
+//                $scope.filter = "&domainId=0" + "&searchText=" + $scope.roleSearch;
+//            } else {
+//                $scope.filter = "&domainId=" + $scope.global.sessionValues.domainId + "&searchText=" + $scope.roleSearch;
+//            }
+//        	hasRoles =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "roles/listByDomain"
+//			+"?lang=" +appService.localStorageService.cookie.get('language')
+//			+ $scope.filter +"&sortBy="+globalConfig.sort.sortOrder+globalConfig.sort.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+//
+//        hasRoles.then(function (result) {  // this is only run after $http
+//            $scope.roleList = result;
+//            $scope.roleList.Count = 0;
+//            if (result.length != 0) {
+//                $scope.roleList.Count = result.totalItems;
+//            }
+//
+//            // For pagination
+//            $scope.paginationObject.limit  = limit;
+//            $scope.paginationObject.currentPage = pageNumber;
+//            $scope.paginationObject.totalItems = result.totalItems;
+//            $scope.showLoader = false;
+//        });
+//    }
     };
     $scope.list(1);
 
     // Get role list based on domain selection
-    $scope.selectDomainView = function(pageNumber) {
+    $scope.selectDomainView = function(domainfilter) {
+    	$scope.filterView = domainfilter;
+    	$scope.filterParamater = 'domain';
+    	$scope.list(1);
+    };
+
+    // Get volume list based on domain selection
+    $scope.selectDepartmentView = function(departmentView) {
+    	$scope.filterView = departmentView;
+    	$scope.filterParamater = 'department';
+    	$scope.list(1);
+    };
+
+    // Get volume list based on domain selection
+    $scope.selectProjectView = function(projectView) {
+    	$scope.filterView = projectView;
+    	$scope.filterParamater = 'project';
     	$scope.list(1);
     };
 
     // Get role search list based on quick search
     $scope.roleSearch = null;
     $scope.searchList = function(roleSearch) {
+    	if ($scope.global.sessionValues.type == 'ROOT_ADMIN') {
+    		$scope.filterParamater = 'domain';
+    	}
+    	if ($scope.global.sessionValues.type == 'DOMAIN_ADMIN') {
+    		$scope.filterParamater = 'department';
+    	}
+    	if ($scope.global.sessionValues.type == 'USER') {
+    		$scope.filterParamater = 'project';
+    	}
         $scope.roleSearch = roleSearch;
         $scope.list(1);
     };

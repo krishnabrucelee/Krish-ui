@@ -342,6 +342,14 @@ function vpcCtrl($scope, $modal, appService, $timeout, filterFilter, $stateParam
             $scope.formElements.departmenttypeList = result;
         });
     };
+    //Load department list
+    $scope.departmentList = {};
+    $scope.getDepartmentList = function (domain) {
+        var hasDepartments = appService.crudService.listAllByFilter("departments/search", domain);
+        hasDepartments.then(function (result) {
+            $scope.departmentList = result;
+        });
+    };
 
     $scope.getProjectList = function(department) {
         if ($scope.global.sessionValues.type != "USER") {
@@ -364,6 +372,12 @@ function vpcCtrl($scope, $modal, appService, $timeout, filterFilter, $stateParam
         var department = {};
         department.id = $scope.global.sessionValues.departmentId;
         $scope.getProjectList(department);
+    }
+
+    if ($scope.global.sessionValues.type == "DOMAIN_ADMIN") {
+        var domain = {};
+        domain.id = $scope.global.sessionValues.domainId;
+        $scope.getDepartmentList(domain);
     }
 
     $scope.changedomain = function(obj) {
@@ -392,17 +406,17 @@ function vpcCtrl($scope, $modal, appService, $timeout, filterFilter, $stateParam
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT
                 : $scope.paginationObject.limit;
         var hasVpcLists = {};
-        if ($scope.domainView == null && $scope.vpcSearch == null) {
+        if ($scope.filterView == null && $scope.vpcSearch == null) {
             hasVpcLists = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "vpc/listView" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+sortOrder+sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
 
         }  else {
             $scope.filter = "";
-            if ($scope.domainView != null && $scope.vpcSearch == null) {
-                $scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=";
-            } else if ($scope.domainView == null && $scope.vpcSearch != null) {
-                $scope.filter = "&domainId=0" + "&searchText=" + $scope.vpcSearch;
+            if ($scope.filterView != null && $scope.vpcSearch == null) {
+                $scope.filter = "&domainId=" + $scope.filterView.id + "&searchText=" + "&filterParameter=" + $scope.filterParamater;
+            } else if ($scope.filterView == null && $scope.vpcSearch != null) {
+                $scope.filter = "&domainId=0" + "&searchText=" + $scope.vpcSearch + "&filterParameter=" + $scope.filterParamater;
             } else {
-                $scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=" + $scope.vpcSearch;
+                $scope.filter = "&domainId=" + $scope.filterView.id + "&searchText=" + $scope.vpcSearch + "&filterParameter=" + $scope.filterParamater;
             }
             hasVpcLists =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "vpc/listByDomain"
 				+"?lang=" +appService.localStorageService.cookie.get('language')+ $scope.filter+"&sortBy="+$scope.paginationObject.sortOrder +$scope.paginationObject.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
@@ -432,15 +446,15 @@ function vpcCtrl($scope, $modal, appService, $timeout, filterFilter, $stateParam
         $scope.type = $stateParams.view;
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasGuestNetworks = {};
-        if ($scope.domainView == null && $scope.vpcSearch== null) {
+        if ($scope.filterView == null && $scope.vpcSearch== null) {
 		    hasGuestNetworks = appService.crudService.list("vpc/listView", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
 	} else {
-	    if ($scope.domainView != null && $scope.vpcSearch == null) {
-		$scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=";
-            } else if ($scope.domainView == null && $scope.vpcSearch != null) {
-	    	$scope.filter = "&domainId=0" + "&searchText=" + $scope.vpcSearch;
+	    if ($scope.filterView != null && $scope.vpcSearch == null) {
+		$scope.filter = "&domainId=" + $scope.filterView.id + "&searchText=" + "&filterParameter=" + $scope.filterParamater;
+            } else if ($scope.filterView == null && $scope.vpcSearch != null) {
+	    	$scope.filter = "&domainId=0" + "&searchText=" + $scope.vpcSearch + "&filterParameter=" + $scope.filterParamater;
             } else {
-		$scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=" + $scope.vpcSearch;
+		$scope.filter = "&domainId=" + $scope.filterView.id + "&searchText=" + $scope.vpcSearch + "&filterParameter=" + $scope.filterParamater;
 	    }
 	    hasGuestNetworks =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "vpc/listByDomain"
 					+"?lang=" +appService.localStorageService.cookie.get('language')+ encodeURI($scope.filter)+"&sortBy="+appService.globalConfig.sort.sortOrder+appService.globalConfig.sort.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
@@ -463,14 +477,39 @@ function vpcCtrl($scope, $modal, appService, $timeout, filterFilter, $stateParam
     $scope.filteredCount = $scope.vpcList;
     $scope.list(1);
 
-    // Get department list based on domain selection
-    $scope.selectDomainView = function(pageNumber) {
+    // Get volume list based on domain selection
+    $scope.selectDomainView = function(domainfilter) {
+    	$scope.filterView = domainfilter;
+    	$scope.filterParamater = 'domain';
+    	$scope.list(1);
+    };
+
+    // Get volume list based on domain selection
+    $scope.selectDepartmentView = function(departmentView) {
+    	$scope.filterView = departmentView;
+    	$scope.filterParamater = 'department';
+    	$scope.list(1);
+    };
+
+    // Get volume list based on domain selection
+    $scope.selectProjectView = function(projectView) {
+    	$scope.filterView = projectView;
+    	$scope.filterParamater = 'project';
     	$scope.list(1);
     };
 
    // Get instance list based on quick search
     $scope.vpcSearch = null;
     $scope.searchList = function(vpcSearch) {
+    	if ($scope.global.sessionValues.type == 'ROOT_ADMIN') {
+    		$scope.filterParamater = 'domain';
+    	}
+    	if ($scope.global.sessionValues.type == 'DOMAIN_ADMIN') {
+    		$scope.filterParamater = 'department';
+    	}
+    	if ($scope.global.sessionValues.type == 'USER') {
+    		$scope.filterParamater = 'project';
+    	}
         $scope.vpcSearch = vpcSearch;
         $scope.list(1);
     };
