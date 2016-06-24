@@ -45,9 +45,9 @@
                 <div class="row">
                     <div class="col-md-12 col-sm-12">
                         <div class="font-extra-bold pull-right" title="<fmt:message key="common.zone" bundle="${msg}" />">
-                            <a href="#" title="<fmt:message key="common.edit" bundle="${msg}" />" has-permission ="EDIT_TEMPLATE"  data-ng-click="editTemplateContainer('lg', templateObj)"><i class="pe-7s-note m-l-md font-extra-bold"></i> </a>
-                            <a href="#"  title="<fmt:message key="common.delete" bundle="${msg}" />" has-permission= "DELETE_MY_TEMPLATE" data-ng-click= "delete('sm', templateObj)"><i class="pe-7s-trash font-extra-bold m-l-md"></i></a>
-                            <a  title="<fmt:message key="properties" bundle="${msg}" />" data-ng-click="showDescription(templateObj)"><i class="pe-7s-keypad font-extra-bold  m-r-sm"></i></a>
+                            <a href="#" title="<fmt:message key="common.edit" bundle="${msg}" />" has-permission ="EDIT_TEMPLATE"  data-ng-click="editTemplateContainer('lg', templateObj.id)"><i class="pe-7s-note m-l-md font-extra-bold"></i> </a>
+                            <a href="#"  title="<fmt:message key="common.delete" bundle="${msg}" />" has-permission= "DELETE_MY_TEMPLATE" data-ng-click= "delete('sm', templateObj.id)"><i class="pe-7s-trash font-extra-bold m-l-md"></i></a>
+                            <a  title="<fmt:message key="properties" bundle="${msg}" />" data-ng-click="showDescription(templateObj.id)"><i class="pe-7s-keypad font-extra-bold  m-r-sm"></i></a>
                             <i class="fa fa-map-marker " ></i> {{ global.zone.name}}
                         </div>
                     </div>
@@ -100,7 +100,7 @@
                         <div class="row m-t-md" >
 
                             <div class="col-md-12 col-sm-12 col-xs-12 ">
-                                <button data-ng-if="templateObj.status == 'ACTIVE'" class="btn btn-info btn-sm pull-right" title="<fmt:message key="common.launch" bundle="${msg}" />" data-ng-click="openAddInstance(templateObj)"><i class="fa fa-power-off"></i> <fmt:message key="common.launch" bundle="${msg}" /></button>
+                                <button data-ng-if="templateObj.status == 'ACTIVE'" class="btn btn-info btn-sm pull-right" title="<fmt:message key="common.launch" bundle="${msg}" />" data-ng-click="openAddInstance(templateObj.id)"><i class="fa fa-power-off"></i> <fmt:message key="common.launch" bundle="${msg}" /></button>
                             </div>
                         </div>
                     </div>
