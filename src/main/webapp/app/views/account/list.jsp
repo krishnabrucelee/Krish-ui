@@ -47,7 +47,7 @@
 								<div class="dashboard-box pull-left">
 	     							<div class="instance-border-content-normal">
 	                                <span class="pull-left m-t-xs m-l-xs m-r-xs"><fmt:message key="common.total" bundle="${msg}" /></span>
-	                                <b class="pull-left">{{accountList.length}}</b>
+	                                <b class="pull-left">{{accountList.Count}}</b>
 	                                <div class="clearfix"></div>
 	                                </div>
 	                            </div>

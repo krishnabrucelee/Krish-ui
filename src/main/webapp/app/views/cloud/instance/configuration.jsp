@@ -421,11 +421,13 @@
               	<div class="clearfix"></div>
               	<form name="affinityForm" method="POST" data-ng-submit="saveAffinity(affinityForm, affinity)" novalidate class="form-horizontal">
 	             <div class="" ng-class="{ 'text-danger' : affinityForm.group.$invalid && affinitySubmitted}">
-	            	<label class="control-label pull-left"><fmt:message key="select.group" bundle="${msg}" /></label>
-	            	<div class="pull-right m-b-sm">
-	                	<a class="btn btn-mini btn-info" data-ng-click="createAffinityGroup('md')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="add.new.affinity" bundle="${msg}" /></a>
-	             	</div>
-
+					<div>
+		            	<label class="control-label"><fmt:message key="select.group" bundle="${msg}" /></label>
+		            	<div class="pull-right">
+		                	<a class="btn btn-mini btn-info" data-ng-click="createAffinityGroup('md')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="add.new.affinity" bundle="${msg}" /></a>
+		             	</div>
+		             	<div class="clearfix"></div>
+				</div>
                  	<select multiple="multiple" class="form-control input-group m-t-sm" name="groupList"
 		                         data-ng-model="affinity.groupList" ng-options="groupList.name for groupList in formElements.affinityGroupList"
 		                         data-ng-class="{'error': affinityForm.groupList.$invalid && affinitySubmitted}" >
@@ -439,9 +441,9 @@
                 </div>
                 <a class="btn btn-default m-r-xs"  ui-sref="cloud.list-instance"><fmt:message key="common.cancel" bundle="${msg}" /></a>
                 <get-loader-image-detail data-ng-show="showLoader"></get-loader-image-detail>
-                <div data-ng-if= "showLoaderDetail" style="margin: 40%">
+                <!-- <div data-ng-if= "showLoaderDetail" style="margin: 40%">
 				  <get-loader-image-detail data-ng-show="showLoaderDetail"></get-loader-image-detail>
-				</div>
+				</div> -->
                 <button data-ng-class = "(instances.status == 'STOPPED') ? 'btn btn-info' : 'btn btn-disable'" data-ng-disabled="instances.status != 'STOPPED'" href="javascript:void(0);" data-ng-hide="showLoader" type="submit"  ><fmt:message key="common.ok" bundle="${msg}" /></button>
 			</form>
 			</div>
