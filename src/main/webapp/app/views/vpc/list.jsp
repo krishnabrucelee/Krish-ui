@@ -175,7 +175,7 @@
 													data-ng-class="sort.descending && sort.column =='cIDR'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="common.cidr" bundle="${msg}" /></th>
 								            <th data-ng-click="changeSort('status',paginationObject.currentPage)"
 													data-ng-class="sort.descending && sort.column =='status'? 'sorting_desc' : 'sorting_asc' "><fmt:message key="common.state" bundle="${msg}" /></th>
-								            <th>Actions</th>
+								             <th><fmt:message key="common.action" bundle="${msg}"/></th>
 								        </tr>
 								    </thead>
 								    <tbody data-ng-hide="vpcList.length > 0">

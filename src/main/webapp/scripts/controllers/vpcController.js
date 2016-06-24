@@ -10,7 +10,143 @@
  *
  */
 
-angular.module('homer').controller('vpcCtrl', vpcCtrl)
+angular.module('homer')
+
+.controller('vpcCtrl', vpcCtrl)
+.controller('vpnGatewayCtrl',vpnGatewayCtrl)
+
+function vpnGatewayCtrl ($scope, $modal, appService, $timeout, filterFilter, $stateParams,$state, localStorageService, promiseAjax, $window, $location) {
+
+	$scope.global = appService.globalConfig;
+    $scope.vpc = {};
+    $scope.formElements = {};
+    $scope.showLoader = false;
+    $scope.showLoaderOffer = false;
+    $scope.paginationObject = {};
+    $scope.sort = appService.globalConfig.sort;
+    $scope.changeSorting = appService.utilService.changeSorting;
+    appService.globalConfig.webSocketLoaders.vpcLoader = false;
+    appService.globalConfig.webSocketLoaders.networkLoader = false;
+    appService.globalConfig.webSocketLoaders.vpnLoader = false;
+    appService.globalConfig.webSocketLoaders.ipLoader = false;
+    appService.globalConfig.webSocketLoaders.egressLoader = false;
+    appService.globalConfig.webSocketLoaders.networkAclLoader = false;
+    appService.globalConfig.webSocketLoaders.networkDeleteAclLoader = false;
+    $scope.paginationObject.sortOrder = '+';
+    $scope.paginationObject.sortBy = 'name';
+
+    $scope.domainList = {};
+    $scope.domainList = function() {
+        var hasDomains = appService.crudService.listAll("domains/list");
+        hasDomains.then(function(result) { // this is only run after $http
+            // completes0
+            $scope.domainList = result;
+        });
+    };
+    $scope.domainList();
+
+    $scope.vpngatewaySearch = null;
+    $scope.searchList = function(vpngatewaySearch) {
+        $scope.vpngatewaySearch = vpngatewaySearch;
+        $scope.list(1);
+    };
+
+    $scope.changeSort = function(sortBy, pageNumber) {
+        var sort = appService.globalConfig.sort;
+        if (sort.column == sortBy) {
+            sort.descending = !sort.descending;
+        } else {
+            sort.column = sortBy;
+            sort.descending = false;
+        }
+        var sortOrder = '-';
+        if (!sort.descending) {
+            sortOrder = '+';
+        }
+        $scope.paginationObject.sortOrder = sortOrder;
+        $scope.paginationObject.sortBy = sortBy;
+        $scope.showLoader = true;
+        var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT
+                : $scope.paginationObject.limit;
+        var hasVpcLists = {};
+        if ($scope.domainView == null && $scope.vpngatewaySearch == null) {
+            hasVpcLists = appService.promiseAjax.httpTokenRequest( appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "vpnCustomerGateway/listView" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+sortOrder+sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+
+        }  else {
+            $scope.filter = "";
+            if ($scope.domainView != null && $scope.vpngatewaySearch == null) {
+                $scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=";
+            } else if ($scope.domainView == null && $scope.vpngatewaySearch != null) {
+                $scope.filter = "&domainId=0" + "&searchText=" + $scope.vpngatewaySearch;
+            } else {
+                $scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=" + $scope.vpngatewaySearch;
+            }
+            hasVpcLists =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "vpnCustomerGateway/listByDomain"
+				+"?lang=" +appService.localStorageService.cookie.get('language')+ $scope.filter+"&sortBy="+$scope.paginationObject.sortOrder +$scope.paginationObject.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+        }
+        hasVpcLists.then(function(result) { // this is only run after $http
+            // completes0
+            $scope.vpngatewayList = result;
+            $scope.vpngatewayList.Count = 0;
+            if (result.length != 0) {
+                $scope.vpngatewayList.Count = result.totalItems;
+            }
+            // For pagination
+            $scope.paginationObject.limit = limit;
+            $scope.paginationObject.currentPage = pageNumber;
+            $scope.paginationObject.totalItems = result.totalItems;
+            $scope.paginationObject.sortOrder = sortOrder;
+            $scope.paginationObject.sortBy = sortBy;
+            $scope.showLoader = false;
+            appService.localStorageService.set('view', null);
+        });
+    };
+
+    $scope.list = function(pageNumber) {
+        $scope.global.sort.sortOrder = $scope.paginationObject.sortOrder;
+        $scope.global.sort.sortBy = $scope.paginationObject.sortBy;
+        $scope.showLoader = true;
+        $scope.type = $stateParams.view;
+        var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
+        var hasGuestNetworks = {};
+        if ($scope.domainView == null && $scope.vpngatewaySearch== null) {
+	    hasGuestNetworks =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "vpnCustomerGateway/listView"
+					+"?lang=" +appService.localStorageService.cookie.get('language')+ encodeURI($scope.filter)+"&sortBy="+appService.globalConfig.sort.sortOrder+appService.globalConfig.sort.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+        }
+        else {
+    	    if ($scope.domainView != null && $scope.vpngatewaySearch == null) {
+    		$scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=";
+                } else if ($scope.domainView == null && $scope.vpngatewaySearch != null) {
+    	    	$scope.filter = "&domainId=0" + "&searchText=" + $scope.vpngatewaySearch;
+                } else {
+    		$scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=" + $scope.vpngatewaySearch;
+    	    }
+    	    hasGuestNetworks =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "vpnCustomerGateway/listByDomain"
+    					+"?lang=" +appService.localStorageService.cookie.get('language')+ encodeURI($scope.filter)+"&sortBy="+appService.globalConfig.sort.sortOrder+appService.globalConfig.sort.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+    	}
+        hasGuestNetworks.then(function(result) {
+            $scope.showLoader = true;
+            $scope.vpngatewayList = angular.copy(result);
+            $scope.vpngatewayList.Count = 0;
+            if (result.length != 0) {
+                $scope.vpngatewayList.Count = result.totalItems;
+            }
+            $scope.showLoader = false;
+            // For pagination
+            $scope.paginationObject.limit = limit;
+            $scope.paginationObject.currentPage = pageNumber;
+            $scope.paginationObject.totalItems = result.totalItems;
+            $scope.showLoader = false;
+        });
+    };
+    $scope.list(1);
+
+    // Get department list based on domain selection
+    $scope.selectDomainView = function(pageNumber) {
+    	$scope.list(1);
+    };
+
+}
 
 function vpcCtrl($scope, $modal, appService, $timeout, filterFilter, $stateParams,$state, localStorageService, promiseAjax, $window, $location) {
     $scope.global = appService.globalConfig;

@@ -248,6 +248,15 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider, $compile
                 }
             })
 
+              // VPN Customer Gateway list
+            .state('vpngateway', {
+                url : "/vpngateway",
+                templateUrl : VIEW_URL + "views/vpn/list.jsp",
+                data : {
+                    pageTitle : 'VPN Customer Gateway'
+                }
+            })
+
             // Public IP
             .state('vpc.view-vpc.config-vpc.public-ip', {
                 url : "/public-ip",
