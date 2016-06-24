@@ -7,7 +7,8 @@ pageEncoding="UTF-8"%>
 <fmt:setBundle basename="i18n/messages_${language}" var="msg" scope="session" />
 
 <div data-ng-if="global.webSocketLoaders.ipLoader" class="overlay-wrapper">
-    <img data-ng-if="global.webSocketLoaders.ipLoader" src="images/loading-bars.svg" class="inner-loading" />
+  <get-show-loader-image data-ng-show="global.webSocketLoaders.ipLoader"></get-show-loader-image>
+
 </div>
 <div class="hpanel">
 <div class="panel-heading">

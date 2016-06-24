@@ -9,7 +9,7 @@ pageEncoding="UTF-8"%>
 <div class="hpanel">
 <div class="white-content">
 <div data-ng-if="global.webSocketLoaders.portForwardLoader" class="overlay-wrapper">
-    <img data-ng-if="global.webSocketLoaders.portForwardLoader" src="images/loading-bars.svg" class="inner-loading" />
+<get-show-loader-image data-ng-show="global.webSocketLoaders.portForwardLoader"></get-show-loader-image>
 </div>
     <form name="portform" method="POST" novalidate data-ng-submit="addVM(portform, portForward)">
 

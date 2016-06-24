@@ -18,7 +18,9 @@
             <td><input  type="text" data-ng-model="account.name" class="form-control input-group " ></td>
             <td></td>
             <td>
-                <img src="images/loading-bars.svg" data-ng-show="showLoader" width="30" height="30" />
+                <!-- <img src="images/loading-bars.svg" data-ng-show="showLoader" width="30" height="30" /> -->
+                <get-loader-image></get-loader-image>
+
                 <a  data-ng-hide="showLoader" class="btn btn-info" data-ng-click="addAccount(account)" ><span class="pe-7s-plus pe-lg font-bold m-r-xs" ></span><fmt:message key="common.add" bundle="${msg}" /></a>
             </td>
         </tr>
@@ -33,12 +35,15 @@
                 <td class="col-md-3 col-xs-3">
                     <span data-ng-show="projectAccountList.length-1 != $index">
                         <a class="icon-button" title="Remove account from the project" data-ng-click="deleteAccount($index)">
-                            <span data-ng-show="removeLoader['index_'+$index]" class="m-r-xl" ><img src="images/loading-bars.svg"  width="30" height="30" /></span>
-                            <span data-ng-hide="removeLoader['index_'+$index]" class="fa fa-trash"></span>
+                            <span data-ng-show="showLoader['index_'+$index]" class="m-r-xl" ><get-loader-image></get-loader-image>
+                            </span>
+                            <span data-ng-hide="showLoader['index_'+$index]" class="fa fa-trash"></span>
                         </a>
                         <a class="icon-button" title="Make account project owner"  data-ng-click="makeOwner($index)">
-                            <span data-ng-show="ownerLoader['index_'+$index]"><img src="images/loading-bars.svg" width="30" height="30" /></span>
-                            <span data-ng-hide="ownerLoader['index_'+$index]" class="fa fa-user-md"></span>
+                            <span data-ng-show="showLoader['index_'+$index]"><!-- <img src="images/loading-bars.svg" width="30" height="30" /> -->
+                            <get-loader-image></get-loader-image>
+                            </span>
+                            <span data-ng-hide="showLoader['index_'+$index]" class="fa fa-user-md"></span>
                         </a>
                     </span>
                 </td>

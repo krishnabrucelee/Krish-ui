@@ -6,14 +6,17 @@
 <c:set var="language" value="${not empty language ? language : pageContext.request.getAttribute('language')}" scope="session" />
 <fmt:setBundle basename="i18n/messages_${language}" var="msg" scope="session" />
 <div data-ng-if="global.webSocketLoaders.networkDeleteAclLoader" class="overlay-wrapper">
-    <img data-ng-if="global.webSocketLoaders.networkDeleteAclLoader" src="images/loading-bars.svg" class="inner-loading" />
+<!--     <img data-ng-if="global.webSocketLoaders.networkDeleteAclLoader" src="images/loading-bars.svg" class="inner-loading" />
+ -->    <get-show-loader-image data-ng-show="global.webSocketLoaders.networkDeleteAclLoader"></get-show-loader-image>
+
 </div>
 <!-- Header -->
 
     <div class="content" ui-view >
     	<div data-ng-controller="vpcCtrl">
     	<div data-ng-if="global.webSocketLoaders.vpcLoader" class="overlay-wrapper">
-                		            <img data-ng-if="global.webSocketLoaders.vpcLoader" src="images/loading-bars.svg" class="inner-loading" />
+        <get-show-loader-image data-ng-show="global.webSocketLoaders.vpcLoader"></get-show-loader-image>
+
  </div>
 
  		<div data-ng-if="networkAclList.vpcId != null" class="col-lg-3 col-md-3 col-sm-4 pull-right">

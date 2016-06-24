@@ -186,7 +186,7 @@
 		   							    </div>
 		   							    </td>
 		   							    <td>
-		   							    <div class="loading-bar-tr"><img src="images/loading-bars.svg" title="{{instance.status}}" data-ng-if="(instance.status != 'STOPPED' && instance.status != 'RUNNING' && instance.status != 'DESTROYED' && instance.status != 'ERROR')" width="30" height="30" /></div>
+		   							    <div class="loading-bar-tr"><get-show-loader-image title="{{instance.status}}" data-ng-if="(instance.status != 'STOPPED' && instance.status != 'RUNNING' && instance.status != 'DESTROYED' && instance.status != 'ERROR')"></get-show-loader-image></div>
 
 										<div class="pointer-not">
 													<div has-permission="START_VM"

@@ -111,9 +111,9 @@
                             <app-currency></app-currency>{{miscellaneousList[0].costperGB }} <span>/GB/<fmt:message key="common.day" bundle="${msg}" /></span>
                         </h4>
                     </span>
-            <img src="images/loading-bars.svg" data-ng-if="showLoaders" width="30" height="30" />
-            <button type="button" data-ng-hide="showLoaders" class="btn btn-default " ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.cancel" bundle="${msg}" /></button>
-            <button class="btn btn-info" data-ng-hide="showLoaders" type="submit"><fmt:message key="common.create" bundle="${msg}" /></button>
+  <get-loader-image-offer></get-loader-image-offer>
+   <button type="button" data-ng-hide="showLoaderOffer" class="btn btn-default " ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.cancel" bundle="${msg}" /></button>
+            <button class="btn btn-info" data-ng-hide="showLoaderOffer" type="submit"><fmt:message key="common.create" bundle="${msg}" /></button>
 </div>
 </div>
         </div></div>

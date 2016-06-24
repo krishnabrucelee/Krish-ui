@@ -9,7 +9,7 @@
 <div ui-view data-ng-controller="networkCtrl">
 
 <div data-ng-if="global.webSocketLoaders.vmnicLoader" class="overlay-wrapper">
-                <img data-ng-if="global.webSocketLoaders.vmnicLoader" src="images/loading-bars.svg" class="inner-loading" />
+                <get-show-loader-image data-ng-show="global.webSocketLoaders.vmnicLoader"></get-show-loader-image>
             </div>
 <div class="row" >
 

@@ -1,3 +1,5 @@
+
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
@@ -99,10 +101,13 @@
                     <hr>
                     <div class="row">
                         <div class="col-md-12">
+                        	<span class="pull-left"><get-project-loader  ></get-project-loader></span>
                             <span class="pull-right">
-                                <a class="btn btn-default" id = "add_project_cancel_button" data-ng-if="!projectLoader" data-ng-click="cancel()"><fmt:message key="common.cancel" bundle="${msg}" /></a>
-                                 <img src="images/loading-bars.svg" data-ng-if="projectLoader" width="30" height="30" />
-                                <button class="btn btn-info"  id = "add_project_add_button" data-ng-if="!projectLoader"  type="submit"><fmt:message key="common.add" bundle="${msg}" /></button>
+                                <a class="btn btn-default" id = "add_project_cancel_button" data-ng-show="!projectLoader" data-ng-click="cancel()"><fmt:message key="common.cancel" bundle="${msg}" /></a>
+<!--                              <img src="images/loading-bars.svg" data-ng-if="projectLoader" width="30" height="30" />
+ -->
+
+  <button class="btn btn-info"  id = "add_project_add_button" data-ng-show="!projectLoader"  type="submit"><fmt:message key="common.add" bundle="${msg}" /></button>
                             </span>
                         </div>
 
@@ -171,3 +176,4 @@
         </div>
 
     </div>
+

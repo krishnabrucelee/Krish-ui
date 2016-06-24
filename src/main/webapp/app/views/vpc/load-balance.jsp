@@ -9,8 +9,8 @@ pageEncoding="UTF-8"%>
 <div ui-view data-ng-controller="vpcCtrl">
     <div class="white-content">
     <div data-ng-if="global.webSocketLoaders.loadBalancerLoader" class="overlay-wrapper">
-                		            <img data-ng-if="global.webSocketLoaders.loadBalancerLoader" src="images/loading-bars.svg" class="inner-loading" />
-            		            </div>
+  <get-show-loader-image data-ng-show="global.webSocketLoaders.loadBalancerLoader"></get-show-loader-image>
+      		            </div>
         <form name="loadform" method="POST" novalidate
               data-ng-submit="openAddVM(loadform,loadBalancer)">
 				<div class="form-group" ng-class="{'text-danger': loadform.vpcnetworks.$invalid && loadFormSubmitted">

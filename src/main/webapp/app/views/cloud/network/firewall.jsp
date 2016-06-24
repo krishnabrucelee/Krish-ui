@@ -9,7 +9,8 @@ pageEncoding="UTF-8"%>
 <div data-ng-controller="networksCtrl">
 <div class="white-content" >
 <div data-ng-if="global.webSocketLoaders.ingressLoader" class="overlay-wrapper">
-   <img data-ng-if="global.webSocketLoaders.ingressLoader" src="images/loading-bars.svg" class="inner-loading" />
+   <get-show-loader-image data-ng-show="global.webSocketLoaders.ingressLoader"></get-show-loader-image>
+
 </div>
 	<form name = "ingressForm" novalidate data-ng-submit="ingressSave(ingressForm,firewallRuleIngress)" method="post">
 

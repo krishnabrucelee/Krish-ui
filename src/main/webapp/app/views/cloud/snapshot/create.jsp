@@ -16,8 +16,7 @@
 			<div class="modal-body">
 				<div class="row" data-ng-show="showLoader">
 					<div class="col-md-12">
-						<img src="images/loading-bars.svg" width="64" height="64" />
-					</div>
+					<get-loader-image></get-loader-image>	</div>
 				</div>
 				<div class="row" data-ng-hide="showLoader">
 					<div class="col-md-12">
