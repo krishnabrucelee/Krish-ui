@@ -6,10 +6,10 @@ pageEncoding="UTF-8"%>
 <c:set var="language" value="${not empty language ? language : pageContext.request.getAttribute('language')}" scope="session" />
 <fmt:setBundle basename="i18n/messages_${language}" var="msg" scope="session" />
 
-    <div class="white-content" >
+    <div class="white-content" > {{global.webSocketLoaders.vpnLoader}}
     <div data-ng-if="global.webSocketLoaders.vpnLoader" class="overlay-wrapper">
-    <img data-ng-if="global.webSocketLoaders.vpnLoader" src="images/loading-bars.svg" class="inner-loading" />
-</div>
+	<get-show-loader-image data-ng-show="global.webSocketLoaders.vpnLoader"></get-show-loader-image>
+ </div>
         <div class="hpanel">
             <div class="panel-heading">
                 <div class="row" >
@@ -47,7 +47,7 @@ pageEncoding="UTF-8"%>
                                 data-ng-show="vpnform.password.$invalid && vpnFormSubmitted">
                              <fmt:message key="common.required" bundle="${msg}" /></span></td>
                      <td>
-                     <img src="images/loading-bars.svg" data-ng-if="showLoader" width="30" height="30" />
+                     <get-loader-image ></get-loader-image>
                      <input data-ng-if = "!showLoader" class="btn btn-info" type="submit" value="<fmt:message key="common.add" bundle="${msg}" />">
 		             </td>
                  </tr>

@@ -435,6 +435,7 @@ table.dataTable thead .sorting_desc::after {content: "\f0dd";}
 .icon-disable img.img-icon{opacity:0.2; filter:alpha(opacity=20);}
 
 .form-control.port-forwarding-select{width:50%;}
+.form-control.filter-label{width:43%;}
 
 .without-firewall .firewall {padding: 50px 0 65px 0;}
 .config-box{min-height:70px; font-size: 12px;}

@@ -31,8 +31,8 @@ pageEncoding="UTF-8"%>
 
             <div class="text-center" data-ng-show="acquiringIP">
                 <span><fmt:message key="please.wait" bundle="${msg}" /></span><br/>
-                <span><img src="images/loading-bars.svg" /> </span>
-            </div>
+ <span><get-show-loader-image> </get-show-loader-image></span>
+             </div>
 
         </div>
 

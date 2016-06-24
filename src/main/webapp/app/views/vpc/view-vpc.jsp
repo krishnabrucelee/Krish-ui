@@ -32,9 +32,12 @@
 							id="events">
 							<div data-ng-if="global.webSocketLoaders.vpcLoader"
 								class="overlay-wrapper">
-								<img data-ng-if="global.webSocketLoaders.vpcLoader"
-									src="images/loading-bars.svg" class="inner-loading" />
+								<!-- <img data-ng-if="global.webSocketLoaders.vpcLoader"
+									src="images/loading-bars.svg" class="inner-loading" /> -->
+									    <get-show-loader-image data-ng-show="global.webSocketLoaders.vpcLoader"></get-show-loader-image>
 							</div>
+
+
 							<form name="addvpcForm" data-ng-submit="update(addvpcForm)"
 								method="post" novalidate="">
 								<div class="row">

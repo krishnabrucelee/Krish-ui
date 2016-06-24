@@ -27,6 +27,7 @@
 
     </div>
     <div class="modal-footer">
+     <get-loader-image ></get-loader-image>
         <button type="button" id="delete_department_cancel_button" class="btn btn-default " ng-click="cancel()" data-dismiss="modal"><fmt:message key="common.cancel" bundle="${msg}" /></button>
         <button type="button" id="delete_department_ok_button" class="btn btn-default btn-danger2" ng-click="ok(deleteObject)" data-dismiss="modal"><fmt:message key="common.ok" bundle="${msg}" /></button>
 

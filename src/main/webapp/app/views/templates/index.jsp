@@ -65,9 +65,9 @@
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
-                            <div class="text-center m-t-xxxl" data-ng-show="showLoader">
-                                <img src="images/loading-bars.svg" />
-                            </div>
+                            <div class="text-center m-t-xxxl" >
+
+<get-loader-image data-ng-show="showLoader"></get-loader-image>                            </div>
                             <div data-ng-hide="showLoader">
                                 <div data-ng-show="listView">
                                     <div class="row" data-ng-include src="'app/views/templates/list.jsp'"></div>
@@ -103,8 +103,9 @@
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
-                            <div class="text-center m-t-xxxl" data-ng-show="showLoader">
-                                <img src="images/loading-bars.svg" />
+                            <div class="text-center m-t-xxxl" >
+
+								<get-loader-image data-ng-show="showLoader"></get-loader-image>
                             </div>
                             <div data-ng-hide="showLoader">
                                 <div data-ng-show="listView">
@@ -137,8 +138,8 @@
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
-                            <div class="text-center m-t-xxxl" data-ng-show="showLoader">
-                                <img src="images/loading-bars.svg" />
+                            <div class="text-center m-t-xxxl">
+									<get-loader-image></get-loader-image>
                             </div>
                             <div data-ng-hide="showLoader">
                                 <div data-ng-show="listView">

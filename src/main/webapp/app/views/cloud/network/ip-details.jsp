@@ -8,7 +8,7 @@ pageEncoding="UTF-8"%>
 
 <div class="row"  >
 <div data-ng-if="global.webSocketLoaders.ipLoader" class="overlay-wrapper">
-    <img data-ng-if="global.webSocketLoaders.ipLoader" src="images/loading-bars.svg" class="inner-loading" />
+    <get-show-loader-image data-ng-show="global.webSocketLoaders.ipLoader"></get-show-loader-image>
 </div>
     <div class="col-lg-6 col-md-6 col-sm-12">
         <div class="row ">

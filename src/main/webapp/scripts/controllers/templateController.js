@@ -788,7 +788,9 @@ var hasFeatured = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET
 
 
     // Delete the template
-    $scope.delete = function (size, template) {
+    $scope.delete = function (size, templateId) {
+    	var hasTemplateRead = appService.crudService.read("templates", templateId);
+     	hasTemplateRead.then(function (template) {
     	appService.dialogService.openDialog("app/views/templates/confirm-delete.jsp", size, $scope, ['$scope', '$modalInstance', function ($scope, $modalInstance) {
                 $scope.deleteId = template.id;
                 $scope.ok = function (deleteId) {
@@ -819,6 +821,7 @@ var hasFeatured = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET
                     $modalInstance.close();
                 };
             }]);
+     	});
     };
 
 
@@ -827,7 +830,9 @@ var hasFeatured = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET
     }
 
 
- $scope.editTemplateContainer = function (size, templateObj){
+ $scope.editTemplateContainer = function (size, templateId){
+	var hasTemplateRead = appService.crudService.read("templates", templateId);
+ 	hasTemplateRead.then(function (templateObj) {
 	$scope.templates = templateObj;
            appService.dialogService.openDialog("app/views/templates/edit-template.jsp", 'lg', $scope, ['$scope', '$modalInstance', '$rootScope', function ($scope, $modalInstance, $rootScope) {
 
@@ -888,6 +893,7 @@ $scope.getOsCategoryList();
                     $modalInstance.close();
                 };
   }]);
+ 	});
     };
 
 
@@ -923,7 +929,9 @@ $scope.openUserDescription = function (index) {
 
     // INFO PAGE
     $scope.templateInfo = $scope.template.templateList[$stateParams.id - 1];
-    $scope.showDescription = function (templateObj) {
+    $scope.showDescription = function (templateId) {
+    	var hasTemplateRead = appService.crudService.read("templates", templateId);
+    	hasTemplateRead.then(function (templateObj) {
         var modalInstance = $modal.open({
             animation: $scope.animationsEnabled,
             templateUrl: 'app/views/templates/properties.jsp',
@@ -940,10 +948,12 @@ $scope.openUserDescription = function (index) {
         modalInstance.result.then(function (selectedItem) {
             $scope.selected = selectedItem;
         });
+    	});
     };
 
-    $scope.openAddInstance = function (templateObj) {
-
+    $scope.openAddInstance = function (templateId) {
+    	var hasTemplateRead = appService.crudService.read("templates", templateId);
+    	hasTemplateRead.then(function (templateObj) {
         appService.localStorageService.set("selectedTemplate", templateObj);
         if(templateObj.format == "ISO") {
             appService.localStorageService.set("view", "iso");
@@ -966,6 +976,7 @@ $scope.openUserDescription = function (index) {
         modalInstance.result.then(function (templateObj) {
             $scope.selected = templateObj;
         });
+    	});
 
     };
 };

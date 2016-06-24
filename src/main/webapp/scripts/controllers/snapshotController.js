@@ -237,7 +237,10 @@ function snapshotListCtrl($scope, crudService, $state, $timeout, promiseAjax, gl
         }
         hasSnapshots.then(function(result) { // this is only run after
             // $http completes0
+            $timeout(function () {
             $scope.showLoaderOffer = false;
+            $scope.list(1);
+        }, 10000);
             $scope.vmSnapshotList = result;
             $scope.vmSnapshotList.Count = 0;
             if (result.length != 0) {
@@ -297,7 +300,7 @@ $scope.vmCostList();
             $scope.validateVMSnapshot = function(form) {
                     $scope.formSubmitted = true;
                     if (form.$valid) {
-                        $scope.showLoaders = true;
+                        $scope.showLoaderOffer = true;
                         $scope.vmsnapshot.domainId = $scope.vmsnapshot.vm.domainId;
                         $scope.vmsnapshot.vmId = $scope.vmsnapshot.vm.id;
                         if(angular.isUndefined($scope.vmsnapshot.snapshotMemory)){
@@ -305,11 +308,14 @@ $scope.vmCostList();
                         }
 			appService.globalConfig.webSocketLoaders.snapshotLoader = true;
                         $scope.cancel();
+$timeout(function () {
+            $scope.showLoaderOffer = false;
+        }, 10000);
                         var hasVm = crudService.add("vmsnapshot", $scope.vmsnapshot);
                         hasVm.then(function(result) {
-                            $scope.showLoaders = false;
+                           // $scope.showLoaderOffer = false;
                         }).catch(function(result) {
-                            $scope.showLoaders = false;
+                            $scope.showLoaderOffer = false;
                             $scope.cancel();
 			appService.globalConfig.webSocketLoaders.snapshotLoader = false;
                         });

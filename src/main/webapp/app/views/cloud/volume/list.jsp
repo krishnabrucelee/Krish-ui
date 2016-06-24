@@ -91,10 +91,10 @@ pageEncoding="UTF-8"%>
                 <div class="col-md-12 col-sm-12 col-xs-12 ">
                     <div class="white-content">
                      <div data-ng-if="global.webSocketLoaders.volumeLoader" class="overlay-wrapper">
-                		<img data-ng-if="global.webSocketLoaders.volumeLoader" src="images/loading-bars.svg" class="inner-loading" />
+              		<get-show-loader-image data-ng-show="global.webSocketLoaders.volumeLoader"></get-show-loader-image>
             		</div>
-                    <div data-ng-show = "showLoader" style="margin: 1%">
-    				  		<get-loader-image data-ng-show="showLoader"></get-loader-image>
+                    <div style="margin: 1%">
+    				  		<get-loader-image></get-loader-image>
       						</div>
       						<div  data-ng-hide="showLoader" class="table-responsive responsive-x">
                         <table cellspacing="1" cellpadding="1" class="table dataTable table-bordered table-striped">

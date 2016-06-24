@@ -62,9 +62,27 @@
 								<select
 									class="form-control input-group col-xs-5" name="domainView"
 									data-ng-model="domainView"
-									data-ng-change="selectDomainView(1)"
+									data-ng-change="selectDomainView(domainView)"
 									data-ng-options="domainView.name for domainView in domainListView">
 									<option value=""> <fmt:message key="common.domain.filter" bundle="${msg}" /></option>
+								</select>
+							</span>
+							<span class="pull-right m-r-sm" data-ng-if="global.sessionValues.type == 'DOMAIN_ADMIN'">
+								<select
+									class="form-control input-group col-xs-5" name="departmentView"
+									data-ng-model="departmentView"
+									data-ng-change="selectDepartmentView(departmentView)"
+									data-ng-options="departmentView.userName for departmentView in departmentList">
+									<option value=""> <fmt:message key="common.department.filter" bundle="${msg}" /></option>
+								</select>
+							</span>
+							<span class="pull-right m-r-sm" data-ng-if="global.sessionValues.type == 'USER'">
+								<select
+									class="form-control input-group col-xs-5" name="userView"
+									data-ng-model="userView"
+									data-ng-change="selectProjectView(userView)"
+									data-ng-options="userView.name for userView in projectList">
+									<option value=""> <fmt:message key="common.project.filter" bundle="${msg}" /></option>
 								</select>
 							</span>
 							<div class="clearfix"></div>
@@ -186,7 +204,7 @@
 		   							    </div>
 		   							    </td>
 		   							    <td>
-		   							    <div class="loading-bar-tr"><img src="images/loading-bars.svg" title="{{instance.status}}" data-ng-if="(instance.status != 'STOPPED' && instance.status != 'RUNNING' && instance.status != 'DESTROYED' && instance.status != 'ERROR')" width="30" height="30" /></div>
+		   							    <div class="loading-bar-tr"><get-show-loader-image title="{{instance.status}}" data-ng-if="(instance.status != 'STOPPED' && instance.status != 'RUNNING' && instance.status != 'DESTROYED' && instance.status != 'ERROR')"></get-show-loader-image></div>
 
 										<div class="pointer-not">
 													<div has-permission="START_VM"
