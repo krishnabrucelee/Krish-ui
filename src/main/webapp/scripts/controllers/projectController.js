@@ -1,3 +1,5 @@
+
+
 /**
  *
  * projectCtrl
@@ -400,7 +402,7 @@ if ($scope.domainView != null && $scope.vmSearch == null) {
     	  $scope.save = function (form) {
     		   	 $scope.formSubmitted = true;
     		        if (form.$valid) {
-    		        	$scope.showLoader = true;
+    		        	$scope.projectLoader = true;
     		        	$scope.newProject.domainId =  $scope.newProject.domain.id;
     		            var project = angular.copy($scope.newProject);
 
@@ -416,14 +418,14 @@ if ($scope.domainView != null && $scope.vmSearch == null) {
     		            var hasProject = appService.crudService.add("projects", project);
     		            hasProject.then(function (result) {  // this is only run after $http completes
 			    $scope.formSubmitted = false;
-    		            	$scope.showLoader = false;
+    		            	$scope.projectLoader = false;
     		           	    $scope.cancel();
     		                $scope.homerTemplate = 'app/views/notification/notify.jsp';
     		                appService.notify({message: 'Project added successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
 
     		              	$scope.list(1);
     		            }).catch(function (result) {
-    		            	$scope.showLoader = false;
+    		            	$scope.projectLoader = false;
     		                if(result.data.fieldErrors != null ){
     		               	 var msg = result.data.fieldErrors['name'];
     		               	 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
@@ -516,7 +518,7 @@ if ($scope.domainView != null && $scope.vmSearch == null) {
                 $scope.projectForm = {};
 
              $scope.update = function (form) {
-            	 $scope.showLoader = true;
+            	 $scope.projectLoader = true;
                     $scope.formSubmitted = true;
                     if (form.$valid) {
                         var project = angular.copy($scope.project);
@@ -531,14 +533,14 @@ if ($scope.domainView != null && $scope.vmSearch == null) {
 
                         var hasServer = appService.crudService.update("projects", project);
                         hasServer.then(function (result) {
-				$scope.showLoader = false;
-                        	//scope.oneChecked = false;
-                        $scope.formSubmitted = false;
+				$scope.projectLoader = false;
+                        	$scope.oneChecked = false;
+                        	$scope.formSubmitted = false;
                             appService.notify({message: 'Project Updated successfully ', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE});
                             $modalInstance.close();
                             $scope.list(1);
                         }).catch(function (result) {
-    		            	$scope.showLoader = false;
+    		            	$scope.projectLoader = false;
     		                if(result.data.globalError[0] != '' && result.data.globalError[0] != null ){
     		               	 var msg = result.data.globalError[0];
     		               	 appService.notify({message: msg, classes: 'alert-danger', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
@@ -550,7 +552,7 @@ if ($scope.domainView != null && $scope.vmSearch == null) {
 
     		            });
                     } else {
-                        $scope.showLoader = false;
+                        $scope.projectLoader = false;
                     }
                 },
                         $scope.cancel = function () {
@@ -639,23 +641,23 @@ if ($scope.domainView != null && $scope.vmSearch == null) {
 
     $scope.deleteAccount = function(index) {
 
-        $scope.showLoader["index_"+index] = true;
+        $scope.removeLoader["index_"+index] = true;
         $timeout(function() {
             $scope.projectAccountList.splice(index, 1);
-            $scope.showLoader["index_"+index] = false;
+            $scope.removeLoader["index_"+index] = false;
             appService.notify({message: 'Account removed successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
         }, 2000);
     };
 
     $scope.makeOwner = function(index) {
-        $scope.showLoader["index_"+index] = true;
+        $scope.ownerLoader["index_"+index] = true;
         $timeout(function() {
             var accountList = angular.copy($scope.projectAccountList).slice().reverse();
             var b = accountList[index];
             accountList[index] = accountList[0];
             accountList[0] = b;
             $scope.projectAccountList = accountList;
-            $scope.showLoader["index_"+index] = false;
+            $scope.ownerLoader["index_"+index] = false;
             appService.notify({message: 'Updated successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
         }, 2000);
     }
@@ -683,3 +685,4 @@ if ($scope.domainView != null && $scope.vmSearch == null) {
 
 
 };
+

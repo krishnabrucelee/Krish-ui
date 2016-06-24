@@ -98,7 +98,7 @@
                 <div class="row">
                     <div class="col-md-12">
                     	<span class="pull-left">
-							<get-loader-image></get-loader-image>
+							<get-project-loader></get-project-loader>
                     	</span>
                     	<div class="clearfix"></div>
                         <span class="pull-right">

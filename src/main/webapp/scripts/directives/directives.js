@@ -30,12 +30,13 @@ angular
     .directive('paginationContent', paginationContent)
     .directive('paginationContents', paginationContents)
     .directive('getLoaderImage', getLoaderImage)
-    .directive('getLoaderImageOffer', getLoaderImageOffer)
+    .directive('getLoaderImageOffer', getLoaderImageOffer) 
     .directive('getLoaderImageDetail', getLoaderImageDetail)
     .directive('getUsageLoaderImage', getUsageLoaderImage)
     .directive('getShowLoaderImage', getShowLoaderImage)
     .directive('getDepartmentLoaderImage', getDepartmentLoaderImage)
     .directive('getLoginLoaderImage', getLoginLoaderImage)
+    .directive('getProjectLoader', getProjectLoader)
     .directive('favIconUrl', favIconUrl)
     .directive('passwordVerify', passwordVerify)
     .directive('validInteger', validInteger)
@@ -832,6 +833,16 @@ function getDepartmentLoaderImage() {
         templateUrl: "app/views/common/department-loader-image.jsp",
 	}
 }
+function getProjectLoader() {
+    return {
+        restrict: 'E',
+        link: function (scope, element, attrs) {
+
+        },
+        templateUrl: "app/views/common/project-loader.jsp",
+    }
+}
+
 function validInteger() {
     return {
         require : '?ngModel',

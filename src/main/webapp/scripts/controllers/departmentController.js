@@ -83,7 +83,7 @@ function departmentCtrl($scope, $sce, appService, localStorageService, globalCon
     appService.globalConfig.sort.sortBy = $scope.paginationObject.sortBy;
     	$scope.showLoader = true;
     	$scope.department = {};
-        $scope.filter = ""; 
+        $scope.filter = "";
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasDepartments = {};
 	if ($scope.domainView == null && $scope.departmentSearch== null) {

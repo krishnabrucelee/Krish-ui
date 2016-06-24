@@ -6,7 +6,9 @@
 <c:set var="language" value="${not empty language ? language : pageContext.request.getAttribute('language')}" scope="session" />
 <fmt:setBundle basename="i18n/messages_${language}" var="msg" scope="session" />
 <div data-ng-if="global.webSocketLoaders.networkDeleteAclLoader" class="overlay-wrapper">
-    <img data-ng-if="global.webSocketLoaders.networkDeleteAclLoader" src="images/loading-bars.svg" class="inner-loading" />
+<!--     <img data-ng-if="global.webSocketLoaders.networkDeleteAclLoader" src="images/loading-bars.svg" class="inner-loading" />
+ -->    <get-show-loader-image data-ng-show="global.webSocketLoaders.networkDeleteAclLoader"></get-show-loader-image>
+
 </div>
 <!-- Header -->
 
