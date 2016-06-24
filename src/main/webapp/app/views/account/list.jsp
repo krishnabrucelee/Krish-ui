@@ -47,7 +47,7 @@
 								<div class="dashboard-box pull-left">
 	     							<div class="instance-border-content-normal">
 	                                <span class="pull-left m-t-xs m-l-xs m-r-xs"><fmt:message key="common.total" bundle="${msg}" /></span>
-	                                <b class="pull-left">{{accountList.Count}}</b>
+	                                <b class="pull-left">{{accountList.length}}</b>
 	                                <div class="clearfix"></div>
 	                                </div>
 	                            </div>
@@ -82,11 +82,29 @@
 										<select
 											class="form-control input-group col-xs-5" name="domainView"
 											data-ng-model="domainView" id = "accounts_domain_filter"
-											data-ng-change="selectDomainView(1)"
+											data-ng-change="selectDomainView(domainView)"
 											data-ng-options="domainView.name for domainView in accountElements.domainList">
 											<option value=""> <fmt:message key="common.domain.filter" bundle="${msg}" /></option>
 										</select>
 		                    		</span>
+							<span class="pull-right m-r-sm" data-ng-if="global.sessionValues.type == 'DOMAIN_ADMIN'">
+								<select
+									class="form-control input-group col-xs-5" name="departmentView"
+									data-ng-model="departmentView"
+									data-ng-change="selectDepartmentView(departmentView)"
+									data-ng-options="departmentView.userName for departmentView in departmentList">
+									<option value=""> <fmt:message key="common.department.filter" bundle="${msg}" /></option>
+								</select>
+							</span>
+							<span class="pull-right m-r-sm" data-ng-if="global.sessionValues.type == 'USER'">
+								<select
+									class="form-control input-group col-xs-5" name="userView"
+									data-ng-model="userView"
+									data-ng-change="selectProjectView(userView)"
+									data-ng-options="userView.name for userView in projectList">
+									<option value=""> <fmt:message key="common.project.filter" bundle="${msg}" /></option>
+								</select>
+							</span>
 
                                     <div class="clearfix"></div>
                                     <span class="pull-right m-l-sm m-t-sm"></span>

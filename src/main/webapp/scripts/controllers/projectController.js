@@ -61,6 +61,9 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams, localStor
     $scope.paginationObject.sortOrder = '+';
     $scope.paginationObject.sortBy = 'name';
 
+    if ($scope.global.sessionValues.type == 'USER') {
+		$scope.filterParamater = 'project';
+	}
     $scope.changeSort = function(sortBy, pageNumber) {
 		var sort = appService.globalConfig.sort;
 		if (sort.column == sortBy) {
@@ -79,23 +82,24 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams, localStor
 		var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
 
             var hasProjectsLists = {};
-         /**   if ($scope.domainView == null) {
+         /**   if ($scope.filterView == null) {
             	var hasProjectsLists =  appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "projects" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+sortOrder+sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
             } else {
             	hasProjectsLists =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "projects/listByDomain"
     				+"?lang=" +appService.localStorageService.cookie.get('language')
-    				+ "&domainId="+$scope.domainView.id+"&sortBy="+$scope.paginationObject.sortOrder+$scope.paginationObject.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+    				+ "&domainId="+$scope.filterView.id+"&sortBy="+$scope.paginationObject.sortOrder+$scope.paginationObject.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
             }**/
- 	 if ($scope.domainView == null && $scope.vmSearch == null) {
+            $scope.filter = "";
+ 	 if ($scope.filterView == null && $scope.vmSearch == null) {
             	hasProjectsLists = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "projects/listView" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+sortOrder+sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
             }
 		else {
-	  	if ($scope.domainView != null && $scope.vmSearch == null) {
-                $scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=";
-            }  else if ($scope.domainView == null && $scope.vmSearch != null) {
-                $scope.filter = "&domainId=0" + "&searchText=" + $scope.vmSearch;
+	  	if ($scope.filterView != null && $scope.vmSearch == null) {
+                $scope.filter = "&domainId=" + $scope.filterView.id + "&searchText=" + "&filterParameter=" + $scope.filterParamater;
+            }  else if ($scope.filterView == null && $scope.vmSearch != null) {
+                $scope.filter = "&domainId=0" + "&searchText=" + $scope.vmSearch + "&filterParameter=" + $scope.filterParamater;
             } else  {
-                $scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=" + $scope.vmSearch;
+                $scope.filter = "&domainId=" + $scope.filterView.id + "&searchText=" + $scope.vmSearch + "&filterParameter=" + $scope.filterParamater;
             }
     	 hasProjectsLists = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "projects/listByDomainAndOwner"+"?lang=" +appService.localStorageService.cookie.get('language')+ $scope.filter +"&sortBy="+sortOrder+sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
             }
@@ -118,6 +122,12 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams, localStor
 
  $scope.vmSearch = null;
     $scope.searchList = function(vmSearch) {
+    	if ($scope.global.sessionValues.type == 'ROOT_ADMIN') {
+    		$scope.filterParamater = 'domain';
+    	}
+    	if ($scope.global.sessionValues.type == 'DOMAIN_ADMIN') {
+    		$scope.filterParamater = 'department';
+    	}
         $scope.vmSearch = vmSearch;
 
         $scope.list(1);
@@ -130,23 +140,24 @@ function projectCtrl($scope, appService, $filter, $state,$stateParams, localStor
     	$scope.showLoader = true;
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasProjects = {};
-        /**if ($scope.domainView == null) {
+        /**if ($scope.filterView == null) {
         	hasProjects = appService.crudService.list("projects", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
         } else {
         	hasProjects =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "projects/listByDomain"
 				+"?lang=" +appService.localStorageService.cookie.get('language')
-				+ "&domainId="+$scope.domainView.id+"&sortBy="+globalConfig.sort.sortOrder+globalConfig.sort.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
+				+ "&domainId="+$scope.filterView.id+"&sortBy="+globalConfig.sort.sortOrder+globalConfig.sort.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
         }**/
-   if ($scope.domainView == null && $scope.vmSearch == null) {
+        $scope.filter = "";
+   if ($scope.filterView == null && $scope.vmSearch == null) {
             	hasProjects = appService.crudService.list("projects/listView", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
             }
 		else {
-if ($scope.domainView != null && $scope.vmSearch == null) {
-                $scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=";
-            }  else if ($scope.domainView == null && $scope.vmSearch != null) {
-                $scope.filter = "&domainId=0" + "&searchText=" + $scope.vmSearch;
+if ($scope.filterView != null && $scope.vmSearch == null) {
+                $scope.filter = "&domainId=" + $scope.filterView.id + "&searchText=" + "&filterParameter=" + $scope.filterParamater;
+            }  else if ($scope.filterView == null && $scope.vmSearch != null) {
+                $scope.filter = "&domainId=0" + "&searchText=" + $scope.vmSearch + "&filterParameter=" + $scope.filterParamater;
             } else  {
-                $scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=" + $scope.vmSearch;
+                $scope.filter = "&domainId=" + $scope.filterView.id + "&searchText=" + $scope.vmSearch + "&filterParameter=" + $scope.filterParamater;
             }
     		    hasProjects = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "projects/listByDomainAndOwner"+"?lang=" +appService.localStorageService.cookie.get('language')
     				+ encodeURI($scope.filter) + "&sortBy="+globalConfig.sort.sortOrder+globalConfig.sort.sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
@@ -168,7 +179,23 @@ if ($scope.domainView != null && $scope.vmSearch == null) {
     $scope.list(1);
 
     // Get project list based on domain selection
-    $scope.selectDomainView = function(pageNumber) {
+    $scope.selectDomainView = function(domainfilter) {
+    	$scope.filterView = domainfilter;
+    	$scope.filterParamater = 'domain';
+    	$scope.list(1);
+    };
+
+    // Get project list based on domain selection
+    $scope.selectDepartmentView = function(departmentView) {
+    	$scope.filterView = departmentView;
+    	$scope.filterParamater = 'department';
+    	$scope.list(1);
+    };
+
+    // Get project list based on domain selection
+    $scope.selectProjectView = function(projectView) {
+    	$scope.filterView = projectView;
+    	$scope.filterParamater = 'project';
     	$scope.list(1);
     };
 
