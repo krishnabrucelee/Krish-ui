@@ -31,6 +31,12 @@
                 <span class="nav-label"><fmt:message key="common.vpc" bundle="${msg}" /></span>
             </a>
         </li>
+        <li data-ng-if="global.sessionValues.userStatus != 'SUSPENDED'" ng-class="{active: $state.includes('vpn-customer-gateway')}">
+            <a ui-sref="vpngateway" id="vpn_navigation_button">
+                <span class="pe-7s-network  pe-2x nav-menu-icons pull-left"></span>
+                <span class="nav-label"><fmt:message key="common.vpn.customer.gateway" bundle="${msg}" /></span>
+            </a>
+        </li>
         <li data-ng-if="global.sessionValues.userStatus != 'SUSPENDED'" ng-class="{active: $state.includes('template-store')}">
             <a ui-sref="template-store" id="templates_navigation_button">
                 <!--<span class="pe-7s-display2 pe-2x nav-menu-icons"></span>-->
@@ -70,7 +76,7 @@
          </li>
          <li data-ng-if="global.sessionValues.userStatus != 'SUSPENDED'" ng-class="{active: $state.includes('department')}">
             <a ui-sref="department" id="departments_navigation_button">
-                <span class="pe-7s-network pe-2x nav-menu-icons"></span>
+                <span class="pe-7s-id pe-2x nav-menu-icons"></span>
                 <span class="nav-label"><fmt:message key="common.departments" bundle="${msg}" /></span>
             </a>
         </li>
