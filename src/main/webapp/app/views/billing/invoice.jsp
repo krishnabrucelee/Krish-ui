@@ -47,7 +47,7 @@ table tbody.auto-serial tr td:first-child:before
 							<a data-ng-if=" global.sessionValues.type == 'ROOT_ADMIN'&& defaultLanguage=='zh'"
 												href="{{ global.PING_APP_URL }}invoice/report?type=pdf&lang=CHINESE"
 												class="btn btn-default  pull-right m-l-xs"><span
-												class="fa fa-file-pdf-o text-danger"></span> PDF</a>					
+												class="fa fa-file-pdf-o text-danger"></span> PDF</a>
 
 							 <a	data-ng-if=" global.sessionValues.type !== 'ROOT_ADMIN'" href="{{viewpdf}}" class="btn btn-default  pull-right m-l-xs" data-ng-click="domainpdf()"><span
 										class="fa fa-file-pdf-o text-danger"></span> PDF</a>
@@ -62,7 +62,7 @@ table tbody.auto-serial tr td:first-child:before
 											href="{{ global.PING_APP_URL }}invoice/report?type=xlsx&lang=CHINESE"
 												class="btn btn-default  pull-right m-l-xs"><span
 												class=" fa fa-file-excel-o text-success"></span> XLSX</a>
-												
+
 												<a	data-ng-if=" global.sessionValues.type !== 'ROOT_ADMIN'" href="{{viewexcel}}" class="btn btn-default  pull-right m-l-xs" data-ng-click="domainexcel()"><span
 										class=" fa fa-file-excel-o text-success"></span>  XLSX</a>
 												<div class="clearfix"></div>
@@ -104,7 +104,7 @@ table tbody.auto-serial tr td:first-child:before
                             <table cellspacing="1" cellpadding="1" class="table  table-bordered ">
                                 <thead>
                                     <tr>
-                                        <th class="label-primary text-white">S.No</th>
+                                        <th class="label-primary text-white"><fmt:message key="serial.no" bundle="${msg}" /></th>
                                     	<th class="label-primary text-white"  data-ng-class="sort.descending && sort.column =='invoiceNumber'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.invoice.no" bundle="${msg}" />.</th>
                                     	<th class="label-primary text-right text-white"  data-ng-class="sort.descending && sort.column =='domain.name'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.company" bundle="${msg}" /></th>
                                     	<th class="label-primary text-right text-white"  data-ng-class="sort.descending && sort.column =='billPeriod'? 'sorting_desc' : 'sorting_asc' " ><fmt:message key="common.billing.period" bundle="${msg}" /></th>
