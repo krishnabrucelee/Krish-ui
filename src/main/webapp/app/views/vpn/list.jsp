@@ -47,7 +47,7 @@
                              <div class="clearfix"></div>
                              </div>
                          </div>
-						 <a has-permission="CREATE_VPC" class="btn btn-info" id="vpc_add_button" data-ng-click="createVpc('md')"> <span class="pe-7s-plus pe-lg font-bold m-r-xs"></span> <fmt:message key="add.vpn.customer.gateway" bundle="${msg}"/></a>
+						 <%-- <a has-permission="CREATE_VPC" class="btn btn-info" id="vpc_add_button" data-ng-click="createVpc('md')"> <span class="pe-7s-plus pe-lg font-bold m-r-xs"></span> <fmt:message key="add.vpn.customer.gateway" bundle="${msg}"/></a> --%>
                          <a class="btn btn-info" id="vpc_refresh_button" data-ng-click="list(1)"  title="<fmt:message key="common.refresh" bundle="${msg}"/>"><span class="fa fa-refresh fa-lg "></span></a>
                     </div>
                     <div class="pull-right dashboard-filters-area">
@@ -98,7 +98,7 @@
 														key="common.department" bundle="${msg}"/></th>
 											<th data-ng-click="changeSort('projectName ',paginationObject.currentPage)"
 													data-ng-class="sort.descending && sort.column =='projectName '? 'sorting_desc' : 'sorting_asc' "><fmt:message key="common.project" bundle="${msg}"/></th>
-								             <th><fmt:message key="common.action" bundle="${msg}"/></th>
+								             <%-- <th><fmt:message key="common.action" bundle="${msg}"/></th> --%>
 								        </tr>
 								    </thead>
 								    <tbody data-ng-hide="vpngatewayList.length > 0">
@@ -117,13 +117,13 @@
 								            <td>{{vpngateway.domainName }}</td>
 											<td>{{vpngateway.departmentUserName || '-'}}</td>
 											<td>{{vpngateway.projectName || '-'}}</td>
-								            <td>
+								            <%-- <td>
 								                <input type="hidden" id="vpngateway_unique_{{vpngateway.id}}"  data-unique-field="{{ vpngateway.domainName }}-{{vpngateway.departmentUserName}}-{{ vpngateway.name}}" class="test_vpngateway_unique">
 								                <a class="icon-button test_vpc_configure_button" id="vpngateway_edit_button_{{vpngateway.id}}" title="<fmt:message key="common.edit" bundle="${msg}" />" >
 								                    <span class="fa fa-edit m-r-xs"> </span>
 								                </a>
 								                <a  class="icon-button test_vpc_delete_button" id="vpc_delete_button_{{vpc.id}}" data-ng-click="delete('sm', vpc.id)" title="<fmt:message key="remove.vpc" bundle="${msg}" />"  ><span class="fa fa-trash"></span></a>
-								            </td>
+								            </td> --%>
 								        </tr>
 								    </tbody>
 								</table>
