@@ -383,7 +383,7 @@
 		                                <span class="text-danger">*</span>
 		                            </label>
 	                            </div>
-	                            <div class="col-md-12">
+	                            <div class="col-md-12  m-t-sm">
 	                              <select required="true" class="form-control input-group m-t-sm" name="keypairName"
 	                                        data-ng-model="resetSSH.keypairName" data-ng-class="{'error': resetForm.keypairName.$invalid && formSubmitted}"
 	                                        data-ng-options="keypairName.name for keypairName in formElements.sshKeyList" >
@@ -417,13 +417,15 @@
 	               <fmt:message key="affinity.group" bundle="${msg}" /> (<fmt:message key="optional" bundle="${msg}" />)
 	            </h4>
 	            <hr class="m-t-xs">
-	            	<div class="pull-right">
-	                	<a class="btn btn-info" data-ng-click="createAffinityGroup('md')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="add.new.affinity" bundle="${msg}" /></a>
-	             	</div>
+
               	<div class="clearfix"></div>
               	<form name="affinityForm" method="POST" data-ng-submit="saveAffinity(affinityForm, affinity)" novalidate class="form-horizontal">
 	             <div class="" ng-class="{ 'text-danger' : affinityForm.group.$invalid && affinitySubmitted}">
-	            	<label class="control-label"><fmt:message key="select.group" bundle="${msg}" /></label>
+	            	<label class="control-label pull-left"><fmt:message key="select.group" bundle="${msg}" /></label>
+	            	<div class="pull-right m-b-sm">
+	                	<a class="btn btn-mini btn-info" data-ng-click="createAffinityGroup('md')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="add.new.affinity" bundle="${msg}" /></a>
+	             	</div>
+
                  	<select multiple="multiple" class="form-control input-group m-t-sm" name="groupList"
 		                         data-ng-model="affinity.groupList" ng-options="groupList.name for groupList in formElements.affinityGroupList"
 		                         data-ng-class="{'error': affinityForm.groupList.$invalid && affinitySubmitted}" >
