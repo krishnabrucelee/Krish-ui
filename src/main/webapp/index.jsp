@@ -3,7 +3,7 @@
 <body>
 <%
 String basePath = request.getContextPath();
-String redirectURL = basePath+"/login";
+String redirectURL = basePath+"/logins";
 response.sendRedirect(redirectURL);
 %>
 </body>
