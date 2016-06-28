@@ -33,7 +33,7 @@ function vpnGatewayCtrl ($scope, $modal, appService, $timeout, filterFilter, $st
     appService.globalConfig.webSocketLoaders.networkAclLoader = false;
     appService.globalConfig.webSocketLoaders.networkDeleteAclLoader = false;
     $scope.paginationObject.sortOrder = '+';
-    $scope.paginationObject.sortBy = 'name';
+    $scope.paginationObject.sortBy = 'id';
 
     $scope.domainList = {};
     $scope.domainList = function() {
@@ -275,7 +275,7 @@ function vpcCtrl($scope, $modal, appService, $timeout, filterFilter, $stateParam
                        $state.$current.parent.parent.parent.data.pageName = result.name;
                        $state.$current.parent.parent.parent.data.id = result.id;
 		         }
-                   else if ($state.current.data.pageTitle === "Network ACL" || $state.current.data.pageTitle === "Public IP" || $state.current.data.pageTitle === "view.network") {
+                   else if ($state.current.data.pageTitle === "Network ACL" || $state.current.data.pageTitle === "Public IP" || $state.current.data.pageTitle === "view.network" || $state.current.data.pageTitle === "Private Gateway") {
                        $state.$current.parent.parent.data.pageName = result.name;
                        $state.$current.parent.parent.data.id = result.id;
                     }
@@ -805,6 +805,21 @@ $scope.dropnetworkLists = {
         }]);
     });
     };
+
+    // VPC Private Gateway List
+    $scope.listPrivateGateway = function () {
+    	$scope.showLoader = true;
+        $scope.privateGateway = {};
+        if (!angular.isUndefined($stateParams.id)) {
+        var hasPrivateGateway =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "vpcprivategateway/listbyvpc" +"?vpcid="+ $stateParams.id+ "&lang=" + appService.localStorageService.cookie
+	               .get('language') + "&sortBy=-id");
+        hasPrivateGateway.then(function (result) {  // this is only run after $http completes0
+            $scope.privateGatewayList = result;
+            $scope.showLoader = false;
+        });
+        }
+    };
+    $scope.listPrivateGateway();
 
     // VPC Network List
     $scope.listVpcNetwork = function(vpcId) {
@@ -2314,6 +2329,7 @@ $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.editrule, funct
         $scope.LBlist(1);
     }
 });
+
 $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.deleteRules, function(event, args) {
     appService.globalConfig.webSocketLoaders.loadBalancerLoader = false;
     appService.globalConfig.webSocketLoaders.networkLoader = false;
