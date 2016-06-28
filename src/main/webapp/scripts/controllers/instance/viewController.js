@@ -430,6 +430,59 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
                 };
         }]);
     };
+
+    $scope.domain = {};
+    var hasDomains = appService.crudService.listAll("domains/list");
+    hasDomains.then(function (result) {
+    	$scope.domainList = result;
+    });
+
+    $scope.departmentList = {};
+    $scope.getDepartmentList = function (domainId) {
+    	if (!angular.isUndefined(domainId)) {
+	    	var domain = {};
+	        domain.id = domainId;
+	        var hasDepartments = appService.crudService.listAllByFilter("departments/search", domain);
+	        hasDepartments.then(function (result) {
+	            $scope.departmentList = result;
+	        });
+    	} else {
+    		$scope.departmentList = {};
+    	}
+    };
+
+    if ($scope.global.sessionValues.type == "DOMAIN_ADMIN") {
+        $scope.getDepartmentList($scope.global.sessionValues.domainId);
+    }
+
+    $scope.vmMigrate = function(vm) {
+        appService.dialogService.openDialog("app/views/cloud/instance/vm-migrate.jsp", 'md', $scope, ['$scope', '$modalInstance', '$rootScope', function($scope, $modalInstance, $rootScope) {
+            var vms = angular.copy(vm);
+            var event = "VM.ASSIGN";
+            $scope.update = function(form) {
+                    vms.event = event;
+                    $scope.formSubmitted = true;
+                    if (form.$valid) {
+                    	vms.domain = $scope.department.domain;
+                    	vms.domainId = $scope.department.domain.id;
+                    	vms.department = $scope.department;
+                    	vms.departmentId = $scope.department.id;
+                        appService.globalConfig.webSocketLoaders.viewLoader = true;
+                        var hasVm = appService.crudService.updates("virtualmachine/handleevent/vm", vms);
+                        hasVm.then(function(result) {
+                            $scope.cancel();
+                        }).catch(function(result) {
+                            $scope.cancel();
+                            appService.globalConfig.webSocketLoaders.viewLoader = false;
+                        });
+                    }
+                },
+                $scope.cancel = function() {
+                    $modalInstance.close();
+                };
+        }]);
+    };
+
     $scope.hostInformation = function(vm) {
         appService.dialogService.openDialog("app/views/cloud/instance/listhost.jsp", 'md', $scope, ['$scope', '$modalInstance', '$rootScope', function($scope, $modalInstance, $rootScope) {
             $scope.cancel = function() {
@@ -781,6 +834,20 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
                 $scope.viewInstance($stateParams.id);
             }
 	    }
+            if ($scope.persistinstance.uuid === args.resourceUuid) {
+                $scope.global.webSocketLoaders.viewLoader = false;
+                if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
+                    $scope.viewInstance($stateParams.id);
+                }
+            }
+        });
+        $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.moveVm, function(event, args) {
+            if(args.status == 'FAILED' && $scope.persistinstance.uuid === args.resourceUuid){
+	    	    $scope.global.webSocketLoaders.viewLoader = false;
+	    	    if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
+                    $scope.viewInstance($stateParams.id);
+                }
+    	    }
             if ($scope.persistinstance.uuid === args.resourceUuid) {
                 $scope.global.webSocketLoaders.viewLoader = false;
                 if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {

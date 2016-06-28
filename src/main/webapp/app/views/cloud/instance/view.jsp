@@ -428,6 +428,9 @@ pageEncoding="UTF-8"%>
                                         <li has-permission="MIGRATE_HOST" class="list-group-item">
                                             <button ng-class = "(instance.status == 'RUNNING' && global.sessionValues.type === 'ROOT_ADMIN') ? 'resizelink enable' : 'resizelink disable'" data-ng-disabled = "(instance.status !== 'RUNNING' || global.sessionValues.type !== 'ROOT_ADMIN')" href="javascript:void(0);" title="<fmt:message key="migrate.to.another.host" bundle="${msg}" />" data-ng-click="hostMigrate(instance)"><span class="fa-arrows fa font-bold m-xs pull-left"></span> <span class="pull-left m-l-xs"><fmt:message key="migrate.to.another.host" bundle="${msg}" /></span><div class="clearfix"></div></button>
                                         </li>
+                                        <li class="list-group-item">
+                                            <button ng-class = "(instance.status == 'STOPPED' && global.sessionValues.type !== 'USER') ? 'resizelink enable' : 'resizelink disable'" data-ng-disabled = "(instance.status !== 'STOPPED' || global.sessionValues.type === 'USER')" href="javascript:void(0);" title="<fmt:message key="vm.ownership.migration" bundle="${msg}" />" data-ng-click="vmMigrate(instance)"><span class="pe-7s-add-user pe-lg font-bold m-xs pull-left"></span> <span class="pull-left m-l-xs"><fmt:message key="vm.ownership.migration" bundle="${msg}" /></span><div class="clearfix"></div></button>
+                                        </li>
                                         <li has-permission="HOST_INFORMATION" data-ng-if="instance.status == 'RUNNING'" class="list-group-item">
                                             <a href="javascript:void(0);" title="<fmt:message key="host.information" bundle="${msg}" />" data-ng-click="hostInformation(instance)" ><span class="fa-server fa m-xs"></span> <fmt:message key="host.information" bundle="${msg}" /></a>
                                         </li>
@@ -467,10 +470,10 @@ pageEncoding="UTF-8"%>
                                         <li data-ng-if="instance.status == 'DESTROYED'" class="list-group-item ">
                                             <a href="javascript:void(0);" data-ng-if="instance.status == 'DESTROYED'" data-ng-click="recoverVm('sm', instance)" title="<fmt:message key="recover.vm" bundle="${msg}" />"><span class="fa-history fa font-bold m-xs"></span> <fmt:message key="recover.vm" bundle="${msg}" /></a>
                                         </li>
-                                         <li has-permission = "RESIZE" class="list-group-item " >
-                                              <button ng-class = "(instance.status == 'STOPPED') ? 'resizelink enable' : 'resizelink disable'" data-ng-disabled="instance.status !== 'STOPPED'" href="javascript:void(0);"   data-ng-click="selectab()" title="<fmt:message key="resize.vm" bundle="${msg}" />"><span class="fa fa-expand m-xs"></span> <fmt:message key="resize.vm" bundle="${msg}" /></button>
+                                        <li has-permission = "RESIZE" class="list-group-item " >
+                                            <button ng-class = "(instance.status == 'STOPPED') ? 'resizelink enable' : 'resizelink disable'" data-ng-disabled="instance.status !== 'STOPPED'" href="javascript:void(0);"   data-ng-click="selectab()" title="<fmt:message key="resize.vm" bundle="${msg}" />"><span class="fa fa-expand m-xs"></span> <fmt:message key="resize.vm" bundle="${msg}" /></button>
                                         </li>
-                                         <li has-permission="RESET_PASSWORD" class="list-group-item">
+                                        <li has-permission="RESET_PASSWORD" class="list-group-item">
                                             <button ng-class = "(instance.passwordEnabled == true && instance.status == 'STOPPED') ? 'resizelink enable' : 'resizelink disable'" data-ng-disabled="instance.passwordEnabled == false || instance.status !== 'STOPPED'" href="javascript:void(0);" title="<fmt:message key="reset.password" bundle="${msg}" />" data-ng-click="resetPassword('sm',instance)"><span class="fa-key fa font-bold m-xs"></span> <fmt:message key="reset.password" bundle="${msg}" /></button>
                                         </li>
                                     </div>
@@ -486,7 +489,7 @@ pageEncoding="UTF-8"%>
             <div class="tab-pane"  data-ng-class="{'active' : templateCategory == 'storage'}" id="step1-storage">
                 <div data-ng-include src="'app/views/cloud/instance/storage.jsp'"></div>
             </div>
-            <div class="tab-pane"  data-ng-class="{'active' : templateCategory == 'network'}" id="step1-network">
+            <div class="tab-pane"  data-ng-class="{'active' : templateCategory == 'network'}"  data-ng-if="templateCategory == 'network'" id="step1-network">
                 <div data-ng-include src="'app/views/cloud/instance/network-config.jsp'"></div>
             </div>
             <div class="tab-pane"  data-ng-class="{'active' : templateCategory == 'monitor'}" id="step1-monitor">

@@ -96,7 +96,7 @@
 									<option value=""> <fmt:message key="common.department.filter" bundle="${msg}" /></option>
 								</select>
 							</span>
-							<span class="pull-right m-r-sm" data-ng-if="global.sessionValues.type == 'USER'">
+<%-- 							<span class="pull-right m-r-sm" data-ng-if="global.sessionValues.type == 'USER'">
 								<select
 									class="form-control input-group col-xs-5" name="userView"
 									data-ng-model="userView"
@@ -104,7 +104,7 @@
 									data-ng-options="userView.name for userView in projectList">
 									<option value=""> <fmt:message key="common.project.filter" bundle="${msg}" /></option>
 								</select>
-							</span>
+							</span> --%>
 
                                     <div class="clearfix"></div>
                                     <span class="pull-right m-l-sm m-t-sm"></span>

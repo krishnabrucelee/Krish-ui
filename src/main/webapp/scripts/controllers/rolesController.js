@@ -64,15 +64,15 @@ angular
 //            }
 
             $scope.filter = "";
-            if ($scope.domainView == null && $scope.roleSearch == null) {
+            if ($scope.filterView == null && $scope.roleSearch == null) {
             	hasRoleLists =  appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "roles" +"?lang=" + localStorageService.cookie.get('language') +"&sortBy="+sortOrder+sortBy+"&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit" : limit});
             } else {
-                if ($scope.domainView != null && $scope.roleSearch == null) {
-                    $scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=" + "&filterParameter=" + $scope.filterParamater;
-                } else if ($scope.domainView == null && $scope.roleSearch != null) {
+                if ($scope.filterView != null && $scope.roleSearch == null) {
+                    $scope.filter = "&domainId=" + $scope.filterView.id + "&searchText=" + "&filterParameter=" + $scope.filterParamater;
+                } else if ($scope.filterView == null && $scope.roleSearch != null) {
                     $scope.filter = "&domainId=0" + "&searchText=" + $scope.roleSearch + "&filterParameter=" + $scope.filterParamater;
                 } else {
-                    $scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=" + $scope.roleSearch + "&filterParameter=" + $scope.filterParamater;
+                    $scope.filter = "&domainId=" + $scope.filterView.id + "&searchText=" + $scope.roleSearch + "&filterParameter=" + $scope.filterParamater;
                 }
               hasRoleLists =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "roles/listByDomain"
         		+"?lang=" +appService.localStorageService.cookie.get('language')
@@ -135,15 +135,15 @@ angular
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         var hasRoles = {};
         $scope.filter = "";
-        if ($scope.domainView == null && $scope.roleSearch == null) {
+        if ($scope.filterView == null && $scope.roleSearch == null) {
         	hasRoles = appService.crudService.list("roles", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
         } else {
-            if ($scope.domainView != null && $scope.roleSearch == null) {
-                $scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=" + "&filterParameter=" + $scope.filterParamater;
-            } else if ($scope.domainView == null && $scope.roleSearch != null) {
+            if ($scope.filterView != null && $scope.roleSearch == null) {
+                $scope.filter = "&domainId=" + $scope.filterView.id + "&searchText=" + "&filterParameter=" + $scope.filterParamater;
+            } else if ($scope.filterView == null && $scope.roleSearch != null) {
                 $scope.filter = "&domainId=0" + "&searchText=" + $scope.roleSearch + "&filterParameter=" + $scope.filterParamater;
             } else {
-                $scope.filter = "&domainId=" + $scope.domainView.id + "&searchText=" + $scope.roleSearch + "&filterParameter=" + $scope.filterParamater;
+                $scope.filter = "&domainId=" + $scope.filterView.id + "&searchText=" + $scope.roleSearch + "&filterParameter=" + $scope.filterParamater;
             }
         	hasRoles =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "roles/listByDomain"
 			+"?lang=" +appService.localStorageService.cookie.get('language')
