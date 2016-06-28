@@ -489,7 +489,7 @@ pageEncoding="UTF-8"%>
             <div class="tab-pane"  data-ng-class="{'active' : templateCategory == 'storage'}" id="step1-storage">
                 <div data-ng-include src="'app/views/cloud/instance/storage.jsp'"></div>
             </div>
-            <div class="tab-pane"  data-ng-class="{'active' : templateCategory == 'network'}" id="step1-network">
+            <div class="tab-pane"  data-ng-class="{'active' : templateCategory == 'network'}"  data-ng-if="templateCategory == 'network'" id="step1-network">
                 <div data-ng-include src="'app/views/cloud/instance/network-config.jsp'"></div>
             </div>
             <div class="tab-pane"  data-ng-class="{'active' : templateCategory == 'monitor'}" id="step1-monitor">
