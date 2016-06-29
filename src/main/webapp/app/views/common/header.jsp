@@ -69,7 +69,7 @@
 					<li><a ui-sref="profile" id="profile"> <fmt:message
 								key="common.profile" bundle="${msg}" />
 					</a></li>
-					<li><a>{{ "v" + global.sessionValues.buildNumber }}</<a></li>
+					<li><a>{{ "V" + global.sessionValues.buildNumber }}</<a></li>
 					<li><a href="javascript:void(0)" id="logout" data-ng-click="logout()"><fmt:message
 								key="common.logout" bundle="${msg}" /> </a></li>
 				</ul></li>
