@@ -164,7 +164,7 @@
 														id="vpc_view_vpc_restart_vpc_button"
 														href="javascript:void(0);"
 														title="<fmt:message key="restart.vpc" bundle="${msg}" />"
-														data-ng-click="restart('md', vpc)"><span
+														data-ng-click="restart('md', vpc.id)"><span
 															class="fa-repeat fa font-bold m-xs"></span>
 														<fmt:message key="restart.vpc" bundle="${msg}" /></a></li>
 													<li class="list-group-item"><a
@@ -172,7 +172,7 @@
 														id="vpc_view_vpc_delete_vpc_button"
 														href="javascript:void(0);"
 														title=" <fmt:message key="delete.vpc" bundle="${msg}" />"
-														data-ng-click="delete('sm', vpc)"><span
+														data-ng-click="delete('sm', vpc.id)"><span
 															class="fa-trash fa font-bold m-xs"></span> <fmt:message
 																key="remove.vpc" bundle="${msg}" /></a></li>
 													<li data-ng-if="type != 'edit'" class="list-group-item"><a

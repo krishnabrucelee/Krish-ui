@@ -30,7 +30,7 @@ angular
     .directive('paginationContent', paginationContent)
     .directive('paginationContents', paginationContents)
     .directive('getLoaderImage', getLoaderImage)
-    .directive('getLoaderImageOffer', getLoaderImageOffer) 
+    .directive('getLoaderImageOffer', getLoaderImageOffer)
     .directive('getLoaderImageDetail', getLoaderImageDetail)
     .directive('getUsageLoaderImage', getUsageLoaderImage)
     .directive('getShowLoaderImage', getShowLoaderImage)
@@ -978,7 +978,7 @@ function hasPermission() {
 }
 
 function favIconUrl($window) {
-    var url = 'http://'+ $window.location.hostname +':8080/'  + 'resources/' + 'favicon.ico';
+    var url =  REQUEST_PROTOCOL + $window.location.hostname +':8080/'  + 'resources/' + 'favicon.ico';
     return {
         restrict :"A",
         link: function(scope, el, attr) {
