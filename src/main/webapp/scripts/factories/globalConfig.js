@@ -160,7 +160,8 @@ function globalConfig($window) {
                 volumesave : 'VOLUME.CREATE',
                 uploadVolume : 'VOLUME.UPLOAD',
                 volumedelete : 'VOLUME.DELETE',
-                createSnapshot : 'SNAPSHOT.CREATE'
+                createSnapshot : 'SNAPSHOT.CREATE',
+                moveVm : 'VM.MOVE',
             },
             volumeEvents : {
                 attachVolume : 'VOLUME.ATTACH',
