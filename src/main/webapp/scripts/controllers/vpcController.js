@@ -1669,6 +1669,8 @@ $scope.dropnetworkLists = {
     };
     $scope.ipLists(1);
 
+
+
         $scope.tabview = appService.localStorageService.get('view');
 
     if (!angular.isUndefined($stateParams.id1) && $stateParams.id1 != null && $stateParams.id > 0) {
@@ -2568,6 +2570,111 @@ $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.createnetwork, 
                     }]);
             };
 
+            $scope.createSiteVPN = function(size) {
+                appService.dialogService.openDialog("app/views/vpc/create-site-vpn.jsp", size, $scope, ['$scope', '$modalInstance', function($scope, $modalInstance) {
+                	$scope.ok = function() {
+                            $scope.showLoader = true;
+                            appService.globalConfig.webSocketLoaders.sitevpnloader = true;
+                            $modalInstance.close();
+                        	var hasVpcs = appService.crudService.listByQuery("vpngateway/findbyvpcid?vpcid=" + $stateParams.id);
+                            hasVpcs.then(function(result) {
+                                $scope.showLoader = false;
+                                $scope.sitevpnLists(1);
+                            }).catch(function(result) {
+                                if (!angular.isUndefined(result.data) && result.data.fieldErrors != null) {
+                                    angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
+                                        $scope.addvpcForm[key].$invalid = true;
+                                        $scope.addvpcForm[key].errorMessage = errorMessage;
+                                    });
+                                }
+                                $modalInstance.close();
+                                $scope.showLoader = false;
+                                appService.globalConfig.webSocketLoaders.sitevpnloader = false;
+                            });
+
+                        	$window.location.href = '#/vpc/view/'+$stateParams.id+'/config-vpc/view-sitevpn';
+
+                        },
+                        $scope.cancel = function() {
+                            $modalInstance.close();
+                        };
+                }]);
+
+            };
+
+
+            	  $scope.viewsitevpn = function(size) {
+                      appService.dialogService.openDialog("app/views/vpc/view-site-vpn-details.jsp", size, $scope, ['$scope', '$modalInstance', function($scope, $modalInstance) {
+                                 var hasVpcs =  appService.crudService.listByQuery("vpngateway/listbyvpc?vpcid=" + $stateParams.id);
+                                  hasVpcs.then(function(result) {
+
+                                	  $scope.viewsitevpn = result[0];
+                                      $scope.showLoader = false;
+                                  })
+
+                              $scope.cancel = function() {
+                                  $modalInstance.close();
+                              };
+                      }]);
+
+                  };
+
+
+
+
+
+            $scope.sitevpnLists = function(pageNumber) {
+                $scope.active = true;
+                $scope.showLoader = true;
+                var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
+                if (!angular.isUndefined($stateParams.id)) {
+
+                	var hasSiteVpns = appService.crudService.listByQuery("vpngateway/listbyvpc?vpcid=" + $stateParams.id);
+                	hasSiteVpns.then(function(result) { // this is only run after
+                    // $http completes0
+                    $scope.sitevpnList = result;
+                    $scope.vpntotal = result.length;
+                    // For pagination
+                    $scope.paginationObject.limit = limit;
+                    $scope.paginationObject.currentPage = pageNumber;
+                    $scope.paginationObject.totalItems = result.totalItems;
+                    $scope.showLoader = false;
+                });
+                }
+            };
+            $scope.sitevpnLists(1);
+
+
+            $scope.deletevpn = function(size, vpn) {
+
+                appService.dialogService.openDialog("app/views/vpc/confirm-delete.jsp", size, $scope, ['$scope', '$modalInstance', function($scope, $modalInstance) {
+                    $scope.vpnId = vpn.id;
+                    $scope.ok = function(vpnId) {
+                            appService.globalConfig.webSocketLoaders.sitevpnloader = true;
+                            $modalInstance.close();
+                            var hasVpcs = appService.crudService.softDelete("vpngateway", vpn);
+                            hasVpcs.then(function(result) {
+                                $scope.showLoader = false;
+                                $scope.sitevpnLists(1);
+                            }).catch(function(result) {
+                                if (!angular.isUndefined(result.data) && result.data.fieldErrors != null) {
+                                    angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
+                                        $scope.addvpcForm[key].$invalid = true;
+                                        $scope.addvpcForm[key].errorMessage = errorMessage;
+                                    });
+                                }
+                                $modalInstance.close();
+                                $scope.showLoader = false;
+                                appService.globalConfig.webSocketLoaders.sitevpnloader = false;
+                            });
+                        },
+                        $scope.cancel = function() {
+                            $modalInstance.close();
+                        };
+                }]);
+
+            };
+
 
 
             // Edit the Network ACL
@@ -2633,6 +2740,18 @@ $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.createnetwork, 
                 if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
                 	$window.location.href = '#/vpc/view/'+$stateParams.id+'/config-vpc/network-acl';
                 	$state.reload();
+                }
+            });
+            $scope.$on(appService.globalConfig.webSocketEvents.vpcEvents.deletevpn, function(event, args) {
+                appService.globalConfig.webSocketLoaders.sitevpnloader = false;
+                if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
+                    $scope.sitevpnLists(1);
+                }
+            });
+            $scope.$on(appService.globalConfig.webSocketEvents.vpcEvents.createSiteVPN, function(event, args) {
+                appService.globalConfig.webSocketLoaders.sitevpnloader = false;
+                if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
+                    $scope.sitevpnLists(1);
                 }
             });
 }

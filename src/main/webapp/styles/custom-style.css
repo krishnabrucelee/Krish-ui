@@ -473,12 +473,25 @@ table.dataTable thead .sorting_desc::after {content: "\f0dd";}
 
 .legendColorBox .fa{font-size: 18px;}
 
+fieldset {border:1px solid #e5e5e5 }
+fieldset.scheduler-border{padding:20px;border:1px solid #e5e5e5;font-size:90%;}
+fieldset.scheduler-border legend{border-bottom:none !important; margin-bottom:0px!important; padding:0px 10px; width:auto !important;}
+
 @media screen and (-webkit-min-device-pixel-ratio:0) {
 .captcha-number{margin-top:28px; margin-left:10px;}
 .captcha-refresh{margin-top:40px; margin-left:0px;}
 }
 
 .well{padding:10px;}
+.dashboard-quota-area legend{font-size:15px !important; color: #6a6c6f;}
+.dashboard-quota-area fieldset{margin-bottom:10px; margin-top:4px;}
+.dashboard-quota-area .dashboard-quota{margin:10px 0px;}
+.dashboard-quota-section .dashboard-quota-area fieldset.scheduler-border{padding:20px 10px;}
+.dashboard-quota-section .doughnut-fixed-area{width:120px;}
+.dashboard-quota-section .doughnutchart-value{margin: 26% 0 0 29%;}
+.dashboard-quota-section .dashboard-quota-area .dashboard-quota{margin:0px;}
+.quick-view-details{margin-top:23px;}
+.dashboard-quota-area .vm-quota .dashboard-quota{margin:0px 10px;}
 
 @media (max-width: 767px) {
     .table-responsive.responsive-x .dropdown-menu { position: relative !important; right: 200px !important; top: -34px;}
