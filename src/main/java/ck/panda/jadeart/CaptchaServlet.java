@@ -11,14 +11,13 @@ import java.awt.Font;
 import java.awt.GradientPaint;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.awt.font.TextAttribute;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.text.AttributedString;
 import java.util.Random;
 import javax.imageio.ImageIO;
 import javax.servlet.*;
 import javax.servlet.http.*;
+
 public class CaptchaServlet extends HttpServlet {
 
 protected TextOptions options;
@@ -50,9 +49,6 @@ protected TextOptions options;
                   BufferedImage.TYPE_INT_RGB);
     Graphics2D g2d = bufferedImage.createGraphics();
     Font font = new Font("SansSerif", Font.BOLD+Font.ITALIC, 18);
-   /* AttributedString as1 = new AttributedString();
-    font.addAttribute(TextAttribute.STRIKETHROUGH,
-            TextAttribute.STRIKETHROUGH_ON, 20, 28);*/
     g2d.setFont(font);
     RenderingHints rh = new RenderingHints(
            RenderingHints.KEY_ANTIALIASING,
