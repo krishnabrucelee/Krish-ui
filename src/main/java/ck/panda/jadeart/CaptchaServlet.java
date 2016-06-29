@@ -11,8 +11,10 @@ import java.awt.Font;
 import java.awt.GradientPaint;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.font.TextAttribute;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.text.AttributedString;
 import java.util.Random;
 import javax.imageio.ImageIO;
 import javax.servlet.*;
@@ -24,7 +26,9 @@ protected TextOptions options;
 	/** Text options. */
 	public enum TextOptions{
 		/** Number format only.*/
-		NUMBERS_ONLY
+		NUMBERS_ONLY,
+
+		NUMBERS_AND_LETTERS
 	}
 
   protected void processRequest(HttpServletRequest request,
@@ -34,18 +38,21 @@ protected TextOptions options;
     int width = 125;
     int height = 38;
 
-    char data[][] = {
-        { '1', '5', '7', '6', '3', '2' },
-        { '0', '4', '8', '2', '1' },
-        { '7', '3', '1', '6', '0', '2', '5' },
-        { '2', '1', '4', '5', '6', '7' },
-        { '5', '9', '8'}
+   char data[][] = {
+    	{ '2', '1', 'a', '6', 'b', 'c' },
+        { 'd', '4', '8', 'e', '1' },
+        { '9', 'f', '3', 'g', '8', 'h', '4' },
+        { '0', '1', 'k', '5', 'j', '7' },
+        { '5', 'm', '8'}
     };
 
     BufferedImage bufferedImage = new BufferedImage(width, height,
                   BufferedImage.TYPE_INT_RGB);
     Graphics2D g2d = bufferedImage.createGraphics();
-    Font font = new Font("Utopia", Font.BOLD, 18);
+    Font font = new Font("SansSerif", Font.BOLD+Font.ITALIC, 18);
+   /* AttributedString as1 = new AttributedString();
+    font.addAttribute(TextAttribute.STRIKETHROUGH,
+            TextAttribute.STRIKETHROUGH_ON, 20, 28);*/
     g2d.setFont(font);
     RenderingHints rh = new RenderingHints(
            RenderingHints.KEY_ANTIALIASING,
@@ -64,14 +71,23 @@ protected TextOptions options;
 	CharArrayWriter cab = new CharArrayWriter();
 	String answer = "";
 	for(int i = 0; i < 5; i ++){
-		int u_l_n = r.nextInt(1);
+		int u_l_n = r.nextInt(3);
 		char ch = ' ';
 		switch(u_l_n){
-		    //Numbers
-		    case 0:
-		    	ch = (char)(r.nextInt(58 - 49) + (49));
-		    	break;
-		    }
+
+		//UpperCase
+	    case 0:
+	    	ch = (char)(r.nextInt(91 - 65) + (65));
+	    	break;
+	    //LowerCase
+	    case 1:
+	    	ch = (char)(r.nextInt(123 - 97) + (97));
+	    	break;
+	    //Numbers
+	    case 2:
+	    	ch = (char)(r.nextInt(58 - 49) + (49));
+	    	break;
+	    }
 			cab.append(ch);
 			answer += ch;
 		}
