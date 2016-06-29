@@ -230,6 +230,8 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider, $compile
                 }
             })
 
+
+
             // Config VPC
             .state('vpc.view-vpc.config-vpc', {
                 url : "/config-vpc",
@@ -263,6 +265,15 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider, $compile
                 templateUrl : VIEW_URL + "views/vpc/public-ip.jsp",
                 data : {
                     pageTitle : 'Public IP'
+                }
+            })
+
+           // View Site to Site VPN
+            .state('vpc.view-vpc.config-vpc.view-sitevpn', {
+                url : "/view-sitevpn",
+                templateUrl : VIEW_URL + "views/vpc/view-site-vpn.jsp",
+                data : {
+                    pageTitle : 'Site to Site VPN'
                 }
             })
 

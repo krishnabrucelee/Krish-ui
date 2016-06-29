@@ -42,26 +42,83 @@ pageEncoding="UTF-8"%>
 							<get-loader-image ></get-loader-image>
                          </div>
                         <div class="row dashboard-quota-area" data-ng-hide="showLoader">
-                            <div data-ng-if="quotaLimit.max != '-1'" class="col-md-2 col-sm-4 col-xs-6 dashboard-quota" data-ng-repeat="quotaLimit in quotaLimits">
+                        <div class="col-md-12">
+                         <fieldset class="scheduler-border">
+								<legend class="scheduler-border"><fmt:message key="common.vm.quota" bundle="${msg}" /></legend>
+								 <div data-ng-if="quotaLimit.max != '-1'" class="col-md-2 col-sm-4 col-xs-6 dashboard-quota" data-ng-repeat="quotaLimit in quotaLimits">
                             	<div class="doughnut-fixed-area">
                             	    <div data-ng-if="quotaLimit.percentage == undefined" class="m-b-sm"><img src="images/unlimited-quota.png" ></div>
 	                                <div data-ng-if="quotaLimit.percentage != undefined" class="doughnutchart-value">{{ quotaLimit.percentage}}%</div>
 	                                <canvas data-ng-if="quotaLimit.percentage != undefined" doughnutchart options="doughnutOptions" data="quotaLimit.doughnutData" width="120" height="85" ></canvas>
 	                                <div>{{ quotaLimit.label }}</div>
-	                                <span data-ng-if="quotaLimit.usedLimit != undefined && quotaLimit.usedLimit != NaN && quotaLimit.max != undefined"><fmt:message key="using" bundle="${msg}" /> {{quotaLimit.usedLimit}} <fmt:message key="of" bundle="${msg}" /> {{quotaLimit.max}}</span>
-	                                <span data-ng-if="(quotaLimit.usedLimit == undefined || quotaLimit.usedLimit == NaN) && quotaLimit.max != undefined"><fmt:message key="using" bundle="${msg}" /> 0 <fmt:message key="of" bundle="${msg}" /> {{quotaLimit.max}}</span>
-	                                <span data-ng-if="quotaLimit.usedLimit != undefined && quotaLimit.usedLimit != NaN && quotaLimit.max == undefined"><fmt:message key="using" bundle="${msg}" /> {{quotaLimit.usedLimit}} <fmt:message key="of" bundle="${msg}" /> <fmt:message key="unlimited" bundle="${msg}" /></span>
-	                                <span data-ng-if="(quotaLimit.usedLimit == undefined || quotaLimit.usedLimit == NaN) && quotaLimit.max == undefined"><fmt:message key="using" bundle="${msg}" /> 0 <fmt:message key="of" bundle="${msg}" /> <fmt:message key="unlimited" bundle="${msg}" /></span>
+	                                <span data-ng-if="quotaLimit.usedLimit != undefined && quotaLimit.usedLimit != NaN && quotaLimit.max != undefined"><fmt:message key="common.allocated" bundle="${msg}" /> {{quotaLimit.usedLimit}} <fmt:message key="of" bundle="${msg}" /> {{quotaLimit.max}}</span>
+	                                <span data-ng-if="(quotaLimit.usedLimit == undefined || quotaLimit.usedLimit == NaN) && quotaLimit.max != undefined"><fmt:message key="common.allocated" bundle="${msg}" /> 0 <fmt:message key="of" bundle="${msg}" /> {{quotaLimit.max}}</span>
+	                                <span data-ng-if="quotaLimit.usedLimit != undefined && quotaLimit.usedLimit != NaN && quotaLimit.max == undefined"><fmt:message key="common.allocated" bundle="${msg}" /> {{quotaLimit.usedLimit}} <fmt:message key="of" bundle="${msg}" /> <fmt:message key="unlimited" bundle="${msg}" /></span>
+	                                <span data-ng-if="(quotaLimit.usedLimit == undefined || quotaLimit.usedLimit == NaN) && quotaLimit.max == undefined"><fmt:message key="common.allocated" bundle="${msg}" /> 0 <fmt:message key="of" bundle="${msg}" /> <fmt:message key="unlimited" bundle="${msg}" /></span>
                             	</div>
 							</div>
 							 <div data-ng-if="quotaLimit.max == '-1'" class="col-md-2 col-sm-4 col-xs-6 dashboard-quota" data-ng-repeat="quotaLimit in quotaLimits">
                                	<div class="doughnut-fixed-area">
 	                               	<div class="m-b-sm"><img src="images/unlimited-quota.png" ></div>
 	                               	<div>{{ quotaLimit.label }}</div>
-	                               	<span data-ng-if="quotaLimit.usedLimit != undefined && quotaLimit.usedLimit != NaN"><fmt:message key="using" bundle="${msg}" /> {{quotaLimit.usedLimit}} <fmt:message key="of" bundle="${msg}" /> <fmt:message key="unlimited" bundle="${msg}" /></span>
-	                                <span data-ng-if="quotaLimit.usedLimit == undefined || quotaLimit.usedLimit == NaN"><fmt:message key="using" bundle="${msg}" /> 0 <fmt:message key="of" bundle="${msg}" /> <fmt:message key="unlimited" bundle="${msg}" /></span>
+	                               	<span data-ng-if="quotaLimit.usedLimit != undefined && quotaLimit.usedLimit != NaN"><fmt:message key="common.allocated" bundle="${msg}" /> {{quotaLimit.usedLimit}} <fmt:message key="of" bundle="${msg}" /> <fmt:message key="unlimited" bundle="${msg}" /></span>
+	                                <span data-ng-if="quotaLimit.usedLimit == undefined || quotaLimit.usedLimit == NaN"><fmt:message key="common.allocated" bundle="${msg}" /> 0 <fmt:message key="of" bundle="${msg}" /> <fmt:message key="unlimited" bundle="${msg}" /></span>
                                 </div>
                             </div>
+							</fieldset>
+							</div>
+                           </div>
+                           <div class="row dashboard-quota-area" data-ng-hide="showLoader">
+                      			<div class="col-md-6">
+		                        	<fieldset class="scheduler-border">
+										<legend class="scheduler-border"><fmt:message key="common.network.quota" bundle="${msg}" /></legend>
+									 	<div data-ng-if="quotaLimit.max != '-1'" class="col-md-4 col-sm-4 col-xs-6 dashboard-quota" data-ng-repeat="quotaLimit in networkQuotaList">
+			                           		<div class="doughnut-fixed-area">
+				                           	    <div data-ng-if="quotaLimit.percentage == undefined" class="m-b-sm"><img src="images/unlimited-quota.png" ></div>
+				                                <div data-ng-if="quotaLimit.percentage != undefined" class="doughnutchart-value">{{ quotaLimit.percentage}}%</div>
+				                                <canvas data-ng-if="quotaLimit.percentage != undefined" doughnutchart options="doughnutOptions" data="quotaLimit.doughnutData" width="120" height="85" ></canvas>
+				                                <div>{{ quotaLimit.label }}</div>
+				                                <span data-ng-if="quotaLimit.usedLimit != undefined && quotaLimit.usedLimit != NaN && quotaLimit.max != undefined"><fmt:message key="common.allocated" bundle="${msg}" /> {{quotaLimit.usedLimit}} <fmt:message key="of" bundle="${msg}" /> {{quotaLimit.max}}</span>
+				                                <span data-ng-if="(quotaLimit.usedLimit == undefined || quotaLimit.usedLimit == NaN) && quotaLimit.max != undefined"><fmt:message key="common.allocated" bundle="${msg}" /> 0 <fmt:message key="of" bundle="${msg}" /> {{quotaLimit.max}}</span>
+				                                <span data-ng-if="quotaLimit.usedLimit != undefined && quotaLimit.usedLimit != NaN && quotaLimit.max == undefined"><fmt:message key="common.allocated" bundle="${msg}" /> {{quotaLimit.usedLimit}} <fmt:message key="of" bundle="${msg}" /> <fmt:message key="unlimited" bundle="${msg}" /></span>
+				                                <span data-ng-if="(quotaLimit.usedLimit == undefined || quotaLimit.usedLimit == NaN) && quotaLimit.max == undefined"><fmt:message key="common.allocated" bundle="${msg}" /> 0 <fmt:message key="of" bundle="${msg}" /> <fmt:message key="unlimited" bundle="${msg}" /></span>
+				                           	</div>
+										</div>
+									 	<div data-ng-if="quotaLimit.max == '-1'" class="col-md-4 col-sm-4 col-xs-6 dashboard-quota" data-ng-repeat="quotaLimit in networkQuotaList">
+			                              	<div class="doughnut-fixed-area">
+			                               	<div class="m-b-sm"><img src="images/unlimited-quota.png" ></div>
+			                               	<div>{{ quotaLimit.label }}</div>
+			                               	<span data-ng-if="quotaLimit.usedLimit != undefined && quotaLimit.usedLimit != NaN"><fmt:message key="common.allocated" bundle="${msg}" /> {{quotaLimit.usedLimit}} <fmt:message key="of" bundle="${msg}" /> <fmt:message key="unlimited" bundle="${msg}" /></span>
+			                                <span data-ng-if="quotaLimit.usedLimit == undefined || quotaLimit.usedLimit == NaN"><fmt:message key="common.allocated" bundle="${msg}" /> 0 <fmt:message key="of" bundle="${msg}" /> <fmt:message key="unlimited" bundle="${msg}" /></span>
+			                               </div>
+			                           </div>
+									</fieldset>
+								</div>
+								<div class="col-md-6">
+									<fieldset class="scheduler-border">
+										<legend class="scheduler-border"><fmt:message key="common.storage.quota" bundle="${msg}" /></legend>
+										 <div data-ng-if="quotaLimit.max != '-1'" class="col-md-4 col-sm-4 col-xs-6 dashboard-quota" data-ng-repeat="quotaLimit in storageQuotaList">
+		                            	<div class="doughnut-fixed-area">
+		                            	    <div data-ng-if="quotaLimit.percentage == undefined" class="m-b-sm"><img src="images/unlimited-quota.png" ></div>
+			                                <div data-ng-if="quotaLimit.percentage != undefined" class="doughnutchart-value">{{ quotaLimit.percentage}}%</div>
+			                                <canvas data-ng-if="quotaLimit.percentage != undefined" doughnutchart options="doughnutOptions" data="quotaLimit.doughnutData" width="120" height="85" ></canvas>
+			                                <div>{{ quotaLimit.label }}</div>
+			                                <span data-ng-if="quotaLimit.usedLimit != undefined && quotaLimit.usedLimit != NaN && quotaLimit.max != undefined"><fmt:message key="common.allocated" bundle="${msg}" /> {{quotaLimit.usedLimit}} <fmt:message key="of" bundle="${msg}" /> {{quotaLimit.max}}</span>
+			                                <span data-ng-if="(quotaLimit.usedLimit == undefined || quotaLimit.usedLimit == NaN) && quotaLimit.max != undefined"><fmt:message key="common.allocated" bundle="${msg}" /> 0 <fmt:message key="of" bundle="${msg}" /> {{quotaLimit.max}}</span>
+			                                <span data-ng-if="quotaLimit.usedLimit != undefined && quotaLimit.usedLimit != NaN && quotaLimit.max == undefined"><fmt:message key="common.allocated" bundle="${msg}" /> {{quotaLimit.usedLimit}} <fmt:message key="of" bundle="${msg}" /> <fmt:message key="unlimited" bundle="${msg}" /></span>
+			                                <span data-ng-if="(quotaLimit.usedLimit == undefined || quotaLimit.usedLimit == NaN) && quotaLimit.max == undefined"><fmt:message key="common.allocated" bundle="${msg}" /> 0 <fmt:message key="of" bundle="${msg}" /> <fmt:message key="unlimited" bundle="${msg}" /></span>
+		                            	</div>
+									</div>
+									 <div data-ng-if="quotaLimit.max == '-1'" class="col-md-4 col-sm-4 col-xs-6 dashboard-quota" data-ng-repeat="quotaLimit in storageQuotaList">
+		                               	<div class="doughnut-fixed-area">
+			                               	<div class="m-b-sm"><img src="images/unlimited-quota.png" ></div>
+			                               	<div>{{ quotaLimit.label }}</div>
+			                               	<span data-ng-if="quotaLimit.usedLimit != undefined && quotaLimit.usedLimit != NaN"><fmt:message key="common.allocated" bundle="${msg}" /> {{quotaLimit.usedLimit}} <fmt:message key="of" bundle="${msg}" /> <fmt:message key="unlimited" bundle="${msg}" /></span>
+			                                <span data-ng-if="quotaLimit.usedLimit == undefined || quotaLimit.usedLimit == NaN"><fmt:message key="common.allocated" bundle="${msg}" /> 0 <fmt:message key="of" bundle="${msg}" /> <fmt:message key="unlimited" bundle="${msg}" /></span>
+		                                </div>
+		                            </div>
+									</fieldset>
+								</div>
                            </div>
                     </div>
                 </div>
