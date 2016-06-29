@@ -99,12 +99,15 @@ pageEncoding="UTF-8"%>
                         		<span class="small"><fmt:message key="enter.captcha.text" bundle="${msg}" /></span>
        							<input type = "text" data-ng-model="answer"  name="answer" required=""  class= form-control>
 							</div>
- 							<div class="col-md-4 captcha-number no-padding">
-								 <iframe src=${pageContext.request.contextPath}/CaptchaServlet id="captchaImg" ></iframe>
+ 							<div class="col-md-7 no-padding">
+ 								<div class="pull-right captcha-refresh no-padding text-center">
+									<a data-ng-click="refreshCaptcha()"  ><span class="fa fa-refresh fa-lg "></span></a>
+	 							</div>
+ 								<div class="pull-right captcha-number">
+ 									<iframe src=${pageContext.request.contextPath}/CaptchaServlet id="captchaImg" ></iframe>
+ 								</div>
 							</div>
-							<div class="col-md-1 captcha-refresh no-padding text-center">
-								<a data-ng-click="refreshCaptcha()"  ><span class="fa fa-refresh fa-lg "></span></a>
- 							</div>
+
 						</div>
 						<div class="form-group row">
 							<div class="col-md-12">

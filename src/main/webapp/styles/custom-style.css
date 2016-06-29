@@ -463,10 +463,10 @@ table.dataTable thead .sorting_desc::after {content: "\f0dd";}
 .cg-notify-close .fa{font-size: 14px;}
 
 .captcha-textbox{margin-top:10px;}
-.captcha-refresh{margin-top:40px; margin-left:6px;}
+.captcha-refresh{margin-top:40px; margin-right:18px;}
 .captcha-refresh a{color:#ffffff;}
 
-#captchaImg{border:none; height:56px;}
+#captchaImg{border:none; height:56px; width:150px;}
 #captchaImg body{margin:0px; padding:0px;}
 .captcha-number{margin-top:22px;}
 .login-container .form-control{height:38px;}
