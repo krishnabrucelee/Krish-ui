@@ -33,7 +33,7 @@ function vpnGatewayCtrl ($scope, $modal, appService, $timeout, filterFilter, $st
     appService.globalConfig.webSocketLoaders.networkAclLoader = false;
     appService.globalConfig.webSocketLoaders.networkDeleteAclLoader = false;
     $scope.paginationObject.sortOrder = '+';
-    $scope.paginationObject.sortBy = 'id';
+    $scope.paginationObject.sortBy = 'name';
 
     $scope.domainList = {};
     $scope.domainList = function() {
