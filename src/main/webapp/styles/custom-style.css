@@ -477,6 +477,8 @@ fieldset {border:1px solid #e5e5e5 }
 fieldset.scheduler-border{padding:20px;border:1px solid #e5e5e5;font-size:90%;}
 fieldset.scheduler-border legend{border-bottom:none !important; margin-bottom:0px!important; padding:0px 10px; width:auto !important;}
 
+#side-menu li a .pe-lg.nav-menu-icons{width:30px;}
+
 @media screen and (-webkit-min-device-pixel-ratio:0) {
 .captcha-number{margin-top:28px; margin-left:10px;}
 .captcha-refresh{margin-top:40px; margin-left:0px;}
