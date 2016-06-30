@@ -288,11 +288,20 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider, $compile
             })
 
             // Private Gateway
-            .state('vpc.private-gateway', {
-                url : "/private-gateway/:id",
+            .state('vpc.view-vpc.config-vpc.private-gateway', {
+                url : "/private-gateway",
                 templateUrl : VIEW_URL + "views/vpc/private-gateway.jsp",
                 data : {
                     pageTitle : 'Private Gateway'
+                }
+            })
+
+            // View VPC Private gateway
+            .state('vpc.view-vpc.config-vpc.private-gateway.view-private-gateway', {
+                url : "/:view/:id5",
+                templateUrl : VIEW_URL + "views/vpc/view-private-gateway.jsp",
+                data : {
+                    pageTitle : 'view VPC private gateway'
                 }
             })
 

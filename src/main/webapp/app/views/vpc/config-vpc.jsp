@@ -37,10 +37,10 @@
                                         <div class="p-xs">
                                             <div class="col-md-6 ">
                                                 <div class="media-body">
-                                                	<!-- <a id="config_vpc_private_gateway" ui-sref="vpc.private-gateway({id: {{ 1}}})"> -->
-	                                                    <div class="panel panel-info cursor-notallow">
+                                                	<a id="config_vpc_private_gateway" ui-sref="vpc.view-vpc.config-vpc.private-gateway">
+	                                                    <div class="panel panel-info">
 	                                                        <div class="panel-body config-box p-xxs text-info text-center ">
-	                                                            <h3> 0 </h3><fmt:message key="private.gateway" bundle="${msg}" />
+	                                                            <h3> {{privateGatewayList.length}} </h3><fmt:message key="private.gateway" bundle="${msg}" />
 	                                                        </div>
 	                                                    </div>
                                                     </a>
@@ -76,7 +76,7 @@
 	                                                            <fmt:message key="site.to.site.vpns" bundle="${msg}" />
 	                                                        </div>
 	                                                    </div>
-                                                    </a>
+                                                    <!-- </a> -->
                                                 </div>
                                             </div>
                                             <div class="col-md-6">

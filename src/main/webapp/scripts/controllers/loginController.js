@@ -15,8 +15,8 @@ angular.module('homer', ['ngCookies', 'LocalStorageModule'])
             $scope.backgroundImage =   REQUEST_PROTOCOL+ $window.location.hostname +':8080/'  + 'resources/' + 'theme_background.jpg';
     }
     $scope.showImage();
-	
-	
+
+
 
     $scope.languageSettingList = function () {
         return $http({method:'get', url: REQUEST_PROTOCOL  + $window.location.hostname +':8080/home/generalConfiguration'})
@@ -37,7 +37,7 @@ angular.module('homer', ['ngCookies', 'LocalStorageModule'])
     $scope.themeSettingList = function () {
         return $http({method:'get', url:  REQUEST_PROTOCOL+ $window.location.hostname +':8080/home/list'})
         .then(function(result){
-            $scope.themeSettings = result;
+            $scope.themeSettings = result.data;
             localStorageService.cookie.set('themeSettings', $scope.themeSettings);
              $scope.welcomeContentUser = result.data.welcomeContentUser;
              $scope.footerContent = result.data.footerContent;
@@ -47,7 +47,7 @@ angular.module('homer', ['ngCookies', 'LocalStorageModule'])
              // Used for pageTitle
              localStorageService.set('themeSettings', $scope.themeSettings);
              if($scope.themeSettings != null) {
-                 document.getElementById("pandaAppPageTitle").innerHTML = $scope.themeSettings.data.headerTitle;
+                 document.getElementById("pandaAppPageTitle").innerHTML = $scope.themeSettings.headerTitle;
              }
 
 
@@ -77,19 +77,19 @@ $scope.captchaList();
               $window.location.reload();
         });
     }
-    
+
    $scope.refreshCaptcha = function() {
 	     //$('#captchaImg').attr('src', '').attr('src', '${pageContext.request.contextPath}/captcha')
 	   	document.getElementById("captchaImg").setAttribute("src", 'CaptchaServlet')
    }
-    
-    
+
+
         $scope.loginForm = function () {
-        	
-        	
+
+
         	if (!angular.isUndefined($scope.answer) && $scope.answer != null)
         	 {
-        	 var headers = { 
+        	 var headers = {
         			 "x-answer" : $scope.answer
         	 }
        $http({method: 'POST', url : REQUEST_PROTOCOL + window.location.hostname + REQUEST_PORT + REQUEST_FOLDER + 'CaptchaServlet', headers: headers})
@@ -195,9 +195,9 @@ $scope.captchaList();
            });
         		}
         }
-        
+
         $scope.loginFormWithoutCaptcha = function () {
-      	
+
      	if (angular.isUndefined($scope.user_remember)) {
     		$scope.user_remember = "false";
     	}

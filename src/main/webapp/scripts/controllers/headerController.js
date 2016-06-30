@@ -13,13 +13,18 @@ function headerCtrl($scope, $http, $window, $modal, $log, $state, $stateParams, 
     $scope.showImage();
 
     $scope.themeSettingList = function () {
-                $scope.themeSettingsList = localStorageService.cookie.get('themeSettings');
-                if ($scope.themeSettingsList != null) {
-                    if ($scope.themeSettingsList.data.headerTitle != null) {
-                        document.getElementById("pandaAppPageTitle").innerHTML = $scope.themeSettingsList.data.headerTitle;
-                    }
-                }
-
+        $scope.themeSettings = localStorageService.cookie.get('themeSettings');
+        if ($scope.themeSettings.data != null) {
+        	$scope.themeSettingsList = $scope.themeSettings.data;
+        } else {
+        	$scope.themeSettingsList = $scope.themeSettings;
+        }
+    	if ($scope.themeSettingsList != null) {
+    		if ($scope.themeSettingsList.headerTitle != null) {
+    			document.getElementById("pandaAppPageTitle").innerHTML = $scope.themeSettingsList.headerTitle;
+    		}
+    	}
+        //$state.data.pageTitle = "testttt";
     };
     $scope.themeSettingList();
 
