@@ -31,7 +31,7 @@
             </div>
         </div> -->
         <div class="row">
-            <div class="col-md-4 dashboard-infra-wrapper">
+            <div class="col-md-5 dashboard-infra-wrapper">
                 <div class="panel panel-white no-border-radious dashboard-infrastructure-section">
                     <div class="panel-body p-sm">
                         <h5 class="no-margins text-primary">
@@ -117,7 +117,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-8 dashboard-quota-wrapper">
+            <div class="col-md-7 dashboard-quota-wrapper">
                 <div class="panel panel-white no-border-radious dashboard-quota-section">
                     <div class="panel-body p-sm">
                         <h5 class="no-margins text-primary">
@@ -131,7 +131,7 @@
                         	<div class="col-md-12">
                             <fieldset class="scheduler-border vm-quota">
 								<legend class="scheduler-border"><fmt:message key="common.vm.quota" bundle="${msg}" /></legend>
-								 <div data-ng-if="quotaLimit.max != '-1'" class="col-md-2 col-sm-4 col-xs-6 dashboard-quota" data-ng-repeat="quotaLimit in quotaLimits">
+								 <div data-ng-if="quotaLimit.max != '-1'" class="col-md-4 col-sm-4 no-padding col-xs-6 dashboard-quota" data-ng-repeat="quotaLimit in quotaLimits">
                             	<div class="doughnut-fixed-area">
                             	    <div data-ng-if="quotaLimit.percentage == undefined" class="m-b-sm"><img src="images/unlimited-quota.png" ></div>
 	                                <div data-ng-if="quotaLimit.percentage != undefined" class="doughnutchart-value">{{ quotaLimit.percentage}}%</div>
@@ -143,7 +143,7 @@
 	                                <span data-ng-if="(quotaLimit.usedLimit == undefined || quotaLimit.usedLimit == NaN) && quotaLimit.max == undefined"><fmt:message key="common.allocated" bundle="${msg}" /> 0 <fmt:message key="of" bundle="${msg}" /> <fmt:message key="unlimited" bundle="${msg}" /></span>
                             	</div>
 							</div>
-							 <div data-ng-if="quotaLimit.max == '-1'" class="col-md-2 col-sm-4 col-xs-6 dashboard-quota" data-ng-repeat="quotaLimit in quotaLimits">
+							 <div data-ng-if="quotaLimit.max == '-1'" class="col-md-4 col-sm-4 no-padding col-xs-6 dashboard-quota" data-ng-repeat="quotaLimit in quotaLimits">
                                	<div class="doughnut-fixed-area">
 	                               	<div class="m-b-sm"><img src="images/unlimited-quota.png" ></div>
 	                               	<div>{{ quotaLimit.label }}</div>
@@ -154,8 +154,19 @@
 							</fieldset>
 							</div>
                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+        	<div class="col-md-12 dashboard-quota-wrapper">
+                <div class="panel panel-white no-border-radious">
+                    <div class="panel-body p-sm">
+                        <div class="text-center m-t-xxxl" data-ng-show="showLoaderDetail">
+<get-loader-image-detail></get-loader-image-detail>                         </div>
+
                                        <div class="row dashboard-quota-area" data-ng-hide="showLoaderDetail">
-                                       <div class="col-md-6">
+                                       <div class="col-md-6 network-quota-area">
                                        		<fieldset class="scheduler-border">
 												<legend class="scheduler-border"><fmt:message key="common.network.quota" bundle="${msg}" /></legend>
 												 <div data-ng-if="quotaLimit.max != '-1'" class="col-md-4 no-padding col-sm-4 col-xs-6 dashboard-quota" data-ng-repeat="quotaLimit in networkQuotaList">
@@ -180,7 +191,7 @@
 				                            </div>
 											</fieldset>
                                        </div>
-                                       <div class="col-md-6">
+                                       <div class="col-md-6 storage-quota-area">
                                        		<fieldset class="scheduler-border">
 												<legend class="scheduler-border"><fmt:message key="common.storage.quota" bundle="${msg}" /></legend>
 												 <div data-ng-if="quotaLimit.max != '-1'" class="col-md-4 no-padding col-sm-4 col-xs-6 dashboard-quota" data-ng-repeat="quotaLimit in storageQuotaList">
@@ -214,7 +225,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-4 col-sm-5">
+            <div class="col-md-5 col-sm-5">
                 <div class="panel panel-white no-border-radious dashboard-tab">
                     <div class="panel-body">
                     <ul class="row">
@@ -327,7 +338,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-8 col-sm-7">
+            <div class="col-md-7 col-sm-7">
                 <div class="panel panel-white no-border-radious">
                     <div class="panel-body p-sm">
                         <h5 class="no-margins text-primary">
