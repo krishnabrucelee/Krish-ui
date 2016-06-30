@@ -52,7 +52,9 @@
 			                        </tbody>
 								    <tbody data-ng-show="privateGatewayList.length > 0">
 								        <tr ng-repeat="privateGateway in privateGatewayList">
-                      					<td>{{privateGateway.ipAddress}}</td>
+								        <td>
+								            <a class="text-info" ui-sref="vpc.view-vpc.config-vpc.private-gateway.view-private-gateway({id5: {{ privateGateway.id }}, view: 'view'})">{{privateGateway.ipAddress}}</a>
+								        </td>
                       					<td>{{privateGateway.gateway}}</td>
                       					<td>{{privateGateway.netMask}}</td>
                       					<td>{{privateGateway.vlan}}</td>

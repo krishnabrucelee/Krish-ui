@@ -230,6 +230,8 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider, $compile
                 }
             })
 
+
+
             // Config VPC
             .state('vpc.view-vpc.config-vpc', {
                 url : "/config-vpc",
@@ -266,6 +268,15 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider, $compile
                 }
             })
 
+           // View Site to Site VPN
+            .state('vpc.view-vpc.config-vpc.view-sitevpn', {
+                url : "/view-sitevpn",
+                templateUrl : VIEW_URL + "views/vpc/view-site-vpn.jsp",
+                data : {
+                    pageTitle : 'Site to Site VPN'
+                }
+            })
+
             // View IP
             .state('vpc.view-vpc.config-vpc.public-ip.ip-view', {
                 url : "/ip-address/:id1",
@@ -282,6 +293,15 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider, $compile
                 templateUrl : VIEW_URL + "views/vpc/private-gateway.jsp",
                 data : {
                     pageTitle : 'Private Gateway'
+                }
+            })
+
+            // View VPC Private gateway
+            .state('vpc.view-vpc.config-vpc.private-gateway.view-private-gateway', {
+                url : "/:view/:id5",
+                templateUrl : VIEW_URL + "views/vpc/view-private-gateway.jsp",
+                data : {
+                    pageTitle : 'view VPC private gateway'
                 }
             })
 

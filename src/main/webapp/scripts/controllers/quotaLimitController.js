@@ -215,72 +215,571 @@ function quotaLimitCtrl($scope, $state, $stateParams, globalConfig, appService, 
 	};
 
 $scope.getResourceDomain = function() {
-	$scope.quotaLimits = {
-		      "CPU": {label: "vCPU"}, "Memory": {label: "Memory"}, "Volume": {label: "Volume"}, "Network": {label: "Network"},
-		      "IP": {label: "IP"}, "PrimaryStorage": {label: "PrimaryStorage"}, "SecondaryStorage": {label: "SecondaryStorage"},
-		      "Snapshot": {label: "Snapshot"}
-		    };
+//    $scope.quotaLimits = {
+// 	       "Instance":{label: "VM"},"CPU": {label: "vCPU"}, "Memory": {label: "Memory"},"Template":{label: "Template"},"Snapshot": {label: "Snapshot"}, "Network": {label: "Network"},
+// 	       "IP": {label: "IP"}, "VPC": {label: "VPC"}, "Volume": {label: "Volume"},"PrimaryStorage": {label: "PrimaryStorage"}, "SecondaryStorage": {label: "SecondaryStorage"},
+//
+// 	     };
+	  $scope.quotaLimits = [];
+	     $scope.networkQuotaList = [];
+	     $scope.storageQuotaList = [];
     $scope.showLoader = true;
-    var resourceArr = ["CPU", "Memory", "Volume", "Network", "IP", "PrimaryStorage", "SecondaryStorage", "Snapshot"];
+    var resourceArr = ["Instance","CPU", "Memory","Template","Snapshot", "Network", "IP", "VPC","Volume", "PrimaryStorage", "SecondaryStorage"];
     if (angular.isUndefined($scope.domainView) || $scope.domainView == null) {
         var hasResourceDomainId = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET , globalConfig.APP_URL + "dashboard/quota");
    } else {
        var hasResourceDomainId = appService.promiseAjax.httpTokenRequest( globalConfig.HTTP_GET , globalConfig.APP_URL + "resourceDomains/listByDomain/"+$scope.domainView.id);
    }
     hasResourceDomainId.then(function (result) {  // this is only run after $http completes
-      $scope.showLoader = false;
-        angular.forEach(result, function(obj, key) {
-        	if(obj.usedLimit == null || obj.usedLimit == "null") {
-      		   obj.usedLimit = 0;
-      	    }
-            if(resourceArr.indexOf(obj.resourceType) > -1) {
-              if(angular.isUndefined($scope.quotaLimits[obj.resourceType])) {
-                  $scope.quotaLimits[obj.resourceType] = {};
-              }
 
-              if(obj.resourceType == "Memory") {
-                obj.usedLimit = Math.round( obj.usedLimit / 1024);
-    						if (obj.max != -1) {
-    							obj.max = Math.round(obj.max / 1024);
-                  $scope.quotaLimits[obj.resourceType].label = $scope.quotaLimits[obj.resourceType].label + " " + "(GB)";
-    						}
-              }
+        $scope.showLoader = false;
+       // console.log("Result",result);
+          angular.forEach(result, function(obj, key) {
+         	 //console.log("Key-",key,"Resource-",obj.resourceType);
+         	 if(obj.resourceType == "Instance"){
+         		 $scope.addText = function() {
+         		        $scope.quotaLimits[0] = obj;
+         		        $scope.quotaLimits[0].label= "VM";
+         		        $scope.quotaLimits[0].max = parseInt(obj.max);
+                         $scope.quotaLimits[0].usedLimit = parseInt(obj.usedLimit);
+                         $scope.quotaLimits[0].percentage = parseFloat(parseInt(obj.usedLimit) / parseInt(obj.max) * 100).toFixed(2);
+                         if(obj.usedLimit == null || obj.usedLimit == "null" || isNaN(obj.usedLimit)) {
+                             obj.usedLimit = 0;
+                         }
+                        if(resourceArr.indexOf(obj.resourceType) > -1) {
+                          if(angular.isUndefined($scope.quotaLimits[0])) {
+                              $scope.quotaLimits[0] = {};
 
-              if (obj.max == -1 && obj.resourceType == "PrimaryStorage" || obj.max == -1 && obj.resourceType == "SecondaryStorage") {
-					        obj.usedLimit = Math.round( obj.usedLimit / (1024 * 1024 * 1024));
-                  $scope.quotaLimits[obj.resourceType].label = $scope.quotaLimits[obj.resourceType].label + " " + "(GB)";
-   				    }
+                          }
+         		    }
+                        if(isNaN($scope.quotaLimits[0].percentage)) {
+                            $scope.quotaLimits[0].percentage = 0;
+                        }
 
-              $scope.quotaLimits[obj.resourceType].max = parseInt(obj.max);
-              $scope.quotaLimits[obj.resourceType].usedLimit = parseInt(obj.usedLimit);
-              $scope.quotaLimits[obj.resourceType].percentage = parseFloat(parseInt(obj.usedLimit) / parseInt(obj.max) * 100).toFixed(2);
-              var unUsed = $scope.quotaLimits[obj.resourceType].max - $scope.quotaLimits[obj.resourceType].usedLimit;
+                        var unUsed = $scope.quotaLimits[0].max - $scope.quotaLimits[0].usedLimit;
 
+                        var usedColor = "#48a9da";
+                        if($scope.quotaLimits[0].percentage > 79 && $scope.quotaLimits[0].percentage < 90) {
+                            usedColor = "#f0ad4e";
+                        } else if($scope.quotaLimits[0].percentage > 89){
+                            usedColor = "#df6457";
+                        }
 
-              var usedColor = "#48a9da";
-              if($scope.quotaLimits[obj.resourceType].percentage > 79 && $scope.quotaLimits[obj.resourceType].percentage < 90) {
-                  usedColor = "#f0ad4e";
-              } else if($scope.quotaLimits[obj.resourceType].percentage > 89){
-                  usedColor = "#df6457";
-              }
-              $scope.quotaLimits[obj.resourceType].doughnutData = [
-                  {
+                        $scope.quotaLimits[0].doughnutData = [
+                           {
+                           value: parseInt(obj.usedLimit),
+                           color: usedColor,
+                           highlight: usedColor,
+                           label: "Used"
+                           },
+                           {
+                           value: unUsed,
+                           color: "#ebf1f4",
+                           highlight: "#ebf1f4",
+                           label: "UnUsed"
+                           }];
+                        }
+         		 $scope.addText();
+
+         	 }
+         	 if(obj.resourceType == "CPU"){
+         		 $scope.addText = function() {
+      		        $scope.quotaLimits[1] = obj;
+     		        $scope.quotaLimits[1].label= "vCPU";
+     		        $scope.quotaLimits[1].max = parseInt(obj.max);
+                     $scope.quotaLimits[1].usedLimit = parseInt(obj.usedLimit);
+                     $scope.quotaLimits[1].percentage = parseFloat(parseInt(obj.usedLimit) / parseInt(obj.max) * 100).toFixed(2);
+
+                     if(obj.usedLimit == null || obj.usedLimit == "null" || isNaN(obj.usedLimit)) {
+                         obj.usedLimit = 0;
+                     }
+                    if(resourceArr.indexOf(obj.resourceType) > -1) {
+                      if(angular.isUndefined($scope.quotaLimits[1])) {
+                          $scope.quotaLimits[1] = {};
+
+                      }
+     		    }
+                     if(isNaN($scope.quotaLimits[1].percentage)) {
+                         $scope.quotaLimits[1].percentage = 0;
+                     }
+
+                     var unUsed = $scope.quotaLimits[1].max - $scope.quotaLimits[1].usedLimit;
+
+                     var usedColor = "#48a9da";
+                     if($scope.quotaLimits[1].percentage > 79 && $scope.quotaLimits[1].percentage < 90) {
+                         usedColor = "#f0ad4e";
+                     } else if($scope.quotaLimits[1].percentage > 89){
+                         usedColor = "#df6457";
+                     }
+
+                     $scope.quotaLimits[1].doughnutData = [
+                        {
+                        value: parseInt(obj.usedLimit),
+                        color: usedColor,
+                        highlight: usedColor,
+                        label: "Used"
+                        },
+                        {
+                        value: unUsed,
+                        color: "#ebf1f4",
+                        highlight: "#ebf1f4",
+                        label: "UnUsed"
+                        }];
+
+         		    }
+         		 $scope.addText();
+
+         	 }
+         	 if(obj.resourceType == "Memory"){
+         		 $scope.addText = function() {
+      		        $scope.quotaLimits[2] = obj;
+     		        $scope.quotaLimits[2].label= "Memory";
+
+     		        obj.usedLimit = Math.round( obj.usedLimit / 1024);
+                     if (obj.max != -1) {
+                                 obj.max = Math.round(obj.max / 1024);
+                                 $scope.quotaLimits[2].label = $scope.quotaLimits[2].label + " " + "(GiB)";
+                     }
+
+                     $scope.quotaLimits[2].max = parseInt(obj.max);
+                     $scope.quotaLimits[2].usedLimit = parseInt(obj.usedLimit);
+                     $scope.quotaLimits[2].percentage = parseFloat(parseInt(obj.usedLimit) / parseInt(obj.max) * 100).toFixed(2);
+
+                     if(obj.usedLimit == null || obj.usedLimit == "null" || isNaN(obj.usedLimit)) {
+                         obj.usedLimit = 0;
+                     }
+                    if(resourceArr.indexOf(obj.resourceType) > -1) {
+                      if(angular.isUndefined($scope.quotaLimits[2])) {
+                          $scope.quotaLimits[2] = {};
+
+                      }
+     		    }
+                     if(isNaN($scope.quotaLimits[2].percentage)) {
+                         $scope.quotaLimits[2].percentage = 0;
+                     }
+
+                     var unUsed = $scope.quotaLimits[2].max - $scope.quotaLimits[2].usedLimit;
+
+                     var usedColor = "#48a9da";
+                     if($scope.quotaLimits[2].percentage > 79 && $scope.quotaLimits[2].percentage < 90) {
+                         usedColor = "#f0ad4e";
+                     } else if($scope.quotaLimits[2].percentage > 89){
+                         usedColor = "#df6457";
+                     }
+
+                     $scope.quotaLimits[2].doughnutData = [
+                        {
+                        value: parseInt(obj.usedLimit),
+                        color: usedColor,
+                        highlight: usedColor,
+                        label: "Used"
+                        },
+                        {
+                        value: unUsed,
+                        color: "#ebf1f4",
+                        highlight: "#ebf1f4",
+                        label: "UnUsed"
+                        }];
+         		    }
+         		 $scope.addText();
+
+         	 }
+         	 if(obj.resourceType == "Template"){
+         		 $scope.addText = function() {
+      		        $scope.quotaLimits[3] = obj;
+     		        $scope.quotaLimits[3].label= "Template";
+     		        $scope.quotaLimits[3].max = parseInt(obj.max);
+                     $scope.quotaLimits[3].usedLimit = parseInt(obj.usedLimit);
+                     $scope.quotaLimits[3].percentage = parseFloat(parseInt(obj.usedLimit) / parseInt(obj.max) * 100).toFixed(2);
+
+                     if(obj.usedLimit == null || obj.usedLimit == "null" || isNaN(obj.usedLimit)) {
+                         obj.usedLimit = 0;
+                     }
+                    if(resourceArr.indexOf(obj.resourceType) > -1) {
+                      if(angular.isUndefined($scope.quotaLimits[3])) {
+                          $scope.quotaLimits[3] = {};
+
+                      }
+     		    }
+                     if(isNaN($scope.quotaLimits[3].percentage)) {
+                         $scope.quotaLimits[3].percentage = 0;
+                     }
+
+                     var unUsed = $scope.quotaLimits[3].max - $scope.quotaLimits[3].usedLimit;
+
+                     var usedColor = "#48a9da";
+                     if($scope.quotaLimits[3].percentage > 79 && $scope.quotaLimits[3].percentage < 90) {
+                         usedColor = "#f0ad4e";
+                     } else if($scope.quotaLimits[3].percentage > 89){
+                         usedColor = "#df6457";
+                     }
+
+                     $scope.quotaLimits[3].doughnutData = [
+                        {
+                        value: parseInt(obj.usedLimit),
+                        color: usedColor,
+                        highlight: usedColor,
+                        label: "Used"
+                        },
+                        {
+                        value: unUsed,
+                        color: "#ebf1f4",
+                        highlight: "#ebf1f4",
+                        label: "UnUsed"
+                        }];
+
+         		    }
+         		 $scope.addText();
+
+         	 }
+         	 if(obj.resourceType == "Snapshot"){
+         		 $scope.addText = function() {
+      		        $scope.quotaLimits[4] = obj;
+     		        $scope.quotaLimits[4].label= "Snapshot";
+     		        $scope.quotaLimits[4].max = parseInt(obj.max);
+                     $scope.quotaLimits[4].usedLimit = parseInt(obj.usedLimit);
+                     $scope.quotaLimits[4].percentage = parseFloat(parseInt(obj.usedLimit) / parseInt(obj.max) * 100).toFixed(2);
+
+                     if(obj.usedLimit == null || obj.usedLimit == "null" || isNaN(obj.usedLimit)) {
+                         obj.usedLimit = 0;
+                     }
+                    if(resourceArr.indexOf(obj.resourceType) > -1) {
+                      if(angular.isUndefined($scope.quotaLimits[4])) {
+                          $scope.quotaLimits[4] = {};
+
+                      }
+     		    }
+                     if(isNaN($scope.quotaLimits[4].percentage)) {
+                         $scope.quotaLimits[4].percentage = 0;
+                     }
+
+                     var unUsed = $scope.quotaLimits[4].max - $scope.quotaLimits[4].usedLimit;
+
+                     var usedColor = "#48a9da";
+                     if($scope.quotaLimits[4].percentage > 79 && $scope.quotaLimits[4].percentage < 90) {
+                         usedColor = "#f0ad4e";
+                     } else if($scope.quotaLimits[4].percentage > 89){
+                         usedColor = "#df6457";
+                     }
+
+                     $scope.quotaLimits[4].doughnutData = [
+                        {
+                        value: parseInt(obj.usedLimit),
+                        color: usedColor,
+                        highlight: usedColor,
+                        label: "Used"
+                        },
+                        {
+                        value: unUsed,
+                        color: "#ebf1f4",
+                        highlight: "#ebf1f4",
+                        label: "UnUsed"
+                        }];
+
+         		    }
+         		 $scope.addText();
+
+         	 }
+
+         	 if(obj.resourceType == "Network"){
+         		 $scope.addText = function() {
+      		        $scope.networkQuotaList[0] = obj;
+     		        $scope.networkQuotaList[0].label= "Network";
+     		        $scope.networkQuotaList[0].max = parseInt(obj.max);
+                     $scope.networkQuotaList[0].usedLimit = parseInt(obj.usedLimit);
+                     $scope.networkQuotaList[0].percentage = parseFloat(parseInt(obj.usedLimit) / parseInt(obj.max) * 100).toFixed(2);
+
+                     if(obj.usedLimit == null || obj.usedLimit == "null" || isNaN(obj.usedLimit)) {
+                         obj.usedLimit = 0;
+                     }
+                    if(resourceArr.indexOf(obj.resourceType) > -1) {
+                      if(angular.isUndefined($scope.networkQuotaList[0])) {
+                          $scope.networkQuotaList[0] = {};
+
+                      }
+     		    }
+                     if(isNaN($scope.networkQuotaList[0].percentage)) {
+                         $scope.networkQuotaList[0].percentage = 0;
+                     }
+
+                     var unUsed = $scope.networkQuotaList[0].max - $scope.networkQuotaList[0].usedLimit;
+
+                     var usedColor = "#48a9da";
+                     if($scope.networkQuotaList[0].percentage > 79 && $scope.networkQuotaList[0].percentage < 90) {
+                         usedColor = "#f0ad4e";
+                     } else if($scope.networkQuotaList[0].percentage > 89){
+                         usedColor = "#df6457";
+                     }
+
+                     $scope.networkQuotaList[0].doughnutData = [
+                        {
+                        value: parseInt(obj.usedLimit),
+                        color: usedColor,
+                        highlight: usedColor,
+                        label: "Used"
+                        },
+                        {
+                        value: unUsed,
+                        color: "#ebf1f4",
+                        highlight: "#ebf1f4",
+                        label: "UnUsed"
+                        }];
+
+         		    }
+         		 $scope.addText();
+
+         	 }
+         	 if(obj.resourceType == "IP"){
+         		 $scope.addText = function() {
+       		        $scope.networkQuotaList[1] = obj;
+       		      $scope.networkQuotaList[1].label= "IP";
+   		        $scope.networkQuotaList[1].max = parseInt(obj.max);
+                   $scope.networkQuotaList[1].usedLimit = parseInt(obj.usedLimit);
+                   $scope.networkQuotaList[1].percentage = parseFloat(parseInt(obj.usedLimit) / parseInt(obj.max) * 100).toFixed(2);
+
+                   if(obj.usedLimit == null || obj.usedLimit == "null" || isNaN(obj.usedLimit)) {
+                       obj.usedLimit = 0;
+                   }
+                  if(resourceArr.indexOf(obj.resourceType) > -1) {
+                    if(angular.isUndefined($scope.networkQuotaList[1])) {
+                        $scope.networkQuotaList[1] = {};
+
+                    }
+   		    }
+                   if(isNaN($scope.networkQuotaList[1].percentage)) {
+                       $scope.networkQuotaList[1].percentage = 0;
+                   }
+
+                   var unUsed = $scope.networkQuotaList[1].max - $scope.networkQuotaList[1].usedLimit;
+
+                   var usedColor = "#48a9da";
+                   if($scope.networkQuotaList[1].percentage > 79 && $scope.networkQuotaList[1].percentage < 90) {
+                       usedColor = "#f0ad4e";
+                   } else if($scope.networkQuotaList[1].percentage > 89){
+                       usedColor = "#df6457";
+                   }
+
+                   $scope.networkQuotaList[1].doughnutData = [
+                      {
                       value: parseInt(obj.usedLimit),
                       color: usedColor,
                       highlight: usedColor,
                       label: "Used"
-
-                  },
-                  {
+                      },
+                      {
                       value: unUsed,
                       color: "#ebf1f4",
                       highlight: "#ebf1f4",
                       label: "UnUsed"
+                      }];
+         		    }
+         		 $scope.addText();
+
+         	 }
+         	 if(obj.resourceType == "VPC"){
+         		 $scope.addText = function() {
+       		        $scope.networkQuotaList[2] = obj;
+       		      $scope.networkQuotaList[2].label= "VPC";
+   		        $scope.networkQuotaList[2].max = parseInt(obj.max);
+                   $scope.networkQuotaList[2].usedLimit = parseInt(obj.usedLimit);
+                   $scope.networkQuotaList[2].percentage = parseFloat(parseInt(obj.usedLimit) / parseInt(obj.max) * 100).toFixed(2);
+
+                   if(obj.usedLimit == null || obj.usedLimit == "null" || isNaN(obj.usedLimit)) {
+                       obj.usedLimit = 0;
+                   }
+                  if(resourceArr.indexOf(obj.resourceType) > -1) {
+                    if(angular.isUndefined($scope.networkQuotaList[2])) {
+                        $scope.networkQuotaList[2] = {};
+
+                    }
+   		    }
+                   if(isNaN($scope.networkQuotaList[2].percentage)) {
+                       $scope.networkQuotaList[2].percentage = 0;
+                   }
+
+                   var unUsed = $scope.networkQuotaList[2].max - $scope.networkQuotaList[2].usedLimit;
+
+                   var usedColor = "#48a9da";
+                   if($scope.networkQuotaList[2].percentage > 79 && $scope.networkQuotaList[2].percentage < 90) {
+                       usedColor = "#f0ad4e";
+                   } else if($scope.networkQuotaList[2].percentage > 89){
+                       usedColor = "#df6457";
+                   }
+
+                   $scope.networkQuotaList[2].doughnutData = [
+                      {
+                      value: parseInt(obj.usedLimit),
+                      color: usedColor,
+                      highlight: usedColor,
+                      label: "Used"
+                      },
+                      {
+                      value: unUsed,
+                      color: "#ebf1f4",
+                      highlight: "#ebf1f4",
+                      label: "UnUsed"
+                      }];
+         		    }
+         		 $scope.addText();
+
+         	 }
+
+         	 if(obj.resourceType == "Volume"){
+         		 $scope.addText = function() {
+
+       		        $scope.storageQuotaList[0] = obj;
+      		        $scope.storageQuotaList[0].label= "Volume";
+      		        $scope.storageQuotaList[0].max = parseInt(obj.max);
+                      $scope.storageQuotaList[0].usedLimit = parseInt(obj.usedLimit);
+                      $scope.storageQuotaList[0].percentage = parseFloat(parseInt(obj.usedLimit) / parseInt(obj.max) * 100).toFixed(2);
+
+                      if(obj.usedLimit == null || obj.usedLimit == "null" || isNaN(obj.usedLimit)) {
+                          obj.usedLimit = 0;
+                      }
+                     if(resourceArr.indexOf(obj.resourceType) > -1) {
+                       if(angular.isUndefined($scope.storageQuotaList[0])) {
+                           $scope.storageQuotaList[0] = {};
+
+                       }
+      		    }
+                      if(isNaN($scope.storageQuotaList[0].percentage)) {
+                          $scope.storageQuotaList[0].percentage = 0;
+                      }
+
+                      var unUsed = $scope.storageQuotaList[0].max - $scope.storageQuotaList[0].usedLimit;
+
+                      var usedColor = "#48a9da";
+                      if($scope.storageQuotaList[0].percentage > 79 && $scope.storageQuotaList[0].percentage < 90) {
+                          usedColor = "#f0ad4e";
+                      } else if($scope.storageQuotaList[0].percentage > 89){
+                          usedColor = "#df6457";
+                      }
+
+                      $scope.storageQuotaList[0].doughnutData = [
+                         {
+                         value: parseInt(obj.usedLimit),
+                         color: usedColor,
+                         highlight: usedColor,
+                         label: "Used"
+                         },
+                         {
+                         value: unUsed,
+                         color: "#ebf1f4",
+                         highlight: "#ebf1f4",
+                         label: "UnUsed"
+                         }];
+
+          		            		    }
+         		 $scope.addText();
+
+         	 }
+         	 if(obj.resourceType == "PrimaryStorage"){
+         		 $scope.addText = function() {
+       		        $scope.storageQuotaList[1] = obj;
+       		        $scope.storageQuotaList[1].label = "Primary Storage";
+       		      if (obj.max == -1 && obj.resourceType == "PrimaryStorage" || obj.max == -1 && obj.resourceType == "SecondaryStorage") {
+                       // obj.usedLimit = Math.round( obj.usedLimit / (1024 * 1024 * 1024));
+              $scope.storageQuotaList[1].label = $scope.storageQuotaList[1].label + " " + "(GiB)";
+           }
+
+       		    $scope.storageQuotaList[1].max = parseInt(obj.max);
+                 $scope.storageQuotaList[1].usedLimit = parseInt(obj.usedLimit);
+                 $scope.storageQuotaList[1].percentage = parseFloat(parseInt(obj.usedLimit) / parseInt(obj.max) * 100).toFixed(2);
+
+                 if(obj.usedLimit == null || obj.usedLimit == "null" || isNaN(obj.usedLimit)) {
+                     obj.usedLimit = 0;
+                 }
+                if(resourceArr.indexOf(obj.resourceType) > -1) {
+                  if(angular.isUndefined($scope.storageQuotaList[1])) {
+                      $scope.storageQuotaList[1] = {};
+
                   }
-              ];
-            }
-        });
-    });
+ 		    }
+                 if(isNaN($scope.storageQuotaList[1].percentage)) {
+                     $scope.storageQuotaList[1].percentage = 0;
+                 }
+
+                 var unUsed = $scope.storageQuotaList[1].max - $scope.storageQuotaList[1].usedLimit;
+
+                 var usedColor = "#48a9da";
+                 if($scope.storageQuotaList[1].percentage > 79 && $scope.storageQuotaList[1].percentage < 90) {
+                     usedColor = "#f0ad4e";
+                 } else if($scope.storageQuotaList[1].percentage > 89){
+                     usedColor = "#df6457";
+                 }
+
+                 $scope.storageQuotaList[1].doughnutData = [
+                    {
+                    value: parseInt(obj.usedLimit),
+                    color: usedColor,
+                    highlight: usedColor,
+                    label: "Used"
+                    },
+                    {
+                    value: unUsed,
+                    color: "#ebf1f4",
+                    highlight: "#ebf1f4",
+                    label: "UnUsed"
+                    }];
+         		    }
+         		 $scope.addText();
+
+         	 }
+         	 if(obj.resourceType == "SecondaryStorage"){
+         		 $scope.addText = function() {
+       		        $scope.storageQuotaList[2] = obj;
+       		      $scope.storageQuotaList[2].label = "Secondary Storage";
+       		      if (obj.max == -1 && obj.resourceType == "PrimaryStorage" || obj.max == -1 && obj.resourceType == "SecondaryStorage") {
+                       // obj.usedLimit = Math.round( obj.usedLimit / (1024 * 1024 * 1024));
+              $scope.storageQuotaList[2].label = $scope.storageQuotaList[2].label + " " + "(GiB)";
+           }
+
+       		    $scope.storageQuotaList[2].max = parseInt(obj.max);
+                 $scope.storageQuotaList[2].usedLimit = parseInt(obj.usedLimit);
+                 $scope.storageQuotaList[2].percentage = parseFloat(parseInt(obj.usedLimit) / parseInt(obj.max) * 100).toFixed(2);
+
+                 if(obj.usedLimit == null || obj.usedLimit == "null" || isNaN(obj.usedLimit)) {
+                     obj.usedLimit = 0;
+                 }
+                if(resourceArr.indexOf(obj.resourceType) > -1) {
+                  if(angular.isUndefined($scope.storageQuotaList[2])) {
+                      $scope.storageQuotaList[2] = {};
+
+                  }
+ 		    }
+                 if(isNaN($scope.storageQuotaList[2].percentage)) {
+                     $scope.storageQuotaList[2].percentage = 0;
+                 }
+
+                 var unUsed = $scope.storageQuotaList[2].max - $scope.storageQuotaList[2].usedLimit;
+
+                 var usedColor = "#48a9da";
+                 if($scope.storageQuotaList[2].percentage > 79 && $scope.storageQuotaList[2].percentage < 90) {
+                     usedColor = "#f0ad4e";
+                 } else if($scope.storageQuotaList[2].percentage > 89){
+                     usedColor = "#df6457";
+                 }
+
+                 $scope.storageQuotaList[2].doughnutData = [
+                    {
+                    value: parseInt(obj.usedLimit),
+                    color: usedColor,
+                    highlight: usedColor,
+                    label: "Used"
+                    },
+                    {
+                    value: unUsed,
+                    color: "#ebf1f4",
+                    highlight: "#ebf1f4",
+                    label: "UnUsed"
+                    }];
+         		    }
+         		 $scope.addText();
+
+         	 }
+          });
+
+      });
 };
 $scope.getResourceDomain();
 

@@ -59,12 +59,20 @@
                                             </div>
                                             <div class="clearfix"></div>
 
-                                            <div class="col-md-6">
+                                            <div class="col-md-6" >
                                                 <div class="media-body">
-                                                	<!-- <a id="config_vpc_site_to_site_vpns" data-ng-click="acquireNewIp('sm')"> -->
-	                                                    <div class="panel panel-info cursor-notallow">
+                                                	 <a data-ng-if="vpntotal==1" id="config_vpc_site_to_site_vpns" ui-sref="vpc.view-vpc.config-vpc.view-sitevpn">
+	                                                    <div class="panel panel-info ">
 	                                                        <div class="panel-body config-box p-xxs text-info text-center">
-	                                                            <h3> 0</h3>
+	                                                            <h3>{{sitevpnList.length}}</h3>
+	                                                            <fmt:message key="site.to.site.vpns" bundle="${msg}" />
+	                                                        </div>
+	                                                    </div>
+                                                    </a>
+                                                     <a data-ng-if="vpntotal!=1" id="config_vpc_site_to_site_vpns" data-ng-click="createSiteVPN('sm')">
+	                                                    <div class="panel panel-info ">
+	                                                        <div class="panel-body config-box p-xxs text-info text-center">
+	                                                            <h3>{{sitevpnList.length}}</h3>
 	                                                            <fmt:message key="site.to.site.vpns" bundle="${msg}" />
 	                                                        </div>
 	                                                    </div>
