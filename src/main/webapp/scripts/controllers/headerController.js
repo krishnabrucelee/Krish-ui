@@ -13,7 +13,7 @@ function headerCtrl($scope, $http, $window, $modal, $log, $state, $stateParams, 
     $scope.showImage();
 
     $scope.themeSettingList = function () {
-        $scope.themeSettings = localStorageService.cookie.get('themeSettings');
+        $scope.themeSettings = localStorageService.get('themeSettings');
         if ($scope.themeSettings.data != null) {
         	$scope.themeSettingsList = $scope.themeSettings.data;
         } else {
