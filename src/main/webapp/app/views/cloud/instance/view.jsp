@@ -143,6 +143,14 @@ pageEncoding="UTF-8"%>
                                                 </td>
                                                 <td class="col-md-6 col-sm-6">{{instance.instanceOwner.userName}}</td>
                                             </tr>
+                                            <tr>
+                                                <td class="col-md-6 col-sm-6">
+                                                    <b>
+                                                        <fmt:message key="vm.migrate.status" bundle="${msg}" />
+                                                    </b>
+                                                </td>
+                                                <td class="col-md-6 col-sm-6"><span data-ng-if="instance.vmMigration == 1"> <fmt:message key="common.yes" bundle="${msg}" /> </span> <span data-ng-if="instance.vmMigration != 1"> <fmt:message key="common.no" bundle="${msg}" /> </span></td>
+                                            </tr>
                                              <tr>
                                                 <td class="col-md-6 col-sm-6">
                                                     <b>
@@ -486,7 +494,7 @@ pageEncoding="UTF-8"%>
             <div class="tab-pane"  data-ng-class="{'active' : templateCategory == 'config'}" id="step1-config">
                 <div data-ng-include src="'app/views/cloud/instance/configuration.jsp'"></div>
             </div>
-            <div class="tab-pane"  data-ng-class="{'active' : templateCategory == 'storage'}" id="step1-storage">
+            <div class="tab-pane"  data-ng-class="{'active' : templateCategory == 'storage'}" data-ng-if="templateCategory == 'storage'" id="step1-storage">
                 <div data-ng-include src="'app/views/cloud/instance/storage.jsp'"></div>
             </div>
             <div class="tab-pane"  data-ng-class="{'active' : templateCategory == 'network'}"  data-ng-if="templateCategory == 'network'" id="step1-network">
