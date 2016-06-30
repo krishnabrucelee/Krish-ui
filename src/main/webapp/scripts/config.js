@@ -367,15 +367,25 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider, $compile
                 }
             })
 
+                // Organization
+            .state('organization', {
+                abstract : true,
+                url : "/organization",
+                templateUrl : VIEW_URL + "views/common/content.jsp",
+                data : {
+                    pageTitle : 'common.organization'
+                }
+            })
+
             // Projects
-            .state('projects', {
+            .state('organization.projects', {
                 url : "/projects",
                 templateUrl : VIEW_URL + "views/project/index.jsp",
                 data : {
                     pageTitle : 'common.projects'
                 }
             })
-            .state('projects.view', {
+            .state('organization.projects.view', {
                 url : "/:id",
                 templateUrl : VIEW_URL + "views/project/view.jsp",
                 data : {
@@ -383,7 +393,7 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider, $compile
                 }
             })
 
-            .state('projects.quotalimit', {
+            .state('organization.projects.quotalimit', {
                 url : "/:quotaType/:id",
                 templateUrl : VIEW_URL + "views/project/projectquota.jsp",
                 data : {
@@ -392,7 +402,7 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider, $compile
             })
 
             // Applications
-            .state('applications', {
+            .state('organization.applications', {
                 url : "/applications",
                 templateUrl : VIEW_URL + "views/application/list.jsp",
                 data : {
@@ -410,7 +420,7 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider, $compile
             })
 
             // Accounts
-            .state('accounts', {
+            .state('organization.accounts', {
                 url : "/accounts",
                 templateUrl : VIEW_URL + "views/account/list.jsp",
                 data : {
@@ -553,7 +563,7 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider, $compile
             // }
             // })
 
-            .state('roles', {
+            .state('organization.roles', {
                 url : "/roles",
                 templateUrl : VIEW_URL + "views/roles/list.jsp",
                 data : {
@@ -561,7 +571,7 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider, $compile
                 }
             })
 
-            .state('roles.list-add', {
+            .state('organization.roles.list-add', {
                 url : "/add",
                 templateUrl : VIEW_URL + "views/roles/add.jsp",
                 data : {
@@ -569,7 +579,7 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider, $compile
                 }
 
             })
-            .state('roles.list-edit', {
+            .state('organization.roles.list-edit', {
                 url : "/edit/:id",
                 templateUrl : VIEW_URL + "views/roles/edit.jsp",
                 data : {
@@ -620,7 +630,7 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider, $compile
                 }
             })
 
-            .state('department', {
+            .state('organization.department', {
                 url : "/department",
                 templateUrl : VIEW_URL + "views/department/list.jsp",
                 data : {
@@ -638,7 +648,7 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider, $compile
                 }
             })
 
-            .state('department.quotalimit', {
+            .state('organization.department.quotalimit', {
                 url : "/:quotaType/:id",
                 templateUrl : VIEW_URL + "views/department/departmentquota.jsp",
                 data : {

@@ -5,51 +5,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:set var="language" value="${not empty language ? language : pageContext.request.getAttribute('language')}" scope="session" />
 <fmt:setBundle basename="i18n/messages_${language}" var="msg" scope="session" />
-<!-- This is content container for nested view in UI-Router-->
-<!-- You can put here any constant element in app content for example: Page title or breadcrum -->
-
-<!-- Header -->
-<div id="header" ng-include="'app/views/common/header.jsp'"></div>
-
-<!-- Navigation -->
-<aside id="menu" ng-include="'app/views/common/navigation.jsp'"></aside>
-
-<!-- Main Wrapper -->
-<div id="wrapper">
-	<div small-header class="normalheader transition ng-scope small-header">
-        <div class="hpanel" tour-step order="1" content="Place your page title and breadcrumb. Select small or large header or give the user choice to change the size." placement="bottom">
-            <div class="panel-body">
-                <div id="hbreadcrumb" class="pull-left">
-                    <ol class="hbreadcrumb breadcrumb">
-                        <li><a ui-sref="dashboard"><fmt:message key="common.home" bundle="${msg}" /></a></li>
-                        <li ng-repeat="state in $state.$current.path" ng-switch="$last || !!state.abstract" ng-class="{active: $last}">
-                           <span data-ng-if="state.data.pageTitle === 'common.projects'">
-	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.projects" bundle="${msg}" /></a>
-	                            <span ng-switch-when="true"><fmt:message key="common.projects" bundle="${msg}" /></span>
-                            </span>
-                            <span data-ng-if="state.data.pageTitle === 'quota.limit'">
-	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="quota.limit" bundle="${msg}" /></a>
-	                            <span ng-switch-when="true"><fmt:message key="quota.limit" bundle="${msg}" /></span>
-                            </span>
-                            <span data-ng-if="state.data.pageTitle === 'view.projects'">
-	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="view.projects" bundle="${msg}" /></a>
-	                            <span ng-switch-when="true">{{ state.data.pageName }}</span>
-	                    	</span>
-                        </li>
-                    </ol>
-                </div>
-                <%-- <h2 class="font-light m-b-xs">
-                    <span data-ng-if="$state.current.data.pageTitle === 'common.projects'"><fmt:message key="common.projects" bundle="${msg}" /></span>
-                </h2>
-                <h2 class="font-light m-b-xs">
-                    <span data-ng-if="$state.current.data.pageTitle === 'quota.limit'"><fmt:message key="quota.limit" bundle="${msg}" /></span>
-                </h2>
-                <small>{{ $state.current.data.pageDesc}}</small> --%>
-            </div>
-        </div>
-    </div>
-	<div class="content">
-		<div ui-view>
+<div ui-view>
 			<div ng-controller="projectCtrl">
 				<div class="hpanel">
 					<div class="panel-heading">
@@ -137,7 +93,7 @@
 											<tr
 												data-ng-repeat="projectObj in filteredCount = projectList"
 												data-ng-class="isSingle === projectObj.id ? 'bg-row text-white' : ''">
-												<td><a class="text-info" ui-sref="projects.view({id: {{ projectObj.id}}})"  title="View Instance" >{{ projectObj.name}}</a></td>
+												<td><a class="text-info" ui-sref="organization.projects.view({id: {{ projectObj.id}}})"  title="View Instance" >{{ projectObj.name}}</a></td>
 												<td><label class="badge badge-success p-xs" data-ng-show="projectObj.isActive"
 													data-ng-class="isSingle === projectObj.id  ? 'text-white' : ''"
 													class="text-success">Active</label> <label class="badge badge-danger p-xs"
@@ -151,7 +107,7 @@
 												<td>{{ projectObj.createdDateTime*1000 | date:'yyyy-MM-dd HH:mm:ss'}}</td>
 												<td>
 												<input type="hidden" id="projects_unique_{{projectObj.id}}"  data-unique-field="{{ projectObj.domainName }}-{{ projectObj.departmentUserName }}-{{ projectObj.projectOwnerUserName }}-{{projectObj.name}}" class="test_projects_unique">
-												<a id="projects_quota_button_{{projectObj.id}}" data-unique-field="{{ projectObj.domainName }}-{{ projectObj.departmentUserName }}-{{ projectObj.projectOwnerUserName }}-{{projectObj.name}}" has-permission="PROJECT_RESOURCE_QUOTA_MODIFICATION" class="icon-button test_projects_quota_button" ui-sref="projects.quotalimit({id: {{projectObj.id}}, quotaType: 'project-quota'})" title="<fmt:message key="common.edit.quota" bundle="${msg}" />">
+												<a id="projects_quota_button_{{projectObj.id}}" data-unique-field="{{ projectObj.domainName }}-{{ projectObj.departmentUserName }}-{{ projectObj.projectOwnerUserName }}-{{projectObj.name}}" has-permission="PROJECT_RESOURCE_QUOTA_MODIFICATION" class="icon-button test_projects_quota_button" ui-sref="organization.projects.quotalimit({id: {{projectObj.id}}, quotaType: 'project-quota'})" title="<fmt:message key="common.edit.quota" bundle="${msg}" />">
                                                     <span class="fa font-bold pe-7s-edit"> </span>
                                                 </a>
                                                 <a
@@ -179,6 +135,4 @@
 				</div>
 			</div>
 		</div>
-	</div>
 <div id="footer" ng-include="'app/views/common/footer.jsp'"></div>
-</div>

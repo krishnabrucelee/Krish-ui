@@ -5,57 +5,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:set var="language" value="${not empty language ? language : pageContext.request.getAttribute('language')}" scope="session" />
 <fmt:setBundle basename="i18n/messages_${language}" var="msg" scope="session" />
-
-<!-- This is content container for nested view in UI-Router-->
-
-<!-- Header -->
-<ng-include id="header" src="global.getViewPageUrl('common/header.jsp')"></ng-include>
-
-<!-- Navigation -->
-<ng-include id="menu" src="global.getViewPageUrl('common/navigation.jsp')"></ng-include>
-
-<!-- Main Wrapper -->
-<div id="wrapper">
-    <div small-header class="normalheader transition ng-scope small-header">
-        <div class="hpanel" tour-step order="1" content="Place your page title and breadcrumb. Select small or large header or give the user choice to change the size." placement="bottom">
-            <div class="panel-body">
-                <div id="hbreadcrumb" class="pull-left">
-                    <ol class="hbreadcrumb breadcrumb">
-                        <li><a ui-sref="dashboard"><fmt:message key="common.home" bundle="${msg}" /></a></li>
-                        <li ng-repeat="state in $state.$current.path" ng-switch="$last || !!state.abstract" ng-class="{active: $last}">
-                           <span data-ng-if="state.data.pageTitle === 'common.departments'">
-	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.departments" bundle="${msg}" /></a>
-	                            <span ng-switch-when="true"><fmt:message key="common.departments" bundle="${msg}" /></span>
-                            </span>
-                            <span data-ng-if="state.data.pageTitle === 'quota.limit'">
-	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="quota.limit" bundle="${msg}" /></a>
-	                            <span ng-switch-when="true"><fmt:message key="quota.limit" bundle="${msg}" /></span>
-                            </span>
-                            <span data-ng-if="state.data.pageTitle !== 'common.departments'">
-	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.departments" bundle="${msg}" /></a>
-	                            <span ng-switch-when="true">{{ state.data.pageName }}</span>
-	                    </span>
-                        </li>
-                    </ol>
-                </div>
-               <%--  <h2 class="font-light m-b-xs">
-                    <span id="departments_page_title" data-ng-if="$state.current.data.pageTitle === 'common.departments'"><fmt:message key="common.departments" bundle="${msg}" /></span>
-                </h2>
-                <h2 class="font-light m-b-xs">
-                    <span id="quota_limit_page_title" data-ng-if="$state.current.data.pageTitle === 'quota.limit'"><fmt:message key="quota.limit" bundle="${msg}" /></span>
-                </h2>
-                <small>{{ $state.current.data.pageDesc}}</small> --%>
-            </div>
-        </div>
-    </div>
-    <div class="content">
-        <div ui-view>
+<div ui-view>
             <div class="row" data-ng-controller="departmentCtrl" id="departments_pagination_container">
-
                 <div class="col-md-12 col-sm-12">
                     <div class="hpanel">
                         <div class="panel-heading">
-
                             <div class="row">
                                 <div class="col-md-12 col-sm-12 col-xs-12 ">
                                     <div class="pull-left dashboard-btn-area">
@@ -125,29 +79,20 @@
                                                 <a has-permission="EDIT_DEPARTMENT" id="departments_edit_button_{{department.id}}" class="icon-button test_departments_edit_button" title="<fmt:message key="common.edit" bundle="${msg}" />" data-ng-click="edit('md', department)">
                                                     <span class="fa fa-edit"> </span>
                                                 </a>
-                                                 <a data-ng-if="department.type != 'ROOT_ADMIN'" has-permission="DEPARTMENT_RESOURCE_QUOTA_MODIFICATION" id="departments_edit_quota_button_{{department.id}}" class="icon-button test_departments_edit_quota_button" ui-sref="department.quotalimit({id: {{department.id}}, quotaType: 'department-quota'})" title="<fmt:message key="common.edit.quota" bundle="${msg}" />">
+                                                 <a data-ng-if="department.type != 'ROOT_ADMIN'" has-permission="DEPARTMENT_RESOURCE_QUOTA_MODIFICATION" id="departments_edit_quota_button_{{department.id}}" class="icon-button test_departments_edit_quota_button" ui-sref="organization.department.quotalimit({id: {{department.id}}, quotaType: 'department-quota'})" title="<fmt:message key="common.edit.quota" bundle="${msg}" />">
                                                     <span class="fa font-bold pe-7s-edit"> </span>
                                                 </a>
                                                 <a has-permission="DELETE_DEPARTMENT" id="departments_delete_button_{{department.id}}" class="icon-button test_departments_delete_button" title="<fmt:message key="common.delete" bundle="${msg}" />" data-ng-click="delete('sm', department)" ><span class="fa fa-trash"></span></a>
-
                                             </td>
-
                                         </tr>
                                     </tbody>
                                 </table>
-
-
-
                             </div>
                         </div>
-
                         <pagination-content></pagination-content>
                     </div>
                 </div>
             </div>
-
         </div>
-    </div>
 <div id="footer" ng-include="'app/views/common/footer.jsp'"></div>
-</div>
 

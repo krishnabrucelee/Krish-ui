@@ -13,7 +13,6 @@
       </div>
         <div class="tab-content" data-ng-if="!showLoader" >
                <div class="row" >
-
                     <div class="col-lg-9 col-md-8 col-sm-12">
                     <div class="panel panel-info">
                             <div class="panel-heading">
@@ -94,23 +93,17 @@
                                 <ul class="list-group">
 								<li class="list-group-item">
 								<a has-permission="PROJECT_RESOURCE_QUOTA_MODIFICATION" class="fa font-bold pe-7s-edit m-r-md"
-									ui-sref="projects.quotalimit({id: projectInfo.id, quotaType: 'project-quota'})"
+									ui-sref="organization.projects.quotalimit({id: projectInfo.id, quotaType: 'project-quota'})"
 									><span class="m-l-sm" >
 									<fmt:message key="common.edit.quota" bundle="${msg}" />
 									</span>
 								</a>
 								</li>
-
 							</ul>
                             </div>
                         </div>
                     </div>
                 </div>
-
-
-
         </div>
-
-
     </div>
 </div>
