@@ -271,11 +271,11 @@ function vpcCtrl($scope, $modal, appService, $timeout, filterFilter, $stateParam
                    $state.$current.parent.data.pageName = result.name;
                    $state.$current.parent.data.id = result.id;
                 } else {
-                    if ($state.current.data.pageTitle === "View IP" || $state.current.data.pageTitle === "View Network") {
+                    if ($state.current.data.pageTitle === "View IP" || $state.current.data.pageTitle === "View Network" || $state.current.data.pageTitle === "view VPC private gateway") {
                        $state.$current.parent.parent.parent.data.pageName = result.name;
                        $state.$current.parent.parent.parent.data.id = result.id;
 		         }
-                   else if ($state.current.data.pageTitle === "Network ACL" || $state.current.data.pageTitle === "Public IP" || $state.current.data.pageTitle === "view.network") {
+                   else if ($state.current.data.pageTitle === "Network ACL" || $state.current.data.pageTitle === "Public IP" || $state.current.data.pageTitle === "view.network" || $state.current.data.pageTitle === "Private Gateway") {
                        $state.$current.parent.parent.data.pageName = result.name;
                        $state.$current.parent.parent.data.id = result.id;
                     }
@@ -805,6 +805,31 @@ $scope.dropnetworkLists = {
         }]);
     });
     };
+
+    // VPC Private Gateway List
+    $scope.listPrivateGateway = function () {
+    	$scope.showLoader = true;
+        $scope.privateGateway = {};
+        if (!angular.isUndefined($stateParams.id)) {
+        var hasPrivateGateway =  appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "vpcprivategateway/listbyvpc" +"?vpcid="+ $stateParams.id+ "&lang=" + appService.localStorageService.cookie
+	               .get('language') + "&sortBy=-id");
+        hasPrivateGateway.then(function (result) {  // this is only run after $http completes0
+            $scope.privateGatewayList = result;
+            $scope.showLoader = false;
+        });
+        }
+    };
+    $scope.listPrivateGateway();
+
+    if ($stateParams.id5 > 0) {
+        $scope.showLoader = true;
+            var hasServer = appService.crudService.read("vpcprivategateway", $stateParams.id5);
+        hasServer.then(function(result) {
+            $scope.showLoader = false;
+            $scope.privateGateway = result;
+            console.log($scope.privateGateway);
+        });
+    }
 
     // VPC Network List
     $scope.listVpcNetwork = function(vpcId) {
@@ -2316,6 +2341,7 @@ $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.editrule, funct
         $scope.LBlist(1);
     }
 });
+
 $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.deleteRules, function(event, args) {
     appService.globalConfig.webSocketLoaders.loadBalancerLoader = false;
     appService.globalConfig.webSocketLoaders.networkLoader = false;

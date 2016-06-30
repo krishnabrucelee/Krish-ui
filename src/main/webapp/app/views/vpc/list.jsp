@@ -35,6 +35,10 @@
 	                            <a ng-switch-when="false" ng-href="{{'#/vpc/view/'+state.parent.parent.data.id}}/config-vpc/public-ip"><fmt:message key="public.ip" bundle="${msg}" /></a>
 	                            <span ng-switch-when="true"><fmt:message key="public.ip" bundle="${msg}" /></span>
                             </span>
+                            <span data-ng-if="state.data.pageTitle === 'Private Gateway'">
+	                            <a ng-switch-when="false" ng-href="{{'#/vpc/view/'+state.parent.parent.data.id}}/config-vpc/private-gateway"><fmt:message key="common.private.gateway" bundle="${msg}" /></a>
+	                            <span ng-switch-when="true"><fmt:message key="common.private.gateway" bundle="${msg}" /></span>
+                            </span>
                             <span data-ng-if="state.data.pageTitle === 'Virtual Machines'">
 	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.virtual.machines" bundle="${msg}" /></a>
 	                            <span ng-switch-when="true"><fmt:message key="common.virtual.machines" bundle="${msg}" /></span>
@@ -63,43 +67,13 @@
 	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}">{{ state.data.pageName }}</a>
 	                            <span ng-switch-when="true">{{ state.data.pageName }}</span>
                             </span>
+                            <span data-ng-if="state.data.pageTitle === 'view VPC private gateway'">
+	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="ip.address" bundle="${msg}" /></a>
+	                            <span ng-switch-when="true"><fmt:message key="ip.address" bundle="${msg}" /></span>
+                            </span>
                         </li>
                     </ol>
                 </div>
-                <%-- <h2 class="font-light m-b-xs">
-                    <span id="vpc_page_title" data-ng-if="$state.current.data.pageTitle === 'VPC'"><fmt:message key="common.vpc" bundle="${msg}" /></span>
-                </h2>
-                <h2 class="font-light m-b-xs">
-                    <span id="view_vpc_page_title" data-ng-if="$state.current.data.pageTitle === 'view VPC'">{{ $state.current.data.pageName }}</span>
-                </h2>
-                <h2 class="font-light m-b-xs">
-                    <span id="vpc_configuration_page_title" data-ng-if="$state.current.data.pageTitle === 'config VPC'"><fmt:message key="vpc.configuration" bundle="${msg}" /></span>
-                </h2>
-                <h2 class="font-light m-b-xs">
-                    <span id="vpc_public_ip_page_title" data-ng-if="$state.current.data.pageTitle === 'Public IP'"><fmt:message key="public.ip" bundle="${msg}" /></span>
-                </h2>
-                <h2 class="font-light m-b-xs">
-                    <span id="vpc_virtual_machine_page_title" data-ng-if="$state.current.data.pageTitle === 'Virtual Machines'"><fmt:message key="common.virtual.machines" bundle="${msg}" /></span>
-                </h2>
-                <h2 class="font-light m-b-xs">
-                    <span id="vpc_ip_address_page_title" data-ng-if="$state.current.data.pageTitle === 'View IP'"><fmt:message key="ip.address" bundle="${msg}" /></span>
-                </h2>
-                <h2 class="font-light m-b-xs">
-                    <span id="vpc_network_acl_page_title" data-ng-if="$state.current.data.pageTitle === 'Network ACL'"><fmt:message key="network.acl" bundle="${msg}" /></span>
-                </h2>
-                <h2 class="font-light m-b-xs">
-                    <span id="vpc_view_network_page_title" data-ng-if="$state.current.data.pageTitle === 'View Network'">{{ $state.current.data.pageName }}</span>
-                </h2>
-                <h2 class="font-light m-b-xs">
-                    <span id="vpc_public_lb_ip_page_title" data-ng-if="$state.current.data.pageTitle === 'LoadBalancer IP'"><fmt:message key="common.public.lb.ip" bundle="${msg}" /></span>
-                </h2>
-                <h2 class="font-light m-b-xs">
-                    <span id="vpc_public_lb_ip_page_title" data-ng-if="$state.current.data.pageTitle === 'Static Nat IP'"><fmt:message key="common.static.nats" bundle="${msg}" /></span>
-                </h2>
-                <h2 class="font-light m-b-xs">
-                    <span id="vpc_network_page_title" data-ng-if="$state.current.data.pageTitle === 'view.network'">{{ $state.current.data.pageName }}</span>
-                </h2>
-                <small>{{ $state.current.data.pageDesc}}</small> --%>
             </div>
         </div>
     </div>
