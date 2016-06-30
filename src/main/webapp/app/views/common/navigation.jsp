@@ -18,31 +18,31 @@
             <ul class="nav nav-second-level" ng-class="{in: $state.includes('organization')}">
                  <li data-ng-if="global.sessionValues.userStatus != 'SUSPENDED'" ng-class="{active: $state.includes('organization.department')}">
             <a ui-sref="organization.department" id="departments_navigation_button">
-                <span class="pe-7s-id pe-2x nav-menu-icons"></span>
+                <span class="pe-7s-id pe-lg nav-menu-icons"></span>
                 <span class="nav-label"><fmt:message key="common.departments" bundle="${msg}" /></span>
             </a>
         </li>
           <li data-ng-if="global.sessionValues.userStatus != 'SUSPENDED'" ng-class="{active: $state.includes('organization.applications')}">
             <a ui-sref="organization.applications" id="applications_navigation_button">
-                <span class="pe-7s-keypad pe-2x nav-menu-icons"></span>
+                <span class="pe-7s-keypad pe-lg nav-menu-icons"></span>
                 <span class="nav-label"><fmt:message key="common.applications" bundle="${msg}" /></span>
             </a>
         </li>
         <li data-ng-if="global.sessionValues.userStatus != 'SUSPENDED'" ng-class="{active: $state.includes('organization.projects')}">
             <a ui-sref="organization.projects" id="projects_navigation_button">
-                <span class="pe-7s-folder pe-2x nav-menu-icons"></span>
+                <span class="pe-7s-folder pe-lg nav-menu-icons"></span>
                 <span class="nav-label"><fmt:message key="common.projects" bundle="${msg}" /></span>
             </a>
         </li>
         <li data-ng-if="global.sessionValues.userStatus != 'SUSPENDED'" ng-class="{active: $state.includes('organization.accounts')}">
             <a ui-sref="organization.accounts" id="accounts_navigation_button">
-                <span class="pe-7s-users pe-2x nav-menu-icons"></span>
+                <span class="pe-7s-users pe-lg nav-menu-icons"></span>
                 <span class="nav-label"><fmt:message key="common.accounts" bundle="${msg}" /></span>
             </a>
         </li>
          <li data-ng-if="global.sessionValues.userStatus != 'SUSPENDED'" ng-class="{active: $state.includes('organization.roles')}">
             <a ui-sref="organization.roles" id="roles_navigation_button">
-                <span class="pe-7s-user pe-2x nav-menu-icons"></span>
+                <span class="pe-7s-user pe-lg nav-menu-icons"></span>
                 <span class="nav-label"><fmt:message key="common.roles" bundle="${msg}" /></span>
             </a>
          </li>
@@ -51,13 +51,13 @@
         <li  ng-class="{active: $state.includes('cloud')}" >
             <a href="#" id="cloud_navigation_button"><span class="pe-7s-cloud pe-2x nav-menu-icons"></span> <span class="nav-label"><fmt:message key="common.cloud" bundle="${msg}" /> </span><span class="fa arrow"></span> </a>
             <ul class="nav nav-second-level" ng-class="{in: $state.includes('cloud')}">
-                <li ui-sref-active="active"><a ui-sref="cloud.list-instance" id="instances_navigation_button"><span class="pe-7s-monitor pe-2x nav-menu-icons"></span><fmt:message key="common.instance" bundle="${msg}" /> </a></li>
-                <li ui-sref-active="active"><a ui-sref="cloud.list-volume" id="volumes_navigation_button"><span class="pe-7s-server pe-2x nav-menu-icons"></span><fmt:message key="common.volume" bundle="${msg}" /> </a></li>
-                <li ui-sref-active="active"><a ui-sref="cloud.list-snapshot" id="snapshots_navigation_button"><span class="pe-7s-camera pe-2x nav-menu-icons"></span><fmt:message key="common.snapshot" bundle="${msg}" /> </a></li>
-                <li ui-sref-active="active"><a ui-sref="cloud.list-network" id="networks_navigation_button"><span class="pe-7s-science pe-2x nav-menu-icons"></span><fmt:message key="common.network" bundle="${msg}" /> </a></li>
-                <li ui-sref-active="active"><a ui-sref="cloud.list-ssh" id="ssh_keys_navigation_button"><span class="pe-7s-key pe-2x nav-menu-icons"></span><fmt:message key="common.ssh.keys" bundle="${msg}" /> </a></li>
-                <li ui-sref-active="active"><a ui-sref="cloud.list-affinity" id="affinity_keys_navigation_button"><span class="pe-7s-target pe-2x nav-menu-icons"></span><fmt:message key="common.affinity.group" bundle="${msg}" /> </a></li>
-                <li ui-sref-active="active" ui-sref="cloud.quota-limit" id="quota_limits_navigation_button"><a href="#"><span class="pe-7s-graph pe-2x nav-menu-icons"></span><fmt:message key="common.quota.limit" bundle="${msg}" /> </a></li>
+                <li ui-sref-active="active"><a ui-sref="cloud.list-instance" id="instances_navigation_button"><span class="pe-7s-monitor pe-lg nav-menu-icons"></span><fmt:message key="common.instance" bundle="${msg}" /> </a></li>
+                <li ui-sref-active="active"><a ui-sref="cloud.list-volume" id="volumes_navigation_button"><span class="pe-7s-server pe-lg nav-menu-icons"></span><fmt:message key="common.volume" bundle="${msg}" /> </a></li>
+                <li ui-sref-active="active"><a ui-sref="cloud.list-snapshot" id="snapshots_navigation_button"><span class="pe-7s-camera pe-lg nav-menu-icons"></span><fmt:message key="common.snapshot" bundle="${msg}" /> </a></li>
+                <li ui-sref-active="active"><a ui-sref="cloud.list-network" id="networks_navigation_button"><span class="pe-7s-science pe-lg nav-menu-icons"></span><fmt:message key="common.network" bundle="${msg}" /> </a></li>
+                <li ui-sref-active="active"><a ui-sref="cloud.list-ssh" id="ssh_keys_navigation_button"><span class="pe-7s-key pe-lg nav-menu-icons"></span><fmt:message key="common.ssh.keys" bundle="${msg}" /> </a></li>
+                <li ui-sref-active="active"><a ui-sref="cloud.list-affinity" id="affinity_keys_navigation_button"><span class="pe-7s-target pe-lg nav-menu-icons"></span><fmt:message key="common.affinity.group" bundle="${msg}" /> </a></li>
+                <li ui-sref-active="active" ui-sref="cloud.quota-limit" id="quota_limits_navigation_button"><a href="#"><span class="pe-7s-graph pe-lg nav-menu-icons"></span><fmt:message key="common.quota.limit" bundle="${msg}" /> </a></li>
             </ul>
         </li>
         <li data-ng-if="global.sessionValues.userStatus != 'SUSPENDED'" ng-class="{active: $state.includes('vpc')}">
