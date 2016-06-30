@@ -24,8 +24,8 @@ function instanceMonitorCtrl($scope, $rootScope, $http, $stateParams, appService
 	var hasServer = appService.crudService.read("virtualmachine", $stateParams.id);
         hasServer.then(function(result) {
             $scope.instance = result;
-            //$scope.uuid = result.uuid;
-            //$scope.hostName = result.displayName;
+            $scope.uuid = result.uuid;
+            $scope.hostName = result.displayName;
             webSockets.init(appService.globalConfig.MONITOR_SOCKET_URL + 'stack/watch', $scope.uuid);
             webSockets.connect( function(frame) {
                         dataSubscribe();
