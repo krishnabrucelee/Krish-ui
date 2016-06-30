@@ -681,10 +681,10 @@
 								<get-loader-image data-ng-show="showLoader"></get-loader-image>
 								<div class="col-md-4 col-sm-5" data-ng-hide="showLoader">
 									<a class="btn btn-default btn-outline"
-										data-ng-if="type == 'department-quota'" ui-sref="department""><fmt:message
+										data-ng-if="type == 'department-quota'" ui-sref="organization.department"><fmt:message
 											key="common.cancel" bundle="${msg}" /></a> <a
 										class="btn btn-default btn-outline"
-										data-ng-if="type == 'project-quota'" ui-sref="projects""><fmt:message
+										data-ng-if="type == 'project-quota'" ui-sref="organization.projects"><fmt:message
 											key="common.cancel" bundle="${msg}" /> </a>
 
 									<button data-ng-if="type == 'department-quota'"
@@ -718,11 +718,8 @@
 						</div>
 					</div>
 					</div>
-
 				</div>
             </div>
-
-
         </div>
     </div>
     </form>

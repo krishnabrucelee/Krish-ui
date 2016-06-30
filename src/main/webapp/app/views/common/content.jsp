@@ -28,6 +28,10 @@
 	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.cloud" bundle="${msg}" /></a>
 	                            <span ng-switch-when="true"><fmt:message key="common.cloud" bundle="${msg}" /></span>
                             </span>
+                             <span data-ng-if="state.data.pageTitle === 'common.organization'">
+	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.organization" bundle="${msg}" /></a>
+	                            <span ng-switch-when="true"><fmt:message key="common.organization" bundle="${msg}" /></span>
+                            </span>
                            <span data-ng-if="state.data.pageTitle === 'common.instances'">
 	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.instances" bundle="${msg}" /></a>
 	                            <span ng-switch-when="true"><fmt:message key="common.instances" bundle="${msg}" /></span>
@@ -80,6 +84,10 @@
 	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.department" bundle="${msg}" /></a>
 	                            <span ng-switch-when="true"><fmt:message key="common.departments" bundle="${msg}" /></span>
                             </span>
+                            <span data-ng-if="state.data.pageTitle === 'common.applications'">
+	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.applications" bundle="${msg}" /></a>
+	                            <span ng-switch-when="true"><fmt:message key="common.applications" bundle="${msg}" /></span>
+                            </span>
                              <span data-ng-if="state.data.pageTitle === 'common.projects'">
 	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.projects" bundle="${msg}" /></a>
 	                            <span ng-switch-when="true"><fmt:message key="common.projects" bundle="${msg}" /></span>
@@ -88,6 +96,30 @@
 	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.host" bundle="${msg}" /></a>
 	                            <a ng-href="{{'#/instance/list/view/'}}" + "{{ $stateParams.id }}" ><span ng-switch-when="true" >{{$stateParams.id}}{{ state.data.pageName }}</span></a>
 	                    	</span>
+	                    	  <span data-ng-if="state.data.pageTitle === 'quota.limit'">
+	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="quota.limit" bundle="${msg}" /></a>
+	                            <span ng-switch-when="true"><fmt:message key="quota.limit" bundle="${msg}" /></span>
+                            </span>
+                             <span data-ng-if="state.data.pageTitle === 'view.projects'">
+	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="view.projects" bundle="${msg}" /></a>
+	                            <span ng-switch-when="true">{{ state.data.pageName }}</span>
+	                    	</span>
+	                    	<span data-ng-if="state.data.pageTitle === 'common.accounts'">
+	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.accounts" bundle="${msg}" /></a>
+	                            <span ng-switch-when="true"><fmt:message key="common.accounts" bundle="${msg}" /></span>
+                            </span>
+                            <span data-ng-if="state.data.pageTitle === 'common.roles'">
+	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.roles" bundle="${msg}" /></a>
+	                            <span ng-switch-when="true"><fmt:message key="common.roles" bundle="${msg}" /></span>
+                            </span>
+                             <span data-ng-if="state.data.pageTitle === 'add.role'">
+	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="add.role" bundle="${msg}" /></a>
+	                            <span ng-switch-when="true"><fmt:message key="add.role" bundle="${msg}" /></span>
+                            </span>
+                            <span data-ng-if="state.data.pageTitle === 'edit.role'">
+	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="edit.role" bundle="${msg}" /></a>
+	                            <span ng-switch-when="true">{{ state.data.pageName }}</span>
+                            </span>
                         </li>
                     </ol>
                 </div>

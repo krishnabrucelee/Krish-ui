@@ -311,7 +311,7 @@ angular
 		 $scope.showLoader = false;
             	$scope.list(1);
             	appService.notify({message: 'Added successfully', classes: 'alert-success', templateUrl: $scope.global.NOTIFICATION_TEMPLATE });
-                $window.location.href = '#/roles';
+                $window.location.href = '#/organization/roles';
             }).catch(function (result) {
             	if (!angular.isUndefined(result) && result.data != null) {
                     if (result.data.globalError[0] != '') {
@@ -387,7 +387,7 @@ angular
 	     $scope.showLoader = false;
             $scope.homerTemplate = 'app/views/notification/notify.jsp';
             appService.notify({message: 'Updated successfully', classes: 'alert-success', templateUrl: $scope.homerTemplate});
-            $window.location.href = '#/roles';
+            $window.location.href = '#/organization/roles';
             }).catch(function (result) {
                 if (!angular.isUndefined(result.data)) {
                 	$scope.showLoader = false;

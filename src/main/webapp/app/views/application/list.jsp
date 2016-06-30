@@ -5,38 +5,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <c:set var="language" value="${not empty language ? language : pageContext.request.getAttribute('language')}" scope="session" />
 <fmt:setBundle basename="i18n/messages_${language}" var="msg" scope="session" />
-<!-- This is content container for nested view in UI-Router-->
-<!-- Header -->
-<ng-include id="header" src="global.getViewPageUrl('common/header.jsp')"></ng-include>
-
-<!-- Navigation -->
-<ng-include id="menu" src="global.getViewPageUrl('common/navigation.jsp')"></ng-include>
-
-<!-- Main Wrapper -->
-<div id="wrapper">
-	<div small-header class="normalheader transition ng-scope small-header">
-        <div class="hpanel" tour-step order="1" content="Place your page title and breadcrumb. Select small or large header or give the user choice to change the size." placement="bottom">
-            <div class="panel-body">
-                <div id="hbreadcrumb" class="pull-left">
-                    <ol class="hbreadcrumb breadcrumb">
-                        <li><a ui-sref="dashboard"><fmt:message key="common.home" bundle="${msg}" /></a></li>
-                        <li ng-repeat="state in $state.$current.path" ng-switch="$last || !!state.abstract" ng-class="{active: $last}">
-                            <span data-ng-if="state.data.pageTitle === 'common.applications'">
-	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.applications" bundle="${msg}" /></a>
-	                            <span ng-switch-when="true"><fmt:message key="common.applications" bundle="${msg}" /></span>
-                            </span>
-                        </li>
-                    </ol>
-                </div>
-               <%--  <h2 class="font-light m-b-xs">
-                    <span id="applications_page_title" data-ng-if="$state.current.data.pageTitle === 'common.applications'"><fmt:message key="common.applications" bundle="${msg}" /></span>
-                </h2>
-                <small>{{ $state.current.data.pageDesc}}</small> --%>
-            </div>
-        </div>
-    </div>
-	<div class="content">
-		<div ui-view>
+<div ui-view>
 			<div ng-controller="applicationListCtrl">
 				<div class="hpanel">
 					<div class="panel-heading">
@@ -78,7 +47,6 @@
 					</div>
 					<div class="row">
 						<div class="col-md-12 col-sm-12 col-xs-12 " id="applications_pagination_container">
-
 							<div data-ng-show = "showLoader" style="margin: 1%">
     				  		<get-loader-image data-ng-show="showLoader"></get-loader-image>
       						</div>
@@ -102,7 +70,6 @@
 		                                </tbody>
 										<tbody data-ng-show="applicationList.length > 0">
 											<tr data-ng-repeat=" application in filteredCount = (applicationList| filter: quickSearch | orderBy:sort.column:sort.descending)">
-
 												<td>{{ application.type}}</td>
                                                 <td>{{ application.domain.name }}</td>
 												<td>{{ application.description}}</td>
@@ -126,6 +93,4 @@
 				</div>
 			</div>
 		</div>
-	</div>
 <div id="footer" ng-include="'app/views/common/footer.jsp'"></div>
-</div>

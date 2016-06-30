@@ -7,7 +7,6 @@
 <fmt:setBundle basename="i18n/messages_${language}" var="msg" scope="session" />
 
 <form name="RoleForm" data-ng-submit="update(RoleForm)" method="post" novalidate="" data-ng-controller="rolesListCtrl">
-
     <div class="row">
         <div class="col-md-12 col-sm-12">
             <div class="hpanel">
@@ -28,7 +27,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="form-group" ng-class="{'text-danger':RoleForm.domain.$invalid && formSubmitted}">
                             <div class="row">
                                 <label class="col-md-3 col-sm-3 control-label"><fmt:message key="common.company" bundle="${msg}" /><span class="text-danger">*</span>
@@ -45,7 +43,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="form-group"ng-class="{'text-danger': RoleForm.department.$invalid && formSubmitted}">
                             <div class="row">
                                 <label class="col-md-3 col-sm-3 control-label control-normal"><fmt:message key="common.department" bundle="${msg}" /><span class="text-danger">*</span></label>
@@ -62,7 +59,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="form-group" ng-class="{'text-danger': RoleForm.description.$invalid && formSubmitted}">
                             <div class="row">
                                 <label class="col-md-3 col-sm-3 control-label"><fmt:message key="common.description" bundle="${msg}" /><span class="text-danger">*</span></label>
@@ -81,13 +77,11 @@
     <div class="row">
         <div data-ng-show = "showLoader" style="margin: 1%">
     	</div>
-
 		<div class="row  p-sm" data-ng-hide = "showLoader">
          	<div class="col-md-12 m-b-sm">
          		<button type="button" id="edit_role_check_uncheck_all_button" class="btn btn-info pull-right" data-ng-click="checkAllPermissions(permissions)"> <fmt:message key="common.check.uncheck.all" bundle="${msg}" /></button>
          	</div>
         <div class="col-md-12 col-sm-12"  ng-repeat="(key, module) in permissions | groupBy: 'module'">
-
             <div class="form-group" data-ng-if="module[0].description !== 'Quota Limit'">
                 <div class="white-content">
                 	<div class="panel-heading bg-info no-padding">
@@ -108,7 +102,7 @@
     <div class="form-group">
         <div class="row p-sm">
             <span class="pull-right">
-                <a class="btn btn-default btn-outline" id="edit_role_cancel_button" data-ng-hide="showLoader" ui-sref="roles"><fmt:message key="common.cancel" bundle="${msg}" /></a>
+                <a class="btn btn-default btn-outline" id="edit_role_cancel_button" data-ng-hide="showLoader" ui-sref="organization.roles"><fmt:message key="common.cancel" bundle="${msg}" /></a>
                 <button class="btn btn-info" id="edit_role_update_button" has-permission="EDIT_ROLE" data-ng-hide="showLoader" type="submit" ng-disabled="form.RoleForm.$invalid" ><fmt:message key="common.update" bundle="${msg}" /></button>
             </span>
         </div>

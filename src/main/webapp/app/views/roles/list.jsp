@@ -5,54 +5,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:set var="language" value="${not empty language ? language : pageContext.request.getAttribute('language')}" scope="session" />
 <fmt:setBundle basename="i18n/messages_${language}" var="msg" scope="session" />
-
-<!-- This is content container for nested view in UI-Router-->
-<!-- You can put here any constant element in app content for example: Page title or breadcrum -->
-<!-- Header -->
-<ng-include id="header" src="global.getViewPageUrl('common/header.jsp')"></ng-include>
-
-<!-- Navigation -->
-<ng-include id="menu" src="global.getViewPageUrl('common/navigation.jsp')"></ng-include>
-
-<!-- Main Wrapper -->
-<div id="wrapper">
-    <div small-header class="normalheader transition ng-scope small-header">
-        <div class="hpanel" tour-step order="1" content="Place your page title and breadcrumb. Select small or large header or give the user choice to change the size." placement="bottom">
-            <div class="panel-body">
-                <div id="hbreadcrumb" class="pull-left">
-                    <ol class="hbreadcrumb breadcrumb">
-                        <li><a ui-sref="dashboard"><fmt:message key="common.home" bundle="${msg}" /></a></li>
-                        <li ng-repeat="state in $state.$current.path" ng-switch="$last || !!state.abstract" ng-class="{active: $last}">
-                            <span data-ng-if="state.data.pageTitle === 'common.roles'">
-	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.roles" bundle="${msg}" /></a>
-	                            <span ng-switch-when="true"><fmt:message key="common.roles" bundle="${msg}" /></span>
-                            </span>
-                             <span data-ng-if="state.data.pageTitle === 'add.role'">
-	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="add.role" bundle="${msg}" /></a>
-	                            <span ng-switch-when="true"><fmt:message key="add.role" bundle="${msg}" /></span>
-                            </span>
-                            <span data-ng-if="state.data.pageTitle === 'edit.role'">
-	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="edit.role" bundle="${msg}" /></a>
-	                            <span ng-switch-when="true">{{ state.data.pageName }}</span>
-                            </span>
-                        </li>
-                    </ol>
-                </div>
-                <%-- <h2 class="font-light m-b-xs">
-                    <span id="roles_page_title" data-ng-if="$state.current.data.pageTitle === 'common.roles'"><fmt:message key="common.roles" bundle="${msg}" /></span>
-                </h2>
-                 <h2 class="font-light m-b-xs">
-                    <span id="edit_role_page_title" data-ng-if="$state.current.data.pageTitle === 'edit.role'"><fmt:message key="edit.role" bundle="${msg}" /></span>
-                </h2>
-                <h2 class="font-light m-b-xs">
-                    <span id="add_role_page_title" data-ng-if="$state.current.data.pageTitle === 'add.role'"><fmt:message key="add.role" bundle="${msg}" /></span>
-                </h2>
-                <small>{{ $state.current.data.pageDesc}}</small> --%>
-            </div>
-        </div>
-    </div>
-    <div class="content">
-        <div ui-view >
+<div ui-view >
             <div class="hpanel" ng-controller="rolesListCtrl">
                 <div class="panel-heading">
                     <div class="row" >
@@ -65,7 +18,7 @@
 	                                <div class="clearfix"></div>
 	                                </div>
 	                            </div>
-                                <a class="btn btn-info font-bold" id="roles_add_role_button" has-permission="CREATE_ROLE"  ui-sref="roles.list-add"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="common.add" bundle="${msg}" /></a>
+                                <a class="btn btn-info font-bold" id="roles_add_role_button" has-permission="CREATE_ROLE"  ui-sref="organization.roles.list-add"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="common.add" bundle="${msg}" /></a>
                                 <a class="btn btn-info font-bold" id="roles_assign_user_role_button" has-permission="ASSIGN_ROLE" data-ng-click="assignRole('lg')"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="assign.user.role" bundle="${msg}" /></a>
                                 <a class="btn btn-info" data-ng-click="list(1)" id="roles_refresh_button" title="<fmt:message key="common.refresh" bundle="${msg}" />"  ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
                             </div>
@@ -104,7 +57,6 @@
                     </div>
                     <div class="row" id="roles_pagination_container">
                             <div class="col-md-12 col-sm-12 col-xs-12 ">
-
                                 <div data-ng-show = "showLoader" style="margin: 1%">
     				  		<get-loader-image data-ng-show="showLoader"></get-loader-image>
       						</div>
@@ -129,11 +81,9 @@
                                                 <tr data-ng-repeat="role in filteredCount = (roleList| filter: quickSearch | orderBy:sort.column:sort.descending)">
                                                     <td>
                                                        {{ role.name}}
-
                                                     </td>
                                                     <td>
                                                        {{ role.domain.name}}
-
                                                     </td>
                                                     <td>
                                                         {{ role.department.userName }}
@@ -143,7 +93,7 @@
                                                     </td>
                                                     <td>
                                                         <input type="hidden" id="role_unique_{{role.id}}"  data-unique-field="{{ role.domain.name}}-{{ role.department.userName }}-{{ role.name}}" class="test_role_unique">
-                                                        <a has-permission="EDIT_ROLE" id="role_edit_button_{{role.id}}" data-unique-field="edit-{{ role.domain.name}}-{{ role.department.userName }}-{{ role.name}}" class="icon-button test_role_edit_button" title="<fmt:message key="common.edit" bundle="${msg}" />" ui-sref="roles.list-edit({id: {{ role.id}}})" ><span class="fa fa-edit m-r"></span></a>
+                                                        <a has-permission="EDIT_ROLE" id="role_edit_button_{{role.id}}" data-unique-field="edit-{{ role.domain.name}}-{{ role.department.userName }}-{{ role.name}}" class="icon-button test_role_edit_button" title="<fmt:message key="common.edit" bundle="${msg}" />" ui-sref="organization.roles.list-edit({id: {{ role.id}}})" ><span class="fa fa-edit m-r"></span></a>
                                                         <a has-permission="DELETE_ROLE" id="role_delete_button_{{role.id}}" data-unique-field="delete-{{ role.domain.name}}-{{ role.department.userName }}-{{ role.name}}" class="icon-button test_role_delete_button" title="<fmt:message key="common.delete" bundle="${msg}" />"  data-ng-click="delete('sm',role)"  ><span class="fa fa-trash"></span></a>
                                                     </td>
                                                 </tr>
@@ -151,13 +101,10 @@
                                         </table>
                                     </div>
                                 </div>
-                                 <pagination-content></pagination-content>
-                            </div>
+                            <pagination-content></pagination-content>
+                        </div>
                     </div>
                 </div>
             </div>
-
         </div>
-    </div>
 <div id="footer" ng-include="'app/views/common/footer.jsp'"></div>
-</div>

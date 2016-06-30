@@ -15,7 +15,6 @@
 		</div>
 		<div class="modal-body">
 			<div class="row">
-
 				<div class="col-md-12">
 					<div class="col-md-6">
 					<div data-ng-if="global.sessionValues.type != 'ROOT_ADMIN'">
@@ -36,7 +35,6 @@
 	                            <div class="col-md-5 col-sm-5">
 	                                <select required="true" class="form-control input-group" id = "add_department_domain" name="domain" data-ng-model="role.domain" ng-options="domain.name for domain in formElements.domainList" data-ng-change="getDepartmentsByDomain(role.domain)" data-ng-class="{'error': departmentForm.domain.$invalid && formSubmitted}" >
 	                                    <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
-
 	                                </select>
 	                                <i  tooltip="<fmt:message key="choose.domain" bundle="${msg}" /> " class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
 	                                <div class="error-area" data-ng-show="departmentForm.domain.$invalid && formSubmitted" ><i  tooltip="<fmt:message key="domain.is.required" bundle="${msg}" />" class="fa fa-warning error-icon"></i></div>
@@ -46,8 +44,6 @@
                     </div>
 				</div>
 				</div>
-
-
 				<div class="col-md-12">
 					<div class="col-md-6 col-sm-6">
 						<div class="form-group"
@@ -110,7 +106,6 @@
 												data-ng-value="role.id">{{role.name}}</option>
 									</select></td>
 								</tr>
-
 							</tbody>
 						</table>
 					</div>
