@@ -492,8 +492,10 @@ fieldset.scheduler-border legend{border-bottom:none !important; margin-bottom:0p
 .dashboard-quota-section .doughnut-fixed-area{width:120px;}
 .dashboard-quota-section .doughnutchart-value{margin: 26% 0 0 29%;}
 .dashboard-quota-section .dashboard-quota-area .dashboard-quota{margin:0px;}
-.quick-view-details{margin-top:23px;}
-.dashboard-quota-area .vm-quota .dashboard-quota{margin:0px 10px;}
+.quick-view-details{margin-top:1px;}
+.dashboard-quota-area .vm-quota .dashboard-quota{margin:0px;}
+
+
 
 @media (max-width: 767px) {
     .table-responsive.responsive-x .dropdown-menu { position: relative !important; right: 200px !important; top: -34px;}
@@ -546,6 +548,7 @@ a.icon-button{width:20px; height:20px;}
 }
 
 @media (min-width:1024px) and (max-width: 1100px) {
+.network-quota-area, .storage-quota-area{width:100%;}
 .template-panel, .template-panel-area {min-height: 190px;}
 .template-panel-area{width:50% !important; min-height:auto !important; margin-bottom:0px;}
 .template-panel-area .hpanel{margin-bottom:0px;}
