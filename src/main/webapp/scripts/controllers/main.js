@@ -122,11 +122,11 @@ if ($scope.global.sessionValues.type == 'USER') {
 $scope.themeSettingList = function () {
         return $http({method:'get', url:  REQUEST_PROTOCOL+ $window.location.hostname +':8080/home/list'})
         .then(function(result){
-            $scope.themeSettings = result;
-             $scope.welcomeContentUser = result.data.welcomeContentUser;
-             $scope.footerContent = result.data.footerContent;
-             $scope.splashTitleUser= result.data.splashTitleUser;
-             $cookies.splashTitleUser = result.data.splashTitleUser;
+            $scope.themeSettings = result.data[0];
+             $scope.welcomeContentUser = result.data[0].welcomeContentUser;
+             $scope.footerContent = result.data[0].footerContent;
+             $scope.splashTitleUser= result.data[0].splashTitleUser;
+             $cookies.splashTitleUser = result.data[0].splashTitleUser;
         });
     };
     $scope.themeSettingList();
