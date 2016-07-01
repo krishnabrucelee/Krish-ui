@@ -334,59 +334,7 @@ function vpcCtrl($scope, $modal, appService, $timeout, filterFilter, $stateParam
         });
     };
 
-    $scope.departmentList = function(domain) {
-        var hasDepartments = appService.crudService.listAllByFilter("departments/search", domain);
 
-        hasDepartments.then(function(result) { // this is only run after
-            // $http completes0
-            $scope.formElements.departmenttypeList = result;
-        });
-    };
-    //Load department list
-    $scope.departmentList = {};
-    $scope.getDepartmentList = function (domain) {
-        var hasDepartments = appService.crudService.listAllByFilter("departments/search", domain);
-        hasDepartments.then(function (result) {
-            $scope.departmentList = result;
-        });
-    };
-
-    $scope.getProjectList = function(department) {
-        if ($scope.global.sessionValues.type != "USER") {
-            var hasProjects = appService.crudService.listAllByObject("projects/department", department);
-            hasProjects.then(function(result) { // this is only run after $http
-                // completes0
-                $scope.projectList = result;
-            });
-        }
-        if ($scope.global.sessionValues.type == "USER") {
-            var hasProjects = appService.crudService.listAllByObject("projects/user", $scope.global.sessionValues);
-            hasProjects.then(function(result) { // this is only run after $http
-                // completes0
-                $scope.projectList = result;
-            });
-        }
-    };
-
-    if ($scope.global.sessionValues.type != "ROOT_ADMIN") {
-        var department = {};
-        department.id = $scope.global.sessionValues.departmentId;
-        $scope.getProjectList(department);
-    }
-
-    if ($scope.global.sessionValues.type == "DOMAIN_ADMIN") {
-        var domain = {};
-        domain.id = $scope.global.sessionValues.domainId;
-        $scope.getDepartmentList(domain);
-    }
-
-    $scope.changedomain = function(obj) {
-        $scope.vpc.project = {};
-        if (!angular.isUndefined(obj)) {
-            $scope.departmentList(obj);
-            //$scope.projectList = [];
-        }
-    }
 
     $scope.changeSort = function(sortBy, pageNumber) {
         var sort = appService.globalConfig.sort;
@@ -671,25 +619,68 @@ $scope.dropnetworkLists = {
                 $scope.cancel = function() {
                     $modalInstance.close();
                 },
-
-        $scope.changedomain = function(obj) {
-        $scope.vpc.project = {};
-        if (!angular.isUndefined(obj)) {
-            $scope.departmentList(obj);
-        //$scope.projectList = [];
-        }
-    },
-               $scope.$watch('vpc.department', function(obj) {
-        $scope.vpc.project = null;
-                    if (!angular.isUndefined(obj)) {
-                        $scope.getProjectList(obj);
-                    }
-                }),
                 $scope.cancel = function() {
                     $modalInstance.close();
                 };
                 } ]);
     };
+
+ // Department list load based on the domain
+    $scope.domainChange = function(vpc) {
+        $scope.domains = {};
+        $scope.formElements.departmentList = {};
+        $scope.options = {};
+        if (!angular.isUndefined(vpc)) {
+	        var hasDepartmentList = appService.crudService.listAllByFilter("departments/search", vpc);
+	        hasDepartmentList.then(function (result) {
+	    	    $scope.formElements.departmentList = result;
+	        });
+        }
+    };
+
+    $scope.departmentList = {};
+    $scope.getDepartmentList = function (domain) {
+        var hasDepartments = appService.crudService.listAllByFilter("departments/search", domain);
+        hasDepartments.then(function (result) {
+            $scope.departmentList = result;
+        });
+    };
+
+    if ($scope.global.sessionValues.type != "ROOT_ADMIN") {
+        var domain = {};
+        domain.id = $scope.global.sessionValues.domainId;
+        $scope.getDepartmentList(domain);
+    }
+
+    // Getting list of projects by department
+    $scope.getProjectsByDepartment = function(department) {
+     $scope.options = {};
+     if (!angular.isUndefined(department)) {
+    	 if($scope.global.sessionValues.type !== 'USER') {
+    		 $scope.showLoaderDetail = true;
+    		 var hasProjects =  appService.promiseAjax.httpTokenRequest(appService.crudService.globalConfig.HTTP_GET,
+       				 appService.crudService.globalConfig.APP_URL + "projects"  +"/department/"+department.id);
+    		 hasProjects.then(function (result) {  // this is only run after $http completes0
+	    		$scope.options = result;
+	    		$scope.showLoaderDetail = false;
+	    	 });
+    	 }
+     }
+   	};
+
+   if($scope.global.sessionValues.type === 'USER') {
+		var hasUsers = appService.crudService.read("users", $scope.global.sessionValues.id);
+        hasUsers.then(function (result) {
+            if (!angular.isUndefined(result)) {
+            	$scope.userElement = result;
+    	        var hasProjects =  appService.crudService.listAllByObject("projects/user", $scope.userElement);
+    			hasProjects.then(function (result) {  // this is only run after $http completes0
+    	   		    $scope.options = result;
+    	   	    });
+            }
+        });
+	 }
+
 
     $scope.update = function(form) {
         $scope.formSubmitted = true;
