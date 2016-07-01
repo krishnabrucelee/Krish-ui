@@ -24,7 +24,6 @@ function headerCtrl($scope, $http, $window, $modal, $log, $state, $stateParams, 
     			document.getElementById("pandaAppPageTitle").innerHTML = $scope.themeSettingsList.headerTitle;
     		}
     	}
-        //$state.data.pageTitle = "testttt";
     };
     $scope.themeSettingList();
 

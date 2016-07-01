@@ -37,12 +37,12 @@ angular.module('homer', ['ngCookies', 'LocalStorageModule'])
     $scope.themeSettingList = function () {
         return $http({method:'get', url:  REQUEST_PROTOCOL+ $window.location.hostname +':8080/home/list'})
         .then(function(result){
-            $scope.themeSettings = result.data;
+            $scope.themeSettings = result.data[0];
             //localStorageService.cookie.set('themeSettings', $scope.themeSettings);
-             $scope.welcomeContentUser = result.data.welcomeContentUser;
-             $scope.footerContent = result.data.footerContent;
-             $scope.splashTitleUser= result.data.splashTitleUser;
-             $cookies.splashTitleUser = result.data.splashTitleUser;
+             $scope.welcomeContentUser = result.data[0].welcomeContentUser;
+             $scope.footerContent = result.data[0].footerContent;
+             $scope.splashTitleUser= result.data[0].splashTitleUser;
+             $cookies.splashTitleUser = result.data[0].splashTitleUser;
 
              // Used for pageTitle
              localStorageService.set('themeSettings', $scope.themeSettings);
