@@ -101,19 +101,6 @@
 							</div>
 						</div>
 					</div>
-           	<!-- <div class="row form-group">
-           		<div class="col-md-6 col-sm-12">
-           			<span class="control-label">Public Load Balancer Provider</span>
-           		</div>
-           		<div class="col-md-6 col-sm-12">
-           			<select class="form-control" name="account">
-		                <option>option 1</option>
-		                <option>option 2</option>
-		                <option>option 3</option>
-		                <option>option 4</option>
-		            </select>
-           		</div>
-           	</div> -->
            	<div class="form-group"
 						ng-class="{'text-danger':addvpcForm.vpcoffering.$invalid && formSubmitted}">
 						<div class="row">
@@ -139,86 +126,120 @@
 							</div>
 						</div>
 			</div>
-           	<div class="form-group">
-						<div class="row" ng-class="{'text-danger':addvpcForm.domain.$invalid && formSubmitted}"
-						 data-ng-if="global.sessionValues.type != 'USER'">
-							<label
-								class="col-md-4 col-xs-12 col-sm-4 control-label control-normal"><fmt:message
-									key="common.domain" bundle="${msg}" /><span
-								class="text-danger">*</span></label>
-							<div class="col-md-6  col-sm-6 col-xs-12">
-								<select required="true" class="form-control input-group" name="domain" id="add_vpc_domain"
-									data-ng-model="vpc.domain" data-ng-change="changedomain(vpc.domain)" data-ng-class="{'error': addvpcForm.domain.$invalid && formSubmitted}"
+					 <div data-ng-if="global.sessionValues.type == 'DOMAIN_ADMIN'">
+						<div class="form-group">
+							<div class="row">
+                            	<label class="col-md-4 col-xs-12 col-sm-3 control-label"><fmt:message key="common.domain" bundle="${msg}" /><span class="text-danger">*</span></label>
+                            	<div class="col-md-6  col-sm-6 col-xs-12">
+                                <label>{{ global.sessionValues.domainName }}</label>
+                                <input type="hidden" name="domain"  data-ng-model="vpc.domain" data-ng-init="vpc.domainId=global.sessionValues.domainId" />
+                            	</div>
+                        	</div>
+                        </div>
+	                	</div>
 
-									ng-options="domain.name for domain in domainList">
-									<option value=""><fmt:message key="common.select"
-											bundle="${msg}" /></option>
-								</select>
-								<div class="error-area"
-									data-ng-show="addvpcForm.domain.$invalid && formSubmitted">
-									<i
-										ng-attr-tooltip="{{ addvpcForm.company.errorMessage || '<fmt:message key="company.is.required" bundle="${msg}" />' }}"
-										class="fa fa-warning error-icon"></i>
+					<div data-ng-if=" global.sessionValues.type == 'ROOT_ADMIN'">
+                    <div class="form-group" ng-class="{'text-danger':addvpcForm.domain.$invalid && formSubmitted}">
+                        <div class="row">
+						    <label class="col-md-4 col-xs-12 col-sm-3 control-label"><fmt:message key="common.domain" bundle="${msg}" /> <span class="text-danger">*</span></label>
+                            <div class="col-md-6  col-sm-6 col-xs-12">
+                               <select required="true" class="form-control input-group" name="domain" data-ng-change="domainChange(vpc.domain)" data-ng-model="vpc.domain" ng-options="domain.name for domain in domainList" data-ng-class="{'error': addvpcForm.domain.$invalid && formSubmitted}" >
+                                    <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
+
+                                </select>
+                                <i  tooltip="<fmt:message key="choose.domain" bundle="${msg}" /> " class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
+                                <div class="error-area" data-ng-show="addvpcForm.domain.$invalid && formSubmitted" ><i  tooltip="<fmt:message key="domain.is.required" bundle="${msg}" />" class="fa fa-warning error-icon"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+					<div data-ng-if="global.sessionValues.type == 'ROOT_ADMIN'">
+                        <div class="form-group"ng-class="{'text-danger': addvpcForm.department.$invalid && formSubmitted}">
+                            <div class="row">
+                                <label class="col-md-4 col-xs-12 col-sm-3 control-label"><fmt:message key="common.department" bundle="${msg}" /><span class="text-danger">*</span></label>
+                                <div class="col-md-6 col-xs-12 col-sm-6">
+                                    <select required="true" class="form-control input-group" ng-change="getProjectsByDepartment(vpc.department)"
+                                     name="department" data-ng-model="vpc.department" ng-options="department.userName for department in formElements.departmentList" data-ng-class="{'error': addvpcForm.department.$invalid && formSubmitted}">
+                                        <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
+                                    </select>
+                                    <i  tooltip="<fmt:message key="department.name" bundle="${msg}" />" class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
+                                    <div class="error-area" data-ng-show="addvpcForm.department.$invalid && formSubmitted" >
+                                    	<i tooltip="<fmt:message key="department.is.required" bundle="${msg}" />"
+												class="fa fa-warning error-icon"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                        <div data-ng-if="global.sessionValues.type == 'DOMAIN_ADMIN'">
+                        <div class="form-group"ng-class="{'text-danger': addvpcForm.department.$invalid && formSubmitted}">
+                            <div class="row">
+                                <label class="col-md-4 col-xs-12 col-sm-3 control-label"><fmt:message key="common.department" bundle="${msg}" /><span class="text-danger">*</span></label>
+                                <div class="col-md-6 col-xs-12 col-sm-6">
+                                    <select required="true" class="form-control input-group" ng-change="getProjectsByDepartment(vpc.department)"
+                                     name="department" data-ng-model="vpc.department" ng-options="department.userName for department in departmentList" data-ng-class="{'error': addvpcForm.department.$invalid && formSubmitted}" >
+                                        <option value=""><fmt:message key="common.select" bundle="${msg}" /></option>
+
+                                    </select>
+                                    <i  tooltip="<fmt:message key="department.name" bundle="${msg}" />" class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
+                                    <div class="error-area" data-ng-show="addvpcForm.department.$invalid && formSubmitted" >
+                                    	<i tooltip="<fmt:message key="department.is.required" bundle="${msg}" />"
+												class="fa fa-warning error-icon"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                        <div data-ng-if="global.sessionValues.type == 'USER'">
+                        <div class="form-group">
+                            <div class="row">
+                                <label class="col-md-4 col-xs-12 col-sm-3 control-label"><fmt:message key="common.department" bundle="${msg}" /><span class="text-danger">*</span></label>
+                                <div class="col-md-6 col-xs-12 col-sm-6">
+                                <label>{{ userElement.department.userName }}</label>
+                                <input type="hidden" name="department"  data-ng-model="vpc.department" data-ng-init="vpc.departmentId=global.sessionValues.departmentId" />
+                            	</div>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="form-group">
+						<div class="row">
+							<div data-ng-if="global.sessionValues.type != 'USER'">
+								<label class="col-md-4 col-xs-12 col-sm-3 control-label">
+									<fmt:message key="common.project" bundle="${msg}" /> <span class="m-l-xs"></span>
+								</label>
+								<div class="col-md-6 col-xs-12 col-sm-6">
+									<select class="form-control input-group" name="project"
+										data-ng-model="vpc.project"
+										data-ng-options="options.name for options in options">
+										<option value="">
+											<fmt:message key="common.select" bundle="${msg}" />
+										</option>
+									</select>
+									<i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"
+										tooltip="<fmt:message key="common.project" bundle="${msg}" />">
+									</i>
 								</div>
-								 <i
-									tooltip="<fmt:message key="choose.domain" bundle="${msg}" /> "
-									class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
-							</div>
-						</div>
-					</div>
-					<div class="form-group">
-						<div class="row"
-							ng-class="{'text-danger':addvpcForm.department.$invalid && formSubmitted}"
-							data-ng-show="global.sessionValues.type != 'USER'"
-							data-ng-if="vpc.domain">
-							<label
-								class="col-md-4 col-xs-12 col-sm-4 control-label control-normal"><fmt:message
-									key="common.department" bundle="${msg}" /><span
-								class="text-danger">*</span></label>
-							<div class="col-md-6  col-sm-6 col-xs-12">
-								<select required="true" class="form-control input-group" id="add_vpc_department"
-									name="department" data-ng-model="vpc.department"
-									data-ng-class="{'error': addvpcForm.department.$invalid && formSubmitted}"
-									ng-options="department.userName for department in formElements.departmenttypeList">
-									<option value=""><fmt:message key="common.select"
-											bundle="${msg}" /></option>
-								</select>
-								<div class="error-area"
-									data-ng-show="addvpcForm.department.$invalid && formSubmitted">
-									<i
-										ng-attr-tooltip="{{ addvpcForm.department.errorMessage || '<fmt:message key="department.is.required" bundle="${msg}" />' }}"
-										class="fa fa-warning error-icon"></i>
-								</div>
-								<i
-									tooltip="<fmt:message key="common.department" bundle="${msg}" /> "
-									class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
-							</div>
-						</div>
-						<div class="row"
-							data-ng-show="global.sessionValues.type == 'USER'">
-							<label
-								class="col-md-4 col-xs-12 col-sm-4 control-label control-normal"><fmt:message
-									key="common.department" bundle="${msg}" /> </label>
-							<div class="col-md-6 col-xs-12 col-sm-6">
-								<label>{{vpc.department.userName}}</label>
-								<input type="hidden" name="department" id="add_vpc_department"  data-ng-model="vpc.department" data-ng-init="vpc.departmentId=global.sessionValues.departmentId" />
 							</div>
 						</div>
 					</div>
 					<div class="form-group">
 						<div class="row">
-							<label
-								class="col-md-4 col-xs-12 col-sm-4 control-label control-normal"><fmt:message
-									key="common.project" bundle="${msg}" /></label>
-							<div class="col-md-6  col-sm-6 col-xs-12">
-								<select class="form-control input-group" name="project" id="add_vpc_project"
-									data-ng-model="vpc.project"
-									ng-options="project.name for project in projectList">
-									<option value=""><fmt:message key="common.select"
-											bundle="${msg}" /></option>
-								</select> <i
-									tooltip="<fmt:message key="choose.project" bundle="${msg}" /> "
-									class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"></i>
+							<div data-ng-if="global.sessionValues.type == 'USER'">
+								<label class="col-md-4 col-xs-12 col-sm-3 control-label">
+									<fmt:message key="common.project" bundle="${msg}" /> <span class="m-l-xs"></span>
+								</label>
+								<div class="col-md-6 col-xs-12 col-sm-6">
+									<select class="form-control input-group" name="project"
+										data-ng-model="vpc.project"
+										data-ng-options="options.name for options in options">
+										<option value="">
+											<fmt:message key="common.select" bundle="${msg}" />
+										</option>
+									</select>
+									<i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"
+										tooltip="<fmt:message key="common.project" bundle="${msg}" />">
+									</i>
+								</div>
 							</div>
 						</div>
 					</div>
