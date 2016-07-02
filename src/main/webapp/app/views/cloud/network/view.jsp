@@ -14,7 +14,7 @@
      <ul class="nav nav-tabs" data-ng-init="templateCategorys = tabviews">
         <li data-ng-class="{'active' : tabviews == 'details'}"><a href="javascript:void(0)" data-ng-click="edit($state.params.id)" data-toggle="tab">  <i class="fa fa-list"></i> <fmt:message key="common.details" bundle="${msg}" /></a></li>
         <li data-ng-if = "persistNetwork.networkCreationType != 'VPC'" data-ng-class="{'active' : tabviews == 'egress'}"><a  data-ng-click="firewallRulesLists(1)" data-toggle="tab"><!--<i class="fa fa-sign-in"></i>--> <i class="custom-icon custom-icon-egress"></i><fmt:message key="common.egressrule" bundle="${msg}" /></a></li>
-        <li data-ng-if = "persistNetwork.networkCreationType != 'VPC'" data-ng-class="{'active' : tabviews == 'ip'}"><a  data-ng-click="ipLists(1)" data-toggle="tab"> <!--<i class="fa fa-sitemap"></i>--> <i class="custom-icon custom-icon-ip"></i><fmt:message key="ip.address" bundle="${msg}" /></a></li>
+        <li data-ng-if = "persistNetwork.networkCreationType != 'VPC'" data-ng-class="{'active' : tabviews == 'ip'}"><a  data-ng-click="ipLists(1)" data-toggle="tab"> <!--<i class="fa fa-sitemap"></i>--> <i class="custom-icon custom-icon-ip"></i><fmt:message key="public.ip" bundle="${msg}" /></a></li>
         <li data-ng-class="{'active' : tabviews == 'instance'}"><a data-ng-click="vmLists(1)" data-toggle="tab"> <i class="fa fa-cloud"></i> <fmt:message key="common.instance" bundle="${msg}" /></a></li>
     </ul>
      <div class="tab-content">

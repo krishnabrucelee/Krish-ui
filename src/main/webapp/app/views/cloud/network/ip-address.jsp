@@ -23,7 +23,7 @@ pageEncoding="UTF-8"%>
                     </div>
                     <div class="pull-left m-t-sm">
                         <span class="pull-right">
-                            <a has-permission="ACQUIRE_IP_ADDRESS" class="btn btn-info" data-ng-click="openAddIP('md', network)"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="acquire.new.ip" bundle="${msg}" /></a>
+                            <a has-permission="ACQUIRE_IP_ADDRESS" class="btn btn-info" data-ng-click="openAddIP('md', network)"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span><fmt:message key="acquire.new.public.ip" bundle="${msg}" /></a>
                        </span>
                     </div>
                                     </div>
@@ -35,7 +35,7 @@ pageEncoding="UTF-8"%>
  <table cellspacing="1" cellpadding="1" class="table table-bordered table-striped">
                     <thead>
                     <tr>
-                        <th><fmt:message key="common.ips" bundle="${msg}" /></th>
+                        <th><fmt:message key="common.public.ips" bundle="${msg}" /></th>
                         <th><fmt:message key="common.zone" bundle="${msg}" /></th>
                         <th><fmt:message key="common.vm.name" bundle="${msg}" /></th>
                         <th><fmt:message key="common.state" bundle="${msg}" /></th>
