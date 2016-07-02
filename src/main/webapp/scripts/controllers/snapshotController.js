@@ -237,10 +237,9 @@ function snapshotListCtrl($scope, crudService, $state, $timeout, promiseAjax, gl
         }
         hasSnapshots.then(function(result) { // this is only run after
             // $http completes0
-            $timeout(function () {
             $scope.showLoaderOffer = false;
             $scope.list(1);
-        }, 10000);
+
             $scope.vmSnapshotList = result;
             $scope.vmSnapshotList.Count = 0;
             if (result.length != 0) {
