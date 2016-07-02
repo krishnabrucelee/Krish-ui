@@ -6,7 +6,7 @@ pageEncoding="UTF-8"%>
 <c:set var="language" value="${not empty language ? language : pageContext.request.getAttribute('language')}" scope="session" />
 <fmt:setBundle basename="i18n/messages_${language}" var="msg" scope="session" />
 
-    <div class="white-content" > {{global.webSocketLoaders.vpnLoader}}
+    <div class="white-content" >
     <div data-ng-if="global.webSocketLoaders.vpnLoader" class="overlay-wrapper">
 	<get-show-loader-image data-ng-show="global.webSocketLoaders.vpnLoader"></get-show-loader-image>
  </div>
