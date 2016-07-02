@@ -13,7 +13,7 @@
 					<div class="row">
 						<div class="col-md-12 col-sm-12 col-xs-12 ">
 							<div class="pull-left dashboard-btn-area">
-								<a id="vpc_acquire_public_ip_button" class="btn btn-info" data-ng-click="openAddIP('md', vpc)"> <span class="pe-7s-plus pe-lg font-bold m-r-xs"></span> <fmt:message key="acquire.new.ip" bundle="${msg}" /></a>
+								<a id="vpc_acquire_public_ip_button" class="btn btn-info" data-ng-click="openAddIP('md', vpc)"> <span class="pe-7s-plus pe-lg font-bold m-r-xs"></span> <fmt:message key="acquire.new.public.ip" bundle="${msg}" /></a>
 								<a
 								class="btn btn-info" id="vpc_refresh_button" ui-sref="vpc.view-vpc.config-vpc.public-ip"
 								title="<fmt:message key="common.refresh" bundle="${msg}" /> "
@@ -48,7 +48,7 @@
 								<table cellspacing="1" cellpadding="1" class="table table-bordered table-striped" id="vpc_ip_address_table">
 								    <thead>
 								        <tr>
-								            <th><fmt:message key="common.ips" bundle="${msg}" /></th>
+								            <th><fmt:message key="common.public.ips" bundle="${msg}" /></th>
 								            <th><fmt:message key="common.zone" bundle="${msg}" /></th>
 								            <th><fmt:message key="network.name" bundle="${msg}" /></th>
 								            <th><fmt:message key="common.state" bundle="${msg}" /></th>
