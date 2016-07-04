@@ -1,15 +1,18 @@
-function appService(crudService, localStorageService, globalConfig, promiseAjax, notify, utilService,  dialogService, webSocket,monitorService) {
+function appService(crudService, localStorageService, globalConfig, promiseAjax, notify, utilService, dialogService, webSocket, monitorService, monitorServiceJQ) {
 
-		var object = {};
+    var object = {};
 
-	// Crud related functionalities goes here
-	object.crudService = crudService;
+    // Crud related functionalities goes here
+    object.crudService = crudService;
 
-	// Local storage service to store data in client side
-	object.localStorageService = localStorageService;
+    // Local storage service to store data in client side
+    object.localStorageService = localStorageService;
 
-	// Global configuration to add configuration vlaues
+    // Global configuration to add configuration vlaues
     object.globalConfig = globalConfig;
+
+    // Monitor service utility.
+    object.monitor = monitorServiceJQ;
 
     // Promise ajax call goes here
     object.promiseAjax = promiseAjax
@@ -31,7 +34,7 @@ function appService(crudService, localStorageService, globalConfig, promiseAjax,
 
     // WebSocket service call goes here
     object.webSocket = webSocket
-    
+
     // Instance monitoring chart calls goes here
     object.monitorService = monitorService
 
@@ -39,10 +42,7 @@ function appService(crudService, localStorageService, globalConfig, promiseAjax,
 
 };
 
-
 /**
  * Pass function into module
  */
-angular
-    .module('homer')
-    .factory('appService', appService);
+angular.module('homer').factory('appService', appService);

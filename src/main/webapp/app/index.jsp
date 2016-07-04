@@ -63,6 +63,8 @@
     href="bower_components/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" />
 <link rel="stylesheet"
     href="bower_components/blueimp-gallery/css/blueimp-gallery.min.css" />
+<link rel="stylesheet" type="text/css" href="bower_components/angular-jqplot/jquery.jqplot.min.css" />
+<link rel="stylesheet" type="text/css" href="bower_components/jquery-ui/themes/smoothness/jquery-ui.css" />
 <!-- endbower -->
 <!-- endbuild -->
 
@@ -190,15 +192,18 @@
     <script src="bower_components/angular-filter/dist/angular-filter.js"></script>
     <script src="bower_components/sockjs/sockjs.min.js"></script>
     <script src="bower_components/stomp/lib/stomp.min.js"></script>
+     <!-- Graph -->
+	<script type="text/javascript" src="bower_components/angular-jqplot/jquery.jqplot.min.js"></script>
+	<script type="text/javascript" src="bower_components/angular-jqplot/plugins/jqplot.dateAxisRenderer.min.js"></script>
+	<script type="text/javascript" src="bower_components/angular-jqplot/plugins/jqplot.logAxisRenderer.min.js"></script>
+	<script type="text/javascript" src="bower_components/angular-jqplot/plugins/jqplot.canvasTextRenderer.min.js"></script>
+	<script type="text/javascript" src="bower_components/angular-jqplot/plugins/jqplot.canvasAxisTickRenderer.min.js"></script>
+	<script type="text/javascript" src="bower_components/angular-jqplot/plugins/jqplot.highlighter.min.js"></script>
+        <script type="text/javascript" src="bower_components/angular-jqplot/plugins/jqplot.cursor.min.js"></script>
+        <script type="text/javascript" src="bower_components/angular-jqplot/plugins/jqplot.categoryAxisRenderer.min.js"></script>
+        <script type="text/javascript" src="bower_components/angular-jqplot/plugins/jqplot.canvasAxisLabelRenderer.min.js"></script>
+        <!-- endbuild -->
 
-    <!-- endbuild -->
-
-    <!--
- You need to include this script on any page that has a Google Map.
- When using Google Maps on your own site you MUST signup for your own API key at:
- https://developers.google.com/maps/documentation/javascript/tutorial#api_key
- After your sign up replace the key in the URL below..
--->
 <script type="text/javascript">
 var REQUEST_PROTOCOL = document.getElementById("request_protocol").value;
     if(REQUEST_PROTOCOL == "" || typeof(REQUEST_PROTOCOL) == "undefined" || REQUEST_PROTOCOL == null) {
@@ -243,6 +248,7 @@ var REQUEST_PROTOCOL = document.getElementById("request_protocol").value;
     <script src="scripts/controllers/instance/affinityController.js"></script>
     <script src="scripts/controllers/instance/storageController.js"></script>
     <script src="scripts/controllers/instance/monitorController.js"></script>
+    <script src="scripts/controllers/instance/Monitor_jqplot.js"></script>
     <script src="scripts/controllers/instance/networkController.js"></script>
     <script src="scripts/controllers/instance/secondaryipController.js"></script>
     <script src="scripts/controllers/vpcController.js"></script>
@@ -277,6 +283,7 @@ var REQUEST_PROTOCOL = document.getElementById("request_protocol").value;
     <script src="scripts/factories/crudService.js"></script>
     <script src="scripts/factories/modalService.js"></script>
     <script src="scripts/factories/monitorService.js"></script>
+    <script src="scripts/factories/monitorService-jqplot.js"></script>
     <script src="scripts/factories/Search.js"></script>
     <script src="scripts/factories/webSocket.js"></script>
     <script src="scripts/factories/webSocketService.js"></script>

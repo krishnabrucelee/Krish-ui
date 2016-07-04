@@ -6,7 +6,7 @@
 <c:set var="language" value="${not empty language ? language : pageContext.request.getAttribute('language')}" scope="session" />
 <fmt:setBundle basename="i18n/messages_${language}" var="msg" scope="session" />
 
-<div class="m-l-sm m-r-sm monitor-charts" ng-controller="instanceMonitorCtrl">
+<div class="m-l-sm m-r-sm monitor-charts" ng-controller="monitorsCtrl">
 	<div data-ng-show = "showLoader" style="margin: 20%">
                 <get-loader-image data-ng-if="showLoader"></get-loader-image>
             </div>
