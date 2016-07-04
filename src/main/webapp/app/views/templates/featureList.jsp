@@ -7,37 +7,7 @@
 <fmt:setBundle basename="i18n/messages_${language}" var="msg" scope="session" />
 
     <div class="">
-    <div class="">
-	<div class="col-md-12 col-sm-12" >
-		<div class="pull-right dashboard-filters-area" id="instances_quick_search">
-						<form data-ng-submit="searchFeaturedList(templateFeaturedListSearch,templateType)">
-							<div class="quick-search pull-right">
-								<div class="input-group">
-									<input data-ng-model="templateFeaturedListSearch" id="featured_list_search" type="text" valid-characters class="form-control input-medium" placeholder="<fmt:message key="common.quick.search" bundle="${msg}" />" aria-describedby="quicksearch-go">
-								   	<span class="input-group-addon" id="quicksearch-go"><span class="pe-7s-search pe-lg font-bold"></span></span>
-								</div>
-							</div>
-							<span class="pull-right m-r-sm" >
-
-							<!--  <select
-									data-ng-init="typeView.name  = typeView.formElements.typeList[0]"
-									class="form-control input-group col-xs-5" name="typeView" data-ng-model="typeView" data-ng-change="selectTypeView(1)"
-									ng-options="typeView.name for  (id, typeView) in formElements.typeList">
-
-								</select> -->
-										<select	class="form-control input-group col-xs-5" name="templateType" data-ng-model="templateType" data-ng-change="list(1,templateType.name)" data-ng-options="templateType.name for templateType in formElements.typeList">
-										<option value=""> <fmt:message key="common.all.templates" bundle="${msg}" /></option>
-										</select>
-										</span>
-							<div class="clearfix"></div>
-							<span class="pull-right m-l-sm m-t-sm">
-							</span>
-						</form>
-						</div>
-	</div>
-</div>
-
-        <div class="col-md-12 col-sm-12" >
+          <div class="col-md-12 col-sm-12" >
             <div class="hpanel">
                 <div class="white-content">
                     <div class="table-responsive">

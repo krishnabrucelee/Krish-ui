@@ -6,28 +6,6 @@
 <c:set var="language" value="${not empty language ? language : pageContext.request.getAttribute('language')}" scope="session" />
 <fmt:setBundle basename="i18n/messages_${language}" var="msg" scope="session" />
 
-<div class="">
-	<div class="col-md-12 col-sm-12" >
-		<div class="pull-right dashboard-filters-area" id="instances_quick_search">
-						<form data-ng-submit="searchList(templateCommunityListSearch,communityGridTemplate)">
-							<div class="quick-search pull-right">
-								<div class="input-group">
-									<input data-ng-model="templateCommunityListSearch" id="community_list_search" type="text" valid-characters class="form-control input-medium" placeholder="<fmt:message key="common.quick.search" bundle="${msg}" />" aria-describedby="quicksearch-go">
-								   	<span class="input-group-addon" id="quicksearch-go"><span class="pe-7s-search pe-lg font-bold"></span></span>
-								</div>
-							</div>
-							<span class="pull-right m-r-sm" >
-										<select	class="form-control input-group col-xs-5" name="communityGridTemplate" data-ng-model="communityGridTemplate" data-ng-change="list(1,communityGridTemplate.name)" data-ng-options="communityGridTemplate.name for communityGridTemplate in formElements.communitytypeList">
-										<option value=""> <fmt:message key="common.all.templates" bundle="${msg}" /></option>
-										</select>
-										</span>
-							<div class="clearfix"></div>
-							<span class="pull-right m-l-sm m-t-sm">
-							</span>
-						</form>
-						</div>
-	</div>
-</div>
   <div class="">
         <div class="col-md-12 col-sm-12" >
 
