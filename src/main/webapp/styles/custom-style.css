@@ -446,7 +446,7 @@ table.dataTable thead .sorting_desc::after {content: "\f0dd";}
 .acl-table .table th, .acl-table .table td{min-width:135px;}
 
 .no-records h5{color:#b7bdc7;}
-.login-bg{background-repeat: no-repeat !important; background-size: 100% 100% !important; overflow-x:hidden !important;}
+.login-bg{background-repeat: no-repeat !important; background-size: cover !important; overflow-x:hidden !important;}
 
 .legendColorBox{padding-left:20px; color:#4c6986;}
 .legendColorBox .fa{color:#4c6986;}
