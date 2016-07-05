@@ -12,89 +12,89 @@ function monitorCtrl($scope, $rootScope, $http, $stateParams, appService, webSoc
     $scope.instance = {};
     $scope.uuid = "079f3a02-69be-47b7-9bdf-3319543aa821";
     $scope.monitorMemoryImage = true;
-    
+
     /** cpu plot variables. */
     $scope.cpuData = [];
     $scope.cpuDataLength = 0;
     $scope.cpuTempData = [];
-    $scope.cpuMaxData = []; 
-    $scope.cpuLabels = [];    
-    $scope.chartSeriesIndex = 1000; 
-    
+    $scope.cpuMaxData = [];
+    $scope.cpuLabels = [];
+    $scope.chartSeriesIndex = 1000;
+
     /** disk plot variables. */
     $scope.diskReadData = [];
     $scope.diskWriteData = [];
     $scope.diskDataLength = 0;
     $scope.diskReadTempData = [];
     $scope.diskWriteTempData = [];
-    $scope.diskMaxData = []; 
+    $scope.diskMaxData = [];
     $scope.diskLabels = [];
-    $scope.diskChartSeriesIndex = 1000; 
+    $scope.diskChartSeriesIndex = 1000;
     $scope.dynamicReadUpdate = 0;
     $scope.dynamicWriteUpdate = 0;
-    
+
      /** memory plot variables. */
     $scope.memoryTotalData = [];
     $scope.memoryFreeData = [];
     $scope.memoryDataLength = 0;
     $scope.memoryFreeTempData = [];
     $scope.memoryTotalTempData = [];
-    $scope.memoryMaxData = []; 
-    $scope.memoryLabels = [];    
-    $scope.memoryChartSeriesIndex = 1000; 
+    $scope.memoryMaxData = [];
+    $scope.memoryLabels = [];
+    $scope.memoryChartSeriesIndex = 1000;
     $scope.memoryFreeIndex = 0;
     $scope.memoryTotalIndex = 0;
-    
-    
+
+
      /** network plot variables. */
     $scope.networkInData = [];
     $scope.networkOutData = [];
     $scope.networkDataLength = 0;
     $scope.networkInTempData = [];
     $scope.networkOutTempData = [];
-    $scope.networkMaxData = []; 
-    $scope.networkLabels = [];    
-    $scope.networkChartSeriesIndex = 1000;    
+    $scope.networkMaxData = [];
+    $scope.networkLabels = [];
+    $scope.networkChartSeriesIndex = 1000;
     $scope.dynamicInUpdate = 0;
     $scope.dynamicOutUpdate = 0;
-    
+
     // Range for performance duration.
     $scope.range = {
         cpu : {actions : {}},
         disk : {actions : {}},
         network : {actions : {}},
         memory : {actions : {}}
-    };    
-    
+    };
+
     $scope.seriesColors = [ "#62cb31", "#d9534f", "#f0ad4e", "#48a9da", "#9ACD32", "#FFFF00", "#F5DEB3",
                         "#EE82EE", "#40E0D0", "#D8BFD8", "#008080", "#4682B4", "#708090", "#2E8B57", "#FA8072",
                         "#800080", "#DB7093", "#DA70D6", "#FFE4B5", "#7B68EE", "#9370DB", "#FF00FF", "#00FF00",
                        "#FFB6C1" ];
-                   
+
     var cpuPlot; // cpu plot
     var diskPlot; // disk plot
     var networkPlot; // disk plot
     var memoryPlot; // disk plot
-    
+
     //refresh time (in millisec)
     var t = 5000;
-    
+
     /** cpu chart options.*/
     var cpuChart = appService.monitor.getPandaChart();
     $scope.cpuOptions = cpuChart.chartOptions;
-    
+
     /** disk chart options. */
     var diskChart = appService.monitor.getPandaChart();
     $scope.diskOptions = diskChart.chartOptions;
-    
+
     /** memory chart options. */
     var memoryChart = appService.monitor.getPandaChart();
     $scope.memoryOptions = memoryChart.chartOptions;
-    
+
     /** network chart options. */
     var networkChart = appService.monitor.getPandaChart();
     $scope.networkOptions = networkChart.chartOptions;
-    
+
     // Overall ranges.
     $scope.instanceElements = {
         actions : [ {
@@ -115,11 +115,11 @@ function monitorCtrl($scope, $rootScope, $http, $stateParams, appService, webSoc
         }
         ]
     };
-    
-    
+
+
 
     /** initial load. */
-    $scope.$watch('$viewContentLoaded', function() {        
+    $scope.$watch('$viewContentLoaded', function() {
         cpuPlot = jQuery.jqplot('cpuChart',  [] , $scope.cpuOptions);
         cpuPlot.redraw(false);
         diskPlot = jQuery.jqplot('diskChart',  [] , $scope.diskOptions);
@@ -128,26 +128,26 @@ function monitorCtrl($scope, $rootScope, $http, $stateParams, appService, webSoc
         networkPlot.redraw(false);
         memoryPlot = jQuery.jqplot('memoryChart',  [] , $scope.memoryOptions);
         memoryPlot.redraw(false);
-        
+
         $scope.range.cpu.actions = $scope.instanceElements.actions[0];
         $scope.range.disk.actions = $scope.instanceElements.actions[0];
-        $scope.range.memory.actions = $scope.instanceElements.actions[0]; 
+        $scope.range.memory.actions = $scope.instanceElements.actions[0];
         $scope.range.network.actions = $scope.instanceElements.actions[0];
     });
-           
+
     /** Establish webscoket connection by uuid, user id.*/
-    var initStompClient = function() {        
+    var initStompClient = function() {
         var hasServer = appService.crudService.read("virtualmachine", $stateParams.id);
         hasServer.then(function(result) {
             $scope.instance = result;
             $scope.uuid = result.uuid;
             $scope.hostName = result.displayName;
             webSockets.init(appService.globalConfig.MONITOR_SOCKET_URL + 'stack/watch', $scope.uuid);
-            webSockets.connect(function(frame) {           
+            webSockets.connect(function(frame) {
             $scope.range.cpu.actions = $scope.instanceElements.actions[0];
             $scope.range.disk.actions = $scope.instanceElements.actions[0];
-            $scope.range.memory.actions = $scope.instanceElements.actions[0]; 
-            $scope.range.network.actions = $scope.instanceElements.actions[0];                 
+            $scope.range.memory.actions = $scope.instanceElements.actions[0];
+            $scope.range.network.actions = $scope.instanceElements.actions[0];
              webSockets.send("/metrics", {}, JSON.stringify({
             "uuid" : $scope.uuid,
             "userId" : appService.globalConfig.sessionValues.id,
@@ -156,12 +156,12 @@ function monitorCtrl($scope, $rootScope, $http, $stateParams, appService, webSoc
             "memory" : $scope.range.memory.actions.id + "-ago",
             "disk" : $scope.range.disk.actions.id + "-ago"
             }));
-            dataSubscribe();            
+            dataSubscribe();
             }, function(error) {
             });
         });
     };
-    
+
     function squash(arr){
         var tmp = [];
         for(var i = 0; i < arr.length; i++){
@@ -171,7 +171,7 @@ function monitorCtrl($scope, $rootScope, $http, $stateParams, appService, webSoc
         }
         return tmp;
     }
-    
+
     var graphTooltip = {
 
         getNetworkToolTipContent : function(type, iname) {
@@ -204,7 +204,7 @@ function monitorCtrl($scope, $rootScope, $http, $stateParams, appService, webSoc
         }
 
     }
-    
+
     /** Toggle cpu series.*/
     $scope.toggleCpuPlot = function($index, cpuLabel){
             if(cpuLabel != 'All') {
@@ -222,10 +222,10 @@ function monitorCtrl($scope, $rootScope, $http, $stateParams, appService, webSoc
              angular.forEach(cpuPlot.series, function(value, key){
                     cpuPlot.series[key].show = true;
                     cpuPlot.redraw(true);
-             });  
+             });
            }
     };
-    
+
     /** Toggle disk series.*/
     $scope.toggleDiskPlot = function($index, diskLabel){
             if(diskLabel != 'All') {
@@ -243,10 +243,10 @@ function monitorCtrl($scope, $rootScope, $http, $stateParams, appService, webSoc
              angular.forEach(diskPlot.series, function(value, key){
                     diskPlot.series[key].show = true;
                     diskPlot.redraw(true);
-             });  
+             });
            }
     };
-    
+
     /** Toggle network series.*/
     $scope.toggleNetworkPlot = function($index, networkLabel){
             if(networkLabel != 'All') {
@@ -264,10 +264,10 @@ function monitorCtrl($scope, $rootScope, $http, $stateParams, appService, webSoc
              angular.forEach(networkPlot.series, function(value, key){
                     networkPlot.series[key].show = true;
                     networkPlot.redraw(true);
-             });  
+             });
            }
     };
-    
+
     /** Toggle memory series.*/
     $scope.toggleMemoryPlot = function($index, memoryLabel) {
             if(memoryLabel != 'All') {
@@ -285,10 +285,10 @@ function monitorCtrl($scope, $rootScope, $http, $stateParams, appService, webSoc
              angular.forEach(memoryPlot.series, function(value, key){
                     memoryPlot.series[key].show = true;
                     memoryPlot.redraw(true);
-             });  
+             });
            }
     };
-    
+
     /** Plot cpu series.*/
     function getCpuPerformanceByFilter(data, interval) {
         $scope.cpuOptions = cpuChart.chartOptions;
@@ -308,11 +308,11 @@ function monitorCtrl($scope, $rootScope, $http, $stateParams, appService, webSoc
         });
         $scope.cpuOptions.highlighter.labels = squash($scope.cpuOptions.highlighter.labels);
         if (cpuPlot) {
-            cpuPlot.destroy();                                
+            cpuPlot.destroy();
             cpuPlot = jQuery.jqplot ('cpuChart', data, $scope.cpuOptions);
-        } 
+        }
     }
-    
+
     /** Plot disk series.*/
     function getDiskPerformanceByFilter(readData, writeData, interval) {
         if(!angular.isUndefined(readData[0]) && readData[0].length > 0){
@@ -332,27 +332,27 @@ function monitorCtrl($scope, $rootScope, $http, $stateParams, appService, webSoc
             for(i=0; i< writeData.length; i++) {
                 chartReadData .push(writeData[i]) ;
             }
-        }  
+        }
         angular.forEach($scope.diskLabels, function(value, key) {
             if(!value.indexOf('All') > -1) {
                 if(value.indexOf('Read') > -1) {
                     $scope.diskOptions.highlighter.labels.push("swagent.disk.read" + "_requests{host=" + $scope.hostName + ", disk= "+ value.split(' ')[0] + "} (Bps): ");
-                } 
+                }
                 if(value.indexOf('Write') > -1){
-                    $scope.diskOptions.highlighter.labels.push("swagent.disk.write" + "_requests{host=" + $scope.hostName + ", disk= "+ value.split(' ')[0] + "} (Bps): "); 
+                    $scope.diskOptions.highlighter.labels.push("swagent.disk.write" + "_requests{host=" + $scope.hostName + ", disk= "+ value.split(' ')[0] + "} (Bps): ");
                 }
             }
         });
         $scope.diskOptions.highlighter.labels = squash($scope.diskOptions.highlighter.labels);
-        
+
         if (diskPlot) {
-            diskPlot.destroy();                                
+            diskPlot.destroy();
             diskPlot = jQuery.jqplot ('diskChart', chartReadData , $scope.diskOptions);
-        }    
+        }
     }
-    
+
     /** Plot memory series.*/
-    function getMemoryPerformanceByFilter(freeData, totalData, interval) {       
+    function getMemoryPerformanceByFilter(freeData, totalData, interval) {
         if(!angular.isUndefined(freeData) && freeData.length > 0){
             $scope.memoryOptions.axes.xaxis.max = freeData[freeData.length-1][0];
             $scope.memoryOptions.axes.xaxis.min = freeData[0][0];
@@ -362,24 +362,24 @@ function monitorCtrl($scope, $rootScope, $http, $stateParams, appService, webSoc
         //$scope.cpuOptions.axes.xaxis.tickInterval = cpuChart.getChartLabelByRangeAndDate(interval);
         var chartData = [];
         chartData .push(freeData);
-        chartData .push(totalData); 
+        chartData .push(totalData);
         angular.forEach($scope.memoryLabels, function(value, key) {
             if(!value.indexOf('All') > -1) {
                 if(value.indexOf('Free') > -1) {
                     $scope.memoryOptions.highlighter.labels.push("swagent.memory.free" + "{host=" + $scope.hostName + "} (MB): ");
-                } 
+                }
                 if(value.indexOf('Total') > -1){
-                    $scope.memoryOptions.highlighter.labels.push("swagent.memory.total" + "{host=" + $scope.hostName + "} (MB) : "); 
+                    $scope.memoryOptions.highlighter.labels.push("swagent.memory.total" + "{host=" + $scope.hostName + "} (MB) : ");
                 }
             }
         });
         $scope.memoryOptions.highlighter.labels = squash($scope.memoryOptions.highlighter.labels);
         if (memoryPlot) {
-            memoryPlot.destroy();                                
-            memoryPlot = jQuery.jqplot ('memoryChart', chartData , $scope.memoryOptions);            
-        }    
+            memoryPlot.destroy();
+            memoryPlot = jQuery.jqplot ('memoryChart', chartData , $scope.memoryOptions);
+        }
     }
-    
+
     /** Plot Network Series.*/
     function getNetworkPerformanceByFilter(inData, outData, interval) {
         if(!angular.isUndefined(inData[0]) && inData[0].length > 0){
@@ -399,28 +399,28 @@ function monitorCtrl($scope, $rootScope, $http, $stateParams, appService, webSoc
             for(i=0; i< outData.length; i++) {
                 chartData .push(outData[i]) ;
             }
-        } 
-        
+        }
+
         angular.forEach($scope.networkLabels, function(value, key) {
             if(!value.indexOf('All') > -1) {
                 if(value.indexOf('In') > -1) {
                     $scope.networkOptions.highlighter.labels.push("swagent.network.receive" + "{host=" + $scope.hostName + ", iname= "+ value.split(' ')[0] + "} (Bps): ");
-                } 
+                }
                 if(value.indexOf('Out') > -1){
-                    $scope.networkOptions.highlighter.labels.push("swagent.network.send" + "{host=" + $scope.hostName + ", iname= "+ value.split(' ')[0] + "} (Bps): "); 
+                    $scope.networkOptions.highlighter.labels.push("swagent.network.send" + "{host=" + $scope.hostName + ", iname= "+ value.split(' ')[0] + "} (Bps): ");
                 }
             }
         });
         $scope.networkOptions.highlighter.labels = squash($scope.networkOptions.highlighter.labels);
-      
-        
+
+
         if (networkPlot) {
-            networkPlot.destroy();                                
+            networkPlot.destroy();
             networkPlot = jQuery.jqplot ('networkChart', chartData , $scope.networkOptions);
-        }    
+        }
     }
-    
-    function updateCpuPoints(data, interval) {          
+
+    function updateCpuPoints(data, interval) {
         if (cpuPlot) {
             cpuPlot.destroy();
         }
@@ -429,34 +429,34 @@ function monitorCtrl($scope, $rootScope, $http, $stateParams, appService, webSoc
             if(!angular.isUndefined($scope.cpuData[i])) {
                 if ($scope.cpuData[i].length > $scope.cpuDataLength - 1) {
                     $scope.cpuData[i].shift();
-                }  
+                }
                 if ($scope.cpuTempData.length > 0) {
                 if  ($scope.cpuTempData[i].length > 0) {
-                    var dataPoint = $scope.cpuTempData[i].shift(); 
-                    $scope.cpuData[i].push(dataPoint);                     
+                    var dataPoint = $scope.cpuTempData[i].shift();
+                    $scope.cpuData[i].push(dataPoint);
                     $scope.cpuMaxData.shift();
                     if(i == $scope.chartSeriesIndex) {
                        // $scope.cpuOptions.series[i].show = true;
                     } else {
                        // $scope.cpuOptions.series[i].show = false;
-                    }                    
+                    }
                 }
             }
-                
+
             }
         }
         if (!angular.isUndefined($scope.cpuData[0]) && $scope.cpuData[0].length > 0) {
             $scope.cpuOptions.axes.xaxis.max = $scope.cpuData[0][$scope.cpuData[0].length -1][0];
-            $scope.cpuOptions.axes.xaxis.min = $scope.cpuData[0][0][0];            
+            $scope.cpuOptions.axes.xaxis.min = $scope.cpuData[0][0][0];
         }
-        
-        //$scope.cpuOptions.axes.yaxis.max =   Math.max.apply(Math, $scope.cpuMaxData);               
+
+        //$scope.cpuOptions.axes.yaxis.max =   Math.max.apply(Math, $scope.cpuMaxData);
         var chartData = [];
         if($scope.cpuData.length > 0) {
             for(i=0; i< $scope.cpuData.length; i++) {
                 chartData .push($scope.cpuData[i]) ;
             }
-        }        
+        }
         if(chartData.length > 0) {
             cpuPlot = jQuery.jqplot ('cpuChart', chartData, $scope.cpuOptions);
             $scope.monitorMemoryImage = false;
@@ -465,12 +465,12 @@ function monitorCtrl($scope, $rootScope, $http, $stateParams, appService, webSoc
         }
         cpuPlot.redraw(false);
         $timeout(function() {
-            updateCpuPoints($scope.cpuTempData, $scope.range.cpu.actions.id);            
+            updateCpuPoints($scope.cpuTempData, $scope.range.cpu.actions.id);
         }, t);
-        
+
     }
-    
-    function updateDiskPoints(data, data1, interval) {          
+
+    function updateDiskPoints(data, data1, interval) {
         if (diskPlot) {
             diskPlot.destroy();
         }
@@ -481,19 +481,19 @@ function monitorCtrl($scope, $rootScope, $http, $stateParams, appService, webSoc
                 if ($scope.diskReadData[i].length > $scope.diskDataLength - 1 && $scope.dynamicReadUpdate > 0) {
                     $scope.diskReadData[i].shift();
                     $scope.dynamicReadUpdate--;
-                }  
+                }
                 if ($scope.diskReadTempData.length > 0) {
                 if  ($scope.diskReadTempData[i].length > 0) {
-                    var dataPoint = $scope.diskReadTempData[i].shift(); 
+                    var dataPoint = $scope.diskReadTempData[i].shift();
                     count ++;
-                    $scope.diskReadData[i].push(dataPoint); 
+                    $scope.diskReadData[i].push(dataPoint);
                     if(i == $scope.diskChartSeriesIndex) {
                        // $scope.diskOptions.series[i].show = true;
                     } else {
                        // $scope.diskOptions.series[i].show = false;
-                    }                    
+                    }
                 }
-            }                
+            }
             }
         }
         for(i=0; i< $scope.diskWriteData.length; i++) {
@@ -501,29 +501,29 @@ function monitorCtrl($scope, $rootScope, $http, $stateParams, appService, webSoc
                 if ($scope.diskWriteData[i].length > $scope.diskDataLength - 1 && $scope.dynamicWriteUpdate > 0 ) {
                     $scope.diskWriteData[i].shift();
                     $scope.dynamicWriteUpdate--;
-                }  
+                }
                 if ($scope.diskWriteTempData.length > 0) {
                 if  ($scope.diskWriteTempData[i].length > 0) {
-                    var dataPoint = $scope.diskWriteTempData[i].shift(); 
-                    $scope.diskWriteData[i].push(dataPoint);  
+                    var dataPoint = $scope.diskWriteTempData[i].shift();
+                    $scope.diskWriteData[i].push(dataPoint);
                     if(i == $scope.diskChartSeriesIndex) {
                         //$scope.diskOptions.series[i+ ($scope.diskReadData.length-1)].show = true;
                     } else {
                         //$scope.diskOptions.series[i+($scope.diskReadData.length-1)].show = false;
-                    }                    
+                    }
                 }
-            }                
             }
-        }        
-        for (i =0;i< count; i++) { 
+            }
+        }
+        for (i =0;i< count; i++) {
             $scope.diskMaxData.shift();
         }
         if (!angular.isUndefined($scope.diskReadData[0]) && $scope.diskReadData[0].length > 0) {
             $scope.diskOptions.axes.xaxis.max = $scope.diskReadData[0][$scope.diskReadData[0].length -1][0];
-            $scope.diskOptions.axes.xaxis.min = $scope.diskReadData[0][0][0];            
+            $scope.diskOptions.axes.xaxis.min = $scope.diskReadData[0][0][0];
         }
-        
-        $scope.diskOptions.axes.yaxis.max =   Math.max.apply(Math, $scope.diskMaxData);     
+
+        $scope.diskOptions.axes.yaxis.max =   Math.max.apply(Math, $scope.diskMaxData);
         var chartData = [];
         if($scope.diskReadData.length > 0) {
             for(i=0; i< $scope.diskReadData.length; i++) {
@@ -545,31 +545,31 @@ function monitorCtrl($scope, $rootScope, $http, $stateParams, appService, webSoc
             updateDiskPoints($scope.diskReadTempData, $scope.diskWriteTempData, $scope.range.disk.actions.id)
         }, t);
     }
-    
-    function updateNetworkPoints(data, data1, interval) {          
+
+    function updateNetworkPoints(data, data1, interval) {
         if (networkPlot) {
             networkPlot.destroy();
         }
         var count = 0;
-        //$scope.diskOptions.axes.xaxis.tickInterval = cpuChart.getChartLabelByRangeAndDate(interval);        
+        //$scope.diskOptions.axes.xaxis.tickInterval = cpuChart.getChartLabelByRangeAndDate(interval);
         for(i=0; i< $scope.networkInData.length; i++) {
             if(!angular.isUndefined($scope.networkInData[i])) {
                 if ($scope.networkInData[i].length > $scope.networkDataLength - 1 && $scope.dynamicInUpdate > 0) {
                     $scope.networkInData[i].shift();
                     $scope.dynamicInUpdate--;
-                }  
+                }
                 if ($scope.networkInTempData.length > 0) {
                 if  ($scope.networkInTempData[i].length > 0) {
-                    var dataPoint = $scope.networkInTempData[i].shift(); 
+                    var dataPoint = $scope.networkInTempData[i].shift();
                     count ++;
-                    $scope.networkInData[i].push(dataPoint); 
+                    $scope.networkInData[i].push(dataPoint);
                     if(i == $scope.networkChartSeriesIndex) {
                        // $scope.diskOptions.series[i].show = true;
                     } else {
                        // $scope.diskOptions.series[i].show = false;
-                    }                    
+                    }
                 }
-            }                
+            }
             }
         }
         for(i=0; i< $scope.networkOutData.length; i++) {
@@ -577,29 +577,29 @@ function monitorCtrl($scope, $rootScope, $http, $stateParams, appService, webSoc
                 if ($scope.networkOutData[i].length > $scope.networkDataLength - 1 && $scope.dynamicOutUpdate > 0 ) {
                     $scope.networkOutData[i].shift();
                     $scope.dynamicOutUpdate--;
-                }  
+                }
                 if ($scope.networkOutTempData.length > 0) {
                 if  ($scope.networkOutTempData[i].length > 0) {
                     var dataPoint = $scope.networkOutTempData[i].shift();
-                    $scope.networkOutData[i].push(dataPoint);  
+                    $scope.networkOutData[i].push(dataPoint);
                     if(i == $scope.networkChartSeriesIndex) {
                         //$scope.diskOptions.series[i+ ($scope.diskReadData.length-1)].show = true;
                     } else {
                         //$scope.diskOptions.series[i+($scope.diskReadData.length-1)].show = false;
-                    }                    
+                    }
                 }
-            }                
             }
-        }        
-        for (i =0;i< count; i++) { 
+            }
+        }
+        for (i =0;i< count; i++) {
             $scope.networkMaxData.shift();
         }
         if (!angular.isUndefined($scope.networkInData[0]) && $scope.networkInData[0].length > 0) {
             $scope.networkOptions.axes.xaxis.max = $scope.networkInData[0][$scope.networkInData[0].length -1][0];
-            $scope.networkOptions.axes.xaxis.min = $scope.networkInData[0][0][0];            
+            $scope.networkOptions.axes.xaxis.min = $scope.networkInData[0][0][0];
         }
-        
-        $scope.networkOptions.axes.yaxis.max =   Math.max.apply(Math, $scope.networkMaxData);     
+
+        $scope.networkOptions.axes.yaxis.max =   Math.max.apply(Math, $scope.networkMaxData);
         var chartData = [];
         if($scope.networkInData.length > 0) {
             for(i=0; i< $scope.networkInData.length; i++) {
@@ -621,13 +621,13 @@ function monitorCtrl($scope, $rootScope, $http, $stateParams, appService, webSoc
             updateNetworkPoints($scope.networkInTempData, $scope.networkOutTempData, $scope.range.network.actions.id)
         }, t);
     }
-    
-    
-     function updateMemoryPoints(data, data1, interval) {          
+
+
+     function updateMemoryPoints(data, data1, interval) {
        if (memoryPlot) {
             memoryPlot.destroy();
         }
-        
+
         $scope.memoryFreeIndex = $scope.memoryFreeTempData.length;
         //$scope.cpuOptions.axes.xaxis.tickInterval = cpuChart.getChartLabelByRangeAndDate(interval);
        if(!angular.isUndefined($scope.memoryFreeData)  && $scope.memoryFreeIndex > 0) {
@@ -635,7 +635,7 @@ function monitorCtrl($scope, $rootScope, $http, $stateParams, appService, webSoc
                 $scope.memoryFreeData.shift();
                 $scope.memoryTotalData.shift();
                 $scope.memoryMaxData.shift();
-            } 
+            }
         }
         if($scope.memoryFreeTempData.length > 0) {
             var freeDataPoints = $scope.memoryFreeTempData.shift();
@@ -647,15 +647,15 @@ function monitorCtrl($scope, $rootScope, $http, $stateParams, appService, webSoc
         }
         if (!angular.isUndefined($scope.memoryFreeData) && $scope.memoryFreeData.length > 0) {
             $scope.memoryOptions.axes.xaxis.max = $scope.memoryFreeData[$scope.memoryFreeData.length -1][0];
-            $scope.memoryOptions.axes.xaxis.min = $scope.memoryFreeData[0][0];  
+            $scope.memoryOptions.axes.xaxis.min = $scope.memoryFreeData[0][0];
         }
-        
-        $scope.memoryOptions.axes.yaxis.max =   Math.max.apply(Math, $scope.memoryMaxData); 
-        
+
+        $scope.memoryOptions.axes.yaxis.max =   Math.max.apply(Math, $scope.memoryMaxData);
+
         var chartData = [];
         chartData .push($scope.memoryFreeData);
         chartData .push($scope.memoryTotalData);
-        
+
         if(chartData.length > 0) {
             memoryPlot = jQuery.jqplot ('memoryChart', chartData, $scope.memoryOptions);
         } else {
@@ -666,17 +666,17 @@ function monitorCtrl($scope, $rootScope, $http, $stateParams, appService, webSoc
             updateMemoryPoints($scope.memoryFreeTempData, $scope.memoryTotalTempData, $scope.range.memory.actions.id)
         }, t);
     }
-    
+
     function getDateByTime(unixTimeStamp) {
         var date = new Date(unixTimeStamp * 1000);
         return date;
     }
-    
+
     function getUnixTime(date){
         var unixtime = Number(date);
         return unixtime
     }
-    
+
     function isItemInArray(array, item) {
     for (var i = 0; i < array.length; i++) {
         // This if statement depends on the format of your array
@@ -684,10 +684,10 @@ function monitorCtrl($scope, $rootScope, $http, $stateParams, appService, webSoc
             return true;   // Found it
         }
     }
-    
+
     return false;   // Not found
     }
-    
+
     function max(array) {
         Math.max.apply(Math, array.map(function (i) {
             return i[1];
@@ -700,7 +700,7 @@ function monitorCtrl($scope, $rootScope, $http, $stateParams, appService, webSoc
             "uuid" : $scope.uuid,
             "userId" : appService.globalConfig.sessionValues.id,
             "cpu" : $scope.range.cpu.actions.id + "-ago"
-            }));            
+            }));
             $scope.cpuData = [];
             $scope.cpuMaxData = [];
             $scope.cpuLabels = [];
@@ -720,7 +720,7 @@ function monitorCtrl($scope, $rootScope, $http, $stateParams, appService, webSoc
             $scope.networkInTempData = [];
             $scope.networkOutTempData = [];
             $scope.networkMaxData = [];
-            $scope.networkLabels = []; 
+            $scope.networkLabels = [];
             $scope.networkChartSeriesIndex = 1000;
             $scope.networkOptions.axes.yaxis.max = 0;
          }
@@ -735,63 +735,63 @@ function monitorCtrl($scope, $rootScope, $http, $stateParams, appService, webSoc
             $scope.memoryDataLength = 0;
             $scope.memoryFreeTempData = [];
             $scope.memoryTotalTempData = [];
-            $scope.memoryMaxData = []; 
-            $scope.memoryLabels = []; 
+            $scope.memoryMaxData = [];
+            $scope.memoryLabels = [];
             $scope.memoryChartSeriesIndex = "";
             $scope.memoryOptions.axes.yaxis.max = 0;
-            
+
          }
          if (type == 'disk') {
             webSockets.send("/metrics", {}, JSON.stringify({
             "uuid" : $scope.uuid,
             "userId" : appService.globalConfig.sessionValues.id,
             "disk" : $scope.range.disk.actions.id + "-ago"
-            }));  
+            }));
             $scope.diskReadData = [];
             $scope.diskWriteData = [];
             $scope.diskDataLength = 0;
             $scope.diskReadTempData = [];
             $scope.diskWriteTempData = [];
-            $scope.diskMaxData = []; 
+            $scope.diskMaxData = [];
             $scope.diskLabels = [];
             $scope.diskChartSeriesIndex = "";
             $scope.diskOptions.axes.yaxis.max = 0;
             //getDiskPerformanceByFilter($scope.diskReadData, $scope.diskWriteData, $scope.range.disk.actions.id);
-         }        
+         }
     }
-    
+
      $scope.updateGraphByRangeAndType = function(min, type) {
          if (type == 'cpu') {
             webSockets.send("/metrics", {}, JSON.stringify({
             "uuid" : $scope.uuid,
             "userId" : appService.globalConfig.sessionValues.id,
             "cpu" : min + "-ago"
-            }));  
+            }));
          }
          if (type == 'network') {
             webSockets.send("/metrics", {}, JSON.stringify({
             "uuid" : $scope.uuid,
             "userId" : appService.globalConfig.sessionValues.id,
             "network" : min + "-ago"
-            }));  
+            }));
          }
          if (type == 'memory') {
             webSockets.send("/metrics", {}, JSON.stringify({
             "uuid" : $scope.uuid,
             "userId" : appService.globalConfig.sessionValues.id,
             "memory" : min + "-ago"
-            }));  
+            }));
          }
          if (type == 'disk') {
             webSockets.send("/metrics", {}, JSON.stringify({
             "uuid" : $scope.uuid,
             "userId" : appService.globalConfig.sessionValues.id,
             "disk" : min + "-ago"
-            }));  
+            }));
          }
     }
-    
-    
+
+
     var dataSubscribe = function() {
         webSockets
                 .subscribe("/topic/stackwatch.cpu/" + appService.globalConfig.sessionValues.id + "/" + $scope.uuid, function (message) {
@@ -831,7 +831,7 @@ function monitorCtrl($scope, $rootScope, $http, $stateParams, appService, webSoc
                                     $scope.cpuData.push(data);
                                     $scope.cpuMaxData.push(dataValue);
                                 }
-                            } 
+                            }
                             getCpuPerformanceByFilter($scope.cpuData, $scope.range.cpu.actions.id);
                         });
                         $scope.cpuLabels[angular.fromJson(cpuResult).length] = "All";
@@ -841,7 +841,7 @@ function monitorCtrl($scope, $rootScope, $http, $stateParams, appService, webSoc
                                 updateCpuPoints($scope.cpuTempData, $scope.range.cpu.actions.id);
                             }
                         }
-                        
+
 
                     } else {
                         angular.forEach(angular.fromJson(cpuResult), function (value, key) {
@@ -865,7 +865,7 @@ function monitorCtrl($scope, $rootScope, $http, $stateParams, appService, webSoc
                             }
                         });
                     }
-                    
+
                 });
         webSockets
                 .subscribe("/topic/stackwatch.memory/" + appService.globalConfig.sessionValues.id + "/" + $scope.uuid, function(message) {
@@ -880,17 +880,17 @@ function monitorCtrl($scope, $rootScope, $http, $stateParams, appService, webSoc
                                     var currentValue = obj;
                                     if ($scope.memoryFreeData.length > 0) {
                                         if (!angular.isUndefined($scope.memoryFreeData)) {
-                                            if (!isItemInArray($scope.memoryFreeData, [getDateByTime(key), currentValue/ (1024 * 1024)])) {
-                                                 $scope.memoryFreeData.push([getDateByTime(key), currentValue/ (1024 * 1024)]);
-                                                $scope.memoryMaxData.push(currentValue/ (1024 * 1024));
+                                            if (!isItemInArray($scope.memoryFreeData, [getDateByTime(key), currentValue/ (1024)])) {
+                                                 $scope.memoryFreeData.push([getDateByTime(key), currentValue/ (1024)]);
+                                                $scope.memoryMaxData.push(currentValue/ (1024));
                                             }
                                         } else {
-                                             $scope.memoryFreeData.push([getDateByTime(key), currentValue/ (1024 * 1024)]);
-                                            $scope.memoryMaxData.push(currentValue/ (1024 * 1024));
+                                             $scope.memoryFreeData.push([getDateByTime(key), currentValue/ (1024)]);
+                                            $scope.memoryMaxData.push(currentValue/ (1024));
                                         }
                                     } else {
-                                        $scope.memoryFreeData.push([getDateByTime(key), currentValue/ (1024 * 1024)]);
-                                         $scope.memoryMaxData.push(currentValue/ (1024 * 1024));
+                                        $scope.memoryFreeData.push([getDateByTime(key), currentValue/ (1024)]);
+                                         $scope.memoryMaxData.push(currentValue/ (1024));
                                     }
                                 });
                                 if ($scope.memoryFreeData.length > 0) {
@@ -909,17 +909,17 @@ function monitorCtrl($scope, $rootScope, $http, $stateParams, appService, webSoc
                                     var currentValue = obj;
                                     if ($scope.memoryTotalData.length > 0) {
                                         if (!angular.isUndefined($scope.memoryTotalData)) {
-                                            if (!isItemInArray($scope.memoryTotalData, [getDateByTime(key), currentValue/ (1024 * 1024)])) {
-                                                $scope.memoryTotalData.push([getDateByTime(key), currentValue/ (1024 * 1024)]);
-                                                $scope.memoryMaxData.push(currentValue/ (1024 * 1024));
+                                            if (!isItemInArray($scope.memoryTotalData, [getDateByTime(key), currentValue/ (1024)])) {
+                                                $scope.memoryTotalData.push([getDateByTime(key), currentValue/ (1024)]);
+                                                $scope.memoryMaxData.push(currentValue/ (1024));
                                             }
                                         } else {
-                                            $scope.memoryTotalData.push([getDateByTime(key), currentValue/ (1024 * 1024)]);
-                                            $scope.memoryMaxData.push(currentValue/ (1024 * 1024));
+                                            $scope.memoryTotalData.push([getDateByTime(key), currentValue/ (1024)]);
+                                            $scope.memoryMaxData.push(currentValue/ (1024));
                                         }
                                     } else {
-                                        $scope.memoryTotalData.push([getDateByTime(key), currentValue/ (1024 * 1024)]);
-                                        $scope.memoryMaxData.push(currentValue/ (1024 * 1024));
+                                        $scope.memoryTotalData.push([getDateByTime(key), currentValue/ (1024)]);
+                                        $scope.memoryMaxData.push(currentValue/ (1024));
                                     }
                                 });
                                 if ($scope.memoryTotalData.length > 0) {
@@ -928,11 +928,11 @@ function monitorCtrl($scope, $rootScope, $http, $stateParams, appService, webSoc
                                     $scope.memoryDataLength = data.length;
                                     //$scope.memoryTotalData.push(data);
                                 }
-                            }); 
+                            });
                             $scope.memoryLabels[$scope.memoryLabels.length] = "All";
-                            $scope.updateGraphByRangeAndType("1m", "memory"); 
+                            $scope.updateGraphByRangeAndType("1m", "memory");
                             getMemoryPerformanceByFilter($scope.memoryFreeData, $scope.memoryTotalData, $scope.range.memory.actions.id);
-                            updateMemoryPoints($scope.memoryFreeTempData, $scope.memoryTotalTempData, $scope.range.memory.actions.id);                            
+                            updateMemoryPoints($scope.memoryFreeTempData, $scope.memoryTotalTempData, $scope.range.memory.actions.id);
 
                     } else {
                         angular.forEach(angular.fromJson(memoryResult).free, function (value, key) {
@@ -941,9 +941,9 @@ function monitorCtrl($scope, $rootScope, $http, $stateParams, appService, webSoc
                                 angular.forEach(angular.fromJson(value), function (obj, key) {
                                     var currentValue = obj;
                                     if (!angular.isUndefined($scope.memoryFreeData)) {
-                                        if (!isItemInArray($scope.memoryFreeData, [getDateByTime(key), currentValue/ (1024 * 1024)])) {
-                                            $scope.memoryFreeTempData.push([getDateByTime(key), currentValue/ (1024 * 1024)]);
-                                            $scope.memoryMaxData.push(currentValue/ (1024 * 1024));
+                                        if (!isItemInArray($scope.memoryFreeData, [getDateByTime(key), currentValue/ (1024)])) {
+                                            $scope.memoryFreeTempData.push([getDateByTime(key), currentValue/ (1024)]);
+                                            $scope.memoryMaxData.push(currentValue/ (1024));
                                         }
                                     }
                                 });
@@ -954,13 +954,13 @@ function monitorCtrl($scope, $rootScope, $http, $stateParams, appService, webSoc
                                 angular.forEach(angular.fromJson(value), function (obj, key) {
                                     var currentValue = obj;
                                     if (!angular.isUndefined($scope.memoryTotalData)) {
-                                        if (!isItemInArray($scope.memoryTotalData, [getDateByTime(key), currentValue/ (1024 * 1024)])) {
-                                            $scope.memoryTotalTempData.push([getDateByTime(key), currentValue/ (1024 * 1024)]);
-                                            $scope.memoryMaxData.push(currentValue/ (1024 * 1024));
+                                        if (!isItemInArray($scope.memoryTotalData, [getDateByTime(key), currentValue/ (1024)])) {
+                                            $scope.memoryTotalTempData.push([getDateByTime(key), currentValue/ (1024)]);
+                                            $scope.memoryMaxData.push(currentValue/ (1024));
                                         }
                                     }
                             });
-                        });                        
+                        });
                     }
                     //$scope.updateGraphByRangeAndType("1m", "memory");
                 });
@@ -1030,12 +1030,12 @@ function monitorCtrl($scope, $rootScope, $http, $stateParams, appService, webSoc
                                     $scope.diskDataLength = data.length;
                                     $scope.diskWriteData.push(data);
                                 }
-                             } 
-                            }); 
+                             }
+                            });
                             $scope.diskLabels[$scope.diskLabels.length] = "All";
-                            $scope.updateGraphByRangeAndType("1m", "disk"); 
+                            $scope.updateGraphByRangeAndType("1m", "disk");
                             getDiskPerformanceByFilter($scope.diskReadData, $scope.diskWriteData, $scope.range.disk.actions.id);
-                            updateDiskPoints($scope.diskReadTempData, $scope.diskWriteTempData, $scope.range.disk.actions.id);                            
+                            updateDiskPoints($scope.diskReadTempData, $scope.diskWriteTempData, $scope.range.disk.actions.id);
 
                     } else {
                         angular.forEach(angular.fromJson(diskResult).read, function (value, key) {
@@ -1072,15 +1072,15 @@ function monitorCtrl($scope, $rootScope, $http, $stateParams, appService, webSoc
                                 });
                                 $scope.dynamicWriteUpdate = data.length;
                                 if (data.length > 0) {
-                                    $scope.diskWriteTempData[key] = data;                                    
+                                    $scope.diskWriteTempData[key] = data;
                                 }
                             }
                         });
-                        
+
                     }
                     $rootScope.$broadcast("DISK", diskResult);
                 });
-                
+
         webSockets
                 .subscribe("/topic/stackwatch.network/" + appService.globalConfig.sessionValues.id + "/" + $scope.uuid, function(message) {
                     $scope.monitorNetworkImage = true;
@@ -1148,12 +1148,12 @@ function monitorCtrl($scope, $rootScope, $http, $stateParams, appService, webSoc
                                     $scope.networkDataLength = data.length;
                                     $scope.networkOutData.push(data);
                                 }
-                             } 
+                             }
                     });
                      $scope.networkLabels[$scope.networkLabels.length] = "All";
-                     $scope.updateGraphByRangeAndType("1m", "network"); 
+                     $scope.updateGraphByRangeAndType("1m", "network");
                      getNetworkPerformanceByFilter($scope.networkInData, $scope.networkOutData, $scope.range.network.actions.id);
-                     updateNetworkPoints($scope.networkInTempData, $scope.networkOutTempData, $scope.range.network.actions.id);                            
+                     updateNetworkPoints($scope.networkInTempData, $scope.networkOutTempData, $scope.range.network.actions.id);
 
                 } else {
                      angular.forEach(angular.fromJson(networkResult.in), function(value, key) {
@@ -1190,7 +1190,7 @@ function monitorCtrl($scope, $rootScope, $http, $stateParams, appService, webSoc
                                 });
                                 $scope.dynamicOutUpdate = data.length;
                                 if (data.length > 0) {
-                                    $scope.networkOutTempData[key] = data;                                    
+                                    $scope.networkOutTempData[key] = data;
                                 }
                             }
                     });
