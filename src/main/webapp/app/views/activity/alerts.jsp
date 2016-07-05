@@ -15,9 +15,6 @@
 
                     </div>
                 </div>
-                <div class="pull-right">
-                    <panda-quick-search></panda-quick-search>
-                    <div class="clearfix"></div>
 
                     <span class="pull-right m-l-sm m-t-sm">
                         <!-- <span data-ng-hide="activity.oneItemSelected.alerts">
@@ -53,7 +50,12 @@
                         <th><fmt:message key="action" bundle="${msg}" /></th>
                     </tr>
                     </thead>
-                    <tbody>
+                     <tbody data-ng-hide="activityList.length > 0">
+                                    <tr>
+                                        <td colspan="10"><fmt:message key="common.no.records.found" bundle="${msg}" />!!</td>
+                                    </tr>
+                </tbody>
+                    <tbody data-ng-show="activityList.length > 0">
 
                     <tr data-ng-repeat="alert in activityList | filter: quickSearch">
                         <td class="">

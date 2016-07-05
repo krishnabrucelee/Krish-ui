@@ -16,8 +16,8 @@
                     </div>
                 </div>
                 <div class="pull-right">
-                    <panda-quick-search></panda-quick-search>
-                    <div class="clearfix"></div>
+                   <!--  <panda-quick-search></panda-quick-search>
+                    <div class="clearfix"></div> -->
 
                     <span class="pull-right m-l-sm m-t-sm">
                        <!--  <span data-ng-hide="activity.oneItemSelected.events">
@@ -28,7 +28,7 @@
                             <a class="btn btn-info" data-ng-click="archive()"><span class="fa fa-file-archive-o"></span> Archive Events</a>
                             <a class="btn btn-info" data-ng-click="delete()"><span class="fa fa-trash"></span> Delete Events</a>
                         </span> -->
-                        <a class="btn btn-info" data-ng-click="getActivityByCategory('events',1)" title="<fmt:message key="common.refresh" bundle="${msg}" />" ><span class="fa fa-refresh fa-lg "></span></a>
+
                     </span>
                 </div>
             </div>
@@ -58,7 +58,12 @@
                 <th>Action</th> -->
                 </tr>
                 </thead>
-                <tbody>
+                <tbody data-ng-hide="activityList.length > 0">
+                                    <tr>
+                                        <td colspan="10"><fmt:message key="common.no.records.found" bundle="${msg}" />!!</td>
+                                    </tr>
+                </tbody>
+                <tbody data-ng-show="activityList.length > 0">
                     <tr data-ng-repeat="event in activityList| filter: quickSearch">
                         <td class="">
                             <div class="checkbox checkbox-single checkbox-info">

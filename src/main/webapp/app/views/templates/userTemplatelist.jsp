@@ -5,30 +5,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:set var="language" value="${not empty language ? language : pageContext.request.getAttribute('language')}" scope="session" />
 <fmt:setBundle basename="i18n/messages_${language}" var="msg" scope="session" />
-
-<div class="">
-	<div class="col-md-12 col-sm-12" >
-		<div class="pull-right dashboard-filters-area" id="instances_quick_search">
-						<form data-ng-submit="vmSearchList(vmSearch,userListTemplateType)">
-							<div class="quick-search pull-right">
-								<div class="input-group">
-									<input data-ng-model="vmSearch" id="mytemplates_list_search" type="text" valid-characters class="form-control input-medium" placeholder="<fmt:message key="common.quick.search" bundle="${msg}" />" aria-describedby="quicksearch-go">
-								   	<span class="input-group-addon" id="quicksearch-go"><span class="pe-7s-search pe-lg font-bold"></span></span>
-								</div>
-							</div>
-							<span class="pull-right m-r-sm" >
-							<select	class="form-control input-group col-xs-5" name="userListTemplateType" data-ng-model="userListTemplateType" data-ng-change="userTemplatePage(userListTemplateType.name)" data-ng-options="userListTemplateType.name for userListTemplateType in templateElements.usertypeList">
-										<option value=""> <fmt:message key="common.all.templates" bundle="${msg}" /></option>
-										</select>
-										</span>
-							<div class="clearfix"></div>
-							<span class="pull-right m-l-sm m-t-sm">
-							</span>
-						</form>
-						</div>
-	</div>
-</div>
-
         <div class="col-md-12 col-sm-12" >
             <div class="hpanel">
                 <div class="white-content">

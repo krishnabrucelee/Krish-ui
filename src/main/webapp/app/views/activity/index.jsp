@@ -41,6 +41,18 @@
             <div class="hpanel">
                 <div class="hpanel">
                     <div class="row m-l-sm m-r-sm panel-body" ng-controller="activityCtrl">
+					<form data-ng-submit="searchList(quickSearchText)">
+                    	<div class="quick-search pull-right">
+							<div class="input-group">
+								<input data-ng-model="quickSearchText" id="network_list_search" type="text" valid-characters class="form-control input-medium" placeholder="<fmt:message key="common.quick.search" bundle="${msg}" />" aria-describedby="quicksearch-go">
+							   	<span class="input-group-addon" id="quicksearch-go"><span class="pe-7s-search pe-lg font-bold"></span></span>
+							</div>
+						</div></form>
+						<div class="pull-right m-r-xs">
+                    		<a data-ng-if =" activity.category == 'events'" class="btn btn-info" data-ng-click="getActivityByCategory('events',1)" title="<fmt:message key="common.refresh" bundle="${msg}" />" ><span class="fa fa-refresh fa-lg "></span></a>
+                    	   <a data-ng-if =" activity.category == 'alerts'" class="btn btn-info" data-ng-click="getActivityByCategory('alerts',1)" title="<fmt:message key="common.refresh" bundle="${msg}" />" ><span class="fa fa-refresh fa-lg "></span></a>
+						   <a  data-ng-if =" activity.category == 'notifications'" class="btn btn-info" title="Refresh" ><span class="fa fa-refresh fa-lg "></span></a>
+                    	</div>
                         <ul class="nav nav-tabs" >
                             <li data-ng-class="{'active' : activity.category == 'events'}"><a   data-ng-click="getActivityByCategory('events', 1)" data-toggle="tab">  <i class="fa fa-calendar"></i> <fmt:message key="events" bundle="${msg}" /></a></li>
                             <li data-ng-if="global.sessionValues.type=='ROOT_ADMIN'" data-ng-class="{'active' : activity.category == 'alerts'}"><a   data-ng-click="getActivityByCategory('alerts', 1)" data-toggle="tab"> <i class="fa fa-warning"></i> <fmt:message key="alerts" bundle="${msg}" /></a></li>

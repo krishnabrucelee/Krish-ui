@@ -49,7 +49,12 @@ function activityCtrl($scope, appService, $modal, promiseAjax, localStorageServi
                 $scope.showLoader = false;
             });
         } else {
-            var hasactionServer = appService.promiseAjax.httpTokenRequest( $scope.global.HTTP_GET, $scope.global.APP_URL + "events/list/event" +"?lang=" + localStorageService.cookie.get('language') + "&type=ALERT&sortBy=+id&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+       	 if ($scope.quickSearchText == null) {
+             var hasactionServer = appService.promiseAjax.httpTokenRequest( $scope.global.HTTP_GET, $scope.global.APP_URL + "events/list/event" +"?lang=" + localStorageService.cookie.get('language') + "&type=ALERT&sortBy=+id&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+            } else {
+                $scope.filter = "&searchText=" + $scope.quickSearchText;
+                var hasactionServer = appService.promiseAjax.httpTokenRequest( $scope.global.HTTP_GET, $scope.global.APP_URL + "events/findeventstypebysearchtext" +"?lang=" + localStorageService.cookie.get('language') + encodeURI($scope.filter) + "&type=ALERT&sortBy=+id&limit="+limit, $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+            }
             hasactionServer.then(function (result) {  // this is only run after $http completes
                 $scope.activityList = result;
                 // For pagination
@@ -61,11 +66,32 @@ function activityCtrl($scope, appService, $modal, promiseAjax, localStorageServi
         }
     }
     $scope.getActivityByCategory($scope.activity.category, 1);
+
+    $scope.quickSearchText = null;
+    $scope.searchList = function(quickSearchText) {
+        $scope.quickSearchText = quickSearchText;
+        if($scope.activity.category == "events") {
+            $scope.list(1);
+        }
+        else {
+            $scope.getActivityByCategory('alerts', 1);
+        }
+    };
+
     $scope.list = function(pageNumber) {
         $scope.showLoader = true;
         var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
         if($scope.activity.category == "events"){
-            var hasactionServer = appService.crudService.list("events", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+
+        	 if ($scope.quickSearchText == null) {
+                 var hasactionServer = appService.crudService.list("events", $scope.global.paginationHeaders(pageNumber, limit), {"limit": limit});
+             } else {
+                 $scope.filter = "&searchText=" + $scope.quickSearchText;
+                 hasactionServer = promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "events/findbysearchtext"
+                 		+ "?lang=" + appService.localStorageService.cookie.get('language') +  encodeURI($scope.filter) + "&sortBy=" + $scope.global.sort.sortOrder + $scope.global.sort.sortBy + "&limit=" + limit, $scope.global.paginationHeaders(pageNumber, limit), {
+                     "limit": limit
+                 });
+             }
             hasactionServer.then(function (result) {  // this is only run after $http completes
             $scope.activityList = result;
             // For pagination

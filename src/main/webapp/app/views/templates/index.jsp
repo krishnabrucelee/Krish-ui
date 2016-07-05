@@ -32,6 +32,122 @@
         <div ui-view >
             <div class="hpanel" ng-controller="templatesCtrl">
                 <div class="panel-body" >
+					<!--  Community grid and list  -->
+                       <form data-ng-submit="searchVMList(quickVmSearch,communityGridTemplate)" data-ng-if ="formElements.category == 'community' && !listView">
+							<div class="quick-search pull-right m-r-n-sm">
+
+								<div class="input-group">
+									<input data-ng-model="quickVmSearch" id="community_grid_search" type="text" valid-characters class="form-control input-medium" placeholder="<fmt:message key="common.quick.search" bundle="${msg}" />" aria-describedby="quicksearch-go">
+								   	<span class="input-group-addon" id="quicksearch-go"><span class="pe-7s-search pe-lg font-bold"></span></span>
+								</div>
+							</div>
+							<span class="pull-right m-r-sm" >
+										<select	class="form-control input-group col-xs-5" name="communityGridTemplate" data-ng-model="communityGridTemplate" data-ng-change="templateList(communityGridTemplate.name)" data-ng-options="communityGridTemplate.name for communityGridTemplate in gridElements.communityGridList">
+										<option value=""> <fmt:message key="common.all.templates" bundle="${msg}" /></option>
+										</select>
+										</span>
+										 <div class="pull-right m-r-sm" >
+							 <a class="btn btn-info" data-ng-click="showCommunityRefresh()"
+											id="community_refresh_button" title="<fmt:message key="common.refresh" bundle="${msg}" />"
+											ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
+											</div>
+						</form>
+						<form data-ng-submit="searchList(templateCommunityListSearch,communityGridTemplate)" data-ng-if =" formElements.category == 'community' && listView">
+							<div class="quick-search pull-right  m-r-n-sm">
+
+								<div class="input-group">
+									<input data-ng-model="templateCommunityListSearch" id="community_list_search" type="text" valid-characters class="form-control input-medium" placeholder="<fmt:message key="common.quick.search" bundle="${msg}" />" aria-describedby="quicksearch-go">
+								   	<span class="input-group-addon" id="quicksearch-go"><span class="pe-7s-search pe-lg font-bold"></span></span>
+								</div>
+							</div>
+							<span class="pull-right m-r-sm" >
+										<select	class="form-control input-group col-xs-5" name="communityGridTemplate" data-ng-model="communityGridTemplate" data-ng-change="list(1,communityGridTemplate.name)" data-ng-options="communityGridTemplate.name for communityGridTemplate in formElements.communitytypeList">
+										<option value=""> <fmt:message key="common.all.templates" bundle="${msg}" /></option>
+										</select>
+										</span>
+							 <div class="pull-right m-r-sm" >
+							 <a class="btn btn-info" data-ng-click="showCommunityRefresh()"
+											id="community_refresh_button" title="<fmt:message key="common.refresh" bundle="${msg}" />"
+											ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
+											</div>
+						</form>
+
+						 <!--  Featured grid and list  -->
+						<form data-ng-submit="featureSearchList(featureSearch,templateTypes)" data-ng-if =" formElements.category == 'featured' && !listView">
+
+							<div class="quick-search pull-right  m-r-n-sm">
+								<div class="input-group">
+									<input data-ng-model="featureSearch" id="featured_grid_search" type="text" valid-characters class="form-control input-medium" placeholder="<fmt:message key="common.quick.search" bundle="${msg}" />" aria-describedby="quicksearch-go">
+								   	<span class="input-group-addon" id="quicksearch-go"><span class="pe-7s-search pe-lg font-bold"></span></span>
+								</div>
+							</div>
+							<span class="pull-right m-r-sm" >
+										<select	class="form-control input-group col-xs-5" name="templateTypes" data-ng-model="templateTypes" data-ng-change="featuredTemplateList(templateTypes.name)" data-ng-options="templateTypes.name for templateTypes in formElements.typeList">
+										<option value=""> <fmt:message key="common.all.templates" bundle="${msg}" /></option>
+										</select>
+										</span>
+							<div class="pull-right m-r-sm" >
+							  <a class="btn btn-info" data-ng-click="showFeaturedRefresh()"
+											id="featured_refresh_button" title="<fmt:message key="common.refresh" bundle="${msg}" />"
+											ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
+							</div>
+						</form>
+							<form data-ng-submit="searchFeaturedList(templateFeaturedListSearch,templateType)"  data-ng-if =" formElements.category == 'featured' && listView">
+							<div class="quick-search pull-right  m-r-n-sm">
+								<div class="input-group">
+									<input data-ng-model="templateFeaturedListSearch" id="featured_list_search" type="text" valid-characters class="form-control input-medium" placeholder="<fmt:message key="common.quick.search" bundle="${msg}" />" aria-describedby="quicksearch-go">
+								   	<span class="input-group-addon" id="quicksearch-go"><span class="pe-7s-search pe-lg font-bold"></span></span>
+								</div>
+							</div>
+							<span class="pull-right m-r-sm" >
+										<select	class="form-control input-group col-xs-5" name="templateType" data-ng-model="templateType" data-ng-change="list(1,templateType.name)" data-ng-options="templateType.name for templateType in formElements.typeList">
+										<option value=""> <fmt:message key="common.all.templates" bundle="${msg}" /></option>
+										</select>
+										</span>
+							<div class="pull-right m-r-sm" >
+							  <a class="btn btn-info" data-ng-click="showFeaturedRefresh()"
+											id="featured_refresh_button" title="<fmt:message key="common.refresh" bundle="${msg}" />"
+											ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
+							</div>
+						</form>
+
+						 <!--  My templates grid and list  -->
+						<form data-ng-submit="mySearchList(mySearch,userGridTemplate)" data-ng-if =" formElements.category == 'mytemplates' && !listView">
+							<div class="quick-search pull-right  m-r-n-sm">
+								<div class="input-group">
+									<input data-ng-model="mySearch" id="mytemplates_grid_search" type="text" valid-characters class="form-control input-medium" placeholder="<fmt:message key="common.quick.search" bundle="${msg}" />" aria-describedby="quicksearch-go">
+								   	<span class="input-group-addon" id="quicksearch-go"><span class="pe-7s-search pe-lg font-bold"></span></span>
+								</div>
+							</div>
+							<span class="pull-right m-r-sm" >
+										<select	class="form-control input-group col-xs-5" name="userGridTemplate" data-ng-model="userGridTemplate" data-ng-change="userCreatedtemplatelist(userGridTemplate.name)" data-ng-options="userGridTemplate.name for userGridTemplate in templateElements.usertypeList">
+										<option value=""> <fmt:message key="common.all.templates" bundle="${msg}" /></option>
+										</select>
+										</span>
+							 <div class="pull-right m-r-sm" >
+							 <a class="btn btn-info"  data-ng-click="showuserTemplateRefresh()"
+											id="community_refresh_button" title="<fmt:message key="common.refresh" bundle="${msg}" />"
+											ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
+							</div>
+						</form>
+						<form data-ng-submit="vmSearchList(vmSearch,userListTemplateType)" data-ng-if ="formElements.category == 'mytemplates' && listView">
+							<div class="quick-search pull-right  m-r-n-sm">
+								<div class="input-group">
+									<input data-ng-model="vmSearch" id="mytemplates_list_search" type="text" valid-characters class="form-control input-medium" placeholder="<fmt:message key="common.quick.search" bundle="${msg}" />" aria-describedby="quicksearch-go">
+								   	<span class="input-group-addon" id="quicksearch-go"><span class="pe-7s-search pe-lg font-bold"></span></span>
+								</div>
+							</div>
+							<span class="pull-right m-r-sm" >
+							<select	class="form-control input-group col-xs-5" name="userListTemplateType" data-ng-model="userListTemplateType" data-ng-change="userTemplatePage(userListTemplateType.name)" data-ng-options="userListTemplateType.name for userListTemplateType in templateElements.usertypeList">
+										<option value=""> <fmt:message key="common.all.templates" bundle="${msg}" /></option>
+										</select>
+										</span>
+							 <div class="pull-right m-r-sm" >
+							 <a class="btn btn-info"  data-ng-click="showuserTemplateRefresh()"
+											id="community_refresh_button" title="<fmt:message key="common.refresh" bundle="${msg}" />"
+											ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
+											</div>
+						</form>
                     <div class="tab-content">
                         <div class="row m-t-n-md">
                             <ul class="nav nav-tabs" data-ng-init="formElements.category = 'community'">
@@ -48,24 +164,12 @@
                                         <div class="pull-left">
                                             <a title="<fmt:message key="grid.view" bundle="${msg}" />" class="btn btn-info" data-ng-click="showCommunityTemplateContent()"  data-ng-class="!listView ? 'disabled' : ''" > <i class="fa fa-th-large" /></a>
                                             <a title="<fmt:message key="list.view" bundle="${msg}" />"  class="btn btn-info" data-ng-click="showCommunityTemplateContent()" data-ng-class="listView ? 'disabled' : ''" > <i class="fa fa-list" /></a>
-                                            <a class="btn btn-info" data-ng-click="showCommunityRefresh()"
-											id="community_refresh_button" title="<fmt:message key="common.refresh" bundle="${msg}" />"
-											ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
                                         </div>
                                     </div>
-                                   <!--  <div class="pull-right">
-                                        <panda-quick-search></panda-quick-search>
-                                        <div class="clearfix"></div>
-                                        <span class="pull-right m-l-sm m-t-sm">
-                                            <a  class="btn btn-info" data-ng-click="uploadTemplateContainer()"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span> Register Template</a>
-                                            <a  class="btn btn-info" title="Refresh"><span class="fa fa-refresh fa-lg "></span></a>
-                                        </span>
-                                    </div> -->
-
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
-                            <div class="text-center m-t-xxxl" >
+                            <div class="text-center m-t-md" >
 
 <get-loader-image data-ng-show="showLoader"></get-loader-image>                            </div>
                             <div data-ng-hide="showLoader">
@@ -86,24 +190,12 @@
                                         <div class="pull-left">
                                             <a title="<fmt:message key="grid.view" bundle="${msg}" />" class="btn btn-info" data-ng-click="showFeaturedTemplateContent()"  data-ng-class="!listView ? 'disabled' : ''" > <i class="fa fa-th-large" /></a>
                                             <a title="<fmt:message key="list.view" bundle="${msg}" />"  class="btn btn-info" data-ng-click="showFeaturedTemplateContent()"  data-ng-class="listView ? 'disabled' : ''" > <i class="fa fa-list" /></a>
-			                                <a class="btn btn-info" data-ng-click="showFeaturedRefresh()"
-											id="featured_refresh_button" title="<fmt:message key="common.refresh" bundle="${msg}" />"
-											ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
                                         </div>
                                     </div>
-                                   <!--  <div class="pull-right">
-                                        <panda-quick-search></panda-quick-search>
-                                        <div class="clearfix"></div>
-                                        <span class="pull-right m-l-sm m-t-sm">
-                                            <a  class="btn btn-info" data-ng-click="uploadTemplateContainer()"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span> Register Template</a>
-                                            <a  class="btn btn-info" title="Refresh"><span class="fa fa-refresh fa-lg "></span></a>
-                                        </span>
-                                    </div> -->
-
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
-                            <div class="text-center m-t-xxxl" >
+                            <div class="text-center" >
 
 								<get-loader-image data-ng-show="showLoader"></get-loader-image>
                             </div>
@@ -123,9 +215,6 @@
                                         <div class="pull-left">
                                             <a title="<fmt:message key="grid.view" bundle="${msg}" />" class="btn btn-info"  data-ng-click="showUserTemplateContent()"   data-ng-class="!listView ? 'disabled' : ''" > <i class="fa fa-th-large" /></a>
                                             <a title="<fmt:message key="list.view" bundle="${msg}" />"  class="btn btn-info" data-ng-click="showUserTemplateContent()"  data-ng-class="listView ? 'disabled' : ''" > <i class="fa fa-list" /></a>
-                                          <a class="btn btn-info" data-ng-click="showuserTemplateRefresh()"
-											id="featured_refresh_button" title="<fmt:message key="common.refresh" bundle="${msg}" />"
-											ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
                                         </div>
                                     </div>
                                     <div class="pull-right">
@@ -138,7 +227,7 @@
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
-                            <div class="text-center m-t-xxxl">
+                            <div class="text-center">
 									<get-loader-image></get-loader-image>
                             </div>
                             <div data-ng-hide="showLoader">
@@ -150,38 +239,6 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- <div class="tab-pane" data-ng-class="{'active' : formElements.category == 'snapshot'}" id="step1-snapshot">
-                            <div class="row">
-                                <div class="col-md-12 col-sm-12 col-xs-12 ">
-                                    <div class="pull-left">
-                                        <div class="pull-left">
-                                            <a title="Grid View" class="btn btn-info" data-ng-click="showTemplateContent()"  data-ng-class="!listView ? 'disabled' : ''" > <i class="fa fa-th-large" /></a>
-                                            <a title="List View"  class="btn btn-info" data-ng-click="showTemplateContent()" data-ng-class="listView ? 'disabled' : ''" > <i class="fa fa-list" /></a>
-                                        </div>
-                                    </div>
-                                    <div class="pull-right">
-                                        <panda-quick-search></panda-quick-search>
-                                        <div class="clearfix"></div>
-                                        <span class="pull-right m-l-sm m-t-sm">
-                                            <a  class="btn btn-info" data-ng-click="uploadTemplateContainer()"><span class="pe-7s-plus pe-lg font-bold m-r-xs"></span> Register Template</a>
-                                            <a  class="btn btn-info" title="Refresh"><span class="fa fa-refresh fa-lg "></span></a>
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="clearfix"></div>
-                            </div>
-                            <div class="text-center m-t-xxxl" data-ng-show="showLoader">
-                                <img src="images/loading-bars.svg" />
-                            </div>
-                            <div data-ng-hide="showLoader">
-                                <div data-ng-show="listView">
-                                    <div class="row" data-ng-include src="'app/views/templates/list.jsp'"></div>
-                                </div>
-                                <div data-ng-hide="listView">
-                                    <div class="row" data-ng-include src="'app/views/templates/snapshot.jsp'"></div>
-                                </div>
-                            </div>
-                        </div> -->
                     </div>
                 </div>
             </div>

@@ -7,26 +7,7 @@ pageEncoding="UTF-8"%>
 <fmt:setBundle basename="i18n/messages_${language}" var="msg" scope="session" />
 
 <div class="row">
-	<div class="col-md-12">
-		<div class="pull-right dashboard-filters-area m-r-sm" id="instances_quick_search">
-						<form data-ng-submit="featureSearchList(featureSearch,templateTypes)">
-							<div class="quick-search pull-right">
-								<div class="input-group">
-									<input data-ng-model="featureSearch" id="featured_grid_search" type="text" valid-characters class="form-control input-medium" placeholder="<fmt:message key="common.quick.search" bundle="${msg}" />" aria-describedby="quicksearch-go">
-								   	<span class="input-group-addon" id="quicksearch-go"><span class="pe-7s-search pe-lg font-bold"></span></span>
-								</div>
-							</div>
-							<span class="pull-right m-r-sm" >
-										<select	class="form-control input-group col-xs-5" name="templateTypes" data-ng-model="templateTypes" data-ng-change="featuredTemplateList(templateTypes.name)" data-ng-options="templateTypes.name for templateTypes in formElements.typeList">
-										<option value=""> <fmt:message key="common.all.templates" bundle="${msg}" /></option>
-										</select>
-										</span>
-							<div class="clearfix"></div>
-							<span class="pull-right m-l-sm m-t-sm">
-							</span>
-						</form>
-						</div>
-	</div>
+
 	<div class="row clearfix">
 		<div  class="col-md-4 col-md-offset-4 clearfix">
 			<div class="hpanel">
