@@ -501,7 +501,7 @@ pageEncoding="UTF-8"%>
                 <div data-ng-include src="'app/views/cloud/instance/network-config.jsp'"></div>
             </div>
             <div class="tab-pane"  data-ng-class="{'active' : templateCategory == 'monitor'}" id="step1-monitor">
-                <div data-ng-include src="'app/views/cloud/instance/monitor.jsp'"></div>
+                <div data-ng-include src="'app/views/cloud/instance/monitor-jqplot.jsp'"></div>
             </div>
             <div class="tab-pane"  data-ng-class="{'active' : templateCategory == 'monitor-windows'}" id="step1-monitor-windows">
                 <div data-ng-include src="'app/views/cloud/instance/monitor-windows.jsp'"></div>

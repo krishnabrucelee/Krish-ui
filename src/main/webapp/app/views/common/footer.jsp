@@ -8,10 +8,7 @@
 
 <footer class="footer" data-ng-controller="headerCtrl">
 	<div class="col-md-4 col-sm-12 text-left">
-		<fmt:message key="common.copyright" bundle="${msg}" />
-		©
-		<fmt:message key="common.footer" bundle="${msg}" />
-		.
+		{{themeSettingsList.themeFooterLeft}}
 	</div>
 	<div class="col-md-4 col-sm-12">
 		<ul class="footer-custom-links text-center">
@@ -22,6 +19,6 @@
 		</ul>
 	</div>
 	<div class="col-md-4 col-sm-12 text-right">
-		<fmt:message key="panda.cloud.management.portal" bundle="${msg}" />
+		{{themeSettingsList.themeFooterRight}}
 	</div>
 </footer>
