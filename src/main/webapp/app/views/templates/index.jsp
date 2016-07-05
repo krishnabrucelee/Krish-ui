@@ -34,12 +34,7 @@
                 <div class="panel-body" >
 					<!--  Community grid and list  -->
                        <form data-ng-submit="searchVMList(quickVmSearch,communityGridTemplate)" data-ng-if ="formElements.category == 'community' && !listView">
-							 <div class="pull-right m-l-sm" >
-							 <a class="btn btn-info" data-ng-click="showCommunityRefresh()"
-											id="community_refresh_button" title="<fmt:message key="common.refresh" bundle="${msg}" />"
-											ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
-											</div>
-							<div class="quick-search pull-right">
+							<div class="quick-search pull-right m-r-n-sm">
 
 								<div class="input-group">
 									<input data-ng-model="quickVmSearch" id="community_grid_search" type="text" valid-characters class="form-control input-medium" placeholder="<fmt:message key="common.quick.search" bundle="${msg}" />" aria-describedby="quicksearch-go">
@@ -51,14 +46,14 @@
 										<option value=""> <fmt:message key="common.all.templates" bundle="${msg}" /></option>
 										</select>
 										</span>
-						</form>
-						<form data-ng-submit="searchList(templateCommunityListSearch,communityGridTemplate)" data-ng-if =" formElements.category == 'community' && listView">
-							 <div class="pull-right m-l-sm" >
+										 <div class="pull-right m-r-sm" >
 							 <a class="btn btn-info" data-ng-click="showCommunityRefresh()"
 											id="community_refresh_button" title="<fmt:message key="common.refresh" bundle="${msg}" />"
 											ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
 											</div>
-							<div class="quick-search pull-right">
+						</form>
+						<form data-ng-submit="searchList(templateCommunityListSearch,communityGridTemplate)" data-ng-if =" formElements.category == 'community' && listView">
+							<div class="quick-search pull-right  m-r-n-sm">
 
 								<div class="input-group">
 									<input data-ng-model="templateCommunityListSearch" id="community_list_search" type="text" valid-characters class="form-control input-medium" placeholder="<fmt:message key="common.quick.search" bundle="${msg}" />" aria-describedby="quicksearch-go">
@@ -70,16 +65,17 @@
 										<option value=""> <fmt:message key="common.all.templates" bundle="${msg}" /></option>
 										</select>
 										</span>
+							 <div class="pull-right m-r-sm" >
+							 <a class="btn btn-info" data-ng-click="showCommunityRefresh()"
+											id="community_refresh_button" title="<fmt:message key="common.refresh" bundle="${msg}" />"
+											ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
+											</div>
 						</form>
 
 						 <!--  Featured grid and list  -->
 						<form data-ng-submit="featureSearchList(featureSearch,templateTypes)" data-ng-if =" formElements.category == 'featured' && !listView">
-							  <div class="pull-right m-l-sm" >
-							  <a class="btn btn-info" data-ng-click="showFeaturedRefresh()"
-											id="featured_refresh_button" title="<fmt:message key="common.refresh" bundle="${msg}" />"
-											ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
-							</div>
-							<div class="quick-search pull-right">
+
+							<div class="quick-search pull-right  m-r-n-sm">
 								<div class="input-group">
 									<input data-ng-model="featureSearch" id="featured_grid_search" type="text" valid-characters class="form-control input-medium" placeholder="<fmt:message key="common.quick.search" bundle="${msg}" />" aria-describedby="quicksearch-go">
 								   	<span class="input-group-addon" id="quicksearch-go"><span class="pe-7s-search pe-lg font-bold"></span></span>
@@ -90,14 +86,14 @@
 										<option value=""> <fmt:message key="common.all.templates" bundle="${msg}" /></option>
 										</select>
 										</span>
-						</form>
-							<form data-ng-submit="searchFeaturedList(templateFeaturedListSearch,templateType)"  data-ng-if =" formElements.category == 'featured' && listView">
-							<div class="pull-right m-l-sm" >
+							<div class="pull-right m-r-sm" >
 							  <a class="btn btn-info" data-ng-click="showFeaturedRefresh()"
 											id="featured_refresh_button" title="<fmt:message key="common.refresh" bundle="${msg}" />"
 											ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
 							</div>
-							<div class="quick-search pull-right">
+						</form>
+							<form data-ng-submit="searchFeaturedList(templateFeaturedListSearch,templateType)"  data-ng-if =" formElements.category == 'featured' && listView">
+							<div class="quick-search pull-right  m-r-n-sm">
 								<div class="input-group">
 									<input data-ng-model="templateFeaturedListSearch" id="featured_list_search" type="text" valid-characters class="form-control input-medium" placeholder="<fmt:message key="common.quick.search" bundle="${msg}" />" aria-describedby="quicksearch-go">
 								   	<span class="input-group-addon" id="quicksearch-go"><span class="pe-7s-search pe-lg font-bold"></span></span>
@@ -108,16 +104,16 @@
 										<option value=""> <fmt:message key="common.all.templates" bundle="${msg}" /></option>
 										</select>
 										</span>
+							<div class="pull-right m-r-sm" >
+							  <a class="btn btn-info" data-ng-click="showFeaturedRefresh()"
+											id="featured_refresh_button" title="<fmt:message key="common.refresh" bundle="${msg}" />"
+											ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
+							</div>
 						</form>
 
 						 <!--  My templates grid and list  -->
 						<form data-ng-submit="mySearchList(mySearch,userGridTemplate)" data-ng-if =" formElements.category == 'mytemplates' && !listView">
-							 <div class="pull-right m-l-sm" >
-							 <a class="btn btn-info"  data-ng-click="showuserTemplateRefresh()"
-											id="community_refresh_button" title="<fmt:message key="common.refresh" bundle="${msg}" />"
-											ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
-											</div>
-							<div class="quick-search pull-right">
+							<div class="quick-search pull-right  m-r-n-sm">
 								<div class="input-group">
 									<input data-ng-model="mySearch" id="mytemplates_grid_search" type="text" valid-characters class="form-control input-medium" placeholder="<fmt:message key="common.quick.search" bundle="${msg}" />" aria-describedby="quicksearch-go">
 								   	<span class="input-group-addon" id="quicksearch-go"><span class="pe-7s-search pe-lg font-bold"></span></span>
@@ -128,14 +124,14 @@
 										<option value=""> <fmt:message key="common.all.templates" bundle="${msg}" /></option>
 										</select>
 										</span>
-						</form>
-						<form data-ng-submit="vmSearchList(vmSearch,userListTemplateType)" data-ng-if ="formElements.category == 'mytemplates' && listView">
-							 <div class="pull-right m-l-sm" >
+							 <div class="pull-right m-r-sm" >
 							 <a class="btn btn-info"  data-ng-click="showuserTemplateRefresh()"
 											id="community_refresh_button" title="<fmt:message key="common.refresh" bundle="${msg}" />"
 											ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
-											</div>
-							<div class="quick-search pull-right">
+							</div>
+						</form>
+						<form data-ng-submit="vmSearchList(vmSearch,userListTemplateType)" data-ng-if ="formElements.category == 'mytemplates' && listView">
+							<div class="quick-search pull-right  m-r-n-sm">
 								<div class="input-group">
 									<input data-ng-model="vmSearch" id="mytemplates_list_search" type="text" valid-characters class="form-control input-medium" placeholder="<fmt:message key="common.quick.search" bundle="${msg}" />" aria-describedby="quicksearch-go">
 								   	<span class="input-group-addon" id="quicksearch-go"><span class="pe-7s-search pe-lg font-bold"></span></span>
@@ -146,6 +142,11 @@
 										<option value=""> <fmt:message key="common.all.templates" bundle="${msg}" /></option>
 										</select>
 										</span>
+							 <div class="pull-right m-r-sm" >
+							 <a class="btn btn-info"  data-ng-click="showuserTemplateRefresh()"
+											id="community_refresh_button" title="<fmt:message key="common.refresh" bundle="${msg}" />"
+											ui-sref-opts="{reload: true}"><span class="fa fa-refresh fa-lg "></span></a>
+											</div>
 						</form>
                     <div class="tab-content">
                         <div class="row m-t-n-md">
@@ -168,7 +169,7 @@
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
-                            <div class="text-center m-t-xxxl" >
+                            <div class="text-center m-t-md" >
 
 <get-loader-image data-ng-show="showLoader"></get-loader-image>                            </div>
                             <div data-ng-hide="showLoader">
@@ -194,7 +195,7 @@
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
-                            <div class="text-center m-t-xxxl" >
+                            <div class="text-center" >
 
 								<get-loader-image data-ng-show="showLoader"></get-loader-image>
                             </div>
@@ -226,7 +227,7 @@
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
-                            <div class="text-center m-t-xxxl">
+                            <div class="text-center">
 									<get-loader-image></get-loader-image>
                             </div>
                             <div data-ng-hide="showLoader">
