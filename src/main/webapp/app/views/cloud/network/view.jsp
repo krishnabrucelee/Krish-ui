@@ -31,7 +31,7 @@
             <div data-ng-include src="'app/views/cloud/network/ip-address.jsp'"></div>
         </div>
         <div class="tab-pane"  data-ng-class="{'active' : templateCategorys == 'instance'}" id="step1-network">
-       		 <div data-ng-include src="'app/views/cloud/network/instance.jsp'"></div>
+       		 <div data-ng-include src="'app/views/cloud/instance/list.jsp'"></div>
         </div>
      </div>
  </div>

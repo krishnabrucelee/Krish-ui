@@ -259,7 +259,6 @@ function resourceAllocationCtrl($scope, crudService, globalConfig, notify, $stat
                         $scope.validateRange('project', resourceObject.max, resourceObject.resourceType);
 		}
                 quotaList.push(resourceObject);
-
             }
             if ($scope.resourceAllocationError) {
                 $scope.showLoader = true;
