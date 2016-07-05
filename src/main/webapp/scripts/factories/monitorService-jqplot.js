@@ -7,7 +7,7 @@ function monitorServiceJQ() {
     object.setLabels = function(cpulabels) {
         object.cpuLables = cpulabels
     }
-    
+
     object.getPandaChart = function() {
         var pandaChart = {
             delayType : {
@@ -125,8 +125,8 @@ function monitorServiceJQ() {
                 },
 //                series : [{
 //				label: 'CPU',
-//				lineWidth:2, 
-//                                show : true, 
+//				lineWidth:2,
+//                                show : true,
 //                                showLine : true, // whether to render the line segments or not.
 //                                showMarker : true, // render the data point markers or not.
 //				markerRenderer : $.jqplot.MarkerRenderer, // renderer to use to draw the data // point markers.
@@ -144,8 +144,8 @@ function monitorServiceJQ() {
 //                    }
 //			}, {
 //				label: 'CPU1',
-//				lineWidth:2, 
-//                                show : true, 
+//				lineWidth:2,
+//                                show : true,
 //                                showLine : true, // whether to render the line segments or not.
 //                                showMarker : true, // render the data point markers or not.
 //				markerRenderer : $.jqplot.MarkerRenderer, // renderer to use to draw the data // point markers.
@@ -172,7 +172,7 @@ function monitorServiceJQ() {
                     xaxis : 'xaxis', // either ‘xaxis’ or ‘x2axis’.
                     yaxis : 'yaxis', // either ‘yaxis’ or ‘y2axis’.
                     label : '', // label to use in the legend for this line.
-                    lineWidth : 3, // Width of the line in pixels.
+                    lineWidth : 2, // Width of the line in pixels.
                     shadow : false, // show shadow or not.
                     shadowAngle : 45, // angle (degrees) of the shadow, clockwise from x axis.
                     shadowOffset : 1.25, // offset from the line of the shadow.
@@ -202,7 +202,7 @@ function monitorServiceJQ() {
                 highlighter : {
                     tooltipFadeSpeed : 'slow',
                     tooltipLocation : 'n',
-                    sizeAdjust : 2,
+                    sizeAdjust : 5,
                     show : true,
                     tooltipAxes : 'both',
                     labels : [],
@@ -220,7 +220,7 @@ function monitorServiceJQ() {
                                 html += "  <br> " + label;
                                 html += point.toFixed(2);
                                 html += "  </div>";
-                
+
                                 return html;
                             },
                     useAxesFormatters : false
@@ -233,14 +233,14 @@ function monitorServiceJQ() {
                     gridLineColor : '#cccccc', // Color of the grid lines.
                     background : '#ffffff', // CSS color spec for background color of grid.
                     borderColor : '#999999', // CSS color spec for border around grid.
-                    borderWidth : 2.0, // pixel width of border around grid.                    
+                    borderWidth : 2.0, // pixel width of border around grid.
                     shadowAngle : 45, // angle of the shadow.  Clockwise from x axis.
                     shadowOffset : 1.5, // offset from the line of the shadow.
                     shadowWidth : 3, // width of the stroke for the shadow.
                     shadowDepth : 3, // Number of strokes to make when drawing shadow.  // Each stroke offset by shadowOffset from the last.
                     shadowAlpha : 0.07, // Opacity of the shadow
                     renderer : $.jqplot.CanvasGridRenderer, // renderer to use to draw the grid.
-                    rendererOptions : {}, 
+                    rendererOptions : {},
                     borderColor: 'white',
                     shadow: false,
                     drawBorder: false
