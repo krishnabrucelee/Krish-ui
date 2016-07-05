@@ -818,7 +818,6 @@ $scope.dropnetworkLists = {
         hasServer.then(function(result) {
             $scope.showLoader = false;
             $scope.privateGateway = result;
-            console.log($scope.privateGateway);
         });
     }
 
