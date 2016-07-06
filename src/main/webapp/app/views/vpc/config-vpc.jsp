@@ -72,7 +72,7 @@
                                                      <a data-ng-if="vpntotal!=1" id="config_vpc_site_to_site_vpns" data-ng-click="createSiteVPN('sm')">
 	                                                    <div class="panel panel-info ">
 	                                                        <div class="panel-body config-box p-xxs text-info text-center">
-	                                                            <h3>{{sitevpnList.length}}</h3>
+	                                                            <h3>{{sitevpnListtotal}}</h3>
 	                                                            <fmt:message key="site.to.site.vpns" bundle="${msg}" />
 	                                                        </div>
 	                                                    </div>

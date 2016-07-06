@@ -126,7 +126,8 @@ function globalConfig($window) {
             projectAssign : false,
             networkAclLoader : false,
             networkDeleteAclLoader : false,
-            sitevpnloader : false
+            sitevpnloader : false,
+            vpnconnectionloader : false
         },
         webSocketEvents : {
             vmEvents : {
@@ -291,7 +292,10 @@ function globalConfig($window) {
                 deleteVPC : 'VPC.DELETE',
                 restartVPC : 'VPC.RESTART',
                 createSiteVPN : 'VPN.S2S.VPN.GATEWAY.CREATE',
-                deletevpn : 'VPN.S2S.VPN.GATEWAY.DELETE'
+                deletevpn : 'VPN.S2S.VPN.GATEWAY.DELETE',
+                createVPNconnection:'VPN.S2S.CONNECTION.CREATE',
+                deletevpnconnection :'VPN.S2S.CONNECTION.DELETE',
+                restartvpnconnection : 'VPN.S2S.CONNECTION.RESET'
 
             },
             configEvents : {
