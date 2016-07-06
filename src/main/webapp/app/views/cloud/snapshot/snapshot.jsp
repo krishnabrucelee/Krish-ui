@@ -7,9 +7,12 @@
 
 <div class="" >
 	 <div data-ng-if="global.webSocketLoaders.volumeBackupLoader" class="overlay-wrapper">
-    	<get-loader-image data-ng-show="global.webSocketLoaders.volumeBackupLoader"></get-loader-image>
+    	<get-show-loader-image data-ng-show="global.webSocketLoaders.volumeBackupLoader"></get-show-loader-image>
 
      </div>
+     <div data-ng-show="showLoader" style="margin: 1%">
+							<get-loader-image data-ng-show="showLoader"></get-loader-image>
+						</div>
 	<div class="col-md-12 col-sm-12" data-ng-hide="showLoader">
         <div class="hpanel">
             <div class="panel-heading">
