@@ -432,7 +432,7 @@ $scope.volumeSnapCostList();
             $scope.volumesList = {};
             $scope.listVolumes = function() {
                 $scope.showLoader = true;
-                var hasVolumes = crudService.listAll("volumes/list");
+                var hasVolumes = crudService.listAll("volumes/listByDomain");
                 hasVolumes.then(function(result) {
                     $scope.showLoader = false;
                     $scope.volumesList = result;
