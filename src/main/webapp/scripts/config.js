@@ -344,7 +344,7 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider, $compile
             // Virtual Machines
             .state('vpc.view-vpc.config-vpc.virtual-machines', {
                 url : "/virtual-machines/:id2",
-                templateUrl : VIEW_URL + "views/vpc/virtual-machines.jsp",
+                templateUrl : VIEW_URL + "views/cloud/instance/list.jsp",
                 data : {
                     pageTitle : 'Virtual Machines'
                 }
