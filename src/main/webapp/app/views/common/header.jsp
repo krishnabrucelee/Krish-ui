@@ -15,7 +15,7 @@
 		<ul class="nav navbar-nav navbar-right round-corner">
 
 		<li data-ng-repeat="theme in themeSettingsList.headers" >
-		<a class="label-menu-corner" data-ng-if="theme.url != null" target="_blank" href="http://{{theme.url}}" >{{theme.name}}
+		<a class="label-menu-corner" data-ng-if="theme.url != null && (theme.name != 'abcd' || theme.name != 'abcd')" target="_blank" href="http://{{theme.url}}" >{{theme.name}}
 		<span class="label label-warning"></span></a></li>
 
 			<%-- <li data-ng-class="{active: $state.includes('system-health')}"><a
@@ -33,10 +33,17 @@
 				class="label-menu-corner" ui-sref="activity"><fmt:message
 						key="common.activity" bundle="${msg}" /><span
 					class="label label-warning">{{global.event }}</span></a></li>
+
+		<li>
+		<a class="label-menu-corner" target="_blank" href="http://support.bluetek.com.cn/" ><fmt:message
+						key="common.support" bundle="${msg}" />
+		<span class="label label-warning"></span></a></li>
+
 			<li data-ng-class="{active: $state.includes('billing')}"><a
 				class="label-menu-corner" ui-sref="billing.current-usage"><fmt:message
 						key="common.billing" bundle="${msg}" /><span
 					class="label label-danger"></span></a></li>
+
 			<li class="dropdown active-round"><a data-toggle="dropdown" id="zone_name"
 				class="dropdown-toggle " href="javascript:void(0)"
 				title="{{global.zone.name}}"
