@@ -43,6 +43,10 @@
 	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.virtual.machines" bundle="${msg}" /></a>
 	                            <span ng-switch-when="true"><fmt:message key="common.virtual.machines" bundle="${msg}" /></span>
                             </span>
+                            <span data-ng-if="state.data.pageTitle === 'Site to Site VPN'">
+	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="common.site.to.site.vpns" bundle="${msg}" /></a>
+	                            <span ng-switch-when="true"><fmt:message key="common.site.to.site.vpns" bundle="${msg}" /></span>
+                            </span>
                             <span data-ng-if="state.data.pageTitle === 'View IP'">
 	                            <a ng-switch-when="false" ng-href="{{'#' + state.url.format($stateParams)}}"><fmt:message key="ip.address" bundle="${msg}" /></a>
 	                            <span ng-switch-when="true"><fmt:message key="ip.address" bundle="${msg}" /></span>

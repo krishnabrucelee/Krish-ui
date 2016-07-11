@@ -338,7 +338,7 @@ table.dataTable thead .sorting_desc::after {content: "\f0dd";}
 .quick-view-details{border-right:#f4f6f7 2px solid; padding:10px 5px; clear:both; height:auto; overflow:hidden}
 .quick-view-count{font-size:20px; font-weight:400;}
 .quick-view-count small{font-size:14px;}
-.quick-view-title{background-color:#f4f6f7; padding:3px 0px; clear:both; margin-bottom:15px;}
+.quick-view-title{background-color:#f4f6f7; padding:3px 0px; clear:both; margin-bottom:14px;}
 
 .quick-view-icon{width:26px; height:26px; display:block; margin: 8px 0 0 7px; background: url("img/dashboard-icons.png") no-repeat !important;}
 .running-vm .quick-view-icon{background-position:0px 0px !important;}
@@ -497,6 +497,42 @@ fieldset.scheduler-border legend{border-bottom:none !important; margin-bottom:0p
 
 .monitor-charts .pop{ background: rgba(0, 0, 0, .7); padding: 8px; color:#fff;}
 
+.col-xs-5ths,
+.col-sm-5ths,
+.col-md-5ths,
+.col-lg-5ths {
+    position: relative;
+    min-height: 1px;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+.col-xs-5ths {
+    width: 20%;
+    float: left;
+}
+
+@media (min-width: 768px) {
+    .col-sm-5ths {
+        width: 20%;
+        float: left;
+    }
+}
+
+@media (min-width: 992px) {
+    .col-md-5ths {
+        width: 20%;
+        float: left;
+    }
+}
+
+@media (min-width: 1200px) {
+    .col-lg-5ths {
+        width: 20%;
+        float: left;
+    }
+}
+
 @media (max-width: 767px) {
     .table-responsive.responsive-x .dropdown-menu { position: relative !important; right: 200px !important; top: -34px;}
 }
@@ -545,9 +581,15 @@ a.icon-button{width:20px; height:20px;}
 
 .vpc-diagram-area{width:100%; margin:0 auto ; float:none; padding-top:70px;}
 .vpc-diagram .v-timeline::before{left:0px; height:107%;}
+
+.dashboard-quota-area .vm-quota .dashboard-quota{margin:10px 0px;}
 }
 
 @media (min-width:1024px) and (max-width: 1100px) {
+.dashboard-topfive-section, .dashboard-cost-section{width:100%;}
+.top-five-table{width:60%;}
+.dashboard-tab{min-height:auto;}
+.dashboard-infrastructure-section .infra-block{width:33%;}
 .network-quota-area, .storage-quota-area{width:100%;}
 .template-panel, .template-panel-area {min-height: 190px;}
 .template-panel-area{width:50% !important; min-height:auto !important; margin-bottom:0px;}

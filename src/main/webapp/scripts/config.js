@@ -277,6 +277,22 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider, $compile
                 }
             })
 
+            .state('vpc.view-vpc.config-vpc.view-vpnconnection', {
+                url : "/view-vpnconnection",
+                templateUrl : VIEW_URL + "views/vpc/vpnconnection.jsp",
+                data : {
+                    pageTitle : 'Site to Site VPN'
+                }
+            })
+
+                .state('vpc.view-vpc.config-vpc.view-vpngateway', {
+                url : "/view-vpngateway",
+                templateUrl : VIEW_URL + "views/vpc/vpn-gateway.jsp",
+                data : {
+                    pageTitle : 'Site to Site VPN'
+                }
+            })
+
             // View IP
             .state('vpc.view-vpc.config-vpc.public-ip.ip-view', {
                 url : "/ip-address/:id1",

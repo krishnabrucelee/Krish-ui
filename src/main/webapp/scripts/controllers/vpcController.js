@@ -32,6 +32,10 @@ function vpnGatewayCtrl ($scope, $modal, appService, $timeout, filterFilter, $st
     appService.globalConfig.webSocketLoaders.egressLoader = false;
     appService.globalConfig.webSocketLoaders.networkAclLoader = false;
     appService.globalConfig.webSocketLoaders.networkDeleteAclLoader = false;
+    appService.globalConfig.webSocketLoaders.sitevpnloader = false;
+    appService.globalConfig.webSocketLoaders.vpnconnectionloader = false;
+
+
     $scope.paginationObject.sortOrder = '+';
     $scope.paginationObject.sortBy = 'name';
 
@@ -200,6 +204,9 @@ function vpcCtrl($scope, $modal, appService, $timeout, filterFilter, $stateParam
     $scope.activity = {
             category: "details",
         };
+    $scope.activitytab = {
+            category: "vpngateway",
+        };
 
 	    $scope.type = $stateParams.view;
 	    // VPC Offer List
@@ -223,6 +230,15 @@ function vpcCtrl($scope, $modal, appService, $timeout, filterFilter, $stateParam
 		$scope. getVpcrouter = function() {
 		    $scope.activity.category = "vpcrouter";
 		};
+
+		$scope. getvpngateway = function() {
+	        $scope.activitytab.category = "vpngateway";
+	};
+
+	$scope. getvpnconnection = function() {
+	    $scope.activitytab.category = "vpnconnection";
+	    $scope.vpnconnectionLists(1);
+	};
 
 		$scope.Vpcrouterdetails = function() {
 			   //var hasServer = appService.crudService.listAll("vpcrouter/listbyvpc", $stateParams.id);
@@ -275,7 +291,7 @@ function vpcCtrl($scope, $modal, appService, $timeout, filterFilter, $stateParam
                        $state.$current.parent.parent.parent.data.pageName = result.name;
                        $state.$current.parent.parent.parent.data.id = result.id;
 		         }
-                   else if ($state.current.data.pageTitle === "Network ACL" || $state.current.data.pageTitle === "Public IP" || $state.current.data.pageTitle === "view.network" || $state.current.data.pageTitle === "Private Gateway") {
+                   else if ($state.current.data.pageTitle === "Network ACL" || $state.current.data.pageTitle === "Public IP" || $state.current.data.pageTitle === "view.network" || $state.current.data.pageTitle === "Private Gateway"|| $state.current.data.pageTitle === "Site to Site VPN") {
                        $state.$current.parent.parent.data.pageName = result.name;
                        $state.$current.parent.parent.data.id = result.id;
                     }
@@ -2591,22 +2607,24 @@ $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.createnetwork, 
                 	$scope.ok = function() {
                             $scope.showLoader = true;
                             appService.globalConfig.webSocketLoaders.sitevpnloader = true;
-                            $modalInstance.close();
                         	var hasVpcs = appService.crudService.listByQuery("vpngateway/findbyvpcid?vpcid=" + $stateParams.id);
                             hasVpcs.then(function(result) {
                                 $scope.showLoader = false;
                                 $scope.sitevpnLists(1);
+                                $modalInstance.close();
                             }).catch(function(result) {
                                 if (!angular.isUndefined(result.data) && result.data.fieldErrors != null) {
                                     angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
                                         $scope.addvpcForm[key].$invalid = true;
+                                        $scope.showLoader = false;
+                                        appService.globalConfig.webSocketLoaders.sitevpnloader = false;
                                         $scope.addvpcForm[key].errorMessage = errorMessage;
                                     });
                                 }
                                 $modalInstance.close();
-                                $scope.showLoader = false;
-                                appService.globalConfig.webSocketLoaders.sitevpnloader = false;
+
                             });
+                            $scope.sitevpnLists(1);
 
                         	$window.location.href = '#/vpc/view/'+$stateParams.id+'/config-vpc/view-sitevpn';
 
@@ -2618,14 +2636,11 @@ $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.createnetwork, 
 
             };
 
-
             	  $scope.viewsitevpn = function(size) {
                       appService.dialogService.openDialog("app/views/vpc/view-site-vpn-details.jsp", size, $scope, ['$scope', '$modalInstance', function($scope, $modalInstance) {
                                  var hasVpcs =  appService.crudService.listByQuery("vpngateway/listbyvpc?vpcid=" + $stateParams.id);
                                   hasVpcs.then(function(result) {
-
                                 	  $scope.viewsitevpn = result[0];
-                                      $scope.showLoader = false;
                                   })
 
                               $scope.cancel = function() {
@@ -2635,34 +2650,33 @@ $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.createnetwork, 
 
                   };
 
-
-
-
-
             $scope.sitevpnLists = function(pageNumber) {
+            	$scope.activitytab.category = "vpngateway";
+
                 $scope.active = true;
-                $scope.showLoader = true;
                 var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
                 if (!angular.isUndefined($stateParams.id)) {
-
                 	var hasSiteVpns = appService.crudService.listByQuery("vpngateway/listbyvpc?vpcid=" + $stateParams.id);
                 	hasSiteVpns.then(function(result) { // this is only run after
                     // $http completes0
+                		if(result.length > 0){
                     $scope.sitevpnList = result;
+                    $scope.sitevpnListtotal = result.length;
+                    $scope.vpngatewayId = $scope.sitevpnList[0].id;
                     $scope.vpntotal = result.length;
                     // For pagination
                     $scope.paginationObject.limit = limit;
                     $scope.paginationObject.currentPage = pageNumber;
                     $scope.paginationObject.totalItems = result.totalItems;
-                    $scope.showLoader = false;
+                	} else {
+                        $scope.sitevpnListtotal = 0;
+                	}
                 });
                 }
             };
             $scope.sitevpnLists(1);
 
-
             $scope.deletevpn = function(size, vpn) {
-
                 appService.dialogService.openDialog("app/views/vpc/confirm-delete.jsp", size, $scope, ['$scope', '$modalInstance', function($scope, $modalInstance) {
                     $scope.vpnId = vpn.id;
                     $scope.ok = function(vpnId) {
@@ -2670,7 +2684,6 @@ $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.createnetwork, 
                             $modalInstance.close();
                             var hasVpcs = appService.crudService.softDelete("vpngateway", vpn);
                             hasVpcs.then(function(result) {
-                                $scope.showLoader = false;
                                 $scope.sitevpnLists(1);
                             }).catch(function(result) {
                                 if (!angular.isUndefined(result.data) && result.data.fieldErrors != null) {
@@ -2680,8 +2693,71 @@ $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.createnetwork, 
                                     });
                                 }
                                 $modalInstance.close();
-                                $scope.showLoader = false;
                                 appService.globalConfig.webSocketLoaders.sitevpnloader = false;
+                            });
+                        },
+                        $scope.cancel = function() {
+                            $modalInstance.close();
+                        };
+                }]);
+            };
+
+            $scope.vpns2sgatway = {};
+            $scope.createVPNconnection = function(size) {
+                appService.dialogService.openDialog("app/views/vpc/create-vpn-connection.jsp", size, $scope, ['$scope', '$modalInstance', function($scope, $modalInstance) {
+                	$scope.ok = function(form,vpnconnection) {
+                		 $scope.formSubmitted = true;
+                         if (form.$valid) {
+                		$scope.vpnconnection = vpnconnection;
+                    	$scope.vpns2sgatway.vpnGatewayId = $scope.vpngatewayId;
+                    	$scope.vpns2sgatway.vpnCustomerGatewayId = $scope.vpnconnection.vpngateway.id;
+                    	$scope.vpns2sgatway.passive = $scope.vpnconnection.passive;
+                            $scope.showLoader = true;
+                            appService.globalConfig.webSocketLoaders.vpnconnectionloader = true;
+                            $modalInstance.close();
+                        	var hasVpcs = appService.crudService.add("vpnconnection" , $scope.vpns2sgatway);
+                            hasVpcs.then(function(result) {
+                                $scope.showLoader = false;
+                                $scope.vpnconnectionLists(1);
+                            }).catch(function(result) {
+                                if (!angular.isUndefined(result.data) && result.data.fieldErrors != null) {
+                                    angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
+                                        $scope.addvpcForm[key].$invalid = true;
+                                        $scope.addvpcForm[key].errorMessage = errorMessage;
+                                    });
+                                }
+                                $modalInstance.close();
+                                $scope.showLoader = false;
+                                appService.globalConfig.webSocketLoaders.vpnconnectionloader = false;
+                            });
+                         }
+                        },
+                        $scope.cancel = function() {
+                            $modalInstance.close();
+                        };
+                }]);
+
+            };
+
+            $scope.deletevpnconnection = function(size, vpnconnection) {
+            	$scope.vpnconnection = vpnconnection;
+                appService.dialogService.openDialog("app/views/vpc/confirm-delete.jsp", size, $scope, ['$scope', '$modalInstance', function($scope, $modalInstance) {
+                    $scope.ok = function(vpnconnectionId) {
+                    	var connectionId= $scope.vpnconnection.id;
+                            appService.globalConfig.webSocketLoaders.vpnconnectionloader = true;
+                            $modalInstance.close();
+                            var hasVpcs = appService.crudService.softDelete("vpnconnection", vpnconnection);
+                            hasVpcs.then(function(result) {
+                                $scope.vpnconnectionLists(1);
+                            }).catch(function(result) {
+                                if (!angular.isUndefined(result.data) && result.data.fieldErrors != null) {
+                                    angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
+                                        $scope.addvpcForm[key].$invalid = true;
+                                        $scope.addvpcForm[key].errorMessage = errorMessage;
+                                    });
+                                }
+                                $modalInstance.close();
+                                appService.globalConfig.webSocketLoaders.vpnconnectionloader = false;
                             });
                         },
                         $scope.cancel = function() {
@@ -2691,6 +2767,81 @@ $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.createnetwork, 
 
             };
 
+
+            $scope.vpncustomergatewayList = function() {
+                           var hasVpcs =  appService.crudService.listByQuery("vpnCustomerGateway/listbydepartmentandproject");
+                            hasVpcs.then(function(result) {
+                          	  $scope.vpncustomergatewayList = result;
+                                $scope.showLoader = false;
+                            })
+                        $scope.cancel = function() {
+                            $modalInstance.close();
+                        };
+            };
+            $scope.vpncustomergatewayList();
+
+
+            $scope.viewvpnconnection = function(size, vpnconnectionId) {
+                  appService.dialogService.openDialog("app/views/vpc/view-vpn-connection-details.jsp", size, $scope, ['$scope', '$modalInstance', function($scope, $modalInstance) {
+                             var hasVpcs =  appService.crudService.read("vpnconnection",vpnconnectionId);
+                              hasVpcs.then(function(result) {
+                            	  $scope.viewvpnconnection = result;
+                              })
+                          $scope.cancel = function() {
+                              $modalInstance.close();
+                          };
+                  }]);
+
+              };
+
+            $scope.vpnconnectionRestart = {};
+            // Restart the Network
+            $scope.restartvpnconnection = function(size, vpnconnection) {
+                appService.dialogService.openDialog("app/views/vpc/restart-vpn-connection.jsp", size, $scope, ['$scope', '$modalInstance', function($scope, $modalInstance) {
+                    $scope.ok = function() {
+                            appService.globalConfig.webSocketLoaders.vpnconnectionloader = true;
+                            $modalInstance.close();
+                            var hasServer = appService.crudService.add("vpnconnection/resetconnection/" +vpnconnection.id, vpnconnection);
+                            hasServer.then(function(result) { // this is only run after $http completes
+                                $scope.vpnconnectionLists(1);
+                            }).catch(function(result) {
+                                if (!angular.isUndefined(result.data)) {
+                                    if (result.data.fieldErrors != null) {
+                                        angular.forEach(result.data.fieldErrors, function(errorMessage, key) {
+                                            $scope.addnetworkForm[key].$invalid = true;
+                                            $scope.addnetworkForm[key].errorMessage = errorMessage;
+                                        });
+                                    }
+                                }
+                                appService.globalConfig.webSocketLoaders.vpnconnectionloader = false;
+                                $modalInstance.close();
+                            });
+                        },
+                        $scope.cancel = function() {
+                            $modalInstance.close();
+                        };
+                }]);
+            };
+
+
+            $scope.vpnconnectionLists = function(pageNumber) {
+            //	$scope.activitytab.category = "vpnconnection";
+                $scope.active = true;
+                var limit = (angular.isUndefined($scope.paginationObject.limit)) ? $scope.global.CONTENT_LIMIT : $scope.paginationObject.limit;
+                if (!angular.isUndefined($scope.vpngatewayId)) {
+                	var hasSiteVpns = appService.crudService.listByQuery("vpnconnection/listbygateway?gatewayid=" + $scope.vpngatewayId);
+                	hasSiteVpns.then(function(result) { // this is only run after
+                    // $http completes0
+                    $scope.vpnconnectionList = result;
+                    $scope.vpntotal = result.length;
+                    // For pagination
+                    $scope.paginationObject.limit = limit;
+                    $scope.paginationObject.currentPage = pageNumber;
+                    $scope.paginationObject.totalItems = result.totalItems;
+                });
+                }
+            };
+            $scope.vpnconnectionLists(1);
 
 
             // Edit the Network ACL
@@ -2761,6 +2912,7 @@ $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.createnetwork, 
             $scope.$on(appService.globalConfig.webSocketEvents.vpcEvents.deletevpn, function(event, args) {
                 appService.globalConfig.webSocketLoaders.sitevpnloader = false;
                 if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
+                	$state.reload();
                     $scope.sitevpnLists(1);
                 }
             });
@@ -2768,6 +2920,25 @@ $scope.$on(appService.globalConfig.webSocketEvents.networkEvents.createnetwork, 
                 appService.globalConfig.webSocketLoaders.sitevpnloader = false;
                 if (!angular.isUndefined($stateParams.id) && $stateParams.id > 0) {
                     $scope.sitevpnLists(1);
+                }
+            });
+
+            $scope.$on(appService.globalConfig.webSocketEvents.vpcEvents.createVPNconnection, function(event, args) {
+                appService.globalConfig.webSocketLoaders.vpnconnectionloader = false;
+                if (!angular.isUndefined($scope.vpngatewayId) && $scope.vpngatewayId > 0) {
+                	 $scope.vpnconnectionLists(1);                }
+            });
+            $scope.$on(appService.globalConfig.webSocketEvents.vpcEvents.deletevpnconnection, function(event, args) {
+                appService.globalConfig.webSocketLoaders.vpnconnectionloader = false;
+
+                if (!angular.isUndefined($scope.vpngatewayId) && $scope.vpngatewayId > 0) {
+                    $scope.vpnconnectionLists(1);
+                }
+            });
+            $scope.$on(appService.globalConfig.webSocketEvents.vpcEvents.restartvpnconnection, function(event, args) {
+                appService.globalConfig.webSocketLoaders.vpnconnectionloader = false;
+                if (!angular.isUndefined($scope.vpngatewayId) && $scope.vpngatewayId > 0) {
+                    $scope.vpnconnectionLists(1);
                 }
             });
 }
