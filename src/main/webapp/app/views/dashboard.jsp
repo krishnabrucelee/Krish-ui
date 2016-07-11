@@ -31,7 +31,7 @@
             </div>
         </div> -->
         <div class="row">
-            <div class="col-md-5 dashboard-infra-wrapper">
+            <div class="col-md-4 dashboard-infra-wrapper">
                 <div class="panel panel-white no-border-radious dashboard-infrastructure-section">
                     <div class="panel-body p-sm">
                         <h5 class="no-margins text-primary">
@@ -40,7 +40,7 @@
                         <div class="text-center m-t-xxxl" data-ng-show="showLoaderOffer">
 <get-loader-image-offer></get-loader-image-offer>                         </div>
                         <div class="row" data-ng-hide="showLoaderOffer">
-                            <div class="col-md-4 col-sm-4 col-xs-6">
+                            <div class="col-md-6 col-sm-4 col-xs-6 infra-block">
                                 <div class="quick-view-details running-vm">
                                     <div class="quick-view-icon text-right pull-right"></div>
                                     <div class="clearfix"></div>
@@ -48,7 +48,7 @@
                                 </div>
                                 <div class="quick-view-title text-center"><fmt:message key="running.vm" bundle="${msg}" /></div>
                             </div>
-                            <div class="col-md-4 col-sm-4 col-xs-6">
+                            <div class="col-md-6 col-sm-4 col-xs-6 infra-block">
                                 <div class="quick-view-details stopped-vm">
                                     <div class="quick-view-icon text-right pull-right"></div>
                                     <div class="clearfix"></div>
@@ -56,7 +56,7 @@
                                 </div>
                                 <div class="quick-view-title text-center"><fmt:message key="stopped.vm" bundle="${msg}" /></div>
                             </div>
-                            <div class="col-md-4 col-sm-4 col-xs-6">
+                            <div class="col-md-6 col-sm-4 col-xs-6 infra-block">
                                 <div class="quick-view-details total-vm">
                                     <div class="quick-view-icon text-right pull-right"></div>
                                     <div class="clearfix"></div>
@@ -64,7 +64,7 @@
                                 </div>
                                 <div class="quick-view-title text-center"><fmt:message key="total.vm" bundle="${msg}" /></div>
                             </div>
-                            <div class="col-md-4 col-sm-4 col-xs-6">
+                            <div class="col-md-6 col-sm-4 col-xs-6 infra-block">
                                 <div class="quick-view-details vcpu">
                                     <div class="quick-view-icon text-right pull-right"></div>
                                     <div class="clearfix"></div>
@@ -72,7 +72,7 @@
                                 </div>
                                 <div class="quick-view-title text-center"><fmt:message key="vcpu" bundle="${msg}" /></div>
                             </div>
-                            <div class="col-md-4 col-sm-4 col-xs-6">
+                            <div class="col-md-6 col-sm-4 col-xs-6 infra-block">
                                 <div class="quick-view-details vcpu">
                                     <div class="quick-view-icon text-right pull-right"></div>
                                     <div class="clearfix"></div>
@@ -80,7 +80,7 @@
                                 </div>
                                 <div class="quick-view-title text-center"><fmt:message key="ram" bundle="${msg}" /></div>
                             </div>
-                            <div class="col-md-4 col-sm-4 col-xs-6">
+                            <div class="col-md-6 col-sm-4 col-xs-6 infra-block">
                                 <div class="quick-view-details vcpu">
                                     <div class="quick-view-icon text-right pull-right"></div>
                                     <div class="clearfix"></div>
@@ -89,7 +89,7 @@
                                 </div>
                                 <div class="quick-view-title text-center"><fmt:message key="storage.allocation" bundle="${msg}" /></div>
                             </div>
-                            <div class="col-md-4 col-sm-4 col-xs-6">
+                            <div class="col-md-6 col-sm-4 col-xs-6 infra-block">
                                 <div class="quick-view-details networks">
                                     <div class="quick-view-icon text-right pull-right"></div>
                                     <div class="clearfix"></div>
@@ -97,7 +97,7 @@
                                 </div>
                                 <div class="quick-view-title text-center"><fmt:message key="public.ip" bundle="${msg}" /></div>
                             </div>
-                            <div class="col-md-4 col-sm-4 col-xs-6">
+                            <div class="col-md-6 col-sm-4 col-xs-6 infra-block">
                                 <div class="quick-view-details networks">
                                     <div class="quick-view-icon text-right pull-right"></div>
                                     <div class="clearfix"></div>
@@ -105,7 +105,7 @@
                                 </div>
                                 <div class="quick-view-title text-center"><fmt:message key="common.networks" bundle="${msg}" /></div>
                             </div>
-                            <div class="col-md-4 col-sm-4 col-xs-6">
+                            <div class="col-md-6 col-sm-4 col-xs-6 infra-block">
                                 <div class="quick-view-details private-template">
                                     <div class="quick-view-icon text-right pull-right"></div>
                                     <div class="clearfix"></div>
@@ -117,7 +117,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-7 dashboard-quota-wrapper">
+            <div class="col-md-8 dashboard-quota-wrapper">
                 <div class="panel panel-white no-border-radious dashboard-quota-section">
                     <div class="panel-body p-sm">
                         <h5 class="no-margins text-primary">
@@ -127,11 +127,12 @@
                         </h5>
                         <div class="text-center m-t-xxxl" data-ng-show="showLoaderDetail">
 <get-loader-image-detail></get-loader-image-detail>                         </div>
+
                         <div class="row dashboard-quota-area" data-ng-hide="showLoaderDetail">
                         	<div class="col-md-12">
                             <fieldset class="scheduler-border vm-quota">
 								<legend class="scheduler-border"><fmt:message key="common.vm.quota" bundle="${msg}" /></legend>
-								 <div data-ng-if="quotaLimit.max != '-1'" class="col-md-4 col-sm-4 no-padding col-xs-6 dashboard-quota" data-ng-repeat="quotaLimit in quotaLimits">
+								 <div data-ng-if="quotaLimit.max != '-1'" class="col-md-5ths col-sm-4 no-padding col-xs-6 dashboard-quota" data-ng-repeat="quotaLimit in quotaLimits">
                             	<div class="doughnut-fixed-area">
                             	    <div data-ng-if="quotaLimit.percentage == undefined" class="m-b-sm"><img src="images/unlimited-quota.png" ></div>
 	                                <div data-ng-if="quotaLimit.percentage != undefined" class="doughnutchart-value">{{ quotaLimit.percentage}}%</div>
@@ -143,7 +144,7 @@
 	                                <span data-ng-if="(quotaLimit.usedLimit == undefined || quotaLimit.usedLimit == NaN) && quotaLimit.max == undefined"><fmt:message key="common.allocated" bundle="${msg}" /> 0 <fmt:message key="of" bundle="${msg}" /> <fmt:message key="unlimited" bundle="${msg}" /></span>
                             	</div>
 							</div>
-							 <div data-ng-if="quotaLimit.max == '-1'" class="col-md-4 col-sm-4 no-padding col-xs-6 dashboard-quota" data-ng-repeat="quotaLimit in quotaLimits">
+							 <div data-ng-if="quotaLimit.max == '-1'" class="col-md-5ths col-sm-4 no-padding col-xs-6 dashboard-quota" data-ng-repeat="quotaLimit in quotaLimits">
                                	<div class="doughnut-fixed-area">
 	                               	<div class="m-b-sm"><img src="images/unlimited-quota.png" ></div>
 	                               	<div>{{ quotaLimit.label }}</div>
@@ -154,149 +155,147 @@
 							</fieldset>
 							</div>
                            </div>
+                           <div class="row dashboard-quota-area" data-ng-hide="showLoaderDetail">
+                                     <div class="col-md-12 network-quota-area">
+                                     		<fieldset class="scheduler-border">
+										<legend class="scheduler-border"><fmt:message key="common.network.quota" bundle="${msg}" /></legend>
+										 <div data-ng-if="quotaLimit.max != '-1'" class="col-md-5ths no-padding col-sm-4 col-xs-6 dashboard-quota" data-ng-repeat="quotaLimit in networkQuotaList">
+		                            	<div class="doughnut-fixed-area">
+		                            	    <div data-ng-if="quotaLimit.percentage == undefined" class="m-b-sm"><img src="images/unlimited-quota.png" ></div>
+			                                <div data-ng-if="quotaLimit.percentage != undefined" class="doughnutchart-value">{{ quotaLimit.percentage}}%</div>
+			                                <canvas data-ng-if="quotaLimit.percentage != undefined" doughnutchart options="doughnutOptions" data="quotaLimit.doughnutData" width="120" height="85" ></canvas>
+			                                <div>{{ quotaLimit.label }}</div>
+			                                <span data-ng-if="quotaLimit.usedLimit != undefined && quotaLimit.usedLimit != NaN && quotaLimit.max != undefined"><fmt:message key="common.allocated" bundle="${msg}" /> {{quotaLimit.usedLimit}} <fmt:message key="of" bundle="${msg}" /> {{quotaLimit.max}}</span>
+			                                <span data-ng-if="(quotaLimit.usedLimit == undefined || quotaLimit.usedLimit == NaN) && quotaLimit.max != undefined"><fmt:message key="common.allocated" bundle="${msg}" /> 0 <fmt:message key="of" bundle="${msg}" /> {{quotaLimit.max}}</span>
+			                                <span data-ng-if="quotaLimit.usedLimit != undefined && quotaLimit.usedLimit != NaN && quotaLimit.max == undefined"><fmt:message key="common.allocated" bundle="${msg}" /> {{quotaLimit.usedLimit}} <fmt:message key="of" bundle="${msg}" /> <fmt:message key="unlimited" bundle="${msg}" /></span>
+			                                <span data-ng-if="(quotaLimit.usedLimit == undefined || quotaLimit.usedLimit == NaN) && quotaLimit.max == undefined"><fmt:message key="common.allocated" bundle="${msg}" /> 0 <fmt:message key="of" bundle="${msg}" /> <fmt:message key="unlimited" bundle="${msg}" /></span>
+		                            	</div>
+									</div>
+									 <div data-ng-if="quotaLimit.max == '-1'" class="col-md-5ths no-padding col-sm-4 col-xs-6 dashboard-quota" data-ng-repeat="quotaLimit in networkQuotaList">
+		                               	<div class="doughnut-fixed-area">
+			                               	<div class="m-b-sm"><img src="images/unlimited-quota.png" ></div>
+			                               	<div>{{ quotaLimit.label }}</div>
+			                               	<span data-ng-if="quotaLimit.usedLimit != undefined && quotaLimit.usedLimit != NaN"><fmt:message key="common.allocated" bundle="${msg}" /> {{quotaLimit.usedLimit}} <fmt:message key="of" bundle="${msg}" /> <fmt:message key="unlimited" bundle="${msg}" /></span>
+			                                <span data-ng-if="quotaLimit.usedLimit == undefined || quotaLimit.usedLimit == NaN"><fmt:message key="common.allocated" bundle="${msg}" /> 0 <fmt:message key="of" bundle="${msg}" /> <fmt:message key="unlimited" bundle="${msg}" /></span>
+		                                </div>
+		                            </div>
+									</fieldset>
+                                     </div>
+                                     <div class="col-md-12 storage-quota-area">
+                                     		<fieldset class="scheduler-border">
+										<legend class="scheduler-border"><fmt:message key="common.storage.quota" bundle="${msg}" /></legend>
+										 <div data-ng-if="quotaLimit.max != '-1'" class="col-md-5ths no-padding col-sm-4 col-xs-6 dashboard-quota" data-ng-repeat="quotaLimit in storageQuotaList">
+		                            	<div class="doughnut-fixed-area">
+		                            	    <div data-ng-if="quotaLimit.percentage == undefined" class="m-b-sm"><img src="images/unlimited-quota.png" ></div>
+			                                <div data-ng-if="quotaLimit.percentage != undefined" class="doughnutchart-value">{{ quotaLimit.percentage}}%</div>
+			                                <canvas data-ng-if="quotaLimit.percentage != undefined" doughnutchart options="doughnutOptions" data="quotaLimit.doughnutData" width="120" height="85" ></canvas>
+			                                <div>{{ quotaLimit.label }}</div>
+			                                <span data-ng-if="quotaLimit.usedLimit != undefined && quotaLimit.usedLimit != NaN && quotaLimit.max != undefined"><fmt:message key="common.allocated" bundle="${msg}" /> {{quotaLimit.usedLimit}} <fmt:message key="of" bundle="${msg}" /> {{quotaLimit.max}}</span>
+			                                <span data-ng-if="(quotaLimit.usedLimit == undefined || quotaLimit.usedLimit == NaN) && quotaLimit.max != undefined"><fmt:message key="common.allocated" bundle="${msg}" /> 0 <fmt:message key="of" bundle="${msg}" /> {{quotaLimit.max}}</span>
+			                                <span data-ng-if="quotaLimit.usedLimit != undefined && quotaLimit.usedLimit != NaN && quotaLimit.max == undefined"><fmt:message key="common.allocated" bundle="${msg}" /> {{quotaLimit.usedLimit}} <fmt:message key="of" bundle="${msg}" /> <fmt:message key="unlimited" bundle="${msg}" /></span>
+			                                <span data-ng-if="(quotaLimit.usedLimit == undefined || quotaLimit.usedLimit == NaN) && quotaLimit.max == undefined"><fmt:message key="common.allocated" bundle="${msg}" /> 0 <fmt:message key="of" bundle="${msg}" /> <fmt:message key="unlimited" bundle="${msg}" /></span>
+		                            	</div>
+									</div>
+									 <div data-ng-if="quotaLimit.max == '-1'" class="col-md-5ths no-padding col-sm-4 col-xs-6 dashboard-quota" data-ng-repeat="quotaLimit in storageQuotaList">
+		                               	<div class="doughnut-fixed-area">
+			                               	<div class="m-b-sm"><img src="images/unlimited-quota.png" ></div>
+			                               	<div>{{ quotaLimit.label }}</div>
+			                               	<span data-ng-if="quotaLimit.usedLimit != undefined && quotaLimit.usedLimit != NaN"><fmt:message key="common.allocated" bundle="${msg}" /> {{quotaLimit.usedLimit}} <fmt:message key="of" bundle="${msg}" /> <fmt:message key="unlimited" bundle="${msg}" /></span>
+			                                <span data-ng-if="quotaLimit.usedLimit == undefined || quotaLimit.usedLimit == NaN"><fmt:message key="common.allocated" bundle="${msg}" /> 0 <fmt:message key="of" bundle="${msg}" /> <fmt:message key="unlimited" bundle="${msg}" /></span>
+		                                </div>
+		                            </div>
+									</fieldset>
+                                     </div>
+                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
         <div class="row">
-        	<div class="col-md-12 dashboard-quota-wrapper">
-                <div class="panel panel-white no-border-radious">
-                    <div class="panel-body p-sm">
-                        <div class="text-center m-t-xxxl" data-ng-show="showLoaderDetail">
-<get-loader-image-detail></get-loader-image-detail>                         </div>
-
-                                       <div class="row dashboard-quota-area" data-ng-hide="showLoaderDetail">
-                                       <div class="col-md-6 network-quota-area">
-                                       		<fieldset class="scheduler-border">
-												<legend class="scheduler-border"><fmt:message key="common.network.quota" bundle="${msg}" /></legend>
-												 <div data-ng-if="quotaLimit.max != '-1'" class="col-md-4 no-padding col-sm-4 col-xs-6 dashboard-quota" data-ng-repeat="quotaLimit in networkQuotaList">
-				                            	<div class="doughnut-fixed-area">
-				                            	    <div data-ng-if="quotaLimit.percentage == undefined" class="m-b-sm"><img src="images/unlimited-quota.png" ></div>
-					                                <div data-ng-if="quotaLimit.percentage != undefined" class="doughnutchart-value">{{ quotaLimit.percentage}}%</div>
-					                                <canvas data-ng-if="quotaLimit.percentage != undefined" doughnutchart options="doughnutOptions" data="quotaLimit.doughnutData" width="120" height="85" ></canvas>
-					                                <div>{{ quotaLimit.label }}</div>
-					                                <span data-ng-if="quotaLimit.usedLimit != undefined && quotaLimit.usedLimit != NaN && quotaLimit.max != undefined"><fmt:message key="common.allocated" bundle="${msg}" /> {{quotaLimit.usedLimit}} <fmt:message key="of" bundle="${msg}" /> {{quotaLimit.max}}</span>
-					                                <span data-ng-if="(quotaLimit.usedLimit == undefined || quotaLimit.usedLimit == NaN) && quotaLimit.max != undefined"><fmt:message key="common.allocated" bundle="${msg}" /> 0 <fmt:message key="of" bundle="${msg}" /> {{quotaLimit.max}}</span>
-					                                <span data-ng-if="quotaLimit.usedLimit != undefined && quotaLimit.usedLimit != NaN && quotaLimit.max == undefined"><fmt:message key="common.allocated" bundle="${msg}" /> {{quotaLimit.usedLimit}} <fmt:message key="of" bundle="${msg}" /> <fmt:message key="unlimited" bundle="${msg}" /></span>
-					                                <span data-ng-if="(quotaLimit.usedLimit == undefined || quotaLimit.usedLimit == NaN) && quotaLimit.max == undefined"><fmt:message key="common.allocated" bundle="${msg}" /> 0 <fmt:message key="of" bundle="${msg}" /> <fmt:message key="unlimited" bundle="${msg}" /></span>
-				                            	</div>
-											</div>
-											 <div data-ng-if="quotaLimit.max == '-1'" class="col-md-4 no-padding col-sm-4 col-xs-6 dashboard-quota" data-ng-repeat="quotaLimit in networkQuotaList">
-				                               	<div class="doughnut-fixed-area">
-					                               	<div class="m-b-sm"><img src="images/unlimited-quota.png" ></div>
-					                               	<div>{{ quotaLimit.label }}</div>
-					                               	<span data-ng-if="quotaLimit.usedLimit != undefined && quotaLimit.usedLimit != NaN"><fmt:message key="common.allocated" bundle="${msg}" /> {{quotaLimit.usedLimit}} <fmt:message key="of" bundle="${msg}" /> <fmt:message key="unlimited" bundle="${msg}" /></span>
-					                                <span data-ng-if="quotaLimit.usedLimit == undefined || quotaLimit.usedLimit == NaN"><fmt:message key="common.allocated" bundle="${msg}" /> 0 <fmt:message key="of" bundle="${msg}" /> <fmt:message key="unlimited" bundle="${msg}" /></span>
-				                                </div>
-				                            </div>
-											</fieldset>
-                                       </div>
-                                       <div class="col-md-6 storage-quota-area">
-                                       		<fieldset class="scheduler-border">
-												<legend class="scheduler-border"><fmt:message key="common.storage.quota" bundle="${msg}" /></legend>
-												 <div data-ng-if="quotaLimit.max != '-1'" class="col-md-4 no-padding col-sm-4 col-xs-6 dashboard-quota" data-ng-repeat="quotaLimit in storageQuotaList">
-				                            	<div class="doughnut-fixed-area">
-				                            	    <div data-ng-if="quotaLimit.percentage == undefined" class="m-b-sm"><img src="images/unlimited-quota.png" ></div>
-					                                <div data-ng-if="quotaLimit.percentage != undefined" class="doughnutchart-value">{{ quotaLimit.percentage}}%</div>
-					                                <canvas data-ng-if="quotaLimit.percentage != undefined" doughnutchart options="doughnutOptions" data="quotaLimit.doughnutData" width="120" height="85" ></canvas>
-					                                <div>{{ quotaLimit.label }}</div>
-					                                <span data-ng-if="quotaLimit.usedLimit != undefined && quotaLimit.usedLimit != NaN && quotaLimit.max != undefined"><fmt:message key="common.allocated" bundle="${msg}" /> {{quotaLimit.usedLimit}} <fmt:message key="of" bundle="${msg}" /> {{quotaLimit.max}}</span>
-					                                <span data-ng-if="(quotaLimit.usedLimit == undefined || quotaLimit.usedLimit == NaN) && quotaLimit.max != undefined"><fmt:message key="common.allocated" bundle="${msg}" /> 0 <fmt:message key="of" bundle="${msg}" /> {{quotaLimit.max}}</span>
-					                                <span data-ng-if="quotaLimit.usedLimit != undefined && quotaLimit.usedLimit != NaN && quotaLimit.max == undefined"><fmt:message key="common.allocated" bundle="${msg}" /> {{quotaLimit.usedLimit}} <fmt:message key="of" bundle="${msg}" /> <fmt:message key="unlimited" bundle="${msg}" /></span>
-					                                <span data-ng-if="(quotaLimit.usedLimit == undefined || quotaLimit.usedLimit == NaN) && quotaLimit.max == undefined"><fmt:message key="common.allocated" bundle="${msg}" /> 0 <fmt:message key="of" bundle="${msg}" /> <fmt:message key="unlimited" bundle="${msg}" /></span>
-				                            	</div>
-											</div>
-											 <div data-ng-if="quotaLimit.max == '-1'" class="col-md-4 no-padding col-sm-4 col-xs-6 dashboard-quota" data-ng-repeat="quotaLimit in storageQuotaList">
-				                               	<div class="doughnut-fixed-area">
-					                               	<div class="m-b-sm"><img src="images/unlimited-quota.png" ></div>
-					                               	<div>{{ quotaLimit.label }}</div>
-					                               	<span data-ng-if="quotaLimit.usedLimit != undefined && quotaLimit.usedLimit != NaN"><fmt:message key="common.allocated" bundle="${msg}" /> {{quotaLimit.usedLimit}} <fmt:message key="of" bundle="${msg}" /> <fmt:message key="unlimited" bundle="${msg}" /></span>
-					                                <span data-ng-if="quotaLimit.usedLimit == undefined || quotaLimit.usedLimit == NaN"><fmt:message key="common.allocated" bundle="${msg}" /> 0 <fmt:message key="of" bundle="${msg}" /> <fmt:message key="unlimited" bundle="${msg}" /></span>
-				                                </div>
-				                            </div>
-											</fieldset>
-                                       </div>
-
-
-                           </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-5 col-sm-5">
+            <div class="col-md-4 col-sm-12 dashboard-topfive-section">
                 <div class="panel panel-white no-border-radious dashboard-tab">
                     <div class="panel-body">
                     <ul class="row">
-                        <li class="col-md-6 no-padding text-center"><a href="javascript:void(0)" data-ng-init="toggleCostList('department');" data-ng-class="{'active' : dashboard.costList.department}" data-ng-click="toggleCostList('department')" ><fmt:message key="common.department" bundle="${msg}" /></a></li>
-                        <li class="col-md-6 no-padding text-center"><a href="javascript:void(0)" data-ng-class="{'active' : dashboard.costList.project}" data-ng-click="toggleCostList('project')"><fmt:message key="common.project" bundle="${msg}" /></a></li>
+                        <li class="col-md-6 col-sm-6 no-padding text-center"><a href="javascript:void(0)" data-ng-init="toggleCostList('department');" data-ng-class="{'active' : dashboard.costList.department}" data-ng-click="toggleCostList('department')" ><fmt:message key="common.department" bundle="${msg}" /></a></li>
+                        <li class="col-md-6 col-sm-6 no-padding text-center"><a href="javascript:void(0)" data-ng-class="{'active' : dashboard.costList.project}" data-ng-click="toggleCostList('project')"><fmt:message key="common.project" bundle="${msg}" /></a></li>
                         <!-- <li><a href="javascript:void(0)" data-ng-class="{'active' : dashboard.costList.application}" data-ng-click="toggleCostList('application')">Application</a></li> -->
                     </ul>
                     <div class="dashboard-department-cost" data-ng-show="dashboard.costList.department">
                         <div class="panel-body">
-                            <h5 class="no-margins text-primary">
-                                <fmt:message key="top.5.departments.by.cost" bundle="${msg}" /> <br>(<fmt:message key="current" bundle="${msg}" /> <fmt:message key="common.month" bundle="${msg}" />) {{filterdept.value | lowercase}}
-                            </h5>
-
-                            <div class="m-t-md">
-
-                                <table cellspacing="1" cellpadding="1" class="top-projects no-margins table table-condensed table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th class="col-md-3"><small><fmt:message key="common.department" bundle="${msg}" /></small></th>
-                                            <th class="col-md-3"><small class="pull-right"><fmt:message key="cost" bundle="${msg}" /> (<app-currency></app-currency>)</small></th>
-                                        </tr>
-                                    </thead>
-                                </table>
+                            <div class="row">
+                            	<div class="col-md-12 col-sm-6 top-five-table">
+                            		<h5 class="no-margins text-primary">
+		                                <fmt:message key="top.5.departments.by.cost" bundle="${msg}" /> <br>(<fmt:message key="current" bundle="${msg}" /> <fmt:message key="common.month" bundle="${msg}" />) {{filterdept.value | lowercase}}
+		                            </h5>
+		                            <div class="m-t-md">
+		                                <table cellspacing="1" cellpadding="1" class="top-projects no-margins table table-condensed table-striped">
+		                                    <thead>
+		                                        <tr>
+		                                            <th class="col-md-3"><small><fmt:message key="common.department" bundle="${msg}" /></small></th>
+		                                            <th class="col-md-3"><small class="pull-right"><fmt:message key="cost" bundle="${msg}" /> (<app-currency></app-currency>)</small></th>
+		                                        </tr>
+		                                    </thead>
+		                                </table>
+		                            </div>
+		                            <div class="text-center m-t-xxxl" data-ng-show="showDepartmentLoader">
+										<get-department-loader-image></get-department-loader-image>
+									</div>
+		                             <div data-ng-hide="showDepartmentLoader">
+		                                <table cellspacing="1" cellpadding="3" class="top-projects table table-condensed table-striped">
+		                                     <tbody >
+		                                         <tr data-ng-repeat="department in top5DepartmentList | limitTo:5">
+		                                             <td  class="col-md-3">{{ department.account }}</td>
+		                                             <td  class="col-md-3">
+		                                                 <label class="badge badge-info p-xxs font-bold pull-right">{{  department.grandTotalCost | number:2}}</label>
+		                                             </td>
+		                                         </tr>
+		                                     </tbody>
+		                                 </table>
+		                             </div>
+                            	</div>
                             </div>
-                             <div class="text-center m-t-xxxl" data-ng-show="showDepartmentLoader">
-<get-department-loader-image></get-department-loader-image>                             </div>
-                             <div data-ng-hide="showDepartmentLoader">
-                                <table cellspacing="1" cellpadding="3" class="top-projects table table-condensed table-striped">
-                                     <tbody >
-                                         <tr data-ng-repeat="department in top5DepartmentList | limitTo:5">
-                                             <td  class="col-md-3">{{ department.account }}</td>
-                                             <td  class="col-md-3">
-                                                 <label class="badge badge-info p-xxs font-bold pull-right">{{  department.grandTotalCost | number:2}}</label>
-                                             </td>
-                                         </tr>
-                                     </tbody>
-                                 </table>
-                             </div>
+
+
+
+
                         </div>
                     </div>
                     <div class="dashboard-project-cost" data-ng-show="dashboard.costList.project">
                         <div class="panel-body">
-                            <h5 class="no-margins text-primary">
-                                <fmt:message key="top.5.projects.by.cost" bundle="${msg}" /> <br>(<fmt:message key="current" bundle="${msg}" /> <fmt:message key="common.month" bundle="${msg}" />) {{filters.value | lowercase}}
-                            </h5>
+                            <div class="row">
+                            	<div class="col-md-12 col-sm-6 top-five-table">
+	                           		<h5 class="no-margins text-primary">
+		                                <fmt:message key="top.5.projects.by.cost" bundle="${msg}" /> <br>(<fmt:message key="current" bundle="${msg}" /> <fmt:message key="common.month" bundle="${msg}" />) {{filters.value | lowercase}}
+		                            </h5>
+		                            <div class="m-t-md">
+		                                <table cellspacing="1" cellpadding="1" class="top-projects no-margins table table-condensed table-striped">
+		                                    <thead>
+		                                        <tr>
+		                                            <th class="col-md-3"><small><fmt:message key="common.project" bundle="${msg}" /></small></th>
 
-                            <div class="m-t-md">
-                                <table cellspacing="1" cellpadding="1" class="top-projects no-margins table table-condensed table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th class="col-md-3"><small><fmt:message key="common.project" bundle="${msg}" /></small></th>
+		                                            <th class="col-md-3"><small class="pull-right"><fmt:message key="cost" bundle="${msg}" /> (<app-currency></app-currency>)</small></th>
+		                                        </tr>
+		                                    </thead>
+		                                </table>
+		                            </div>
 
-                                            <th class="col-md-3"><small class="pull-right"><fmt:message key="cost" bundle="${msg}" /> (<app-currency></app-currency>)</small></th>
-                                        </tr>
-                                    </thead>
-                                </table>
-                            </div>
-
-                             <div class="text-center m-t-xxxl" data-ng-show="showLoader">
-<get-loader-image></get-loader-image>                             </div>
-                             <div data-ng-hide="showLoader">
-                                 <table cellspacing="1" cellpadding="3" class="top-projects table table-condensed table-striped">
-                                     <tbody >
-                                         <tr data-ng-repeat="project in top5ProjectList | limitTo:5">
-                                             <td  class="col-md-3">{{ project.project }}</td>
-                                             <td  class="col-md-3">
-                                                 <label class="badge badge-info p-xxs font-bold pull-right">{{  project.grandTotalCost | number:2 }}</label>
-                                             </td>
-                                         </tr>
-                                     </tbody>
-                                 </table>
+                             		<div class="text-center m-t-xxxl" data-ng-show="showLoader">
+										<get-loader-image></get-loader-image>
+									</div>
+		                             <div data-ng-hide="showLoader">
+		                                 <table cellspacing="1" cellpadding="3" class="top-projects table table-condensed table-striped">
+		                                     <tbody >
+		                                         <tr data-ng-repeat="project in top5ProjectList | limitTo:5">
+		                                             <td  class="col-md-3">{{ project.project }}</td>
+		                                             <td  class="col-md-3">
+		                                                 <label class="badge badge-info p-xxs font-bold pull-right">{{  project.grandTotalCost | number:2 }}</label>
+		                                             </td>
+		                                         </tr>
+		                                     </tbody>
+		                                 </table>
+		                             </div>
+	                             </div>
                              </div>
                         </div>
                     </div>
@@ -338,7 +337,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-7 col-sm-7">
+            <div class="col-md-8 col-sm-12 dashboard-cost-section">
                 <div class="panel panel-white no-border-radious">
                     <div class="panel-body p-sm">
                         <h5 class="no-margins text-primary">
