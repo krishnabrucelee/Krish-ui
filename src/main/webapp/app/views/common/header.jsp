@@ -15,7 +15,7 @@
 		<ul class="nav navbar-nav navbar-right round-corner">
 
 		<li data-ng-repeat="theme in themeSettingsList.headers" >
-		<a class="label-menu-corner" data-ng-if="theme.url != null && (theme.name != 'abcd' || theme.name != 'abcd')" target="_blank" href="http://{{theme.url}}" >{{theme.name}}
+		<a class="label-menu-corner" data-ng-if="theme.url != null" target="_blank" href="http://{{theme.url}}" >{{theme.name}}
 		<span class="label label-warning"></span></a></li>
 
 			<%-- <li data-ng-class="{active: $state.includes('system-health')}"><a
