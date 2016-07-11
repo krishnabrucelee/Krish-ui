@@ -12,9 +12,13 @@
 	</div>
 	<div class="col-md-4 col-sm-12">
 		<ul class="footer-custom-links text-center">
-			<li data-ng-repeat="theme in themeSettingsList.footers" data-ng-if="theme.url != null">
+			<li data-ng-repeat="theme in themeSettingsList.footers" data-ng-if="theme.url != null && appLanguage != 'zh'">
 
 				<a class="label-menu-corner" target="_blank" href="http://{{theme.url}}">{{theme.name}}</a>
+			</li>
+			<li data-ng-repeat="theme in themeSettingsList.footers" data-ng-if="theme.url != null && appLanguage != 'en'">
+
+				<a class="label-menu-corner" target="_blank" href="http://{{theme.url}}">{{theme.chineseName}}</a>
 			</li>
 		</ul>
 	</div>
