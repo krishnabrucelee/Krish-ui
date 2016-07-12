@@ -87,10 +87,14 @@ function configurationCtrl($scope, $stateParams, appService, localStorageService
 	$scope.volume = [];
 	$scope.list = function () {
        	var instanceId = $stateParams.id;
-       	var hasVolume = promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "volumes/listbyinstancesandvolumetype?instanceid="+instanceId +"&lang=" + 	localStorageService.cookie.get('language')+"&sortBy=-id");
-	        hasVolume.then(function (result) {
+       	var hasVolume = promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "volumes/listbyinstancesandvolumetype?instanceid="+instanceId +"&lang=" + localStorageService.cookie.get('language')+"&sortBy=-id");
+       	hasVolume.then(function (result) {
 	            $scope.volume = result;
 	        });
+       	var hasDatavolume = promiseAjax.httpTokenRequest( globalConfig.HTTP_GET, globalConfig.APP_URL + "volumes/listbyinstanceId?instanceid="+instanceId +"&lang=" + localStorageService.cookie.get('language')+"&sortBy=-id");
+       	hasDatavolume.then(function (result) {
+            $scope.dataVolume = result;
+        });
 	    };
 	    $scope.list();
 
@@ -330,6 +334,12 @@ function configurationCtrl($scope, $stateParams, appService, localStorageService
 	}
      });
     $scope.$on(appService.globalConfig.webSocketEvents.vmEvents.resetPassword, function(event, args) {
+    });
+    $scope.$on(appService.globalConfig.webSocketEvents.volumeEvents.attachVolume, function(event, args) {
+    	$scope.list();
+    });
+    $scope.$on(appService.globalConfig.webSocketEvents.volumeEvents.detachVolume, function(event, args) {
+    	$scope.list();
     });
 
 }

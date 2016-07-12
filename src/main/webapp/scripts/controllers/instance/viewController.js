@@ -52,7 +52,6 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
         var hasServer = appService.crudService.read("virtualmachine", id);
         hasServer.then(function(result) {
             $scope.instance = result;
-            console.log("ddd" + result);
             $scope.persistinstance = result;
             setTimeout(function() {
                 $state.current.data.pageName = result.name;
@@ -90,6 +89,7 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
         $scope.templateCategory = 'config';
         $scope.active = true;
     }
+
     $scope.networkTab = function() {
             $scope.templateCategory = 'network';
         }
@@ -366,7 +366,6 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
                         $scope.cancel();
                     }).catch(function(result) {
                         $scope.cancel();
-			alert("hi");
                         appService.globalConfig.webSocketLoaders.viewLoader = false;
                     });
                 },
@@ -855,6 +854,7 @@ function instanceViewCtrl($scope, $sce, $state, $stateParams, appService, $windo
                 }
             }
         });
+
     }
 
     function instanceDetailsCtrl($scope, $log, $sce, dialogService, $modal, $http, $state, $stateParams, promiseAjax, localStorageService, globalConfig, crudService, notify, $window) {

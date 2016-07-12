@@ -627,32 +627,36 @@
                     <table class="table table-condensed" cellspacing="1" cellpadding="1">
                         <tbody>
                         	<tr>
-                                <td class="p-xs col-md-4 col-sm-4"><b><fmt:message key="instance.name" bundle="${msg}" /></b></td>
-                                <td class="p-xs col-md-8 col-sm-8">{{instances.name}}</td>
+                                <td class="p-xs col-md-5 col-sm-4"><b><fmt:message key="instance.name" bundle="${msg}" /></b></td>
+                                <td class="p-xs col-md-7 col-sm-8">{{instances.name}}</td>
                             </tr>
                             <tr>
-                                <td class="p-xs col-md-4 col-sm-4"><b><fmt:message key="cpu" bundle="${msg}" /></b></td>
-                                <td class="p-xs col-md-8 col-sm-8">{{instances.computeOffering.numberOfCores}} vCPU's</td>
+                                <td class="p-xs col-md-5 col-sm-4"><b><fmt:message key="cpu" bundle="${msg}" /></b></td>
+                                <td class="p-xs col-md-7 col-sm-8">{{instances.computeOffering.numberOfCores}} vCPU's</td>
                             </tr>
                             <tr>
-                                <td class="p-xs col-md-4 col-sm-4"><b><fmt:message key="ram" bundle="${msg}" /></b></b></td>
-                                <td class="p-xs col-md-8 col-sm-8">{{instances.computeOffering.memory}} MB of memory</td>
-                            </tr>
-                            <tr>
-                                <td class="p-xs col-md-4 col-sm-4"><b><fmt:message key="disk.size" bundle="${msg}" /></b></td>
-                                <td class="p-xs col-md-8 col-sm-8">{{volume[0].diskSize / global.Math.pow(2, 30) || "0"}} GB</td>
+                                <td class="p-xs col-md-5 col-sm-4"><b><fmt:message key="ram" bundle="${msg}" /></b></b></td>
+                                <td class="p-xs col-md-7 col-sm-8">{{instances.computeOffering.memory}} MB of memory</td>
                             </tr>
                            <tr>
-                                <td class="p-xs col-md-4 col-sm-4"><b><fmt:message key="common.network" bundle="${msg}" /></b></td>
-                                <td class="p-xs col-md-8 col-sm-8">1000GB</td>
+                                <td class="p-xs col-md-5 col-sm-4"><b><fmt:message key="root.disk" bundle="${msg}" /></b></td>
+                                <td class="p-xs col-md-7 col-sm-8">{{volume[0].diskSize / global.Math.pow(2, 30) || "0"}} GB</td>
                             </tr>
                             <tr>
-                                <td class="p-xs col-md-4 col-sm-4"><b><fmt:message key="bandwidth" bundle="${msg}" /></b></td>
-                                <td class="p-xs col-md-8 col-sm-8">10 MB/s</td>
+                                <td class="p-xs col-md-5 col-sm-4"><b><fmt:message key="data.disk" bundle="${msg}" /></b></td>
+                                <td class="p-xs col-md-7 col-sm-8">{{dataVolume / global.Math.pow(2, 30) || "0"}} GB</td>
                             </tr>
                             <tr>
-                                <td class="p-xs col-md-4 col-sm-4"><b><fmt:message key="disk.io" bundle="${msg}" /></b></td>
-                                <td class="p-xs col-md-8 col-sm-8">{{instances.computeOffering.diskIo}}</td>
+                                <td class="p-xs col-md-5 col-sm-4"><b><fmt:message key="common.public.ip.address" bundle="${msg}" /></b></td>
+                                <td class="p-xs col-md-7 col-sm-8">{{instances.publicIpAddress}}</td>
+                            </tr>
+                            <tr>
+                                <td class="p-xs col-md-5 col-sm-4"><b><fmt:message key="created.from.template" bundle="${msg}" /></b></td>
+                                <td class="p-xs col-md-7 col-sm-8">{{instances.templateName}}</td>
+                            </tr>
+                            <tr>
+                                <td class="p-xs col-md-5 col-sm-4"><b><fmt:message key="common.service.offering" bundle="${msg}" /></b></td>
+                                <td class="p-xs col-md-7 col-sm-8">{{instances.services.serviceName}}</td>
                             </tr>
                         </tbody>
                     </table>
