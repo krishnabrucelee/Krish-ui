@@ -1066,6 +1066,7 @@ $scope.top5DepartmentList = result;
 
     $scope.updateLanguage = function(language) {
          localStorageService.cookie.set('language', language);
+         appService.localStorageService.get('serviceView');
          $window.location.reload();
     }
 

@@ -518,7 +518,7 @@ function configState($stateProvider, $httpProvider, $urlRouterProvider, $compile
 
             .state('services', {
                 url : "/services",
-                templateUrl : VIEW_URL + "views/services/index.jsp",
+                templateUrl : VIEW_URL + "views/services/list.jsp",
                 data : {
                     pageTitle : 'Services'
                 }
