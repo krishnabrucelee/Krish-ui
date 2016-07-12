@@ -482,6 +482,17 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
         });
     };
 
+    //Services list
+    $scope.servicesList = function() {
+        $scope.showLoaderDetail = true;
+        var hasServices = appService.promiseAjax.httpTokenRequest(appService.globalConfig.HTTP_GET, appService.globalConfig.APP_URL + "services/list");
+        hasServices.then(function(result) { // this is only run after $http completes0
+            $scope.instanceElements.servicesList = result;
+            $scope.showLoaderDetail = false;
+        });
+    };
+    $scope.servicesList();
+
     $scope.projectList = function(user) {
         $scope.showLoaderDetail = true;
         var hasProjects = appService.crudService.listAllByObject("projects/user", user);
@@ -561,7 +572,7 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
     $scope.validateOffering = function(form) {
         $scope.OfferingSubmitted = true;
         var submitError = false;
-        if (form.networkoffer.$valid && form.computeoffer.$valid) {
+        if (form.networkoffer.$valid && form.computeoffer.$valid && form.service.$valid) {
             var computeOfferValid = true;
             if ($scope.instance.computeOffering.customized == "true") {
                 if ($scope.instance.computeOffer.cpuCore.value != 0 && $scope.instance.computeOffer.memory.value != 0) {
@@ -825,6 +836,10 @@ function instanceCtrl($scope, $modalInstance, $state, $stateParams, filterFilter
         if (!angular.isUndefined(instance.storageOffering) && instance.storageOffering !== null) {
             instance.storageOfferingId = instance.storageOffering.id;
             delete instance.storageOffering;
+        }
+        if (!angular.isUndefined(instance.services) && instance.services != null) {
+            instance.servicesId = instance.services.id;
+            delete instance.services;
         }
         instance.templateId = instance.template.id;
         delete instance.template;
