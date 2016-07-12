@@ -258,6 +258,7 @@ var REQUEST_PROTOCOL = document.getElementById("request_protocol").value;
     <script src="scripts/controllers/reportCtrl.js"></script>
     <script src="scripts/controllers/activityController.js"></script>
     <script src="scripts/controllers/volumeController.js"></script>
+    <script src="scripts/controllers/services/serviceController.js"></script>
     <script src="scripts/controllers/billingController.js"></script>
     <script src="scripts/controllers/quotaLimitController.js"></script>
     <script src="scripts/controllers/templateController.js"></script>

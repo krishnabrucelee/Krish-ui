@@ -6,7 +6,7 @@
 <c:set var="language" value="${not empty language ? language : pageContext.request.getAttribute('language')}" scope="session" />
 <fmt:setBundle basename="i18n/messages_${language}" var="msg" scope="session" />
 
-<div data-ng-hide="viewContent" data-ng-controller="servicesCtrl">
+<%-- <div data-ng-hide="viewContent" data-ng-controller="servicesCtrl">
     	<div class="" >
         	<div class="hpanel">
             	<div class="panel-heading no-padding">
@@ -16,7 +16,7 @@
                             	<div class="dashboard-box pull-left">
      							<div class="instance-border-content-normal">
                                 <span class="pull-left m-t-xs m-l-xs m-r-xs"><fmt:message key="total.services" bundle="${msg}" /></span>
-                                <b class="pull-left">{{servicesList.length}}</b>
+                                <b class="pull-left">{{servicesList.Count}}</b>
                                 <div class="clearfix"></div>
                                 </div>
                             </div>
@@ -52,13 +52,14 @@
                      <div class="white-content">
                     <div class="col-md-12 col-sm-12">
                         <div class="font-extra-bold pull-right" title="<fmt:message key="common.zone" bundle="${msg}" />">
-                            <a  title="<fmt:message key="properties" bundle="${msg}" />" data-ng-click="viewserviceDetails('md',serviceObj.id)"><i class="pe-7s-keypad font-extra-bold  m-r-sm"></i></a>
+                            <a  title="<fmt:message key="properties" bundle="${msg}" />" data-ng-click="showDescription(serviceObj.id)"><i class="pe-7s-keypad font-extra-bold  m-r-sm"></i></a>
                             <i class="fa fa-map-marker" ></i> {{ global.zone.name}}
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-2 col-sm-2">
+
                     </div>
                     <div class="col-md-7 col-sm-7 ">
                         <div class="row">
@@ -69,11 +70,10 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="small  m-b-sm  " >
+                            <div class="small  m-b-sm  "  data-ng-hide="serviceObj.openCommunityDescription">
                                 {{ serviceObj.description}}
                             </div>
                         </div>
-
                     </div>
                     <div class="col-md-3 col-sm-3">
                         <div class="row m-t-md">
@@ -83,9 +83,10 @@
                         </div>
                         <div class="row m-t-md" >
                             <div class="col-md-10 col-sm-12 col-xs-12 ">
-                                <button data-ng-if="serviceObj.isActive == 1" class="btn btn-info btn-sm pull-right" title="<fmt:message key="common.attach" bundle="${msg}" />" data-ng-click="openAddInstance('md',serviceObj.id)"><i class="fa fa-power-off"></i> <fmt:message key="common.attach" bundle="${msg}" /></button>
+                                <button data-ng-if="serviceObj.isActive == 1" class="btn btn-info btn-sm pull-right" title="<fmt:message key="common.launch" bundle="${msg}" />" data-ng-click="openAddInstance(serviceObj.id)"><i class="fa fa-power-off"></i> <fmt:message key="common.launch" bundle="${msg}" /></button>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -110,6 +111,16 @@
         </div>
         </div>
         </div>
-    </div>
+    </div> --%>
 
-
+<div class="row clearfix"  >
+		<div  class="col-md-4 col-md-offset-4 clearfix">
+			<div class="hpanel">
+			    <div  class="panel-body no-records p-xs text-center" >
+					 <h5><fmt:message key="common.no.records.found" bundle="${msg}" /></h5><br>
+					 <img src="images/no-templates-found.png" border="0" alt="no records found" title="<fmt:message key="common.no.records.found" bundle="${msg}" />">
+			    </div>
+		    </div>
+		</div>
+	</div>
+</div>
