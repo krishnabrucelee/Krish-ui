@@ -235,6 +235,42 @@
 		</div>
 	</div>
 	<div class="row border-content">
+		<div class="col-offset-3 col-md-12 col-sm-12">
+			<div class="row  form-group" data-ng-class="{ 'text-danger' : instanceForm.service.$invalid && OfferingSubmitted}">
+				<div class="col-md-5 col-xs-5 col-sm-5">
+					<label class="pull-left section-title">
+						<fmt:message key="common.services" bundle="${msg}" />
+						<span title="<fmt:message key="common.required" bundle="${msg}" />"	class="text-danger font-bold">*</span>
+					</label>
+				</div>
+				<div class="col-md-6 col-xs-6 col-sm-6">
+				    <select required="true" class="form-control form-group-lg"
+						name="services" id="create_instance_services"
+						data-ng-model="instance.services"
+						data-ng-class="{'error': instanceForm.services.$invalid && OfferingSubmitted}"
+						data-ng-options="services.serviceName for services in instanceElements.servicesList">
+						<option value="">
+							<fmt:message key="common.select" bundle="${msg}" />
+						</option>
+					</select>
+					<i class="pe-7s-help1 pe-lg m-l-n-sm tooltip-icon"
+						tooltip="<fmt:message key="choose.services" bundle="${msg}" />">
+					</i>
+					<div class="error-area"
+						data-ng-show="instanceForm.service.$invalid && OfferingSubmitted">
+						<i tooltip="<fmt:message key="services.is.required" bundle="${msg}" />"
+							class="fa fa-warning error-icon">
+						</i>
+					</div>
+					<input required="true" type="hidden" name="service" id="create_instance_service"
+						data-ng-model="instance.services.serviceName"
+						class="form-control"
+						data-ng-class="{'error': instanceForm.service.$invalid && OfferingSubmitted}">
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row border-content">
 		<div class="col-md-12 col-sm-12">
 			<div class="row  form-group"
 				data-ng-class="{ 'text-danger' : instanceForm.networkoffer.$invalid && OfferingSubmitted}">
