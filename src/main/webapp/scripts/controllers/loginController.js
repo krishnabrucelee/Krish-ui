@@ -81,28 +81,27 @@ $scope.captchaList();
    $scope.refreshCaptcha = function() {
 	     //$('#captchaImg').attr('src', '').attr('src', '${pageContext.request.contextPath}/captcha')
 	   	document.getElementById("captchaImg").setAttribute("src", 'CaptchaServlet')
-   }
+   };
 
 
         $scope.loginForm = function () {
 
-
-        	if (!angular.isUndefined($scope.answer) && $scope.answer != null)
+        	if (!angular.isUndefined($scope.user.answer) && $scope.user.answer != null)
         	 {
         	 var headers = {
-        			 "x-answer" : $scope.answer
+        			 "x-answer" : $scope.user.answer
         	 }
        $http({method: 'POST', url : REQUEST_PROTOCOL + window.location.hostname + REQUEST_PORT + REQUEST_FOLDER + 'CaptchaServlet', headers: headers})
        .success(function (result) {
            if(result.result == 'success'){
-        if (angular.isUndefined($scope.user_remember)) {
-            $scope.user_remember = "false";
+        if (angular.isUndefined($scope.user.remember)) {
+            $scope.user.remember = "false";
         }
         var headers = {
-            "x-requested-with": $scope.user_domain,
-            "x-auth-username": $scope.user_name,
-            "x-auth-password": $scope.user_password,
-            "x-auth-remember": $scope.user_remember,
+            "x-requested-with": $scope.user.domain,
+            "x-auth-username": $scope.user.name,
+            "x-auth-password": $scope.user.password,
+            "x-auth-remember": $scope.user.remember,
             "x-force-login" : "false",
             'Content-Type': 'application/json'
         };
@@ -130,10 +129,10 @@ $scope.captchaList();
             		  $scope.forceLogin = function() {
             		      if (confirm("Already user is logged In. Are you sure want to do Force Login?") == true) {
             		    	  var headers = {
-            		    	            "x-requested-with": $scope.user_domain,
-            		    	            "x-auth-username": $scope.user_name,
-            		    	            "x-auth-password": $scope.user_password,
-            		    	            "x-auth-remember": $scope.user_remember,
+            		    	            "x-requested-with": $scope.user.domain,
+            		    	            "x-auth-username": $scope.user.name,
+            		    	            "x-auth-password": $scope.user.password,
+            		    	            "x-auth-remember": $scope.user.remember,
             		    	            "x-force-login" : "true",
             		    	            'Content-Type': 'application/json'
             		    	        };
@@ -158,7 +157,7 @@ $scope.captchaList();
             		        	  $scope.showLoader = false;
             		        	  $window.sessionStorage.removeItem("loginSession")
             		        	  if (!angular.isUndefined(result.data)) {
-            		        		  var target = document.getElementById("errorMsgs");
+            		        		  var target = document.getElementById("errorMsg");
                                       target.innerHTML = result.data.message;
                                       target.style.display = 'block';
                                       target.style["margin-bottom"] = '10px';
@@ -169,7 +168,7 @@ $scope.captchaList();
             		  $scope.forceLogin();
             		  } else {
                     	  $window.sessionStorage.removeItem("loginSession");
-                    	  var target = document.getElementById("errorMsgs");
+                    	  var target = document.getElementById("errorMsg");
                           target.innerHTML = result.data.message;
                           target.style.display = 'block';
                           target.style["margin-bottom"] = '10px';
@@ -177,7 +176,7 @@ $scope.captchaList();
                   } else {
                 	  $window.sessionStorage.removeItem("loginSession")
     	        	  if (!angular.isUndefined(result.data)) {
-    	        		var target = document.getElementById("errorMsgs");
+    	        		var target = document.getElementById("errorMsg");
     	                target.innerHTML = "The server could be temporarily unavailable. Try again in a few moments.";
     	                target.style.display = 'block';
     	                target.style["margin-bottom"] = '10px';
@@ -186,26 +185,28 @@ $scope.captchaList();
            });
            } else {
         	   if(!angular.isUndefined(result.result) || result.result == "failure") {
-        	   var target = document.getElementById("errorMsgs");
+        	   var target = document.getElementById("errorMsg");
                target.innerHTML = "Invalid captcha.";
                target.style.display = 'block';
               target.style["margin-bottom"] = '10px';
         	   }
            }
            });
+        		} else if (angular.isUndefined($scope.user.answer) && $scope.user.answer == null) {
+        			$scope.loginFormWithoutCaptcha();
         		}
         }
 
         $scope.loginFormWithoutCaptcha = function () {
 
-     	if (angular.isUndefined($scope.user_remember)) {
-    		$scope.user_remember = "false";
+     	if (angular.isUndefined($scope.user.remember)) {
+    		$scope.user.remember = "false";
     	}
         var headers = {
-            "x-requested-with": $scope.user_domain,
-            "x-auth-username": $scope.user_name,
-            "x-auth-password": $scope.user_password,
-            "x-auth-remember": $scope.user_remember,
+            "x-requested-with": $scope.user.domain,
+            "x-auth-username": $scope.user.name,
+            "x-auth-password": $scope.user.password,
+            "x-auth-remember": $scope.user.remember,
             "x-force-login" : "false",
             'Content-Type': 'application/json'
         };
@@ -233,10 +234,10 @@ $scope.captchaList();
                       $scope.forceLogin = function() {
                           if (confirm("Already user is logged In. Are you sure want to do Force Login?") == true) {
                               var headers = {
-                                        "x-requested-with": $scope.user_domain,
-                                        "x-auth-username": $scope.user_name,
-                                        "x-auth-password": $scope.user_password,
-                                        "x-auth-remember": $scope.user_remember,
+                                        "x-requested-with": $scope.user.domain,
+                                        "x-auth-username": $scope.user.name,
+                                        "x-auth-password": $scope.user.password,
+                                        "x-auth-remember": $scope.user.remember,
                                         "x-force-login" : "true",
                                         'Content-Type': 'application/json'
                                     };
