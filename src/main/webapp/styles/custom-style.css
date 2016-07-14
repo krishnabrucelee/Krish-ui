@@ -479,6 +479,10 @@ fieldset.scheduler-border legend{border-bottom:none !important; margin-bottom:0p
 
 #side-menu li a .pe-lg.nav-menu-icons{width:30px;}
 
+.volumelist-action-menu .dropdown-menu{padding-right:80px;}
+.volumelist-action-menu .vol-dropdown-arw{position: absolute; right: 88px; top: -17px;}
+.volumelist-action-menu.action-menu .dropdown-menu{ right: -94px !important; top: 25px;}
+
 @media screen and (-webkit-min-device-pixel-ratio:0) {
 .captcha-number{margin-top:28px; margin-left:10px;}
 .captcha-refresh{margin-top:40px; margin-left:0px;}

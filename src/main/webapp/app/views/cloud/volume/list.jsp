@@ -132,10 +132,10 @@ pageEncoding="UTF-8"%>
                                      <span data-ng-if="volume.volumeType == 'DATADISK' && !volume.isCustomDisk">{{volume.storageDiskSize}}</span></td>
                                     <td>{{ volume.createdDateTime*1000 | date:'yyyy-MM-dd HH:mm:ss'}}</td>
                                     <td>
-                                        <div class="btn-group action-menu">
+                                        <div class="btn-group action-menu volumelist-action-menu">
                                             <span data-ng-if="volume.volumeType == 'DATADISK'">
                                                 <a class="fa fa-cogs dropdown-toggle" data-toggle="dropdown" ></a>
-                                                <ul class="dropdown-menu pull-right">
+                                                <ul class="dropdown-menu pull-right ">
                                                     <img src="images/dropdown-arw2.png" border="0" class="vol-dropdown-arw">
                                                      <li has-permission = "DISK_SNAPSHOT"><a class="icon-button" href="javascript:void(0);" data-ng-click="createSnapshot(md, volume.id)" title="Snapshot"><span class="fa fa-camera m-xs"></span> <fmt:message key="common.snapshot" bundle="${msg}" /></a></li>
                                                     <li has-permission = "RECURRING_SNAPSHOT"><a href="javascript:void(0);" data-ng-click="openReccuringSnapshot(volume.id)" title="Recurring Snapshot"><span class="fa fa-repeat m-xs"></span> <fmt:message key="recurring.snapshot" bundle="${msg}" /></a></li>
